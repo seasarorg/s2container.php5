@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><!-- don't edit start --><title>Seasar - DI Container with AOP -</title><meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<link href="seasar_b.css" type="text/css" rel="stylesheet" media="screen"><link href="seasar_p.css" type="text/css" rel="stylesheet" media="print"><script src="seasar_b.js" type="text/JavaScript" language="JavaScript"></script></head>
+
+
+<body onload="preload('ja')"><table align="left" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr>
+<td align="left" valign="top" width="780"><table class="white" border="0" cellpadding="0" cellspacing="0" width="780">
+<tbody><tr><td colspan="7"><img src="images/top01_b.gif" alt="" height="5" width="780"></td></tr>
+<tr><td width="235"><img src="images/top02_b.gif" alt="Seasar" height="117" width="235"></td>
+<td colspan="3"><img src="images/top03.gif" alt="DI Container with AOP" height="117" width="289"></td>
+<td colspan="3"><img src="images/spacer.gif" alt="" height="117" width="256"></td>
+</tr><tr><td rowspan="2"><img src="images/top04.gif" alt="" height="49" width="235"></td>
+<td><a href="http://www.seasar.org/index.html"><img src="images/menu01_b_ja.gif" alt="" id="menu01" onmouseover="swap(1)" onmouseout="restore(1)" border="0" height="30" width="78"></a></td>
+<td><a href="http://www.seasar.org/projects.html"><img src="images/menu02_b_ja.gif" alt="" id="menu02" onmouseover="swap(2)" onmouseout="restore(2)" border="0" height="30" width="101"></a></td>
+<td><a href="http://www.seasar.org/products.html"><img src="images/menu03_b_ja.gif" alt="" id="menu03" onmouseover="swap(3)" onmouseout="restore(3)" border="0" height="30" width="110"></a></td>
+<td><a href="http://www.seasar.org/resources.html"><img src="images/menu04_b_ja.gif" alt="" id="menu04" onmouseover="swap(4)" onmouseout="restore(4)" border="0" height="30" width="113"></a></td>
+<td><img src="images/menu05_b_ja.gif" alt="" id="menu05" onmouseover="swap(5)" onmouseout="restore(5)" border="0" height="30" width="109"></td>
+<td width="34"><img src="images/menu06.gif" alt="" height="30" width="34"></td></tr><tr>
+<td colspan="6"><img src="images/spacer.gif" alt="" height="19" width="545"></td></tr></tbody></table>
+<table class="white" border="0" cellpadding="0" cellspacing="0" width="780">
+<tbody><tr align="left" valign="top"><td width="18"><img src="images/spacer.gif" alt="" height="14" width="18"></td><td class="main" width="744">
+<!-- don't edit end -->
+<!-- document start -->
+
+<h3>セットアップ</h3>
+<p>
+s2container.php5.version.zipを取得し解凍して下さい。以下のディレクトリが展開されます。
+</p>
+
+<pre>
+s2container.php5/
+  +-- docs/                ----- ドキュメント ディレクトリ
+  +-- src/                 ----- ソース ディレクトリ
+  +-- test/                ----- テスト ディレクトリ
+  +-- .project             ----- Eclipseのプロジェクトファイル
+  +-- SEASAR-LICENSE.TXT   ----- Seasarライセンス
+  +-- s2container.php5.ini ----- S2Container.PHP5 設定ファイル
+</pre>
+<p>
+s2container.php5.ini を読み込んで下さい。S2Container.PHP5が使用可能となります。
+</p>
+
+<pre>&lt?php
+require_once('/path/to/s2container.php5.ini');
+?&gt;
+</pre>
+
+<br>
+<h3>クラス定義の AutoLoad について</h3>
+<p>
+S2Container.PHP5 では、__autoload関数を用いてクラス定義ファイルを読み込みます。<br>
+__autoload関数は、s2container.php5.ini ファイル内で定義されています。
+</p>
+<pre>&lt?php
+・・・
+function __autoload($class=null){
+    if(S2ClassLoader::load($class)){return;}
+}
+・・・
+?&gt;
+</pre>
+
+開発中のアプリケーションや使用しているフレームワークで、既に__autoload関数が定義されている場合は、s2container.php5.ini 内の __autoload関数をコメントアウトして下さい。
+<pre>&lt?php
+・・・
+/*
+function __autoload($class=null){
+    if(S2ClassLoader::load($class)){return;}
+}
+*/
+・・・
+?&gt;
+</pre>
+
+s2container.php5.ini 内の __autoload関数をコメントアウト後、以下の1行をご使用の__autoload関数の先頭に挿入して下さい。
+<pre>
+if(S2ClassLoader::load($class)){return;}
+</pre>
+***注） __autoload関数定義が読み込まれる前に s2container.php5.ini ファイルの require を行って下さい。<br>
+***注） S2ClassLoader::load メソッドの引数($class)は、__autoload関数の引数を渡して下さい。
+
+<!-- document end -->
+<!-- don't edit start -->
+</td>
+<td width="14"><img src="images/spacer.gif" alt="" height="14" width="14"></td>
+</tr><tr>
+<td width="14"><img src="images/spacer.gif" alt="" height="30" width="14"></td>
+<td width="766"><img src="images/spacer.gif" alt="" height="30" width="592"></td>
+</tr><tr>
+<td width="14"><img src="images/spacer.gif" alt="" height="14" width="14"></td>
+<td class="copyright" width="766">&#169; Copyright The Seasar Project and the others 2004-2005, all rights reserved.</td>
+</tr></tbody></table>
+</td><td class="backright" align="left" valign="top">&nbsp;</td></tr><tr>
+<td class="backunder" align="left" height="16" valign="top" width="780">&nbsp;</td>
+<td class="backcorner" align="left" height="16" valign="top">&nbsp;</td>
+</tr></tbody></table><!-- don't edit end -->
+</body></html>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
+"components21.dtd">
+<components namespace="adodb">
+    <component name="dataSource" class="ADOdbDataSource">
+        <property name="dsn">
+            "mysql://hoge:hoge@localhost:3306/s2container"
+        </property>
+        <!--
+        <property name="type">"mysql"</property>
+        <property name="user">"hoge"</property>
+        <property name="password">"hoge"</property>
+        <property name="host">"localhost"</property>
+        <property name="port">"3306"</property>
+        <property name="database">"s2container"</property>
+        <property name="cacheDir">"%HOME_DIR%/tmp"</property>
+        <property name="cache">false</property>
+        <property name="cacheSecs">"60"</property>
+        -->
+    </component>
+
+    <component name="dbtx" class="ADOdbTxInterceptor"/>
+    <component name="session" class="DBSessionImpl"/>
+
+    <component class="ADOdbSqlHandler"/>
+    <component name="dao" class="SimpleDaoInterceptor"/>
+    <component class="DaoMetaDataFactoryImpl"/>
+</components>

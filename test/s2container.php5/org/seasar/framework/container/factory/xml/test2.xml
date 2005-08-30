@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
+"components21.dtd">
+<components namespace="test2">
+
+    <component name="n" class="N">
+        <arg>"test value."</arg>
+    </component>
+
+</components>
