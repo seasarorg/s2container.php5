@@ -12,7 +12,7 @@
 // | Authors: klove                                                       |
 // +----------------------------------------------------------------------+
 //
-// $Id: NoSuchMethodRuntimeException.class.php,v 1.1 2005/08/02 14:00:03 klove Exp $
+// $Id$
 /**
  * package org.seasar.framework.exception
  * @author klove

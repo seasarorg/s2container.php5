@@ -12,7 +12,7 @@
 // | Authors: klove                                                       |
 // +----------------------------------------------------------------------+
 //
-// $Id: InitMethodDefSupport.class.php,v 1.1 2005/05/28 16:50:12 klove Exp $
+// $Id$
 /**
  * InitMethodDefの設定をサポートします。
  * 

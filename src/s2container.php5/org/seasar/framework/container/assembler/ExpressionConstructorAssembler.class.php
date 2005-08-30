@@ -12,7 +12,7 @@
 // | Authors: klove                                                       |
 // +----------------------------------------------------------------------+
 //
-// $Id: ExpressionConstructorAssembler.class.php,v 1.3 2005/06/03 10:16:01 klove Exp $
+// $Id$
 /**
  * @package org.seasar.framework.container.assembler
  * @author klove

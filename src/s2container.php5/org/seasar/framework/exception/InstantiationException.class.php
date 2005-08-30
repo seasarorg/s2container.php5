@@ -12,7 +12,7 @@
 // | Authors: klove                                                       |
 // +----------------------------------------------------------------------+
 //
-// $Id: InstantiationException.class.php,v 1.1 2005/05/28 16:50:13 klove Exp $
+// $Id$
 /**
  * InstantiationExceptionをラップする実行時例外です。
  * 

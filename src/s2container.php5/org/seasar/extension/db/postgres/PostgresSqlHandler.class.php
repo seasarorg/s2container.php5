@@ -12,7 +12,7 @@
 // | Authors: klove                                                       |
 // +----------------------------------------------------------------------+
 //
-// $Id: PostgresSqlHandler.class.php,v 1.1 2005/06/28 13:48:37 klove Exp $
+// $Id$
 /**
  * @package org.seasar.extension.db.postgres
  * @author klove

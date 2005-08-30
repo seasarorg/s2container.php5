@@ -12,7 +12,7 @@
 // | Authors: klove                                                       |
 // +----------------------------------------------------------------------+
 //
-// $Id: UuCallAopProxy.class.php,v 1.4 2005/07/02 11:52:20 klove Exp $
+// $Id$
 /**
  * @package org.seasar.framework.aop.proxy
  * @author klove

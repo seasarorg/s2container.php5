@@ -12,7 +12,7 @@
 // | Authors: klove                                                       |
 // +----------------------------------------------------------------------+
 //
-// $Id: DaoNotFoundRuntimeException.class.php,v 1.1 2005/06/21 16:33:46 klove Exp $
+// $Id$
 /**
  * @package org.seasar.extension.db
  * @author klove

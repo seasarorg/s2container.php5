@@ -12,7 +12,7 @@
 // | Authors: klove                                                       |
 // +----------------------------------------------------------------------+
 //
-// $Id: S2RuntimeException.class.php,v 1.2 2005/06/21 16:33:46 klove Exp $
+// $Id$
 /**
  * @package org.seasar.framework.exception
  * @author klove

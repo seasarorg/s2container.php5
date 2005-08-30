@@ -12,7 +12,7 @@
 // | Authors: klove                                                       |
 // +----------------------------------------------------------------------+
 //
-// $Id: ADOdbDataSource.class.php,v 1.1 2005/07/02 12:34:41 klove Exp $
+// $Id$
 /**
  * @package org.seasar.extension.db.adodb
  * @author klove

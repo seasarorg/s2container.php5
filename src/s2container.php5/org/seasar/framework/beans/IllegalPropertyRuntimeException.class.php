@@ -12,7 +12,7 @@
 // | Authors: klove                                                       |
 // +----------------------------------------------------------------------+
 //
-// $Id: IllegalPropertyRuntimeException.class.php,v 1.3 2005/08/02 14:00:04 klove Exp $
+// $Id$
 /**
  *
  * @package org.seasar.framework.beans

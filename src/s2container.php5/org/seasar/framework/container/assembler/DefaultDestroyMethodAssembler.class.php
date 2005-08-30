@@ -12,7 +12,7 @@
 // | Authors: klove                                                       |
 // +----------------------------------------------------------------------+
 //
-// $Id: DefaultDestroyMethodAssembler.class.php,v 1.1 2005/05/28 16:50:11 klove Exp $
+// $Id$
 /**
  * @package org.seasar.framework.container.assembler
  * @author klove

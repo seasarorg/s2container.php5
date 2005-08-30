@@ -12,7 +12,7 @@
 // | Authors: klove                                                       |
 // +----------------------------------------------------------------------+
 //
-// $Id: AbstractAssembler.class.php,v 1.2 2005/06/03 10:16:01 klove Exp $
+// $Id$
 /**
  * @package org.seasar.framework.container.assembler
  * @author klove

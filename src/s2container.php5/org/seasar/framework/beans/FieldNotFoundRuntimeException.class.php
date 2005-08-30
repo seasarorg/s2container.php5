@@ -12,7 +12,7 @@
 // | Authors: klove                                                       |
 // +----------------------------------------------------------------------+
 //
-// $Id: FieldNotFoundRuntimeException.class.php,v 1.1 2005/05/28 16:50:13 klove Exp $
+// $Id$
 /**
  * クラスのpublic staticなフィールドが見つからなかったときの実行時例外
  * 

@@ -12,7 +12,7 @@
 // | Authors: klove                                                       |
 // +----------------------------------------------------------------------+
 //
-// $Id: S2Logger.class.php,v 1.1 2005/05/28 16:50:13 klove Exp $
+// $Id$
 /**
  * @package org.seasar.framework.log
  * @author klove

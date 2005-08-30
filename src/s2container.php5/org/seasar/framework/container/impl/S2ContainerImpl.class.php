@@ -12,7 +12,7 @@
 // | Authors: klove                                                       |
 // +----------------------------------------------------------------------+
 //
-// $Id: S2ContainerImpl.class.php,v 1.3 2005/08/02 14:00:02 klove Exp $
+// $Id$
 /**
  * @package org.seasar.framework.container.impl
  * @author klove

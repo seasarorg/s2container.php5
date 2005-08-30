@@ -12,7 +12,7 @@
 // | Authors: klove                                                       |
 // +----------------------------------------------------------------------+
 //
-// $Id: PearDBSqlHandler.class.php,v 1.1 2005/06/21 16:33:47 klove Exp $
+// $Id$
 /**
  * @package org.seasar.extension.db.peardb
  * @author klove

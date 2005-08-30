@@ -12,7 +12,7 @@
 // | Authors: klove                                                       |
 // +----------------------------------------------------------------------+
 //
-// $Id: DBSessionImpl.class.php,v 1.2 2005/08/02 14:00:01 klove Exp $
+// $Id$
 /**
  * @package org.seasar.extension.db.impl
  * @author klove

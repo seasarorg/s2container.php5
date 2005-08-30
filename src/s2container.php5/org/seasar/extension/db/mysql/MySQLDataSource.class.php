@@ -12,7 +12,7 @@
 // | Authors: klove                                                       |
 // +----------------------------------------------------------------------+
 //
-// $Id: MySQLDataSource.class.php,v 1.2 2005/06/28 13:48:37 klove Exp $
+// $Id$
 /**
  * @package org.seasar.extension.db.mysql
  * @author klove

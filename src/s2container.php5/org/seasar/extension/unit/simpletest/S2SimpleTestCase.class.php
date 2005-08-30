@@ -12,7 +12,7 @@
 // | Authors: klove                                                       |
 // +----------------------------------------------------------------------+
 //
-// $Id: S2SimpleTestCase.class.php,v 1.1 2005/08/02 14:00:02 klove Exp $
+// $Id$
 /**
  * @package org.seasar.extension.unit.simpletest
  * @author klove

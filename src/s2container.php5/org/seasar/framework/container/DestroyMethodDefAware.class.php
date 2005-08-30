@@ -12,7 +12,7 @@
 // | Authors: klove                                                       |
 // +----------------------------------------------------------------------+
 //
-// $Id: DestroyMethodDefAware.class.php,v 1.1 2005/05/28 16:50:11 klove Exp $
+// $Id$
 /**
  * DestroyMethodDefÇÃê›íËÇ™â¬î\Ç…Ç»ÇËÇ‹Ç∑ÅB
  * 

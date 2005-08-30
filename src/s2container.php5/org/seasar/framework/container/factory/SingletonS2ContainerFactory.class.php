@@ -12,7 +12,7 @@
 // | Authors: klove                                                       |
 // +----------------------------------------------------------------------+
 //
-// $Id: SingletonS2ContainerFactory.class.php,v 1.2 2005/08/02 14:00:02 klove Exp $
+// $Id$
 /**
  * @package org.seasar.framework.container.factory
  * @author klove

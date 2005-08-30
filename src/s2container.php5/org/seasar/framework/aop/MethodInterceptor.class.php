@@ -12,7 +12,7 @@
 // | Authors: klove                                                       |
 // +----------------------------------------------------------------------+
 //
-// $Id: MethodInterceptor.class.php,v 1.2 2005/05/31 16:40:22 klove Exp $
+// $Id$
 /**
  * @package org.seasar.framework.aop
  * @author klove
