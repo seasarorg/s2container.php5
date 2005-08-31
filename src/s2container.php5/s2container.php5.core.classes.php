@@ -6,7 +6,7 @@ final class S2ContainerFactory {
     private static $builders_ = array();
     private static $defaultBuilder_;
     private static $inited_ = false;
-    private function TesContainerFactory() {
+    private function S2ContainerFactory() {
         $this->init();
     }
     private static function init(){
@@ -45,8 +45,7 @@ final class S2ContainerFactory {
     }
     private static function getExtension($path) {
         $filename = basename($path);
-        $regs = array();
-        ereg('\.([a-zA-Z0-9]+)$',$filename,$regs);
+        preg_match('/\.([a-zA-Z0-9]+)$/',$filename,$regs);
         return $regs[1];
     }
     private static function getBuilder($ext) {
@@ -71,237 +70,6 @@ final class S2ContainerFactory {
 interface S2ContainerBuilder {
     public function build($path);
     public function includeChild(S2Container $parent, $path);
-}
-
-final class XmlS2ContainerBuilder implements S2ContainerBuilder {
-    public static $DTD_PATH21 =
-        "components21.dtd";
-    private $unresolvedCompRef_ = array();
-    private $yetRegisteredCompRef_ = array();
-    public function XmlS2ContainerBuilder (){
-        $this->DTD_PATH21 = S2CONTAINER_PHP5 . "/org/seasar/framework/container/factory/components21.dtd";
-    }
-    public function build($path,$classLoader=null) {
-        $container = null;
-        if(!is_readable($path)){
-            throw new S2RuntimeException('ESSR0001',array($path));
-        }
-        if(S2CONTAINER_PHP5_DOM_VALIDATE){
-            $dom = new DomDocument();
-               $dom->validateOnParse = true;
-               $dom->load($path);
-               if(!$dom->validate()){
-                throw new S2RuntimeException('ESSR1001',array($path));
-               }
-               $root = simplexml_import_dom($dom);
-        }else{
-            $root = simplexml_load_file($path);
-        }
-           $namespace = trim((string)$root['namespace']);
-        $container = new S2ContainerImpl();
-        $container->setPath($path);
-        if ($namespace != "") {
-            $container->setNamespace($namespace); 
-        }
-           foreach($root->include as $index => $val){
-            $path = trim((string)$val['path']);
-            $path = StringUtil::expandPath($path);
-               if(!is_readable($path)){
-                throw new S2RuntimeException('ESSR0001',array($path));
-               }
-            $child = S2ContainerFactory::includeChild($container,$path);
-            $child->setRoot($container->getRoot());
-           }
-           foreach($root->component as $index => $val){
-            $container->register($this->setupComponentDef($val));               
-           }
-           $this->setupMetaDef($root,$container);
-           foreach($this->yetRegisteredCompRef_ as $compRef){
-           	   $container->register($compRef);
-           }
-           $this->yetRegisteredCompRef_ = array();
-           if(count(array_keys($this->unresolvedCompRef_)>0)){
-               foreach ($this->unresolvedCompRef_ as $key => $val){
-                   foreach($val as $argDef){
-                       if($container->hasComponentDef($key)){
-                           $argDef->setChildComponentDef($container->getComponentDef($key));
-                           $argDef->setExpression("");
-                       }
-                   }
-               }
-           }
-           $this->unresolvedCompRef_ = array();
-        return $container;
-    }
-    private function setupComponentDef($component){
-        $className = trim((string)$component['class']);
-        $name = trim((string)$component['name']);
-        $instanceMode = trim((string)$component['instance']);
-        $autoBindingMode = trim((string)$component['autoBinding']);
-        $componentDef = new ComponentDefImpl($className,$name);
-        $compExp = trim((string)$component);
-        if($compExp != ""){
-            $componentDef->setExpression($compExp);        	
-        }   
-        if ($instanceMode != "") {
-            $componentDef->setInstanceMode($instanceMode);
-        }
-        if ($autoBindingMode != "") {
-            $componentDef->setAutoBindingMode($autoBindingMode);
-        }
-        foreach($component->arg as $index => $val){
-            $componentDef->addArgDef($this->setupArgDef($val));               
-        }
-        foreach($component->property as $index => $val){
-            $componentDef->addPropertyDef($this->setupPropertyDef($val));               
-        }
-        foreach($component->initMethod as $index => $val){
-            $componentDef->addInitMethodDef($this->setupInitMethodDef($val));               
-        }
-        foreach($component->destroyMethod as $index => $val){
-            $componentDef->addDestroyMethodDef($this->setupDestroyMethodDef($val));               
-        }
-        foreach($component->aspect as $index => $val){
-            $componentDef->addAspectDef($this->setupAspectDef($val,$className));               
-        }
-        $this->setupMetaDef($component,$componentDef);
-        return $componentDef;
-    }    
-    private function setupArgDef($arg){
-        $argDef = new ArgDefImpl();
-        if(count($arg->component[0]) == null){
-            $argValue = trim((string)$arg);
-            $regs = array();
-            if(ereg("^\"(.+)\"$",$argValue,$regs) or
-               ereg("^\'(.+)\'$",$argValue,$regs)){
-                $argDef->setValue($regs[1]);
-            }else{
-                 $argDef->setExpression($argValue);
-                if(array_key_exists($argValue,$this->unresolvedCompRef_)){
-                   array_push($this->unresolvedCompRef_[$argValue],$argDef);
-                }else{
-                   $this->unresolvedCompRef_[$argValue] = array($argDef);
-                }
-            }
-        }else{
-            $childComponent = $this->setupComponentDef($arg->component[0]);
-            $argDef->setChildComponentDef($childComponent);
-            array_push($this->yetRegisteredCompRef_,$childComponent);
-        }
-        $this->setupMetaDef($arg,$argDef);
-        return $argDef;
-    }
-    private function setupPropertyDef($property){
-        $name = (string)$property['name'];
-        $propertyDef = new PropertyDefImpl($name);
-        if(count($property->component[0]) == null){
-            $propertyValue = trim((string)$property);
-            $regs = array();
-            if(ereg("^\"(.+)\"$",$propertyValue,$regs) or
-               ereg("^\'(.+)\'$",$propertyValue,$regs)){
-                  $propertyDef->setValue($regs[1]);
-            }else{
-                 $propertyDef->setExpression($propertyValue);
-                if(array_key_exists($propertyValue,$this->unresolvedCompRef_)){
-                   array_push($this->unresolvedCompRef_[$propertyValue],$propertyDef);
-                }else{
-                   $this->unresolvedCompRef_[$propertyValue] = array($propertyDef);
-                }
-            }
-        }else{
-            $childComponent = $this->setupComponentDef($property->component[0]);
-            $propertyDef->setChildComponentDef($childComponent);
-            array_push($this->yetRegisteredCompRef_,$childComponent);        	
-        }
-        $this->setupMetaDef($property,$propertyDef);
-        return $propertyDef;
-    }
-    private function setupInitMethodDef($initMethod){
-        $name = (string)$initMethod['name'];
-        $exp = trim((string)$initMethod);
-        $initMethodDef = new InitMethodDefImpl($name);
-        if($exp != ""){
-        	$initMethodDef->setExpression($exp);
-        }
-        foreach($initMethod->arg as $index => $val){
-            $initMethodDef->addArgDef($this->setupArgDef($val));               
-        }
-        return $initMethodDef;
-    }
-    private function setupDestroyMethodDef($destroyMethod){
-        $name = (string)$destroyMethod['name'];
-        $exp = trim((string)$destroyMethod);
-        $destroyMethodDef = new DestroyMethodDefImpl($name);
-        if($exp != ""){
-        	$destroyMethodDef->setExpression($exp);
-        }
-        foreach($destroyMethod->arg as $index => $val){
-            $destroyMethodDef->addArgDef($this->setupArgDef($val));               
-        }
-        return $destroyMethodDef;
-    }
-    private function setupAspectDef($aspect,$targetClassName){
-        $pointcut = trim((string)$aspect['pointcut']);
-        if($pointcut == ""){
-            $pointcut = new PointcutImpl($targetClassName);
-        }else{
-            $pointcuts = split(",",$pointcut);
-            $pointcut = new PointcutImpl($pointcuts);
-        }
-        $aspectDef = new AspectDefImpl($pointcut);
-        if(count($aspect->component[0]) == null){
-            $aspectValue = trim((string)$aspect);
-            $regs = array();
-            if(ereg("^\"(.+)\"$",$aspectValue,$regs) or
-               ereg("^\'(.+)\'$",$aspectValue,$regs)){
-                  $aspectDef->setValue($regs[1]);
-            }else{
-                 $aspectDef->setExpression($aspectValue);
-                if(array_key_exists($aspectValue,$this->unresolvedCompRef_)){
-                   array_push($this->unresolvedCompRef_[$aspectValue],$aspectDef);
-                }else{
-                   $this->unresolvedCompRef_[$aspectValue] = array($aspectDef);
-                }
-            }
-        }else{
-            $childComponent = $this->setupComponentDef($aspect->component[0]);
-            $aspectDef->setChildComponentDef($childComponent);
-            array_push($this->yetRegisteredCompRef_,$childComponent);        	
-        }
-        return $aspectDef;
-    }
-    private function setupMetaDef($parent,$parentDef){
-        foreach($parent->meta as $index => $val){
-            $name = trim((string)$val['name']);
-            $metaDef = new MetaDefImpl($name);
-            if(count($val->component[0]) == null){
-                $metaValue = trim((string)$val);
-                $regs = array();
-                if(ereg("^\"(.+)\"$",$metaValue,$regs) or
-                   ereg("^\'(.+)\'$",$metaValue,$regs)){
-                   $metaDef->setValue($regs[1]);
-                }else{
-                     $metaDef->setExpression($metaValue);
-                    if(array_key_exists($metaValue,$this->unresolvedCompRef_)){
-                       array_push($this->unresolvedCompRef_[$metaValue],$metaDef);
-                    }else{
-                       $this->unresolvedCompRef_[$metaValue] = array($metaDef);
-                    }
-                }
-            }else{
-                $childComponent = $this->setupComponentDef($meta->component[0]);
-                $metaDef->setChildComponentDef($childComponent);
-                array_push($this->yetRegisteredCompRef_,$childComponent);        	
-            }
-            $parentDef->addMetaDef($metaDef);
-        }
-    }
-    public function includeChild(S2Container $parent, $path) {
-        $child = null;
-        $child = $this->build($path);
-        $parent->includeChild($child);
-        return $child;
-    }
 }
 
 interface MetaDefAware {
@@ -410,10 +178,13 @@ class S2ContainerImpl implements S2Container {
     }
     public function getComponentDef($key){
         if(is_int($key)){
+        	if(!isset($this->componentDefList_[$key])){
+        		throw new ComponentNotFoundRuntimeException($key);
+        	}
             return $this->componentDefList_[$key];
         }
         if(is_object($key)){
-            $key = $get_class($key);
+            $key = get_class($key);
         }
         $cd = $this->getComponentDef0($key);
         if ($cd == null) {
@@ -422,21 +193,18 @@ class S2ContainerImpl implements S2Container {
         return $cd;
     }
     private function getComponentDef0($key) {
+        $cd = null;
         if(array_key_exists($key,$this->componentDefMap_)){
             $cd = $this->componentDefMap_[$key];
-        }else{
-                $cd = null;
+            if ($cd != null) {
+                return $cd;
+            }
         }
-        if ($cd != null) {
-            return $cd;
-        }
-        if(ereg("(.+)\.(.+)",$key,$ret)){
-            $ns = $ret[1];
-            if ($this->hasComponentDef($ns)) {
-                $child = $this->getComponent($ns);// returned S2Container
-                $name = $ret[2];
-                if ($child->hasComponentDef($name)) {
-                    return $child->getComponentDef($name);
+        if(preg_match("/(.+)\.(.+)/",$key,$ret)){
+            if ($this->hasComponentDef($ret[1])) {
+                $child = $this->getComponent($ret[1]);
+                if ($child->hasComponentDef($ret[2])) {
+                    return $child->getComponentDef($ret[2]);
                 }
             }
         }
@@ -480,6 +248,9 @@ class S2ContainerImpl implements S2Container {
         return count($this->children_);
     }
     public function getChild($index) {
+    	if(!isset($this->children_[$index])){
+    		throw new ContainerNotRegisteredRuntimeException("Child:".$index);
+    	}
         return $this->children_[$index];
     }
     public function init() {
@@ -502,7 +273,7 @@ class S2ContainerImpl implements S2Container {
             try {
                 $this->getComponentDef($i)->destroy();
             } catch (Exception $e) {
-                print $e;
+                print $e->getMessage() . "\n";
             }
         }
         for ($i = $this->getChildSize() - 1; 0 <= $i; --$i) {
@@ -678,7 +449,7 @@ class SimpleComponentDef implements ComponentDef {
     private $container_;
     public function SimpleComponentDef($component,$componentName="") {
         $this->component_ = $component;
-        $this->componentClass_ = new ReflectionClass(get_class($component));
+        $this->componentClass_ = new ReflectionClass($component);
         $this->componentName_ = $componentName;
     }
     public function getComponent() {
@@ -965,7 +736,7 @@ class ComponentDefImpl implements ComponentDef {
             $this->componentDeployer_ = ComponentDeployerFactory::create($this);
         }
         return $this->componentDeployer_;
-    }
+    }   
 }
 
 final class ArgDefSupport {
@@ -1113,9 +884,9 @@ interface ArgDef extends MetaDefAware {
 class ArgDefImpl implements ArgDef {
     private $value_;
     private $container_;
-    private $expression_;
-    private $exp_;
-    private $childComponentDef_;
+    private $expression_ = "";
+    private $exp_ = null;
+    private $childComponentDef_ = null;
     private $metaDefSupport_;
     public function ArgDefImpl($value=null) {
         $this->metaDefSupport_ = new MetaDefSupport();
@@ -1194,53 +965,120 @@ class PropertyDefImpl extends ArgDefImpl implements PropertyDef {
 }
 
 final class EvalUtil {
-    function EvalUtil() {
+    private function EvalUtil() {
     }
     public static function getExpression($expression){
         $exp = $expression;
-        if(!ereg(" return ",$exp) and 
-           !ereg("\nreturn ",$exp) and
-           !ereg("^return ",$exp)){
+        if(!preg_match("/\sreturn\s/",$exp) and 
+           !preg_match("/\nreturn\s/",$exp) and
+           !preg_match("/^return\s/",$exp)){
             $exp = "return " . $exp;
         }
-        if(!ereg(";$",$exp)){
+        if(!preg_match("/;$/",$exp)){
             $exp = $exp . ";";
         }
         return $exp;
     } 
     public static function addSemiColon($expression){
-        $exp = $expression;
-        if(!ereg(";$",$exp)){
+        $exp = trim($expression);
+        if(!preg_match("/;$/",$exp)){
             $exp = $exp . ";";
         }
         return $exp;
     } 
-    public static function getSql($sql,
-                                     $argNames,
-                                     $args){
-        for($i=0;$i<count($args);$i++){
-             $$argNames[$i] = $args[$i];       	
-        }
-        $exp = trim($sql);
-        if(!ereg(" return ",$exp) and 
-           !ereg("\nreturn ",$exp) and
-           !ereg("^return ",$exp)){
-        	if(!ereg("^\"",$exp)){
-        		$exp = "\"" . $exp;
-        	}
-        	if(!ereg("\"$",$exp)){
-        		$exp = $exp . "\"";
-        	}
-            $exp = "return " . $exp;
-            if(!ereg(";$",$exp)){
-                $exp = $exp . ";";
-            }
-        }        
-        return eval($exp);
-    } 
 }
 
-final class ComponentDeployerFactory {
+interface Pointcut { 
+    public function isApplied($methodName);
+}
+
+final class PointcutImpl implements Pointcut {
+    private $methodNames_;
+    private $patterns_;
+    public function PointcutImpl($target=null) {
+        if(!is_array($target)){
+            if ($target == null) {
+                throw new EmptyRuntimeException("targetClass");
+            }
+            if($target instanceof ReflectionClass){
+                $this->setMethodNames($this->getMethodNames($target));
+            }else{
+                $this->setMethodNames($this->getMethodNames(
+                                       new ReflectionClass($target)));
+            }
+        }else{
+            if (count($target) == 0) {
+                throw new EmptyRuntimeException("methodNames");
+            }
+            $this->setMethodNames($target);
+        }
+    }
+    public function isApplied($methodName) {
+        for ($i = 0;$i < count($this->methodNames_); ++$i) {
+        	if(preg_match("/^!(.+)/",$this->methodNames_[$i],$regs)){
+                if(!preg_match("/".$regs[1]."/",$methodName)){
+               	    return true;
+                }
+        	}else{
+                if(preg_match("/".$this->methodNames_[$i]."/",$methodName)){
+               	    return true;
+                }
+        	}
+        }
+        return false;
+    }
+    private function setMethodNames($methodNames) {
+        $this->methodNames_ = $methodNames;
+    }
+    private function getMethodNames($targetClass=null) {
+        if($targetClass == null){
+            return $this->methodNames_;
+        }
+        $methodNameSet = array();
+        if($targetClass->isInterface() or $targetClass->isAbstract()){
+            $methods = $targetClass->getMethods();
+            for ($j = 0; $j < count($methods); $j++) {
+                array_push($methodNameSet,$methods[$j]->getName());
+            }
+        }else{
+            $interfaces = $targetClass->getInterfaces();
+            for ($i = 0; $i < count($interfaces); $i++) {
+                $methods = $interfaces[$i]->getMethods();
+                for ($j = 0; $j < count($methods); $j++) {
+                    array_push($methodNameSet,$methods[$j]->getName());
+                }
+            }
+        }
+        return $methodNameSet;
+    }
+}
+
+interface AspectDef extends ArgDef {
+    public function getAspect();
+}
+
+class AspectDefImpl extends ArgDefImpl implements AspectDef {
+    private $pointcut_;
+    public function AspectDefImpl($arg1=null,$arg2=null) {
+        parent::__construct();
+        if($arg1 instanceof Pointcut){
+            $this->pointcut_ = $arg1;
+        }
+        if($arg2 instanceof Pointcut){
+            $this->pointcut_ = $arg2;
+        }
+        if($arg1 instanceof MethodInterceptor){
+            $this->setValue($arg1);
+        }
+        if($arg2 instanceof MethodInterceptor){
+            $this->setValue($arg2);
+        }
+    }
+    public function getAspect() {
+        $interceptor = $this->getValue();
+        return new AspectImpl($interceptor, $this->pointcut_);
+    }
+}final class ComponentDeployerFactory {
     private function ComponentDeployerFactory() {
     }
     public static function create(ComponentDef $componentDef) {
@@ -1422,8 +1260,8 @@ final class AutoBindingUtil {
     }
     public static final function isSuitable($classes) {
         if(is_array($classes)){
-            for ($i = 0; $i < count(classes); ++$i) {
-                if (!$this->isSuitable($classes[$i])) {
+            for ($i = 0; $i < count($classes); ++$i) {
+                if (!AutoBindingUtil::isSuitable($classes[$i])) {
                     return false;
                 }
             }
@@ -1477,7 +1315,7 @@ abstract class AbstractAssembler {
         if ($clazz != null) {
             return $clazz;
         } else {
-            return get_class($component);
+            return new ReflectionClass($component);
         }
     }
     protected function getArgs($argTypes) {
@@ -1514,8 +1352,7 @@ abstract class AbstractConstructorAssembler extends AbstractAssembler
     }
     protected function assembleDefault() {
         $clazz = $this->getComponentDef()->getConcreteClass();
-        $constructor = ClassUtil::getConstructor($clazz, null);
-        return ConstructorUtil::newInstance($constructor, null,$this->getComponentDef());
+        return ConstructorUtil::newInstance($clazz, null,$this->getComponentDef());
     }
 }
 
@@ -1671,8 +1508,23 @@ class ManualPropertyAssembler extends AbstractPropertyAssembler {
         for ($i = 0; $i < $size; ++$i) {
             $propDef = $this->getComponentDef()->getPropertyDef($i);
             $value = $this->getValue($propDef, $component);
-            $propDesc =
-                $beanDesc->getPropertyDesc($propDef->getPropertyName());
+            try{
+                $propDesc =
+                    $beanDesc->getPropertyDesc($propDef->getPropertyName());
+            }catch(PropertyNotFoundRuntimeException $e1){
+                try{
+                	$propDesc =
+                        $beanDesc->getPropertyDesc('__set');
+                    $propDesc->setSetterPropertyName($propDef->getPropertyName());    
+                }catch(PropertyNotFoundRuntimeException $e2){
+                    throw $e1;
+                }
+            }
+            if(!$propDesc->hasWriteMethod()){
+            	$propDesc =
+                    $beanDesc->getPropertyDesc('__set');
+                $propDesc->setSetterPropertyName($propDef->getPropertyName());    
+            }    
             $this->setValue($propDesc,$component,$value);
         }
     }
@@ -1698,11 +1550,12 @@ class AutoPropertyAssembler extends ManualPropertyAssembler {
                 try {
                     $value = $container->getComponent($propDesc->getPropertyType()->getName());
                 } catch (ComponentNotFoundRuntimeException $ex) {
-                    $this->log_->warn($ex->getMessage(),__METHOD__);
-                    if ($propDesc->getReadMethod() != null
-                            && $propDesc->getValue($component) != null) {
+                    if ($propDesc->getReadMethod() != null and
+                        $propDesc->getValue($component) != null) {
                         continue;
                     }
+                    $this->log_->info($ex->getMessage().". skip property<$propName>.",
+                                      __METHOD__);
                     continue;
                 }
                 $this->setValue($propDesc,$component,$value);
@@ -1760,13 +1613,10 @@ abstract class AbstractMethodAssembler
     	eval($exp);
     }
     private function getSuitableMethod($methods) {
-        $argSize = -1;
-        $method = null;
         $params = $methods->getParameters();
         $suitable = 1;
         if(count($params) == 0){
-            $method = $methods;
-            return $method;
+            return $methods;
         }
         foreach($params as $param){
             if($param->getClass() != null){
@@ -1776,10 +1626,9 @@ abstract class AbstractMethodAssembler
             }
         }
         if($suitable == 1){
-            $method = $methods;
-            return $method;
+            return $methods;
         }
-        return $method;
+        return null;
     }
     private function invoke0(
         BeanDesc $beanDesc,
@@ -1790,7 +1639,7 @@ abstract class AbstractMethodAssembler
             $beanDesc->invoke($component,$methodName,$args);
         } catch (Exception $ex) {
             throw new IllegalMethodRuntimeException(
-                $getComponentDef()->getComponentClass(),
+                $this->getComponentClass($component),
                 $methodName,
                 $ex);
         }
@@ -1854,14 +1703,15 @@ class ComponentNotFoundRuntimeException extends S2RuntimeException {
 }
 
 final class BeanDescFactory {
-    private static $beanDescCache_;
+    private static $beanDescCache_ = array();
     private function BeanDescFactory() {
     }
-    public static function getBeanDesc($clazz) {
-        $beanDesc = BeanDescFactory::$beanDescCache_[$clazz->getName()];
-        if ($beanDesc == null) {
+    public static function getBeanDesc(ReflectionClass $clazz) {
+    	if(array_key_exists($clazz->getName(),BeanDescFactory::$beanDescCache_)){
+            $beanDesc = BeanDescFactory::$beanDescCache_[$clazz->getName()];
+    	}else{
             $beanDesc = new BeanDescImpl($clazz);
-            $beanDescCache_[$clazz->getName()] = $beanDesc;
+            BeanDescFactory::$beanDescCache_[$clazz->getName()] = $beanDesc;
         }
         return $beanDesc;
     }
@@ -1875,7 +1725,7 @@ interface BeanDesc {
     public function hasField($fieldName);
     public function getField($fieldName);
     public function newInstance($args);
-    public function getSuitableConstructor($args);
+    public function getSuitableConstructor();
     public function invoke($target, $methodName,$args);
     public function getMethods($methodName);
     public function hasMethod($methodName);
@@ -1893,15 +1743,11 @@ final class BeanDescImpl implements BeanDesc {
     private $methodsCache_ = array();
     private $fieldCache_ = array();
     private $constCache_ = array();
-    private $invalidPropertyNames_ = array();
-    public function BeanDescImpl($beanClass) {
-        if ($beanClass == null) {
-            throw new EmptyRuntimeException("beanClass");
-        }
+    public function BeanDescImpl(ReflectionClass $beanClass) {
         $this->beanClass_ = $beanClass;
         $this->constructors_ = $this->beanClass_->getConstructor();
-        $this->setupPropertyDescs();
         $this->setupMethods();
+        $this->setupPropertyDescs();
         $this->setupField();
         $this->setupConstant();
     }
@@ -1909,19 +1755,20 @@ final class BeanDescImpl implements BeanDesc {
         return $this->beanClass_;
     }
     public function hasPropertyDesc($propertyName) {
-        return array_key_exists($propertyName,$this->propertyDescCache_) ||
-                array_key_exists('__set',$this->propertyDescCache_);
+        return array_key_exists($propertyName,$this->propertyDescCache_);
     }
     public function getPropertyDesc($propertyName) {
         if(is_int($propertyName)){
-               return $this->propertyDescCache_[$this->propertyDescCacheIndex_[$propertyName]];
+            if ($propertyName >= count($this->propertyDescCacheIndex_)) {
+                throw new PropertyNotFoundRuntimeException(
+                    $this->beanClass_, 'index '.$propertyName);
+            }
+            return $this->propertyDescCache_[
+                       $this->propertyDescCacheIndex_[$propertyName]];
         }
         $pd = null;
         if(array_key_exists($propertyName,$this->propertyDescCache_)){
             $pd = $this->propertyDescCache_[$propertyName];
-        }else if (array_key_exists('__set',$this->propertyDescCache_)) {
-            $pd = $this->propertyDescCache_['__set'];
-            $pd->setSetterPropertyName($propertyName);
         }
         if ($pd == null) {
             throw new PropertyNotFoundRuntimeException(
@@ -1943,11 +1790,9 @@ final class BeanDescImpl implements BeanDesc {
         return array_key_exists($fieldName,$this->fieldCache_);
     }
     public function getField($fieldName) {
-        $field = null;
         if(array_key_exists($fieldName,$this->fieldCache_)){
             $field = $this->fieldCache_[$fieldName];
-        }
-        if ($field == null) {
+        }else{
             throw new FieldNotFoundRuntimeException($this->beanClass_, $fieldName);
         }
         return $field;
@@ -1956,11 +1801,9 @@ final class BeanDescImpl implements BeanDesc {
         return array_key_exists($constName,$this->constCache_);
     }
     public function getConstant($constName) {
-        $constant = null;
         if(array_key_exists($constName,$this->constCache_)){
             $constant = $this->constCache_[$constName];
-        }
-        if ($constant == null) {
+        }else{
             throw new ConstantNotFoundRuntimeException($this->beanClass_, $constName);
         }
         return $constant;
@@ -1972,11 +1815,13 @@ final class BeanDescImpl implements BeanDesc {
         $method = $this->getMethods($methodName);
         return MethodUtil::invoke($method,$target,$args);
     }
-    public function getSuitableConstructor($args) {
+    public function getSuitableConstructor() {
+    	return $this->constructors_;
     }
     public function getMethods($methodName){
-        $methods = $this->methodsCache_[$methodName];
-        if ($methods == null) {
+        if(array_key_exists($methodName,$this->methodsCache_)){
+            $methods = $this->methodsCache_[$methodName];
+        }else{
             throw new MethodNotFoundRuntimeException($this->beanClass_, $methodName, null);
         }
         return $methods;
@@ -1991,18 +1836,6 @@ final class BeanDescImpl implements BeanDesc {
     public function getMethodNames() {
         return array_keys($this->methodsCache_);
     }
-    private function findSuitableConstructor($args) {
-        return null;
-    }
-    private function findSuitableConstructorAdjustNumber($args) {
-        return null;
-    }
-    private static function adjustNumber(
-        $paramTypes,
-        $args,
-        $index) {
-        return false;
-    }
     private function isFirstCapitalize($str){
         $top = substr($str,0,1);
         $upperTop = strtoupper($top);
@@ -2011,11 +1844,10 @@ final class BeanDescImpl implements BeanDesc {
     private function setupPropertyDescs() {
         $methods = $this->beanClass_->getMethods();
         for ($i = 0; $i < count($methods); $i++) {
-            $m = $methods[$i];
-            $methodName = $m->getName();
-            $regs = array();
-            if (ereg("^get(.+)",$methodName,$regs)) {
-                if (count($m->getParameters()) != 0){
+            $mRef = $methods[$i];
+            $methodName = $mRef->getName();
+            if (preg_match("/^get(.+)/",$methodName,$regs)) {
+                if (count($mRef->getParameters()) != 0){
                     continue;
                 }
                 if(!$this->isFirstCapitalize($regs[1])){
@@ -2023,9 +1855,9 @@ final class BeanDescImpl implements BeanDesc {
                 }
                 $propertyName = 
                     $this->decapitalizePropertyName($regs[1]);
-                $this->setupReadMethod($m, $propertyName);
-            } else if (ereg("^is(.+)",$methodName,$regs)) {
-                if (count($m->getParameters()) != 0){
+                $this->setupReadMethod($mRef, $propertyName);
+            } else if (preg_match("/^is(.+)/",$methodName,$regs)) {
+                if (count($mRef->getParameters()) != 0){
                     continue;
                 }
                 if(!$this->isFirstCapitalize($regs[1])){
@@ -2033,9 +1865,9 @@ final class BeanDescImpl implements BeanDesc {
                 }
                 $propertyName =
                     $this->decapitalizePropertyName($regs[1]);
-                $this->setupReadMethod($m, $propertyName);
-            } else if (ereg("^set(.+)",$methodName,$regs)) {
-                if (count($m->getParameters()) != 1){
+                $this->setupReadMethod($mRef, $propertyName);
+            } else if (preg_match("/^set(.+)/",$methodName,$regs)) {
+                if (count($mRef->getParameters()) != 1){
                     continue;
                 }
                 if(!$this->isFirstCapitalize($regs[1])){
@@ -2043,27 +1875,37 @@ final class BeanDescImpl implements BeanDesc {
                 }
                 $propertyName =
                     $this->decapitalizePropertyName($regs[1]);
-                $this->setupWriteMethod($m, $propertyName);
-            } else if (ereg("^(__set)$",$methodName,$regs)) {
+                $this->setupWriteMethod($mRef, $propertyName);
+            } else if (preg_match("/^(__set)$/",$methodName,$regs)) {
                 $propertyName = $regs[1];
-                $this->setupWriteMethod($m, $propertyName);
+                $this->setupWriteMethod($mRef, $propertyName);
             }
         }
-        $this->invalidPropertyNames_ = array();
     }
-    private static function decapitalizePropertyName($name) {
+    private function decapitalizePropertyName($name) {
         $top = substr($name,0,1);
         $top = strtolower($top);
         return substr_replace($name,$top,0,1);
     }
     private function addPropertyDesc(PropertyDesc $propertyDesc) {
-        if ($propertyDesc == null) {
-            throw new EmptyRuntimeException("propertyDesc");
-        }
         $this->propertyDescCache_[$propertyDesc->getPropertyName()] = $propertyDesc;
         array_push($this->propertyDescCacheIndex_,$propertyDesc->getPropertyName());
     }
     private function setupReadMethod($readMethod, $propertyName) {
+		$propDesc = $this->getPropertyDesc0($propertyName);
+		if ($propDesc != null) {
+			$propDesc->setReadMethod($readMethod);
+		} else {
+    		$writeMethod = null;	
+			$propDesc =
+				new PropertyDescImpl(
+					$propertyName,
+					null,
+					$readMethod,
+					null,
+					$this);
+			$this->addPropertyDesc($propDesc);
+		}
     }
     private function setupWriteMethod($writeMethod,$propertyName) {
         $propDesc = $this->getPropertyDesc0($propertyName);
@@ -2089,16 +1931,9 @@ final class BeanDescImpl implements BeanDesc {
                         $this);
             }
             $this->addPropertyDesc($propDesc);
-        }
-    }
-    private function getSuitableMethod($methodName,$args){
-    }
-    private function findSuitableMethod($methods,$args) {
-    }
-    private function findSuitableMethodAdjustNumber($methods,$args) {
+        }       
     }
     private function setupMethods() {
-        $methodListMap = array();
         $methods = $this->beanClass_->getMethods();
         for ($i = 0; $i < count($methods); $i++) {
             $this->methodsCache_[$methods[$i]->getName()] = $methods[$i];
@@ -2131,15 +1966,17 @@ interface PropertyDesc {
     public function convertIfNeed($value);
 }
 
-final class PropertyDescImpl implements PropertyDesc {
-    private $propertyName_;
-    private $propertyType_;
-    private $readMethod_;
-    private $writeMethod_;
-    private $beanDesc_;
-    private $stringConstructor_;
-    public function PropertyDescImpl($propertyName,$propertyType,
-            $readMethod,$writeMethod,BeanDesc $beanDesc) {
+class PropertyDescImpl implements PropertyDesc {
+    protected $propertyName_ = null;
+    protected $propertyType_ = null;
+    protected $readMethod_ = null;
+    protected $writeMethod_ = null;
+    protected $beanDesc_ = null;
+    public function PropertyDescImpl($propertyName=null,
+                                       $propertyType,
+                                       $readMethod,
+                                       $writeMethod,
+                                       BeanDesc $beanDesc) {
         if ($propertyName == null) {
             throw new EmptyRuntimeException("propertyName");
         }
@@ -2148,9 +1985,6 @@ final class PropertyDescImpl implements PropertyDesc {
         $this->readMethod_ = $readMethod;
         $this->writeMethod_ = $writeMethod;
         $this->beanDesc_ = $beanDesc;
-        if($this->propertyType_ != null){
-            $this->stringConstructor_ = $this->propertyType_->getConstructor();
-        }
     }
     public final function getPropertyName() {
         return $this->propertyName_;
@@ -2179,7 +2013,7 @@ final class PropertyDescImpl implements PropertyDesc {
     public final function getValue($target) {
         return MethodUtil::invoke($this->readMethod_,$target, null);
     }
-    public final function setValue($target,$value) {
+    public function setValue($target,$value) {
         try {
             MethodUtil::invoke($this->writeMethod_,$target, $value);
         } catch (Exception $t) {
@@ -2195,11 +2029,11 @@ final class PropertyDescImpl implements PropertyDesc {
         $buf .= "propertyName=";
         $buf .= $this->propertyName_;
         $buf .= ",propertyType=";
-        $buf .= $this->propertyType_->getName();
+        $buf .= $this->propertyType_ != null ? $this->propertyType_->getName() : "null";
         $buf .= ",readMethod=";
-        $buf .= $this->readMethod_ != null ?$this->eadMethod_->getName() : "null";
+        $buf .= $this->readMethod_ != null ? $this->readMethod_->getName() : "null";
         $buf .= ",writeMethod=";
-        $buf .= $this->writeMethod_ != null ?$this->writeMethod_->getName() : "null";
+        $buf .= $this->writeMethod_ != null ? $this->writeMethod_->getName() : "null";
         return $buf;
     }
     public function convertIfNeed($arg) {
@@ -2232,6 +2066,335 @@ final class ConstructorUtil {
     }
 }
 
+class AopProxyUtil {
+    private function AopProxyUtil() {
+    }
+    public static function getEnhancedClass(ComponentDef $componentDef,$args) {
+        $parameters = array();
+        $parameters[ContainerConstants::COMPONENT_DEF_NAME] = $componentDef;
+        $proxy = new AopProxy($componentDef->getComponentClass(),
+                               AopProxyUtil::getAspects($componentDef),
+                               $parameters);
+        return $proxy->create("",$args);
+    }
+    private static function getAspects(ComponentDef $componentDef) {
+        $size = $componentDef->getAspectDefSize();
+        $aspects = array();
+        for ($i = 0; $i < $size; ++$i) {
+            array_push($aspects,$componentDef->getAspectDef($i)->getAspect());
+        }
+        return $aspects;
+    }
+}
+
+final class AopProxy {
+	private $log_;
+    private $targetClass_;
+    private $enhancedClass_;
+    private $defaultPointcut_;
+    private $parameters_;
+    private $methodInterceptorsMap_;
+    public function AopProxy($targetClass,$aspects,$parameters=null) {
+		$this->log_ = S2Logger::getLogger(get_class($this));
+        $this->parameters_ = $parameters;
+        if($targetClass instanceof ReflectionClass){ 
+            $this->setTargetClass($targetClass);
+        }else{
+            $this->setTargetClass(new ReflectionClass($targetClass));
+        }
+        $this->setAspects($aspects);
+    }
+    private function setTargetClass($targetClass) {
+        $this->targetClass_ = $targetClass;
+        $this->defaultPointcut_ = new PointcutImpl($targetClass);
+    }
+    private function setAspects($aspects) {
+        if ($aspects == null || count($aspects) == 0) {
+            throw new EmptyRuntimeException("aspects");
+        }
+        for ($i = 0; $i < count($aspects); ++$i) {
+            $aspect = $aspects[$i];
+            if ($aspect->getPointcut() == null) {
+                $aspect->setPointcut($this->defaultPointcut_);
+            }
+        }
+        $methods = $this->targetClass_->getMethods();
+        $this->methodInterceptorsMap_ = array();
+        for ($i = 0;$i < count($methods); ++$i) {
+        	if(!AopProxy::isApplicableAspect($methods[$i])){
+        		$this->log_->info($this->targetClass_->getName()."::".
+        		                   $methods[$i]->getName() ."() is a constructor or a static method. ignored.",__METHOD__);
+                continue;        		                  
+        	}
+            $interceptorList = array();
+            for ($j = 0; $j < count($aspects); ++$j) {
+                $aspect = $aspects[$j];
+                if ($aspect->getPointcut()->isApplied($methods[$i]->getName())) {
+                    array_push($interceptorList,$aspect->getMethodInterceptor());
+                }else{
+                    $this->log_->info("no pointcut defined for " . 
+                        $this->targetClass_->getName() . "::" .
+                        $methods[$i]->getName() . "()",__METHOD__);
+                }
+            }
+            if(count($interceptorList) > 0){
+                $this->methodInterceptorsMap_[$methods[$i]->getName()] = $interceptorList;
+            }
+        }
+    }
+    public function getEnhancedClass() {
+        return $this->enhancedClass_;
+    }
+    public function create($argTypes=null,$args=null) {
+        if($this->targetClass_->isFinal()){
+        	throw new S2RuntimeException('ESSR0017',
+        	                               array("cannot aspect. target class [{$this->targetClass_->getName()}] is final class. "));
+        }
+        $this->enhancedClass_ = UuCallAopProxyFactory::create(
+                                    $this->targetClass_,
+                                    $this->methodInterceptorsMap_,
+                                    $args,
+                                    $this->parameters_);
+        return $this->enhancedClass_;
+    }
+    public static function isApplicableAspect(ReflectionMethod $method) {
+    	return ! $method->isStatic() and ! $method->isConstructor();
+    }
+}
+
+final class AutoConstructorAssembler
+    extends AbstractConstructorAssembler {
+    public function AutoConstructorAssembler(ComponentDef $componentDef) {
+        parent::__construct($componentDef);
+    }
+    public function assemble(){
+        $args = array();
+        $refMethod = $this->getComponentDef()->getConcreteClass()->getConstructor();
+        if($refMethod != null){
+            $args = $this->getArgs($this->getComponentDef()->getConcreteClass()->getConstructor()->getParameters());
+        }
+        return ConstructorUtil::newInstance($this->getComponentDef()->getConcreteClass(), $args,$this->getComponentDef());
+    }
+}
+
+interface Aspect {
+    public function getMethodInterceptor();
+    public function getPointcut();
+    public function setPointcut(Pointcut $pointcut);
+}
+
+class AspectImpl implements Aspect {
+    private $methodInterceptor_;
+    private $pointcut_;
+    public function AspectImpl(MethodInterceptor $methodInterceptor,Pointcut $pointcut) {
+        $this->methodInterceptor_ = $methodInterceptor;
+        $this->pointcut_ = $pointcut;
+    }
+    public function getMethodInterceptor() {
+        return $this->methodInterceptor_;
+    }
+    public function getPointcut() {
+        return $this->pointcut_;
+    }
+    public function setPointcut(Pointcut $pointcut) {
+        $this->pointcut_ = $pointcut;
+    }
+}
+
+class UuCallAopProxyFactory {
+    private function UuCallAopProxyFactory() {}
+    static function create($targetClass,$map,$args,$params=null){
+        $log = S2Logger::getLogger('UuCallAopProxyFactory');
+        if(ClassUtil::hasMethod($targetClass,'__call')){
+            $log->info("target class has __call(). ignore aspect.",__METHOD__);
+            return ConstructorUtil::newInstance($targetClass,$args);
+        }
+        $concreteClassName = 'UuCallAopProxy' . $targetClass->getName() . 'EnhancedByS2AOP';
+        if(class_exists($concreteClassName,false)){
+            return new $concreteClassName($targetClass,$map,$args,$params);
+        }
+        if(!$targetClass->isUserDefined()){
+            return new UuCallAopProxy($targetClass,$map,$args,$params);
+        }
+        $classSrc = ClassUtil::getClassSource(new ReflectionClass('UuCallAopProxy'));
+        $interfaces = ClassUtil::getInterfaces($targetClass); 
+        if(count($interfaces) == 0){
+            return new UuCallAopProxy($targetClass,$map,$args,$params);
+        }
+        $addMethodSrc = array();
+        $interfaceNames = array();
+        foreach ($interfaces as $interface){
+            $interfaceSrc = ClassUtil::getSource($interface);
+            $methods = $interface->getMethods();
+            $unApplicable = false;
+            foreach ($methods as $method){
+                if($method->getDeclaringClass()->getName() == $interface->getName()){
+                    if(AopProxy::isApplicableAspect($method)){
+                        array_push($addMethodSrc,UuCallAopProxyFactory::getMethodDefinition($method,$interfaceSrc));
+                    }else{
+                        $unApplicable=true;	
+                        break;
+                    }
+                }
+            }
+            if(!$unApplicable){
+                array_push($interfaceNames,$interface->getName());
+            }else{
+                $log->info("interface [".$interface->getName()."] is unapplicable. not implemented.",__METHOD__);
+            }
+        }          
+        if(count($interfaceNames)>0){
+        	$implLine = " implements " . implode(',',$interfaceNames) . ' {';
+        }else{
+        	$implLine = ' {';
+        }
+        $srcLine = str_replace('UuCallAopProxy',$concreteClassName,$classSrc[0]);
+        $srcLine = str_replace('{',$implLine,$srcLine);
+        for($i=1;$i<count($classSrc)-1;$i++){
+            $srcLine .= str_replace('UuCallAopProxy',$concreteClassName,$classSrc[$i]);
+        }
+        foreach($addMethodSrc as $methodSrc){
+            $srcLine .= $methodSrc . "\n";
+        }
+        $srcLine .= "}\n";
+        eval($srcLine);
+        return new $concreteClassName($targetClass,$map,$args,$params);
+    }
+    private static function getMethodDefinition($refMethod,$interfaceSrc){
+        $def = MethodUtil::getSource($refMethod,$interfaceSrc);        
+        $defLine = trim(implode(' ',$def));
+        $defLine = preg_replace("/\;$/","",$defLine);
+        $defLine = preg_replace("/abstract\s/","",$defLine);
+        $defLine .= " {";
+        if(preg_match("/\((.*)\)/",$defLine,$regs)){
+            $argLine = $regs[1];
+        }
+        $argsTmp = split('[ ,]',$argLine);
+        $args = array();
+        foreach($argsTmp as $item){
+            if(preg_match('/^\$/',$item)){
+                array_push($args,$item);
+            }
+            if(preg_match('/^\&(.+)/',$item,$regs)){
+                array_push($args,$regs[1]);
+            }
+        }
+        $argLine = implode(',',$args);
+        $defLine .= ' return $this->__call(\'' . $refMethod->getName() .
+                    '\',array(' . $argLine . ')); }';
+        return $defLine;
+    }
+}
+
+final class ClassUtil {
+    private function ClassUtil() {
+    }
+    static function getClassSource($refClass){
+        if(!is_readable($refClass->getFileName())){
+            throw new S2RuntimeException('ESSR1006',array($refClass->getFileName()));
+        }
+        $ret = array();
+        $lines = file($refClass->getFileName());
+        $start = $refClass->getStartLine();
+        $end   = $refClass->getEndLine();
+        for($i=$start-1;$i<$end;$i++){
+            array_push($ret,$lines[$i]);
+        }
+        return $ret;
+    }
+    static function getSource($refClass){
+        if(!is_readable($refClass->getFileName())){
+            throw new S2RuntimeException('ESSR1006',array($refClass->getFileName()));
+        }
+        $ret = array();
+        return file($refClass->getFileName());
+    }
+	public static function getMethod(
+		                          ReflectionClass $clazz,
+		                          $methodName) {
+        try{
+            return $clazz->getMethod($methodName);
+        }catch(ReflectionException $e){
+            throw new NoSuchMethodRuntimeException($clazz,$methodName,$e);
+        }
+	}
+	public static function hasMethod(
+		                          ReflectionClass $clazz,
+		                          $methodName) {
+        try{
+            $m = $clazz->getMethod($methodName);
+            return true;
+        }catch(ReflectionException $e){
+            return false;
+        }
+	}
+	public static function getInterfaces(ReflectionClass $clazz){
+        $interfaces = $clazz->getInterfaces();
+        if($clazz->isInterface()){
+            array_push($interfaces,$clazz);
+        }       
+        return $interfaces;
+	}
+}
+
+class UuCallAopProxy {
+    private $parameters_;
+    private $methodInterceptorsMap_;
+    private $target_ = null;
+    private $targetClass_;
+    function UuCallAopProxy($targetClass,$map,$args,$params) {
+        $this->targetClass_=$targetClass;
+        $this->methodInterceptorsMap_ = $map;
+        $this->parameters_ = $params;
+        if(!$this->targetClass_->isInterface() && !$this->targetClass_->isAbstract()){
+            $this->target_ = ConstructorUtil::newInstance($this->targetClass_,$args);
+        }
+    }
+    function __call($name,$args){
+        if(array_key_exists($name,$this->methodInterceptorsMap_)){
+            $methodInvocation = new S2MethodInvocationImpl(
+                                    $this->target_,
+                                    $this->targetClass_,
+                                    $this->targetClass_->getMethod($name),
+                                    $args,
+                                    $this->methodInterceptorsMap_[$name],
+                                    $this->parameters_);
+            return $methodInvocation->proceed();
+        }else{
+        	if(!is_object($this->target_)){
+        		if($this->targetClass_->isInterface()){
+        			$msg = "target class [{$this->targetClass_->getName()}] is interface. ";
+        		}else{
+        			$msg = "target class [{$this->targetClass_->getName()}] ";
+        		}
+        		throw new S2RuntimeException('ESSR0043',array($name,$msg));
+        	}
+            return MethodUtil::invoke($this->targetClass_->getMethod($name),
+                                       $this->target_,
+                                       $args);
+        }
+    }
+}
+
+class PropertyNotFoundRuntimeException
+    extends S2RuntimeException {
+    private $targetClass_;
+    private $propertyName_;
+    public function PropertyNotFoundRuntimeException(
+        $componentClass,
+        $propertyName) {
+        parent::__construct("ESSR0065",array($componentClass->getName(), $propertyName));
+        $this->targetClass_ = $componentClass;
+        $this->propertyName_ = $propertyName;
+    }
+    public function getTargetClass() {
+        return $this->targetClass_;
+    }
+    public function getPropertyName() {
+        return $this->propertyName_;
+    }
+}
+
 final class MethodUtil {
     private function MethodUtil() {
     }
@@ -2243,12 +2406,10 @@ final class MethodUtil {
             if(count($args) == 0){
                 return $method->invoke($target,$args);
             }
-            $cmd = "return \$method->invoke(\$target,";
             $strArg=array();
             for($i=0;$i<count($args);$i++){
                 array_push($strArg,"\$args[" . $i . "]");
             }
-            $cmd = $cmd . implode(',',$strArg) . ");";
             $methodName = $method->getName();
             $cmd = 'return $target->' . $methodName . '('.
                    implode(',',$strArg) . ");";
@@ -2257,23 +2418,21 @@ final class MethodUtil {
             throw $e;
         }
     }
-    public static function isAbstract($method) {
+    public static function isAbstract(ReflectionMethod $method) {
         return $method->isAbstract();
     }
-    public static function getSignature($methodName,$argTypes) {
-        $buf = "";
-        $buf .= $methodName;
-        $buf .= "(";
-        if ($argTypes != null) {
-            for ($i = 0;$i < count($argTypes); ++$i) {
-                if ($i > 0) {
-                    $buf .= ", ";
-                }
-                $buf .= $argTypes[$i]->getName();
-            }
+    public static function getSource(ReflectionMethod $method,
+                                        $src = null) {
+        if($src == null){
+        	$src = ClassUtil::getSource($method->getDeclaringClass());
         }
-        $buf .= ")";
-        return $buf;
+        $def = array();
+        $start = $method->getStartLine();
+        $end = $method->getEndLine();
+        for($i=$start-1;$i<$end;$i++){
+            array_push($def,$src[$i]);
+        }
+        return $def;
     }
 }
 

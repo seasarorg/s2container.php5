@@ -34,8 +34,7 @@ class PostgresDataSource extends AbstractDataSource {
             $this->dsn =$this->constructDsn();
     	}
 
-    	$db = pg_connect($this->dsn);
-
+    	$db = pg_connect(trim($this->dsn));
     	if(!$db){
     		$this->log_->error(pg_result_error($db),
     		                   __METHOD__);
