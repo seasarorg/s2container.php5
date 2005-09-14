@@ -38,6 +38,20 @@ interface S2Container extends MetaDefAware{
      */
     public function getComponent($componentKey);
 
+	/**
+     * キーを指定してコンポーネントを検索します。
+     * キーが文字列の場合、一致するコンポーネント名を持つコンポーネントを
+     * 検索します。
+     * キーがクラスまたはインターフェースの場合、
+     * 「コンポーネント instanceof キー」
+     * を満たすコンポーネントを検索します。
+     *
+     * @param componentKey コンポーネントを取得するためのキー
+     * @return コンポーネントの配列。キーに対応するコンポーネントが存在しない場合は空の配列を返します。
+     * @throws CyclicReferenceRuntimeException constructor injectionでコンポーネントの参照が循環している場合
+     */
+	public function findComponents($componentKey);
+
     /**
      * 外部コンポーネントにセッター・インジェクション、メソッド・インジェクションを実行します。
      * 
@@ -75,6 +89,14 @@ interface S2Container extends MetaDefAware{
      * @throws ComponentNotFoundRuntimeException コンポーネント定義が見つからない場合
      */
     public function getComponentDef($index);
+
+	/**
+     * 指定したキーに対応するコンポーネント定義を検索します。
+     *
+     * @param componentKey キー
+     * @return コンポーネント定義の配列。キーに対応するコンポーネントが存在しない場合は空の配列を返します。
+     */
+	public function findComponentDefs($componentKey);
 
     /**
      * 指定したキーに対応するコンポーネント定義を持つどうか判定します。

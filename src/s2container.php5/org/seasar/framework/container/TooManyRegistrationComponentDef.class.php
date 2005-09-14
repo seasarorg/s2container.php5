@@ -16,30 +16,11 @@
 /**
  * 1つのキーに複数のコンポーネントが登録された場合に使用されます。
  * 
- * @package org.seasar.framework.container.impl
+ * @package org.seasar.framework.container
  * @author klove
  */
-class TooManyRegistrationComponentDef extends SimpleComponentDef {
-
-    private $key_;
-    private $componentClasses_ = array();
-
-    public function TooManyRegistrationComponentDef($key) {
-        $this->key_ = $key;
-    }
-
-    public function addComponentClass($componentClass) {
-        array_push($this->componentClasses_,$componentClass);
-    }
-
-    /**
-     * @see ComponentDef::getComponent()
-     */
-    public function getComponent() {
-
-        throw new TooManyRegistrationRuntimeException(
-            $this->key_,
-            $this->componentClasses_);
-    }
+interface TooManyRegistrationComponentDef {
+    public function addComponentDef($componentDef);
+    public function getComponentClasses();
 }
 ?>

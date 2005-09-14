@@ -39,7 +39,7 @@ final class ClassUtil {
         for($i=$start-1;$i<$end;$i++){
             array_push($ret,$lines[$i]);
         }
-        
+
         return $ret;
     }
 

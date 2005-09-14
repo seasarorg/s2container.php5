@@ -77,7 +77,7 @@ class S2MethodInvocationImpl implements S2MethodInvocation{
     }
 
     function getThis(){
-        return get_class($this);
+        return $this->target;
     }
 
     function proceed(){

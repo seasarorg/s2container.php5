@@ -640,5 +640,18 @@ class XmlS2ContainerBuilderTests extends UnitTestCase {
         
         print "\n";
     }
+
+    function testCircularIncludeRuntimeException() {
+       
+        print __METHOD__ . "\n";
+        try{ 
+            $container = S2ContainerFactory::create(TEST_DIR . '/s2container.php5/org/seasar/framework/container/factory/xml/test32.dicon');
+        }catch(Exception $e){
+        	$this->assertIsA($e,'CircularIncludeRuntimeException');
+        	print $e->getMessage() . "\n";
+        }
+
+        print "\n";
+    }
 }
 ?>

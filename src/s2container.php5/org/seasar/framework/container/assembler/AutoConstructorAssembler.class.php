@@ -17,7 +17,7 @@
  * @package org.seasar.framework.container.assembler
  * @author klove
  */
-final class AutoConstructorAssembler
+class AutoConstructorAssembler
     extends AbstractConstructorAssembler {
 
     public function AutoConstructorAssembler(ComponentDef $componentDef) {

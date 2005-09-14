@@ -14,33 +14,38 @@
 //
 // $Id$
 /**
- * @package org.seasar.framework.container.assembler
+ * @package org.seasar.framework.container
  * @author klove
  */
-class ManualConstructorAssembler
-    extends AbstractConstructorAssembler {
+class CircularIncludeRuntimeException extends S2RuntimeException {
+    protected $path_;
+    protected $paths_;
 
     /**
-     * @param ComponentDef
+     * @param componentClasses
      */
-    public function ManualConstructorAssembler(ComponentDef $componentDef) {
-        parent::__construct($componentDef);
+    public function CircularIncludeRuntimeException($path,$paths) {
+        parent::__construct("ESSR0076",array($path,$this->toString($path,$paths)));
+        $this->path_ = $path;
+        $this->paths_ = $paths;
     }
 
-    public function assemble(){
-        $args = array();
-        for ($i = 0; $i < $this->getComponentDef()->getArgDefSize(); ++$i) {
-            try {
-                $args[$i] = $this->getComponentDef()->getArgDef($i)->getValue();
-            } catch (ComponentNotFoundRuntimeException $cause) {
-                throw new IllegalConstructorRuntimeException(
-                    $this->getComponentDef()->getComponentClass(),
-                    $cause);
-            }
+    public function getPath() {
+        return $this->path_;
+    }
+
+    public function getPaths() {
+        return $this->paths_;
+    }
+
+    protected static function toString($path, $paths) {
+        $buf = "";
+        foreach($paths as $val){
+            $buf .= '"' . $val . '"';
+            $buf .= " includes ";
         }
-        $beanDesc =
-            BeanDescFactory::getBeanDesc($this->getComponentDef()->getConcreteClass());
-        return $beanDesc->newInstance($args,$this->getComponentDef());
+        $buf .= '"' . $path . '"';
+        return $buf;
     }
 }
 ?>

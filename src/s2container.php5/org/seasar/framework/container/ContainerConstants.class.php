@@ -39,7 +39,10 @@ interface ContainerConstants {
 
     const AUTO_BINDING_NONE = "none";
 
-    const NS_SEP = '.';
+    /**
+     * preg_match(/"(.+)". ContainerConstants::NS_SEP ."(.+)"/);
+     */
+    const NS_SEP = '\.';
 
     const CONTAINER_NAME = "container";
 

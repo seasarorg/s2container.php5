@@ -17,7 +17,7 @@
  * @package org.seasar.framework.container.assembler
  * @author klove
  */
-final class ExpressionConstructorAssembler
+class ExpressionConstructorAssembler
     extends AbstractConstructorAssembler {
 
     /**

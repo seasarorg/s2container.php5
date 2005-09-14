@@ -25,6 +25,7 @@ final class S2ContainerFactory {
     private static $builders_ = array();
     private static $defaultBuilder_;
     private static $inited_ = false;
+    protected static $processingPaths_ = array();
     
     private function S2ContainerFactory() {
         $this->init();
@@ -47,13 +48,16 @@ final class S2ContainerFactory {
 
     public static function create($path) {
         S2ContainerFactory::init();
+        S2ContainerFactory::enter($path);
         $ext = S2ContainerFactory::getExtension($path);
         $container = S2ContainerFactory::getBuilder($ext)->build($path);
+        S2ContainerFactory::leave($path);
         return $container;
     }
     
     public static function includeChild(S2Container $parent, $path) {
         S2ContainerFactory::init();
+        S2ContainerFactory::enter($path);
         $root = $parent->getRoot();
         $child = null;
         if ($root->hasDescendant($path)) {
@@ -65,6 +69,7 @@ final class S2ContainerFactory {
             $child = $builder->includeChild($parent,$path);
             $root->registerDescendant($child);
         }
+        S2ContainerFactory::leave($path);
         return $child;
     }
     
@@ -92,6 +97,18 @@ final class S2ContainerFactory {
             $builder = S2ContainerFactory::$defaultBuilder_;
         }
         return $builder;
+    }
+
+    protected static function enter($path) {
+        if (in_array($path,S2ContainerFactory::$processingPaths_)){
+            throw new CircularIncludeRuntimeException(
+                          $path, S2ContainerFactory::$processingPaths_);
+        }
+        array_push(S2ContainerFactory::$processingPaths_,$path);
+    }
+
+    protected static function leave($path) {
+    	array_pop(S2ContainerFactory::$processingPaths_);
     }
 }
 ?>

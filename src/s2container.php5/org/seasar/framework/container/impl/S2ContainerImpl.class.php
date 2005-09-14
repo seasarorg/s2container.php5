@@ -52,6 +52,18 @@ class S2ContainerImpl implements S2Container {
         return $this->getComponentDef($componentKey)->getComponent();
     }
 
+	/**
+	 * @see S2Container::findComponents()
+	 */
+	public function findComponents($componentKey) {
+	    $componentDefs = $this->findComponentDefs($componentKey);
+	    $components = array();
+	    foreach($componentDefs as $componentDef) {
+	        array_push($components,$componentDef->getComponent());
+	    }
+		return $components;
+	}
+
     /**
      * @see S2Container::injectDependency()
      */
@@ -130,14 +142,28 @@ class S2ContainerImpl implements S2Container {
             $key = get_class($key);
         }
 
-        $cd = $this->getComponentDef0($key);
+        $cd = $this->internalGetComponentDef($key);
         if ($cd == null) {
             throw new ComponentNotFoundRuntimeException($key);
         }
         return $cd;
     }
 
-    private function getComponentDef0($key) {
+	/**
+	 * @see S2Container::findComponentDefs()
+	 */
+	public function findComponentDefs($key){
+		$cd = $this->internalGetComponentDef($key);
+		if ($cd == null) {
+			return array();
+		}
+		else if ($cd instanceof TooManyRegistrationComponentDef) {
+		    return $cd->getComponentDefs();
+		}
+		return array($cd);
+    }
+
+    private function internalGetComponentDef($key) {
         $cd = null;
         if(array_key_exists($key,$this->componentDefMap_)){
             $cd = $this->componentDefMap_[$key];
@@ -145,7 +171,8 @@ class S2ContainerImpl implements S2Container {
                 return $cd;
             }
         }
-        if(preg_match("/(.+)\.(.+)/",$key,$ret)){
+
+        if(preg_match("/(.+)".ContainerConstants::NS_SEP."(.+)/",$key,$ret)){
             if ($this->hasComponentDef($ret[1])) {
                 $child = $this->getComponent($ret[1]);
                 if ($child->hasComponentDef($ret[2])) {
@@ -166,7 +193,7 @@ class S2ContainerImpl implements S2Container {
      * @see S2Container::hasComponentDef()
      */
     public function hasComponentDef($componentKey) {
-        return $this->getComponentDef0($componentKey) != null;
+        return $this->internalGetComponentDef($componentKey) != null;
     }
 
     /**
@@ -335,11 +362,11 @@ class S2ContainerImpl implements S2Container {
 
         $cd = $this->componentDefMap_[$key];
         if ($cd instanceof TooManyRegistrationComponentDef) {
-            $cd->addComponentClass($componentDef->getComponentClass());
+            $cd->addComponentDef($componentDef);
         } else {
-            $tmrcf = new TooManyRegistrationComponentDef($key);
-            $tmrcf->addComponentClass($cd->getComponentClass());
-            $tmrcf->addComponentClass($componentDef->getComponentClass());
+            $tmrcf = new TooManyRegistrationComponentDefImpl($key);
+            $tmrcf->addComponentDef($cd);
+            $tmrcf->addComponentDef($componentDef);
             $this->componentDefMap_[$key] = $tmrcf;
         }
     }

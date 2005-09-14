@@ -299,5 +299,28 @@ class S2ContainerImplTests extends UnitTestCase {
 
         print "\n";
     } 
+
+    function testFindComponents() {
+       
+        print __METHOD__ . "\n";
+
+        $container = new S2ContainerImpl();
+        $components = $container->findComponents('A');
+        $this->assertEqual(count($components),0);
+
+        $container->register(new A(),'a');
+
+        $components = $container->findComponents('A');
+        $this->assertEqual(count($components),1);
+        $this->assertIsA($components[0],'A');
+
+        $container->register('D','A');
+        $components = $container->findComponents('A');
+        $this->assertEqual(count($components),2);
+        $this->assertIsA($components[0],'A');
+        $this->assertIsA($components[1],'D');
+
+        print "\n";
+    } 
 }
 ?>
