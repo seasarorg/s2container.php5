@@ -12,8 +12,10 @@ require_once 'foo/FooAllTest.class.php';
 
 print "\n\n============================\n";
 $suite  = new PHPUnit_TestSuite();
-$suite->addTest(BarAllTest::suite());
-$suite->addTest(FooAllTest::suite());
+$barAllTest = BarAllTest::suite();
+$suite->addTest($barAllTest);
+$fooAllTest = FooAllTest::suite();
+$suite->addTest($fooAllTest);
 $result = PHPUnit::run($suite);
 echo $result -> toString();         
 

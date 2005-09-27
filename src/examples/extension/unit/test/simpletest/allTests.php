@@ -12,8 +12,10 @@ require_once 'foo/FooLogicTest.class.php';
 require_once 'foo/FooAllTest.class.php';
 
 $test = new GroupTest('All Test');
-$test->addTestCase(BarAllTest::group());
-$test->addTestCase(FooAllTest::group());
+$barAllTest = BarAllTest::group();
+$test->addTestCase($barAllTest);
+$fooAllTest = FooAllTest::group();
+$test->addTestCase($fooAllTest);
 
 if (TextReporter::inCli()) {
     print "\n\n============================\n";
