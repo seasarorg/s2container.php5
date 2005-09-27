@@ -7,11 +7,16 @@ require_once(TEST_DIR . '/conf/container.inc.php');
 //session_start();
 
 $test = new GroupTest('All S2CONTAINER_PHP5 tests');
-$test->addTestCase(AopAllTest::group());
-$test->addTestCase(BeansAllTest::group());
-$test->addTestCase(ContainerAllTest::group());
-$test->addTestCase(ExceptionAllTest::group());
-$test->addTestCase(UtilAllTest::group());
+$aopAllTest = AopAllTest::group();
+$test->addTestCase($aopAllTest);
+$beansAllTest = BeansAllTest::group();
+$test->addTestCase($beansAllTest);
+$containerAllTest = ContainerAllTest::group();
+$test->addTestCase($containerAllTest);
+$exceptionAllTest = ExceptionAllTest::group();
+$test->addTestCase($exceptionAllTest);
+$utilAllTest = UtilAllTest::group();
+$test->addTestCase($utilAllTest);
 
 if (TextReporter::inCli()) {
     print "\n\n============================\n";

@@ -17,6 +17,7 @@
  * @package org.seasar.framework.aop.proxy
  * @author klove
  */
+ 
 class UuCallAopProxy {
 
     private $parameters_;

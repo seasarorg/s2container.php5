@@ -6,6 +6,7 @@ final class S2ContainerFactory {
     private static $builders_ = array();
     private static $defaultBuilder_;
     private static $inited_ = false;
+    protected static $processingPaths_ = array();
     private function S2ContainerFactory() {
         $this->init();
     }
@@ -24,12 +25,15 @@ final class S2ContainerFactory {
     }
     public static function create($path) {
         S2ContainerFactory::init();
+        S2ContainerFactory::enter($path);
         $ext = S2ContainerFactory::getExtension($path);
         $container = S2ContainerFactory::getBuilder($ext)->build($path);
+        S2ContainerFactory::leave($path);
         return $container;
     }
     public static function includeChild(S2Container $parent, $path) {
         S2ContainerFactory::init();
+        S2ContainerFactory::enter($path);
         $root = $parent->getRoot();
         $child = null;
         if ($root->hasDescendant($path)) {
@@ -41,6 +45,7 @@ final class S2ContainerFactory {
             $child = $builder->includeChild($parent,$path);
             $root->registerDescendant($child);
         }
+        S2ContainerFactory::leave($path);
         return $child;
     }
     private static function getExtension($path) {
@@ -65,6 +70,16 @@ final class S2ContainerFactory {
         }
         return $builder;
     }
+    protected static function enter($path) {
+        if (in_array($path,S2ContainerFactory::$processingPaths_)){
+            throw new CircularIncludeRuntimeException(
+                          $path, S2ContainerFactory::$processingPaths_);
+        }
+        array_push(S2ContainerFactory::$processingPaths_,$path);
+    }
+    protected static function leave($path) {
+    	array_pop(S2ContainerFactory::$processingPaths_);
+    }
 }
 
 interface S2ContainerBuilder {
@@ -81,10 +96,12 @@ interface MetaDefAware {
 
 interface S2Container extends MetaDefAware{
     public function getComponent($componentKey);
+	public function findComponents($componentKey);
     public function injectDependency($outerComponent,$componentName="");
     public function register($component, $componentName="");
     public function getComponentDefSize();
     public function getComponentDef($index);
+	public function findComponentDefs($componentKey);
     public function hasComponentDef($componentKey);
     public function hasDescendant($path);
     public function getDescendant($path);
@@ -128,6 +145,14 @@ class S2ContainerImpl implements S2Container {
     public function getComponent($componentKey) {
         return $this->getComponentDef($componentKey)->getComponent();
     }
+	public function findComponents($componentKey) {
+	    $componentDefs = $this->findComponentDefs($componentKey);
+	    $components = array();
+	    foreach($componentDefs as $componentDef) {
+	        array_push($components,$componentDef->getComponent());
+	    }
+		return $components;
+	}
     public function injectDependency($outerComponent, $componentName="") {
         if(is_object($outerComponent)){
             if($componentName != ""){
@@ -186,13 +211,23 @@ class S2ContainerImpl implements S2Container {
         if(is_object($key)){
             $key = get_class($key);
         }
-        $cd = $this->getComponentDef0($key);
+        $cd = $this->internalGetComponentDef($key);
         if ($cd == null) {
             throw new ComponentNotFoundRuntimeException($key);
         }
         return $cd;
     }
-    private function getComponentDef0($key) {
+	public function findComponentDefs($key){
+		$cd = $this->internalGetComponentDef($key);
+		if ($cd == null) {
+			return array();
+		}
+		else if ($cd instanceof TooManyRegistrationComponentDef) {
+		    return $cd->getComponentDefs();
+		}
+		return array($cd);
+    }
+    private function internalGetComponentDef($key) {
         $cd = null;
         if(array_key_exists($key,$this->componentDefMap_)){
             $cd = $this->componentDefMap_[$key];
@@ -200,7 +235,7 @@ class S2ContainerImpl implements S2Container {
                 return $cd;
             }
         }
-        if(preg_match("/(.+)\.(.+)/",$key,$ret)){
+        if(preg_match("/(.+)".ContainerConstants::NS_SEP."(.+)/",$key,$ret)){
             if ($this->hasComponentDef($ret[1])) {
                 $child = $this->getComponent($ret[1]);
                 if ($child->hasComponentDef($ret[2])) {
@@ -217,7 +252,7 @@ class S2ContainerImpl implements S2Container {
         return null;
     }
     public function hasComponentDef($componentKey) {
-        return $this->getComponentDef0($componentKey) != null;
+        return $this->internalGetComponentDef($componentKey) != null;
     }
     public function hasDescendant($path) {
         return array_key_exists($path,$this->descendants_);
@@ -327,11 +362,11 @@ class S2ContainerImpl implements S2Container {
             ComponentDef $componentDef) {
         $cd = $this->componentDefMap_[$key];
         if ($cd instanceof TooManyRegistrationComponentDef) {
-            $cd->addComponentClass($componentDef->getComponentClass());
+            $cd->addComponentDef($componentDef);
         } else {
-            $tmrcf = new TooManyRegistrationComponentDef($key);
-            $tmrcf->addComponentClass($cd->getComponentClass());
-            $tmrcf->addComponentClass($componentDef->getComponentClass());
+            $tmrcf = new TooManyRegistrationComponentDefImpl($key);
+            $tmrcf->addComponentDef($cd);
+            $tmrcf->addComponentDef($componentDef);
             $this->componentDefMap_[$key] = $tmrcf;
         }
     }
@@ -565,7 +600,7 @@ interface ContainerConstants {
     const AUTO_BINDING_CONSTRUCTOR = "constructor";
     const AUTO_BINDING_PROPERTY = "property";
     const AUTO_BINDING_NONE = "none";
-    const NS_SEP = '.';
+    const NS_SEP = '\.';
     const CONTAINER_NAME = "container";
     const REQUEST_NAME = "request";
     const RESPONSE_NAME = "response";
@@ -1356,7 +1391,7 @@ abstract class AbstractConstructorAssembler extends AbstractAssembler
     }
 }
 
-final class ManualConstructorAssembler
+class ManualConstructorAssembler
     extends AbstractConstructorAssembler {
     public function ManualConstructorAssembler(ComponentDef $componentDef) {
         parent::__construct($componentDef);
@@ -2162,7 +2197,7 @@ final class AopProxy {
     }
 }
 
-final class AutoConstructorAssembler
+class AutoConstructorAssembler
     extends AbstractConstructorAssembler {
     public function AutoConstructorAssembler(ComponentDef $componentDef) {
         parent::__construct($componentDef);
@@ -2433,6 +2468,81 @@ final class MethodUtil {
             array_push($def,$src[$i]);
         }
         return $def;
+    }
+}
+
+interface Joinpoint {
+    function getStaticPart();
+    function getThis();
+    function proceed();
+}
+
+interface Invocation extends Joinpoint{
+    function getArguments();
+}
+
+interface MethodInvocation extends Invocation{
+    function getMethod();
+}
+
+interface S2MethodInvocation extends MethodInvocation {
+    function getTargetClass();
+    function getParameter($name);
+}
+
+class S2MethodInvocationImpl implements S2MethodInvocation{
+    private $interceptorIndex = 0;
+    private $interceptors;
+    private $method;
+    private $methodArgs;
+    private $parameters_;
+    private $target;
+    private $targetClass;
+    function S2MethodInvocationImpl(
+        $target,
+        $targetClass,
+        $method,
+        $methodArgs,
+        $interceptors,
+        $parameters=null) {
+        $this->target = $target;
+        $this->targetClass = $targetClass;
+        $this->method = $method;
+        $this->methodArgs = $methodArgs;
+        $this->interceptors = $interceptors;
+        if(is_array($parameters)){
+            $this->parameters_ = $parameters;
+        }else{
+            $this->parameters_ = array();
+        }
+    }
+    function getTargetClass() {
+    	return $this->targetClass;
+    }
+    function getParameter($name) {
+        if(array_key_exists($name,$this->parameters_)){
+        	return $this->parameters_[$name];
+        }
+        return null;
+    }
+    function getMethod() {
+        return $this->method;
+    }
+    function getArguments(){
+         return $this->methodArgs;
+    }
+    function getStaticPart(){
+    }
+    function getThis(){
+        return $this->target;
+    }
+    function proceed(){
+        if($this->interceptorIndex < count($this->interceptors)){
+            return $this->interceptors[$this->interceptorIndex++]->invoke($this);
+        }else{
+            $method = $this->method->getName();
+            return MethodUtil::invoke($this->method,$this->target,$this->methodArgs);
+        }
     }
 }
 

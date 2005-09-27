@@ -1,5 +1,5 @@
 <?php
-class S2ClassLoader {
+class S2ContainerClassLoader {
     static $CLASSES = array(
         'ADOdbDataSource' => '/org/seasar/extension/db/adodb/ADOdbDataSource.class.php',
         'ADOdbSqlHandler' => '/org/seasar/extension/db/adodb/ADOdbSqlHandler.class.php',
@@ -106,12 +106,12 @@ class S2ClassLoader {
         'SingletonComponentDeployer' => '/org/seasar/framework/container/deployer/SingletonComponentDeployer.class.php',
         'DestroyMethodDef' => '/org/seasar/framework/container/DestroyMethodDef.class.php',
         'DestroyMethodDefAware' => '/org/seasar/framework/container/DestroyMethodDefAware.class.php',
+        'CircularIncludeRuntimeException' => '/org/seasar/framework/container/factory/CircularIncludeRuntimeException.class.php',
         'IniS2ContainerBuilder' => '/org/seasar/framework/container/factory/IniS2ContainerBuilder.class.php',
         'S2ContainerBuilder' => '/org/seasar/framework/container/factory/S2ContainerBuilder.class.php',
         'S2ContainerFactory' => '/org/seasar/framework/container/factory/S2ContainerFactory.class.php',
         'SingletonS2ContainerFactory' => '/org/seasar/framework/container/factory/SingletonS2ContainerFactory.class.php',
         'XmlS2ContainerBuilder' => '/org/seasar/framework/container/factory/XmlS2ContainerBuilder.class.php',
-        'CircularIncludeRuntimeException' => '/org/seasar/framework/container/factory/CircularIncludeRuntimeException.class.php',
         'IllegalConstructorRuntimeException' => '/org/seasar/framework/container/IllegalConstructorRuntimeException.class.php',
         'IllegalMethodRuntimeException' => '/org/seasar/framework/container/IllegalMethodRuntimeException.class.php',
         'ArgDefImpl' => '/org/seasar/framework/container/impl/ArgDefImpl.class.php',
@@ -125,7 +125,6 @@ class S2ClassLoader {
         'S2ContainerComponentDef' => '/org/seasar/framework/container/impl/S2ContainerComponentDef.class.php',
         'S2ContainerImpl' => '/org/seasar/framework/container/impl/S2ContainerImpl.class.php',
         'SimpleComponentDef' => '/org/seasar/framework/container/impl/SimpleComponentDef.class.php',
-        'TooManyRegistrationComponentDef' => '/org/seasar/framework/container/TooManyRegistrationComponentDef.class.php',
         'TooManyRegistrationComponentDefImpl' => '/org/seasar/framework/container/impl/TooManyRegistrationComponentDefImpl.class.php',
         'InitMethodDef' => '/org/seasar/framework/container/InitMethodDef.class.php',
         'InitMethodDefAware' => '/org/seasar/framework/container/InitMethodDefAware.class.php',
@@ -135,6 +134,7 @@ class S2ClassLoader {
         'PropertyDef' => '/org/seasar/framework/container/PropertyDef.class.php',
         'PropertyDefAware' => '/org/seasar/framework/container/PropertyDefAware.class.php',
         'S2Container' => '/org/seasar/framework/container/S2Container.class.php',
+        'TooManyRegistrationComponentDef' => '/org/seasar/framework/container/TooManyRegistrationComponentDef.class.php',
         'TooManyRegistrationRuntimeException' => '/org/seasar/framework/container/TooManyRegistrationRuntimeException.class.php',
         'AopProxyUtil' => '/org/seasar/framework/container/util/AopProxyUtil.class.php',
         'ArgDefSupport' => '/org/seasar/framework/container/util/ArgDefSupport.class.php',
@@ -164,8 +164,8 @@ class S2ClassLoader {
     );
 
     function load($className){
-        if(array_key_exists($className,S2ClassLoader::$CLASSES)){
-            require_once(S2CONTAINER_PHP5 . S2ClassLoader::$CLASSES[$className]);
+        if(array_key_exists($className,S2ContainerClassLoader::$CLASSES)){
+            require_once(S2CONTAINER_PHP5 . S2ContainerClassLoader::$CLASSES[$className]);
             return true;
         }
         else{

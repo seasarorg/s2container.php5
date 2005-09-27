@@ -17,18 +17,46 @@
  * @author klove
  */
 
+/**
+ * S2Container.PHP5 ROOT Directory
+ */
 define('S2CONTAINER_PHP5',dirname(__FILE__).'/src/s2container.php5');
+
+/**
+ * DICON XML format DTD Validation Switch
+ */
 define('S2CONTAINER_PHP5_DOM_VALIDATE',true);
+
+/**
+ * Messages Resouce File
+ */
 define('S2CONTAINER_PHP5_MESSAGES_INI',S2CONTAINER_PHP5 . '/SSRMessages.properties');
+
+/**
+ * S2Container.PHP5 Log Level 
+ */
 //define('S2CONTAINER_PHP5_LOG_LEVEL',SimpleLogger::WARN);
+
+/**
+ * SingletonS2ContainerFactory app.dicon
+ */
 //define('S2CONTAINER_PHP5_APP_DICON','app.dicon');
 
-require_once(S2CONTAINER_PHP5 . '/S2ClassLoader.class.php');
+/**
+ * S2Container.PHP5 Class Loader fot Autoload
+ */
+require_once(S2CONTAINER_PHP5 . '/S2ContainerClassLoader.class.php');
 
-//require_once(S2CONTAINER_PHP5 . '/s2container.php5.core.classes.php');
-/*
+/**
+ * S2Container.PHP5 Core Classes
+ */
+require_once(S2CONTAINER_PHP5 . '/s2container.core.classes.php');
+
+/**
+ * Autoload Function
+ */
 function __autoload($class=null){
-    if(S2ClassLoader::load($class)){return;}
+    if(S2ContainerClassLoader::load($class)){return;}
 }
-*/
+
 ?>
