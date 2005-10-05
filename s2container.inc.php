@@ -55,7 +55,6 @@ require_once(S2CONTAINER_PHP5 . '/s2container.core.classes.php');
 /**
  * Autoload Function
  */
-
 function __autoload($class=null){
     if(S2ContainerClassLoader::load($class)){return;}
 }

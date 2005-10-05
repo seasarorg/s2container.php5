@@ -160,7 +160,8 @@ class S2ContainerClassLoader {
         'EvalUtil' => '/org/seasar/framework/util/EvalUtil.class.php',
         'MessageUtil' => '/org/seasar/framework/util/MessageUtil.class.php',
         'MethodUtil' => '/org/seasar/framework/util/MethodUtil.class.php',
-        'StringUtil' => '/org/seasar/framework/util/StringUtil.class.php'
+        'StringUtil' => '/org/seasar/framework/util/StringUtil.class.php',
+        'S2ContainerClassLoader' => '/S2ContainerClassLoader.class.php'
     );
 
     function load($className){

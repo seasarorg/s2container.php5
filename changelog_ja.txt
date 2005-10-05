@@ -1,0 +1,28 @@
+S2Container.PHP5 変更履歴
+
+1.0.0-beta2
+-------------------------------------------------------------------------------
+* PHP-5.0.5 で動作確認しました。
+* s2container.php5.ini を s2container.inc.php にリネームしました。
+* S2ClassLoader を S2ContainerClassLoader にリネームしました。
+
+org.seasar.framework.aop.impl パッケージ
+* S2MethodInvocationImplのgetThis()がターゲットオブジェクトを返すように修正しました。
+
+org.seasar.framework.container パッケージ
+* S2Container インタフェースに findComponents(),findComponentDefs() メソッドを追加しました。
+* TooManyComponentRegistrationDef インタフェースを追加しました。
+
+org.seasar.framework.container.assembler パッケージ
+* AutoConstructorAssembler, DefaultConstructorAssembler,
+  ExpressionConstructorAssembler, ManualConstructorAssembler クラスの 
+  final 修飾子を削除しました。
+
+org.seasar.framework.container.factory パッケージ
+* CircularIncludeRuntimeException 例外を追加しました。
+
+org.seasar.framework.container.impl パッケージ
+* TooManyRegistrationComponentDef クラスを TooManyRegistrationComponentDefImpl に
+  リネームしました。
+
+

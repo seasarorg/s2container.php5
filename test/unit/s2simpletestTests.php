@@ -3,13 +3,16 @@ error_reporting(E_ALL);
 require_once(dirname(dirname(__FILE__)) . '/conf/test.ini.php');
 require_once(TEST_DIR . '/conf/extensionUnit.inc.php');
 
-$test = &new GroupTest('All S2SimpleTestCase tests');
-$test->addTestFile(TEST_DIR . '/s2container.php5/org/seasar/extension/unit/simpletest/S2SimpleTestCaseTests.class.php');
+$group = &new GroupTest('All S2SimpleTestCase tests');
+
+require_once(TEST_DIR . '/s2container.php5/org/seasar/extension/unit/simpletest/S2SimpleTestCaseTests.class.php');
+$test = new S2SimplTestCaseTests();
+$group->addTestCase($test);
 
 if (TextReporter::inCli()) {
     print "\n\n============================\n";
-    exit ($test->run(new TextReporter()) ? 0 : 1);
+    exit ($group->run(new TextReporter()) ? 0 : 1);
 }
-$test->run(new HtmlReporter()); 
+$group->run(new HtmlReporter()); 
 
 ?>
