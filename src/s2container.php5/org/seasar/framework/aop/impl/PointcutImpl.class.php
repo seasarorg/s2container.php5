@@ -24,35 +24,29 @@ final class PointcutImpl implements Pointcut {
 
     public function PointcutImpl($target=null) {
 
-        if(!is_array($target)){
-             
-            if ($target == null) {
-                throw new EmptyRuntimeException("targetClass");
+        if ($target == null) {
+            throw new EmptyRuntimeException("targetClass");
+        }
+
+        if(is_array($target)){
+            if (count($target) == 0) {
+                throw new EmptyRuntimeException("methodNames");
             }
+            $this->setMethodNames($target);
+        }else{
             if($target instanceof ReflectionClass){
                 $this->setMethodNames($this->getMethodNames($target));
             }else{
                 $this->setMethodNames($this->getMethodNames(
                                        new ReflectionClass($target)));
             }
-        }else{
-            if (count($target) == 0) {
-                throw new EmptyRuntimeException("methodNames");
-            }
-            $this->setMethodNames($target);
         }
     }
 
     public function isApplied($methodName) {
         for ($i = 0;$i < count($this->methodNames_); ++$i) {
-        	if(preg_match("/^!(.+)/",$this->methodNames_[$i],$regs)){
-                if(!preg_match("/".$regs[1]."/",$methodName)){
-               	    return true;
-                }
-        	}else{
-                if(preg_match("/".$this->methodNames_[$i]."/",$methodName)){
-               	    return true;
-                }
+            if(preg_match("/".$this->methodNames_[$i]."/",$methodName)){
+          	    return true;
         	}
         }
         return false;

@@ -48,10 +48,14 @@ class PointcutImplTests extends UnitTestCase {
         $this->assertTrue($pc->isApplied('deb'));       
         $this->assertTrue($pc->isApplied('om') == false);       
 
-        $pc = new PointcutImpl(array('!^a','!b$'));
+        $pc = new PointcutImpl(array('^(!?a)'));
         $this->assertTrue($pc->isApplied('abs'));       
-        $this->assertTrue($pc->isApplied('deb'));       
-        $this->assertTrue($pc->isApplied('om'));       
+        $this->assertFalse($pc->isApplied('deb'));       
+        $this->assertFalse($pc->isApplied('om'));       
+
+        $pc = new PointcutImpl(array('(!?a)$'));
+        $this->assertFalse($pc->isApplied('abs'));       
+        $this->assertTrue($pc->isApplied('aba'));       
        
         print "\n";
     }

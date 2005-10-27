@@ -12,6 +12,12 @@ $packages = array(
     TEST_DIR . "/s2container.php5/org/seasar/extension/db/impl"
 );
 
+foreach($packages as $pkgDir){
+    requireOnce($pkgDir);
+}
+
+/*
 ini_set('include_path', ini_get('include_path') . PATH_SEPARATOR .
          implode(PATH_SEPARATOR, $packages));
+*/
 ?>

@@ -2,7 +2,6 @@
 error_reporting(E_ALL);
 require_once(dirname(dirname(__FILE__)) . '/conf/test.ini.php');
 require_once(TEST_DIR . '/conf/extensionUnit.inc.php');
-require_once 'PHPUnit.php';
 
 print "\n\n============================\n";
 $suite  = new PHPUnit_TestSuite();
