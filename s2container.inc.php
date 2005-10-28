@@ -28,7 +28,7 @@
 /**
  * S2Container.PHP5 ROOT Directory
  */
-define('S2CONTAINER_PHP5',dirname(__FILE__).'/src/s2container.php5');
+define('S2CONTAINER_PHP5',dirname(__FILE__).'/classes/s2container.php5');
 
 /**
  * DICON XML format DTD Validation Switch
