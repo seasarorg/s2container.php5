@@ -21,7 +21,7 @@ class AopProxyUtil {
     private function AopProxyUtil() {
     }
 
-    public static function getEnhancedClass(ComponentDef $componentDef,$args) {
+    public static function getProxyObject(ComponentDef $componentDef,$args) {
         $parameters = array();
         $parameters[ContainerConstants::COMPONENT_DEF_NAME] = $componentDef;
         $proxy = new AopProxy($componentDef->getComponentClass(),

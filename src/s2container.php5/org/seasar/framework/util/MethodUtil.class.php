@@ -22,13 +22,10 @@ final class MethodUtil {
     private function MethodUtil() {
     }
 
-    public static function invoke($method,$target,$args) {
+    public static function invoke($method,$target,$args=null) {
         try {
-            if(!is_array($args)){
-                $args = array($args);
-            }
             if(count($args) == 0){
-                return $method->invoke($target,$args);
+                return $method->invoke($target,array());
             }
 
             $strArg=array();

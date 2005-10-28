@@ -131,7 +131,11 @@ final class BeanDescImpl implements BeanDesc {
      * @see BeanDesc::newInstance()
      */
     public function newInstance($args,$componentDef=null){
-        return ConstructorUtil::newInstance($this->beanClass_, $args,$componentDef);
+        if($componentDef != null and 
+           $componentDef->getAspectDefSize()>0){
+            return AopProxyUtil::getProxyObject($componentDef,$args); 
+        }
+        return ConstructorUtil::newInstance($this->beanClass_, $args);
     }
 
     /**

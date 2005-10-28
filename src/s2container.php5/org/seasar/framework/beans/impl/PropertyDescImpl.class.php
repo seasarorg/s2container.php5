@@ -80,7 +80,7 @@ class PropertyDescImpl implements PropertyDesc {
     
     public function setValue($target,$value) {
         try {
-            MethodUtil::invoke($this->writeMethod_,$target, $value);
+            MethodUtil::invoke($this->writeMethod_,$target, array($value));
         } catch (Exception $t) {
             throw new IllegalPropertyRuntimeException(
                     $this->beanDesc_->getBeanClass(), $this->propertyName_, $t);

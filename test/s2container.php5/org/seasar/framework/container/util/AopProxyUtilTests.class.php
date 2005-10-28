@@ -4,7 +4,7 @@ class AopProxyUtilTests extends UnitTestCase {
         $this->UnitTestCase();
     }
 
-    function testGetEnhancedClass() {
+    function testGetProxyObject() {
        
         print __METHOD__ . "\n";
 
@@ -12,7 +12,7 @@ class AopProxyUtilTests extends UnitTestCase {
         $aspect1 = new AspectDefImpl(new PointcutImpl('A'),new TraceInterceptor());
         $cd->addAspectDef($aspect1);
         
-        $a = AopProxyUtil::getEnhancedClass($cd,array());
+        $a = AopProxyUtil::getProxyObject($cd,array());
         $this->assertIsA($a,'UuCallAopProxyAEnhancedByS2AOP');
 
         print "\n";

@@ -41,19 +41,5 @@ class ConstructerUtilTests extends UnitTestCase {
        
         print "\n";
     }
-
-    function testInstanceWithAspect() {
-       
-        print __METHOD__ . "\n";
-
-        $cd = new ComponentDefImpl('A','a');
-        $aspect1 = new AspectDefImpl(new PointcutImpl('A'),new TraceInterceptor());
-        $cd->addAspectDef($aspect1);       
-        $c = ConstructorUtil::newInstance(new ReflectionClass('A'),
-                                         array(),$cd);
-        $this->assertIsA($c,'UuCallAopProxyAEnhancedByS2AOP');
-       
-        print "\n";
-    }
 }
 ?>

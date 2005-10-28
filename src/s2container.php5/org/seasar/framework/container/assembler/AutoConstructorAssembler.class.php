@@ -30,7 +30,11 @@ class AutoConstructorAssembler
         if($refMethod != null){
             $args = $this->getArgs($this->getComponentDef()->getConcreteClass()->getConstructor()->getParameters());
         }
-        return ConstructorUtil::newInstance($this->getComponentDef()->getConcreteClass(), $args,$this->getComponentDef());
+        if($this->getComponentDef() != null and 
+           $this->getComponentDef()->getAspectDefSize()>0){
+            return AopProxyUtil::getProxyObject($this->getComponentDef(),$args); 
+        }                
+        return ConstructorUtil::newInstance($this->getComponentDef()->getConcreteClass(), $args);
     }
 }
 ?>

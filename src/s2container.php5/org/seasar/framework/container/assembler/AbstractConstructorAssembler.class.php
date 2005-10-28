@@ -26,7 +26,12 @@ abstract class AbstractConstructorAssembler extends AbstractAssembler
 
     protected function assembleDefault() {
         $clazz = $this->getComponentDef()->getConcreteClass();
-        return ConstructorUtil::newInstance($clazz, null,$this->getComponentDef());
+        
+        if($this->getComponentDef() != null and 
+           $this->getComponentDef()->getAspectDefSize()>0){
+            return AopProxyUtil::getProxyObject($this->getComponentDef(),$args); 
+        }        
+        return ConstructorUtil::newInstance($clazz, null);
     }
 }
 ?>

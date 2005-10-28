@@ -22,14 +22,14 @@ final class ConstructorUtil {
     private function ConstructorUtil() {
     }
 
-    public static function newInstance($refClass,$args,$componentDef=null){
+    public static function newInstance($refClass,$args){
         try {
-            
+/*          
             if($componentDef != null and 
                $componentDef->getAspectDefSize()>0){
                return AopProxyUtil::getEnhancedClass($componentDef,$args); 
             }
-
+*/
             $cmd = "return new " . $refClass->getName() . "(";
             if(count($args) == 0){
                 $cmd = $cmd . ");";
