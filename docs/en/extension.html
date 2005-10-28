@@ -1,0 +1,963 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><!-- don't edit start --><title>Seasar - DI Container with AOP -</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<link href="seasar_b.css" type="text/css" rel="stylesheet" media="screen"><script src="seasar_b.js" type="text/JavaScript" language="JavaScript"></script></head>
+
+
+<body onload="preload('en')">
+<table align="left" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr>
+<td align="left" valign="top" width="780"><table class="white" border="0" cellpadding="0" cellspacing="0" width="780">
+<tbody><tr><td colspan="7"><img src="images/top01_b.gif" alt="" height="5" width="780"></td></tr>
+<tr><td><img src="images/top02_b.gif" alt="Seasar" height="117" width="235"></td>
+<td colspan="3"><img src="images/top03.gif" alt="DI Container with AOP" height="117" width="289"></td>
+<td colspan="3"><img src="images/spacer.gif" alt="" height="117" width="256"></td>
+</tr><tr><td rowspan="2"><img src="images/top04.gif" alt="" height="49" width="235"></td>
+<td><a href="http://www.seasar.org/en/index.html"><img src="images/menu01_b_en.gif" alt="" id="menu01" onmouseover="swap(1)" onmouseout="restore(1)" border="0" height="30" width="78"></a></td>
+<td><a href="http://www.seasar.org/en/projects.html"><img src="images/menu02_b_en.gif" alt="" id="menu02" onmouseover="swap(2)" onmouseout="restore(2)" border="0" height="30" width="101"></a></td>
+<td><a href="http://www.seasar.org/en/products.html"><img src="images/menu06_b_en.gif" alt="" id="menu06" onmouseover="swap(6)" onmouseout="restore(6)" border="0" height="30" width="110"></a></td>
+<td><a href="http://www.seasar.org/en/resources.html"><img src="images/menu05_b_en.gif" alt="" id="menu05" onmouseover="swap(5)" onmouseout="restore(5)" border="0" height="30" width="113"></a></td>
+<td><img src="images/menu07_b_en.gif" alt="" id="menu07" onmouseover="swap(7)" onmouseout="restore(7)" border="0" height="30" width="109"></td>
+<td><img src="images/menu06.gif" alt="" height="30" width="34"></td></tr><tr>
+
+<td colspan="6"><img src="images/spacer.gif" alt="" height="19" width="545"></td></tr></tbody></table>
+<table class="menu" border="0" cellpadding="0" cellspacing="0" width="780">
+<tbody><tr align="left" valign="top"><td width="14"><img src="images/spacer.gif" alt="" height="14" width="14"></td><td class="main" width="740">
+<!-- don't edit end -->
+<!-- document start -->
+
+
+<ul>
+<li><a href="#diconInclude">Path attribute of include-tag in the dicon file</a></li>
+<li><a href="#uuset">Setter injection by __set() method</a></li>
+<li><a href="#ini-dicon">Writing dicon file in PHP initialize format (php.ini format)</a></li>
+    <ul>
+    <li><a href="#ini-components">components section</a></li>
+    <li><a href="#ini-component">component section</a></li>
+        <ul>
+        <li type="circle"><a href="#ini-arg">arg definition</a></li>
+        <li type="circle"><a href="#ini-property">property definition</a></li>
+        <li type="circle"><a href="#ini-init_method">init_method definition</a></li>
+        <li type="circle"><a href="#ini-destroy_method">destroy_method definition</a></li>
+        <li type="circle"><a href="#ini-aspect">aspect definition</a></li>
+        <li type="circle"><a href="#ini-meta">meta definition</a></li>
+        <li type="circle"><a href="#ini-etc">Some points</a></li>
+        </ul>
+    </ul>
+<li><a href="#dba">Database access framework</a></li>
+    <ul>
+    <li><a href="#dba-ds">DataSource</a></li>
+        <ul>
+        <li type="circle"><a href="#dba-ds-peardb">peardb.dicon template</a></li>
+        <li type="circle"><a href="#dba-ds-use">Using DataSource</a></li>
+        </ul>
+    <li><a href="#dba-tx">Using TxIntereceptor</a></li>
+    </ul>
+
+<li><a href="#unit">S2Unit</a></li>
+    <ul>
+    <li><a href="#unit-example">Example</a></li>
+    </ul>
+</li>
+</ul>
+
+<br>
+<b><h2>Extension</h2></b>
+<a name="diconInclude"><h3>Path attribute of include-tag in the dicon file</h3></a>
+
+<p>Setting a path attribute of include-tag, you can use a constant variable by putting it between %...% at the beginning of path.<br>
+</p>
+<pre>
+define(DICON_DIR,'/path/to/dir');   // defined somewhere else in advance
+
+&lt;components&gt;
+    &lt;include path="%DICON_DIR%/bar.dicon"/&gt;
+&lt;/components&gt;
+*** only at the beginning, a constant between %...% will be expanded.
+</pre>
+
+<br>
+<a name="uuset"><h3>Setter injection by __set() method</h3></a>
+<p>Setter injection will be enforced with __set() method if it meets these conditions below.</p>
+<ul>
+<li>Property tags specified</li>
+<li>No setter method of specified property found in a component</li>
+<li>__set() method is implemented in a component</li>
+</ul>
+
+<br>
+<b>Implementation of Example class</b>
+<ul>
+<li type="circle">Implement setter method [ setMessageA() ] </li>
+<li type="circle">Implement __set() method</li>
+<li type="circle">Implement showMessage() method</li>
+</ul>
+<p>There is not implementation of setter method [ setMessageB() ] for property $messageB.</p>
+<p>s2container.php5/src/examples/extension/uuset/HelloImpl.class.php</p>
+<pre>&lt;?php
+class HelloImpl {
+
+    private $messageA = "";
+    private $messageB = "";
+
+    function HelloImpl() {}
+    
+    function setMessageA($messageA){
+        $this->messageA = $messageA;	
+    }
+
+    function __set($name,$val){
+        $this->$name = $val;	
+    }
+    
+    function showMessage(){
+        print "{$this->messageA} {$this->messageB} \n";
+    }
+}
+?&gt;
+</pre>
+
+<br>
+<b>Creating a dicon file</b>
+<p>s2container.php5/src/examples/extension/uuset/uuset.dicon</p>
+<pre>&lt;components&gt;
+    &lt;component class="HelloImpl"&gt;
+        &lt;property name="messageA"&gt;"Hello"&lt;/property&gt;
+        &lt;property name="messageB"&gt;"World"&lt;/property&gt;
+    &lt;/component&gt;
+&lt;/components&gt;
+</pre>
+
+<br>
+<b>Execution script</b>
+
+<p>s2container.php5/src/examples/extension/uuset/uusetClient.php</p>
+<pre>&lt;?php
+require_once(dirname(__FILE__) . '/uuset.inc.php');
+$PATH = EXAMPLE_DIR . "/extension/uuset/uuset.dicon";
+$container = S2ContainerFactory::create($PATH);
+$hello = $container->getComponent('HelloImpl');
+$hello->showMessage();
+?&gt;
+</pre>
+<br>
+<b>Result</b>
+<pre>
+% php uusetClient.php
+Hello World
+%
+</pre>
+
+<br>
+
+<br>
+<a name="ini-dicon"><h3>Writing dicon file in PHP initialize format (php.ini format)</h3></a>
+<p>Instead of writing dicon file in XML format, you are able to write a dicon file in php.ini format.<br>
+There are two kind of sections, one is a components section, the other is a component section.</p>
+<pre>
+[components]
+namespace = "dao"
+.....
+.....
+.....
+[componentA]                |
+class = "A"                 |
+.....                       |
+.....                       | here is component section
+[componentB]                |
+.....                       |
+.....                       |
+.....                       V
+
+</pre>
+
+<a name="ini-components"><h3>components section</h3></a>
+<p>Because components section is optional, it can be omitted.
+<table border="0" vspace="0" hspace="0" cellpadding="0" cellspacing="0">
+<tr>
+<td width="30"></td>
+<td>namespace</td>
+<td width="20" align="center"> : </td>
+<td>setting namespace</td>
+</tr>
+<tr>
+<td></td>
+<td>include</td>
+<td align="center"> : </td>
+<td>setting include dicon file path.</td>
+</tr>
+<tr>
+<td></td>
+<td valign="top">meta</td>
+<td valign="top" align="center"> : </td>
+<td>setting <a href="#ini-meta">meta data</a>.
+</td>
+</tr>
+</table>
+</p>
+
+<pre>
+[components]
+namespace = "dao"
+include{0} = "/path/to/aaa.dicon"
+include{1} = "/path/to/bbb.dicon"
+meta{0}{name} = "metaA"
+meta{0}{val}  = "meta data"
+. . .
+. . .
+. . .
+</pre>
+
+<a name="ini-component"><h3>component section</h3></a>
+<p>Component section name is a component name. There are 10 items in component section.
+<table border="0" vspace="0" hspace="0" cellpadding="0" cellspacing="0">
+<tr>
+<td width="30"></td>
+<td>class</td>
+<td width="20" align="center"> : </td>
+<td>setting class name. if class attribute is omitted, section name is used as a class name.</td>
+</tr>
+
+<tr>
+<td></td>
+<td>instance</td>
+<td align="center"> : </td>
+<td>setting <a href="./DIContainer.html#InstanceMode">instance mode</a>. [ singleton, prototype, request, session ] are available.</td>
+</tr>
+
+<tr>
+<td></td>
+<td>autobinding</td>
+<td align="center"> : </td>
+<td>setting <a href="./DIContainer.html#AutoBindingMode">auto binding mode</a>. [ atuo, constructor, property, none ] are available.</td>
+</tr>
+
+<tr>
+<td></td>
+<td>exp</td>
+<td align="center"> : </td>
+<td>setting <a href="./php.html">PHP scripting</a>.</td>
+</tr>
+
+<tr>
+<td></td>
+<td>arg</td>
+<td align="center"> : </td>
+<td>setting <a href="#ini-arg">constructor arguments</a>.</td>
+</tr>
+
+<tr>
+<td></td>
+<td>property</td>
+<td align="center"> : </td>
+<td>setting <a href="#ini-property">property value</a>.</td>
+</tr>
+
+<tr>
+<td></td>
+<td>init_method</td>
+<td align="center"> : </td>
+<td>setting <a href="#ini-init_method">initMethod</a>.</td>
+</tr>
+
+<tr>
+<td></td>
+<td>destroy_method</td>
+<td align="center"> : </td>
+<td>setting <a href="#ini-destroy_method">destroyMethod</a>.</td>
+</tr>
+
+<tr>
+<td></td>
+<td>aspect</td>
+<td align="center"> : </td>
+<td>setting <a href="#ini-aspect">aspect</a>.</td>
+</tr>
+
+<tr>
+<td></td>
+<td>meta</td>
+<td align="center"> : </td>
+<td>setting <a href="#ini-meta">meta data</a>.</td>
+</tr>
+
+</table>
+</p>
+
+<pre>
+[hello]
+class = "Hello"
+instance = "singleton"
+autobinding = "auto"
+
+arg{0}{val} = "hello world"
+arg{1}{ref} = "bye"
+
+property{0}{name} = "message"
+property{0}{val} = "hello world 2 !!"
+
+init_method{0}{name} = "initialize"
+init_method{0}{arg{0}{val}} = "-1"
+
+aspect{0}{pointcut} = "showMessage"
+aspect{0}{exp} = "new TraceInterceptor()"
+
+meta{0}{name} = "helloMeta"
+meta{0}{ref} = "bye"
+
+[bye]
+class = "Bye"
+...
+...
+...
+</pre>
+
+<a name="ini-arg"><h3>arg</h3></a>
+　　　・arg{index}{val} = setting value<br>
+　　　・arg{index}{ref} = reference to other component<br>
+　　　・arg{index}{exp} = writing PHP scripting<br>
+　　　・arg{index}{meta{0}{val}} = <a href="#ini-meta">Meta data</a><br>
+<pre>
+[hello]
+class=Hello
+arg{0}{val} = "hello world"
+arg{1}{ref} = bye
+arg{2}{exp} = "array('hello','world','!!')"
+
+[bye]
+class = Bye
+</pre>
+
+<a name="ini-property"><h3>property</h3></a>
+　　　・property{index}{name} = property name<br>
+　　　・property{index}{val} = setting value<br>
+　　　・property{index}{ref} = reference to other component<br>
+　　　・property{index}{exp} = writing PHP scripting<br>
+　　　・property{index}{meta{0}{val}} = <a href="#ini-meta">Meta data</a><br>
+
+<pre>
+[hello]
+class=Hello
+
+property{0}{name} = "messageA"     --- setting a value "Hello" to property messageA
+property{0}{val} = "Hello"
+property{1}{name} = "messageB"     --- setting a value "World" to property messageB
+property{1}{val} = "World"
+property{2}{name} = "bye"          --- setting reference to bye component
+property{2}{ref} = "bye"
+
+[bye]
+class = Bye
+</pre>
+
+<a name="ini-init_method"><h3>init_method</h3></a>
+　　　・init_method{index}{name} = setting method name<br>
+　　　・init_method{index}{arg{0}{val}} = argument of initMethod<br>
+　　　・init_method{index}{exp} = writing PHP scripting<br>
+
+<pre>
+[hello]
+class=Hello
+
+init_method{0}{name} = "showMessage"
+init_method{0}{arg{0}{val}} = "Hello"
+init_method{0}{arg{1}{val}} = "World"
+
+init_method{1}{exp} = "$component->initialize()"
+
+</pre>
+
+<a name="ini-destroy_method"><h3>destroy_method</h3></a>
+<p>same as init_method</p>
+
+<a name="ini-aspect"><h3>aspect</h3></a>
+　　　・aspect{index}{pointcut} = pointcut setting<br>
+　　　・aspect{index}{ref} = reference to other component<br>
+　　　・aspect{index}{exp} = writing PHP scripting<br>
+
+<pre>
+[hello]
+class=Hello
+
+aspect{0}{pointcut} = "showMessage"
+aspect{0}{ref} = "trace"
+
+[trace]
+class = "TraceInterceptor"
+
+</pre>
+<a name="ini-meta"><h3>meta</h3></a>
+　　　・meta{index}{val} = setting value<br>
+　　　・meta{index}{ref} = reference to other component<br>
+　　　・meta{index}{exp} = writing PHP scriptin<br>
+
+<pre>
+[components]
+meta{0}{name} = "metaA"
+meta{0}{val} = "5"
+meta{1}{name} = "metaB"
+meta{1}{ref} = hello
+meta{2}{name} = "metaC"
+meta{2}{exp} = "array('a','b','c')"
+
+[hello]
+class = HelloImpl
+</pre>
+
+<a name="ini-etc"><h3>Some points</h3></a>
+
+<ul>
+<li>It is not able to use quote on section item name. ( arg{0}{'val'}、arg{0}{"val"} etc.)</li>
+<li>By putting a value between double-quotation, multi-line become effective.</li>
+<li>{index} on section item is starts from 0.</li>
+<li>Both XML and php.ini format dicon files get prepared for each example in s2container.php5/src/examples.
+</li>
+</ul>
+
+<br>
+<a name="dba"><h3>Database access framework</h3></a>
+<p>Extension includes database access framework. We use sample tables below in this section. There is a demo.sql file in s2container.php5/src/s2container.php5/org/seasar/extension/db/sql/ , for creatitng sample tables.</p>
+
+    	Table : EMP
+		<table border="1" class="main">
+			<tr bgcolor="#d1f3f4" align="center">
+			  <th>Colum</th>
+			  <th>Type</th>
+			  <th>NotNull</th>
+			  <th>Primary Key</th>
+			</tr>
+			<tr>
+			  <td>EMPNO</td>
+			  <td>NUMBER</td>
+			  <td align="center">*</td>
+
+			  <td align="center">*</td>
+			</tr>
+			<tr>
+			  <td>ENAME</td>
+			  <td>VARCHAR</td>
+			  <td><br /></td>
+
+			  <td><br /></td>
+			</tr>
+			<tr>
+			  <td>JOB</td>
+			  <td>VARCHAR</td>
+			  <td><br /></td>
+
+			  <td><br /></td>
+			</tr>
+			<tr>
+			  <td>MGR</td>
+			  <td>NUMBER</td>
+			  <td><br /></td>
+
+			  <td><br /></td>
+			</tr>
+			<tr>
+			  <td>HIREDATE</td>
+			  <td>DATE</td>
+			  <td><br /></td>
+
+			  <td><br /></td>
+			</tr>
+			<tr>
+			  <td>SAL</td>
+			  <td>NUMBER</td>
+			  <td><br /></td>
+
+			  <td><br /></td>
+			</tr>
+			<tr>
+			  <td>COMM</td>
+			  <td>NUMBER</td>
+			  <td><br /></td>
+
+			  <td><br /></td>
+			</tr>
+			<tr>
+			  <td>DEPTNO</td>
+			  <td>NUMBER</td>
+			  <td><br /></td>
+
+			  <td><br /></td>
+			</tr>
+			<tr>
+			  <td>TSTAMP</td>
+			  <td>TIMESTAMP</td>
+			  <td><br /></td>
+
+			  <td><br /></td>
+			</tr>
+		</table>
+    	<br />Table : DEPT
+		<table border="1" class="main">
+			<tr bgcolor="#d1f3f4" align="center">
+			  <th>Colum</th>
+			  <th>Type</th>
+			  <th>NotNull</th>
+			  <th>Primary Key</th>
+			</tr>
+			<tr>
+			  <td>DEPTNO</td>
+			  <td>NUMBER</td>
+			  <td align="center">*</td>
+			  <td align="center">*</td>
+			</tr>
+			<tr>
+			  <td>DNAME</td>
+			  <td>VARCHAR</td>
+			  <td><br /></td>
+			  <td><br /></td>
+			</tr>
+			<tr>
+			  <td>LOC</td>
+			  <td>VARCHAR</td>
+			  <td><br /></td>
+			  <td><br /></td>
+			</tr>
+			<tr>
+			  <td>VERSIONNO</td>
+			  <td>NUMBER</td>
+			  <td><br /></td>
+			  <td><br /></td>
+			</tr>
+		</table>
+
+
+<a name="dba-ds"><h3>DataSource</h3></a>
+<p>As a DataSource, MySQL functions, PostgreSQL functions, PearDB and ADOdb are available. There are DataSource template dicon files in s2container.php5/src/s2container.php5/org/seasar/extension/db/ .
+</p>
+
+<table border="1" vspace="0" hspace="0" cellpadding="2" cellspacing="1">
+<tr bgcolor="#d1f3f4" align="center">
+<th></th>
+<th>XML format</th>
+<th>INI format</th>
+<tr>
+<tr>
+<td>MySQL functions</td>
+<td>mysql.dicon</td>
+<td>mysql.ini</td>
+<tr>
+<tr>
+<td>PostgreSQL functions</td>
+<td>postgres.dicon</td>
+<td>postgres.ini</td>
+<tr>
+<tr>
+<td><a href="http://pear.php.net/package/DB" target="_blank">PearDB</a></td>
+<td>peardb.dicon</td>
+<td>peardb.ini</td>
+<tr>
+<tr>
+<td><a href="http://adodb.sourceforge.net/" target="_blank">ADOdb</a></td>
+<td>adodb.dicon</td>
+<td>adodb.ini</td>
+<tr>
+</table>
+　・Using PearDB as DataSource, you have to require DB.php in advance.<br>
+　・Using  ADOdb as DataSource, you have to require adodb-exceptions.inc.php and adodb.inc.php  in advance.<br>
+
+<a name="dba-ds-peardb"><h3>peardb.dicon template</h3></a>
+<p>Property <i>dsn</i> of DataSource component takes precedence over other properties.</p>
+
+<p>XML format peardb.dicon</p>
+<pre>
+&lt;?xml version="1.0" encoding="Shift_JIS"?&gt;
+&lt;!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
+"components21.dtd"&gt;
+&lt;components namespace="peardb"&gt;
+    &lt;component name="dataSource" class="PearDBDataSource"&gt;
+        &lt;property name="dsn"&gt;                                  
+            "mysql://hoge:hoge@localhost:3306/s2container"       
+        &lt;/property&gt;                                            
+    &lt;/component&gt;
+
+    &lt;component class="PearDBSqlHandler"/&gt;
+    &lt;component name="dbtx" class="PearDBTxInterceptor"/&gt;
+    &lt;component name="dao" class="SimpleDaoInterceptor"/&gt;
+    &lt;component class="DaoMetaDataFactoryImpl"/&gt;
+    &lt;component name="session" class="DBSessionImpl"/&gt;
+&lt;/components&gt;
+</pre>
+
+<br>
+<p>INI format peardb.ini</p>
+<pre>
+[components]
+namespace="peardb"
+
+[dataSource]
+class="PearDBDataSource"
+
+property{0}{name}="dsn"                                         
+property{0}{val} ="mysql://hoge:hoge@localhost:3306/s2container"
+
+[PearDBSqlHandler]
+
+[dbtx]
+class="PearDBTxInterceptor"
+
+[dao]
+class="SimpleDaoInterceptor"
+
+[DaoMetaDataFactoryImpl]
+
+[session]
+class="DBSessionImpl"
+</pre>
+
+<a name="dba-ds-use"><h3>Using DataSource</h3></a>
+<p>DataSource provides the management of database connection. There is a example in s2container.php5/src/examples/extension/db, which implements Data Access Object. This DAO has find-method which gets row data set as an array from DEPT table selected by DEPTNO given as method arguments.<br>
+</p>
+<p><b>Define interface</b></p>
+<ul>
+<li type="circle">Define DeptDao interface</li>
+<li type="circle">Define findDeptByDeptno method.</li>
+</ul>
+
+<pre>
+&lt;?php
+interface DeptDao {
+    function findDeptByDeptno($deptno);
+}
+?&gt;
+</pre>
+
+<p><b>Implementation</b></p>
+
+
+<pre>
+&lt;?php
+class DeptDaoImpl implements DeptDao {
+
+    private $dataSource;
+
+    function DeptDaoImpl(DataSource $dataSource) {
+        $this->dataSource = $dataSource;
+    }
+    
+    function findDeptByDeptno($deptno){
+        $db = $this->dataSource->getConnection();
+        $result = $db->query("select * from dept where deptno = '{$deptno}';"); 
+        $row = $result->fetchRow();
+        $this->dataSource->disconnect($db);
+        return $row;
+    }
+}
+?&gt;
+</pre>
+
+A return value of DataSource->getConnection() is depends on which DataSource used.
+<table border="0" vspace="0" hspace="0" cellpadding="0" cellspacing="0">
+<tr>
+<td width="15"></td><td>using PearDB</td><td align="center" width="15"> : </td><td>DB::connect() return value</td>
+</tr>
+<tr>
+<td></td><td>using ADOdb</td><td align="center"> : </td><td>NewADOConnection() return value</td>
+</tr>
+<tr>
+<td></td><td>MySQL functions</td><td align="center"> : </td><td>mysql_connect() return value</td>
+</tr>
+<tr>
+<td></td><td>PostgreSQL functions</td><td align="center"> : </td><td>pg_connect() return value</td>
+</tr>
+</table>
+
+
+<br>
+
+<p><b>Creating dicon file</b></p>
+
+<p>XML format deptDao.dicon</p>
+<pre>
+&lt;components&gt;
+    &lt;include path="%S2CONTAINER_PHP5%/org/seasar/extension/db/peardb.dicon"/&gt;
+    &lt;component name ="deptDao" class="DeptDaoImpl"/&gt;
+&lt;/components&gt;
+</pre>
+
+<p>INI format deptDao.ini</p>
+<pre>
+[components]
+include{0} = "%S2CONTAINER_PHP5%/org/seasar/extension/db/peardb.dicon"
+
+[deptDao]
+class="DeptDaoImpl"
+</pre>
+
+
+<p><b>Execution script</b></p>
+
+<p>dataSourceClient.php</p>
+<pre>
+&lt;?php
+require_once(dirname(__FILE__) . '/db.inc.php');
+$PATH = EXAMPLE_DIR . "/extension/db/deptDao.dicon";
+//$PATH = EXAMPLE_DIR . "/extension/db/deptDao.ini";
+
+$container = S2ContainerFactory::create($PATH);
+$dao = $container->getComponent('deptDao');
+$result = $dao->findDeptByDeptno(10);
+
+print_r($result);
+?&gt;
+</pre>
+
+<p><b>Result</b></p>
+<pre>
+% php dataSourceClient.php
+Array
+(
+    [0] => 10
+    [1] => ACCOUNTING
+    [2] => NEW YORK
+    [3] => 0
+)
+%
+</pre>
+<br>
+<a name="dba-tx"><h3>Using TxIntereceptor</h3></a>
+<p>TxInterceptor provides the automatic transaction management by using Aspect for POJOs. There is a 
+example using TxInterceptor in s2container.php5/src/examples/extension/db/ .</p>
+<p><b>Define interface</b></p>
+<ul>
+<li type="circle">Define DeptDao interface</li>
+<li type="circle">Define findDeptByDeptno method</li>
+</ul>
+
+<pre>
+&lt;?php
+interface DeptDao {
+    function findDeptByDeptno($deptno);
+}
+?&gt;
+</pre>
+
+<p><b>Implementation</b></p>
+
+TxInterceptor manages connecting and disconnecting to database, begin and commit transaction. if exception occurs, then rollback is enforced.
+
+<pre>
+&lt;?php
+class TxDeptDaoImpl implements DeptDao {
+
+    private $session;
+
+    function TxDeptDaoImpl(DBSession $session) {
+        $this->session = $session;
+    }
+    
+    function findDeptByDeptno($deptno){
+        $db = $this->session->getConnection();
+        $result = $db->query("select * from dept where deptno = '{$deptno}';"); 
+        $row = $result->fetchRow();
+
+        return $row;
+    }
+}
+?&gt;
+</pre>
+A return value of DBSession->getConnection() is depends on which DataSource used.
+<table border="0" vspace="0" hspace="0" cellpadding="0" cellspacing="0">
+<tr>
+<td width="15"></td><td>using PearDB</td><td align="center" width="15"> : </td><td>DB::connect() return value</td>
+</tr>
+<tr>
+<td></td><td>using ADOdb</td><td align="center"> : </td><td>NewADOConnection() return value</td>
+</tr>
+<tr>
+<td></td><td>MySQL functions</td><td align="center"> : </td><td>mysql_connect() return value</td>
+</tr>
+<tr>
+<td></td><td>PostgreSQL functions</td><td align="center"> : </td><td>pg_connect() return value</td>
+</tr>
+</table>
+
+<br>
+<p><b>Creating dicon file</b></p>
+<p>
+
+<p>XML format txDeptDao.dicon</p>
+<pre>
+&lt;components&gt;
+    &lt;include path="%S2CONTAINER_PHP5%/org/seasar/extension/db/peardb.dicon"/&gt;
+    &lt;component name ="deptDao" class="TxDeptDaoImpl"&gt;
+        &lt;aspect pointcut="findDeptByDeptno"&gt;
+            dbtx
+        &lt;/aspect&gt;
+    &lt;/component&gt;
+&lt;/components&gt;
+</pre>
+
+<p>INI fromat txDeptDao.ini</p>
+<pre>
+[components]
+include{0} = "%S2CONTAINER_PHP5%/org/seasar/extension/db/peardb.dicon"
+
+[deptDao]
+class="TxDeptDaoImpl"
+aspect{0}{pointcut} = "findDeptByDeptno"
+aspect{0}{ref} = "dbtx"
+</pre>
+
+<p><b>Execution script</b></p>
+
+<p>txClient.php</p>
+<pre>
+&lt;?php
+require_once(dirname(__FILE__) . '/db.inc.php');
+
+$PATH = EXAMPLE_DIR . "/extension/db/txDeptDao.dicon";
+//$PATH = EXAMPLE_DIR . "/extension/db/txDeptDao.ini";
+
+$container = S2ContainerFactory::create($PATH);
+$dao = $container->getComponent('deptDao');
+$result = $dao->findDeptByDeptno(10);
+print_r($result);
+?&gt;
+</pre>
+
+<p><b>Result</b></p>
+<pre>
+% php dataSourceClient.php
+Array
+(
+    [0] => 10
+    [1] => ACCOUNTING
+    [2] => NEW YORK
+    [3] => 0
+)
+%
+</pre>
+
+<br>
+<a name="unit"><h3>S2Unit</h3></a>
+<p>Testing framework based on PHPUnit, PHPUnit2 and SimpleTest is integrated with S2 to make tests on development using containers fun. Followings are some features:
+</p>
+<ul>
+<li>S2Container is automatically generated for each test method(textXXX).</li>
+
+<li>register(),getComponent(), and include() for a S2Container is made available.</li>
+<li>TestCase public fields are automatically set by S2Container, if there is a same name component with field name.</li>
+<li>Values automatically assigned are cleared (set to null) afer test method ends.</li>
+<li>If test method(testXxx) is defined with corresponding setUpXxx() and tearDownXxx() methods, it is invoked after setUp() and before tearDown() are invoked. Thus, it makes initialization and finalization process easier.</li>
+</ul>
+<h3><a name="unit-example">Example</a></h3>
+<p>Let's look at UnitTest example useing S2PHPUnit2TestCase based on Pear PHPUnit2.<br>
+This example is located in s2container.php5/src/examples/extension/unit/ .</p>
+
+<p><b>Test target class</b></p>
+<p>s2container.php5/src/examples/extension/unit/src/foo/FooLogic.class.php</p>
+<pre>
+&lt;?php
+class FooLogic {
+
+    function FooLogic() {
+    }
+    
+    function showYear(){
+    	return 2005;
+    }
+}
+?&gt;
+</pre>
+
+<p><b>Creating dicon file</b></p>
+
+<p>s2container.php5/src/examples/extension/unit/src/foo/foo.ini</p>
+<pre>
+[logic]
+class = FooLogic
+</pre>
+
+<p><b>UnitTest class</b></p>
+
+<p>s2container.php5/src/examples/extension/unit/test/phpunit2/foo/FooLogicTest.class.php</p>
+<pre>
+&lt;?php
+class FooLogicTest extends S2PHPUnit2TestCase {
+
+    public $logic;   //--- automatically set by S2Container if there is a component named 'logic'
+    
+    function __construct($name) {
+    	parent::__construct($name);
+    }
+
+    function setUp(){
+        $this->includeDicon(UNIT_EXAMPLE . "/src/foo/foo.ini");   //--- automatically include dicon file.
+    }
+
+    function testShowYear(){
+        $year = $this->logic->showYear();
+        $this->assertEquals($year , 2005);	
+    }
+}
+?&gt;
+</pre>
+
+<p>s2container.php5/src/examples/extension/unit/test/phpunit2/foo/FooAllTest.class.php</p>
+<pre>
+&lt;?php
+class FooAllTest {
+
+    public static function main() {
+        PHPUnit2_TextUI_TestRunner::run(self::suite());
+    }
+    
+    public static function suite() {
+        $suite = new PHPUnit2_Framework_TestSuite();
+        $suite->addTestSuite('FooLogicTest');
+        return $suite;  
+    }
+}
+?&gt;
+</pre>
+
+<p><b>Executing script</b></p>
+<p>s2container.php5/src/examples/extension/unit/test/phpunit2/foo/fooTests.php</p>
+<pre>
+&lt;?php
+define('PHPUnit2_MAIN_METHOD', 'FooAllTest::main()');
+require_once 'PHPUnit2/Framework/TestSuite.php';
+require_once 'PHPUnit2/TextUI/TestRunner.php';
+
+FooAllTest::main();
+?&gt;
+</pre>
+
+
+<p><b>Result</b></p>
+<pre>
+% php allTests.php
+
+TEST : FooLogicTest::testShowYear
+------------------------------------
+
+.
+
+Time: 0.368033
+
+OK (1 test)
+%
+</pre>
+
+<p>There are same examples using Pear PHPUnit and SimpleTest in s2container.php5/src/examples/extension/unit/test/ .</p>
+
+
+<!-- document end -->
+<!-- don't edit start -->
+</td>
+<td width="14"><img src="images/spacer.gif" alt="" height="14" width="14"></td>
+</tr><tr>
+<td width="14"><img src="images/spacer.gif" alt="" height="30" width="14"></td>
+<td width="766"><img src="images/spacer.gif" alt="" height="30" width="592"></td>
+</tr><tr>
+<td width="14"><img src="images/spacer.gif" alt="" height="14" width="14"></td>
+<td class="copyright" width="766">&#169; Copyright The Seasar Foundation and the others 2004, all rights reserved.</td>
+</tr></tbody></table>
+</td><td class="backright" align="left" valign="top">&nbsp;</td></tr><tr>
+<td class="backunder" align="left" height="16" valign="top" width="780">&nbsp;</td>
+<td class="backcorner" align="left" height="16" valign="top">&nbsp;</td>
+</tr></tbody></table><!-- don't edit end -->
+</body></html>
