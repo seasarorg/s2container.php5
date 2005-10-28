@@ -5,7 +5,7 @@
     <component name="d" class="IDelegateA">
         <aspect>mock</aspect>
     </component>
-    <component name="mock" class="MockInterceptor">
+    <component name="mock" class="S2Container_MockInterceptor">
         <initMethod name="setReturnValue">
             <arg>"ma"</arg>
             <arg>"-1"</arg>

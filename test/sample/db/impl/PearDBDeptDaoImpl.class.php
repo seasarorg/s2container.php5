@@ -5,7 +5,7 @@ class PearDBDeptDaoImpl implements IDeptDao {
     function PearDBDeptDaoImpl() {
     }
     
-    function setSession(DBSession $session){
+    function setSession(S2Container_DBSession $session){
     	$this->session = $session;
     }
     

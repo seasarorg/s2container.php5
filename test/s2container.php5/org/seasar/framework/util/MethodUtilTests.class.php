@@ -9,21 +9,21 @@ class MethodUtilTests extends UnitTestCase {
         print __METHOD__ . "\n";
        
         $c = new ReflectionClass('C');
-        $src = ClassUtil::getSource($c);
+        $src = S2Container_ClassUtil::getSource($c);
         $m = $c->getMethod('say');
-        $src = MethodUtil::getSource($m,$src);
+        $src = S2Container_MethodUtil::getSource($m,$src);
 
         $this->assertEqual(trim($src[0]),"public function say(){");       
         $this->assertEqual(trim($src[2]),"}");     
 
-        $src = MethodUtil::getSource($m);
+        $src = S2Container_MethodUtil::getSource($m);
         $this->assertEqual(trim($src[0]),"public function say(){");       
         $this->assertEqual(trim($src[2]),"}");     
 
         $ref = new ReflectionClass('IW');
-        $src = ClassUtil::getSource($ref);
+        $src = S2Container_ClassUtil::getSource($ref);
         $m = $ref->getMethod('wm1');
-        $src = MethodUtil::getSource($m,$src);
+        $src = S2Container_MethodUtil::getSource($m,$src);
         $this->assertEqual(trim($src[0]),'function wm1($arg1,IA &$a);');     
        
         print "\n";
@@ -37,31 +37,31 @@ class MethodUtilTests extends UnitTestCase {
         $ref = new ReflectionClass('MethodUtilTest');
         
         $m = $ref->getMethod('a');
-        $ret = MethodUtil::invoke($m,$t,array());
+        $ret = S2Container_MethodUtil::invoke($m,$t,array());
         $this->assertTrue($ret);
 
         $m = $ref->getMethod('a');
-        $ret = MethodUtil::invoke($m,$t,null);
+        $ret = S2Container_MethodUtil::invoke($m,$t,null);
         $this->assertTrue($ret);
 
         $m = $ref->getMethod('b');
-        $ret = MethodUtil::invoke($m,$t,array('hoge'));
+        $ret = S2Container_MethodUtil::invoke($m,$t,array('hoge'));
         $this->assertEqual($ret,'hoge');
 
         $m = $ref->getMethod('c');
-        $ret = MethodUtil::invoke($m,$t,array(1,2));
+        $ret = S2Container_MethodUtil::invoke($m,$t,array(1,2));
         $this->assertEqual($ret,3);
 
         $m = $ref->getMethod('d');
-        $ret = MethodUtil::invoke($m,$t,array(array(1,2)));
+        $ret = S2Container_MethodUtil::invoke($m,$t,array(array(1,2)));
         $this->assertEqual($ret,3);
 
         $m = $ref->getMethod('e');
-        $ret = MethodUtil::invoke($m,$t,array(array(1,2)));
+        $ret = S2Container_MethodUtil::invoke($m,$t,array(array(1,2)));
         $this->assertEqual($ret,3);
 
         $m = $ref->getMethod('f');
-        $ret = MethodUtil::invoke($m,$t,array(array(new A(),new B())));
+        $ret = S2Container_MethodUtil::invoke($m,$t,array(array(new A(),new B())));
         $this->assertIsA($ret,'B');
 
         print "\n";

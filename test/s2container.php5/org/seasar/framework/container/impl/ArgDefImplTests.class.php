@@ -8,7 +8,7 @@ class ArgDefImplTests extends UnitTestCase {
        
         print __METHOD__ . "\n";
        
-        $arg = new ArgDefImpl();
+        $arg = new S2Container_ArgDefImpl();
         $this->assertNotNull($arg);
 
         $arg->setValue('test val');
@@ -17,10 +17,10 @@ class ArgDefImplTests extends UnitTestCase {
         $arg->setExpression('100');
         $this->assertEqual($arg->getValue(),'100');
 
-        $arg = new ArgDefImpl();
+        $arg = new S2Container_ArgDefImpl();
         $this->assertNotNull($arg);
 
-        $cd = new ComponentDefImpl('A','a');
+        $cd = new S2Container_ComponentDefImpl('A','a');
         $arg->setChildComponentDef($cd);
         $this->assertIsA($arg->getValue(),'A');
 
@@ -31,14 +31,14 @@ class ArgDefImplTests extends UnitTestCase {
 
         print __METHOD__ . "\n";
 
-        $arg = new ArgDefImpl();
+        $arg = new S2Container_ArgDefImpl();
         $this->assertNotNull($arg);
  
-        $md1 = new MetaDefImpl('a','A');
+        $md1 = new S2Container_MetaDefImpl('a','A');
     	$arg->addMetaDef($md1);
-        $md2 = new MetaDefImpl('b','B');
+        $md2 = new S2Container_MetaDefImpl('b','B');
     	$arg->addMetaDef($md2);
-        $md3 = new MetaDefImpl('c','C');
+        $md3 = new S2Container_MetaDefImpl('c','C');
     	$arg->addMetaDef($md3);
 
         $this->assertEqual($arg->getMetaDefSize(),3);
@@ -56,14 +56,14 @@ class ArgDefImplTests extends UnitTestCase {
 
         print __METHOD__ . "\n";
 
-        $arg = new ArgDefImpl();
+        $arg = new S2Container_ArgDefImpl();
         $this->assertNotNull($arg);
  
-        $md1 = new MetaDefImpl('a','A1');
+        $md1 = new S2Container_MetaDefImpl('a','A1');
     	$arg->addMetaDef($md1);
-        $md2 = new MetaDefImpl('a','A2');
+        $md2 = new S2Container_MetaDefImpl('a','A2');
     	$arg->addMetaDef($md2);
-        $md3 = new MetaDefImpl('a','A3');
+        $md3 = new S2Container_MetaDefImpl('a','A3');
     	$arg->addMetaDef($md3);
 
         $this->assertEqual($arg->getMetaDefSize(),3);

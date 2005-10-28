@@ -299,7 +299,7 @@ init_method{0}{name} = "initialize"
 init_method{0}{arg{0}{val}} = "-1"
 
 aspect{0}{pointcut} = "showMessage"
-aspect{0}{exp} = "new TraceInterceptor()"
+aspect{0}{exp} = "new S2Container_TraceInterceptor()"
 
 meta{0}{name} = "helloMeta"
 meta{0}{ref} = "bye"
@@ -382,7 +382,7 @@ aspect{0}{pointcut} = "showMessage"
 aspect{0}{ref} = "trace"
 
 [trace]
-class = "TraceInterceptor"
+class = "S2Container_TraceInterceptor"
 
 </pre>
 <a name="ini-meta"><h3>meta</h3></a>
@@ -525,7 +525,7 @@ class = HelloImpl
 
 
 <a name="dba-ds"><h3>DataSource</h3></a>
-<p>As a DataSource, MySQL functions, PostgreSQL functions, PearDB and ADOdb are available. There are DataSource template dicon files in s2container.php5/src/s2container.php5/org/seasar/extension/db/ .
+<p>As a S2Container_DataSource, MySQL functions, PostgreSQL functions, PearDB and ADOdb are available. There are S2Container_DataSource template dicon files in s2container.php5/src/s2container.php5/org/seasar/extension/db/ .
 </p>
 
 <table border="1" vspace="0" hspace="0" cellpadding="2" cellspacing="1">
@@ -555,11 +555,11 @@ class = HelloImpl
 <td>adodb.ini</td>
 <tr>
 </table>
-　・Using PearDB as DataSource, you have to require DB.php in advance.<br>
-　・Using  ADOdb as DataSource, you have to require adodb-exceptions.inc.php and adodb.inc.php  in advance.<br>
+　・Using PearDB as S2Container_DataSource, you have to require DB.php in advance.<br>
+　・Using  ADOdb as S2Container_DataSource, you have to require adodb-exceptions.inc.php and adodb.inc.php  in advance.<br>
 
 <a name="dba-ds-peardb"><h3>peardb.dicon template</h3></a>
-<p>Property <i>dsn</i> of DataSource component takes precedence over other properties.</p>
+<p>Property <i>dsn</i> of S2Container_DataSource component takes precedence over other properties.</p>
 
 <p>XML format peardb.dicon</p>
 <pre>
@@ -567,17 +567,17 @@ class = HelloImpl
 &lt;!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
 "components21.dtd"&gt;
 &lt;components namespace="peardb"&gt;
-    &lt;component name="dataSource" class="PearDBDataSource"&gt;
+    &lt;component name="dataSource" class="S2Container_PearDBDataSource"&gt;
         &lt;property name="dsn"&gt;                                  
             "mysql://hoge:hoge@localhost:3306/s2container"       
         &lt;/property&gt;                                            
     &lt;/component&gt;
 
-    &lt;component class="PearDBSqlHandler"/&gt;
-    &lt;component name="dbtx" class="PearDBTxInterceptor"/&gt;
-    &lt;component name="dao" class="SimpleDaoInterceptor"/&gt;
-    &lt;component class="DaoMetaDataFactoryImpl"/&gt;
-    &lt;component name="session" class="DBSessionImpl"/&gt;
+    &lt;component class="S2Container_PearDBSqlHandler"/&gt;
+    &lt;component name="dbtx" class="S2Container_PearDBTxInterceptor"/&gt;
+    &lt;component name="dao" class="S2Container_SimpleDaoInterceptor"/&gt;
+    &lt;component class="S2Container_DaoMetaDataFactoryImpl"/&gt;
+    &lt;component name="session" class="S2Container_DBSessionImpl"/&gt;
 &lt;/components&gt;
 </pre>
 
@@ -588,23 +588,23 @@ class = HelloImpl
 namespace="peardb"
 
 [dataSource]
-class="PearDBDataSource"
+class="S2Container_PearDBDataSource"
 
 property{0}{name}="dsn"                                         
 property{0}{val} ="mysql://hoge:hoge@localhost:3306/s2container"
 
-[PearDBSqlHandler]
+[S2Container_PearDBSqlHandler]
 
 [dbtx]
-class="PearDBTxInterceptor"
+class="S2Container_PearDBTxInterceptor"
 
 [dao]
-class="SimpleDaoInterceptor"
+class="S2Container_SimpleDaoInterceptor"
 
-[DaoMetaDataFactoryImpl]
+[S2Container_DaoMetaDataFactoryImpl]
 
 [session]
-class="DBSessionImpl"
+class="S2Container_DBSessionImpl"
 </pre>
 
 <a name="dba-ds-use"><h3>Using DataSource</h3></a>
@@ -633,7 +633,7 @@ class DeptDaoImpl implements DeptDao {
 
     private $dataSource;
 
-    function DeptDaoImpl(DataSource $dataSource) {
+    function DeptDaoImpl(S2Container_DataSource $dataSource) {
         $this->dataSource = $dataSource;
     }
     
@@ -648,7 +648,7 @@ class DeptDaoImpl implements DeptDao {
 ?&gt;
 </pre>
 
-A return value of DataSource->getConnection() is depends on which DataSource used.
+A return value of DataSource->getConnection() is depends on which S2Container_DataSource used.
 <table border="0" vspace="0" hspace="0" cellpadding="0" cellspacing="0">
 <tr>
 <td width="15"></td><td>using PearDB</td><td align="center" width="15"> : </td><td>DB::connect() return value</td>
@@ -718,7 +718,7 @@ Array
 </pre>
 <br>
 <a name="dba-tx"><h3>Using TxIntereceptor</h3></a>
-<p>TxInterceptor provides the automatic transaction management by using Aspect for POJOs. There is a 
+<p>TxInterceptor provides the automatic transaction management by using S2Container_Aspect for POJOs. There is a 
 example using TxInterceptor in s2container.php5/src/examples/extension/db/ .</p>
 <p><b>Define interface</b></p>
 <ul>
@@ -744,7 +744,7 @@ class TxDeptDaoImpl implements DeptDao {
 
     private $session;
 
-    function TxDeptDaoImpl(DBSession $session) {
+    function TxDeptDaoImpl(S2Container_DBSession $session) {
         $this->session = $session;
     }
     
@@ -758,7 +758,7 @@ class TxDeptDaoImpl implements DeptDao {
 }
 ?&gt;
 </pre>
-A return value of DBSession->getConnection() is depends on which DataSource used.
+A return value of DBSession->getConnection() is depends on which S2Container_DataSource used.
 <table border="0" vspace="0" hspace="0" cellpadding="0" cellspacing="0">
 <tr>
 <td width="15"></td><td>using PearDB</td><td align="center" width="15"> : </td><td>DB::connect() return value</td>
@@ -844,7 +844,7 @@ Array
 <li>If test method(testXxx) is defined with corresponding setUpXxx() and tearDownXxx() methods, it is invoked after setUp() and before tearDown() are invoked. Thus, it makes initialization and finalization process easier.</li>
 </ul>
 <h3><a name="unit-example">Example</a></h3>
-<p>Let's look at UnitTest example useing S2PHPUnit2TestCase based on Pear PHPUnit2.<br>
+<p>Let's look at UnitTest example useing S2Container_S2PHPUnit2TestCase based on Pear PHPUnit2.<br>
 This example is located in s2container.php5/src/examples/extension/unit/ .</p>
 
 <p><b>Test target class</b></p>
@@ -876,7 +876,7 @@ class = FooLogic
 <p>s2container.php5/src/examples/extension/unit/test/phpunit2/foo/FooLogicTest.class.php</p>
 <pre>
 &lt;?php
-class FooLogicTest extends S2PHPUnit2TestCase {
+class FooLogicTest extends S2Container_S2PHPUnit2TestCase {
 
     public $logic;   //--- automatically set by S2Container if there is a component named 'logic'
     

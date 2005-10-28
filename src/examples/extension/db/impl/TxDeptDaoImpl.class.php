@@ -3,7 +3,7 @@ class TxDeptDaoImpl implements DeptDao {
 
     private $session;
 
-    function TxDeptDaoImpl(DBSession $session) {
+    function TxDeptDaoImpl(S2Container_DBSession $session) {
         $this->session = $session;
     }
     

@@ -7,47 +7,47 @@ class AbstractComponentDeployerTests extends UnitTestCase {
     function testSetupAssemblerForAuto() {
         print __METHOD__ . "\n";
 
-        $cd = new ComponentDefImpl('C','c');
-        $cd->setAutoBindingMode(ContainerConstants::AUTO_BINDING_AUTO);
+        $cd = new S2Container_ComponentDefImpl('C','c');
+        $cd->setAutoBindingMode(S2Container_ContainerConstants::AUTO_BINDING_AUTO);
         
         $deployer = new TestComponentDeployer($cd);  
 
         $this->assertIsA($deployer->getConstructorAssemblerTest(),
-                         'AutoConstructorAssembler');
+                         'S2Container_AutoConstructorAssembler');
         $this->assertIsA($deployer->getPropertyAssemblerTest(),
-                         'AutoPropertyAssembler');
+                         'S2Container_AutoPropertyAssembler');
         $this->assertIsA($deployer->getInitMethodAssemblerTest(),
-                         'DefaultInitMethodAssembler');
+                         'S2Container_DefaultInitMethodAssembler');
         $this->assertIsA($deployer->getDestroyMethodAssemblerTest(),
-                         'DefaultDestroyMethodAssembler');
+                         'S2Container_DefaultDestroyMethodAssembler');
 
-        $cd = new ComponentDefImpl('C','c');
-        $cd->setAutoBindingMode(ContainerConstants::AUTO_BINDING_AUTO);
+        $cd = new S2Container_ComponentDefImpl('C','c');
+        $cd->setAutoBindingMode(S2Container_ContainerConstants::AUTO_BINDING_AUTO);
         $cd->setExpression("d");        
         $deployer = new TestComponentDeployer($cd);  
 
         $this->assertIsA($deployer->getConstructorAssemblerTest(),
-                         'ExpressionConstructorAssembler');
+                         'S2Container_ExpressionConstructorAssembler');
         $this->assertIsA($deployer->getPropertyAssemblerTest(),
-                         'AutoPropertyAssembler');
+                         'S2Container_AutoPropertyAssembler');
         $this->assertIsA($deployer->getInitMethodAssemblerTest(),
-                         'DefaultInitMethodAssembler');
+                         'S2Container_DefaultInitMethodAssembler');
         $this->assertIsA($deployer->getDestroyMethodAssemblerTest(),
-                         'DefaultDestroyMethodAssembler');
+                         'S2Container_DefaultDestroyMethodAssembler');
 
-        $cd = new ComponentDefImpl('C','c');
-        $cd->setAutoBindingMode(ContainerConstants::AUTO_BINDING_AUTO);
-        $cd->addArgDef(new ArgDefImpl('test'));
+        $cd = new S2Container_ComponentDefImpl('C','c');
+        $cd->setAutoBindingMode(S2Container_ContainerConstants::AUTO_BINDING_AUTO);
+        $cd->addArgDef(new S2Container_ArgDefImpl('test'));
         $deployer = new TestComponentDeployer($cd);  
 
         $this->assertIsA($deployer->getConstructorAssemblerTest(),
-                         'ManualConstructorAssembler');
+                         'S2Container_ManualConstructorAssembler');
         $this->assertIsA($deployer->getPropertyAssemblerTest(),
-                         'AutoPropertyAssembler');
+                         'S2Container_AutoPropertyAssembler');
         $this->assertIsA($deployer->getInitMethodAssemblerTest(),
-                         'DefaultInitMethodAssembler');
+                         'S2Container_DefaultInitMethodAssembler');
         $this->assertIsA($deployer->getDestroyMethodAssemblerTest(),
-                         'DefaultDestroyMethodAssembler');
+                         'S2Container_DefaultDestroyMethodAssembler');
                          
         print "\n";
     }
@@ -55,19 +55,19 @@ class AbstractComponentDeployerTests extends UnitTestCase {
     function testSetupAssemblerForConstructor() {
         print __METHOD__ . "\n";
 
-        $cd = new ComponentDefImpl('C','c');
-        $cd->setAutoBindingMode(ContainerConstants::AUTO_BINDING_CONSTRUCTOR);
+        $cd = new S2Container_ComponentDefImpl('C','c');
+        $cd->setAutoBindingMode(S2Container_ContainerConstants::AUTO_BINDING_CONSTRUCTOR);
         
         $deployer = new TestComponentDeployer($cd);  
 
         $this->assertIsA($deployer->getConstructorAssemblerTest(),
-                         'AutoConstructorAssembler');
+                         'S2Container_AutoConstructorAssembler');
         $this->assertIsA($deployer->getPropertyAssemblerTest(),
-                         'ManualPropertyAssembler');
+                         'S2Container_ManualPropertyAssembler');
         $this->assertIsA($deployer->getInitMethodAssemblerTest(),
-                         'DefaultInitMethodAssembler');
+                         'S2Container_DefaultInitMethodAssembler');
         $this->assertIsA($deployer->getDestroyMethodAssemblerTest(),
-                         'DefaultDestroyMethodAssembler');
+                         'S2Container_DefaultDestroyMethodAssembler');
 
         print "\n";
     }
@@ -75,19 +75,19 @@ class AbstractComponentDeployerTests extends UnitTestCase {
     function testSetupAssemblerForProperty() {
         print __METHOD__ . "\n";
 
-        $cd = new ComponentDefImpl('C','c');
-        $cd->setAutoBindingMode(ContainerConstants::AUTO_BINDING_PROPERTY);
+        $cd = new S2Container_ComponentDefImpl('C','c');
+        $cd->setAutoBindingMode(S2Container_ContainerConstants::AUTO_BINDING_PROPERTY);
         
         $deployer = new TestComponentDeployer($cd);  
 
         $this->assertIsA($deployer->getConstructorAssemblerTest(),
-                         'ManualConstructorAssembler');
+                         'S2Container_ManualConstructorAssembler');
         $this->assertIsA($deployer->getPropertyAssemblerTest(),
-                         'AutoPropertyAssembler');
+                         'S2Container_AutoPropertyAssembler');
         $this->assertIsA($deployer->getInitMethodAssemblerTest(),
-                         'DefaultInitMethodAssembler');
+                         'S2Container_DefaultInitMethodAssembler');
         $this->assertIsA($deployer->getDestroyMethodAssemblerTest(),
-                         'DefaultDestroyMethodAssembler');
+                         'S2Container_DefaultDestroyMethodAssembler');
 
         print "\n";
     }
@@ -95,41 +95,41 @@ class AbstractComponentDeployerTests extends UnitTestCase {
     function testSetupAssemblerForNone() {
         print __METHOD__ . "\n";
 
-        $cd = new ComponentDefImpl('C','c');
-        $cd->setAutoBindingMode(ContainerConstants::AUTO_BINDING_NONE);
+        $cd = new S2Container_ComponentDefImpl('C','c');
+        $cd->setAutoBindingMode(S2Container_ContainerConstants::AUTO_BINDING_NONE);
         
         $deployer = new TestComponentDeployer($cd);  
 
         $this->assertIsA($deployer->getConstructorAssemblerTest(),
-                         'DefaultConstructorAssembler');
+                         'S2Container_DefaultConstructorAssembler');
         $this->assertIsA($deployer->getPropertyAssemblerTest(),
-                         'DefaultPropertyAssembler');
+                         'S2Container_DefaultPropertyAssembler');
         $this->assertIsA($deployer->getInitMethodAssemblerTest(),
-                         'DefaultInitMethodAssembler');
+                         'S2Container_DefaultInitMethodAssembler');
         $this->assertIsA($deployer->getDestroyMethodAssemblerTest(),
-                         'DefaultDestroyMethodAssembler');
+                         'S2Container_DefaultDestroyMethodAssembler');
 
-        $cd = new ComponentDefImpl('C','c');
-        $cd->setAutoBindingMode(ContainerConstants::AUTO_BINDING_NONE);
-        $cd->addArgDef(new ArgDefImpl('test'));
-        $cd->addPropertyDef(new PropertyDefImpl('test','test'));
+        $cd = new S2Container_ComponentDefImpl('C','c');
+        $cd->setAutoBindingMode(S2Container_ContainerConstants::AUTO_BINDING_NONE);
+        $cd->addArgDef(new S2Container_ArgDefImpl('test'));
+        $cd->addPropertyDef(new S2Container_PropertyDefImpl('test','test'));
         $deployer = new TestComponentDeployer($cd);  
 
         $this->assertIsA($deployer->getConstructorAssemblerTest(),
-                         'ManualConstructorAssembler');
+                         'S2Container_ManualConstructorAssembler');
         $this->assertIsA($deployer->getPropertyAssemblerTest(),
-                         'ManualPropertyAssembler');
+                         'S2Container_ManualPropertyAssembler');
         $this->assertIsA($deployer->getInitMethodAssemblerTest(),
-                         'DefaultInitMethodAssembler');
+                         'S2Container_DefaultInitMethodAssembler');
         $this->assertIsA($deployer->getDestroyMethodAssemblerTest(),
-                         'DefaultDestroyMethodAssembler');
+                         'S2Container_DefaultDestroyMethodAssembler');
 
         print "\n";
     }
 }
 
-class TestComponentDeployer extends AbstractComponentDeployer{
-    public function TestComponentDeployer(ComponentDef $componentDef) {
+class TestComponentDeployer extends S2Container_AbstractComponentDeployer{
+    public function TestComponentDeployer(S2Container_ComponentDef $componentDef) {
         parent::__construct($componentDef);
     }	
 

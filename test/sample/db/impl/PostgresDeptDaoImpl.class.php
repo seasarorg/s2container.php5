@@ -5,7 +5,7 @@ class PostgresDeptDaoImpl implements IDeptDao {
     function PostgresDeptDaoImpl() {
     }
     
-    function setSession(DBSession $session){
+    function setSession(S2Container_DBSession $session){
     	$this->session = $session;
     }
     

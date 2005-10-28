@@ -30,7 +30,7 @@ class AutoPropertyAssemblerTests extends UnitTestCase {
         $container->register('E','e');
 
         $ecd = $container->getComponentDef('e');
-        $pro = new PropertyDefImpl('name','test-test');
+        $pro = new S2Container_PropertyDefImpl('name','test-test');
         $ecd->addPropertyDef($pro);
 
           

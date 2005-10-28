@@ -8,10 +8,10 @@ class MessageUtilTests extends UnitTestCase {
        
         print __METHOD__ . "\n";
        
-        $msg = MessageUtil::getMessageWithArgs("ESSR0001",array('java file'));
+        $msg = S2Container_MessageUtil::getMessageWithArgs("ESSR0001",array('java file'));
         $this->assertEqual($msg,"java file not found");
 
-        $msg = MessageUtil::getMessageWithArgs("ESSR0003",array('string','int'));
+        $msg = S2Container_MessageUtil::getMessageWithArgs("ESSR0003",array('string','int'));
         $this->assertEqual($msg,"<string> unexpected:<int>");
 
         print "\n";

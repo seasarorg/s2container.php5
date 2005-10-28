@@ -9,7 +9,7 @@ class ClassUtilTests extends UnitTestCase {
         print __METHOD__ . "\n";
        
         $uRef = new ReflectionClass('U');
-        $src = ClassUtil::getClassSource($uRef);
+        $src = S2Container_ClassUtil::getClassSource($uRef);
 
         $this->assertEqual(trim($src[0]),"class U{");       
         $this->assertEqual(trim($src[3]),"}");       
@@ -20,7 +20,7 @@ class ClassUtilTests extends UnitTestCase {
        
         print __METHOD__ . "\n";
         $uRef = new ReflectionClass('U');
-        $src = ClassUtil::getSource($uRef);
+        $src = S2Container_ClassUtil::getSource($uRef);
         $this->assertEqual(trim($src[2]),"class U{");       
         $this->assertEqual(trim($src[5]),"}");       
 
@@ -32,13 +32,13 @@ class ClassUtilTests extends UnitTestCase {
         print __METHOD__ . "\n";
        
         $cRef = new ReflectionClass('C');
-        $mRef = ClassUtil::getMethod($cRef,'say');
+        $mRef = S2Container_ClassUtil::getMethod($cRef,'say');
         $this->assertEqual($mRef->getName(),"say");       
 
         try{
-            $mRef = ClassUtil::getMethod($cRef,'say2');
+            $mRef = S2Container_ClassUtil::getMethod($cRef,'say2');
         }catch(Exception $e){
-            $this->assertIsA($e,'NoSuchMethodRuntimeException');	
+            $this->assertIsA($e,'S2Container_NoSuchMethodRuntimeException');	
         }
         print "\n";
     }
@@ -48,8 +48,8 @@ class ClassUtilTests extends UnitTestCase {
         print __METHOD__ . "\n";
        
         $cRef = new ReflectionClass('C');
-        $this->assertTrue(ClassUtil::hasMethod($cRef,'say'));
-        $this->assertTrue(!ClassUtil::hasMethod($cRef,'say2'));
+        $this->assertTrue(S2Container_ClassUtil::hasMethod($cRef,'say'));
+        $this->assertTrue(!S2Container_ClassUtil::hasMethod($cRef,'say2'));
 
         print "\n";
     }
@@ -59,10 +59,10 @@ class ClassUtilTests extends UnitTestCase {
         print __METHOD__ . "\n";
        
         $cRef = new ReflectionClass('G');
-        $this->assertEqual(count(ClassUtil::getInterfaces($cRef)),1);
+        $this->assertEqual(count(S2Container_ClassUtil::getInterfaces($cRef)),1);
 
         $cRef = new ReflectionClass('IW');
-        $this->assertEqual(count(ClassUtil::getInterfaces($cRef)),2);
+        $this->assertEqual(count(S2Container_ClassUtil::getInterfaces($cRef)),2);
 
         print "\n";
     }

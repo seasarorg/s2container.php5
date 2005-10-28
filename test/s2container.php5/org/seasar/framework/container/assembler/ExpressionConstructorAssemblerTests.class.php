@@ -8,7 +8,7 @@ class ExpressionConstructorAssemblerTests extends UnitTestCase {
        
         print __METHOD__ . "\n";
        
-        $cd = new ComponentDefImpl('','dd');
+        $cd = new S2Container_ComponentDefImpl('','dd');
         $cd->setExpression("return new D();");
         
         $container = new S2ContainerImpl();
@@ -24,7 +24,7 @@ class ExpressionConstructorAssemblerTests extends UnitTestCase {
        
         print __METHOD__ . "\n";
        
-        $cd = new ComponentDefImpl('','dd');
+        $cd = new S2Container_ComponentDefImpl('','dd');
         $cd->setExpression("d");
         
         $container = new S2ContainerImpl();
@@ -46,7 +46,7 @@ class ExpressionConstructorAssemblerTests extends UnitTestCase {
        
         print __METHOD__ . "\n";
        
-        $cd = new ComponentDefImpl('','dd');
+        $cd = new S2Container_ComponentDefImpl('','dd');
         $cd->setExpression("return 100;");
         
         $container = new S2ContainerImpl();
@@ -55,7 +55,7 @@ class ExpressionConstructorAssemblerTests extends UnitTestCase {
         try{
             $dd = $container->getComponent('dd');
         }catch(Exception $e ){
-            $this->assertIsA($e,'S2RuntimeException');
+            $this->assertIsA($e,'S2Container_S2RuntimeException');
             print $e->getMessage() ."\n";
         }
 
@@ -66,7 +66,7 @@ class ExpressionConstructorAssemblerTests extends UnitTestCase {
        
         print __METHOD__ . "\n";
        
-        $cd = new ComponentDefImpl('C','dd');
+        $cd = new S2Container_ComponentDefImpl('C','dd');
         $cd->setExpression("return new D();");
         
         $container = new S2ContainerImpl();
@@ -75,7 +75,7 @@ class ExpressionConstructorAssemblerTests extends UnitTestCase {
         try{
             $dd = $container->getComponent('dd');
         }catch(Exception $e ){
-            $this->assertIsA($e,'ClassUnmatchRuntimeException');
+            $this->assertIsA($e,'S2Container_ClassUnmatchRuntimeException');
             print $e->getMessage() ."\n";
         }
 

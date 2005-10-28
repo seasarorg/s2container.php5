@@ -5,7 +5,7 @@
 	<component class="Dummy">
 	    <aspect>
 			<component 
-				class="PrototypeDelegateInterceptor">
+				class="S2Container_PrototypeDelegateInterceptor">
 				<property name="targetName">"target"</property>
 			</component>
 	    </aspect>

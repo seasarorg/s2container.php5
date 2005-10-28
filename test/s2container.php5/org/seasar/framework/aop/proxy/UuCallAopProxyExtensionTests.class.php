@@ -20,14 +20,14 @@ class UuCallAopProxyExtensionTests extends UnitTestCase {
        
         print __METHOD__ . "\n";
        
-        $c = UuCallAopProxyFactory::create(new ReflectionClass(new WextendAW()),array(),array());
+        $c = S2Container_UuCallAopProxyFactory::create(new ReflectionClass(new WextendAW()),array(),array());
         if($c instanceof IW){
             $this->assertTrue(true);
         }else{
             $this->assertTrue(false);
         }              
               
-        $c = UuCallAopProxyFactory::create(new ReflectionClass('IW'),array(),array());
+        $c = S2Container_UuCallAopProxyFactory::create(new ReflectionClass('IW'),array(),array());
         if($c instanceof IW){
             $this->assertTrue(true);
         }else{
@@ -41,14 +41,14 @@ class UuCallAopProxyExtensionTests extends UnitTestCase {
        
         print __METHOD__ . "\n";
        
-        $c = UuCallAopProxyFactory::create(new ReflectionClass(new WextendAW()),array(),array());
+        $c = S2Container_UuCallAopProxyFactory::create(new ReflectionClass(new WextendAW()),array(),array());
         if($c instanceof IW){
             $this->assertTrue(true);
         }else{
             $this->assertTrue(false);
         }              
               
-        $c = UuCallAopProxyFactory::create(new ReflectionClass(new WextendAW()),array(),array());
+        $c = S2Container_UuCallAopProxyFactory::create(new ReflectionClass(new WextendAW()),array(),array());
         if($c instanceof IW){
             $this->assertTrue(true);
         }else{

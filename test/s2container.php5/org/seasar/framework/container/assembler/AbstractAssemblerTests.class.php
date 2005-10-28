@@ -8,11 +8,11 @@ class AbstractAssemblerTests extends UnitTestCase {
        
         print __METHOD__ . "\n";       
 
-        $asm = new TestAbstractAssembler (new ComponentDefImpl('A'));       
+        $asm = new TestAbstractAssembler (new S2Container_ComponentDefImpl('A'));       
         $this->assertIsA($asm,'TestAbstractAssembler');
 
         $desc = $asm->getBeanDescTest();
-        $this->assertTrue($desc instanceof BeanDesc);
+        $this->assertTrue($desc instanceof S2Container_BeanDesc);
         
         print "\n";
     }
@@ -20,10 +20,10 @@ class AbstractAssemblerTests extends UnitTestCase {
     function testGetComponentClass(){
         print __METHOD__ . "\n";       
 
-        $asm = new TestAbstractAssembler (new ComponentDefImpl('A'));       
+        $asm = new TestAbstractAssembler (new S2Container_ComponentDefImpl('A'));       
 
         $desc = $asm->getBeanDescTest(new B());
-        $this->assertTrue($desc instanceof BeanDesc);
+        $this->assertTrue($desc instanceof S2Container_BeanDesc);
 
         $c = $desc->getBeanClass();
         $this->assertTrue($c->getName() == 'A');
@@ -33,9 +33,9 @@ class AbstractAssemblerTests extends UnitTestCase {
     }
 }
 
-class TestAbstractAssembler extends AbstractAssembler{
+class TestAbstractAssembler extends S2Container_AbstractAssembler{
 	
-    public function TestAbstractAssembler(ComponentDef $componentDef) {
+    public function TestAbstractAssembler(S2Container_ComponentDef $componentDef) {
         parent::__construct($componentDef);
     }	
     

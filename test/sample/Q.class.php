@@ -6,13 +6,13 @@ class Q {
     }
     
     function throwE(){
-        throw new UnsupportedOperationException("throwE");
+        throw new S2Container_UnsupportedOperationException("throwE");
     }
     
     function doNone(){
         
         print "void method called.";    
-        throw new UnsupportedOperationException("throwE");
+        throw new S2Container_UnsupportedOperationException("throwE");
     }
     
 }

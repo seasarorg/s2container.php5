@@ -8,11 +8,11 @@ class MethodDefImplTests extends UnitTestCase {
        
         print __METHOD__ . "\n";
        
-        $arg1 = new ArgDefImpl('a');
-        $arg2 = new ArgDefImpl('b');
-        $arg3 = new ArgDefImpl('c');
+        $arg1 = new S2Container_ArgDefImpl('a');
+        $arg2 = new S2Container_ArgDefImpl('b');
+        $arg3 = new S2Container_ArgDefImpl('c');
 
-        $im = new InitMethodDefImpl('hoge');
+        $im = new S2Container_InitMethodDefImpl('hoge');
         $im->addArgDef($arg1);
         $im->addArgDef($arg2);
         $im->addArgDef($arg3);

@@ -9,8 +9,8 @@ class BeanDescTests extends UnitTestCase {
        print __METHOD__ . "\n";       
     
        $a = new ReflectionClass('BeanDescSample');
-       $desc = new BeanDescImpl($a);
-       $this->assertIsA($desc,'BeanDescImpl');
+       $desc = new S2Container_BeanDescImpl($a);
+       $this->assertIsA($desc,'S2Container_BeanDescImpl');
 
        $b = $desc->getBeanClass();
        $this->assertReference($a,$b);
@@ -27,14 +27,14 @@ class BeanDescTests extends UnitTestCase {
        print __METHOD__ . "\n";       
 
        $a = new ReflectionClass('BeanDescSample');
-       $desc = new BeanDescImpl($a);
+       $desc = new S2Container_BeanDescImpl($a);
 
        $this->assertTrue($desc->hasPropertyDesc('val'));
        $this->assertTrue($desc->hasPropertyDesc('msg'));
        $this->assertTrue(!$desc->hasPropertyDesc('val3'));
        
        $propDesc = $desc->getPropertyDesc('val');
-       $this->assertIsA($propDesc,'PropertyDescImpl');
+       $this->assertIsA($propDesc,'S2Container_PropertyDescImpl');
        $this->assertEqual($propDesc->getPropertyName(),'val');
        $this->assertTrue($propDesc->hasWriteMethod());
        $this->assertTrue($propDesc->hasReadMethod());
@@ -45,19 +45,19 @@ class BeanDescTests extends UnitTestCase {
        
 
        $propDesc = $desc->getPropertyDesc(0);
-       $this->assertIsA($propDesc,'PropertyDescImpl');
+       $this->assertIsA($propDesc,'S2Container_PropertyDescImpl');
        $this->assertEqual($propDesc->getPropertyName(),'val');
 
        try{
            $propDesc = $desc->getPropertyDesc(2);
        }catch(Exception $e){
-           $this->assertIsA($e,'PropertyNotFoundRuntimeException');
+           $this->assertIsA($e,'S2Container_PropertyNotFoundRuntimeException');
        }
 
        try{
            $propDesc = $desc->getPropertyDesc('val2');
        }catch(Exception $e){
-           $this->assertIsA($e,'PropertyNotFoundRuntimeException');
+           $this->assertIsA($e,'S2Container_PropertyNotFoundRuntimeException');
        }
        
        print "\n";
@@ -68,7 +68,7 @@ class BeanDescTests extends UnitTestCase {
        print __METHOD__ . "\n";       
 
        $a = new ReflectionClass('BeanDescSample');
-       $desc = new BeanDescImpl($a);
+       $desc = new S2Container_BeanDescImpl($a);
 
        $this->assertTrue($desc->hasField('QUERY_1'));
        $this->assertTrue($desc->hasField('QUERY_2'));
@@ -87,7 +87,7 @@ class BeanDescTests extends UnitTestCase {
        try{
            $field = $desc->getField('QUERY_3');
        }catch(Exception $e){
-       	   $this->assertIsA($e,'FieldNotFoundRuntimeException');
+       	   $this->assertIsA($e,'S2Container_FieldNotFoundRuntimeException');
        	   print $e->getMessage() . "\n";
        }
 
@@ -99,7 +99,7 @@ class BeanDescTests extends UnitTestCase {
        print __METHOD__ . "\n";       
 
        $a = new ReflectionClass('BeanDescSample');
-       $desc = new BeanDescImpl($a);
+       $desc = new S2Container_BeanDescImpl($a);
 
        $this->assertTrue($desc->hasConstant('BEAN_A'));
        $this->assertTrue($desc->hasConstant('BEAN_B'));
@@ -111,7 +111,7 @@ class BeanDescTests extends UnitTestCase {
        try{
            $field = $desc->getConstant('BEAN_C');
        }catch(Exception $e){
-       	   $this->assertIsA($e,'ConstantNotFoundRuntimeException');
+       	   $this->assertIsA($e,'S2Container_ConstantNotFoundRuntimeException');
        	   print $e->getMessage() . "\n";
        }
 
@@ -123,7 +123,7 @@ class BeanDescTests extends UnitTestCase {
        print __METHOD__ . "\n";       
 
        $a = new ReflectionClass('BeanDescSample');
-       $desc = new BeanDescImpl($a);
+       $desc = new S2Container_BeanDescImpl($a);
 
        $om = $desc->getMethods('om1');
    	   $this->assertIsA($om,'ReflectionMethod');
@@ -131,7 +131,7 @@ class BeanDescTests extends UnitTestCase {
        try{
            $om = $desc->getMethods('omX');
        }catch(Exception $e){
-       	   $this->assertIsA($e,'MethodNotFoundRuntimeException');
+       	   $this->assertIsA($e,'S2Container_MethodNotFoundRuntimeException');
        	   print $e->getMessage() . "\n";
        }
        print "\n";

@@ -81,7 +81,7 @@ class S2ContainerImplTests extends UnitTestCase {
         try{
             $d = $container->getComponent('D');
         }catch(Exception $e){
-            $this->assertIsA($e,'TooManyRegistrationRuntimeException');
+            $this->assertIsA($e,'S2Container_TooManyRegistrationRuntimeException');
         }
 
         print "\n";
@@ -96,7 +96,7 @@ class S2ContainerImplTests extends UnitTestCase {
         try{
             $d = $container->getComponent('D');
         }catch(Exception $e){
-            $this->assertIsA($e,'ComponentNotFoundRuntimeException');
+            $this->assertIsA($e,'S2Container_ComponentNotFoundRuntimeException');
             $this->assertEqual($e->getComponentKey(),'D');
         }
 
@@ -114,7 +114,7 @@ class S2ContainerImplTests extends UnitTestCase {
         try{
             $d = $container->getComponent('J');
         }catch(Exception $e){
-            $this->assertIsA($e,'CyclicReferenceRuntimeException');
+            $this->assertIsA($e,'S2Container_CyclicReferenceRuntimeException');
         }
 
         print "\n";
@@ -149,7 +149,7 @@ class S2ContainerImplTests extends UnitTestCase {
         try{
             $d = $root->getComponent('D');
         }catch(Exception $e){
-            $this->assertIsA($e,'ComponentNotFoundRuntimeException');
+            $this->assertIsA($e,'S2Container_ComponentNotFoundRuntimeException');
             $this->assertEqual($e->getComponentKey(),'D');
         }
 
@@ -188,13 +188,13 @@ class S2ContainerImplTests extends UnitTestCase {
         $container->register('N','n');
           
         $cd = $container->getComponentDef('n');
-        $arg = new ArgDefImpl();
+        $arg = new S2Container_ArgDefImpl();
         $arg->setValue("aaa");
         $cd->addArgDef($arg);
 
         $cd->setAutoBindingMode(
-            ContainerConstants::AUTO_BINDING_CONSTRUCTOR);
-        $pro = new PropertyDefImpl('val2','bbb');
+            S2Container_ContainerConstants::AUTO_BINDING_CONSTRUCTOR);
+        $pro = new S2Container_PropertyDefImpl('val2','bbb');
         $cd->addPropertyDef($pro);
 
         $n = $container->getComponent('n');
@@ -211,19 +211,19 @@ class S2ContainerImplTests extends UnitTestCase {
         $container = new S2ContainerImpl();
         $container->register('B','b');
         $def = $container->getComponentDef(new B());
-        $this->assertIsA($def,'ComponentDefImpl');
+        $this->assertIsA($def,'S2Container_ComponentDefImpl');
 
         $container->register('B','bb');
         $def = $container->getComponentDef(0);
-        $this->assertIsA($def,'ComponentDefImpl');
+        $this->assertIsA($def,'S2Container_ComponentDefImpl');
         $def = $container->getComponentDef(1);
-        $this->assertIsA($def,'ComponentDefImpl');
+        $this->assertIsA($def,'S2Container_ComponentDefImpl');
           
         try{
             $def = $container->getComponentDef(2);
-            $this->assertIsA($def,'ComponentDefImpl');
+            $this->assertIsA($def,'S2Container_ComponentDefImpl');
         }catch(Exception $e){
-            $this->assertIsA($e,'ComponentNotFoundRuntimeException');
+            $this->assertIsA($e,'S2Container_ComponentNotFoundRuntimeException');
         }
 
         print "\n";
@@ -266,9 +266,9 @@ class S2ContainerImplTests extends UnitTestCase {
 
         $container = new S2ContainerImpl();
                
-        $meta1 = new MetaDefImpl('a');
-        $meta2 = new MetaDefImpl('b');
-        $meta3 = new MetaDefImpl('c');
+        $meta1 = new S2Container_MetaDefImpl('a');
+        $meta2 = new S2Container_MetaDefImpl('b');
+        $meta3 = new S2Container_MetaDefImpl('c');
         
         $container->addMetaDef($meta1);
         $container->addMetaDef($meta2);
@@ -293,7 +293,7 @@ class S2ContainerImplTests extends UnitTestCase {
         try{
             $container->getChild(2);	
         }catch(Exception $e){   
-        	$this->assertIsA($e,'ContainerNotRegisteredRuntimeException');
+        	$this->assertIsA($e,'S2Container_ContainerNotRegisteredRuntimeException');
         	print $e->getMessage() . "\n";
         }            
 

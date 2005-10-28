@@ -1,5 +1,5 @@
 <?php
-class BarLogicTest extends S2PHPUnitTestCase {
+class BarLogicTest extends S2Container_S2PHPUnitTestCase {
 
     public $logic;
     

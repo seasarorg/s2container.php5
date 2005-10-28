@@ -12,7 +12,7 @@ final class S2ContainerFactory {
     }
     private static function init(){
         if(!S2ContainerFactory::$inited_){
-            S2ContainerFactory::$defaultBuilder_ = new XmlS2ContainerBuilder();
+            S2ContainerFactory::$defaultBuilder_ = new S2Container_XmlS2ContainerBuilder();
             S2ContainerFactory::$DTD_PATH = S2CONTAINER_PHP5 . "/org/seasar/framework/container/factory/components21.dtd";
             S2ContainerFactory::$BUILDER_CONFIG_PATH = S2CONTAINER_PHP5 . "/S2CntainerBuilder.properties";
             if(is_readable(S2ContainerFactory::$BUILDER_CONFIG_PATH)){
@@ -72,7 +72,7 @@ final class S2ContainerFactory {
     }
     protected static function enter($path) {
         if (in_array($path,S2ContainerFactory::$processingPaths_)){
-            throw new CircularIncludeRuntimeException(
+            throw new S2Container_CircularIncludeRuntimeException(
                           $path, S2ContainerFactory::$processingPaths_);
         }
         array_push(S2ContainerFactory::$processingPaths_,$path);
@@ -87,14 +87,14 @@ interface S2ContainerBuilder {
     public function includeChild(S2Container $parent, $path);
 }
 
-interface MetaDefAware {
-    public function addMetaDef(MetaDef $metaDef);
+interface S2Container_MetaDefAware {
+    public function addMetaDef(S2Container_MetaDef $metaDef);
     public function getMetaDefSize();
     public function getMetaDef($index);
     public function getMetaDefs($name);
 }
 
-interface S2Container extends MetaDefAware{
+interface S2Container extends S2Container_MetaDefAware{
     public function getComponent($componentKey);
 	public function findComponents($componentKey);
     public function injectDependency($outerComponent,$componentName="");
@@ -130,10 +130,10 @@ class S2ContainerImpl implements S2Container {
     private $inited_ = false;
     private $metaDefSupport_;
     public function S2ContainerImpl() {
-        $this->metaDefSupport_ = new MetaDefSupport();
+        $this->metaDefSupport_ = new S2Container_MetaDefSupport();
         $this->root_ = $this;
-        $componentDef = new SimpleComponentDef($this, ContainerConstants::CONTAINER_NAME);
-        $this->componentDefMap_[ContainerConstants::CONTAINER_NAME] = $componentDef;
+        $componentDef = new S2Container_SimpleComponentDef($this, S2Container_ContainerConstants::CONTAINER_NAME);
+        $this->componentDefMap_[S2Container_ContainerConstants::CONTAINER_NAME] = $componentDef;
         $this->componentDefMap_['S2Container'] = $componentDef;
     }
     public function getRoot() {
@@ -163,35 +163,35 @@ class S2ContainerImpl implements S2Container {
         }
     }
     public function register($component,$componentName="") {
-        if($component instanceof ComponentDef){
+        if($component instanceof S2Container_ComponentDef){
             $this->register0($component);
             array_push($this->componentDefList_,$component);
         }else if(is_object($component)){
-            $this->register(new SimpleComponentDef($component,trim($componentName)));
+            $this->register(new S2Container_SimpleComponentDef($component,trim($componentName)));
         }else {
-            $this->register(new ComponentDefImpl($component, trim($componentName)));
+            $this->register(new S2Container_ComponentDefImpl($component, trim($componentName)));
         }
     }
-    private function register0(ComponentDef $componentDef) {
+    private function register0(S2Container_ComponentDef $componentDef) {
         if ($componentDef->getContainer() == null) {
             $componentDef->setContainer($this);
         }    
         $this->registerByClass($componentDef);
         $this->registerByName($componentDef);
     }
-    private function registerByClass(ComponentDef $componentDef) {
+    private function registerByClass(S2Container_ComponentDef $componentDef) {
         $classes = $this->getAssignableClasses($componentDef->getComponentClass());
         for ($i = 0; $i < count($classes); ++$i) {
             $this->registerMap($classes[$i], $componentDef);
         }
     }
-    private function registerByName(ComponentDef $componentDef) {
+    private function registerByName(S2Container_ComponentDef $componentDef) {
         $componentName = $componentDef->getComponentName();
         if ($componentName != "") {
             $this->registerMap($componentName, $componentDef);
         }
     }
-    private function registerMap($key, ComponentDef $componentDef) {
+    private function registerMap($key, S2Container_ComponentDef $componentDef) {
         if (array_key_exists($key,$this->componentDefMap_)) {
             $this->processTooManyRegistration($key, $componentDef);
         } else {
@@ -204,7 +204,7 @@ class S2ContainerImpl implements S2Container {
     public function getComponentDef($key){
         if(is_int($key)){
         	if(!isset($this->componentDefList_[$key])){
-        		throw new ComponentNotFoundRuntimeException($key);
+        		throw new S2Container_ComponentNotFoundRuntimeException($key);
         	}
             return $this->componentDefList_[$key];
         }
@@ -213,7 +213,7 @@ class S2ContainerImpl implements S2Container {
         }
         $cd = $this->internalGetComponentDef($key);
         if ($cd == null) {
-            throw new ComponentNotFoundRuntimeException($key);
+            throw new S2Container_ComponentNotFoundRuntimeException($key);
         }
         return $cd;
     }
@@ -222,7 +222,7 @@ class S2ContainerImpl implements S2Container {
 		if ($cd == null) {
 			return array();
 		}
-		else if ($cd instanceof TooManyRegistrationComponentDef) {
+		else if ($cd instanceof S2Container_TooManyRegistrationComponentDef) {
 		    return $cd->getComponentDefs();
 		}
 		return array($cd);
@@ -235,7 +235,7 @@ class S2ContainerImpl implements S2Container {
                 return $cd;
             }
         }
-        if(preg_match("/(.+)".ContainerConstants::NS_SEP."(.+)/",$key,$ret)){
+        if(preg_match("/(.+)".S2Container_ContainerConstants::NS_SEP."(.+)/",$key,$ret)){
             if ($this->hasComponentDef($ret[1])) {
                 $child = $this->getComponent($ret[1]);
                 if ($child->hasComponentDef($ret[2])) {
@@ -265,7 +265,7 @@ class S2ContainerImpl implements S2Container {
         if ($descendant != null) {
             return $descendant;
         } else {
-            throw new ContainerNotRegisteredRuntimeException($path);
+            throw new S2Container_ContainerNotRegisteredRuntimeException($path);
         }
     }
     public function registerDescendant(S2Container $descendant) {
@@ -284,7 +284,7 @@ class S2ContainerImpl implements S2Container {
     }
     public function getChild($index) {
     	if(!isset($this->children_[$index])){
-    		throw new ContainerNotRegisteredRuntimeException("Child:".$index);
+    		throw new S2Container_ContainerNotRegisteredRuntimeException("Child:".$index);
     	}
         return $this->children_[$index];
     }
@@ -322,7 +322,7 @@ class S2ContainerImpl implements S2Container {
     public function setNamespace($namespace) {
         $this->namespace_ = $namespace;
         $this->componentDefMap_[$this->namespace_] = 
-            new SimpleComponentDef($this,$this->namespace_);
+            new S2Container_SimpleComponentDef($this,$this->namespace_);
     }
     public function getPath() {
         return $this->path_;
@@ -330,7 +330,7 @@ class S2ContainerImpl implements S2Container {
     public function setPath($path) {
         $this->path_ = $path;
     }
-    public function addMetaDef(MetaDef $metaDef) {
+    public function addMetaDef(S2Container_MetaDef $metaDef) {
         $this->metaDefSupport_->addMetaDef($metaDef);
     }
     public function getMetaDef($name) {
@@ -359,12 +359,12 @@ class S2ContainerImpl implements S2Container {
         return $classes;
     }
     private function  processTooManyRegistration($key,
-            ComponentDef $componentDef) {
+            S2Container_ComponentDef $componentDef) {
         $cd = $this->componentDefMap_[$key];
-        if ($cd instanceof TooManyRegistrationComponentDef) {
+        if ($cd instanceof S2Container_TooManyRegistrationComponentDef) {
             $cd->addComponentDef($componentDef);
         } else {
-            $tmrcf = new TooManyRegistrationComponentDefImpl($key);
+            $tmrcf = new S2Container_TooManyRegistrationComponentDefImpl($key);
             $tmrcf->addComponentDef($cd);
             $tmrcf->addComponentDef($componentDef);
             $this->componentDefMap_[$key] = $tmrcf;
@@ -372,15 +372,15 @@ class S2ContainerImpl implements S2Container {
     }
 }
 
-final class MetaDefSupport {
+final class S2Container_MetaDefSupport {
     private $metaDefs_ = array();
     private $container_;
-    public function MetaDefSupport($container=null) {
+    public function S2Container_MetaDefSupport($container=null) {
         if($container instanceof S2Container){
             $this->setContainer($container);
         }
     }
-    public function addMetaDef(MetaDef $metaDef) {
+    public function addMetaDef(S2Container_MetaDef $metaDef) {
         if ($this->container_ != null) {
             $metaDef->setContainer($this->container_);
         }
@@ -421,45 +421,45 @@ final class MetaDefSupport {
     }
 }
 
-interface ArgDefAware {
-    public function addArgDef(ArgDef $argDef);
+interface S2Container_ArgDefAware {
+    public function addArgDef(S2Container_ArgDef $argDef);
     public function getArgDefSize();
     public function getArgDef($index);
 }
 
-interface PropertyDefAware {
-    public function addPropertyDef(PropertyDef $propertyDef);
+interface S2Container_PropertyDefAware {
+    public function addPropertyDef(S2Container_PropertyDef $propertyDef);
     public function getPropertyDefSize();
     public function getPropertyDef($index);
     public function hasPropertyDef($propertyName);
 }
 
-interface InitMethodDefAware {
-    public function addInitMethodDef(InitMethodDef $methodDef);
+interface S2Container_InitMethodDefAware {
+    public function addInitMethodDef(S2Container_InitMethodDef $methodDef);
     public function getInitMethodDefSize();
     public function getInitMethodDef($index);
 }
 
-interface DestroyMethodDefAware {
-    public function addDestroyMethodDef(DestroyMethodDef $methodDef);
+interface S2Container_DestroyMethodDefAware {
+    public function addDestroyMethodDef(S2Container_DestroyMethodDef $methodDef);
     public function getDestroyMethodDefSize();
     public function getDestroyMethodDef($index);
 }
 
-interface AspectDefAware {
-    public function addAspectDef(AspectDef $aspectDef);
+interface S2Container_AspectDefAware {
+    public function addAspectDef(S2Container_AspectDef $aspectDef);
     public function getAspectDefSize();
     public function getAspectDef($index);
 }
 
-interface ComponentDef
+interface S2Container_ComponentDef
     extends
-        ArgDefAware,
-        PropertyDefAware,
-        InitMethodDefAware,
-        DestroyMethodDefAware,
-        AspectDefAware,
-        MetaDefAware {
+        S2Container_ArgDefAware,
+        S2Container_PropertyDefAware,
+        S2Container_InitMethodDefAware,
+        S2Container_DestroyMethodDefAware,
+        S2Container_AspectDefAware,
+        S2Container_MetaDefAware {
     public function getComponent();
     public function injectDependency($outerComponent);
     public function getContainer();
@@ -477,12 +477,12 @@ interface ComponentDef
     public function destroy();
 }
 
-class SimpleComponentDef implements ComponentDef {
+class S2Container_SimpleComponentDef implements S2Container_ComponentDef {
     private $component_;
     private $componentClass_;
     private $componentName_;
     private $container_;
-    public function SimpleComponentDef($component,$componentName="") {
+    public function S2Container_SimpleComponentDef($component,$componentName="") {
         $this->component_ = $component;
         $this->componentClass_ = new ReflectionClass($component);
         $this->componentName_ = $componentName;
@@ -491,7 +491,7 @@ class SimpleComponentDef implements ComponentDef {
         return $this->component_;
     }
     public function injectDependency($outerComponent) {
-        throw new UnsupportedOperationException("injectDependency");
+        throw new S2Container_UnsupportedOperationException("injectDependency");
     }
     public function getContainer() {
         return $this->container_;
@@ -508,89 +508,89 @@ class SimpleComponentDef implements ComponentDef {
     public function getConcreteClass() {
         return $this->componentClass_;
     }
-    public function addArgDef(ArgDef $constructorArgDef) {
-        throw new UnsupportedOperationException("addArgDef");
+    public function addArgDef(S2Container_ArgDef $constructorArgDef) {
+        throw new S2Container_UnsupportedOperationException("addArgDef");
     }
-    public function addPropertyDef(PropertyDef $propertyDef) {
-        throw new UnsupportedOperationException("addPropertyDef");
+    public function addPropertyDef(S2Container_PropertyDef $propertyDef) {
+        throw new S2Container_UnsupportedOperationException("addPropertyDef");
     }
-    public function addInitMethodDef(InitMethodDef $methodDef) {
-        throw new UnsupportedOperationException("addInitMethodDef");
+    public function addInitMethodDef(S2Container_InitMethodDef $methodDef) {
+        throw new S2Container_UnsupportedOperationException("addInitMethodDef");
     }
-    public function addDestroyMethodDef(DestroyMethodDef $methodDef) {
-        throw new UnsupportedOperationException("addDestroyMethodDef");
+    public function addDestroyMethodDef(S2Container_DestroyMethodDef $methodDef) {
+        throw new S2Container_UnsupportedOperationException("addDestroyMethodDef");
     }
-    public function addAspectDef(AspectDef $aspectDef) {
-        throw new UnsupportedOperationException("addAspectDef");
+    public function addAspectDef(S2Container_AspectDef $aspectDef) {
+        throw new S2Container_UnsupportedOperationException("addAspectDef");
     }
     public function getArgDefSize() {
-        throw new UnsupportedOperationException("getArgDefSize");
+        throw new S2Container_UnsupportedOperationException("getArgDefSize");
     }
     public function getPropertyDefSize() {
-        throw new UnsupportedOperationException("getPropertyDefSize");
+        throw new S2Container_UnsupportedOperationException("getPropertyDefSize");
     }
     public function getInitMethodDefSize() {
-        throw new UnsupportedOperationException("getInitMethodDefSize");
+        throw new S2Container_UnsupportedOperationException("getInitMethodDefSize");
     }
     public function getDestroyMethodDefSize() {
-        throw new UnsupportedOperationException("getDestroyMethodDefSize");
+        throw new S2Container_UnsupportedOperationException("getDestroyMethodDefSize");
     }
     public function getAspectDefSize() {
-        throw new UnsupportedOperationException("getAspectDefSize");
+        throw new S2Container_UnsupportedOperationException("getAspectDefSize");
     }
     public function getArgDef($index) {
-        throw new UnsupportedOperationException("getArgDef");
+        throw new S2Container_UnsupportedOperationException("getArgDef");
     }
     public function getPropertyDef($index) {
-        throw new UnsupportedOperationException("getPropertyDef");
+        throw new S2Container_UnsupportedOperationException("getPropertyDef");
     }
     public function hasPropertyDef($propertyName) {
-        throw new UnsupportedOperationException("hasPropertyDef");
+        throw new S2Container_UnsupportedOperationException("hasPropertyDef");
     }
     public function getInitMethodDef($index) {
-        throw new UnsupportedOperationException("getInitMethodDef");
+        throw new S2Container_UnsupportedOperationException("getInitMethodDef");
     }
     public function getDestroyMethodDef($index) {
-        throw new UnsupportedOperationException("getDestroyMethodDef");
+        throw new S2Container_UnsupportedOperationException("getDestroyMethodDef");
     }
     public function getAspectDef($index) {
-        throw new UnsupportedOperationException("getAspectDef");
+        throw new S2Container_UnsupportedOperationException("getAspectDef");
     }
-    public function addMetaDef(MetaDef $metaDef) {
-        throw new UnsupportedOperationException("addMetaDef");
+    public function addMetaDef(S2Container_MetaDef $metaDef) {
+        throw new S2Container_UnsupportedOperationException("addMetaDef");
     }
     public function getMetaDef($index) {
-        throw new UnsupportedOperationException("getMetaDef");
+        throw new S2Container_UnsupportedOperationException("getMetaDef");
     }
     public function getMetaDefs($name) {
-        throw new UnsupportedOperationException("getMetaDefs");
+        throw new S2Container_UnsupportedOperationException("getMetaDefs");
     }
     public function getMetaDefSize() {
-        throw new UnsupportedOperationException("getMetaDefSize");
+        throw new S2Container_UnsupportedOperationException("getMetaDefSize");
     }
     public function getExpression() {
-        throw new UnsupportedOperationException("getExpression");
+        throw new S2Container_UnsupportedOperationException("getExpression");
     }
     public function setExpression($str) {
-        throw new UnsupportedOperationException("setExpression");
+        throw new S2Container_UnsupportedOperationException("setExpression");
     }
     public function getInstanceMode() {
-        throw new UnsupportedOperationException("getInstanceMode");
+        throw new S2Container_UnsupportedOperationException("getInstanceMode");
     }
     public function setInstanceMode($instanceMode) {
-        throw new UnsupportedOperationException("setInstanceMode");
+        throw new S2Container_UnsupportedOperationException("setInstanceMode");
     }
     public function getAutoBindingMode() {
-        throw new UnsupportedOperationException("getAutoBindingMode");
+        throw new S2Container_UnsupportedOperationException("getAutoBindingMode");
     }
     public function setAutoBindingMode($autoBindingMode) {
-        throw new UnsupportedOperationException("setAutoBindingMode");
+        throw new S2Container_UnsupportedOperationException("setAutoBindingMode");
     }
     public function init() {}
     public function destroy() {}
 }
 
-interface ContainerConstants {
+interface S2Container_ContainerConstants {
     const INSTANCE_SINGLETON = "singleton";
     const INSTANCE_PROTOTYPE = "prototype";
     const INSTANCE_REQUEST = "request";
@@ -609,7 +609,7 @@ interface ContainerConstants {
     const COMPONENT_DEF_NAME = "componentDef";
 }
 
-class ComponentDefImpl implements ComponentDef {
+class S2Container_ComponentDefImpl implements S2Container_ComponentDef {
     private $componentClass_;
     private $componentName_;
     private $concreteClass_;
@@ -621,20 +621,20 @@ class ComponentDefImpl implements ComponentDef {
     private $destroyMethodDefSupport_;
     private $aspectDefSupport_;
     private $metaDefSupport_;
-    private $instanceMode_ = ContainerConstants::INSTANCE_SINGLETON;
-    private $autoBindingMode_ = ContainerConstants::AUTO_BINDING_AUTO;
+    private $instanceMode_ = S2Container_ContainerConstants::INSTANCE_SINGLETON;
+    private $autoBindingMode_ = S2Container_ContainerConstants::AUTO_BINDING_AUTO;
     private $componentDeployer_;
-    public function ComponentDefImpl($componentClass="", $componentName="") {
+    public function S2Container_ComponentDefImpl($componentClass="", $componentName="") {
         if($componentClass!=""){
         	$this->componentClass_ = new ReflectionClass($componentClass);
         }
         $this->componentName_ = $componentName;
-        $this->argDefSupport_ = new ArgDefSupport();
-        $this->propertyDefSupport_ = new PropertyDefSupport();
-        $this->initMethodDefSupport_ = new InitMethodDefSupport();
-        $this->destroyMethodDefSupport_ = new DestroyMethodDefSupport();
-        $this->aspectDefSupport_ = new AspectDefSupport();
-        $this->metaDefSupport_ = new MetaDefSupport();
+        $this->argDefSupport_ = new S2Container_ArgDefSupport();
+        $this->propertyDefSupport_ = new S2Container_PropertyDefSupport();
+        $this->initMethodDefSupport_ = new S2Container_InitMethodDefSupport();
+        $this->destroyMethodDefSupport_ = new S2Container_DestroyMethodDefSupport();
+        $this->aspectDefSupport_ = new S2Container_AspectDefSupport();
+        $this->metaDefSupport_ = new S2Container_MetaDefSupport();
     }
     public function getComponent() {
         return $this->getComponentDeployer()->deploy();
@@ -666,19 +666,19 @@ class ComponentDefImpl implements ComponentDef {
         $this->destroyMethodDefSupport_->setContainer($container);
         $this->aspectDefSupport_->setContainer($container);
     }
-    public function addArgDef(ArgDef $argDef) {
+    public function addArgDef(S2Container_ArgDef $argDef) {
         $this->argDefSupport_->addArgDef($argDef);
     }
-    public function addPropertyDef(PropertyDef $propertyDef) {
+    public function addPropertyDef(S2Container_PropertyDef $propertyDef) {
         $this->propertyDefSupport_->addPropertyDef($propertyDef);
     }
-    public function addInitMethodDef(InitMethodDef $methodDef) {
+    public function addInitMethodDef(S2Container_InitMethodDef $methodDef) {
         $this->initMethodDefSupport_->addInitMethodDef($methodDef);
     }
-    public function addDestroyMethodDef(DestroyMethodDef $methodDef) {
+    public function addDestroyMethodDef(S2Container_DestroyMethodDef $methodDef) {
         $this->destroyMethodDefSupport_->addDestroyMethodDef($methodDef);
     }
-    public function addAspectDef(AspectDef $aspectDef) {
+    public function addAspectDef(S2Container_AspectDef $aspectDef) {
         $this->aspectDefSupport_->addAspectDef($aspectDef);
         $this->concreteClass_ = null;
     }
@@ -701,27 +701,27 @@ class ComponentDefImpl implements ComponentDef {
         return $this->instanceMode_;
     }
     public function setInstanceMode($instanceMode) {
-        if (InstanceModeUtil::isSingleton($instanceMode)
-                || InstanceModeUtil::isPrototype($instanceMode)
-                || InstanceModeUtil::isRequest($instanceMode)
-                || InstanceModeUtil::isSession($instanceMode)
-                || InstanceModeUtil::isOuter($instanceMode)) {
+        if (S2Container_InstanceModeUtil::isSingleton($instanceMode)
+                || S2Container_InstanceModeUtil::isPrototype($instanceMode)
+                || S2Container_InstanceModeUtil::isRequest($instanceMode)
+                || S2Container_InstanceModeUtil::isSession($instanceMode)
+                || S2Container_InstanceModeUtil::isOuter($instanceMode)) {
             $this->instanceMode_ = $instanceMode;
         } else {
-            throw new IllegalArgumentException($instanceMode);
+            throw new S2Container_IllegalArgumentException($instanceMode);
         }
     }
     public function getAutoBindingMode() {
         return $this->autoBindingMode_;
     }
     public function setAutoBindingMode($autoBindingMode) {
-        if (AutoBindingUtil::isAuto($autoBindingMode)
-                || AutoBindingUtil::isConstructor($autoBindingMode)
-                || AutoBindingUtil::isProperty($autoBindingMode)
-                || AutoBindingUtil::isNone($autoBindingMode)) {
+        if (S2Container_AutoBindingUtil::isAuto($autoBindingMode)
+                || S2Container_AutoBindingUtil::isConstructor($autoBindingMode)
+                || S2Container_AutoBindingUtil::isProperty($autoBindingMode)
+                || S2Container_AutoBindingUtil::isNone($autoBindingMode)) {
             $this->autoBindingMode_ = $autoBindingMode;
         } else {
-            throw new IllegalArgumentException(autoBindingMode);
+            throw new S2Container_IllegalArgumentException(autoBindingMode);
         }
     }
     public function init() {
@@ -754,7 +754,7 @@ class ComponentDefImpl implements ComponentDef {
     public function getAspectDef($index) {
         return $this->aspectDefSupport_->getAspectDef($index);
     }
-    public function addMetaDef(MetaDef $metaDef) {
+    public function addMetaDef(S2Container_MetaDef $metaDef) {
         $this->metaDefSupport_->addMetaDef($metaDef);
     }
     public function getMetaDef($name) {
@@ -768,18 +768,18 @@ class ComponentDefImpl implements ComponentDef {
     }
     private function getComponentDeployer() {
         if ($this->componentDeployer_ == null) {
-            $this->componentDeployer_ = ComponentDeployerFactory::create($this);
+            $this->componentDeployer_ = S2Container_ComponentDeployerFactory::create($this);
         }
         return $this->componentDeployer_;
     }   
 }
 
-final class ArgDefSupport {
+final class S2Container_ArgDefSupport {
     private $argDefs_ = array();
     private $container_;
-    public function ArgDefSupport() {
+    public function S2Container_ArgDefSupport() {
     }
-    public function addArgDef(ArgDef $argDef) {
+    public function addArgDef(S2Container_ArgDef $argDef) {
         if ($this->container_ != null) {
             $argDef->setContainer($this->container_);
         }
@@ -799,13 +799,13 @@ final class ArgDefSupport {
     }
 }
 
-final class PropertyDefSupport {
+final class S2Container_PropertyDefSupport {
     private $propertyDefs_ = array();
     private $propertyDefList_ = array();
     private $container_;
-    public function PropertyDefSupport() {
+    public function S2Container_PropertyDefSupport() {
     }
-    public function addPropertyDef(PropertyDef $propertyDef) {
+    public function addPropertyDef(S2Container_PropertyDef $propertyDef) {
         if ($this->container_ != null) {
             $propertyDef->setContainer($this->container_);
         }
@@ -832,12 +832,12 @@ final class PropertyDefSupport {
     }
 }
 
-final class InitMethodDefSupport {
+final class S2Container_InitMethodDefSupport {
     private $methodDefs_ = array();
     private $container_;
-    public function InitMethodDefSupport() {
+    public function S2Container_InitMethodDefSupport() {
     }
-    public function addInitMethodDef(InitMethodDef $methodDef) {
+    public function addInitMethodDef(S2Container_InitMethodDef $methodDef) {
         if ($this->container_ != null) {
             $methodDef->setContainer($this->container_);
         }
@@ -857,12 +857,12 @@ final class InitMethodDefSupport {
     }
 }
 
-final class DestroyMethodDefSupport {
+final class S2Container_DestroyMethodDefSupport {
     private $methodDefs_ = array();
     private $container_;
-    public function DestroyMethodDefSupport() {
+    public function S2Container_DestroyMethodDefSupport() {
     }
-    public function addDestroyMethodDef(DestroyMethodDef $methodDef) {
+    public function addDestroyMethodDef(S2Container_DestroyMethodDef $methodDef) {
         if ($this->container_ != null) {
             $methodDef->setContainer($this->container_);
         }
@@ -882,12 +882,12 @@ final class DestroyMethodDefSupport {
     }
 }
 
-final class AspectDefSupport {
+final class S2Container_AspectDefSupport {
     private $aspectDefs_ = array();
     private $container_;
-    public function AspectDefSupport() {
+    public function S2Container_AspectDefSupport() {
     }
-    public function addAspectDef(AspectDef $aspectDef) {
+    public function addAspectDef(S2Container_AspectDef $aspectDef) {
         if ($this->container_ != null) {
             $aspectDef->setContainer($this->container_);
         }
@@ -907,24 +907,24 @@ final class AspectDefSupport {
     }
 }
 
-interface ArgDef extends MetaDefAware {
+interface S2Container_ArgDef extends S2Container_MetaDefAware {
     public function getValue();
     public function getContainer();
     public function setContainer($container);
     public function getExpression();
     public function setExpression($str);
-    public function setChildComponentDef(ComponentDef $componentDef);
+    public function setChildComponentDef(S2Container_ComponentDef $componentDef);
 }
 
-class ArgDefImpl implements ArgDef {
+class S2Container_ArgDefImpl implements S2Container_ArgDef {
     private $value_;
     private $container_;
     private $expression_ = "";
     private $exp_ = null;
     private $childComponentDef_ = null;
     private $metaDefSupport_;
-    public function ArgDefImpl($value=null) {
-        $this->metaDefSupport_ = new MetaDefSupport();
+    public function S2Container_ArgDefImpl($value=null) {
+        $this->metaDefSupport_ = new S2Container_MetaDefSupport();
         if($value != null){
             $this->setValue($value);
         }
@@ -959,16 +959,16 @@ class ArgDefImpl implements ArgDef {
         if($this->expression_ == ""){
             $this->exp_ = null;
         }else{
-            $this->exp_ = EvalUtil::getExpression($this->expression_);
+            $this->exp_ = S2Container_EvalUtil::getExpression($this->expression_);
         }
     }
-    public final function setChildComponentDef(ComponentDef $componentDef) {
+    public final function setChildComponentDef(S2Container_ComponentDef $componentDef) {
         if ($this->container_ != null) {
             $componentDef->setContainer($this->container_);
         }
         $this->childComponentDef_ = $componentDef;
     }
-    public function addMetaDef(MetaDef $metaDef) {
+    public function addMetaDef(S2Container_MetaDef $metaDef) {
         $this->metaDefSupport_->addMetaDef($metaDef);
     }
     public function getMetaDef($indexOrName) {
@@ -982,13 +982,13 @@ class ArgDefImpl implements ArgDef {
     }
 }
 
-interface PropertyDef extends ArgDef {
+interface S2Container_PropertyDef extends S2Container_ArgDef {
     public function getPropertyName();
 }
 
-class PropertyDefImpl extends ArgDefImpl implements PropertyDef {
+class S2Container_PropertyDefImpl extends S2Container_ArgDefImpl implements S2Container_PropertyDef {
     private $propertyName_;
-    public function PropertyDefImpl($propertyName=null, $value=null) {
+    public function S2Container_PropertyDefImpl($propertyName=null, $value=null) {
         parent::__construct($value);
         if($propertyName != null){
             $this->propertyName_ = $propertyName;
@@ -999,8 +999,8 @@ class PropertyDefImpl extends ArgDefImpl implements PropertyDef {
     }
 }
 
-final class EvalUtil {
-    private function EvalUtil() {
+final class S2Container_EvalUtil {
+    private function S2Container_EvalUtil() {
     }
     public static function getExpression($expression){
         $exp = $expression;
@@ -1023,17 +1023,17 @@ final class EvalUtil {
     } 
 }
 
-interface Pointcut { 
+interface S2Container_Pointcut { 
     public function isApplied($methodName);
 }
 
-final class PointcutImpl implements Pointcut {
+final class S2Container_PointcutImpl implements S2Container_Pointcut {
     private $methodNames_;
     private $patterns_;
-    public function PointcutImpl($target=null) {
+    public function S2Container_PointcutImpl($target=null) {
         if(!is_array($target)){
             if ($target == null) {
-                throw new EmptyRuntimeException("targetClass");
+                throw new S2Container_EmptyRuntimeException("targetClass");
             }
             if($target instanceof ReflectionClass){
                 $this->setMethodNames($this->getMethodNames($target));
@@ -1043,7 +1043,7 @@ final class PointcutImpl implements Pointcut {
             }
         }else{
             if (count($target) == 0) {
-                throw new EmptyRuntimeException("methodNames");
+                throw new S2Container_EmptyRuntimeException("methodNames");
             }
             $this->setMethodNames($target);
         }
@@ -1088,88 +1088,88 @@ final class PointcutImpl implements Pointcut {
     }
 }
 
-interface AspectDef extends ArgDef {
+interface S2Container_AspectDef extends S2Container_ArgDef {
     public function getAspect();
 }
 
-class AspectDefImpl extends ArgDefImpl implements AspectDef {
+class S2Container_AspectDefImpl extends S2Container_ArgDefImpl implements S2Container_AspectDef {
     private $pointcut_;
-    public function AspectDefImpl($arg1=null,$arg2=null) {
+    public function S2Container_AspectDefImpl($arg1=null,$arg2=null) {
         parent::__construct();
-        if($arg1 instanceof Pointcut){
+        if($arg1 instanceof S2Container_Pointcut){
             $this->pointcut_ = $arg1;
         }
-        if($arg2 instanceof Pointcut){
+        if($arg2 instanceof S2Container_Pointcut){
             $this->pointcut_ = $arg2;
         }
-        if($arg1 instanceof MethodInterceptor){
+        if($arg1 instanceof S2Container_MethodInterceptor){
             $this->setValue($arg1);
         }
-        if($arg2 instanceof MethodInterceptor){
+        if($arg2 instanceof S2Container_MethodInterceptor){
             $this->setValue($arg2);
         }
     }
     public function getAspect() {
         $interceptor = $this->getValue();
-        return new AspectImpl($interceptor, $this->pointcut_);
+        return new S2Container_AspectImpl($interceptor, $this->pointcut_);
     }
-}final class ComponentDeployerFactory {
-    private function ComponentDeployerFactory() {
+}final class S2Container_ComponentDeployerFactory {
+    private function S2Container_ComponentDeployerFactory() {
     }
-    public static function create(ComponentDef $componentDef) {
-        if (InstanceModeUtil::isSingleton($componentDef->getInstanceMode())) {
-            return new SingletonComponentDeployer($componentDef);
-        } else if (InstanceModeUtil::isPrototype($componentDef->getInstanceMode())) {
-            return new PrototypeComponentDeployer($componentDef);
-        } else if (InstanceModeUtil::isRequest($componentDef->getInstanceMode())) {
-            return new RequestComponentDeployer($componentDef);
-        } else if (InstanceModeUtil::isSession($componentDef->getInstanceMode())) {
-            return new SessionComponentDeployer($componentDef);
+    public static function create(S2Container_ComponentDef $componentDef) {
+        if (S2Container_InstanceModeUtil::isSingleton($componentDef->getInstanceMode())) {
+            return new S2Container_SingletonComponentDeployer($componentDef);
+        } else if (S2Container_InstanceModeUtil::isPrototype($componentDef->getInstanceMode())) {
+            return new S2Container_PrototypeComponentDeployer($componentDef);
+        } else if (S2Container_InstanceModeUtil::isRequest($componentDef->getInstanceMode())) {
+            return new S2Container_RequestComponentDeployer($componentDef);
+        } else if (S2Container_InstanceModeUtil::isSession($componentDef->getInstanceMode())) {
+            return new S2Container_SessionComponentDeployer($componentDef);
         } else {
-            return new OuterComponentDeployer($componentDef);
+            return new S2Container_OuterComponentDeployer($componentDef);
         }
     }
 }
 
-final class InstanceModeUtil {
-    private function InstanceModeUtil() {
+final class S2Container_InstanceModeUtil {
+    private function S2Container_InstanceModeUtil() {
     }
     public static final function isSingleton($mode) {
-        return strtolower(ContainerConstants::INSTANCE_SINGLETON)
+        return strtolower(S2Container_ContainerConstants::INSTANCE_SINGLETON)
                 == strtolower($mode);
     }
     public static final function isPrototype($mode) {
-        return strtolower(ContainerConstants::INSTANCE_PROTOTYPE)
+        return strtolower(S2Container_ContainerConstants::INSTANCE_PROTOTYPE)
                 == strtolower($mode);
     }
     public static final function isRequest($mode) {
-        return strtolower(ContainerConstants::INSTANCE_REQUEST)
+        return strtolower(S2Container_ContainerConstants::INSTANCE_REQUEST)
                 == strtolower($mode);
     }
     public static final function isSession($mode) {
-        return strtolower(ContainerConstants::INSTANCE_SESSION)
+        return strtolower(S2Container_ContainerConstants::INSTANCE_SESSION)
                 == strtolower($mode);
     }
     public static final function isOuter($mode) {
-        return strtolower(ContainerConstants::INSTANCE_OUTER)
+        return strtolower(S2Container_ContainerConstants::INSTANCE_OUTER)
                 == strtolower($mode);
     }
 }
 
-interface ComponentDeployer {
+interface S2Container_ComponentDeployer {
     public function deploy();
     public function injectDependency($outerComponent);
     public function init();
     public function destroy();
 }
 
-abstract class AbstractComponentDeployer implements ComponentDeployer {
+abstract class S2Container_AbstractComponentDeployer implements S2Container_ComponentDeployer {
     private $componentDef_;
     private $constructorAssembler_;
     private $propertyAssembler_;
     private $initMethodAssembler_;
     private $destroyMethodAssembler_;
-    public function AbstractComponentDeployer(ComponentDef $componentDef) {
+    public function S2Container_AbstractComponentDeployer(S2Container_ComponentDef $componentDef) {
         $this->componentDef_ = $componentDef;
         $this->setupAssembler();
     }
@@ -1190,72 +1190,72 @@ abstract class AbstractComponentDeployer implements ComponentDeployer {
     }
     private function setupAssembler() {
         $autoBindingMode = $this->componentDef_->getAutoBindingMode();
-        if (AutoBindingUtil::isAuto($autoBindingMode)) {
+        if (S2Container_AutoBindingUtil::isAuto($autoBindingMode)) {
             $this->setupAssemblerForAuto();
-        } else if (AutoBindingUtil::isConstructor($autoBindingMode)) {
+        } else if (S2Container_AutoBindingUtil::isConstructor($autoBindingMode)) {
             $this->setupAssemblerForConstructor();
-        } else if (AutoBindingUtil::isProperty($autoBindingMode)) {
+        } else if (S2Container_AutoBindingUtil::isProperty($autoBindingMode)) {
             $this->setupAssemblerForProperty();
-        } else if (AutoBindingUtil::isNone($autoBindingMode)) {
+        } else if (S2Container_AutoBindingUtil::isNone($autoBindingMode)) {
             $this->setupAssemblerForNone();
         } else {
-            throw new IllegalArgumentException($autoBindingMode);
+            throw new S2Container_IllegalArgumentException($autoBindingMode);
         }
-        $this->initMethodAssembler_ = new DefaultInitMethodAssembler($this->componentDef_);
-        $this->destroyMethodAssembler_ = new DefaultDestroyMethodAssembler($this->componentDef_);
+        $this->initMethodAssembler_ = new S2Container_DefaultInitMethodAssembler($this->componentDef_);
+        $this->destroyMethodAssembler_ = new S2Container_DefaultDestroyMethodAssembler($this->componentDef_);
     }
     private function setupAssemblerForAuto() {
         $this->setupConstructorAssemblerForAuto();
-        $this->propertyAssembler_ = new AutoPropertyAssembler($this->componentDef_);
+        $this->propertyAssembler_ = new S2Container_AutoPropertyAssembler($this->componentDef_);
     }
     private function setupConstructorAssemblerForAuto() {
         if ($this->componentDef_->getExpression() != null) {
             $this->constructorAssembler_ =
-                new ExpressionConstructorAssembler($this->componentDef_);
+                new S2Container_ExpressionConstructorAssembler($this->componentDef_);
         }else if ($this->componentDef_->getArgDefSize() > 0) {
             $this->constructorAssembler_ =
-                new ManualConstructorAssembler($this->componentDef_);
+                new S2Container_ManualConstructorAssembler($this->componentDef_);
         } else {
             $this->constructorAssembler_ =
-                new AutoConstructorAssembler($this->componentDef_);
+                new S2Container_AutoConstructorAssembler($this->componentDef_);
         }
     }
     private function setupAssemblerForConstructor() {
         $this->setupConstructorAssemblerForAuto();
-        $this->propertyAssembler_ = new ManualPropertyAssembler($this->componentDef_);
+        $this->propertyAssembler_ = new S2Container_ManualPropertyAssembler($this->componentDef_);
     }
     private function setupAssemblerForProperty() {
         if ($this->componentDef_->getExpression() != null) {
             $this->constructorAssembler_ =
-                new ExpressionConstructorAssembler($this->componentDef_);
+                new S2Container_ExpressionConstructorAssembler($this->componentDef_);
         } else {
-            $this->constructorAssembler_ = new ManualConstructorAssembler($this->componentDef_);
+            $this->constructorAssembler_ = new S2Container_ManualConstructorAssembler($this->componentDef_);
         }
-        $this->propertyAssembler_ = new AutoPropertyAssembler($this->componentDef_);
+        $this->propertyAssembler_ = new S2Container_AutoPropertyAssembler($this->componentDef_);
     }
     private function setupAssemblerForNone() {
         if ($this->componentDef_->getExpression() != null) {
             $this->constructorAssembler_ =
-                new ExpressionConstructorAssembler($this->componentDef_);
+                new S2Container_ExpressionConstructorAssembler($this->componentDef_);
         }else if ($this->componentDef_->getArgDefSize() > 0) {
             $this->constructorAssembler_ =
-                new ManualConstructorAssembler($this->componentDef_);
+                new S2Container_ManualConstructorAssembler($this->componentDef_);
         } else {
             $this->constructorAssembler_ =
-                new DefaultConstructorAssembler($this->componentDef_);
+                new S2Container_DefaultConstructorAssembler($this->componentDef_);
         }
         if ($this->componentDef_->getPropertyDefSize() > 0) {
-            $this->propertyAssembler_ = new ManualPropertyAssembler($this->componentDef_);
+            $this->propertyAssembler_ = new S2Container_ManualPropertyAssembler($this->componentDef_);
         } else {
-            $this->propertyAssembler_ = new DefaultPropertyAssembler($this->componentDef_);
+            $this->propertyAssembler_ = new S2Container_DefaultPropertyAssembler($this->componentDef_);
         }
     }
 }
 
-class SingletonComponentDeployer extends AbstractComponentDeployer {
+class S2Container_SingletonComponentDeployer extends S2Container_AbstractComponentDeployer {
     private $component_;
     private $instantiating_ = false;
-    public function SingletonComponentDeployer(ComponentDef $componentDef) {
+    public function S2Container_SingletonComponentDeployer(S2Container_ComponentDef $componentDef) {
         parent::__construct($componentDef);
     }
     public function deploy() {
@@ -1265,11 +1265,11 @@ class SingletonComponentDeployer extends AbstractComponentDeployer {
         return $this->component_;
     }
     public function injectDependency($component) {
-        throw new UnsupportedOperationException("injectDependency");
+        throw new S2Container_UnsupportedOperationException("injectDependency");
     }
     private function assemble() {
         if ($this->instantiating_) {
-            throw new CyclicReferenceRuntimeException(
+            throw new S2Container_CyclicReferenceRuntimeException(
                 $this->getComponentDef()->getComponentClass());
         }
         $this->instantiating_ = true;
@@ -1290,13 +1290,13 @@ class SingletonComponentDeployer extends AbstractComponentDeployer {
     }
 }
 
-final class AutoBindingUtil {
-    private function AutoBindingUtil() {
+final class S2Container_AutoBindingUtil {
+    private function S2Container_AutoBindingUtil() {
     }
     public static final function isSuitable($classes) {
         if(is_array($classes)){
             for ($i = 0; $i < count($classes); ++$i) {
-                if (!AutoBindingUtil::isSuitable($classes[$i])) {
+                if (!S2Container_AutoBindingUtil::isSuitable($classes[$i])) {
                     return false;
                 }
             }
@@ -1310,39 +1310,39 @@ final class AutoBindingUtil {
         return true;
     }
     public static final function isAuto($mode) {
-        return strtolower(ContainerConstants::AUTO_BINDING_AUTO)
+        return strtolower(S2Container_ContainerConstants::AUTO_BINDING_AUTO)
                 == strtolower($mode);
     }
     public static final function isConstructor($mode) {
-        return strtolower(ContainerConstants::AUTO_BINDING_CONSTRUCTOR)
+        return strtolower(S2Container_ContainerConstants::AUTO_BINDING_CONSTRUCTOR)
                 == strtolower($mode);
     }
     public static final function isProperty($mode) {
-        return strtolower(ContainerConstants::AUTO_BINDING_PROPERTY)
+        return strtolower(S2Container_ContainerConstants::AUTO_BINDING_PROPERTY)
                 == strtolower($mode);
     }
     public static final function isNone($mode) {
-        return strtolower(ContainerConstants::AUTO_BINDING_NONE)
+        return strtolower(S2Container_ContainerConstants::AUTO_BINDING_NONE)
                 == strtolower($mode);
     }
 }
 
-abstract class AbstractAssembler {
+abstract class S2Container_AbstractAssembler {
     private $log_;
     private $componentDef_;
-    public function AbstractAssembler(ComponentDef $componentDef) {
+    public function S2Container_AbstractAssembler(S2Container_ComponentDef $componentDef) {
         $this->componentDef_ = $componentDef;
-        $this->log_ = S2Logger::getLogger(get_class($this));
+        $this->log_ = S2Container_S2Logger::getLogger(get_class($this));
     }
     protected final function getComponentDef() {
         return $this->componentDef_;
     }
     protected final function getBeanDesc($component=null) {
         if(!is_object($component)){
-            return BeanDescFactory::getBeanDesc(
+            return S2Container_BeanDescFactory::getBeanDesc(
                 $this->getComponentDef()->getComponentClass());
         }
-        return BeanDescFactory::getBeanDesc(
+        return S2Container_BeanDescFactory::getBeanDesc(
             $this->getComponentClass($component));
     }
     protected final function getComponentClass($component) {
@@ -1358,7 +1358,7 @@ abstract class AbstractAssembler {
         for ($i = 0; $i < count($argTypes); ++$i) {
             try {
                 if($argTypes[$i]->getClass() != null &&
-                    AutoBindingUtil::isSuitable($argTypes[$i]->getClass())){
+                    S2Container_AutoBindingUtil::isSuitable($argTypes[$i]->getClass())){
                     $args[$i]= $this->getComponentDef()->getContainer()->getComponent($argTypes[$i]->getClass()->getName());
                 }else{
                 	if($argTypes[$i]->isOptional()){
@@ -1367,7 +1367,7 @@ abstract class AbstractAssembler {
                 		$args[$i] = null;
                 	}
                 }
-            } catch (ComponentNotFoundRuntimeException $ex) {
+            } catch (S2Container_ComponentNotFoundRuntimeException $ex) {
                 $this->log_->warn($ex->getMessage(),__METHOD__);
                 $args[$i] = null;
             }
@@ -1376,24 +1376,24 @@ abstract class AbstractAssembler {
     }
 }
 
-interface ConstructorAssembler {
+interface S2Container_ConstructorAssembler {
     public function assemble();
 }
 
-abstract class AbstractConstructorAssembler extends AbstractAssembler
-        implements ConstructorAssembler {
-    public function AbstractConstructorAssembler(ComponentDef $componentDef) {
+abstract class S2Container_AbstractConstructorAssembler extends S2Container_AbstractAssembler
+        implements S2Container_ConstructorAssembler {
+    public function S2Container_AbstractConstructorAssembler(S2Container_ComponentDef $componentDef) {
         parent::__construct($componentDef);
     }
     protected function assembleDefault() {
         $clazz = $this->getComponentDef()->getConcreteClass();
-        return ConstructorUtil::newInstance($clazz, null,$this->getComponentDef());
+        return S2Container_ConstructorUtil::newInstance($clazz, null,$this->getComponentDef());
     }
 }
 
-class ManualConstructorAssembler
-    extends AbstractConstructorAssembler {
-    public function ManualConstructorAssembler(ComponentDef $componentDef) {
+class S2Container_ManualConstructorAssembler
+    extends S2Container_AbstractConstructorAssembler {
+    public function S2Container_ManualConstructorAssembler(S2Container_ComponentDef $componentDef) {
         parent::__construct($componentDef);
     }
     public function assemble(){
@@ -1401,32 +1401,32 @@ class ManualConstructorAssembler
         for ($i = 0; $i < $this->getComponentDef()->getArgDefSize(); ++$i) {
             try {
                 $args[$i] = $this->getComponentDef()->getArgDef($i)->getValue();
-            } catch (ComponentNotFoundRuntimeException $cause) {
-                throw new IllegalConstructorRuntimeException(
+            } catch (S2Container_ComponentNotFoundRuntimeException $cause) {
+                throw new S2Container_IllegalConstructorRuntimeException(
                     $this->getComponentDef()->getComponentClass(),
                     $cause);
             }
         }
         $beanDesc =
-            BeanDescFactory::getBeanDesc($this->getComponentDef()->getConcreteClass());
+            S2Container_BeanDescFactory::getBeanDesc($this->getComponentDef()->getConcreteClass());
         return $beanDesc->newInstance($args,$this->getComponentDef());
     }
 }
 
-final class S2Logger {
+final class S2Container_S2Logger {
     private static $loggerMap_ = array();
     private $log_;
-    private function S2Logger($className) {
-        $this->log_ = S2LogFactory::getLog($className);
+    private function S2Container_S2Logger($className) {
+        $this->log_ = S2Container_S2LogFactory::getLog($className);
     }
     public static final function getLogger($className) {
         $logger = null;
-        if(array_key_exists($className,S2Logger::$loggerMap_)){
-            $logger = S2Logger::$loggerMap_[$className];
+        if(array_key_exists($className,S2Container_S2Logger::$loggerMap_)){
+            $logger = S2Container_S2Logger::$loggerMap_[$className];
         }
         if ($logger == null) {
-            $logger = new S2Logger($className);
-            S2Logger::$loggerMap_[$className] = $logger;
+            $logger = new S2Container_S2Logger($className);
+            S2Container_S2Logger::$loggerMap_[$className] = $logger;
         }
         return $logger->getLog();
     }
@@ -1435,22 +1435,22 @@ final class S2Logger {
     }
 }
 
-class S2LogFactory {
+class S2Container_S2LogFactory {
     private function LogFactory() {
     }
     public static function getLog($className){
-        return new SimpleLogger($className);
+        return new S2Container_SimpleLogger($className);
     }
 }
 
-class SimpleLogger {
+class S2Container_SimpleLogger {
     private $className;
     const DEBUG = 1;
     const INFO  = 2;
     const WARN  = 3;
     const ERROR = 4;
     const FATAL = 5;
-    function SimpleLogger($className) {
+    function S2Container_SimpleLogger($className) {
         $this->className = $className;
         if(!defined('S2CONTAINER_PHP5_LOG_LEVEL')){
             define('S2CONTAINER_PHP5_LOG_LEVEL',3);
@@ -1458,19 +1458,19 @@ class SimpleLogger {
     }
     private function cli($level,$msg="",$methodName=""){
         switch($level){
-            case SimpleLogger::DEBUG :
+            case S2Container_SimpleLogger::DEBUG :
                 $logLevel = "DEBUG";
                 break;    
-            case SimpleLogger::INFO :
+            case S2Container_SimpleLogger::INFO :
                 $logLevel = "INFO";
                 break;    
-            case SimpleLogger::WARN :
+            case S2Container_SimpleLogger::WARN :
                 $logLevel = "WARN";
                 break;    
-            case SimpleLogger::ERROR :
+            case S2Container_SimpleLogger::ERROR :
                 $logLevel = "ERROR";
                 break;    
-            case SimpleLogger::FATAL :
+            case S2Container_SimpleLogger::FATAL :
                 $logLevel = "FATAL";
                 break;    
         }
@@ -1479,44 +1479,44 @@ class SimpleLogger {
         }
     }
     public function debug($msg="",$methodName=""){
-        $this->cli(SimpleLogger::DEBUG,$msg,$methodName);
+        $this->cli(S2Container_SimpleLogger::DEBUG,$msg,$methodName);
     }
     public function info($msg="",$methodName=""){
-        $this->cli(SimpleLogger::INFO,$msg,$methodName);
+        $this->cli(S2Container_SimpleLogger::INFO,$msg,$methodName);
     }
     public function warn($msg="",$methodName=""){
-        $this->cli(SimpleLogger::WARN,$msg,$methodName);
+        $this->cli(S2Container_SimpleLogger::WARN,$msg,$methodName);
     }
     public function error($msg="",$methodName=""){
-        $this->cli(SimpleLogger::ERROR,$msg,$methodName);
+        $this->cli(S2Container_SimpleLogger::ERROR,$msg,$methodName);
     }
     public function fatal($msg="",$methodName=""){
-        $this->cli(SimpleLogger::FATAL,$msg,$methodName);
+        $this->cli(S2Container_SimpleLogger::FATAL,$msg,$methodName);
     }
 }
 
-interface PropertyAssembler {
+interface S2Container_PropertyAssembler {
     public function assemble($component);
 }
 
-abstract class AbstractPropertyAssembler
-    extends AbstractAssembler
-    implements PropertyAssembler {
-    public function AbstractPropertyAssembler(ComponentDef $componentDef) {
+abstract class S2Container_AbstractPropertyAssembler
+    extends S2Container_AbstractAssembler
+    implements S2Container_PropertyAssembler {
+    public function S2Container_AbstractPropertyAssembler(S2Container_ComponentDef $componentDef) {
         parent::__construct($componentDef);
     }
-    protected function getValue(PropertyDef $propertyDef, $component) {
+    protected function getValue(S2Container_PropertyDef $propertyDef, $component) {
         try {
             return $propertyDef->getValue();
-        } catch (ComponentNotFoundRuntimeException $cause) {
-            throw new IllegalPropertyRuntimeException(
+        } catch (S2Container_ComponentNotFoundRuntimeException $cause) {
+            throw new S2Container_IllegalPropertyRuntimeException(
                 $this->getComponentClass($component),
                 $propertyDef->getPropertyName(),
                 $cause);
         }
     }
     protected function setValue(
-        PropertyDesc $propertyDesc,
+        S2Container_PropertyDesc $propertyDesc,
         $component,
         $value){
         if ($value == null) {
@@ -1525,7 +1525,7 @@ abstract class AbstractPropertyAssembler
         try {
             $propertyDesc->setValue($component,$value);
         } catch (Exception $ex) {
-            throw new IllegalPropertyRuntimeException(
+            throw new S2Container_IllegalPropertyRuntimeException(
                 $this->getComponentDef()->getComponentClass(),
                 $propertyDesc->getPropertyName(),
                 $ex);
@@ -1533,8 +1533,8 @@ abstract class AbstractPropertyAssembler
     }
 }
 
-class ManualPropertyAssembler extends AbstractPropertyAssembler {
-    public function ManualPropertyAssembler(ComponentDef $componentDef) {
+class S2Container_ManualPropertyAssembler extends S2Container_AbstractPropertyAssembler {
+    public function S2Container_ManualPropertyAssembler(S2Container_ComponentDef $componentDef) {
         parent::__construct($componentDef);
     }
     public function assemble($component) {
@@ -1546,12 +1546,12 @@ class ManualPropertyAssembler extends AbstractPropertyAssembler {
             try{
                 $propDesc =
                     $beanDesc->getPropertyDesc($propDef->getPropertyName());
-            }catch(PropertyNotFoundRuntimeException $e1){
+            }catch(S2Container_PropertyNotFoundRuntimeException $e1){
                 try{
                 	$propDesc =
                         $beanDesc->getPropertyDesc('__set');
                     $propDesc->setSetterPropertyName($propDef->getPropertyName());    
-                }catch(PropertyNotFoundRuntimeException $e2){
+                }catch(S2Container_PropertyNotFoundRuntimeException $e2){
                     throw $e1;
                 }
             }
@@ -1565,11 +1565,11 @@ class ManualPropertyAssembler extends AbstractPropertyAssembler {
     }
 }
 
-class AutoPropertyAssembler extends ManualPropertyAssembler {
+class S2Container_AutoPropertyAssembler extends S2Container_ManualPropertyAssembler {
     private $log_;
-    public function AutoPropertyAssembler(ComponentDef $componentDef) {
+    public function S2Container_AutoPropertyAssembler(S2Container_ComponentDef $componentDef) {
         parent::__construct($componentDef);
-        $this->log_ = S2Logger::getLogger(get_class($this));
+        $this->log_ = S2Container_S2Logger::getLogger(get_class($this));
     }
     public function assemble($component) {
         parent::assemble($component);
@@ -1581,10 +1581,10 @@ class AutoPropertyAssembler extends ManualPropertyAssembler {
             $propName = $propDesc->getPropertyName();
             if (!$this->getComponentDef()->hasPropertyDef($propName) and
                 $propDesc->getWriteMethod() != null and
-                AutoBindingUtil::isSuitable($propDesc->getPropertyType())) {
+                S2Container_AutoBindingUtil::isSuitable($propDesc->getPropertyType())) {
                 try {
                     $value = $container->getComponent($propDesc->getPropertyType()->getName());
-                } catch (ComponentNotFoundRuntimeException $ex) {
+                } catch (S2Container_ComponentNotFoundRuntimeException $ex) {
                     if ($propDesc->getReadMethod() != null and
                         $propDesc->getValue($component) != null) {
                         continue;
@@ -1599,20 +1599,20 @@ class AutoPropertyAssembler extends ManualPropertyAssembler {
     }
 }
 
-interface MethodAssembler {
+interface S2Container_MethodAssembler {
     public function assemble($component);
 }
 
-abstract class AbstractMethodAssembler
-    extends AbstractAssembler
-    implements MethodAssembler {
-    public function AbstractMethodAssembler(ComponentDef $componentDef) {
+abstract class S2Container_AbstractMethodAssembler
+    extends S2Container_AbstractAssembler
+    implements S2Container_MethodAssembler {
+    public function S2Container_AbstractMethodAssembler(S2Container_ComponentDef $componentDef) {
         parent::__construct($componentDef);
     }
     protected function invoke(
-        BeanDesc $beanDesc,
+        S2Container_BeanDesc $beanDesc,
         $component,
-        MethodDef $methodDef) {
+        S2Container_MethodDef $methodDef) {
         $expression = $methodDef->getExpression();
         $methodName = $methodDef->getMethodName();
         if ($methodName != null) {
@@ -1628,14 +1628,14 @@ abstract class AbstractMethodAssembler
                         $args = $this->getArgs($method->getParameters());
                     }
                 }
-            } catch (ComponentNotFoundRuntimeException $cause) {
-                throw new IllegalMethodRuntimeException(
+            } catch (S2Container_ComponentNotFoundRuntimeException $cause) {
+                throw new S2Container_IllegalMethodRuntimeException(
                     $this->getComponentClass($component),
                     $methodName,
                     $cause);
             }
             if ($method != null) {
-                MethodUtil::invoke($method, $component, $args);
+                S2Container_MethodUtil::invoke($method, $component, $args);
             } else {
                 $this->invoke0($beanDesc,$component,$methodName,$args);
             }
@@ -1644,7 +1644,7 @@ abstract class AbstractMethodAssembler
         }
     }
     private function invokeExpression($component,$expression) {
-    	$exp = EvalUtil::addSemiColon($expression);
+    	$exp = S2Container_EvalUtil::addSemiColon($expression);
     	eval($exp);
     }
     private function getSuitableMethod($methods) {
@@ -1655,7 +1655,7 @@ abstract class AbstractMethodAssembler
         }
         foreach($params as $param){
             if($param->getClass() != null){
-                if(!AutoBindingUtil::isSuitable($param->getClass())){
+                if(!S2Container_AutoBindingUtil::isSuitable($param->getClass())){
                     $suitable *= 0;
                 }                    
             }
@@ -1666,14 +1666,14 @@ abstract class AbstractMethodAssembler
         return null;
     }
     private function invoke0(
-        BeanDesc $beanDesc,
+        S2Container_BeanDesc $beanDesc,
         $component,
         $methodName,
         $args){
         try {
             $beanDesc->invoke($component,$methodName,$args);
         } catch (Exception $ex) {
-            throw new IllegalMethodRuntimeException(
+            throw new S2Container_IllegalMethodRuntimeException(
                 $this->getComponentClass($component),
                 $methodName,
                 $ex);
@@ -1681,8 +1681,8 @@ abstract class AbstractMethodAssembler
     }
 }
 
-class DefaultInitMethodAssembler extends AbstractMethodAssembler {
-    public function DefaultInitMethodAssembler(ComponentDef $componentDef) {
+class S2Container_DefaultInitMethodAssembler extends S2Container_AbstractMethodAssembler {
+    public function S2Container_DefaultInitMethodAssembler(S2Container_ComponentDef $componentDef) {
         parent::__construct($componentDef);
     }
     public function assemble($component){
@@ -1695,8 +1695,8 @@ class DefaultInitMethodAssembler extends AbstractMethodAssembler {
     }
 }
 
-class DefaultDestroyMethodAssembler extends AbstractMethodAssembler {
-    public function DefaultDestroyMethodAssembler(ComponentDef $componentDef) {
+class S2Container_DefaultDestroyMethodAssembler extends S2Container_AbstractMethodAssembler {
+    public function S2Container_DefaultDestroyMethodAssembler(S2Container_ComponentDef $componentDef) {
         parent::__construct($componentDef);
     }
     public function assemble($component){
@@ -1709,26 +1709,26 @@ class DefaultDestroyMethodAssembler extends AbstractMethodAssembler {
     }
 }
 
-class S2RuntimeException extends Exception {
+class S2Container_S2RuntimeException extends Exception {
     private $messageCode_;
     private $args_;
     private $message_;
     private $simpleMessage_;
-    public function S2RuntimeException(
+    public function S2Container_S2RuntimeException(
         $messageCode,
         $args = null,
         $cause = null) {
         $cause instanceof Exception ? 
             $msg = $cause->getMessage() . "\n" :
             $msg = "";
-        $msg .= MessageUtil::getMessageWithArgs($messageCode,$args);
+        $msg .= S2Container_MessageUtil::getMessageWithArgs($messageCode,$args);
         parent::__construct($msg);
     }
 }
 
-class ComponentNotFoundRuntimeException extends S2RuntimeException {
+class S2Container_ComponentNotFoundRuntimeException extends S2Container_S2RuntimeException {
     private $componentKey_;
-    public function ComponentNotFoundRuntimeException($componentKey) {
+    public function S2Container_ComponentNotFoundRuntimeException($componentKey) {
         parent::__construct("ESSR0046", array($componentKey));
         $this->componentKey_ = $componentKey;
     }
@@ -1737,22 +1737,22 @@ class ComponentNotFoundRuntimeException extends S2RuntimeException {
     }
 }
 
-final class BeanDescFactory {
+final class S2Container_BeanDescFactory {
     private static $beanDescCache_ = array();
-    private function BeanDescFactory() {
+    private function S2Container_BeanDescFactory() {
     }
     public static function getBeanDesc(ReflectionClass $clazz) {
-    	if(array_key_exists($clazz->getName(),BeanDescFactory::$beanDescCache_)){
-            $beanDesc = BeanDescFactory::$beanDescCache_[$clazz->getName()];
+    	if(array_key_exists($clazz->getName(),S2Container_BeanDescFactory::$beanDescCache_)){
+            $beanDesc = S2Container_BeanDescFactory::$beanDescCache_[$clazz->getName()];
     	}else{
-            $beanDesc = new BeanDescImpl($clazz);
-            BeanDescFactory::$beanDescCache_[$clazz->getName()] = $beanDesc;
+            $beanDesc = new S2Container_BeanDescImpl($clazz);
+            S2Container_BeanDescFactory::$beanDescCache_[$clazz->getName()] = $beanDesc;
         }
         return $beanDesc;
     }
 }
 
-interface BeanDesc {
+interface S2Container_BeanDesc {
     public function getBeanClass();
     public function hasPropertyDesc($propertyName);
     public function getPropertyDesc($propertyName);
@@ -1769,7 +1769,7 @@ interface BeanDesc {
     public function getConstant($constName);
 }
 
-final class BeanDescImpl implements BeanDesc {
+final class S2Container_BeanDescImpl implements S2Container_BeanDesc {
     private static $EMPTY_ARGS = array();
     private $beanClass_;
     private $constructors_;
@@ -1778,7 +1778,7 @@ final class BeanDescImpl implements BeanDesc {
     private $methodsCache_ = array();
     private $fieldCache_ = array();
     private $constCache_ = array();
-    public function BeanDescImpl(ReflectionClass $beanClass) {
+    public function S2Container_BeanDescImpl(ReflectionClass $beanClass) {
         $this->beanClass_ = $beanClass;
         $this->constructors_ = $this->beanClass_->getConstructor();
         $this->setupMethods();
@@ -1795,7 +1795,7 @@ final class BeanDescImpl implements BeanDesc {
     public function getPropertyDesc($propertyName) {
         if(is_int($propertyName)){
             if ($propertyName >= count($this->propertyDescCacheIndex_)) {
-                throw new PropertyNotFoundRuntimeException(
+                throw new S2Container_PropertyNotFoundRuntimeException(
                     $this->beanClass_, 'index '.$propertyName);
             }
             return $this->propertyDescCache_[
@@ -1806,7 +1806,7 @@ final class BeanDescImpl implements BeanDesc {
             $pd = $this->propertyDescCache_[$propertyName];
         }
         if ($pd == null) {
-            throw new PropertyNotFoundRuntimeException(
+            throw new S2Container_PropertyNotFoundRuntimeException(
                 $this->beanClass_, $propertyName);
         }
         return $pd;
@@ -1828,7 +1828,7 @@ final class BeanDescImpl implements BeanDesc {
         if(array_key_exists($fieldName,$this->fieldCache_)){
             $field = $this->fieldCache_[$fieldName];
         }else{
-            throw new FieldNotFoundRuntimeException($this->beanClass_, $fieldName);
+            throw new S2Container_FieldNotFoundRuntimeException($this->beanClass_, $fieldName);
         }
         return $field;
     }
@@ -1839,16 +1839,16 @@ final class BeanDescImpl implements BeanDesc {
         if(array_key_exists($constName,$this->constCache_)){
             $constant = $this->constCache_[$constName];
         }else{
-            throw new ConstantNotFoundRuntimeException($this->beanClass_, $constName);
+            throw new S2Container_ConstantNotFoundRuntimeException($this->beanClass_, $constName);
         }
         return $constant;
     }
     public function newInstance($args,$componentDef=null){
-        return ConstructorUtil::newInstance($this->beanClass_, $args,$componentDef);
+        return S2Container_ConstructorUtil::newInstance($this->beanClass_, $args,$componentDef);
     }
     public function invoke($target,$methodName,$args) {
         $method = $this->getMethods($methodName);
-        return MethodUtil::invoke($method,$target,$args);
+        return S2Container_MethodUtil::invoke($method,$target,$args);
     }
     public function getSuitableConstructor() {
     	return $this->constructors_;
@@ -1857,7 +1857,7 @@ final class BeanDescImpl implements BeanDesc {
         if(array_key_exists($methodName,$this->methodsCache_)){
             $methods = $this->methodsCache_[$methodName];
         }else{
-            throw new MethodNotFoundRuntimeException($this->beanClass_, $methodName, null);
+            throw new S2Container_MethodNotFoundRuntimeException($this->beanClass_, $methodName, null);
         }
         return $methods;
     }
@@ -1922,7 +1922,7 @@ final class BeanDescImpl implements BeanDesc {
         $top = strtolower($top);
         return substr_replace($name,$top,0,1);
     }
-    private function addPropertyDesc(PropertyDesc $propertyDesc) {
+    private function addPropertyDesc(S2Container_PropertyDesc $propertyDesc) {
         $this->propertyDescCache_[$propertyDesc->getPropertyName()] = $propertyDesc;
         array_push($this->propertyDescCacheIndex_,$propertyDesc->getPropertyName());
     }
@@ -1933,7 +1933,7 @@ final class BeanDescImpl implements BeanDesc {
 		} else {
     		$writeMethod = null;	
 			$propDesc =
-				new PropertyDescImpl(
+				new S2Container_PropertyDescImpl(
 					$propertyName,
 					null,
 					$readMethod,
@@ -1949,7 +1949,7 @@ final class BeanDescImpl implements BeanDesc {
         } else {
             if($propertyName == "__set"){
                 $propDesc =
-                    new UuSetPropertyDescImpl(
+                    new S2Container_UuSetPropertyDescImpl(
                         $propertyName,
                         null,
                         null,
@@ -1958,7 +1958,7 @@ final class BeanDescImpl implements BeanDesc {
             }else{
                 $propertyTypes = $writeMethod->getParameters();
                 $propDesc =
-                    new PropertyDescImpl(
+                    new S2Container_PropertyDescImpl(
                         $propertyName,
                         $propertyTypes[0]->getClass(),
                         null,
@@ -1987,7 +1987,7 @@ final class BeanDescImpl implements BeanDesc {
     }
 }
 
-interface PropertyDesc {
+interface S2Container_PropertyDesc {
     public function getPropertyName();
     public function getPropertyType();
     public function getReadMethod();
@@ -2001,19 +2001,19 @@ interface PropertyDesc {
     public function convertIfNeed($value);
 }
 
-class PropertyDescImpl implements PropertyDesc {
+class S2Container_PropertyDescImpl implements S2Container_PropertyDesc {
     protected $propertyName_ = null;
     protected $propertyType_ = null;
     protected $readMethod_ = null;
     protected $writeMethod_ = null;
     protected $beanDesc_ = null;
-    public function PropertyDescImpl($propertyName=null,
+    public function S2Container_PropertyDescImpl($propertyName=null,
                                        $propertyType,
                                        $readMethod,
                                        $writeMethod,
-                                       BeanDesc $beanDesc) {
+                                       S2Container_BeanDesc $beanDesc) {
         if ($propertyName == null) {
-            throw new EmptyRuntimeException("propertyName");
+            throw new S2Container_EmptyRuntimeException("propertyName");
         }
         $this->propertyName_ = $propertyName;
         $this->propertyType_ = $propertyType;
@@ -2046,13 +2046,13 @@ class PropertyDescImpl implements PropertyDesc {
         return $this->writeMethod_ != null;
     }
     public final function getValue($target) {
-        return MethodUtil::invoke($this->readMethod_,$target, null);
+        return S2Container_MethodUtil::invoke($this->readMethod_,$target, null);
     }
     public function setValue($target,$value) {
         try {
-            MethodUtil::invoke($this->writeMethod_,$target, $value);
+            S2Container_MethodUtil::invoke($this->writeMethod_,$target, $value);
         } catch (Exception $t) {
-            throw new IllegalPropertyRuntimeException(
+            throw new S2Container_IllegalPropertyRuntimeException(
                     $this->beanDesc_->getBeanClass(), $this->propertyName_, $t);
         }
     }
@@ -2075,14 +2075,14 @@ class PropertyDescImpl implements PropertyDesc {
     }
 }
 
-final class ConstructorUtil {
-    private function ConstructorUtil() {
+final class S2Container_ConstructorUtil {
+    private function S2Container_ConstructorUtil() {
     }
     public static function newInstance($refClass,$args,$componentDef=null){
         try {
             if($componentDef != null and 
                $componentDef->getAspectDefSize()>0){
-               return AopProxyUtil::getEnhancedClass($componentDef,$args); 
+               return S2Container_AopProxyUtil::getEnhancedClass($componentDef,$args); 
             }
             $cmd = "return new " . $refClass->getName() . "(";
             if(count($args) == 0){
@@ -2101,18 +2101,18 @@ final class ConstructorUtil {
     }
 }
 
-class AopProxyUtil {
-    private function AopProxyUtil() {
+class S2Container_AopProxyUtil {
+    private function S2Container_AopProxyUtil() {
     }
-    public static function getEnhancedClass(ComponentDef $componentDef,$args) {
+    public static function getEnhancedClass(S2Container_ComponentDef $componentDef,$args) {
         $parameters = array();
-        $parameters[ContainerConstants::COMPONENT_DEF_NAME] = $componentDef;
-        $proxy = new AopProxy($componentDef->getComponentClass(),
-                               AopProxyUtil::getAspects($componentDef),
+        $parameters[S2Container_ContainerConstants::COMPONENT_DEF_NAME] = $componentDef;
+        $proxy = new S2Container_AopProxy($componentDef->getComponentClass(),
+                               S2Container_AopProxyUtil::getAspects($componentDef),
                                $parameters);
         return $proxy->create("",$args);
     }
-    private static function getAspects(ComponentDef $componentDef) {
+    private static function getAspects(S2Container_ComponentDef $componentDef) {
         $size = $componentDef->getAspectDefSize();
         $aspects = array();
         for ($i = 0; $i < $size; ++$i) {
@@ -2122,15 +2122,15 @@ class AopProxyUtil {
     }
 }
 
-final class AopProxy {
+final class S2Container_AopProxy {
 	private $log_;
     private $targetClass_;
     private $enhancedClass_;
     private $defaultPointcut_;
     private $parameters_;
     private $methodInterceptorsMap_;
-    public function AopProxy($targetClass,$aspects,$parameters=null) {
-		$this->log_ = S2Logger::getLogger(get_class($this));
+    public function S2Container_AopProxy($targetClass,$aspects,$parameters=null) {
+		$this->log_ = S2Container_S2Logger::getLogger(get_class($this));
         $this->parameters_ = $parameters;
         if($targetClass instanceof ReflectionClass){ 
             $this->setTargetClass($targetClass);
@@ -2141,11 +2141,11 @@ final class AopProxy {
     }
     private function setTargetClass($targetClass) {
         $this->targetClass_ = $targetClass;
-        $this->defaultPointcut_ = new PointcutImpl($targetClass);
+        $this->defaultPointcut_ = new S2Container_PointcutImpl($targetClass);
     }
     private function setAspects($aspects) {
         if ($aspects == null || count($aspects) == 0) {
-            throw new EmptyRuntimeException("aspects");
+            throw new S2Container_EmptyRuntimeException("aspects");
         }
         for ($i = 0; $i < count($aspects); ++$i) {
             $aspect = $aspects[$i];
@@ -2156,7 +2156,7 @@ final class AopProxy {
         $methods = $this->targetClass_->getMethods();
         $this->methodInterceptorsMap_ = array();
         for ($i = 0;$i < count($methods); ++$i) {
-        	if(!AopProxy::isApplicableAspect($methods[$i])){
+        	if(!S2Container_AopProxy::isApplicableAspect($methods[$i])){
         		$this->log_->info($this->targetClass_->getName()."::".
         		                   $methods[$i]->getName() ."() is a constructor or a static method. ignored.",__METHOD__);
                 continue;        		                  
@@ -2182,10 +2182,10 @@ final class AopProxy {
     }
     public function create($argTypes=null,$args=null) {
         if($this->targetClass_->isFinal()){
-        	throw new S2RuntimeException('ESSR0017',
+        	throw new S2Container_S2RuntimeException('ESSR0017',
         	                               array("cannot aspect. target class [{$this->targetClass_->getName()}] is final class. "));
         }
-        $this->enhancedClass_ = UuCallAopProxyFactory::create(
+        $this->enhancedClass_ = S2Container_UuCallAopProxyFactory::create(
                                     $this->targetClass_,
                                     $this->methodInterceptorsMap_,
                                     $args,
@@ -2197,9 +2197,9 @@ final class AopProxy {
     }
 }
 
-class AutoConstructorAssembler
-    extends AbstractConstructorAssembler {
-    public function AutoConstructorAssembler(ComponentDef $componentDef) {
+class S2Container_AutoConstructorAssembler
+    extends S2Container_AbstractConstructorAssembler {
+    public function S2Container_AutoConstructorAssembler(S2Container_ComponentDef $componentDef) {
         parent::__construct($componentDef);
     }
     public function assemble(){
@@ -2208,20 +2208,20 @@ class AutoConstructorAssembler
         if($refMethod != null){
             $args = $this->getArgs($this->getComponentDef()->getConcreteClass()->getConstructor()->getParameters());
         }
-        return ConstructorUtil::newInstance($this->getComponentDef()->getConcreteClass(), $args,$this->getComponentDef());
+        return S2Container_ConstructorUtil::newInstance($this->getComponentDef()->getConcreteClass(), $args,$this->getComponentDef());
     }
 }
 
-interface Aspect {
+interface S2Container_Aspect {
     public function getMethodInterceptor();
     public function getPointcut();
-    public function setPointcut(Pointcut $pointcut);
+    public function setPointcut(S2Container_Pointcut $pointcut);
 }
 
-class AspectImpl implements Aspect {
+class S2Container_AspectImpl implements S2Container_Aspect {
     private $methodInterceptor_;
     private $pointcut_;
-    public function AspectImpl(MethodInterceptor $methodInterceptor,Pointcut $pointcut) {
+    public function S2Container_AspectImpl(S2Container_MethodInterceptor $methodInterceptor,S2Container_Pointcut $pointcut) {
         $this->methodInterceptor_ = $methodInterceptor;
         $this->pointcut_ = $pointcut;
     }
@@ -2231,41 +2231,41 @@ class AspectImpl implements Aspect {
     public function getPointcut() {
         return $this->pointcut_;
     }
-    public function setPointcut(Pointcut $pointcut) {
+    public function setPointcut(S2Container_Pointcut $pointcut) {
         $this->pointcut_ = $pointcut;
     }
 }
 
-class UuCallAopProxyFactory {
-    private function UuCallAopProxyFactory() {}
+class S2Container_UuCallAopProxyFactory {
+    private function S2Container_UuCallAopProxyFactory() {}
     static function create($targetClass,$map,$args,$params=null){
-        $log = S2Logger::getLogger('UuCallAopProxyFactory');
-        if(ClassUtil::hasMethod($targetClass,'__call')){
+        $log = S2Container_S2Logger::getLogger('S2Container_UuCallAopProxyFactory');
+        if(S2Container_ClassUtil::hasMethod($targetClass,'__call')){
             $log->info("target class has __call(). ignore aspect.",__METHOD__);
-            return ConstructorUtil::newInstance($targetClass,$args);
+            return S2Container_ConstructorUtil::newInstance($targetClass,$args);
         }
-        $concreteClassName = 'UuCallAopProxy' . $targetClass->getName() . 'EnhancedByS2AOP';
+        $concreteClassName = 'S2Container_UuCallAopProxy' . $targetClass->getName() . 'EnhancedByS2AOP';
         if(class_exists($concreteClassName,false)){
             return new $concreteClassName($targetClass,$map,$args,$params);
         }
         if(!$targetClass->isUserDefined()){
-            return new UuCallAopProxy($targetClass,$map,$args,$params);
+            return new S2Container_UuCallAopProxy($targetClass,$map,$args,$params);
         }
-        $classSrc = ClassUtil::getClassSource(new ReflectionClass('UuCallAopProxy'));
-        $interfaces = ClassUtil::getInterfaces($targetClass); 
+        $classSrc = S2Container_ClassUtil::getClassSource(new ReflectionClass('S2Container_UuCallAopProxy'));
+        $interfaces = S2Container_ClassUtil::getInterfaces($targetClass); 
         if(count($interfaces) == 0){
-            return new UuCallAopProxy($targetClass,$map,$args,$params);
+            return new S2Container_UuCallAopProxy($targetClass,$map,$args,$params);
         }
         $addMethodSrc = array();
         $interfaceNames = array();
         foreach ($interfaces as $interface){
-            $interfaceSrc = ClassUtil::getSource($interface);
+            $interfaceSrc = S2Container_ClassUtil::getSource($interface);
             $methods = $interface->getMethods();
             $unApplicable = false;
             foreach ($methods as $method){
                 if($method->getDeclaringClass()->getName() == $interface->getName()){
-                    if(AopProxy::isApplicableAspect($method)){
-                        array_push($addMethodSrc,UuCallAopProxyFactory::getMethodDefinition($method,$interfaceSrc));
+                    if(S2Container_AopProxy::isApplicableAspect($method)){
+                        array_push($addMethodSrc,S2Container_UuCallAopProxyFactory::getMethodDefinition($method,$interfaceSrc));
                     }else{
                         $unApplicable=true;	
                         break;
@@ -2283,10 +2283,10 @@ class UuCallAopProxyFactory {
         }else{
         	$implLine = ' {';
         }
-        $srcLine = str_replace('UuCallAopProxy',$concreteClassName,$classSrc[0]);
+        $srcLine = str_replace('S2Container_UuCallAopProxy',$concreteClassName,$classSrc[0]);
         $srcLine = str_replace('{',$implLine,$srcLine);
         for($i=1;$i<count($classSrc)-1;$i++){
-            $srcLine .= str_replace('UuCallAopProxy',$concreteClassName,$classSrc[$i]);
+            $srcLine .= str_replace('S2Container_UuCallAopProxy',$concreteClassName,$classSrc[$i]);
         }
         foreach($addMethodSrc as $methodSrc){
             $srcLine .= $methodSrc . "\n";
@@ -2296,7 +2296,7 @@ class UuCallAopProxyFactory {
         return new $concreteClassName($targetClass,$map,$args,$params);
     }
     private static function getMethodDefinition($refMethod,$interfaceSrc){
-        $def = MethodUtil::getSource($refMethod,$interfaceSrc);        
+        $def = S2Container_MethodUtil::getSource($refMethod,$interfaceSrc);        
         $defLine = trim(implode(' ',$def));
         $defLine = preg_replace("/\;$/","",$defLine);
         $defLine = preg_replace("/abstract\s/","",$defLine);
@@ -2321,12 +2321,12 @@ class UuCallAopProxyFactory {
     }
 }
 
-final class ClassUtil {
-    private function ClassUtil() {
+final class S2Container_ClassUtil {
+    private function S2Container_ClassUtil() {
     }
     static function getClassSource($refClass){
         if(!is_readable($refClass->getFileName())){
-            throw new S2RuntimeException('ESSR1006',array($refClass->getFileName()));
+            throw new S2Container_S2RuntimeException('ESSR1006',array($refClass->getFileName()));
         }
         $ret = array();
         $lines = file($refClass->getFileName());
@@ -2339,7 +2339,7 @@ final class ClassUtil {
     }
     static function getSource($refClass){
         if(!is_readable($refClass->getFileName())){
-            throw new S2RuntimeException('ESSR1006',array($refClass->getFileName()));
+            throw new S2Container_S2RuntimeException('ESSR1006',array($refClass->getFileName()));
         }
         $ret = array();
         return file($refClass->getFileName());
@@ -2350,7 +2350,7 @@ final class ClassUtil {
         try{
             return $clazz->getMethod($methodName);
         }catch(ReflectionException $e){
-            throw new NoSuchMethodRuntimeException($clazz,$methodName,$e);
+            throw new S2Container_NoSuchMethodRuntimeException($clazz,$methodName,$e);
         }
 	}
 	public static function hasMethod(
@@ -2372,22 +2372,22 @@ final class ClassUtil {
 	}
 }
 
-class UuCallAopProxy {
+class S2Container_UuCallAopProxy {
     private $parameters_;
     private $methodInterceptorsMap_;
     private $target_ = null;
     private $targetClass_;
-    function UuCallAopProxy($targetClass,$map,$args,$params) {
+    function S2Container_UuCallAopProxy($targetClass,$map,$args,$params) {
         $this->targetClass_=$targetClass;
         $this->methodInterceptorsMap_ = $map;
         $this->parameters_ = $params;
         if(!$this->targetClass_->isInterface() && !$this->targetClass_->isAbstract()){
-            $this->target_ = ConstructorUtil::newInstance($this->targetClass_,$args);
+            $this->target_ = S2Container_ConstructorUtil::newInstance($this->targetClass_,$args);
         }
     }
     function __call($name,$args){
         if(array_key_exists($name,$this->methodInterceptorsMap_)){
-            $methodInvocation = new S2MethodInvocationImpl(
+            $methodInvocation = new S2Container_S2MethodInvocationImpl(
                                     $this->target_,
                                     $this->targetClass_,
                                     $this->targetClass_->getMethod($name),
@@ -2402,20 +2402,20 @@ class UuCallAopProxy {
         		}else{
         			$msg = "target class [{$this->targetClass_->getName()}] ";
         		}
-        		throw new S2RuntimeException('ESSR0043',array($name,$msg));
+        		throw new S2Container_S2RuntimeException('ESSR0043',array($name,$msg));
         	}
-            return MethodUtil::invoke($this->targetClass_->getMethod($name),
+            return S2Container_MethodUtil::invoke($this->targetClass_->getMethod($name),
                                        $this->target_,
                                        $args);
         }
     }
 }
 
-class PropertyNotFoundRuntimeException
-    extends S2RuntimeException {
+class S2Container_PropertyNotFoundRuntimeException
+    extends S2Container_S2RuntimeException {
     private $targetClass_;
     private $propertyName_;
-    public function PropertyNotFoundRuntimeException(
+    public function S2Container_PropertyNotFoundRuntimeException(
         $componentClass,
         $propertyName) {
         parent::__construct("ESSR0065",array($componentClass->getName(), $propertyName));
@@ -2430,8 +2430,8 @@ class PropertyNotFoundRuntimeException
     }
 }
 
-final class MethodUtil {
-    private function MethodUtil() {
+final class S2Container_MethodUtil {
+    private function S2Container_MethodUtil() {
     }
     public static function invoke($method,$target,$args) {
         try {
@@ -2459,7 +2459,7 @@ final class MethodUtil {
     public static function getSource(ReflectionMethod $method,
                                         $src = null) {
         if($src == null){
-        	$src = ClassUtil::getSource($method->getDeclaringClass());
+        	$src = S2Container_ClassUtil::getSource($method->getDeclaringClass());
         }
         $def = array();
         $start = $method->getStartLine();
@@ -2471,26 +2471,26 @@ final class MethodUtil {
     }
 }
 
-interface Joinpoint {
+interface S2Container_Joinpoint {
     function getStaticPart();
     function getThis();
     function proceed();
 }
 
-interface Invocation extends Joinpoint{
+interface S2Container_Invocation extends S2Container_Joinpoint{
     function getArguments();
 }
 
-interface MethodInvocation extends Invocation{
+interface S2Container_MethodInvocation extends S2Container_Invocation{
     function getMethod();
 }
 
-interface S2MethodInvocation extends MethodInvocation {
+interface S2Container_S2MethodInvocation extends S2Container_MethodInvocation {
     function getTargetClass();
     function getParameter($name);
 }
 
-class S2MethodInvocationImpl implements S2MethodInvocation{
+class S2Container_S2MethodInvocationImpl implements S2Container_S2MethodInvocation{
     private $interceptorIndex = 0;
     private $interceptors;
     private $method;
@@ -2498,7 +2498,7 @@ class S2MethodInvocationImpl implements S2MethodInvocation{
     private $parameters_;
     private $target;
     private $targetClass;
-    function S2MethodInvocationImpl(
+    function S2Container_S2MethodInvocationImpl(
         $target,
         $targetClass,
         $method,
@@ -2541,7 +2541,7 @@ class S2MethodInvocationImpl implements S2MethodInvocation{
             return $this->interceptors[$this->interceptorIndex++]->invoke($this);
         }else{
             $method = $this->method->getName();
-            return MethodUtil::invoke($this->method,$this->target,$this->methodArgs);
+            return S2Container_MethodUtil::invoke($this->method,$this->target,$this->methodArgs);
         }
     }
 }

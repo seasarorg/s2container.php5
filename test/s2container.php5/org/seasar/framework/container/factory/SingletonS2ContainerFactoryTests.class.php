@@ -9,7 +9,7 @@ class SingletonS2ContainerFactoryTests extends UnitTestCase {
        
         print __METHOD__ . "\n";
        
-        $this->assertEqual(SingletonS2ContainerFactory::getConfigPath(),
+        $this->assertEqual(S2Container_SingletonS2ContainerFactory::getConfigPath(),
                            "/path/to/app.dicon");
         
         print "\n";
@@ -20,8 +20,8 @@ class SingletonS2ContainerFactoryTests extends UnitTestCase {
        
         print __METHOD__ . "\n";
        
-        SingletonS2ContainerFactory::init();
-        $container = SingletonS2ContainerFactory::getContainer();
+        S2Container_SingletonS2ContainerFactory::init();
+        $container = S2Container_SingletonS2ContainerFactory::getContainer();
         $a = $container->getComponent('a');
         $this->assertIsA($a,'A');
         
@@ -33,8 +33,8 @@ class SingletonS2ContainerFactoryTests extends UnitTestCase {
         print __METHOD__ . "\n";
 
         $path = TEST_DIR . '/s2container.php5/org/seasar/framework/container/factory/xml/test1.dicon';    
-        SingletonS2ContainerFactory::init($path);
-        $container = SingletonS2ContainerFactory::getContainer();
+        S2Container_SingletonS2ContainerFactory::init($path);
+        $container = S2Container_SingletonS2ContainerFactory::getContainer();
         $this->assertNotNull($container);
        
         $a = $container->getComponent('a');
@@ -52,9 +52,9 @@ class SingletonS2ContainerFactoryTests extends UnitTestCase {
 
         $path = TEST_DIR . '/test1.dicon';  
         try{  
-            SingletonS2ContainerFactory::init($path);
+            S2Container_SingletonS2ContainerFactory::init($path);
         }catch(Exception $e){
-            $this->assertIsA($e,'S2RuntimeException');	
+            $this->assertIsA($e,'S2Container_S2RuntimeException');	
             print $e->getMessage() ."\n";
         }    
         print "\n";

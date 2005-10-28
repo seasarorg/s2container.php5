@@ -8,11 +8,11 @@ class ComponentDefImplTests extends UnitTestCase {
        
         print __METHOD__ . "\n";
 
-        $cd = new ComponentDefImpl('A','a');
+        $cd = new S2Container_ComponentDefImpl('A','a');
                
-        $arg1 = new ArgDefImpl();
-        $arg2 = new ArgDefImpl();
-        $arg3 = new ArgDefImpl();
+        $arg1 = new S2Container_ArgDefImpl();
+        $arg2 = new S2Container_ArgDefImpl();
+        $arg3 = new S2Container_ArgDefImpl();
         
         $cd->addArgDef($arg1);
         $cd->addArgDef($arg2);
@@ -29,11 +29,11 @@ class ComponentDefImplTests extends UnitTestCase {
        
         print __METHOD__ . "\n";
 
-        $cd = new ComponentDefImpl('A','a');
+        $cd = new S2Container_ComponentDefImpl('A','a');
                
-        $prop1 = new PropertyDefImpl('a');
-        $prop2 = new PropertyDefImpl('b');
-        $prop3 = new PropertyDefImpl('c');
+        $prop1 = new S2Container_PropertyDefImpl('a');
+        $prop2 = new S2Container_PropertyDefImpl('b');
+        $prop3 = new S2Container_PropertyDefImpl('c');
         
         $cd->addPropertyDef($prop1);
         $cd->addPropertyDef($prop2);
@@ -56,11 +56,11 @@ class ComponentDefImplTests extends UnitTestCase {
        
         print __METHOD__ . "\n";
 
-        $cd = new ComponentDefImpl('A','a');
+        $cd = new S2Container_ComponentDefImpl('A','a');
                
-        $im1 = new InitMethodDefImpl('a');
-        $im2 = new InitMethodDefImpl('b');
-        $im3 = new InitMethodDefImpl('c');
+        $im1 = new S2Container_InitMethodDefImpl('a');
+        $im2 = new S2Container_InitMethodDefImpl('b');
+        $im3 = new S2Container_InitMethodDefImpl('c');
         
         $cd->addInitMethodDef($im1);
         $cd->addInitMethodDef($im2);
@@ -77,11 +77,11 @@ class ComponentDefImplTests extends UnitTestCase {
        
         print __METHOD__ . "\n";
 
-        $cd = new ComponentDefImpl('A','a');
+        $cd = new S2Container_ComponentDefImpl('A','a');
                
-        $dm1 = new DestroyMethodDefImpl('a');
-        $dm2 = new DestroyMethodDefImpl('b');
-        $dm3 = new DestroyMethodDefImpl('c');
+        $dm1 = new S2Container_DestroyMethodDefImpl('a');
+        $dm2 = new S2Container_DestroyMethodDefImpl('b');
+        $dm3 = new S2Container_DestroyMethodDefImpl('c');
         
         $cd->addDestroyMethodDef($dm1);
         $cd->addDestroyMethodDef($dm2);
@@ -98,11 +98,11 @@ class ComponentDefImplTests extends UnitTestCase {
        
         print __METHOD__ . "\n";
 
-        $cd = new ComponentDefImpl('A','a');
+        $cd = new S2Container_ComponentDefImpl('A','a');
                
-        $aspect1 = new AspectDefImpl('a');
-        $aspect2 = new AspectDefImpl('b');
-        $aspect3 = new AspectDefImpl('c');
+        $aspect1 = new S2Container_AspectDefImpl('a');
+        $aspect2 = new S2Container_AspectDefImpl('b');
+        $aspect3 = new S2Container_AspectDefImpl('c');
         
         $cd->addAspectDef($aspect1);
         $cd->addAspectDef($aspect2);
@@ -119,11 +119,11 @@ class ComponentDefImplTests extends UnitTestCase {
        
         print __METHOD__ . "\n";
 
-        $cd = new ComponentDefImpl('A','a');
+        $cd = new S2Container_ComponentDefImpl('A','a');
                
-        $meta1 = new MetaDefImpl('a');
-        $meta2 = new MetaDefImpl('b');
-        $meta3 = new MetaDefImpl('c');
+        $meta1 = new S2Container_MetaDefImpl('a');
+        $meta2 = new S2Container_MetaDefImpl('b');
+        $meta3 = new S2Container_MetaDefImpl('c');
         
         $cd->addMetaDef($meta1);
         $cd->addMetaDef($meta2);

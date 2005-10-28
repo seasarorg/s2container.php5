@@ -8,7 +8,7 @@ class AbstractConstructorAssemblerTests extends UnitTestCase {
        
         print __METHOD__ . "\n";       
 
-        $asm = new TestAbstractConstructorAssembler(new ComponentDefImpl('A'));       
+        $asm = new TestAbstractConstructorAssembler(new S2Container_ComponentDefImpl('A'));       
         $this->assertIsA($asm,'TestAbstractConstructorAssembler');
 
         $a = $asm->assembleDefaultTest();
@@ -18,9 +18,9 @@ class AbstractConstructorAssemblerTests extends UnitTestCase {
     }
 }
 
-class TestAbstractConstructorAssembler extends AbstractConstructorAssembler{
+class TestAbstractConstructorAssembler extends S2Container_AbstractConstructorAssembler{
 	
-    public function TestAbstractAssembler(ComponentDef $componentDef) {
+    public function TestAbstractAssembler(S2Container_ComponentDef $componentDef) {
         parent::__construct($componentDef);
     }	
     

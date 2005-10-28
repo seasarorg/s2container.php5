@@ -1,5 +1,5 @@
 <?php
-class S2SimplTestCaseTests extends S2SimpleTestCase {
+class S2SimplTestCaseTests extends S2Container_S2SimpleTestCase {
 
     public $a;
     

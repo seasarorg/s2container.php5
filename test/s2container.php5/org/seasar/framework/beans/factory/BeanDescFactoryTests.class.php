@@ -9,9 +9,9 @@ class BeanDescFactoryTests extends UnitTestCase {
        print __METHOD__ . "\n";       
     
        $a = new ReflectionClass('A');
-       $desc = BeanDescFactory::getBeanDesc($a);
+       $desc = S2Container_BeanDescFactory::getBeanDesc($a);
        
-       $desc = BeanDescFactory::getBeanDesc($a);
+       $desc = S2Container_BeanDescFactory::getBeanDesc($a);
 
        print "\n";
    }

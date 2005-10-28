@@ -286,7 +286,7 @@ class IniS2ContainerBuilderTests extends UnitTestCase {
        
         print __METHOD__ . "\n";
        
-        $container = SingletonS2ContainerFactory::getContainer();
+        $container = S2Container_SingletonS2ContainerFactory::getContainer();
         $this->assertNotNull($container);
 
         $a = $container->getComponent("a");
@@ -403,7 +403,7 @@ class IniS2ContainerBuilderTests extends UnitTestCase {
             $a = $container->getComponent('A');
             $this->assertIsA($a,'A');
         }catch(Exception $e){
-            $this->assertIsA($e,'TooManyRegistrationRuntimeException');
+            $this->assertIsA($e,'S2Container_TooManyRegistrationRuntimeException');
         }
 
         print "\n";
@@ -553,7 +553,7 @@ class IniS2ContainerBuilderTests extends UnitTestCase {
             $b = $container->getComponent('b5');
             $this->assertIsA($b,'B');
         }catch(Exception $e){
-            $this->assertIsA($e,'ClassUnmatchRuntimeException');
+            $this->assertIsA($e,'S2Container_ClassUnmatchRuntimeException');
             print $e->getMessage() . "\n";
         }
 
@@ -607,7 +607,7 @@ class IniS2ContainerBuilderTests extends UnitTestCase {
         try{ 
             $container = S2ContainerFactory::create(TEST_DIR . '/s2container.php5/org/seasar/framework/container/factory/ini/test32.ini');
         }catch(Exception $e){
-        	$this->assertIsA($e,'CircularIncludeRuntimeException');
+        	$this->assertIsA($e,'S2Container_CircularIncludeRuntimeException');
         	print $e->getMessage() . "\n";
         }
 

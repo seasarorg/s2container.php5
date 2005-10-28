@@ -12,7 +12,7 @@ class DefaultInitMethodAssemblerTests extends UnitTestCase {
         $container->register('I','i');
 
         $cd = $container->getComponentDef('i');
-        $me = new InitMethodDefImpl('culc');
+        $me = new S2Container_InitMethodDefImpl('culc');
         $cd->addInitMethodDef($me);
 
           
@@ -31,7 +31,7 @@ class DefaultInitMethodAssemblerTests extends UnitTestCase {
         $container->register('I','i');
 
         $cd = $container->getComponentDef('i');
-        $me = new InitMethodDefImpl('culc3');
+        $me = new S2Container_InitMethodDefImpl('culc3');
         $cd->addInitMethodDef($me);
           
         $i = $container->getComponent('i');
@@ -48,11 +48,11 @@ class DefaultInitMethodAssemblerTests extends UnitTestCase {
         $container->register('I','i');
 
         $cd = $container->getComponentDef('i');
-        $me = new InitMethodDefImpl('culc2');
-        $arg = new ArgDefImpl();
+        $me = new S2Container_InitMethodDefImpl('culc2');
+        $arg = new S2Container_ArgDefImpl();
         $arg->setValue("2");
         $me->addArgDef($arg);
-        $arg = new ArgDefImpl();
+        $arg = new S2Container_ArgDefImpl();
         $arg->setValue("3");
         $me->addArgDef($arg);
           

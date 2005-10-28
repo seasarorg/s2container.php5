@@ -8,12 +8,12 @@ class AopProxyUtilTests extends UnitTestCase {
        
         print __METHOD__ . "\n";
 
-        $cd = new ComponentDefImpl('A','a');
-        $aspect1 = new AspectDefImpl(new PointcutImpl('A'),new TraceInterceptor());
+        $cd = new S2Container_ComponentDefImpl('A','a');
+        $aspect1 = new S2Container_AspectDefImpl(new S2Container_PointcutImpl('A'),new S2Container_TraceInterceptor());
         $cd->addAspectDef($aspect1);
         
-        $a = AopProxyUtil::getProxyObject($cd,array());
-        $this->assertIsA($a,'UuCallAopProxyAEnhancedByS2AOP');
+        $a = S2Container_AopProxyUtil::getProxyObject($cd,array());
+        $this->assertIsA($a,'S2Container_UuCallAopProxyAEnhancedByS2AOP');
 
         print "\n";
     } 

@@ -251,7 +251,7 @@ init_method{0}{name} = "initialize"
 init_method{0}{arg{0}{val}} = "-1"
 
 aspect{0}{pointcut} = "showMessage"
-aspect{0}{exp} = "new TraceInterceptor()"
+aspect{0}{exp} = "new S2Container_TraceInterceptor()"
 
 meta{0}{name} = "helloMeta"
 meta{0}{ref} = "bye"
@@ -335,7 +335,7 @@ aspect{0}{pointcut} = "showMessage"
 aspect{0}{ref} = "trace"
 
 [trace]
-class = "TraceInterceptor"
+class = "S2Container_TraceInterceptor"
 
 </pre>
 <a name="ini-meta"><h3>meta設定</h3></a>
@@ -550,17 +550,17 @@ dsnプロパティが設定されている場合は、dsnプロパティ値が優先されます。</p>
 &lt;!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
 "components21.dtd"&gt;
 &lt;components namespace="peardb"&gt;
-    &lt;component name="dataSource" class="PearDBDataSource"&gt;
+    &lt;component name="dataSource" class="S2Container_PearDBDataSource"&gt;
         &lt;property name="dsn"&gt;                                  
             "mysql://hoge:hoge@localhost:3306/s2container"       
         &lt;/property&gt;                                            
     &lt;/component&gt;
 
-    &lt;component class="PearDBSqlHandler"/&gt;
-    &lt;component name="dbtx" class="PearDBTxInterceptor"/&gt;
-    &lt;component name="dao" class="SimpleDaoInterceptor"/&gt;
-    &lt;component class="DaoMetaDataFactoryImpl"/&gt;
-    &lt;component name="session" class="DBSessionImpl"/&gt;
+    &lt;component class="S2Container_PearDBSqlHandler"/&gt;
+    &lt;component name="dbtx" class="S2Container_PearDBTxInterceptor"/&gt;
+    &lt;component name="dao" class="S2Container_SimpleDaoInterceptor"/&gt;
+    &lt;component class="S2Container_DaoMetaDataFactoryImpl"/&gt;
+    &lt;component name="session" class="S2Container_DBSessionImpl"/&gt;
 &lt;/components&gt;
 </pre>
 
@@ -571,23 +571,23 @@ dsnプロパティが設定されている場合は、dsnプロパティ値が優先されます。</p>
 namespace="peardb"
 
 [dataSource]
-class="PearDBDataSource"
+class="S2Container_PearDBDataSource"
 
 property{0}{name}="dsn"                                         
 property{0}{val} ="mysql://hoge:hoge@localhost:3306/s2container"
 
-[PearDBSqlHandler]
+[S2Container_PearDBSqlHandler]
 
 [dbtx]
-class="PearDBTxInterceptor"
+class="S2Container_PearDBTxInterceptor"
 
 [dao]
-class="SimpleDaoInterceptor"
+class="S2Container_SimpleDaoInterceptor"
 
-[DaoMetaDataFactoryImpl]
+[S2Container_DaoMetaDataFactoryImpl]
 
 [session]
-class="DBSessionImpl"
+class="S2Container_DBSessionImpl"
 </pre>
 
 <a name="dba-ds-use"><h3>使用方法</h3></a>
@@ -610,7 +610,7 @@ interface DeptDao {
 <p><b>実装クラスの作成</b></p>
 <ul>
 <li type="circle">DeptDaoインタフェースを implements する DeptDaoImplクラスを作成します。</li>
-<li type="circle">コンストラクタ引数で DataSource を受け取るようにします。</li>
+<li type="circle">コンストラクタ引数で S2Container_DataSource を受け取るようにします。</li>
 <li type="circle">findDeptByDeptno メソッドを実装します。データベースへのコネクションは、DataSourceより取得します。</li>
 </ul>
 
@@ -620,7 +620,7 @@ class DeptDaoImpl implements DeptDao {
 
     private $dataSource;
 
-    function DeptDaoImpl(DataSource $dataSource) {
+    function DeptDaoImpl(S2Container_DataSource $dataSource) {
         $this->dataSource = $dataSource;
     }
     
@@ -731,7 +731,7 @@ interface DeptDao {
 <p><b>実装クラスの作成</b></p>
 <ul>
 <li type="circle">DeptDaoインタフェースを implements する TxDeptDaoImplクラスを作成します。</li>
-<li type="circle">コンストラクタ引数で DBSession を受け取るようにします。</li>
+<li type="circle">コンストラクタ引数で S2Container_DBSession を受け取るようにします。</li>
 <li type="circle">findDeptByDeptno メソッドを実装します。データベースへのコネクションは、DBSessionより取得します。</li>
 </ul>
 
@@ -743,7 +743,7 @@ class TxDeptDaoImpl implements DeptDao {
 
     private $session;
 
-    function TxDeptDaoImpl(DBSession $session) {
+    function TxDeptDaoImpl(S2Container_DBSession $session) {
         $this->session = $session;
     }
     
@@ -778,7 +778,7 @@ DBSession->getConnection()の戻り値は、<br>
 <p><b>diconファイルの作成</b></p>
 <p>
 Pear DB を用いる場合の diconファイルを作成します。includeタグで peardb.diconをインクルードします。
-findDeptByDeptnoメソッドに、dbtx (PearDBTxInterceptor) をアスペクトします。
+findDeptByDeptnoメソッドに、dbtx (S2Container_PearDBTxInterceptor) をアスペクトします。
 </p>
 
 <p>XML形式 txDeptDao.dicon</p>
@@ -875,7 +875,7 @@ interface DeptDao {
 <p><b>diconファイルの作成</b></p>
 <p>
 ADOdb を用いる場合の diconファイルを作成します。includeタグで adodb.diconをインクルードします。
-findDeptByDeptnoメソッドに、dao(SimpleDaoInterceptor) をアスペクトします。
+findDeptByDeptnoメソッドに、dao(S2Container_SimpleDaoInterceptor) をアスペクトします。
 </p>
 
 <p>XML形式 simpleDeptDao.dicon</p>
@@ -1035,7 +1035,7 @@ class DeptDto {
 <p><b>diconファイルの作成</b></p>
 <p>
 ADOdb を用いる場合の diconファイルを作成します。includeタグで adodb.diconをインクルードします。
-findDeptByDeptnoメソッドに、dao(SimpleDaoInterceptor) をアスペクトします。(Pear DBを使用する場合は、peardb.dicon をインクルードして下さい。)
+findDeptByDeptnoメソッドに、dao(S2Container_SimpleDaoInterceptor) をアスペクトします。(Pear DBを使用する場合は、peardb.dicon をインクルードして下さい。)
 </p>
 
 <p>XML形式 simpleDeptDao.dicon</p>
@@ -1110,7 +1110,7 @@ Array
 <li>テストメソッド( testXxx )に対応する setUpXxx()、tearDownXxx() を定義しておくと、setUp()の後、tearDown()の前に自動的に呼び出されます。個別のテストメソッドごとの初期化・終了処理を簡単に行えるようになります。</li>
 </ul>
 <h3><a name="unit-example">Example</a></h3>
-<p>Pear PHPUnit2 を拡張した S2PHPUnit2TestCase を用います。<br>
+<p>Pear PHPUnit2 を拡張した S2Container_S2PHPUnit2TestCase を用います。<br>
 このサンプルは、s2container.php5/src/examples/extension/unit/以下にあります。</p>
 
 <p><b>テスト対象</b></p>
@@ -1142,7 +1142,7 @@ class = FooLogic
 <p>s2container.php5/src/examples/extension/unit/test/phpunit2/foo/FooLogicTest.class.php</p>
 <pre>
 &lt;?php
-class FooLogicTest extends S2PHPUnit2TestCase {
+class FooLogicTest extends S2Container_S2PHPUnit2TestCase {
 
     public $logic;   //--- dicon ファイルに logic という名前のコンポーネントが存在すれば設定されます
     

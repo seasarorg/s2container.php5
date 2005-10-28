@@ -5,7 +5,7 @@ class MySQLDeptDaoImpl implements IDeptDao {
     function MySQLDeptDaoImpl() {
     }
     
-    function setSession(DBSession $session){
+    function setSession(S2Container_DBSession $session){
     	$this->session = $session;
     }
     

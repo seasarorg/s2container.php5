@@ -103,26 +103,26 @@ class Date {
  ³‹K•\Œ»‚ğg‚Á‚Äjava.util.Date‚Ìpublic‚Èƒƒ\ƒbƒh‚·‚×‚Ä‚ğ‘ÎÛ‚Æ‚µ‚½‚¢ê‡‚ÍAˆÈ‰º‚Ì‚æ‚¤‚Éİ’è‚µ‚Ü‚·B
 <pre>&lt;component class="Date"&gt;
     &lt;aspect pointcut=".*"&gt;
-        &lt;component class="TraceInterceptor"/&gt;
+        &lt;component class="S2Container_TraceInterceptor"/&gt;
     &lt;/aspect&gt;
 &lt;/component&gt;
 </pre>
 
     <h3><a name="AOPInterceptor">S2AOP‚Å—pˆÓ‚³‚ê‚Ä‚¢‚éInterceptor</a></h3>
     <p>S2AOP‚Å‚ÍAˆÈ‰º‚ÌInterceptor‚ğ—pˆÓ‚µ‚Ä‚¢‚Ü‚·B‚Ü‚½“Æ©‚ÌInterceptor‚ğŠÈ’P‚Éì¬‚Å‚«‚é‚æ‚¤‚É‚È‚Á‚Ä‚¢‚Ü‚·B</p>
-    <h4><a name="TraceInterceptor">(1) TraceInterceptor</a></h4>
+    <h4><a name="S2Container_TraceInterceptor">(1) TraceInterceptor</a></h4>
     <h5>ƒNƒ‰ƒX–¼</h5>
     <p>TraceInterceptor</p>
     <h5>à–¾</h5>
     <p>ƒgƒŒ[ƒXˆ—‚ğuCrosscutting Concernv‚Æ‚µ‚Äˆµ‚¤‚½‚ß‚ÌInterceptor‚Å‚·BDateƒNƒ‰ƒX‚ÉTraceInterceptor‚ğ“K—p‚µ‚½diconƒtƒ@ƒCƒ‹‚ÍAˆÈ‰º‚Ì‚æ‚¤‚É‚È‚è‚Ü‚·B‘ÎÛ‚Æ‚·‚éƒƒ\ƒbƒh‚ÍgetTime()‚Æ‚µ‚Ü‚·B</p>
 <pre>&lt;component class="Date"&gt;
     &lt;aspect pointcut="getTime"&gt;
-        &lt;component class="TraceInterceptor"/&gt;
+        &lt;component class="S2Container_TraceInterceptor"/&gt;
     &lt;/aspect&gt;
 &lt;/component&gt;
 </pre>
     <p>Ú‚µ‚¢g—p•û–@‚Í<a href="#TraceInterceptorSample">TraceInterceptor</a>‚ğQÆ‚µ‚Ä‚­‚¾‚³‚¢B</p>
-    <h4><a name="ThrowsInterceptor">(2) ThrowsInterceptor</a></h4>
+    <h4><a name="S2Container_ThrowsInterceptor">(2) ThrowsInterceptor</a></h4>
     <h5>ƒNƒ‰ƒX–¼</h5>
     <p>ThrowsInterceptor</p>
     <h5>à–¾</h5>
@@ -130,13 +130,13 @@ class Date {
 ŠOˆ—‚ğuCrosscutting
 concernv‚Æ‚µ‚Äˆµ‚¤‚½‚ß‚ÌInterceptor‚Å‚·Bg—p‚·‚é‚É‚ÍThrowsInterceptor‚ğŒp³‚µAfunction
 handleThrowable(Exception,
-MethodInvocation)‚ğÀ‘•‚·‚é‚¾‚¯‚Å‚·BÚ‚µ‚¢g—p•û–@‚Í<a href="#ThrowsInterceptorSample">ThrowsInterceptor</a>‚ğQÆ‚µ‚Ä‚­‚¾‚³‚¢B</p>
-    <h4><a name="MockInterceptor">(3) MockInterceptor</a></h4>
+S2Container_MethodInvocation)‚ğÀ‘•‚·‚é‚¾‚¯‚Å‚·BÚ‚µ‚¢g—p•û–@‚Í<a href="#ThrowsInterceptorSample">ThrowsInterceptor</a>‚ğQÆ‚µ‚Ä‚­‚¾‚³‚¢B</p>
+    <h4><a name="S2Container_MockInterceptor">(3) MockInterceptor</a></h4>
     <h5>ƒNƒ‰ƒX–¼</h5>
     <p>MockInterceptor</p>
     <h5>à–¾</h5>
     <p>Mock‚ğg‚Á‚½ƒeƒXƒg‚ğŠÈ’P‚És‚¤‚½‚ß‚ÌInterceptor‚Å‚·BÚ‚µ‚¢à–¾‚ÍƒeƒXƒg‹Z–@‚Ì<a href="http://homepage3.nifty.com/seasar/testtech.html#MockMake">ƒ‚ƒbƒN‚ğì¬‚·‚é‚½‚ß‚Ìİ’è</a>‚ğQÆ‚µ‚Ä‚­‚¾‚³‚¢B</p>
-    <h4><a name="DelegateInterceptor">(4) DelegateInterceptor</a></h4>
+    <h4><a name="S2Container_DelegateInterceptor">(4) DelegateInterceptor</a></h4>
     <h5>ƒNƒ‰ƒX–¼</h5>
     <p>DelegateInterceptor</p>
     <h5>à–¾</h5>
@@ -153,7 +153,7 @@ DeleateInterceptor#setTarget(foo)CDeleateInterceptor#addMethodNameMap
 <p>targetƒvƒƒpƒeƒB‚Éw’è‚³‚ê‚½ƒRƒ“ƒ|[ƒlƒ“ƒg‚ÍAƒRƒ“ƒeƒi‚Ì‰Šú‰»‚ÉƒRƒ“ƒeƒi‚©‚çæ“¾‚³‚ê‚Ü‚·B‚±‚Ì‚½‚ßAtargetƒvƒƒpƒeƒB‚Éw’è‚³
 ‚ê‚½ƒRƒ“ƒ|[ƒlƒ“ƒg‚Ìinstance‘®«‚ªprototype‚Å‚ ‚Á‚Ä‚àAí‚É“¯‚¶ƒCƒ“ƒXƒ^ƒ“ƒX‚ªg‚í‚ê‚Ü‚·Bƒƒ\ƒbƒhŒÄ‚Ño‚µ‚Ì“x‚ÉV‚µ‚¢ƒCƒ“ƒXƒ^ƒ“
 ƒX‚ğƒRƒ“ƒeƒi‚©‚çæ“¾‚µ‚½‚¢ê‡‚ÍŸ‚ÌPrototypeDelegateInterceptor‚ğg—p‚µ‚Ä‚­‚¾‚³‚¢B</p>
-<h4><a name="PrototypeDelegateInterceptor">(5) PrototypeDelegateInterceptor</a></h4>
+<h4><a name="S2Container_PrototypeDelegateInterceptor">(5) PrototypeDelegateInterceptor</a></h4>
     <h5>ƒNƒ‰ƒX–¼</h5>
     <p>PrototypeDelegateInterceptor</p>
     <h5>à–¾</h5>
@@ -165,7 +165,7 @@ PrototypeDeleateInterceptor#setTarget(foo)C
 PrototypeDeleateInterceptor#addMethodNameMap("bar",
 "bar2")‚Ì‚æ‚¤‚Éw’è‚µ‚Ü‚·BÚ‚µ‚¢g—p•û–@‚Í<a href="#PrototypeDelegateInterceptorSample">PrototypeDelegateInterceptor</a>‚ğQÆ‚µ‚Ä‚­‚¾‚³‚¢B</p>
 
-	<h4><a name="InterceptorChain">(6) InterceptorChain</a></h4>
+	<h4><a name="S2Container_InterceptorChain">(6) InterceptorChain</a></h4>
     <h5>ƒNƒ‰ƒX–¼</h5>
     <p>InterceptorChain</p>
     <h5>à–¾</h5>
@@ -175,7 +175,7 @@ PrototypeDeleateInterceptor#addMethodNameMap("bar",
 ‚æ‚¤‚É‚·‚é‚Æ‚¢‚¢‚Å‚µ‚å‚¤B</p>
 	<pre>&lt;component name="interceptor1" .../&gt;
 &lt;component name="interceptor2" .../&gt;
-&lt;component name="interceptor3" .../&gt;<br>&lt;component name="chain" class="InterceptorChain"&gt;<br>    &lt;initMethod name="add"&gt;&lt;arg&gt;interceptor1&lt;/arg&gt;&lt;/initMethod&gt;<br>    &lt;initMethod name="add"&gt;&lt;arg&gt;interceptor2&lt;/arg&gt;&lt;/initMethod&gt;<br>    &lt;initMethod name="add"&gt;&lt;arg&gt;interceptor3&lt;/arg&gt;&lt;/initMethod&gt;<br>&lt;/component&gt;
+&lt;component name="interceptor3" .../&gt;<br>&lt;component name="chain" class="S2Container_InterceptorChain"&gt;<br>    &lt;initMethod name="add"&gt;&lt;arg&gt;interceptor1&lt;/arg&gt;&lt;/initMethod&gt;<br>    &lt;initMethod name="add"&gt;&lt;arg&gt;interceptor2&lt;/arg&gt;&lt;/initMethod&gt;<br>    &lt;initMethod name="add"&gt;&lt;arg&gt;interceptor3&lt;/arg&gt;&lt;/initMethod&gt;<br>&lt;/component&gt;
 &lt;component ...&gt;
     &lt;aspect&gt;chain&lt;/aspect&gt;
 &lt;/component&gt;
@@ -192,7 +192,7 @@ PrototypeDeleateInterceptor#addMethodNameMap("bar",
     </dl>
     <p>‚Ç‚¿‚ç‚Ìê‡‚àÀ‘•‚·‚éƒƒ\ƒbƒh‚ÍAˆÈ‰º‚Ìinvoke()ƒƒ\ƒbƒh‚Ì‚P‚Â‚¾‚¯‚Å‚·B</p>
     <dl>
-    	<dt style="text-indent: 1em;">public function invoke(MethodInvocation $methodInvocation)</dt>
+    	<dt style="text-indent: 1em;">public function invoke(S2Container_MethodInvocation $methodInvocation)</dt>
     </dl>
     <p>AbstractInterceptor
 ‚ÍAMethodInterceptor‚ğimplements‚µ‚½’ŠÛƒNƒ‰ƒX‚Å‚·BAbstractInterceptor‚É‚ÍAProxyƒIƒuƒWƒFƒN
@@ -201,15 +201,15 @@ PrototypeDeleateInterceptor#addMethodNameMap("bar",
 AbstractInterceptor‚ğg—p‚·‚é‚±‚Æ‚ÅŠÈ’P‚ÉƒNƒ‰ƒX–¼‚ğæ“¾‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B</p>
     <dl>
     	<dt style="text-indent: 1em;">public function createProxy($proxyClass)</dt>
-    	<dt style="text-indent: 1em;">protected function getTargetClass(MethodInvocation $methodInvocation)</dt>
+    	<dt style="text-indent: 1em;">protected function getTargetClass(S2Container_MethodInvocation $methodInvocation)</dt>
     </dl>
    	<p>MethodInvocation
 ‚ÌgetThis()AgetMethod()AgetArguments()‚Å‘ÎÛ‚Æ‚È‚éƒIƒuƒWƒFƒNƒgAƒƒ\ƒbƒhAˆø”‚ğæ“¾‚Å‚«‚Ü‚·Bproceed()‚ğŒÄ‚Ño‚·‚ÆÀÛ‚Ìƒƒ\ƒbƒh‚ªŒÄ‚Ño‚³‚êÀsŒ‹‰Ê‚ğæ
 “¾‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·BˆÈ‰º‚Ì‚æ‚¤‚È“Æ©‚ÌInterceptor‚ğì¬‚µ‚½‚Æ‚µ‚Ü‚·B</p>
     <h5>ì¬—á</h5>
 <pre>&lt;?php
-class ABS implements MethodInterceptor {
-    public function invoke(MethodInvocation $invocation){
+class ABS implements S2Container_MethodInterceptor {
+    public function invoke(S2Container_MethodInvocation $invocation){
 
         print "Before \n";             <-- ŒÄ‚Ô‘O‚Í Before
 
@@ -241,9 +241,9 @@ class ABS implements MethodInterceptor {
 	</ul>
     <p>DateƒNƒ‰ƒX‚ÉTraceInterceptor‚ğƒvƒƒOƒ‰ƒ€ã‚Å“K—p‚·‚éê‡‚ÍAŸ‚Ì‚æ‚¤‚É‚È‚è‚Ü‚·B‘ÎÛ‚Æ‚È‚éƒƒ\ƒbƒh‚ÍgetTime()‚Æ‚µ‚Ü‚·B</p>
 <pre>&lt;?php
-$pointcut = new PointcutImpl(array("getTime"));
-$aspect = new AspectImpl(new TraceInterceptor(), $pointcut);
-$aopProxy = new AopProxy('Date', array($aspect));
+$pointcut = new S2Container_PointcutImpl(array("getTime"));
+$aspect = new S2Container_AspectImpl(new S2Container_TraceInterceptor(), $pointcut);
+$aopProxy = new S2Container_AopProxy('Date', array($aspect));
 $proxy = $aopProxy->create();
 $proxy->getTime();
 ?&gt;
@@ -269,7 +269,7 @@ $proxy->getTime();
 &lt;!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
 "http://www.seasar.org/dtd/components21.dtd"&gt;
 &lt;components&gt;
-    &lt;component name="traceInterceptor" class="TraceInterceptor"/&gt;
+    &lt;component name="traceInterceptor" class="S2Container_TraceInterceptor"/&gt;
     &lt;component class="Date"&gt;
         &lt;aspect pointcut="getTime"&gt;
             traceInterceptor
@@ -334,13 +334,13 @@ class Checker {
 	<p><b>ThrowsInterceptor‚ğŒp³‚·‚éInterceptor‚Ìì¬</b></p>
 	<ul>
         <li type="circle">ThrowsInterceptor‚ğŒp³‚µ‚Ü‚·B</li>
-	    <li type="circle">handleThrowable(Exception, MethodInvocation)‚ğÀ‘•‚µ‚Ü‚·B</li>
+	    <li type="circle">handleThrowable(Exception, S2Container_MethodInvocation)‚ğÀ‘•‚µ‚Ü‚·B</li>
     </ul>
 	<p>HandleThrowableInterceptor.class.php</p>
 <pre>&lt;?php
-class HandleThrowableInterceptor extends ThrowsInterceptor {
+class HandleThrowableInterceptor extends S2Container_ThrowsInterceptor {
 	
-    public function handleThrowable(Exception $t, MethodInvocation $invocation){
+    public function handleThrowable(Exception $t, S2Container_MethodInvocation $invocation){
     }
 }
 ?&gt;
@@ -415,10 +415,10 @@ ThrowsInterceptor‚ğŒp³‚µ‚Äì¬‚µ‚½ƒNƒ‰ƒX(HandleThrowableInterceptor.class.php)‚
  @ <b>—áŠO‚ğ•Ê‚Ì—áŠO‚É•ÏŠ·‚·‚éInterceptor‚Ìì¬</b>
     <p>S2RuntimeException‚ğ”­¶‚³‚¹‚ÄƒƒbƒZ[ƒW‚ğ•ÏX‚µ‚Ü‚·B</p>
 <pre>&lt;?php
-class HandleThrowableInterceptor extends ThrowsInterceptor {
+class HandleThrowableInterceptor extends S2Container_ThrowsInterceptor {
 	
-    public function handleThrowable(Exception $t, MethodInvocation $invocation){
-        throw new S2RuntimeException("ESSR0007", array("arg"));
+    public function handleThrowable(Exception $t, S2Container_MethodInvocation $invocation){
+        throw new S2Container_S2RuntimeException("ESSR0007", array("arg"));
     }
 }
 ?&gt;
@@ -494,7 +494,7 @@ class Substance implements IBase{
 &lt;components&gt;
     &lt;component class="Dummy"&gt;
         &lt;aspect&gt;
-            &lt;component class="DelegateInterceptor"&gt;
+            &lt;component class="S2Container_DelegateInterceptor"&gt;
                 &lt;initMethod name="setTarget"&gt;
                     &lt;arg&gt;new Substance()&lt;/arg&gt;
                 &lt;/initMethod&gt;
@@ -589,7 +589,7 @@ class Substance implements IBase{
 &lt;components&gt;
     &lt;component class="Dummy"&gt;
         &lt;aspect&gt;
-            &lt;component class="PrototypeDelegateInterceptor"&gt;
+            &lt;component class="S2Container_PrototypeDelegateInterceptor"&gt;
                 &lt;property name="targetName"&gt;"target"&lt;/property&gt;
             &lt;/component&gt;
         &lt;/aspect&gt;
@@ -641,7 +641,7 @@ sum : 0
 	<p><b>“Æ©À‘•‚ÌIntercepter‚Ìì¬</b></p>
 	<ul>
     	<li type="circle">AbstractInterceptorƒNƒ‰ƒX‚ğÀ‘•‚µ‚Ü‚·B</li>
-	    <li type="circle">invoke(MethodInvocation $invocation)ƒƒ\ƒbƒh‚ğÀ‘•‚µ‚Ü‚·B</li>
+	    <li type="circle">invoke(S2Container_MethodInvocation $invocation)ƒƒ\ƒbƒh‚ğÀ‘•‚µ‚Ü‚·B</li>
         <li type="circle">getTargetClass($invocation)->getName()‚ÅƒNƒ‰ƒX–¼‚ğæ“¾‚µ‚Ü‚·B</li>
         <li type="circle">$invocation->getMethod()->getName()‚Åƒƒ\ƒbƒh–¼‚ğæ“¾‚µ‚Ü‚·B</li>
         <li type="circle">$invocation->getArguments()‚Åˆø”‚ğæ“¾‚µ‚Ü‚·B</li>
@@ -649,8 +649,8 @@ sum : 0
 	</ul>
     <p>MeasurementInterceptor.class.php</p>
 <pre>&lt;?php
-class MeasurementInterceptor extends AbstractInterceptor {
-    public function invoke(MethodInvocation $invocation){
+class MeasurementInterceptor extends S2Container_AbstractInterceptor {
+    public function invoke(S2Container_MethodInvocation $invocation){
         $start = 0;
         $end = 0;
         $buf = "";

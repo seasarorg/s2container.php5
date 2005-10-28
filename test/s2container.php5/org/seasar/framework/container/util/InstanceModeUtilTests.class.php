@@ -32,9 +32,9 @@ class InstanceModeUtilTests extends UnitTestCase {
        
         print __METHOD__ . "\n";
        
-        $this->assertTrue(InstanceModeUtil::isOuter('outer'));
-        $this->assertTrue(InstanceModeUtil::isOuter('oUter'));
-        $this->assertFalse(InstanceModeUtil::isOuter('oouter'));
+        $this->assertTrue(S2Container_InstanceModeUtil::isOuter('outer'));
+        $this->assertTrue(S2Container_InstanceModeUtil::isOuter('oUter'));
+        $this->assertFalse(S2Container_InstanceModeUtil::isOuter('oouter'));
 
         print "\n";
     }
@@ -43,9 +43,9 @@ class InstanceModeUtilTests extends UnitTestCase {
        
         print __METHOD__ . "\n";
        
-        $this->assertTrue(InstanceModeUtil::isSingleton('singleton'));
-        $this->assertTrue(InstanceModeUtil::isSingleton('SingleTon'));
-        $this->assertFalse(InstanceModeUtil::isSingleton('single'));
+        $this->assertTrue(S2Container_InstanceModeUtil::isSingleton('singleton'));
+        $this->assertTrue(S2Container_InstanceModeUtil::isSingleton('SingleTon'));
+        $this->assertFalse(S2Container_InstanceModeUtil::isSingleton('single'));
 
         print "\n";
     }
@@ -54,9 +54,9 @@ class InstanceModeUtilTests extends UnitTestCase {
        
         print __METHOD__ . "\n";
        
-        $this->assertTrue(InstanceModeUtil::isPrototype('prototype'));
-        $this->assertTrue(InstanceModeUtil::isPrototype('Prototype'));
-        $this->assertFalse(InstanceModeUtil::isPrototype('pro'));
+        $this->assertTrue(S2Container_InstanceModeUtil::isPrototype('prototype'));
+        $this->assertTrue(S2Container_InstanceModeUtil::isPrototype('Prototype'));
+        $this->assertFalse(S2Container_InstanceModeUtil::isPrototype('pro'));
 
         print "\n";
     }    
@@ -65,9 +65,9 @@ class InstanceModeUtilTests extends UnitTestCase {
        
         print __METHOD__ . "\n";
        
-        $this->assertTrue(InstanceModeUtil::isRequest('request'));
-        $this->assertTrue(InstanceModeUtil::isRequest('Request'));
-        $this->assertFalse(InstanceModeUtil::isRequest('req'));
+        $this->assertTrue(S2Container_InstanceModeUtil::isRequest('request'));
+        $this->assertTrue(S2Container_InstanceModeUtil::isRequest('Request'));
+        $this->assertFalse(S2Container_InstanceModeUtil::isRequest('req'));
 
         print "\n";
     }    
@@ -76,9 +76,9 @@ class InstanceModeUtilTests extends UnitTestCase {
        
         print __METHOD__ . "\n";
        
-        $this->assertTrue(InstanceModeUtil::isSession('session'));
-        $this->assertTrue(InstanceModeUtil::isSession('Session'));
-        $this->assertFalse(InstanceModeUtil::isSession('ses'));
+        $this->assertTrue(S2Container_InstanceModeUtil::isSession('session'));
+        $this->assertTrue(S2Container_InstanceModeUtil::isSession('Session'));
+        $this->assertFalse(S2Container_InstanceModeUtil::isSession('ses'));
 
         print "\n";
     }    

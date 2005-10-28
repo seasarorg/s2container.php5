@@ -3,11 +3,19 @@
 // +----------------------------------------------------------------------+
 // | PHP version 5                                                        |
 // +----------------------------------------------------------------------+
-// | Copyright (c) 2003-2004 The Seasar Project.                          |
+// | Copyright 2004-2005 the Seasar Foundation and the Others.            |
 // +----------------------------------------------------------------------+
-// | The Seasar Software License, Version 1.1                             |
-// |   This product includes software developed by the Seasar Project.    |
-// |   (http://www.seasar.org/)                                           |
+// | Licensed under the Apache License, Version 2.0 (the "License");      |
+// | you may not use this file except in compliance with the License.     |
+// | You may obtain a copy of the License at                              |
+// |                                                                      |
+// |     http://www.apache.org/licenses/LICENSE-2.0                       |
+// |                                                                      |
+// | Unless required by applicable law or agreed to in writing, software  |
+// | distributed under the License is distributed on an "AS IS" BASIS,    |
+// | WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,                        |
+// | either express or implied. See the License for the specific language |
+// | governing permissions and limitations under the License.             |
 // +----------------------------------------------------------------------+
 // | Authors: klove                                                       |
 // +----------------------------------------------------------------------+
@@ -30,10 +38,10 @@ class S2ContainerImpl implements S2Container {
     private $metaDefSupport_;
     
     public function S2ContainerImpl() {
-        $this->metaDefSupport_ = new MetaDefSupport();
+        $this->metaDefSupport_ = new S2Container_MetaDefSupport();
         $this->root_ = $this;
-        $componentDef = new SimpleComponentDef($this, ContainerConstants::CONTAINER_NAME);
-        $this->componentDefMap_[ContainerConstants::CONTAINER_NAME] = $componentDef;
+        $componentDef = new S2Container_SimpleComponentDef($this, S2Container_ContainerConstants::CONTAINER_NAME);
+        $this->componentDefMap_[S2Container_ContainerConstants::CONTAINER_NAME] = $componentDef;
         $this->componentDefMap_['S2Container'] = $componentDef;
     }
     
@@ -81,17 +89,17 @@ class S2ContainerImpl implements S2Container {
      * @see S2Container::register()
      */
     public function register($component,$componentName="") {
-        if($component instanceof ComponentDef){
+        if($component instanceof S2Container_ComponentDef){
             $this->register0($component);
             array_push($this->componentDefList_,$component);
         }else if(is_object($component)){
-            $this->register(new SimpleComponentDef($component,trim($componentName)));
+            $this->register(new S2Container_SimpleComponentDef($component,trim($componentName)));
         }else {
-            $this->register(new ComponentDefImpl($component, trim($componentName)));
+            $this->register(new S2Container_ComponentDefImpl($component, trim($componentName)));
         }
     }
 
-    private function register0(ComponentDef $componentDef) {
+    private function register0(S2Container_ComponentDef $componentDef) {
         if ($componentDef->getContainer() == null) {
             $componentDef->setContainer($this);
         }    
@@ -99,21 +107,21 @@ class S2ContainerImpl implements S2Container {
         $this->registerByName($componentDef);
     }
 
-    private function registerByClass(ComponentDef $componentDef) {
+    private function registerByClass(S2Container_ComponentDef $componentDef) {
         $classes = $this->getAssignableClasses($componentDef->getComponentClass());
         for ($i = 0; $i < count($classes); ++$i) {
             $this->registerMap($classes[$i], $componentDef);
         }
     }
 
-    private function registerByName(ComponentDef $componentDef) {
+    private function registerByName(S2Container_ComponentDef $componentDef) {
         $componentName = $componentDef->getComponentName();
         if ($componentName != "") {
             $this->registerMap($componentName, $componentDef);
         }
     }
 
-    private function registerMap($key, ComponentDef $componentDef) {
+    private function registerMap($key, S2Container_ComponentDef $componentDef) {
         if (array_key_exists($key,$this->componentDefMap_)) {
             $this->processTooManyRegistration($key, $componentDef);
         } else {
@@ -134,7 +142,7 @@ class S2ContainerImpl implements S2Container {
     public function getComponentDef($key){
         if(is_int($key)){
         	if(!isset($this->componentDefList_[$key])){
-        		throw new ComponentNotFoundRuntimeException($key);
+        		throw new S2Container_ComponentNotFoundRuntimeException($key);
         	}
             return $this->componentDefList_[$key];
         }
@@ -144,7 +152,7 @@ class S2ContainerImpl implements S2Container {
 
         $cd = $this->internalGetComponentDef($key);
         if ($cd == null) {
-            throw new ComponentNotFoundRuntimeException($key);
+            throw new S2Container_ComponentNotFoundRuntimeException($key);
         }
         return $cd;
     }
@@ -157,7 +165,7 @@ class S2ContainerImpl implements S2Container {
 		if ($cd == null) {
 			return array();
 		}
-		else if ($cd instanceof TooManyRegistrationComponentDef) {
+		else if ($cd instanceof S2Container_TooManyRegistrationComponentDef) {
 		    return $cd->getComponentDefs();
 		}
 		return array($cd);
@@ -172,7 +180,7 @@ class S2ContainerImpl implements S2Container {
             }
         }
 
-        if(preg_match("/(.+)".ContainerConstants::NS_SEP."(.+)/",$key,$ret)){
+        if(preg_match("/(.+)".S2Container_ContainerConstants::NS_SEP."(.+)/",$key,$ret)){
             if ($this->hasComponentDef($ret[1])) {
                 $child = $this->getComponent($ret[1]);
                 if ($child->hasComponentDef($ret[2])) {
@@ -211,7 +219,7 @@ class S2ContainerImpl implements S2Container {
         if ($descendant != null) {
             return $descendant;
         } else {
-            throw new ContainerNotRegisteredRuntimeException($path);
+            throw new S2Container_ContainerNotRegisteredRuntimeException($path);
         }
     }
     
@@ -243,7 +251,7 @@ class S2ContainerImpl implements S2Container {
      */
     public function getChild($index) {
     	if(!isset($this->children_[$index])){
-    		throw new ContainerNotRegisteredRuntimeException("Child:".$index);
+    		throw new S2Container_ContainerNotRegisteredRuntimeException("Child:".$index);
     	}
         return $this->children_[$index];
     }
@@ -298,7 +306,7 @@ class S2ContainerImpl implements S2Container {
     public function setNamespace($namespace) {
         $this->namespace_ = $namespace;
         $this->componentDefMap_[$this->namespace_] = 
-            new SimpleComponentDef($this,$this->namespace_);
+            new S2Container_SimpleComponentDef($this,$this->namespace_);
     }
 
     public function getPath() {
@@ -310,28 +318,28 @@ class S2ContainerImpl implements S2Container {
     }
  
     /**
-     * @see MetaDefAware::addMetaDef()
+     * @see S2Container_MetaDefAware::addMetaDef()
      */
-    public function addMetaDef(MetaDef $metaDef) {
+    public function addMetaDef(S2Container_MetaDef $metaDef) {
         $this->metaDefSupport_->addMetaDef($metaDef);
     }
     
     /**
-     * @see MetaDefAware::getMetaDef()
+     * @see S2Container_MetaDefAware::getMetaDef()
      */
     public function getMetaDef($name) {
         return $this->metaDefSupport_->getMetaDef($name);
     }
     
     /**
-     * @see MetaDefAware::getMetaDefs()
+     * @see S2Container_MetaDefAware::getMetaDefs()
      */
     public function getMetaDefs($name) {
         return $this->metaDefSupport_->getMetaDefs($name);
     }
     
     /**
-     * @see MetaDefAware::getMetaDefSize()
+     * @see S2Container_MetaDefAware::getMetaDefSize()
      */
     public function getMetaDefSize() {
         return $this->metaDefSupport_->getMetaDefSize();
@@ -358,13 +366,13 @@ class S2ContainerImpl implements S2Container {
     }
     
     private function  processTooManyRegistration($key,
-            ComponentDef $componentDef) {
+            S2Container_ComponentDef $componentDef) {
 
         $cd = $this->componentDefMap_[$key];
-        if ($cd instanceof TooManyRegistrationComponentDef) {
+        if ($cd instanceof S2Container_TooManyRegistrationComponentDef) {
             $cd->addComponentDef($componentDef);
         } else {
-            $tmrcf = new TooManyRegistrationComponentDefImpl($key);
+            $tmrcf = new S2Container_TooManyRegistrationComponentDefImpl($key);
             $tmrcf->addComponentDef($cd);
             $tmrcf->addComponentDef($componentDef);
             $this->componentDefMap_[$key] = $tmrcf;

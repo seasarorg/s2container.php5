@@ -12,8 +12,8 @@ class UuSetPropertyDescImplTests extends UnitTestCase {
        $container->register('M','m');
 
        $ecd = $container->getComponentDef('m');
-       $ecd->setAutoBindingMode(ContainerConstants::AUTO_BINDING_CONSTRUCTOR);
-       $pro = new PropertyDefImpl('name','test-test');
+       $ecd->setAutoBindingMode(S2Container_ContainerConstants::AUTO_BINDING_CONSTRUCTOR);
+       $pro = new S2Container_PropertyDefImpl('name','test-test');
        $ecd->addPropertyDef($pro);
           
        $m = $container->getComponent('m');
@@ -30,8 +30,8 @@ class UuSetPropertyDescImplTests extends UnitTestCase {
        $container->register('M2','m');
 
        $ecd = $container->getComponentDef('m');
-       $ecd->setAutoBindingMode(ContainerConstants::AUTO_BINDING_CONSTRUCTOR);
-       $pro = new PropertyDefImpl('val','test-test');
+       $ecd->setAutoBindingMode(S2Container_ContainerConstants::AUTO_BINDING_CONSTRUCTOR);
+       $pro = new S2Container_PropertyDefImpl('val','test-test');
        $ecd->addPropertyDef($pro);
           
        $m = $container->getComponent('m');
@@ -48,14 +48,14 @@ class UuSetPropertyDescImplTests extends UnitTestCase {
        $container->register('M3','m');
 
        $ecd = $container->getComponentDef('m');
-       $ecd->setAutoBindingMode(ContainerConstants::AUTO_BINDING_CONSTRUCTOR);
-       $pro = new PropertyDefImpl('val','test-test');
+       $ecd->setAutoBindingMode(S2Container_ContainerConstants::AUTO_BINDING_CONSTRUCTOR);
+       $pro = new S2Container_PropertyDefImpl('val','test-test');
        $ecd->addPropertyDef($pro);
 
        try{          
            $m = $container->getComponent('m');
        }catch(Exception $e){
-       	   $this->assertIsA($e,'PropertyNotFoundRuntimeException');
+       	   $this->assertIsA($e,'S2Container_PropertyNotFoundRuntimeException');
        	   print $e->getMessage() . "\n";
        }
        

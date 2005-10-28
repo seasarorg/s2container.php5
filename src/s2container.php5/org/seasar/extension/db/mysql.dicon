@@ -2,17 +2,17 @@
 <!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
 "components21.dtd">
 <components namespace="mysql">
-    <component name="dataSource" class="MySQLDataSource">
+    <component name="dataSource" class="S2Container_MySQLDataSource">
         <property name="database">"s2container"</property>
         <property name="host">"localhost"</property>
         <property name="port">"3306"</property>
         <property name="user">"hoge"</property>
         <property name="password">"hoge"</property>
     </component>
-    <component name="session" class="DBSessionImpl"/>
-    <component name="dbtx" class="MySQLTxInterceptor"/>
+    <component name="session" class="S2Container_DBSessionImpl"/>
+    <component name="dbtx" class="S2Container_MySQLTxInterceptor"/>
 
-    <component class="MySQLSqlHandler"/>
-    <component name="dao" class="SimpleDaoInterceptor"/>
-    <component class="DaoMetaDataFactoryImpl"/>
+    <component class="S2Container_MySQLSqlHandler"/>
+    <component name="dao" class="S2Container_SimpleDaoInterceptor"/>
+    <component class="S2Container_DaoMetaDataFactoryImpl"/>
 </components>

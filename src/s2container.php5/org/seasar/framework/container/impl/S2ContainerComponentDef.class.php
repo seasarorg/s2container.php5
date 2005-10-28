@@ -3,11 +3,19 @@
 // +----------------------------------------------------------------------+
 // | PHP version 5                                                        |
 // +----------------------------------------------------------------------+
-// | Copyright (c) 2003-2004 The Seasar Project.                          |
+// | Copyright 2004-2005 the Seasar Foundation and the Others.            |
 // +----------------------------------------------------------------------+
-// | The Seasar Software License, Version 1.1                             |
-// |   This product includes software developed by the Seasar Project.    |
-// |   (http://www.seasar.org/)                                           |
+// | Licensed under the Apache License, Version 2.0 (the "License");      |
+// | you may not use this file except in compliance with the License.     |
+// | You may obtain a copy of the License at                              |
+// |                                                                      |
+// |     http://www.apache.org/licenses/LICENSE-2.0                       |
+// |                                                                      |
+// | Unless required by applicable law or agreed to in writing, software  |
+// | distributed under the License is distributed on an "AS IS" BASIS,    |
+// | WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,                        |
+// | either express or implied. See the License for the specific language |
+// | governing permissions and limitations under the License.             |
 // +----------------------------------------------------------------------+
 // | Authors: klove                                                       |
 // +----------------------------------------------------------------------+
@@ -17,7 +25,7 @@
  * @package org.seasar.framework.container.impl
  * @author klove
  */
-class S2ContainerComponentDef extends SimpleComponentDef {
+class S2ContainerComponentDef extends S2Container_SimpleComponentDef {
 
     public function S2ContainerComponentDef(S2Container $container, $name) {
         parent::__construct($container, $name);
@@ -28,21 +36,21 @@ class S2ContainerComponentDef extends SimpleComponentDef {
     }
     
     /**
-     * @see ComponentDef::getComponent()
+     * @see S2Container_ComponentDef::getComponent()
      */
     public function getComponent() {
         return $this->getContainer();
     }
 
     /**
-     * @see ComponentDef::init()
+     * @see S2Container_ComponentDef::init()
      */
     public function init() {
         $this->getContainer()->init();
     }
     
     /**
-     * @see ComponentDef::destroy()
+     * @see S2Container_ComponentDef::destroy()
      */
     public function destroy() {
         $this->getContainer()->destroy();

@@ -8,9 +8,9 @@ class TraceInterceptorTests extends UnitTestCase {
        
         print __METHOD__ . "\n";
        
-        $pointcut = new PointcutImpl(array("getTime"));
-        $aspect = new AspectImpl(new TraceInterceptor(), $pointcut);
-        $aopProxy = new AopProxy('Date', array($aspect));
+        $pointcut = new S2Container_PointcutImpl(array("getTime"));
+        $aspect = new S2Container_AspectImpl(new S2Container_TraceInterceptor(), $pointcut);
+        $aopProxy = new S2Container_AopProxy('Date', array($aspect));
         $proxy = $aopProxy->create();
         $this->assertEqual($proxy->getTime(),'12:00:30');
         print "\n";
@@ -20,9 +20,9 @@ class TraceInterceptorTests extends UnitTestCase {
        
         print __METHOD__ . "\n";
        
-        $pointcut = new PointcutImpl(array("culc2"));
-        $aspect = new AspectImpl(new TraceInterceptor(), $pointcut);
-        $aopProxy = new AopProxy('I', array($aspect));
+        $pointcut = new S2Container_PointcutImpl(array("culc2"));
+        $aspect = new S2Container_AspectImpl(new S2Container_TraceInterceptor(), $pointcut);
+        $aopProxy = new S2Container_AopProxy('I', array($aspect));
         $proxy = $aopProxy->create();
         $proxy->culc2(4,8);
         $this->assertEqual($proxy->getResult(),12);

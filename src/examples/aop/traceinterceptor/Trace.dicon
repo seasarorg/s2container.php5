@@ -2,7 +2,7 @@
 <!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
 "components21.dtd">
 <components>
-	<component name="traceInterceptor" class="TraceInterceptor"/>
+	<component name="traceInterceptor" class="S2Container_TraceInterceptor"/>
 	<component class="Date">
         <aspect pointcut="getTime">
             traceInterceptor

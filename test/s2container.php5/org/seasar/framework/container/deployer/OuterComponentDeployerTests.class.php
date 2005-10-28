@@ -13,7 +13,7 @@ class OuterComponentDeployerTests extends UnitTestCase {
         $container->register('L','l');
           
         $cd = $container->getComponentDef('l');
-        $cd->setInstanceMode(ContainerConstants::INSTANCE_OUTER);
+        $cd->setInstanceMode(S2Container_ContainerConstants::INSTANCE_OUTER);
           
         $l = new L();
         $this->assertNull($l->getComp());
@@ -27,15 +27,15 @@ class OuterComponentDeployerTests extends UnitTestCase {
     function testCheckComponentClass() {
         print __METHOD__ . "\n";
 
-        $cd = new ComponentDefImpl('L','l');
-        $cd->setInstanceMode(ContainerConstants::INSTANCE_OUTER);
+        $cd = new S2Container_ComponentDefImpl('L','l');
+        $cd->setInstanceMode(S2Container_ContainerConstants::INSTANCE_OUTER);
         
-        $deployer = new OuterComponentDeployer($cd);  
+        $deployer = new S2Container_OuterComponentDeployer($cd);  
 
         try{
             $deployer->injectDependency(new A());
         }catch(Exception $e){
-        	$this->assertIsA($e,'ClassUnmatchRuntimeException');
+        	$this->assertIsA($e,'S2Container_ClassUnmatchRuntimeException');
         	print $e->getMessage() . "\n";
         }    
 

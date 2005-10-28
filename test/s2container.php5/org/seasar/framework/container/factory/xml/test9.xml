@@ -4,11 +4,11 @@
 <components namespace="test9">
 
     <component name="date" class="Date">
-        <aspect pointcut="getTime">new TraceInterceptor()</aspect>
+        <aspect pointcut="getTime">new S2Container_TraceInterceptor()</aspect>
     </component>
 
     <component name="e" class="DelegateA">
-        <aspect>new TraceInterceptor()</aspect>
+        <aspect>new S2Container_TraceInterceptor()</aspect>
     </component>
 
 </components>

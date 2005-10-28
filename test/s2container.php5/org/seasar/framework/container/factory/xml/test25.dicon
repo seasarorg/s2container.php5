@@ -10,7 +10,7 @@
         <aspect>mock</aspect>
     </component>
 
-    <component name="mock" class="MockInterceptor">
+    <component name="mock" class="S2Container_MockInterceptor">
         <initMethod name="setReturnValue">
             <arg>"add"</arg>
             <arg>"5"</arg>

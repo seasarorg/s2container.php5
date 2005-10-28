@@ -3,7 +3,7 @@ class DeptDaoImpl implements DeptDao {
 
     private $dataSource;
 
-    function DeptDaoImpl(DataSource $dataSource) {
+    function DeptDaoImpl(S2Container_DataSource $dataSource) {
         $this->dataSource = $dataSource;
     }
     

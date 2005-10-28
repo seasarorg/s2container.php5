@@ -2,7 +2,7 @@
 <!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
 "components21.dtd">
 <components namespace="adodb">
-    <component name="dataSource" class="ADOdbDataSource">
+    <component name="dataSource" class="S2Container_ADOdbDataSource">
         <property name="dsn">
             "mysql://hoge:hoge@localhost:3306/s2container"
         </property>
@@ -19,10 +19,10 @@
         -->
     </component>
 
-    <component name="dbtx" class="ADOdbTxInterceptor"/>
-    <component name="session" class="DBSessionImpl"/>
+    <component name="dbtx" class="S2Container_ADOdbTxInterceptor"/>
+    <component name="session" class="S2Container_DBSessionImpl"/>
 
-    <component class="ADOdbSqlHandler"/>
-    <component name="dao" class="SimpleDaoInterceptor"/>
-    <component class="DaoMetaDataFactoryImpl"/>
+    <component class="S2Container_ADOdbSqlHandler"/>
+    <component name="dao" class="S2Container_SimpleDaoInterceptor"/>
+    <component class="S2Container_DaoMetaDataFactoryImpl"/>
 </components>

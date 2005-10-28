@@ -9,7 +9,7 @@ class UnsupportedOperationExceptionTests extends UnitTestCase {
         print __METHOD__ . "\n";
 
         try{
-            throw new 	UnsupportedOperationException("<unsupport exception test>");
+            throw new 	S2Container_UnsupportedOperationException("<unsupport exception test>");
         }catch(Exception $e){
         	print $e->getMessage() . "\n";
         }

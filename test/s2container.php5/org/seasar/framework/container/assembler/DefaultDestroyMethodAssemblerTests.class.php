@@ -12,11 +12,11 @@ class DefaultDestroyMethodAssemblerTests extends UnitTestCase {
         $container->register('G','g');
 
         $cd = $container->getComponentDef('g');
-        $me = new DestroyMethodDefImpl('finish');
+        $me = new S2Container_DestroyMethodDefImpl('finish');
         $cd->addDestroyMethodDef($me);
 
-        $me = new DestroyMethodDefImpl('finish2');
-        $arg = new ArgDefImpl();
+        $me = new S2Container_DestroyMethodDefImpl('finish2');
+        $arg = new S2Container_ArgDefImpl();
         $arg->setValue("destroy test.");
         $me->addArgDef($arg);
         $cd->addDestroyMethodDef($me);

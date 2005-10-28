@@ -13,8 +13,8 @@ class ManualPropertyAssemblerTests extends UnitTestCase {
         $container->register('E','e');
 
         $ecd = $container->getComponentDef('e');
-        $ecd->setAutoBindingMode(ContainerConstants::AUTO_BINDING_CONSTRUCTOR);
-        $pro = new PropertyDefImpl('name','test-test');
+        $ecd->setAutoBindingMode(S2Container_ContainerConstants::AUTO_BINDING_CONSTRUCTOR);
+        $pro = new S2Container_PropertyDefImpl('name','test-test');
         $ecd->addPropertyDef($pro);
 
           
@@ -34,8 +34,8 @@ class ManualPropertyAssemblerTests extends UnitTestCase {
 
         $dcd = $container->getComponentDef('d');
         $ecd = $container->getComponentDef('e');
-        $ecd->setAutoBindingMode(ContainerConstants::AUTO_BINDING_CONSTRUCTOR);
-        $pro = new PropertyDefImpl('d',null);
+        $ecd->setAutoBindingMode(S2Container_ContainerConstants::AUTO_BINDING_CONSTRUCTOR);
+        $pro = new S2Container_PropertyDefImpl('d',null);
         $pro->setChildComponentDef($dcd);
         $ecd->addPropertyDef($pro);
 
@@ -57,8 +57,8 @@ class ManualPropertyAssemblerTests extends UnitTestCase {
         $container->register('E','e');
 
         $ecd = $container->getComponentDef('e');
-        $ecd->setAutoBindingMode(ContainerConstants::AUTO_BINDING_CONSTRUCTOR);
-        $pro = new PropertyDefImpl('name',null);
+        $ecd->setAutoBindingMode(S2Container_ContainerConstants::AUTO_BINDING_CONSTRUCTOR);
+        $pro = new S2Container_PropertyDefImpl('name',null);
         $pro->setExpression("1+1");
         $ecd->addPropertyDef($pro);
 

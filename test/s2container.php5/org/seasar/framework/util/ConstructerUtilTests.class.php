@@ -20,11 +20,11 @@ class ConstructerUtilTests extends UnitTestCase {
        
         print __METHOD__ . "\n";
        
-        $a = ConstructorUtil::newInstance(new ReflectionClass('A'),
+        $a = S2Container_ConstructorUtil::newInstance(new ReflectionClass('A'),
                                          array());
         $this->assertIsA($a,'A');
 
-        $a = ConstructorUtil::newInstance(new ReflectionClass('A'),
+        $a = S2Container_ConstructorUtil::newInstance(new ReflectionClass('A'),
                                          null);
         $this->assertIsA($a,'A');
        
@@ -35,7 +35,7 @@ class ConstructerUtilTests extends UnitTestCase {
        
         print __METHOD__ . "\n";
        
-        $c = ConstructorUtil::newInstance(new ReflectionClass('C'),
+        $c = S2Container_ConstructorUtil::newInstance(new ReflectionClass('C'),
                                          array('hoge'));
         $this->assertIsA($c,'C');
        

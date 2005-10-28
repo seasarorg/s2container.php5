@@ -12,7 +12,7 @@ class ManualConstructorAssemblerTests extends UnitTestCase {
         $container->register('C','c');
           
         $cd = $container->getComponentDef('c');
-        $arg = new ArgDefImpl();
+        $arg = new S2Container_ArgDefImpl();
         $arg->setValue("test-test");
         $cd->addArgDef($arg);
           
@@ -29,7 +29,7 @@ class ManualConstructorAssemblerTests extends UnitTestCase {
         $container = new S2ContainerImpl();
         $container->register('C','c');
         $cd = $container->getComponentDef('c');
-        $arg = new ArgDefImpl();
+        $arg = new S2Container_ArgDefImpl();
           
         //$arg->setExpression("return 1+1;");
         //$arg->setExpression("1+1;");
@@ -70,7 +70,7 @@ class ManualConstructorAssemblerTests extends UnitTestCase {
           
         $dcd = $container->getComponentDef('d');
         $cd = $container->getComponentDef('c');
-        $arg = new ArgDefImpl();
+        $arg = new S2Container_ArgDefImpl();
         $arg->setChildComponentDef($dcd);
         $cd->addArgDef($arg);
 

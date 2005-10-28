@@ -3,7 +3,7 @@
 "components21.dtd">
 <components>
     <component name="mockInterceptor" 
-               class="MockInterceptor">
+               class="S2Container_MockInterceptor">
         <initMethod name="setReturnValue">
             <arg>"greeting"</arg>
             <arg>"Hello"</arg>

@@ -13,7 +13,7 @@ class SessionComponentDeployerTests extends UnitTestCase {
         $container->register('L','l');
           
         $cd = $container->getComponentDef('l');
-        $cd->setInstanceMode(ContainerConstants::INSTANCE_SESSION);
+        $cd->setInstanceMode(S2Container_ContainerConstants::INSTANCE_SESSION);
           
         $l = $container->getComponent('l');
         $this->assertIsA($l->getComp(),'D');
@@ -35,7 +35,7 @@ class SessionComponentDeployerTests extends UnitTestCase {
         $container->register('L','l');
           
         $cd = $container->getComponentDef('l');
-        $cd->setInstanceMode(ContainerConstants::INSTANCE_SESSION);
+        $cd->setInstanceMode(S2Container_ContainerConstants::INSTANCE_SESSION);
           
         $l = $container->getComponent('l');
         $this->assertIsA($l,'L');

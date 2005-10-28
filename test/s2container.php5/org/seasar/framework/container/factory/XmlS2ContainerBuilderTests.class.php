@@ -303,7 +303,7 @@ class XmlS2ContainerBuilderTests extends UnitTestCase {
        
         print __METHOD__ . "\n";
        
-        $container = SingletonS2ContainerFactory::getContainer();
+        $container = S2Container_SingletonS2ContainerFactory::getContainer();
         $this->assertNotNull($container);
 
         $a = $container->getComponent("a");
@@ -414,7 +414,7 @@ class XmlS2ContainerBuilderTests extends UnitTestCase {
             $a = $container->getComponent('A');
             $this->assertIsA($a,'A');
         }catch(Exception $e){
-            $this->assertIsA($e,'TooManyRegistrationRuntimeException');
+            $this->assertIsA($e,'S2Container_TooManyRegistrationRuntimeException');
         }
 
         print "\n";
@@ -564,7 +564,7 @@ class XmlS2ContainerBuilderTests extends UnitTestCase {
             $b = $container->getComponent('b5');
             $this->assertIsA($b,'B');
         }catch(Exception $e){
-            $this->assertIsA($e,'ClassUnmatchRuntimeException');
+            $this->assertIsA($e,'S2Container_ClassUnmatchRuntimeException');
             print $e->getMessage() . "\n";
         }
 
@@ -616,11 +616,11 @@ class XmlS2ContainerBuilderTests extends UnitTestCase {
        
         print __METHOD__ . "\n";
 
-        if(SingletonS2ContainerFactory::hasContainer()){
-        	print "SingletonS2ContainerFactory destroy.\n";
-        	SingletonS2ContainerFactory::destroy();
+        if(S2Container_SingletonS2ContainerFactory::hasContainer()){
+        	print "S2Container_SingletonS2ContainerFactory destroy.\n";
+        	S2Container_SingletonS2ContainerFactory::destroy();
         }
-        $container = SingletonS2ContainerFactory::getContainer(
+        $container = S2Container_SingletonS2ContainerFactory::getContainer(
                        TEST_DIR . '/s2container.php5/org/seasar/framework/container/factory/xml/test4.xml');
        
         $this->assertNotNull($container);
@@ -633,9 +633,9 @@ class XmlS2ContainerBuilderTests extends UnitTestCase {
 
         $o = $container->getComponent('o');
         $this->assertIsA($o->getVal1(),'D');
-        if(SingletonS2ContainerFactory::hasContainer()){
-        	print "SingletonS2ContainerFactory destroy.\n";
-        	SingletonS2ContainerFactory::destroy();
+        if(S2Container_SingletonS2ContainerFactory::hasContainer()){
+        	print "S2Container_SingletonS2ContainerFactory destroy.\n";
+        	S2Container_SingletonS2ContainerFactory::destroy();
         }
         
         print "\n";
@@ -647,7 +647,7 @@ class XmlS2ContainerBuilderTests extends UnitTestCase {
         try{ 
             $container = S2ContainerFactory::create(TEST_DIR . '/s2container.php5/org/seasar/framework/container/factory/xml/test32.dicon');
         }catch(Exception $e){
-        	$this->assertIsA($e,'CircularIncludeRuntimeException');
+        	$this->assertIsA($e,'S2Container_CircularIncludeRuntimeException');
         	print $e->getMessage() . "\n";
         }
 

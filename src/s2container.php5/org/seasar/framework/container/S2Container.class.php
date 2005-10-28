@@ -3,11 +3,19 @@
 // +----------------------------------------------------------------------+
 // | PHP version 5                                                        |
 // +----------------------------------------------------------------------+
-// | Copyright (c) 2003-2004 The Seasar Project.                          |
+// | Copyright 2004-2005 the Seasar Foundation and the Others.            |
 // +----------------------------------------------------------------------+
-// | The Seasar Software License, Version 1.1                             |
-// |   This product includes software developed by the Seasar Project.    |
-// |   (http://www.seasar.org/)                                           |
+// | Licensed under the Apache License, Version 2.0 (the "License");      |
+// | you may not use this file except in compliance with the License.     |
+// | You may obtain a copy of the License at                              |
+// |                                                                      |
+// |     http://www.apache.org/licenses/LICENSE-2.0                       |
+// |                                                                      |
+// | Unless required by applicable law or agreed to in writing, software  |
+// | distributed under the License is distributed on an "AS IS" BASIS,    |
+// | WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,                        |
+// | either express or implied. See the License for the specific language |
+// | governing permissions and limitations under the License.             |
 // +----------------------------------------------------------------------+
 // | Authors: klove                                                       |
 // +----------------------------------------------------------------------+
@@ -19,7 +27,7 @@
  * @package org.seasar.framework.container
  * @author klove
  */
-interface S2Container extends MetaDefAware{
+interface S2Container extends S2Container_MetaDefAware{
 
     /**
      * キーを指定してコンポーネントを取得します。
@@ -32,9 +40,9 @@ interface S2Container extends MetaDefAware{
      *
      * @param string コンポーネントを取得するためのキー
      * @return object
-     * @throws ComponentNotFoundRuntimeException コンポーネントが見つからない場合
-     * @throws TooManyRegistrationRuntimeException 同じ名前、または同じクラスに複数のコンポーネントが登録されている場合
-     * @throws CyclicReferenceRuntimeException constructor injectionでコンポーネントの参照が循環している場合
+     * @throws S2Container_ComponentNotFoundRuntimeException コンポーネントが見つからない場合
+     * @throws S2Container_TooManyRegistrationRuntimeException 同じ名前、または同じクラスに複数のコンポーネントが登録されている場合
+     * @throws S2Container_CyclicReferenceRuntimeException constructor injectionでコンポーネントの参照が循環している場合
      */
     public function getComponent($componentKey);
 
@@ -48,7 +56,7 @@ interface S2Container extends MetaDefAware{
      *
      * @param componentKey コンポーネントを取得するためのキー
      * @return コンポーネントの配列。キーに対応するコンポーネントが存在しない場合は空の配列を返します。
-     * @throws CyclicReferenceRuntimeException constructor injectionでコンポーネントの参照が循環している場合
+     * @throws S2Container_CyclicReferenceRuntimeException constructor injectionでコンポーネントの参照が循環している場合
      */
 	public function findComponents($componentKey);
 
@@ -62,7 +70,7 @@ interface S2Container extends MetaDefAware{
      *
      * @param object
      * @param string 外部コンポーネント定義のキー (名前)
-     * @throws ClassUnmatchRuntimeException 「外部コンポーネント instanceof 取得したコンポーネントのクラス」がfalseを返す場合
+     * @throws S2Container_ClassUnmatchRuntimeException 「外部コンポーネント instanceof 取得したコンポーネントのクラス」がfalseを返す場合
      */
     public function injectDependency($outerComponent,$componentName="");
     
@@ -85,8 +93,8 @@ interface S2Container extends MetaDefAware{
      * 指定したキーに対応するコンポーネント定義を取得します。
      *
      * @param int キー
-     * @return ComponentDef コンポーネント定義
-     * @throws ComponentNotFoundRuntimeException コンポーネント定義が見つからない場合
+     * @return S2Container_ComponentDef コンポーネント定義
+     * @throws S2Container_ComponentNotFoundRuntimeException コンポーネント定義が見つからない場合
      */
     public function getComponentDef($index);
 
@@ -119,7 +127,7 @@ interface S2Container extends MetaDefAware{
      *
      * @param string パス
      * @return S2Container コンテナ
-     * @throws ContainerNotRegisteredRuntimeException コンテナが見つからない場合
+     * @throws S2Container_ContainerNotRegisteredRuntimeException コンテナが見つからない場合
      */    
     public function getDescendant($path);
     

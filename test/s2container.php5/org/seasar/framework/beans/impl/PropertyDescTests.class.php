@@ -9,9 +9,9 @@ class PropertyDescTests extends UnitTestCase {
        print __METHOD__ . "\n";       
     
        $a = new ReflectionClass('N');
-       $desc = new BeanDescImpl($a);
+       $desc = new S2Container_BeanDescImpl($a);
        $propDesc = $desc->getPropertyDesc('val1');
-       $this->assertIsA($propDesc,'PropertyDescImpl');
+       $this->assertIsA($propDesc,'S2Container_PropertyDescImpl');
 
        print($propDesc);
        print "\n";
@@ -26,9 +26,9 @@ class PropertyDescTests extends UnitTestCase {
        print __METHOD__ . "\n";       
     
        $a = new ReflectionClass('N');
-       $desc = new BeanDescImpl($a);
+       $desc = new S2Container_BeanDescImpl($a);
        $propDesc = $desc->getPropertyDesc('val1');
-       $this->assertIsA($propDesc,'PropertyDescImpl');
+       $this->assertIsA($propDesc,'S2Container_PropertyDescImpl');
 
        $propDesc = $desc->getPropertyDesc('val2');
        $m = $propDesc->getWriteMethod();

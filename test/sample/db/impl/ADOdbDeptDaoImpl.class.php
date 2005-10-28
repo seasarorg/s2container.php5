@@ -5,7 +5,7 @@ class ADOdbDeptDaoImpl implements IDeptDao {
     function ADOdbDeptDaoImpl() {
     }
     
-    function setSession(DBSession $session){
+    function setSession(S2Container_DBSession $session){
     	$this->session = $session;
     }
     

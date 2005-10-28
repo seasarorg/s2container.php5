@@ -12,7 +12,7 @@ class SqlCommandImplTests extends UnitTestCase {
         $argNames = array('a','b','c');
         $args = array('col1','table1','10');
         $ret = 'select col1 from table1 where col2 = \'10\';';
-        $result = SqlCommandImpl::constructSql($sql,$argNames,$args);
+        $result = S2Container_SqlCommandImpl::constructSql($sql,$argNames,$args);
         $this->assertEqual($ret,$result);
 
         print "\n";

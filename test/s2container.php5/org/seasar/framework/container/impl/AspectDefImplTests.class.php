@@ -8,13 +8,13 @@ class AspectDefImplTests extends UnitTestCase {
        
         print __METHOD__ . "\n";
        
-        $ad = new AspectDefImpl(new PointcutImpl('A'),
-                                new TraceInterceptor());
+        $ad = new S2Container_AspectDefImpl(new S2Container_PointcutImpl('A'),
+                                new S2Container_TraceInterceptor());
         $aspect = $ad->getValue();
-        $this->assertIsA($aspect,'TraceInterceptor');
+        $this->assertIsA($aspect,'S2Container_TraceInterceptor');
 
         $aspect = $ad->getAspect();
-        $this->assertIsA($aspect,'AspectImpl');
+        $this->assertIsA($aspect,'S2Container_AspectImpl');
 
         print "\n";
     } 

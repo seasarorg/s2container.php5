@@ -2,7 +2,7 @@
 <!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
 "components21.dtd">
 <components namespace="postgres">
-    <component name="dataSource" class="PostgresDataSource">
+    <component name="dataSource" class="S2Container_PostgresDataSource">
         <property name="dsn">
             "host=localhost port=5432 user=hoge password=hoge dbname=s2container"
         </property>
@@ -14,10 +14,10 @@
         <property name="database">"s2container"</property>
         -->
     </component>
-    <component name="session" class="DBSessionImpl"/>
-    <component name="dbtx" class="PostgresTxInterceptor"/>
+    <component name="session" class="S2Container_DBSessionImpl"/>
+    <component name="dbtx" class="S2Container_PostgresTxInterceptor"/>
 
-    <component class="PostgresSqlHandler"/>
-    <component name="dao" class="SimpleDaoInterceptor"/>
-    <component class="DaoMetaDataFactoryImpl"/>
+    <component class="S2Container_PostgresSqlHandler"/>
+    <component name="dao" class="S2Container_SimpleDaoInterceptor"/>
+    <component class="S2Container_DaoMetaDataFactoryImpl"/>
 </components>

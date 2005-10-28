@@ -4,8 +4,8 @@
 <components namespace="test16">
 
     <component class="AddActionImpl">
-        <!-- aspect>new TraceInterceptor()</aspect -->
-        <aspect><component class="TraceInterceptor"/></aspect>
+        <!-- aspect>new S2Container_TraceInterceptor()</aspect -->
+        <aspect><component class="S2Container_TraceInterceptor"/></aspect>
     </component>
     <component class="CalculatorImpl"/>
 

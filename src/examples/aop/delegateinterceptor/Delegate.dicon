@@ -5,7 +5,7 @@
 	<component class="Dummy">
 	    <aspect>
 			<component 
-				class="DelegateInterceptor">
+				class="S2Container_DelegateInterceptor">
 				<initMethod name="setTarget">
 					<arg >new Substance()</arg>
 				</initMethod>

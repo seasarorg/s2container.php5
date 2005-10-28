@@ -3,11 +3,19 @@
 // +----------------------------------------------------------------------+
 // | PHP version 5                                                        |
 // +----------------------------------------------------------------------+
-// | Copyright (c) 2003-2004 The Seasar Project.                          |
+// | Copyright 2004-2005 the Seasar Foundation and the Others.            |
 // +----------------------------------------------------------------------+
-// | The Seasar Software License, Version 1.1                             |
-// |   This product includes software developed by the Seasar Project.    |
-// |   (http://www.seasar.org/)                                           |
+// | Licensed under the Apache License, Version 2.0 (the "License");      |
+// | you may not use this file except in compliance with the License.     |
+// | You may obtain a copy of the License at                              |
+// |                                                                      |
+// |     http://www.apache.org/licenses/LICENSE-2.0                       |
+// |                                                                      |
+// | Unless required by applicable law or agreed to in writing, software  |
+// | distributed under the License is distributed on an "AS IS" BASIS,    |
+// | WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,                        |
+// | either express or implied. See the License for the specific language |
+// | governing permissions and limitations under the License.             |
 // +----------------------------------------------------------------------+
 // | Authors: klove                                                       |
 // +----------------------------------------------------------------------+
@@ -35,10 +43,10 @@ define('S2CONTAINER_PHP5_MESSAGES_INI',S2CONTAINER_PHP5 . '/SSRMessages.properti
 /**
  * S2Container.PHP5 Log Level 
  */
-//define('S2CONTAINER_PHP5_LOG_LEVEL',SimpleLogger::WARN);
+//define('S2CONTAINER_PHP5_LOG_LEVEL',S2Container_SimpleLogger::WARN);
 
 /**
- * SingletonS2ContainerFactory app.dicon
+ * S2Container_SingletonS2ContainerFactory app.dicon
  */
 //define('S2CONTAINER_PHP5_APP_DICON','app.dicon');
 

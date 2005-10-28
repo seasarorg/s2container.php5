@@ -12,8 +12,8 @@ class PrototypeComponentDeployerTests extends UnitTestCase {
         $container->register('C','c');
           
         $cd = $container->getComponentDef('c');
-        $cd->setInstanceMode(ContainerConstants::INSTANCE_PROTOTYPE);
-        $arg = new ArgDefImpl();
+        $cd->setInstanceMode(S2Container_ContainerConstants::INSTANCE_PROTOTYPE);
+        $arg = new S2Container_ArgDefImpl();
         $arg->setValue("test-test");
         $cd->addArgDef($arg);
           
@@ -31,8 +31,8 @@ class PrototypeComponentDeployerTests extends UnitTestCase {
         $container->register('C','c');
           
         $cd = $container->getComponentDef('c');
-        $cd->setInstanceMode(ContainerConstants::INSTANCE_PROTOTYPE);
-        $arg = new ArgDefImpl();
+        $cd->setInstanceMode(S2Container_ContainerConstants::INSTANCE_PROTOTYPE);
+        $arg = new S2Container_ArgDefImpl();
         $arg->setValue("test-test");
         $cd->addArgDef($arg);
           

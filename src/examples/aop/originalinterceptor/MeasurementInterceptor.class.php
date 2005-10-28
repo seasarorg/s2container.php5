@@ -1,6 +1,6 @@
 <?php
-class MeasurementInterceptor extends AbstractInterceptor {
-	public function invoke(MethodInvocation $invocation){
+class MeasurementInterceptor extends S2Container_AbstractInterceptor {
+	public function invoke(S2Container_MethodInvocation $invocation){
 		$start = 0;
 		$end = 0;
 		$buf = "";
