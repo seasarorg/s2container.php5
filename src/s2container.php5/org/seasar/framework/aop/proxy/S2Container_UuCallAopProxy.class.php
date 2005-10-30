@@ -34,7 +34,7 @@ class S2Container_UuCallAopProxy {
     /**
      * Object
      */
-    private $target_ = null;
+    public $target_ = null;
     
     /**
      * ReflectionClass 

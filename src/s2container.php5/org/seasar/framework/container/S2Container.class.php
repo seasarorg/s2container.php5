@@ -176,6 +176,15 @@ interface S2Container extends S2Container_MetaDefAware{
     public function destroy();
 
     /**
+     * Component reconstruct
+     * 
+     * @param integer $mode
+     *        S2Container_ComponentDef::RECONSTRUCT_NORMAL
+     *        S2Container_ComponentDef::RECONSTRUCT_FORCE 
+     */
+    public function reconstruct($mode=S2Container_ComponentDef::RECONSTRUCT_NORMAL);
+
+    /**
      * 名前空間を取得します。
      *
      * @return string 名前空間
@@ -216,6 +225,5 @@ interface S2Container extends S2Container_MetaDefAware{
      * @param S2Container セットするルートのコンテナ
      */    
     public function setRoot(S2Container $root);
-
 }
 ?>

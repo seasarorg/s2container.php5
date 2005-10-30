@@ -294,6 +294,26 @@ class S2ContainerImpl implements S2Container {
     }
 
     /**
+     * @see S2Container::reconstruct()
+     */
+    public function reconstruct($mode=S2Container_ComponentDef::RECONSTRUCT_NORMAL) {
+        $c = $this->getChildSize();
+        for ($i = 0; $i < $c; ++$i) {
+            $this->getChild($i)->reconstruct();
+        }
+
+        $componentDef = $this->componentDefMap_[S2Container_ContainerConstants::CONTAINER_NAME]->reconstruct($mode);
+
+        $c = $this->getComponentDefSize();
+        for ($i = 0; $i < $c; ++$i) {
+            if($this->getComponentDef($i)->reconstruct($mode) and 
+               $mode == S2Container_ComponentDef::RECONSTRUCT_NORMAL){
+                $this->registerByClass($this->getComponentDef($i));
+            }
+        }
+    }
+
+    /**
      * @see S2Container::getNamespace()
      */
     public function getNamespace() {

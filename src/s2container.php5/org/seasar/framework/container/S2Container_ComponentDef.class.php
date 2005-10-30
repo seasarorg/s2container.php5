@@ -65,5 +65,9 @@ interface S2Container_ComponentDef
     public function init();
 
     public function destroy();
+    
+    const RECONSTRUCT_NORMAL = 0;
+    const RECONSTRUCT_FORCE = 1;
+    public function reconstruct($mode=S2Container_ComponentDef::RECONSTRUCT_NORMAL);
 }
 ?>

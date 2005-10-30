@@ -31,13 +31,19 @@ class S2Container_SimpleComponentDef implements S2Container_ComponentDef {
 
     private $component_;
     private $componentClass_;
+    private $componentClassName_;
     private $componentName_;
     private $container_;
 
+    /**
+     * @param object $component
+     * @param string $componentName
+     */
     public function S2Container_SimpleComponentDef($component,$componentName="") {
             
         $this->component_ = $component;
         $this->componentClass_ = new ReflectionClass($component);
+        $this->componentClassName_ = $this->componentClass_->getName();
         $this->componentName_ = $componentName;
     }
 
@@ -281,5 +287,16 @@ class S2Container_SimpleComponentDef implements S2Container_ComponentDef {
      * @see S2Container_ComponentDef::destroy()
      */
     public function destroy() {}
+
+    /**
+     * @see S2Container_ComponentDef::reconstruct()
+     */
+    public function reconstruct($mode=S2Container_ComponentDef::RECONSTRUCT_NORMAL) {
+        if($mode == S2Container_ComponentDef::RECONSTRUCT_NORMAL){
+            return false;
+        }
+        $this->componentClass_ = new ReflectionClass($this->componentClassName_);
+        return true;
+    }
 }
 ?>

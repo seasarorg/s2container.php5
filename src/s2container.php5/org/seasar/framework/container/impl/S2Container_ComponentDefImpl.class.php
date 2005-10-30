@@ -29,6 +29,8 @@ class S2Container_ComponentDefImpl implements S2Container_ComponentDef {
 
     private $componentClass_;
 
+    private $componentClassName_;
+
     private $componentName_;
 
     private $concreteClass_;
@@ -56,10 +58,19 @@ class S2Container_ComponentDefImpl implements S2Container_ComponentDef {
     private $componentDeployer_;
 
     public function S2Container_ComponentDefImpl($componentClass="", $componentName="") {
+/*
         if($componentClass!=""){
         	$this->componentClass_ = new ReflectionClass($componentClass);
         }
         $this->componentName_ = $componentName;
+*/
+
+        if(class_exists($componentClass,false) or
+           interface_exists($componentClass,false)){
+        	$this->componentClass_ = new ReflectionClass($componentClass);
+        }
+        $this->componentName_ = $componentName;
+        $this->componentClassName_ = $componentClass;
         $this->argDefSupport_ = new S2Container_ArgDefSupport();
         $this->propertyDefSupport_ = new S2Container_PropertyDefSupport();
         $this->initMethodDefSupport_ = new S2Container_InitMethodDefSupport();
@@ -261,6 +272,25 @@ class S2Container_ComponentDefImpl implements S2Container_ComponentDef {
     }
 
     /**
+     * @see S2Container_ComponentDef::reconstruct()
+     */
+    public function reconstruct($mode=S2Container_ComponentDef::RECONSTRUCT_NORMAL) {
+
+        if($mode == S2Container_ComponentDef::RECONSTRUCT_NORMAL and
+           $this->componentClass_ != null){
+            return false;
+        }
+
+        if(class_exists($this->componentClassName_,false) or
+           interface_exists($this->componentClassName_,false)){
+            $this->componentClass_ = new ReflectionClass($this->componentClassName_);
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * @see S2Container_ComponentDef::getExpression()
      */
     public function getExpression() {
@@ -346,8 +376,12 @@ class S2Container_ComponentDefImpl implements S2Container_ComponentDef {
     }
 
     private function getComponentDeployer() {
-
         if ($this->componentDeployer_ == null) {
+            if($this->expression_ == null and 
+               $this->componentClass_ == null){
+                throw new S2Container_S2RuntimeException('ESSR1008',
+                           array($this->componentName_,$this->componentClassName_));
+            }
             $this->componentDeployer_ = S2Container_ComponentDeployerFactory::create($this);
         }
         return $this->componentDeployer_;

@@ -322,5 +322,29 @@ class S2ContainerImplTests extends UnitTestCase {
 
         print "\n";
     } 
+
+    function testReconstruct() {
+       
+        print __METHOD__ . "\n";
+
+        $container = new S2ContainerImpl();
+        $container->register(new A(),'a');
+
+        $refA1 = $container->getComponentDef('a')->getComponentClass();
+        $container->reconstruct();
+
+        $refA2 = $container->getComponentDef('a')->getComponentClass();
+        $this->assertReference($refA1,$refA2);
+
+        $container->reconstruct(S2Container_ComponentDef::RECONSTRUCT_FORCE);
+
+        $refA2 = $container->getComponentDef('a')->getComponentClass();
+        if($refA1===$refA2){
+            $this->assertTrue(false);	        	
+        }else{
+            $this->assertTrue(true);	        	
+        }        
+        print "\n";
+    }
 }
 ?>

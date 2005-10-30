@@ -138,5 +138,33 @@ class ComponentDefImplTests extends UnitTestCase {
 
         print "\n";
     } 
+
+    function testNotRequiredClass(){
+        print __METHOD__ . "\n";
+
+        $cd = new S2Container_ComponentDefImpl('NotRequiredClass','a');
+        $this->assertIsA($cd,'S2Container_ComponentDefImpl');
+        $this->assertNull($cd->getComponentClass());
+        $this->assertNull($cd->getConcreteClass());
+
+        try{
+            $cd->getComponent();
+        }catch(Exception $e){
+            $this->assertIsA($e,'S2Container_S2RuntimeException');
+            print $e->getMessage()."\n";
+        }
+
+        $this->assertFalse($cd->reconstruct());
+        $s = "class NotRequiredClass{}";
+        eval($s);
+        $this->assertTrue($cd->reconstruct());
+        $this->assertFalse($cd->reconstruct());
+        $this->assertTrue($cd->reconstruct(1));
+        $this->assertEqual($cd->getComponentClass()->getName(),'NotRequiredClass');
+        $this->assertEqual($cd->getConcreteClass()->getName(),'NotRequiredClass');
+        $a = $cd->getComponent();
+        $this->assertIsA($a,'NotRequiredClass');
+        print "\n";
+    }
 }
 ?>
