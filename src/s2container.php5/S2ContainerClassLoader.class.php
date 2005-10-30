@@ -4,11 +4,6 @@ class S2ContainerClassLoader {
         'S2Container_ADOdbDataSource' => '/org/seasar/extension/db/adodb/S2Container_ADOdbDataSource.class.php',
         'S2Container_ADOdbSqlHandler' => '/org/seasar/extension/db/adodb/S2Container_ADOdbSqlHandler.class.php',
         'S2Container_ADOdbTxInterceptor' => '/org/seasar/extension/db/adodb/S2Container_ADOdbTxInterceptor.class.php',
-        'S2Container_DaoMetaData' => '/org/seasar/extension/db/S2Container_DaoMetaData.class.php',
-        'S2Container_DaoMetaDataFactory' => '/org/seasar/extension/db/S2Container_DaoMetaDataFactory.class.php',
-        'S2Container_DaoNotFoundRuntimeException' => '/org/seasar/extension/db/S2Container_DaoNotFoundRuntimeException.class.php',
-        'S2Container_DataSource' => '/org/seasar/extension/db/S2Container_DataSource.class.php',
-        'S2Container_DBSession' => '/org/seasar/extension/db/S2Container_DBSession.class.php',
         'S2Container_AbstractBeanResultSetHandler' => '/org/seasar/extension/db/impl/S2Container_AbstractBeanResultSetHandler.class.php',
         'S2Container_AbstractDataSource' => '/org/seasar/extension/db/impl/S2Container_AbstractDataSource.class.php',
         'S2Container_ArrayResultSetHandler' => '/org/seasar/extension/db/impl/S2Container_ArrayResultSetHandler.class.php',
@@ -28,6 +23,11 @@ class S2ContainerClassLoader {
         'S2Container_PostgresDataSource' => '/org/seasar/extension/db/postgres/S2Container_PostgresDataSource.class.php',
         'S2Container_PostgresSqlHandler' => '/org/seasar/extension/db/postgres/S2Container_PostgresSqlHandler.class.php',
         'S2Container_PostgresTxInterceptor' => '/org/seasar/extension/db/postgres/S2Container_PostgresTxInterceptor.class.php',
+        'S2Container_DaoMetaData' => '/org/seasar/extension/db/S2Container_DaoMetaData.class.php',
+        'S2Container_DaoMetaDataFactory' => '/org/seasar/extension/db/S2Container_DaoMetaDataFactory.class.php',
+        'S2Container_DaoNotFoundRuntimeException' => '/org/seasar/extension/db/S2Container_DaoNotFoundRuntimeException.class.php',
+        'S2Container_DataSource' => '/org/seasar/extension/db/S2Container_DataSource.class.php',
+        'S2Container_DBSession' => '/org/seasar/extension/db/S2Container_DBSession.class.php',
         'S2Container_ResultSetHandler' => '/org/seasar/extension/db/S2Container_ResultSetHandler.class.php',
         'S2Container_SqlCommand' => '/org/seasar/extension/db/S2Container_SqlCommand.class.php',
         'S2Container_SqlHandler' => '/org/seasar/extension/db/S2Container_SqlHandler.class.php',
@@ -35,13 +35,10 @@ class S2ContainerClassLoader {
         'S2Container_S2PHPUnit2TestCase' => '/org/seasar/extension/unit/phpunit2/S2Container_S2PHPUnit2TestCase.class.php',
         'S2Container_S2SimpleInvoker' => '/org/seasar/extension/unit/simpletest/S2Container_S2SimpleInvoker.class.php',
         'S2Container_S2SimpleTestCase' => '/org/seasar/extension/unit/simpletest/S2Container_S2SimpleTestCase.class.php',
-        'S2Container_Advice' => '/org/seasar/framework/aop/S2Container_Advice.class.php',
-        'S2Container_Aspect' => '/org/seasar/framework/aop/S2Container_Aspect.class.php',
         'S2Container_AspectImpl' => '/org/seasar/framework/aop/impl/S2Container_AspectImpl.class.php',
         'S2Container_NestedMethodInvocation' => '/org/seasar/framework/aop/impl/S2Container_NestedMethodInvocation.class.php',
         'S2Container_PointcutImpl' => '/org/seasar/framework/aop/impl/S2Container_PointcutImpl.class.php',
         'S2Container_S2MethodInvocationImpl' => '/org/seasar/framework/aop/impl/S2Container_S2MethodInvocationImpl.class.php',
-        'S2Container_Interceptor' => '/org/seasar/framework/aop/S2Container_Interceptor.class.php',
         'S2Container_AbstractInterceptor' => '/org/seasar/framework/aop/interceptors/S2Container_AbstractInterceptor.class.php',
         'S2Container_DelegateInterceptor' => '/org/seasar/framework/aop/interceptors/S2Container_DelegateInterceptor.class.php',
         'S2Container_InterceptorChain' => '/org/seasar/framework/aop/interceptors/S2Container_InterceptorChain.class.php',
@@ -50,30 +47,29 @@ class S2ContainerClassLoader {
         'S2Container_ThrowsInterceptor' => '/org/seasar/framework/aop/interceptors/S2Container_ThrowsInterceptor.class.php',
         'S2Container_TraceInterceptor' => '/org/seasar/framework/aop/interceptors/S2Container_TraceInterceptor.class.php',
         'S2Container_TraceThrowsInterceptor' => '/org/seasar/framework/aop/interceptors/S2Container_TraceThrowsInterceptor.class.php',
+        'S2Container_AopProxy' => '/org/seasar/framework/aop/proxy/S2Container_AopProxy.class.php',
+        'S2Container_UuCallAopProxy' => '/org/seasar/framework/aop/proxy/S2Container_UuCallAopProxy.class.php',
+        'S2Container_UuCallAopProxyFactory' => '/org/seasar/framework/aop/proxy/S2Container_UuCallAopProxyFactory.class.php',
+        'S2Container_Advice' => '/org/seasar/framework/aop/S2Container_Advice.class.php',
+        'S2Container_Aspect' => '/org/seasar/framework/aop/S2Container_Aspect.class.php',
+        'S2Container_Interceptor' => '/org/seasar/framework/aop/S2Container_Interceptor.class.php',
         'S2Container_Invocation' => '/org/seasar/framework/aop/S2Container_Invocation.class.php',
         'S2Container_Joinpoint' => '/org/seasar/framework/aop/S2Container_Joinpoint.class.php',
         'S2Container_MethodInterceptor' => '/org/seasar/framework/aop/S2Container_MethodInterceptor.class.php',
         'S2Container_MethodInvocation' => '/org/seasar/framework/aop/S2Container_MethodInvocation.class.php',
         'S2Container_Pointcut' => '/org/seasar/framework/aop/S2Container_Pointcut.class.php',
-        'S2Container_AopProxy' => '/org/seasar/framework/aop/proxy/S2Container_AopProxy.class.php',
-        'S2Container_UuCallAopProxy' => '/org/seasar/framework/aop/proxy/S2Container_UuCallAopProxy.class.php',
-        'S2Container_UuCallAopProxyFactory' => '/org/seasar/framework/aop/proxy/S2Container_UuCallAopProxyFactory.class.php',
         'S2Container_S2MethodInvocation' => '/org/seasar/framework/aop/S2Container_S2MethodInvocation.class.php',
-        'S2Container_BeanDesc' => '/org/seasar/framework/beans/S2Container_BeanDesc.class.php',
-        'S2Container_ConstantNotFoundRuntimeException' => '/org/seasar/framework/beans/S2Container_ConstantNotFoundRuntimeException.class.php',
         'S2Container_BeanDescFactory' => '/org/seasar/framework/beans/factory/S2Container_BeanDescFactory.class.php',
-        'S2Container_FieldNotFoundRuntimeException' => '/org/seasar/framework/beans/S2Container_FieldNotFoundRuntimeException.class.php',
-        'S2Container_IllegalPropertyRuntimeException' => '/org/seasar/framework/beans/S2Container_IllegalPropertyRuntimeException.class.php',
         'S2Container_BeanDescImpl' => '/org/seasar/framework/beans/impl/S2Container_BeanDescImpl.class.php',
         'S2Container_PropertyDescImpl' => '/org/seasar/framework/beans/impl/S2Container_PropertyDescImpl.class.php',
         'S2Container_UuSetPropertyDescImpl' => '/org/seasar/framework/beans/impl/S2Container_UuSetPropertyDescImpl.class.php',
+        'S2Container_BeanDesc' => '/org/seasar/framework/beans/S2Container_BeanDesc.class.php',
+        'S2Container_ConstantNotFoundRuntimeException' => '/org/seasar/framework/beans/S2Container_ConstantNotFoundRuntimeException.class.php',
+        'S2Container_FieldNotFoundRuntimeException' => '/org/seasar/framework/beans/S2Container_FieldNotFoundRuntimeException.class.php',
+        'S2Container_IllegalPropertyRuntimeException' => '/org/seasar/framework/beans/S2Container_IllegalPropertyRuntimeException.class.php',
         'S2Container_MethodNotFoundRuntimeException' => '/org/seasar/framework/beans/S2Container_MethodNotFoundRuntimeException.class.php',
         'S2Container_PropertyDesc' => '/org/seasar/framework/beans/S2Container_PropertyDesc.class.php',
         'S2Container_PropertyNotFoundRuntimeException' => '/org/seasar/framework/beans/S2Container_PropertyNotFoundRuntimeException.class.php',
-        'S2Container_ArgDef' => '/org/seasar/framework/container/S2Container_ArgDef.class.php',
-        'S2Container_ArgDefAware' => '/org/seasar/framework/container/S2Container_ArgDefAware.class.php',
-        'S2Container_AspectDef' => '/org/seasar/framework/container/S2Container_AspectDef.class.php',
-        'S2Container_AspectDefAware' => '/org/seasar/framework/container/S2Container_AspectDefAware.class.php',
         'S2Container_AbstractAssembler' => '/org/seasar/framework/container/assembler/S2Container_AbstractAssembler.class.php',
         'S2Container_AbstractConstructorAssembler' => '/org/seasar/framework/container/assembler/S2Container_AbstractConstructorAssembler.class.php',
         'S2Container_AbstractMethodAssembler' => '/org/seasar/framework/container/assembler/S2Container_AbstractMethodAssembler.class.php',
@@ -90,12 +86,6 @@ class S2ContainerClassLoader {
         'S2Container_ManualPropertyAssembler' => '/org/seasar/framework/container/assembler/S2Container_ManualPropertyAssembler.class.php',
         'S2Container_MethodAssembler' => '/org/seasar/framework/container/assembler/S2Container_MethodAssembler.class.php',
         'S2Container_PropertyAssembler' => '/org/seasar/framework/container/assembler/S2Container_PropertyAssembler.class.php',
-        'S2Container_ClassUnmatchRuntimeException' => '/org/seasar/framework/container/S2Container_ClassUnmatchRuntimeException.class.php',
-        'S2Container_ComponentDef' => '/org/seasar/framework/container/S2Container_ComponentDef.class.php',
-        'S2Container_ComponentNotFoundRuntimeException' => '/org/seasar/framework/container/S2Container_ComponentNotFoundRuntimeException.class.php',
-        'S2Container_ContainerConstants' => '/org/seasar/framework/container/S2Container_ContainerConstants.class.php',
-        'S2Container_ContainerNotRegisteredRuntimeException' => '/org/seasar/framework/container/S2Container_ContainerNotRegisteredRuntimeException.class.php',
-        'S2Container_CyclicReferenceRuntimeException' => '/org/seasar/framework/container/S2Container_CyclicReferenceRuntimeException.class.php',
         'S2Container_AbstractComponentDeployer' => '/org/seasar/framework/container/deployer/S2Container_AbstractComponentDeployer.class.php',
         'S2Container_ComponentDeployer' => '/org/seasar/framework/container/deployer/S2Container_ComponentDeployer.class.php',
         'S2Container_ComponentDeployerFactory' => '/org/seasar/framework/container/deployer/S2Container_ComponentDeployerFactory.class.php',
@@ -104,16 +94,14 @@ class S2ContainerClassLoader {
         'S2Container_RequestComponentDeployer' => '/org/seasar/framework/container/deployer/S2Container_RequestComponentDeployer.class.php',
         'S2Container_SessionComponentDeployer' => '/org/seasar/framework/container/deployer/S2Container_SessionComponentDeployer.class.php',
         'S2Container_SingletonComponentDeployer' => '/org/seasar/framework/container/deployer/S2Container_SingletonComponentDeployer.class.php',
-        'S2Container_DestroyMethodDef' => '/org/seasar/framework/container/S2Container_DestroyMethodDef.class.php',
-        'S2Container_DestroyMethodDefAware' => '/org/seasar/framework/container/S2Container_DestroyMethodDefAware.class.php',
-        'S2Container_CircularIncludeRuntimeException' => '/org/seasar/framework/container/factory/S2Container_CircularIncludeRuntimeException.class.php',
-        'S2Container_IniS2ContainerBuilder' => '/org/seasar/framework/container/factory/S2Container_IniS2ContainerBuilder.class.php',
         'S2ContainerBuilder' => '/org/seasar/framework/container/factory/S2ContainerBuilder.class.php',
         'S2ContainerFactory' => '/org/seasar/framework/container/factory/S2ContainerFactory.class.php',
+        'S2Container_CircularIncludeRuntimeException' => '/org/seasar/framework/container/factory/S2Container_CircularIncludeRuntimeException.class.php',
+        'S2Container_IniS2ContainerBuilder' => '/org/seasar/framework/container/factory/S2Container_IniS2ContainerBuilder.class.php',
         'S2Container_SingletonS2ContainerFactory' => '/org/seasar/framework/container/factory/S2Container_SingletonS2ContainerFactory.class.php',
         'S2Container_XmlS2ContainerBuilder' => '/org/seasar/framework/container/factory/S2Container_XmlS2ContainerBuilder.class.php',
-        'S2Container_IllegalConstructorRuntimeException' => '/org/seasar/framework/container/S2Container_IllegalConstructorRuntimeException.class.php',
-        'S2Container_IllegalMethodRuntimeException' => '/org/seasar/framework/container/S2Container_IllegalMethodRuntimeException.class.php',
+        'S2ContainerComponentDef' => '/org/seasar/framework/container/impl/S2ContainerComponentDef.class.php',
+        'S2ContainerImpl' => '/org/seasar/framework/container/impl/S2ContainerImpl.class.php',
         'S2Container_ArgDefImpl' => '/org/seasar/framework/container/impl/S2Container_ArgDefImpl.class.php',
         'S2Container_AspectDefImpl' => '/org/seasar/framework/container/impl/S2Container_AspectDefImpl.class.php',
         'S2Container_ComponentDefImpl' => '/org/seasar/framework/container/impl/S2Container_ComponentDefImpl.class.php',
@@ -122,10 +110,23 @@ class S2ContainerClassLoader {
         'S2Container_MetaDefImpl' => '/org/seasar/framework/container/impl/S2Container_MetaDefImpl.class.php',
         'S2Container_MethodDefImpl' => '/org/seasar/framework/container/impl/S2Container_MethodDefImpl.class.php',
         'S2Container_PropertyDefImpl' => '/org/seasar/framework/container/impl/S2Container_PropertyDefImpl.class.php',
-        'S2ContainerComponentDef' => '/org/seasar/framework/container/impl/S2ContainerComponentDef.class.php',
-        'S2ContainerImpl' => '/org/seasar/framework/container/impl/S2ContainerImpl.class.php',
         'S2Container_SimpleComponentDef' => '/org/seasar/framework/container/impl/S2Container_SimpleComponentDef.class.php',
         'S2Container_TooManyRegistrationComponentDefImpl' => '/org/seasar/framework/container/impl/S2Container_TooManyRegistrationComponentDefImpl.class.php',
+        'S2Container' => '/org/seasar/framework/container/S2Container.class.php',
+        'S2Container_ArgDef' => '/org/seasar/framework/container/S2Container_ArgDef.class.php',
+        'S2Container_ArgDefAware' => '/org/seasar/framework/container/S2Container_ArgDefAware.class.php',
+        'S2Container_AspectDef' => '/org/seasar/framework/container/S2Container_AspectDef.class.php',
+        'S2Container_AspectDefAware' => '/org/seasar/framework/container/S2Container_AspectDefAware.class.php',
+        'S2Container_ClassUnmatchRuntimeException' => '/org/seasar/framework/container/S2Container_ClassUnmatchRuntimeException.class.php',
+        'S2Container_ComponentDef' => '/org/seasar/framework/container/S2Container_ComponentDef.class.php',
+        'S2Container_ComponentNotFoundRuntimeException' => '/org/seasar/framework/container/S2Container_ComponentNotFoundRuntimeException.class.php',
+        'S2Container_ContainerConstants' => '/org/seasar/framework/container/S2Container_ContainerConstants.class.php',
+        'S2Container_ContainerNotRegisteredRuntimeException' => '/org/seasar/framework/container/S2Container_ContainerNotRegisteredRuntimeException.class.php',
+        'S2Container_CyclicReferenceRuntimeException' => '/org/seasar/framework/container/S2Container_CyclicReferenceRuntimeException.class.php',
+        'S2Container_DestroyMethodDef' => '/org/seasar/framework/container/S2Container_DestroyMethodDef.class.php',
+        'S2Container_DestroyMethodDefAware' => '/org/seasar/framework/container/S2Container_DestroyMethodDefAware.class.php',
+        'S2Container_IllegalConstructorRuntimeException' => '/org/seasar/framework/container/S2Container_IllegalConstructorRuntimeException.class.php',
+        'S2Container_IllegalMethodRuntimeException' => '/org/seasar/framework/container/S2Container_IllegalMethodRuntimeException.class.php',
         'S2Container_InitMethodDef' => '/org/seasar/framework/container/S2Container_InitMethodDef.class.php',
         'S2Container_InitMethodDefAware' => '/org/seasar/framework/container/S2Container_InitMethodDefAware.class.php',
         'S2Container_MetaDef' => '/org/seasar/framework/container/S2Container_MetaDef.class.php',
@@ -133,7 +134,6 @@ class S2ContainerClassLoader {
         'S2Container_MethodDef' => '/org/seasar/framework/container/S2Container_MethodDef.class.php',
         'S2Container_PropertyDef' => '/org/seasar/framework/container/S2Container_PropertyDef.class.php',
         'S2Container_PropertyDefAware' => '/org/seasar/framework/container/S2Container_PropertyDefAware.class.php',
-        'S2Container' => '/org/seasar/framework/container/S2Container.class.php',
         'S2Container_TooManyRegistrationComponentDef' => '/org/seasar/framework/container/S2Container_TooManyRegistrationComponentDef.class.php',
         'S2Container_TooManyRegistrationRuntimeException' => '/org/seasar/framework/container/S2Container_TooManyRegistrationRuntimeException.class.php',
         'S2Container_AopProxyUtil' => '/org/seasar/framework/container/util/S2Container_AopProxyUtil.class.php',
@@ -172,6 +172,30 @@ class S2ContainerClassLoader {
         else{
             return false;
        }
+    }
+
+    static $USER_CLASSES = array();
+    function import($path,$key=null){
+        if(is_dir($path) and is_readable($path)){
+            $d = dir($path);
+            while (false !== ($entry = $d->read())) {
+                if(preg_match("/([^\.]+).+php$/",$entry,$matches)){
+                    S2ContainerClassLoader::$USER_CLASSES[$matches[1]] = "$path/$entry";
+                }
+            }
+            $d->close();
+        }else if(is_file($path) and is_readable($path)){
+            if($key == null){
+                $file = basename($path);
+                if(preg_match("/([^\.]+).+php$/",$file,$matches)){
+                    S2ContainerClassLoader::$USER_CLASSES[$matches[1]] = $path;
+                }
+            }else{
+                S2ContainerClassLoader::$USER_CLASSES[$key] = $path;
+            }
+        }else{
+            print "[WARN] invalid args. path : $path, key : $key\n";
+        }
     }
 }
 ?>

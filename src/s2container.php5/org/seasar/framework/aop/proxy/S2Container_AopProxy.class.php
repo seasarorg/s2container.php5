@@ -111,7 +111,9 @@ final class S2Container_AopProxy {
     }
 
     public static function isApplicableAspect(ReflectionMethod $method) {
-    	return ! $method->isStatic() and ! $method->isConstructor();
+    	return $method->isPublic() and
+    	       !$method->isStatic() and
+    	       !$method->isConstructor();
     }
 }
 ?>
