@@ -32,10 +32,44 @@ class S2Container_AopProxyUtil {
     public static function getProxyObject(S2Container_ComponentDef $componentDef,$args) {
         $parameters = array();
         $parameters[S2Container_ContainerConstants::COMPONENT_DEF_NAME] = $componentDef;
+
+        $target = null;
+        if(!$componentDef->getComponentClass()->isInterface() and
+           !$componentDef->getComponentClass()->isAbstract()){
+            $target = S2Container_ConstructorUtil::newInstance($componentDef->getComponentClass(),$args);
+        }
+
+        if(S2Container_FileCacheUtil::isContainerAopCache()){
+            $componentDef->getComponentName() == '' ? 
+                $name = $componentDef->getComponentClass()->getName() : 
+                $name = $componentDef->getComponentName();
+            $proxy = S2Container_FileCacheUtil::getCachedContainerAop($name,$componentDef->getContainer()->getPath());
+            if($proxy!=null){
+                $proxy->target_ = $target;
+                $proxy->targetClass_ = $componentDef->getComponentClass();
+                return $proxy;
+            }
+        }
+        $proxy = S2Container_AopProxyFactory::create(
+                   $target,
+                   $componentDef->getComponentClass(),
+                   S2Container_AopProxyUtil::getAspects($componentDef),
+                   $parameters);
+
+        if(S2Container_FileCacheUtil::isContainerAopCache()){
+            S2Container_FileCacheUtil::writeContainerAopCache($name,$componentDef->getContainer()->getPath(),$proxy);
+        }
+
+        return $proxy;
+
+/*
+        $parameters = array();
+        $parameters[S2Container_ContainerConstants::COMPONENT_DEF_NAME] = $componentDef;
         $proxy = new S2Container_AopProxy($componentDef->getComponentClass(),
                                S2Container_AopProxyUtil::getAspects($componentDef),
                                $parameters);
         return $proxy->create("",$args);
+*/
     }
 
     private static function getAspects(S2Container_ComponentDef $componentDef) {

@@ -161,7 +161,11 @@ class S2ContainerClassLoader {
         'S2Container_MessageUtil' => '/org/seasar/framework/util/S2Container_MessageUtil.class.php',
         'S2Container_MethodUtil' => '/org/seasar/framework/util/S2Container_MethodUtil.class.php',
         'S2Container_StringUtil' => '/org/seasar/framework/util/S2Container_StringUtil.class.php',
-        'S2ContainerClassLoader' => '/S2ContainerClassLoader.class.php'
+        'S2ContainerClassLoader' => '/S2ContainerClassLoader.class.php',
+        'S2Container_AopProxyFactory' => '/org/seasar/framework/aop/proxy/S2Container_AopProxyFactory.class.php',
+        'S2Container_AopProxyGenerator' => '/org/seasar/framework/aop/proxy/S2Container_AopProxyGenerator.class.php',
+        'S2Container_AopProxyTemplate' => '/org/seasar/framework/aop/proxy/S2Container_AopProxyTemplate.class.php',
+        'S2Container_FileCacheUtil' => '/org/seasar/framework/util/S2Container_FileCacheUtil.class.php'
     );
 
     function load($className){

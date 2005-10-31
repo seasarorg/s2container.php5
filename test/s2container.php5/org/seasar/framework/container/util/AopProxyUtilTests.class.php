@@ -13,7 +13,7 @@ class AopProxyUtilTests extends UnitTestCase {
         $cd->addAspectDef($aspect1);
         
         $a = S2Container_AopProxyUtil::getProxyObject($cd,array());
-        $this->assertIsA($a,'S2Container_UuCallAopProxyAEnhancedByS2AOP');
+        $this->assertIsA($a,'AEnhancedByS2AOP');
 
         print "\n";
     } 

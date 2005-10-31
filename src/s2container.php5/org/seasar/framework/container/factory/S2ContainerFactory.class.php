@@ -55,11 +55,25 @@ final class S2ContainerFactory {
     }
 
     public static function create($path) {
+
+        if(S2Container_FileCacheUtil::isContainerCache()){
+            $container = S2Container_FileCacheUtil::getCachedContainer($path);
+            if($container instanceof S2Container){
+                $container->reconstruct();
+                return $container;
+            }
+        }
+
         S2ContainerFactory::init();
         S2ContainerFactory::enter($path);
         $ext = S2ContainerFactory::getExtension($path);
         $container = S2ContainerFactory::getBuilder($ext)->build($path);
         S2ContainerFactory::leave($path);
+
+        if(S2Container_FileCacheUtil::isContainerCache()){
+            S2Container_FileCacheUtil::writeContainerCache($path,$container);
+        }
+
         return $container;
     }
     
