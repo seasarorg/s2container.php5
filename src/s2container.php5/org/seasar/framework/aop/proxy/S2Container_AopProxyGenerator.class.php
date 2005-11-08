@@ -27,6 +27,9 @@
  */
 class S2Container_AopProxyGenerator {
 
+    const CLASS_NAME_PREFIX = '';
+    const CLASS_NAME_POSTFIX = 'EnhancedByS2AOP';
+
     private function __construct() {}
     
     /**
@@ -36,7 +39,8 @@ class S2Container_AopProxyGenerator {
     static function generate($target,$targetClass,$params=null){
         //$log = S2Container_S2Logger::getLogger('S2Container_AopProxyGenerator');
 
-        $concreteClassName = $targetClass->getName() . 'EnhancedByS2AOP';
+        $concreteClassName = S2Container_AopProxyGenerator::getConcreteClassName($targetClass->getName());
+
         if(class_exists($concreteClassName,false)){
             return $concreteClassName;
         }
@@ -101,6 +105,12 @@ class S2Container_AopProxyGenerator {
 
         eval($srcLine);
         return $concreteClassName;
+    }
+
+    public static function getConcreteClassName($targetClassName){
+        return S2Container_AopProxyGenerator::CLASS_NAME_PREFIX .
+               $targetClassName . 
+               S2Container_AopProxyGenerator::CLASS_NAME_POSTFIX;
     }
     
     private static function getMethodDefinition($refMethod,$interfaceSrc){

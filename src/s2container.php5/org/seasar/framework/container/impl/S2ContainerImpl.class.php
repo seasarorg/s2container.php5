@@ -299,7 +299,7 @@ class S2ContainerImpl implements S2Container {
     public function reconstruct($mode=S2Container_ComponentDef::RECONSTRUCT_NORMAL) {
         $c = $this->getChildSize();
         for ($i = 0; $i < $c; ++$i) {
-            $this->getChild($i)->reconstruct();
+            $this->getChild($i)->reconstruct($mode);
         }
 
         $componentDef = $this->componentDefMap_[S2Container_ContainerConstants::CONTAINER_NAME]->reconstruct($mode);

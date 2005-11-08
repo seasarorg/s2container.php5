@@ -71,7 +71,7 @@ class PostgresTests extends UnitTestCase {
 
         print "\n";
     }
-
+/* */
     function testDao() {
        
         print __METHOD__ . "\n";
@@ -142,6 +142,7 @@ class PostgresTests extends UnitTestCase {
         print "\n";
         
     }
+
 /*
     function testInsertDept() {
        

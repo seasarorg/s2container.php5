@@ -17,6 +17,8 @@
     <component name="session" class="S2Container_DBSessionImpl"/>
     <component name="dbtx" class="S2Container_PostgresTxInterceptor"/>
 
+    <!--
+    -->
     <component class="S2Container_PostgresSqlHandler"/>
     <component name="dao" class="S2Container_SimpleDaoInterceptor"/>
     <component class="S2Container_DaoMetaDataFactoryImpl"/>

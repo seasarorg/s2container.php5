@@ -79,6 +79,7 @@ class ADOdbTests extends UnitTestCase {
         print "\n";
     }
 
+/* */
     function testDao() {
        
         print __METHOD__ . "\n";

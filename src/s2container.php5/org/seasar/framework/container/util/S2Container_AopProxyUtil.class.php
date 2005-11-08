@@ -30,6 +30,7 @@ class S2Container_AopProxyUtil {
     }
 
     public static function getProxyObject(S2Container_ComponentDef $componentDef,$args) {
+
         $parameters = array();
         $parameters[S2Container_ContainerConstants::COMPONENT_DEF_NAME] = $componentDef;
 
@@ -39,24 +40,31 @@ class S2Container_AopProxyUtil {
             $target = S2Container_ConstructorUtil::newInstance($componentDef->getComponentClass(),$args);
         }
 
-        if(S2Container_FileCacheUtil::isContainerAopCache()){
+        if(S2Container_FileCacheUtil::isContainerAopCache() and
+           $componentDef->getContainer() != null){
             $componentDef->getComponentName() == '' ? 
                 $name = $componentDef->getComponentClass()->getName() : 
                 $name = $componentDef->getComponentName();
-            $proxy = S2Container_FileCacheUtil::getCachedContainerAop($name,$componentDef->getContainer()->getPath());
+            $proxy = S2Container_FileCacheUtil::getCachedContainerAop(
+                       $name,
+                       $componentDef->getContainer()->getPath(),
+                       $componentDef->getComponentClass());
             if($proxy!=null){
                 $proxy->target_ = $target;
                 $proxy->targetClass_ = $componentDef->getComponentClass();
+
                 return $proxy;
             }
         }
+
         $proxy = S2Container_AopProxyFactory::create(
                    $target,
                    $componentDef->getComponentClass(),
                    S2Container_AopProxyUtil::getAspects($componentDef),
                    $parameters);
 
-        if(S2Container_FileCacheUtil::isContainerAopCache()){
+        if(S2Container_FileCacheUtil::isContainerAopCache() and
+           $componentDef->getContainer() != null){
             S2Container_FileCacheUtil::writeContainerAopCache($name,$componentDef->getContainer()->getPath(),$proxy);
         }
 

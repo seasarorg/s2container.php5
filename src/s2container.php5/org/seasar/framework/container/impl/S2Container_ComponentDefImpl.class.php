@@ -65,12 +65,17 @@ class S2Container_ComponentDefImpl implements S2Container_ComponentDef {
         $this->componentName_ = $componentName;
 */
 
-        if(class_exists($componentClass,false) or
-           interface_exists($componentClass,false)){
-        	$this->componentClass_ = new ReflectionClass($componentClass);
+        if($componentClass instanceof ReflectionClass){
+            $this->componentClass_ = $componentClass;
+            $this->componentClassName_ = $componentClass->getName();
+        }else{
+            if(class_exists($componentClass) or
+               interface_exists($componentClass)){
+               $this->componentClass_ = new ReflectionClass($componentClass);
+            }
+            $this->componentClassName_ = $componentClass;
         }
         $this->componentName_ = $componentName;
-        $this->componentClassName_ = $componentClass;
         $this->argDefSupport_ = new S2Container_ArgDefSupport();
         $this->propertyDefSupport_ = new S2Container_PropertyDefSupport();
         $this->initMethodDefSupport_ = new S2Container_InitMethodDefSupport();
@@ -281,8 +286,8 @@ class S2Container_ComponentDefImpl implements S2Container_ComponentDef {
             return false;
         }
 
-        if(class_exists($this->componentClassName_,false) or
-           interface_exists($this->componentClassName_,false)){
+        if(class_exists($this->componentClassName_) or
+           interface_exists($this->componentClassName_)){
             $this->componentClass_ = new ReflectionClass($this->componentClassName_);
             return true;
         }

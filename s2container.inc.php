@@ -67,4 +67,10 @@ function __autoload($class=null){
     if(S2ContainerClassLoader::load($class)){return;}
 }
 
+/*
+define('S2CONTAINER_PHP5_FILE_CACHE',true);
+define('S2CONTAINER_PHP5_AOP_FILE_CACHE',true);
+define('S2AOP_PHP5_FILE_CACHE',true);
+define('S2AOP_PHP5_FILE_CACHE_DIR','d:/tmp/tmp2/sp/cache');
+*/
 ?>

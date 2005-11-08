@@ -39,17 +39,27 @@ final class S2Container_FileCacheUtil {
 
     public static function isContainerAopCache(){
         if(defined('S2CONTAINER_PHP5_AOP_FILE_CACHE') and
-           S2CONTAINER_PHP5_AOP_FILE_CACHE){
+           S2CONTAINER_PHP5_AOP_FILE_CACHE and
+           S2Container_FileCacheUtil::isAopCache()){
             return true;
         }
         return false;
     }
 
-    public static function getCachedContainerAop($name,$path){
-        $file = $path.".".$name."_aop.s2dat";
-        if(is_readable($file) and
-           !S2Container_FileCacheUtil::isUpdated($file,$path)){
-            return unserialize(file_get_contents($file));
+    public static function getCachedContainerAop($name,$diconPath,$targetClass){
+        $concreteClassName = S2Container_AopProxyGenerator::getConcreteClassName($targetClass->getName());
+        if(!class_exists($concreteClassName,false)){
+            S2Container_FileCacheUtil::requireAopCache(
+                $concreteClassName,
+                $targetClass->getFileName());
+        }
+
+        if(class_exists($concreteClassName,false)){
+            $cacheFile = $diconPath.".".$name."_aop.s2dat";
+            if(is_readable($cacheFile) and
+               !S2Container_FileCacheUtil::isUpdated($cacheFile,$diconPath)){
+                 return unserialize(file_get_contents($cacheFile));
+            }
         }
         return null;
     }

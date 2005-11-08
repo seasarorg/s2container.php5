@@ -15,11 +15,12 @@
         <property name="database">"s2container"</property>
         -->
     </component>
-    <component class="S2Container_PearDBSqlHandler"/>
+    <component name="session" class="S2Container_DBSessionImpl"/>
     <component name="dbtx" class="S2Container_PearDBTxInterceptor"/>
 
+    <!--
+    -->
     <component name="dao" class="S2Container_SimpleDaoInterceptor"/>
     <component class="S2Container_DaoMetaDataFactoryImpl"/>
-    <component name="session" class="S2Container_DBSessionImpl"/>
-    
+    <component class="S2Container_PearDBSqlHandler"/>
 </components>

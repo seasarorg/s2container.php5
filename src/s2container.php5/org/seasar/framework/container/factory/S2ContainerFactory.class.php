@@ -58,8 +58,8 @@ final class S2ContainerFactory {
 
         if(S2Container_FileCacheUtil::isContainerCache()){
             $container = S2Container_FileCacheUtil::getCachedContainer($path);
-            if($container instanceof S2Container){
-                $container->reconstruct();
+            if(is_object($container)){
+                $container->reconstruct(S2Container_ComponentDef::RECONSTRUCT_FORCE);
                 return $container;
             }
         }

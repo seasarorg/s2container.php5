@@ -21,7 +21,9 @@
 
     <component name="dbtx" class="S2Container_ADOdbTxInterceptor"/>
     <component name="session" class="S2Container_DBSessionImpl"/>
-
+ 
+    <!--
+    -->
     <component class="S2Container_ADOdbSqlHandler"/>
     <component name="dao" class="S2Container_SimpleDaoInterceptor"/>
     <component class="S2Container_DaoMetaDataFactoryImpl"/>
