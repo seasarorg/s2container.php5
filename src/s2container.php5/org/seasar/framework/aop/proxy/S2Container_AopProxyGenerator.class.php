@@ -46,13 +46,13 @@ class S2Container_AopProxyGenerator {
         }
 
         if(S2Container_FileCacheUtil::isAopCache()){
-            if(S2Container_FileCacheUtil::requireAopCache($concreteClassName,$targetClass->getFileName())){
+            if(S2Container_FileCacheUtil::loadAopCache($concreteClassName,$targetClass->getFileName())){
                 return $concreteClassName;
             }
         }
 
         $interfaces = S2Container_ClassUtil::getInterfaces($targetClass); 
-        $classSrc = S2Container_ClassUtil::getClassSource(new ReflectionClass('S2Container_AopProxyTemplate'));
+        $classSrc = S2Container_ClassUtil::getClassSource(new ReflectionClass('S2Container_DefaultAopProxy'));
         $addMethodSrc = array();
         $interfaceNames = array();
         foreach ($interfaces as $interface){
@@ -87,10 +87,10 @@ class S2Container_AopProxyGenerator {
         	$implLine = ' {';
         }
         
-        $srcLine = str_replace('S2Container_AopProxyTemplate',$concreteClassName,$classSrc[0]);
+        $srcLine = str_replace('S2Container_DefaultAopProxy',$concreteClassName,$classSrc[0]);
         $srcLine = str_replace('{',$implLine,$srcLine);
         for($i=1;$i<count($classSrc)-1;$i++){
-            $srcLine .= str_replace('S2Container_AopProxyTemplate',$concreteClassName,$classSrc[$i]);
+            $srcLine .= str_replace('S2Container_DefaultAopProxy',$concreteClassName,$classSrc[$i]);
         }
         
         foreach($addMethodSrc as $methodSrc){
@@ -100,7 +100,7 @@ class S2Container_AopProxyGenerator {
         $srcLine .= "}\n";
 
         if(S2Container_FileCacheUtil::isAopCache()){
-            S2Container_FileCacheUtil::writeAopCache($concreteClassName,$srcLine);
+            S2Container_FileCacheUtil::saveAopCache($concreteClassName,$srcLine);
         }
 
         eval($srcLine);

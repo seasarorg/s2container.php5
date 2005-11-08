@@ -32,12 +32,12 @@ final class S2Container_AopProxyFactory {
     public function create($target=null,$targetClass=null,$aspects=null,$parameters=null) {
         //$log = S2Container_S2Logger::getLogger('S2Container_AopProxyFactor');
 
-        if(!is_object($target) and !$targetClass instanceof ReflectionClass){
-            throw new Exception("invalid args");
-        }
-
         if(!$targetClass instanceof ReflectionClass){ 
-            $targetClass = new ReflectionClass($target);
+            if(!is_object($target)){
+                throw new S2Container_S2RuntimeException('ESSR1010',array($target,$targetClass));
+            }else{
+                $targetClass = new ReflectionClass($target);
+            }
         }
 
         if(S2Container_ClassUtil::hasMethod($targetClass,'__call')){
@@ -49,10 +49,10 @@ final class S2Container_AopProxyFactory {
 
         $interfaces = S2Container_ClassUtil::getInterfaces($targetClass); 
         if(!$targetClass->isUserDefined() or count($interfaces) == 0){
-            return new S2Container_AopProxyTemplate($target,
-                                                    $targetClass,
-                                                    $methodInterceptorsMap,
-                                                    $parameters);
+            return new S2Container_DefaultAopProxy($target,
+                                                   $targetClass,
+                                                   $methodInterceptorsMap,
+                                                   $parameters);
         }
 
         $concreteClassName = S2Container_AopProxyGenerator::generate(

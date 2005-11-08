@@ -26,7 +26,7 @@
  * @author klove
  */
  
-class S2Container_AopProxyTemplate {
+class S2Container_DefaultAopProxy {
 
     private $methodInterceptorsMap_;
 
@@ -65,15 +65,8 @@ class S2Container_AopProxyTemplate {
             return $methodInvocation->proceed();
         }else{
             if(!is_object($this->target_)){
-                if($this->targetClass_->isInterface()){
-                    $msg = "target class [{$this->targetClass_->getName()}] is interface. ";
-                }else{
-                    $msg = "target class [{$this->targetClass_->getName()}] ";
-                }
-                
-                throw new S2Container_S2RuntimeException('ESSR0043',array($name,$msg));
+                throw new S2Container_S2RuntimeException('ESSR1009',array($name,$this->targetClass_->getName()));
             }
-
             return S2Container_MethodUtil::invoke($this->targetClass_->getMethod($name),
                                                   $this->target_,
                                                   $args);
