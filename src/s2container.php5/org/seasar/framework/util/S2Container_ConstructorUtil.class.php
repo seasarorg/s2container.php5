@@ -31,29 +31,31 @@ final class S2Container_ConstructorUtil {
     }
 
     public static function newInstance($refClass,$args){
-        try {
 /*          
             if($componentDef != null and 
                $componentDef->getAspectDefSize()>0){
                return S2Container_AopProxyUtil::getEnhancedClass($componentDef,$args); 
             }
 */
-            $cmd = "return new " . $refClass->getName() . "(";
-            if(count($args) == 0){
-                $cmd = $cmd . ");";
-                return eval($cmd);
-            }
-            
-            $strArg=array();
-            for($i=0;$i<count($args);$i++){
-                array_push($strArg,"\$args[" . $i . "]");
-            }
-            
-            $cmd = $cmd . implode(',',$strArg) . ");";
-            return eval($cmd);
-        }catch(Exception $e){
-            throw $e;
+
+        if(! $refClass instanceof ReflectionClass){
+            throw new S2Container_IllegalArgumentException('args[0] must be <ReflectionClass>');
         }
+
+        $cmd = "return new " . $refClass->getName() . "(";
+        if(count($args) == 0){
+            $cmd = $cmd . ");";
+            return eval($cmd);
+        }
+            
+        $strArg=array();
+        $c = count($args);
+        for($i=0;$i<$c;$i++){
+            array_push($strArg,"\$args[" . $i . "]");
+        }
+          
+        $cmd = $cmd . implode(',',$strArg) . ");";
+        return eval($cmd);
     }
 }
 ?>

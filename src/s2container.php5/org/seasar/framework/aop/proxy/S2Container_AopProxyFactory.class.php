@@ -29,18 +29,31 @@ final class S2Container_AopProxyFactory {
 
     private function __construct(){}
 
-    public function create($target=null,$targetClass=null,$aspects=null,$parameters=null) {
+    public function create($target=null,
+                           $targetClass=null,
+                           $aspects=null,
+                           $parameters=null) {
         //$log = S2Container_S2Logger::getLogger('S2Container_AopProxyFactor');
 
         if(!$targetClass instanceof ReflectionClass){ 
-            if(!is_object($target)){
-                throw new S2Container_S2RuntimeException('ESSR1010',array($target,$targetClass));
-            }else{
+        	if(is_string($targetClass)){
+                $targetClass = new ReflectionClass($targetClass);
+        	}else if(is_object($target)){
                 $targetClass = new ReflectionClass($target);
+            }else{
+                throw new S2Container_S2RuntimeException('ESSR1010',array($target,$targetClass));
             }
         }
 
-        if(S2Container_ClassUtil::hasMethod($targetClass,'__call')){
+        /*
+        if($targetClass->isFinal()){
+        	throw new S2Container_S2RuntimeException('ESSR0017',
+        	                               array("cannot aspect. target class [{$targetClass->getName()}] is final class. "));
+        }
+        */
+
+        if(!$targetClass->isUserDefined() or
+           S2Container_ClassUtil::hasMethod($targetClass,'__call')){
             //$log->info("target class has __call(). ignore aspect.",__METHOD__);
             return $target;
         }
@@ -48,7 +61,7 @@ final class S2Container_AopProxyFactory {
         $methodInterceptorsMap = S2Container_AopProxyFactory::creatMethodInterceptorsMap($targetClass,$aspects);
 
         $interfaces = S2Container_ClassUtil::getInterfaces($targetClass); 
-        if(!$targetClass->isUserDefined() or count($interfaces) == 0){
+        if(count($interfaces) == 0){
             return new S2Container_DefaultAopProxy($target,
                                                    $targetClass,
                                                    $methodInterceptorsMap,

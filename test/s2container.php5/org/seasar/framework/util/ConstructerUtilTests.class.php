@@ -41,5 +41,19 @@ class ConstructerUtilTests extends UnitTestCase {
        
         print "\n";
     }
+
+    function testIllegalRelfection() {
+       
+        print __METHOD__ . "\n";
+
+        try{
+            $c = S2Container_ConstructorUtil::newInstance('C',array('hoge'));
+        }catch(Exception $e){
+            $this->assertIsA($e,'S2Container_IllegalArgumentException');
+            print "{$e->getMessage()}\n";
+        }
+
+        print "\n";
+    }
 }
 ?>

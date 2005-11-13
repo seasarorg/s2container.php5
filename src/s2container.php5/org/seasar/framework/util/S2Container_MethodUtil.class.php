@@ -31,22 +31,25 @@ final class S2Container_MethodUtil {
     }
 
     public static function invoke($method,$target,$args=null) {
-        try {
-            if(count($args) == 0){
-                return $method->invoke($target,array());
-            }
-
-            $strArg=array();
-            for($i=0;$i<count($args);$i++){
-                array_push($strArg,"\$args[" . $i . "]");
-            }
-            $methodName = $method->getName();
-            $cmd = 'return $target->' . $methodName . '('.
-                   implode(',',$strArg) . ");";
-            return eval($cmd);
-        }catch(Exception $e){
-            throw $e;
+        if(! $method instanceof ReflectionMethod){
+            throw new S2Container_IllegalArgumentException('args[0] must be <ReflectionMethod>');
         }
+        if(! is_object($target)){
+            throw new S2Container_IllegalArgumentException('args[1] must be <object>');
+        }
+
+        if(count($args) == 0){
+            return $method->invoke($target,array());
+        }
+
+        $strArg=array();
+        for($i=0;$i<count($args);$i++){
+            array_push($strArg,"\$args[" . $i . "]");
+        }
+        $methodName = $method->getName();
+        $cmd = 'return $target->' . $methodName . '('.
+               implode(',',$strArg) . ");";
+        return eval($cmd);
     }
     
     public static function isAbstract(ReflectionMethod $method) {

@@ -18,6 +18,11 @@ class AopAllTest {
         $group->addTestCase(new DelegateInterceptorTests());
         $group->addTestCase(new AbstractInterceptorTests());
         $group->addTestCase(new TraceInterceptorTests());
+
+        $group->addTestCase(new AbstractInterceptorTests2());
+        $group->addTestCase(new DelegateInterceptorTests2());
+        $group->addTestCase(new TraceInterceptorTests2());
+        $group->addTestCase(new InterceptorsTests2());
         $group->addTestCase(new AopProxyFactoryTests());
 
         return $group;    	

@@ -32,15 +32,6 @@ class AopProxyFactoryTests extends UnitTestCase {
             $this->assertTrue(false);
         }              
           
-        try{
-            $c = S2Container_AopProxyFactory::create(null,
-                                                     null,
-                                                     array($ad->getAspect()),
-                                                     array());
-        }catch(Exception $e){
-            print $e->getMessage() . "\n";
-        }
-
         $c = S2Container_AopProxyFactory::create(new WextendAW(),
                                                  null,
                                                  array($ad->getAspect()),
@@ -50,6 +41,32 @@ class AopProxyFactoryTests extends UnitTestCase {
         }else{
             $this->assertTrue(false);
         }
+        print "\n";
+    }
+
+    function testNullTarget() {
+        print __METHOD__ . "\n";
+
+        $ad = new S2Container_AspectDefImpl(new S2Container_PointcutImpl('WextendAW'),
+                                            new S2Container_TraceInterceptor());
+
+        try{
+            $c = S2Container_AopProxyFactory::create(null,
+                                                     null,
+                                                     array($ad->getAspect()),
+                                                     array());
+        }catch(Exception $e){
+            $this->assertIsA($e,'S2Container_S2RuntimeException');
+            print $e->getMessage() . "\n";
+        }
+
+    
+        print "\n";
+    }
+    
+    function testNullAspect() {
+       
+        print __METHOD__ . "\n";
 
         try{
             $c = S2Container_AopProxyFactory::create(new WextendAW(),

@@ -1,27 +1,27 @@
 <?php
-class AbstractInterceptorTests extends UnitTestCase {
+class AbstractInterceptorTests2 extends UnitTestCase {
     function __construct() {
         $this->UnitTestCase();
     }
 
-/*
     function testCreateProxy() {
 
         print __METHOD__ . "\n";
        
         $interceptor = new S2Container_TraceInterceptor();
         $proxy = $interceptor->createProxy(new ReflectionClass('I'));
+        $proxy->target_ = new I();
         $proxy->culc();
         $this->assertEqual($proxy->getResult(),2);
 
         print "\n";
     }
-*/
+
     function testGetTargetClass() {
 
         print __METHOD__ . "\n";
        
-        $interceptor = new TestInterceptor();
+        $interceptor = new AbstractInterceptorTests2_TestInterceptor();
         $proxy = $interceptor->createProxy(new ReflectionClass('I'));
         $proxy->culc();
         $this->assertIsA($interceptor->getClazz(),'ReflectionClass');
@@ -34,11 +34,11 @@ class AbstractInterceptorTests extends UnitTestCase {
         print __METHOD__ . "\n";
        
         $pointcut = new S2Container_PointcutImpl(array("getTime"));
-        $interceptor = new TestInterceptor();
+        $interceptor = new AbstractInterceptorTests2_TestInterceptor();
         $aspect = new S2Container_AspectImpl($interceptor, $pointcut);
         $params[S2Container_ContainerConstants::COMPONENT_DEF_NAME] = new S2Container_ComponentDefImpl('Date','date');
-        $aopProxy = new S2Container_AopProxy('Date', array($aspect),$params);
-        $proxy = $aopProxy->create();
+        $proxy = S2Container_AopProxyFactory::create(null,'Date', array($aspect),$params);
+        $proxy->target_ = new Date();
         $proxy->getTime();
         $cd = $interceptor->getCd();
         
@@ -49,7 +49,7 @@ class AbstractInterceptorTests extends UnitTestCase {
 
 }
 
-class TestInterceptor extends S2Container_AbstractInterceptor {
+class AbstractInterceptorTests2_TestInterceptor extends S2Container_AbstractInterceptor {
     private $clazz;
     private $cd;
     

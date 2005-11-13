@@ -66,6 +66,38 @@ class MethodUtilTests extends UnitTestCase {
 
         print "\n";
     }
+    
+    function testIllegalRelfection() {
+       
+        print __METHOD__ . "\n";
+
+        try{
+        	$ret = S2Container_MethodUtil::invoke(null,new A());
+        }catch(Exception $e){
+            $this->assertIsA($e,'S2Container_IllegalArgumentException');
+            print "{$e->getMessage()}\n";
+        }
+
+        print "\n";
+    }
+
+    function testIllegalObject() {
+       
+        print __METHOD__ . "\n";
+
+        $t = new MethodUtilTest();
+        $ref = new ReflectionClass('MethodUtilTest');
+        $m = $ref->getMethod('a');
+
+        try{
+        	$ret = S2Container_MethodUtil::invoke($m,null);
+        }catch(Exception $e){
+            $this->assertIsA($e,'S2Container_IllegalArgumentException');
+            print "{$e->getMessage()}\n";
+        }
+
+        print "\n";
+    }
 }
 
 class MethodUtilTest {
