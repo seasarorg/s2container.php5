@@ -24,10 +24,6 @@
 <tbody><tr align="left" valign="top"><td width="14"><img src="images/spacer.gif" alt="" height="14" width="14"></td><td class="main" width="740">
 <!-- don't edit end -->
 <!-- document start -->
-<center>
-S2Container.PHP5は、Java版Seasar2をPHP5に移植したものです。<br>
-AOPについては、<a href="http://www.seasar.org/aop.html#S2概要">S2AOPの概要</a>を参照下さい。<br>
-</center>
 	<ul>
 		<li><a href="#S2AOPReference">S2AOPリファレンス</a>
             <ul>
@@ -60,7 +56,7 @@ AOPについては、<a href="http://www.seasar.org/aop.html#S2概要">S2AOPの概要</a>を
 
 <h3><a name="Warning">注意点</a></h3>
 <ul>
-<li>finalなクラスにはアスペクトを適用できません。</li>
+<li>Publicなメソッドにアスペクトを適用できます。</li>
 <li>staticなメソッドにはアスペクトを適用できません。</li>
 <li>pointcut属性を指定しない場合、すべてのメソッドが対象になるわけではありません。実装しているインターフェースのすべてのメソッドが対象になります。すべてのメソッドを対象にするには、pointcut属性に".*"と指定します。</li>
 </ul>
