@@ -62,17 +62,16 @@ require_once(S2CONTAINER_PHP5 . '/S2ContainerClassLoader.class.php');
 
 /**
  * Autoload Function
-*/ 
 function __autoload($class=null){
     if(S2ContainerClassLoader::load($class)){return;}
 }
+ */
 
-/*
-define('S2CONTAINER_PHP5_FILE_CACHE',true);
-define('S2CONTAINER_PHP5_AOP_FILE_CACHE',true);
-define('S2AOP_PHP5_FILE_CACHE',true);
-define('S2AOP_PHP5_FILE_CACHE_DIR','d:/tmp/tmp2/sp/cache');
-*/
+/**
+ * S2AOP enhanced proxy class file cache.
+define('S2AOP_PHP5_FILE_CACHE',false);
+define('S2AOP_PHP5_FILE_CACHE_DIR','/path/to/cache/dir');
+ */
 
 /*
 require_once(S2CONTAINER_PHP5 .
