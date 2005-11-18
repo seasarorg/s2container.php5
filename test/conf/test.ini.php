@@ -4,6 +4,9 @@ define('SRC_DIR',HOME_DIR . '/src');
 define('TEST_DIR',HOME_DIR . '/test');
 
 require_once(HOME_DIR . '/s2container.inc.php'); 
+function __autoload($class=null){
+    if(S2ContainerClassLoader::load($class)){return;}
+}
 
 define('S2CONTAINER_PHP5_APP_DICON',TEST_DIR . '/s2container.php5/org/seasar/framework/container/factory/app.dicon');
 define('S2CONTAINER_PHP5_LOG_LEVEL',S2Container_SimpleLogger::DEBUG);

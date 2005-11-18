@@ -42,7 +42,6 @@ class ContainerAllTest {
         $group->addTestCase(new AopProxyUtilTests());
         $group->addTestCase(new InstanceModeUtilTests());
         $group->addTestCase(new AutoBindingUtilTests());
-        $group->addTestCase(new S2ContainerClassLoaderTests());
 
         return $group;    	
     }
