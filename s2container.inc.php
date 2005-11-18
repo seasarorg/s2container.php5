@@ -73,4 +73,13 @@ define('S2CONTAINER_PHP5_AOP_FILE_CACHE',true);
 define('S2AOP_PHP5_FILE_CACHE',true);
 define('S2AOP_PHP5_FILE_CACHE_DIR','d:/tmp/tmp2/sp/cache');
 */
+
+/*
+require_once(S2CONTAINER_PHP5 .
+    '/org/seasar/framework/util/S2Container_MessageUtil.class.php');
+
+if( class_exists("S2Container_MessageUtil") ){
+    S2Container_MessageUtil::addMessageResource(S2CONTAINER_PHP5_MESSAGES_INI);
+}
+*/
 ?>

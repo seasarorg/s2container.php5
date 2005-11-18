@@ -158,9 +158,9 @@ class S2ContainerClassLoader {
         'S2Container_ClassUtil' => '/org/seasar/framework/util/S2Container_ClassUtil.class.php',
         'S2Container_ConstructorUtil' => '/org/seasar/framework/util/S2Container_ConstructorUtil.class.php',
         'S2Container_EvalUtil' => '/org/seasar/framework/util/S2Container_EvalUtil.class.php',
-        'S2Container_MessageUtil' => '/org/seasar/framework/util/S2Container_MessageUtil.class.php',
         'S2Container_MethodUtil' => '/org/seasar/framework/util/S2Container_MethodUtil.class.php',
-        'S2Container_StringUtil' => '/org/seasar/framework/util/S2Container_StringUtil.class.php',
+        'S2Container_MessageUtil' => '/org/seasar/framework/util/S2Container_MessageUtil.class.php',
+    	'S2Container_StringUtil' => '/org/seasar/framework/util/S2Container_StringUtil.class.php',
         'S2ContainerClassLoader' => '/S2ContainerClassLoader.class.php',
         'S2Container_AopProxyFactory' => '/org/seasar/framework/aop/proxy/S2Container_AopProxyFactory.class.php',
         'S2Container_AopProxyGenerator' => '/org/seasar/framework/aop/proxy/S2Container_AopProxyGenerator.class.php',
@@ -173,6 +173,12 @@ class S2ContainerClassLoader {
             require_once(S2CONTAINER_PHP5 . S2ContainerClassLoader::$CLASSES[$className]);
             return true;
         }
+        //
+        else if(isset(self::$USER_CLASSES[$className])){
+            require_once(self::$USER_CLASSES[$className]);
+            return true;
+        }
+        //
         else{
             return false;
        }

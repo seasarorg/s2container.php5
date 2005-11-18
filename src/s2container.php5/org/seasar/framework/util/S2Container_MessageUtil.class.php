@@ -37,8 +37,8 @@ class S2Container_MessageUtil {
      * @params array message words
      */
     public static function getMessageWithArgs($code,$args){
-        if(S2Container_MessageUtil::$msgMap_ == null){
-            S2Container_MessageUtil::loadMsgFile();
+        if(self::$msgMap_ == null){
+            self::loadMsgFile();
         }
         if(!is_array($args)){
             return "$args not array.\n";
@@ -47,10 +47,10 @@ class S2Container_MessageUtil {
             return "$code not string.\n";
         }
         
-        if(!array_key_exists($code,S2Container_MessageUtil::$msgMap_)){
-            return "$code not found in " . S2CONTAINER_PHP5_MESSAGES_INI . "\n.";
+        if(!isset(self::$msgMap_[$code])){
+            return "$code not found in " . implode(",", self::$msgMap_) . "\n.";
         }
-        $msg = S2Container_MessageUtil::$msgMap_[$code];
+        $msg = self::$msgMap_[$code];
 
         $msg = preg_replace('/{/','{$args[',$msg);
         $msg = preg_replace('/}/',']}',$msg);
@@ -58,10 +58,20 @@ class S2Container_MessageUtil {
 
         return eval($msg);
     }
+    
+    public static function addMessageResource($resource){
+        if(is_readable($resource)){
+            //self::$msgMap += parse_ini_file($resource);
+            $msg = parse_ini_file($resource);
+            self::$msgMap_ = array_merge(self::$msgMap_, $msg);
+        } else {
+            echo "[ERROR] ${resource} file not found.\n";
+        }
+    }
 
     private static function loadMsgFile(){
         if(is_readable(S2CONTAINER_PHP5_MESSAGES_INI)){
-            S2Container_MessageUtil::$msgMap_ = parse_ini_file(S2CONTAINER_PHP5_MESSAGES_INI);
+            self::$msgMap_ = parse_ini_file(S2CONTAINER_PHP5_MESSAGES_INI);
         }else{
             print "[ERROR] S2CONTAINER_PHP5_MESSAGES_INI file not found.\n";
         }
