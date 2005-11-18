@@ -169,7 +169,7 @@ class S2ContainerClassLoader {
     );
 
     function load($className){
-        if(array_key_exists($className,S2ContainerClassLoader::$CLASSES)){
+        if(array_key_exists($className,self::$CLASSES)){
             require_once(S2CONTAINER_PHP5 . S2ContainerClassLoader::$CLASSES[$className]);
             return true;
         }
