@@ -1,4 +1,28 @@
 <?php
+/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
+// +----------------------------------------------------------------------+
+// | PHP version 5                                                        |
+// +----------------------------------------------------------------------+
+// | Copyright 2004-2005 the Seasar Foundation and the Others.            |
+// +----------------------------------------------------------------------+
+// | Licensed under the Apache License, Version 2.0 (the "License");      |
+// | you may not use this file except in compliance with the License.     |
+// | You may obtain a copy of the License at                              |
+// |                                                                      |
+// |     http://www.apache.org/licenses/LICENSE-2.0                       |
+// |                                                                      |
+// | Unless required by applicable law or agreed to in writing, software  |
+// | distributed under the License is distributed on an "AS IS" BASIS,    |
+// | WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,                        |
+// | either express or implied. See the License for the specific language |
+// | governing permissions and limitations under the License.             |
+// +----------------------------------------------------------------------+
+// | Authors: klove                                                       |
+// +----------------------------------------------------------------------+
+//
+// $Id$
+/**
+ */
 class S2ContainerClassLoader {
     static $CLASSES = array(
         'S2Container_ADOdbDataSource' => '/org/seasar/extension/db/adodb/S2Container_ADOdbDataSource.class.php',
@@ -48,6 +72,9 @@ class S2ContainerClassLoader {
         'S2Container_TraceInterceptor' => '/org/seasar/framework/aop/interceptors/S2Container_TraceInterceptor.class.php',
         'S2Container_TraceThrowsInterceptor' => '/org/seasar/framework/aop/interceptors/S2Container_TraceThrowsInterceptor.class.php',
         'S2Container_AopProxy' => '/org/seasar/framework/aop/proxy/S2Container_AopProxy.class.php',
+        'S2Container_AopProxyFactory' => '/org/seasar/framework/aop/proxy/S2Container_AopProxyFactory.class.php',
+        'S2Container_AopProxyGenerator' => '/org/seasar/framework/aop/proxy/S2Container_AopProxyGenerator.class.php',
+        'S2Container_DefaultAopProxy' => '/org/seasar/framework/aop/proxy/S2Container_DefaultAopProxy.class.php',
         'S2Container_UuCallAopProxy' => '/org/seasar/framework/aop/proxy/S2Container_UuCallAopProxy.class.php',
         'S2Container_UuCallAopProxyFactory' => '/org/seasar/framework/aop/proxy/S2Container_UuCallAopProxyFactory.class.php',
         'S2Container_Advice' => '/org/seasar/framework/aop/S2Container_Advice.class.php',
@@ -158,19 +185,15 @@ class S2ContainerClassLoader {
         'S2Container_ClassUtil' => '/org/seasar/framework/util/S2Container_ClassUtil.class.php',
         'S2Container_ConstructorUtil' => '/org/seasar/framework/util/S2Container_ConstructorUtil.class.php',
         'S2Container_EvalUtil' => '/org/seasar/framework/util/S2Container_EvalUtil.class.php',
-        'S2Container_MethodUtil' => '/org/seasar/framework/util/S2Container_MethodUtil.class.php',
+        'S2Container_FileCacheUtil' => '/org/seasar/framework/util/S2Container_FileCacheUtil.class.php',
         'S2Container_MessageUtil' => '/org/seasar/framework/util/S2Container_MessageUtil.class.php',
-    	'S2Container_StringUtil' => '/org/seasar/framework/util/S2Container_StringUtil.class.php',
-        'S2ContainerClassLoader' => '/S2ContainerClassLoader.class.php',
-        'S2Container_AopProxyFactory' => '/org/seasar/framework/aop/proxy/S2Container_AopProxyFactory.class.php',
-        'S2Container_AopProxyGenerator' => '/org/seasar/framework/aop/proxy/S2Container_AopProxyGenerator.class.php',
-        'S2Container_DefaultAopProxy' => '/org/seasar/framework/aop/proxy/S2Container_DefaultAopProxy.class.php',
-        'S2Container_FileCacheUtil' => '/org/seasar/framework/util/S2Container_FileCacheUtil.class.php'
-    );
+        'S2Container_MethodUtil' => '/org/seasar/framework/util/S2Container_MethodUtil.class.php',
+        'S2Container_StringUtil' => '/org/seasar/framework/util/S2Container_StringUtil.class.php');
+
 
     function load($className){
         if(array_key_exists($className,self::$CLASSES)){
-            require_once(S2CONTAINER_PHP5 . S2ContainerClassLoader::$CLASSES[$className]);
+            require_once(S2CONTAINER_PHP5 . self::$CLASSES[$className]);
             return true;
         }
         //
@@ -204,7 +227,7 @@ class S2ContainerClassLoader {
                 S2ContainerClassLoader::$USER_CLASSES[$key] = $path;
             }
         }else{
-            print "[WARN] invalid args. path : $path, key : $key\n";
+            trigger_error("invalid args. path : $path, key : $key",E_USER_WARNING);
         }
     }
 }
