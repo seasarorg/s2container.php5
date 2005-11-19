@@ -196,12 +196,10 @@ class S2ContainerClassLoader {
             require_once(S2CONTAINER_PHP5 . self::$CLASSES[$className]);
             return true;
         }
-        //
         else if(isset(self::$USER_CLASSES[$className])){
             require_once(self::$USER_CLASSES[$className]);
             return true;
         }
-        //
         else{
             return false;
        }
@@ -209,7 +207,9 @@ class S2ContainerClassLoader {
 
     static $USER_CLASSES = array();
     function import($path,$key=null){
-        if(is_dir($path) and is_readable($path)){
+        if(is_array($path) && $key == null){
+            self::$USER_CLASSES = array_merge(self::$USER_CLASSES, $path);
+        }else if(is_dir($path) and is_readable($path)){
             $d = dir($path);
             while (false !== ($entry = $d->read())) {
                 if(preg_match("/([^\.]+).+php$/",$entry,$matches)){
