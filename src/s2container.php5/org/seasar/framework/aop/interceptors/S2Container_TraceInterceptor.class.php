@@ -49,8 +49,8 @@ class S2Container_TraceInterceptor extends S2Container_AbstractInterceptor {
             $buf .= " : ";
             $buf .= $ret;
         } catch (Exception $t) {
-            $buf .= " Exception:";
-            $buf .= $t;
+            $buf .= " Exception : " . get_class($t) . " : ";
+            $buf .= $t->getMessage();
             $cause = $t;
         }
         print "END   " . $buf ."\n";

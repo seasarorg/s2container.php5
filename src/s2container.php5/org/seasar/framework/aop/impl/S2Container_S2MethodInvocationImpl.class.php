@@ -93,6 +93,11 @@ class S2Container_S2MethodInvocationImpl implements S2Container_S2MethodInvocati
             return $this->interceptors[$this->interceptorIndex++]->invoke($this);
         }else{
             $method = $this->method->getName();
+            if(!is_object($this->target)){
+                throw new S2Container_S2RuntimeException(
+                              'ESSR1009',
+                              array($method,$this->targetClass->getName()));
+            }
             return S2Container_MethodUtil::invoke($this->method,$this->target,$this->methodArgs);
         }
     }
