@@ -60,6 +60,14 @@
     <li><a href="#unit-example">Example</a></li>
     </ul>
 </li>
+
+<li><a href="#loader">S2ContainerClassLoader</a></li>
+    <ul>
+    <li><a href="#loader-file">クラス定義ファイルを指定する</a></li>
+    <li><a href="#loader-dir">ディレクトリを指定する</a></li>
+    <li><a href="#loader-array">クラス定義の配列を使用する</a></li>
+    </ul>
+</li>
 </ul>
 
 <br>
@@ -1210,6 +1218,56 @@ OK (1 test)
 
 <p>Pear PHPUnit と SimpleTest を用いた同様のサンプルが s2container.php5/src/examples/extension/unit/test/以下にあります。</p>
 
+<br>
+<a name="loader"><h3>S2ContainerClassLoader</h3></a>
+<p>
+S2Container.PHP5では、クラス定義の読み込みを S2ContainerClassLoader が管理します。
+S2ContainerClassLoader には importメソッドが定義されており、任意のクラスを登録できます。登録されたクラスは、__autoload関数内で読み込まれます。
+</p>
+
+<h3><a name="loader-file">クラス定義ファイルを指定する</a></h3>
+<p><b>クラス定義ファイルを指定する</b></p>
+<pre>
+&lt;?php
+S2ContainerClassLoader::import('/path/to/Hoge.class.php');
+S2ContainerClassLoader::import('/path/to/Foo.php');
+?&gt;
+</pre>
+
+クラス名は指定されたファイル名の先頭から「.」までになります。Hoge.class.phpの場合は「Hoge」となります。
+<br>
+<br>
+<p><b>クラス名を指定する</b></p>
+<pre>
+&lt;?php
+S2ContainerClassLoader::import('/path/to/Hoge.class.php','Hoge');
+S2ContainerClassLoader::import('/path/to/classes.php','Foo');
+S2ContainerClassLoader::import('/path/to/classes.php','Bar');
+?&gt;
+</pre>
+importメソッドの第二引数でクラス名を指定できます。
+
+<br>
+<h3><a name="loader-dir">ディレクトリを指定する</a></h3>
+<pre>
+&lt;?php
+S2ContainerClassLoader::import('/path/to/dir');
+?&gt;
+</pre>
+
+指定されたディレクトリにあるクラス定義ファイルをimportします。
+
+<h3><a name="loader-array">クラス定義の配列を使用する</a></h3>
+
+<pre>
+&lt;?php
+$classes = array('Hoge'=>'/path/to/Hoge.class.php',
+                 'Foo'=>'/path/to/classes.php');
+S2ContainerClassLoader::import($classes);
+?&gt;
+</pre>
+
+クラス名をキーとしてクラス定義ファイルが指定された連想配列をimportします。
 
 <!-- document end -->
 <!-- don't edit start -->

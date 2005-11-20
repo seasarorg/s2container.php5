@@ -17,6 +17,8 @@ $classes = array(
            'H'=>'./H.class.php',
            'I'=>dirname(__FILE__).'/I.class.php');
 S2ContainerClassLoader::import($classes);
+S2ContainerClassLoader::import('jk.classes.php','J');
+S2ContainerClassLoader::import('jk.classes.php','K');
 
 print_r(S2ContainerClassLoader::$USER_CLASSES);
 $obj = new A();
@@ -34,5 +36,9 @@ print get_class($obj)."\n";
 $obj = new H();
 print get_class($obj)."\n";
 $obj = new I();
+print get_class($obj)."\n";
+$obj = new J();
+print get_class($obj)."\n";
+$obj = new K();
 print get_class($obj)."\n";
 ?>
