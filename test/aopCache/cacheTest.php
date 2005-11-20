@@ -9,6 +9,7 @@ function __autoload($class=null){
 define('S2AOP_PHP5_FILE_CACHE',false);
 define('S2AOP_PHP5_FILE_CACHE_DIR','./cache');
 //define('S2AOP_PHP5_FILE_CACHE_DIR',dirname(__FILE__).'/cache');
+//define('S2AOP_PHP5_FILE_CACHE_DIR','./not_exists_cache');
 
 require_once('classes.php');
 
@@ -20,6 +21,7 @@ $proxy->test(2,3);
 $proxy = S2Container_AopProxyFactory::create(new B(),'B', array($aspect));
 $proxy->test(2,3);
 
+/*
 $proxy = S2Container_AopProxyFactory::create(null,'IB', array($aspect));
 try{
     $proxy->test(2,3);
@@ -35,5 +37,5 @@ try{
 }catch(Exception $e){
     print "{$e->getMessage()}\n";
 }
-
+*/
 ?>

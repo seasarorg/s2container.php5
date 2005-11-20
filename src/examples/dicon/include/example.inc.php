@@ -4,6 +4,9 @@ define('HOME_DIR',dirname(dirname(dirname(dirname(dirname(__FILE__))))));
 define('EXAMPLE_DIR',HOME_DIR . '/src/examples');
 
 require_once(HOME_DIR . '/s2container.inc.php'); 
+function __autoload($class=null){
+    if(S2ContainerClassLoader::load($class)){return;}
+}
 
 require_once('Hello.class.php');         
 require_once('HelloClient.class.php');         
