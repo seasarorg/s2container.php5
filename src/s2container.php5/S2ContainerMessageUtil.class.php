@@ -18,65 +18,54 @@
 // | governing permissions and limitations under the License.             |
 // +----------------------------------------------------------------------+
 // | Authors: klove                                                       |
+// |          nowel                                                       |
 // +----------------------------------------------------------------------+
 //
 // $Id$
 /**
+ * @package 
  * @author klove
+ *         nowel
  */
+class S2ContainerMessageUtil {
 
-/**
- * S2Container.PHP5 ROOT Directory
- */
-define('S2CONTAINER_PHP5',dirname(__FILE__).'/src/s2container.php5');
+    private static $msgMap_ = array();
+    
+    private function __construct() {
+    }
+    
+    /**
+     * @param string message id code
+     * @params array message words
+     */
+    public static function getMessageWithArgs($code,$args){
+        if(!is_array($args)){
+            return "$args not array.\n";
+        }
+        if(!is_string($code)){
+            return "$code not string.\n";
+        }
+        
+        if(!isset(self::$msgMap_[$code])){
+            return "$code not found in " . implode(",", self::$msgMap_) . "\n.";
+        }
+        $msg = self::$msgMap_[$code];
 
-/**
- * S2Container.PHP5 Class Loader fot Autoload
- */
-require_once(S2CONTAINER_PHP5 . '/S2ContainerClassLoader.class.php');
+        $msg = preg_replace('/{/','{$args[',$msg);
+        $msg = preg_replace('/}/',']}',$msg);
+        $msg = S2Container_EvalUtil::getExpression('"'.$msg.'"');
 
-/**
- * S2Container.PHP5 Core Classes
- */
-//require_once(S2CONTAINER_PHP5 . '/s2container.core.classes.php');
-
-
-/**
- * Messages Resouce File
- */
-require_once(S2CONTAINER_PHP5 .'/org/seasar/framework/util/S2Container_MessageUtil.class.php');
-if( class_exists("S2Container_MessageUtil") ){
-    S2Container_MessageUtil::addMessageResource(
-                       S2CONTAINER_PHP5 . '/SSRMessages.properties');
+        return eval($msg);
+    }
+    
+    public static function addMessageResource($resource){
+        if(is_readable($resource)){
+            //self::$msgMap += parse_ini_file($resource);
+            $msg = parse_ini_file($resource);
+            self::$msgMap_ = array_merge(self::$msgMap_, $msg);
+        } else {
+            echo "[ERROR] ${resource} file not found.\n";
+        }
+    }
 }
-
-
-/**
- * DICON XML format DTD Validation Switch
- */
-define('S2CONTAINER_PHP5_DOM_VALIDATE',false);
-
-/**
- * S2Container_SingletonS2ContainerFactory app.dicon
- */
-//define('S2CONTAINER_PHP5_APP_DICON','app.dicon');
-
-/**
- * S2Container.PHP5 Log Level 
- */
-//define('S2CONTAINER_PHP5_LOG_LEVEL',S2Container_SimpleLogger::WARN);
-
-
-/**
- * S2AOP enhanced proxy class file cache.
- */
-//define('S2AOP_PHP5_FILE_CACHE',false);
-//define('S2AOP_PHP5_FILE_CACHE_DIR','/path/to/cache/dir');
-
-/**
- * Autoload Function
- */
-//function __autoload($class=null){
-//    if(S2ContainerClassLoader::load($class)){return;}
-//}
 ?>

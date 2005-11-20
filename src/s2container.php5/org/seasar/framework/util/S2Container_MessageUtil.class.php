@@ -18,16 +18,18 @@
 // | governing permissions and limitations under the License.             |
 // +----------------------------------------------------------------------+
 // | Authors: klove                                                       |
+// |          nowel                                                       |
 // +----------------------------------------------------------------------+
 //
 // $Id$
 /**
  * @package org.seasar.framework.util
  * @author klove
+ *         nowel
  */
 class S2Container_MessageUtil {
 
-    private static $msgMap_ = null;
+    private static $msgMap_ = array();
     
     private function S2Container_MessageUtil() {
     }
@@ -37,9 +39,6 @@ class S2Container_MessageUtil {
      * @params array message words
      */
     public static function getMessageWithArgs($code,$args){
-        if(self::$msgMap_ == null){
-            self::loadMsgFile();
-        }
         if(!is_array($args)){
             return "$args not array.\n";
         }
@@ -68,13 +67,5 @@ class S2Container_MessageUtil {
             echo "[ERROR] ${resource} file not found.\n";
         }
     }
-
-    private static function loadMsgFile(){
-        if(is_readable(S2CONTAINER_PHP5_MESSAGES_INI)){
-            self::$msgMap_ = parse_ini_file(S2CONTAINER_PHP5_MESSAGES_INI);
-        }else{
-            print "[ERROR] S2CONTAINER_PHP5_MESSAGES_INI file not found.\n";
-        }
-    }    
 }
 ?>

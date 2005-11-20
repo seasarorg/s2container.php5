@@ -18,6 +18,7 @@
 // | governing permissions and limitations under the License.             |
 // +----------------------------------------------------------------------+
 // | Authors: klove                                                       |
+// |          nowel                                                       |
 // +----------------------------------------------------------------------+
 //
 // $Id$
@@ -186,7 +187,6 @@ class S2ContainerClassLoader {
         'S2Container_ConstructorUtil' => '/org/seasar/framework/util/S2Container_ConstructorUtil.class.php',
         'S2Container_EvalUtil' => '/org/seasar/framework/util/S2Container_EvalUtil.class.php',
         'S2Container_FileCacheUtil' => '/org/seasar/framework/util/S2Container_FileCacheUtil.class.php',
-        'S2Container_MessageUtil' => '/org/seasar/framework/util/S2Container_MessageUtil.class.php',
         'S2Container_MethodUtil' => '/org/seasar/framework/util/S2Container_MethodUtil.class.php',
         'S2Container_StringUtil' => '/org/seasar/framework/util/S2Container_StringUtil.class.php');
 

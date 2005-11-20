@@ -13,6 +13,11 @@ S2ContainerClassLoader::import('classes_dir2/G.class.php');
 S2ContainerClassLoader::import('classes_dir');
 S2ContainerClassLoader::import('no-exist-classes-dir');
 
+$classes = array(
+           'H'=>'./H.class.php',
+           'I'=>dirname(__FILE__).'/I.class.php');
+S2ContainerClassLoader::import($classes);
+
 print_r(S2ContainerClassLoader::$USER_CLASSES);
 $obj = new A();
 print get_class($obj)."\n";
@@ -25,5 +30,9 @@ print get_class($obj)."\n";
 $obj = new E();
 print get_class($obj)."\n";
 $obj = new G();
+print get_class($obj)."\n";
+$obj = new H();
+print get_class($obj)."\n";
+$obj = new I();
 print get_class($obj)."\n";
 ?>

@@ -24,6 +24,8 @@ class AopAllTest {
         $group->addTestCase(new TraceInterceptorTests2());
         $group->addTestCase(new InterceptorsTests2());
         $group->addTestCase(new AopProxyFactoryTests());
+        $group->addTestCase(new DefaultAopProxyTests());
+        $group->addTestCase(new MethodInvocationTests());
 
         return $group;    	
     }
