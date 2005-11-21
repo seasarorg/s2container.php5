@@ -1,0 +1,87 @@
+<?xml version="1.0"?>
+<!--$Id$-->
+<project name="s2container.php5" default="build" basedir=".">
+
+ 	<target name="read-properties">
+		<echo msg="Reading property files..." />
+	    <!--read properties-->
+    	<property file="./build.properties" override="true"/>
+
+	    <!--read common properties-->
+	    <property file="./common.properties"/>
+	</target>
+
+	<!--create directories-->
+	<target name="prepare" depends="read-properties">
+		<echo msg="Preparing build..." />
+        <!--copy file-->
+        <copy file="build-dist.properties" tofile="build.properties"/>
+
+	    <!--add include_path -->
+	    <includepath>
+		    <classpath>
+			    <pathelement dir="${src.php}"/>
+			    <pathelement dir="${src.tests}"/>
+	    	</classpath>
+    	</includepath>
+
+		<mkdir dir="${build}" />
+		<mkdir dir="${build.tests.report}"/>
+	</target>
+
+	<target name="copy" depends="prepare">
+		<echo>Building...</echo>
+	</target>
+
+	<target name="test" depends="prepare" description="all test mainframe">
+		<echo msg="Test start..."/>
+		<property name="package" value=""/>
+		<phpunit2 printsummary="true">
+			<formatter type="xml" todir="${build.tests.report}"/>
+			<batchtest prefix="Soya_">
+				<fileset dir="${src.tests}/${package}">
+					<include name="**/*Test.php" />
+					<include name="*Test.php" />
+				</fileset>
+			</batchtest>
+		</phpunit2>
+		<phpunit2report infile="${build.tests.repost}/report.xml" 
+			format = "no-frames" styledir="${etc/style}"/>
+		<echo msg="Tests done, please see build/report/php-noframes.html"/>
+	</target>
+
+	<!--unit test-->
+	<!--
+	<target name="unit-test" depends="prepare" description="one unit test">
+		<echo msg="Test one file"/>
+		<property name="file" value=""/>
+		<echo msg="${src.tests}/${file}Test.php"/>
+		<phpunit2 printsummary="true">
+			<formatter type="xml"/>
+			<batchtest_old prefix="Soya_" todir="${build.tests.report}">
+				<fileset dir="${src.tests}">
+					<include name="${file}Test.php" />
+				</fileset>
+			</batchtest_old>
+		</phpunit2>
+		<result_aggregator todir="${build.tests.report}" tofile="report.xml">
+			<report styledir="${etc.style}" format="noframes"
+				todir="${build.tests.report}"/>
+			<fileset dir="${build.tests.report}"/>
+		</result_aggregator>
+		<echo msg="Tests done, please see build/report/php-noframes.html"/>
+	</target>                                                                
+	-->
+
+	<!--execute all tests and all copy-->
+	<target name="build" depends="prepare">
+		<phingcall target="copy"/>
+	</target>
+	
+    <!--clean up working copy-->
+	<target name="clean" depends="prepare">
+		<echo msg="Cleaning up..."/>
+		<delete dir="${build}"/>
+		<delete dir="${lib}"/>
+	</target>
+</project>
