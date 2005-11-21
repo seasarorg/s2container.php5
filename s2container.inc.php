@@ -44,16 +44,16 @@ require_once(S2CONTAINER_PHP5 . '/s2container.core.classes.php');
 /**
  * Messages Resouce File
  */
-require_once(S2CONTAINER_PHP5 .'/org/seasar/framework/util/S2Container_MessageUtil.class.php');
-if( class_exists("S2Container_MessageUtil") ){
-    S2Container_MessageUtil::addMessageResource(
+require_once(S2CONTAINER_PHP5 .'/S2ContainerMessageUtil.class.php');
+if( class_exists("S2ContainerMessageUtil") ){
+    S2ContainerMessageUtil::addMessageResource(
                        S2CONTAINER_PHP5 . '/SSRMessages.properties');
 }
 
 /**
  * DICON XML format DTD Validation Switch
  */
-define('S2CONTAINER_PHP5_DOM_VALIDATE',false);
+define('S2CONTAINER_PHP5_DOM_VALIDATE',true);
 
 /**
  * S2Container_SingletonS2ContainerFactory app.dicon

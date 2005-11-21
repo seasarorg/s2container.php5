@@ -40,7 +40,7 @@ class S2Container_S2RuntimeException extends Exception {
         $cause instanceof Exception ? 
             $msg = $cause->getMessage() . "\n" :
             $msg = "";
-        $msg .= S2Container_MessageUtil::getMessageWithArgs($messageCode,$args);
+        $msg .= S2ContainerMessageUtil::getMessageWithArgs($messageCode,$args);
         parent::__construct($msg);
     }
 }

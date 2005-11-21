@@ -27,11 +27,11 @@
  * @author klove
  *         nowel
  */
-class S2Container_MessageUtil {
+class S2ContainerMessageUtil {
 
     private static $msgMap_ = array();
     
-    private function S2Container_MessageUtil() {
+    private function construct() {
     }
     
     /**

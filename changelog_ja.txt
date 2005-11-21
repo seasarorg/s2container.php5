@@ -1,5 +1,33 @@
 S2Container.PHP5 変更履歴
 
+1.0.0-beta3
+-------------------------------------------------------------------------------
+* ライセンスを「The Seasar Software License, Version 1.1」から
+  「The Apache License, Version 2.0」に切り替えました。
+* クラス名が「S2Container」で始まっていないクラスについて、「S2Container_」
+  プレフィックスを付加しました。
+* デフォルトで__autoload関数を未定義としました。(コメントアウトしています。)
+* S2ContainerClassLoaderにimportメソッドを追加しました。
+* extensionドキュメントにS2ContainerClassLoaderについて追加しました。
+* セッターインジェクションにてexpressionで作成した配列がインジェクション
+  できない点を修正しました。
+* S2Container_ComponentDefImplで、コンポーネントのクラス定義が読み込まれて
+  いなくてもインスタンスを作成できるようにしました。
+* S2Container_MessageUtilをリソースファイルを追加できるように改修しました。
+* S2AOPで、EnhanceしたProxyクラスをファイルに出力できるようにしました。
+
+org.seasar.framework.aop.proxy
+* S2Container_AopProxyをS2Container_AopProxyFactoryに変更
+* S2Container_UuCallAopProxyFactoryをS2Container_AopProxyGeneratorに変更
+* S2Container_UuCallAopProxyをS2Container_DefaultAopProxyに変更
+
+org.seasar.framework.util
+* S2Container_FileCacheUtilを追加
+
+org.seasar.framework.container.util
+* S2Container_AopProxyUtilをS2Container_AopProxyFactoryを使用するように変更
+
+
 1.0.0-beta2
 -------------------------------------------------------------------------------
 * PHP-5.0.5 で動作確認しました。

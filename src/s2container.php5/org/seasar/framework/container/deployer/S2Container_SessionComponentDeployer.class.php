@@ -56,7 +56,7 @@ class S2Container_SessionComponentDeployer extends S2Container_AbstractComponent
                 return $component;
             }else{
                 $this->logger_->warn(
-                    S2Container_MessageUtil::getMessageWithArgs(
+                    S2ContainerMessageUtil::getMessageWithArgs(
                         'ESSR1005',
                         array('Session',$componentName,$className)),
                     __METHOD__);

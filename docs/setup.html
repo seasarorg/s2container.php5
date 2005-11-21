@@ -30,54 +30,34 @@ s2container.php5.version.zipを取得し解凍して下さい。以下のディレクトリが展開され
 
 <pre>
 s2container.php5/
-  +-- docs/                ----- ドキュメント ディレクトリ
-  +-- src/                 ----- ソース ディレクトリ
-  +-- test/                ----- テスト ディレクトリ
-  +-- SEASAR-LICENSE.TXT   ----- Seasarライセンス
-  +-- s2container.inc.php  ----- S2Container.PHP5 設定ファイル
+  +-- docs/
+  +-- src/
+  +-- test/
+  +-- Apache_Software_License_2.0.txt
+  +-- changelog_ja.txt
+  +-- s2container.inc.php
 </pre>
 <p>
-s2container.inc.php を読み込んで下さい。S2Container.PHP5が使用可能となります。
+s2container.inc.php を読み込み、__autoload関数を次のように定義して下さい。S2Container.PHP5が使用可能となります。
 </p>
 
 <pre>&lt?php
 require_once('/path/to/s2container.php5/s2container.inc.php');
+function __autoload($class=null){
+    if(S2ContainerClassLoader::load($class)){return;}
+}
 ?&gt;
 </pre>
-
+***備) s2container.inc.phpに、コメントアウトした__autoload関数定義のサンプルがあります。<br>
 <br>
-<h3>クラス定義の AutoLoad について</h3>
-<p>
-S2Container.PHP5 では、__autoload関数を用いてクラス定義ファイルを読み込みます。<br>
-__autoload関数は、s2container.inc.php ファイル内で定義されています。
+<p>開発中のアプリケーションや使用しているフレームワークで、既に__autoload関数が定義されている場合は、次の1行をご使用の__autoload関数の先頭に挿入して下さい。
 </p>
-<pre>&lt?php
-・・・
-function __autoload($class=null){
-    if(S2ContainerClassLoader::load($class)){return;}
-}
-・・・
-?&gt;
-</pre>
-
-開発中のアプリケーションや使用しているフレームワークで、既に__autoload関数が定義されている場合は、s2container.inc.php 内の __autoload関数をコメントアウトして下さい。
-<pre>&lt?php
-・・・
-/*
-function __autoload($class=null){
-    if(S2ContainerClassLoader::load($class)){return;}
-}
-*/
-・・・
-?&gt;
-</pre>
-
-s2container.inc.php 内の __autoload関数をコメントアウト後、以下の1行をご使用の__autoload関数の先頭に挿入して下さい。
 <pre>
 if(S2ContainerClassLoader::load($class)){return;}
 </pre>
+
 ***注） __autoload関数定義が読み込まれる前に s2container.inc.php ファイルの require を行って下さい。<br>
-***注） S2ContainerClassLoader::load メソッドの引数($class)は、__autoload関数の引数を渡して下さい。
+***注） S2ContainerClassLoader::load メソッドの引数($class)は、__autoload関数の引数を渡して下さい。<br>
 
 <!-- document end -->
 <!-- don't edit start -->
