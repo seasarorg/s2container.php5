@@ -2054,11 +2054,29 @@ final class S2Container_ConstructorUtil {
         if(! $refClass instanceof ReflectionClass){
             throw new S2Container_IllegalArgumentException('args[0] must be <ReflectionClass>');
         }
+        if(! $refClass->isInstantiable()){
+            throw new S2Container_IllegalArgumentException('args[0] ' . get_class($regClass) . 'is not instantiable. arg[0] must be instantiable');
+        }
         $cmd = "return new " . $refClass->getName() . "(";
         if(count($args) == 0){
-            $cmd = $cmd . ");";
+ $cmd = $cmd . ");";
             return eval($cmd);
         }
+
+        $constructor = $refClass->getConstructor();
+        $parameters = $constructor->getParameters();
+
+        foreach($parameters as $key => $param){
+            $paramClass = $param->getClass();
+            if($param->allowsNull() == false && is_null($args[$key])){
+                throw new S2Container_IllegalArgumentException("args[1], argument $key must not be null. please check class definition of " . get_class($refClass));
+            }
+            if(is_null($paramClass) == false &&
+               $paramClass->isInstance($args[$key]) == false){
+                throw new S2Container_IllegalArgumentException("args[1], argument $key must be instance of " . $paramClass->getName() . ".");
+            }
+        }
+            
         $strArg=array();
         $c = count($args);
         for($i=0;$i<$c;$i++){

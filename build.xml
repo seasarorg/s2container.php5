@@ -20,13 +20,14 @@
 	    <!--add include_path -->
 	    <includepath>
 		    <classpath>
-			    <pathelement dir="${src.php}"/>
-			    <pathelement dir="${src.tests}"/>
+			    <pathelement dir="${php}"/>
+			    <pathelement dir="${test}"/>
+			    <pathelement dir="${test.s2container.php5}"/>
 	    	</classpath>
     	</includepath>
 
 		<mkdir dir="${build}" />
-		<mkdir dir="${build.tests.report}"/>
+		<mkdir dir="${build.report}"/>
 	</target>
 
 	<target name="copy" depends="prepare">
@@ -37,41 +38,39 @@
 		<echo msg="Test start..."/>
 		<property name="package" value=""/>
 		<phpunit2 printsummary="true">
-			<formatter type="xml" todir="${build.tests.report}"/>
-			<batchtest prefix="Soya_">
-				<fileset dir="${src.tests}/${package}">
+			<formatter type="xml" todir="${build.report}"/>
+			<batchtest>
+				<fileset dir="${test.s2container.php5}/${package}">
 					<include name="**/*Test.php" />
 					<include name="*Test.php" />
+					<exclude name="**/extension/**"/>
 				</fileset>
 			</batchtest>
 		</phpunit2>
-		<phpunit2report infile="${build.tests.repost}/report.xml" 
-			format = "no-frames" styledir="${etc/style}"/>
+		<phpunit2report infile="${build.report}/testsuites.xml"
+			todir="${build.report}" 
+			format = "noframes" styledir="${style}"/>
 		<echo msg="Tests done, please see build/report/php-noframes.html"/>
 	</target>
 
 	<!--unit test-->
-	<!--
 	<target name="unit-test" depends="prepare" description="one unit test">
 		<echo msg="Test one file"/>
 		<property name="file" value=""/>
-		<echo msg="${src.tests}/${file}Test.php"/>
+		<echo msg="${test.s2container.php5}/${file}Test.php"/>
 		<phpunit2 printsummary="true">
-			<formatter type="xml"/>
-			<batchtest_old prefix="Soya_" todir="${build.tests.report}">
-				<fileset dir="${src.tests}">
-					<include name="${file}Test.php" />
+			<formatter type="xml" todir="${build.report}"/>
+			<batchtest>
+				<fileset dir="${test.s2container.php5}">
+					<include name="**/${file}Test.php" />
 				</fileset>
-			</batchtest_old>
+			</batchtest>
 		</phpunit2>
-		<result_aggregator todir="${build.tests.report}" tofile="report.xml">
-			<report styledir="${etc.style}" format="noframes"
-				todir="${build.tests.report}"/>
-			<fileset dir="${build.tests.report}"/>
-		</result_aggregator>
+		<phpunit2report infile="${build.report}/testsuites.xml"
+			todir="${build.report}" 
+			format = "noframes" styledir="${style}"/>
 		<echo msg="Tests done, please see build/report/php-noframes.html"/>
 	</target>                                                                
-	-->
 
 	<!--execute all tests and all copy-->
 	<target name="build" depends="prepare">
