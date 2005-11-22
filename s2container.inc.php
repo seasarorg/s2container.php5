@@ -40,7 +40,6 @@ require_once(S2CONTAINER_PHP5 . '/S2ContainerClassLoader.class.php');
  */
 require_once(S2CONTAINER_PHP5 . '/s2container.core.classes.php');
 
-
 /**
  * Messages Resouce File
  */
