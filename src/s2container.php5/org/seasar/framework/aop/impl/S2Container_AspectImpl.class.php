@@ -25,12 +25,17 @@
  * @package org.seasar.framework.aop.impl
  * @author klove
  */
-class S2Container_AspectImpl implements S2Container_Aspect {
+class S2Container_AspectImpl implements S2Container_Aspect 
+{
 
     private $methodInterceptor_;
     private $pointcut_;
 
-    public function S2Container_AspectImpl(S2Container_MethodInterceptor $methodInterceptor,S2Container_Pointcut $pointcut) {
+    /**
+     */
+    public function __construct(S2Container_MethodInterceptor $methodInterceptor,
+                                S2Container_Pointcut $pointcut)
+    {
         $this->methodInterceptor_ = $methodInterceptor;
         $this->pointcut_ = $pointcut;
     }
@@ -38,21 +43,24 @@ class S2Container_AspectImpl implements S2Container_Aspect {
     /**
      * @see S2Container_Aspect::getMethodInterceptor()
      */
-    public function getMethodInterceptor() {
+    public function getMethodInterceptor() 
+    {
         return $this->methodInterceptor_;
     }
 
     /**
      * @see S2Container_Aspect::getPointcut()
      */
-    public function getPointcut() {
+    public function getPointcut()
+    {
         return $this->pointcut_;
     }
 
     /**
      * @see S2Container_Aspect::setPointcut()
      */
-    public function setPointcut(S2Container_Pointcut $pointcut) {
+    public function setPointcut(S2Container_Pointcut $pointcut)
+    {
         $this->pointcut_ = $pointcut;
     }
 }

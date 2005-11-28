@@ -25,32 +25,52 @@
  * @package org.seasar.framework.aop.interceptors
  * @author klove
  */
-class S2Container_PrototypeDelegateInterceptor extends S2Container_AbstractInterceptor {
+class S2Container_PrototypeDelegateInterceptor 
+    extends S2Container_AbstractInterceptor
+{
     private $container;
     private $targetName;
     private $beanDesc;
     private $methodNameMap = array();
 
-    public function S2Container_PrototypeDelegateInterceptor(S2Container $container) {
+    /**
+     * @param S2Container container
+     */
+    public function __construct(S2Container $container)
+    {
         $this->container = $container;
     }
 
-    public function getTargetName() {
+    /**
+     * @return string target name
+     */
+    public function getTargetName()
+    {
         return $this->targetName;
     }
 
-    public function setTargetName($targetName) {
+    /**
+     * @param string target name
+     */
+    public function setTargetName($targetName)
+    {
         $this->targetName = $targetName;
     }
 
-    public function addMethodNameMap($methodName,$targetMethodName) {
+    /**
+     * @param string method name
+     * @param string target method name 
+     */
+    public function addMethodNameMap($methodName,$targetMethodName)
+    {
         $this->methodNameMap[$methodName] = $targetMethodName;
     }
 
     /**
      * @see S2Container_MethodInterceptor::invoke()
      */
-    public function invoke(S2Container_MethodInvocation $invocation) {
+    public function invoke(S2Container_MethodInvocation $invocation)
+    {
         if ($this->targetName == null) {
             throw new S2Container_EmptyRuntimeException("targetName");
         }
@@ -63,15 +83,18 @@ class S2Container_PrototypeDelegateInterceptor extends S2Container_AbstractInter
         }
         $target = $this->container->getComponent($this->targetName);
         if ($this->beanDesc == null) {
-            $this->beanDesc = S2Container_BeanDescFactory::getBeanDesc(new ReflectionClass($target));
+            $this->beanDesc = 
+                S2Container_BeanDescFactory::getBeanDesc(new ReflectionClass($target));
         }
 
         if (!$this->beanDesc->hasMethod($methodName)) {
-            throw new S2Container_MethodNotFoundRuntimeException($this->getTargetClass($invocation), $methodName,
-                    $invocation->getArguments());
+            throw new S2Container_MethodNotFoundRuntimeException($this->
+                                               getTargetClass($invocation),
+                                               $methodName,
+                                               $invocation->getArguments());
         }
-
-        return $this->beanDesc->invoke($target, $methodName, $invocation->getArguments());
+        return $this->beanDesc->invoke($target, 
+                          $methodName, $invocation->getArguments());
     }
 }
 ?>
