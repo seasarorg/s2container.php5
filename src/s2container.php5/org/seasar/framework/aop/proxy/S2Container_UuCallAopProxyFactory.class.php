@@ -25,76 +25,90 @@
  * @package org.seasar.framework.aop.proxy
  * @author klove
  */
-class S2Container_UuCallAopProxyFactory {
-
-    private function S2Container_UuCallAopProxyFactory() {}
+class S2Container_UuCallAopProxyFactory
+{
+    /**
+     *  
+     */
+    private function __construct()
+    {
+    }
     
     /**
      * @param ReflectionClass 
      * @param array Interceptors 
      */
-    static function create($targetClass,$map,$args,$params=null){
+    static function create($targetClass,$map,$args,$params = null)
+    {
         $log = S2Container_S2Logger::getLogger('S2Container_UuCallAopProxyFactory');
 
-        if(S2Container_ClassUtil::hasMethod($targetClass,'__call')){
+        if (S2Container_ClassUtil::hasMethod($targetClass,'__call')) {
             $log->info("target class has __call(). ignore aspect.",__METHOD__);
             return S2Container_ConstructorUtil::newInstance($targetClass,$args);
         }
-               	
-        $concreteClassName = 'S2Container_UuCallAopProxy' . $targetClass->getName() . 'EnhancedByS2AOP';
 
-        if(class_exists($concreteClassName,false)){
+        $concreteClassName = 'S2Container_UuCallAopProxy' . 
+             $targetClass->getName() . 'EnhancedByS2AOP';
+
+        if (class_exists($concreteClassName,false)) {
             return new $concreteClassName($targetClass,$map,$args,$params);
         }
         
-        if(!$targetClass->isUserDefined()){
+        if (!$targetClass->isUserDefined()) {
             return new S2Container_UuCallAopProxy($targetClass,$map,$args,$params);
         }
 
-        $classSrc = S2Container_ClassUtil::getClassSource(new ReflectionClass('S2Container_UuCallAopProxy'));
+        $classSrc = S2Container_ClassUtil::getClassSource(new 
+                        ReflectionClass('S2Container_UuCallAopProxy'));
 
         $interfaces = S2Container_ClassUtil::getInterfaces($targetClass); 
                
-        if(count($interfaces) == 0){
+        if (count($interfaces) == 0) {
             return new S2Container_UuCallAopProxy($targetClass,$map,$args,$params);
         }
 
         $addMethodSrc = array();
         $interfaceNames = array();
-        foreach ($interfaces as $interface){
+        foreach ($interfaces as $interface) {
             $interfaceSrc = S2Container_ClassUtil::getSource($interface);
             $methods = $interface->getMethods();
             $unApplicable = false;
-            foreach ($methods as $method){
-                if($method->getDeclaringClass()->getName() == $interface->getName()){
-                    if(S2Container_AopProxy::isApplicableAspect($method)){
-                        array_push($addMethodSrc,S2Container_UuCallAopProxyFactory::getMethodDefinition($method,$interfaceSrc));
-                    }else{
-                        $unApplicable=true;	
+            foreach ($methods as $method) {
+                if ($method->getDeclaringClass()->getName() == $interface->getName()) {
+                    if (S2Container_AopProxy::isApplicableAspect($method)) {
+                        array_push($addMethodSrc,
+                        S2Container_UuCallAopProxyFactory::getMethodDefinition($method,
+                                                           $interfaceSrc));
+                    } else {
+                        $unApplicable = true;
                         break;
                     }
                 }
             }
-            if(!$unApplicable){
+            if (!$unApplicable) {
                 array_push($interfaceNames,$interface->getName());
-            }else{
-                $log->info("interface [".$interface->getName()."] is unapplicable. not implemented.",__METHOD__);
+            } else {
+                $log->info("interface [" . 
+                    $interface->getName() . 
+                    "] is unapplicable. not implemented.",__METHOD__);
             }
         }          
 
-        if(count($interfaceNames)>0){
-        	$implLine = " implements " . implode(',',$interfaceNames) . ' {';
-        }else{
-        	$implLine = ' {';
+        if (count($interfaceNames) > 0) {
+            $implLine = " implements " . implode(',',$interfaceNames) . ' {';
+        } else {
+            $implLine = ' {';
         }
         
-        $srcLine = str_replace('S2Container_UuCallAopProxy',$concreteClassName,$classSrc[0]);
+        $srcLine = str_replace('S2Container_UuCallAopProxy',
+        $concreteClassName,$classSrc[0]);
         $srcLine = str_replace('{',$implLine,$srcLine);
-        for($i=1;$i<count($classSrc)-1;$i++){
-            $srcLine .= str_replace('S2Container_UuCallAopProxy',$concreteClassName,$classSrc[$i]);
+        for ($i = 1; $i < count($classSrc) - 1; $i++) {
+            $srcLine .= str_replace('S2Container_UuCallAopProxy',
+            $concreteClassName,$classSrc[$i]);
         }
         
-        foreach($addMethodSrc as $methodSrc){
+        foreach ($addMethodSrc as $methodSrc) {
             $srcLine .= $methodSrc . "\n";
         }
 
@@ -103,25 +117,28 @@ class S2Container_UuCallAopProxyFactory {
         return new $concreteClassName($targetClass,$map,$args,$params);
     }
     
-    private static function getMethodDefinition($refMethod,$interfaceSrc){
-
+    /**
+     * 
+     */
+    private static function getMethodDefinition($refMethod,$interfaceSrc)
+    {
         $def = S2Container_MethodUtil::getSource($refMethod,$interfaceSrc);        
         $defLine = trim(implode(' ',$def));
         $defLine = preg_replace("/\;$/","",$defLine);
         $defLine = preg_replace("/abstract\s/","",$defLine);
         $defLine .= " {";
         
-        if(preg_match("/\((.*)\)/",$defLine,$regs)){
+        if (preg_match("/\((.*)\)/",$defLine,$regs)) {
             $argLine = $regs[1];
         }
                 
         $argsTmp = split('[ ,]',$argLine);
         $args = array();
-        foreach($argsTmp as $item){
-            if(preg_match('/^\$/',$item)){
+        foreach ($argsTmp as $item) {
+            if (preg_match('/^\$/',$item)) {
                 array_push($args,$item);
             }
-            if(preg_match('/^\&(.+)/',$item,$regs)){
+            if (preg_match('/^\&(.+)/',$item,$regs)) {
                 array_push($args,$regs[1]);
             }
         }

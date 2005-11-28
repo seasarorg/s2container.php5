@@ -25,7 +25,11 @@
  * @package org.seasar.framework.aop
  * @author klove
  */
-interface S2Container_Invocation extends S2Container_Joinpoint{
+interface S2Container_Invocation extends S2Container_Joinpoint
+{
+    /**
+     * 
+     */
     function getArguments();
 }
 ?>

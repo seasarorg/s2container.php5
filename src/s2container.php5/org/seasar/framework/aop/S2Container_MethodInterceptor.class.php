@@ -25,7 +25,11 @@
  * @package org.seasar.framework.aop
  * @author klove
  */
-interface S2Container_MethodInterceptor {
+interface S2Container_MethodInterceptor
+{
+    /**
+     * @param S2Container_MethodInvocation
+     */
     function invoke(S2Container_MethodInvocation $invocation);
 }
 ?>

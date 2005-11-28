@@ -25,5 +25,7 @@
  * @package org.seasar.framework.aop
  * @author klove
  */
-interface S2Container_Interceptor extends S2Container_Advice{}
+interface S2Container_Interceptor extends S2Container_Advice
+{
+}
 ?>
