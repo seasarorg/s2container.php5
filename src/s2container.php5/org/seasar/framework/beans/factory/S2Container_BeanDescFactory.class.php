@@ -22,26 +22,29 @@
 //
 // $Id$
 /**
- * BeanDesc‚ðì¬‚µ‚Ü‚·B
- * 
  * @package org.seasar.framework.beans.factory
  * @author klove
  */
-final class S2Container_BeanDescFactory {
-
+final class S2Container_BeanDescFactory
+{
     private static $beanDescCache_ = array();
 
     /**
-     * Singleton‚Ì‚½‚ßprivate
+     * Singleton
      */
-    private function S2Container_BeanDescFactory() {
+    private function __construct()
+    {
     }
 
-    public static function getBeanDesc(ReflectionClass $clazz) {
-    	
-    	if(array_key_exists($clazz->getName(),S2Container_BeanDescFactory::$beanDescCache_)){
+    /**
+     * @param ReflectionClass
+     */
+    public static function getBeanDesc(ReflectionClass $clazz)
+    {
+        if (array_key_exists($clazz->getName(),
+            S2Container_BeanDescFactory::$beanDescCache_)) {
             $beanDesc = S2Container_BeanDescFactory::$beanDescCache_[$clazz->getName()];
-    	}else{
+        } else {
             $beanDesc = new S2Container_BeanDescImpl($clazz);
             S2Container_BeanDescFactory::$beanDescCache_[$clazz->getName()] = $beanDesc;
         }

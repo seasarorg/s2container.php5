@@ -22,30 +22,40 @@
 //
 // $Id$
 /**
- * クラスのプロパティが見つからなかったときの実行時例外
- * 
  * @package org.seasar.framework.beans
  * @author klove
  */
 class S2Container_PropertyNotFoundRuntimeException
-    extends S2Container_S2RuntimeException {
-
+    extends S2Container_S2RuntimeException
+{
     private $targetClass_;
     private $propertyName_;
 
-    public function S2Container_PropertyNotFoundRuntimeException(
-        $componentClass,
-        $propertyName) {
-        parent::__construct("ESSR0065",array($componentClass->getName(), $propertyName));
+    /**
+     * 
+     */
+    public function __construct($componentClass,
+        $propertyName)
+    {
+        parent::__construct("ESSR0065",
+                  array($componentClass->getName(), $propertyName));
         $this->targetClass_ = $componentClass;
         $this->propertyName_ = $propertyName;
     }
 
-    public function getTargetClass() {
+    /**
+     * 
+     */
+    public function getTargetClass()
+    {
         return $this->targetClass_;
     }
     
-    public function getPropertyName() {
+    /**
+     * 
+     */
+    public function getPropertyName()
+    {
         return $this->propertyName_;
     }
 }

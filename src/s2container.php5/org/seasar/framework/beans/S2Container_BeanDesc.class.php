@@ -27,33 +27,81 @@
  */
 interface S2Container_BeanDesc {
 
+    /**
+     * @return ReflectionClass
+     */
     public function getBeanClass();
     
+    /**
+     * @param string property name
+     * @return boolean
+     */
     public function hasPropertyDesc($propertyName);
 
+    /**
+     * @param string property name
+     */
     public function getPropertyDesc($propertyName);
     
+    /**
+     * @return int
+     */
     public function getPropertyDescSize();
     
+    /**
+     * @param string field name
+     * @return boolean 
+     */
     public function hasField($fieldName);
     
+    /**
+     * @param string field name
+     * @return string 
+     */
     public function getField($fieldName);
     
+    /**
+     * @param array args
+     */
     public function newInstance($args);
         
+    /**
+     * 
+     */
     public function getSuitableConstructor();
     
+    /**
+     * @param object target object
+     * @param string method name
+     * @param array args
+     */
     public function invoke($target, $methodName,$args);
         
+    /**
+     * @param string method name
+     */
     public function getMethods($methodName);
     
+    /**
+     * @param string method name
+     * @return boolean
+     */
     public function hasMethod($methodName);
         
+    /**
+     * 
+     */
     public function getMethodNames();
 
+    /**
+     * @param string constant name
+     * @return boolean
+     */
     public function hasConstant($constName);
     
+    /**
+     * @param string constant name
+     */
     public function getConstant($constName);
-
 }
 ?>

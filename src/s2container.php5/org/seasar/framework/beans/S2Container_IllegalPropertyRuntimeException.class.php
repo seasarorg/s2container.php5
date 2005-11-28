@@ -22,35 +22,45 @@
 //
 // $Id$
 /**
- *
  * @package org.seasar.framework.beans
  * @author klove
  */
-class S2Container_IllegalPropertyRuntimeException extends S2Container_S2RuntimeException {
-
+class S2Container_IllegalPropertyRuntimeException 
+    extends S2Container_S2RuntimeException
+{
     private $componentClass_;
-	private $propertyName_;
+    private $propertyName_;
 
-	public function S2Container_IllegalPropertyRuntimeException(
-		$componentClass,
-		$propertyName,
-		$cause = null) {
+    /**
+     * 
+     */
+    public function __construct($componentClass,
+        $propertyName,
+        $cause = null)
+    {
+        $cause != null ? $causeMsg = $cause->getMessage() : 
+        $causeMsg = "";
+        parent::__construct("ESSR0059",
+                 array($componentClass->getName(), 
+                       $propertyName, $causeMsg),$cause);
+       $this->componentClass_ = $componentClass;
+       $this->propertyName_ = $propertyName;
+    }
 
-	    $cause != null ? $causeMsg = $cause->getMessage() : 
-	                      $causeMsg = "";
-		parent::__construct(
-			"ESSR0059",
-			array($componentClass->getName(), $propertyName, $causeMsg),$cause);
-		$this->componentClass_ = $componentClass;
-		$this->propertyName_ = $propertyName;
-	}
+    /**
+     * 
+     */
+    public function getComponentClass()
+    {
+        return $this->componentClass_;
+    }
 
-	public function getComponentClass() {
-		return $this->componentClass_;
-	}
-	
-	public function getPropertyName() {
-		return $this->propertyName_;
-	}
+    /**
+     * 
+     */
+    public function getPropertyName()
+    {
+        return $this->propertyName_;
+    }
 }
 ?>

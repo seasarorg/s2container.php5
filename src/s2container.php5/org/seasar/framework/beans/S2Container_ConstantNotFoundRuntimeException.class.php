@@ -22,32 +22,41 @@
 //
 // $Id$
 /**
- * クラスの const が見つからなかったときの実行時例外
- * 
  * @package org.seasar.framework.beans
  * @author klove
  */
 class S2Container_ConstantNotFoundRuntimeException
-    extends S2Container_S2RuntimeException {
-
+    extends S2Container_S2RuntimeException
+{
     private $targetClass_;
     private $constantName_;
 
-    public function S2Container_ConstantNotFoundRuntimeException(
-        $componentClass,
-        $constantName) {
-        parent::__construct(
-            "ESSR1007",array($componentClass->getName(),$constantName));
+    /**
+     * 
+     */
+    public function __construct($componentClass,
+        $constantName)
+    {
+        parent::__construct("ESSR1007",
+                  array($componentClass->getName(),$constantName));
             
         $this->targetClass_ = $componentClass;
         $this->constantName_ = $constantName;
     }
 
-    public function getTargetClass() {
+    /**
+     * 
+     */
+    public function getTargetClass()
+    {
         return $this->targetClass_;
     }
     
-    public function getConstantName() {
+    /**
+     * 
+     */
+    public function getConstantName()
+    {
         return $this->constantName_;
     }
 }

@@ -25,20 +25,23 @@
  * @package org.seasar.framework.beans.impl
  * @author klove
  */
-class S2Container_PropertyDescImpl implements S2Container_PropertyDesc {
-
+class S2Container_PropertyDescImpl implements S2Container_PropertyDesc
+{
     protected $propertyName_ = null;
     protected $propertyType_ = null;
     protected $readMethod_ = null;
     protected $writeMethod_ = null;
     protected $beanDesc_ = null;
     
-    public function S2Container_PropertyDescImpl($propertyName=null,
+    /**
+     * 
+     */
+    public function __construct($propertyName,
                                        $propertyType,
                                        $readMethod,
                                        $writeMethod,
-                                       S2Container_BeanDesc $beanDesc) {
-                
+                                       S2Container_BeanDesc $beanDesc)
+    {
         if ($propertyName == null) {
             throw new S2Container_EmptyRuntimeException("propertyName");
         }
@@ -50,61 +53,111 @@ class S2Container_PropertyDescImpl implements S2Container_PropertyDesc {
         $this->beanDesc_ = $beanDesc;
     }
     
-    public final function getPropertyName() {
+    /**
+     * @return string property name
+     */
+    public final function getPropertyName()
+    {
         return $this->propertyName_;
     }
 
-    public final function getPropertyType() {
+    /**
+     * 
+     */
+    public final function getPropertyType()
+    {
         return $this->propertyType_;
     }
     
-    public final function getReadMethod() {
+    /**
+     * 
+     */
+    public final function getReadMethod()
+    {
         return $this->readMethod_;
     }
     
-    public final function setReadMethod($readMethod) {
+    /**
+     * 
+     */
+    public final function setReadMethod($readMethod)
+    {
         $this->readMethod_ = $readMethod;
     }
     
-    public final function hasReadMethod() {
+    /**
+     * 
+     */
+    public final function hasReadMethod()
+    {
         return $this->readMethod_ != null;
     }
     
-    public final function getWriteMethod() {
+    /**
+     * 
+     */
+    public final function getWriteMethod()
+    {
         return $this->writeMethod_;
     }
     
-    public final function setWriteMethod($writeMethod) {
+    /**
+     * 
+     */
+    public final function setWriteMethod($writeMethod)
+    {
         $this->writeMethod_ = $writeMethod;
     }
-    
-    public final function hasWriteMethod() {
+
+    /**
+     * 
+     */    
+    public final function hasWriteMethod()
+    {
         return $this->writeMethod_ != null;
     }
-    
-    public final function getValue($target) {
+
+    /**
+     * 
+     */    
+    public final function getValue($target)
+    {
         return S2Container_MethodUtil::invoke($this->readMethod_,$target, null);
     }
     
-    public function setValue($target,$value) {
+    /**
+     * 
+     */
+    public function setValue($target,$value)
+    {
         try {
             S2Container_MethodUtil::invoke($this->writeMethod_,$target, array($value));
         } catch (Exception $t) {
-            throw new S2Container_IllegalPropertyRuntimeException(
-                    $this->beanDesc_->getBeanClass(), $this->propertyName_, $t);
+            throw new S2Container_IllegalPropertyRuntimeException($this->beanDesc_->
+                                                              getBeanClass(),
+                                                              $this->propertyName_, $t);
         }
     }
     
-    public final function getBeanDesc() {
+    /**
+     * 
+     */
+    public final function getBeanDesc()
+    {
         return $this->beanDesc_;
     }
     
-    public final function __toString() {
+    /**
+     * 
+     */
+    public final function __toString()
+    {
         $buf = "";
         $buf .= "propertyName=";
         $buf .= $this->propertyName_;
         $buf .= ",propertyType=";
-        $buf .= $this->propertyType_ != null ? $this->propertyType_->getName() : "null";
+        $buf .= $this->propertyType_ != null ? 
+                         $this->propertyType_->getName() : "null";
         $buf .= ",readMethod=";
         $buf .= $this->readMethod_ != null ? $this->readMethod_->getName() : "null";
         $buf .= ",writeMethod=";
@@ -112,7 +165,11 @@ class S2Container_PropertyDescImpl implements S2Container_PropertyDesc {
         return $buf;
     }
     
-    public function convertIfNeed($arg) {
+    /**
+     * 
+     */
+    public function convertIfNeed($arg)
+    {
     }
 }
 ?>

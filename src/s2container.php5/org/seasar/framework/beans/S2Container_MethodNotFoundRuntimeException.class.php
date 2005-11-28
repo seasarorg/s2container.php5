@@ -22,39 +22,51 @@
 //
 // $Id$
 /**
- * 対象のクラスに適用可能なメソッドが見つからなかった場合の実行時例外です。
- * 
  * @package org.seasar.framework.beans
  * @author klove
  */
-final class S2Container_MethodNotFoundRuntimeException extends S2Container_S2RuntimeException {
-
+final class S2Container_MethodNotFoundRuntimeException 
+    extends S2Container_S2RuntimeException
+{
     private $targetClass_;
     private $methodName_;
     private $methodArgClasses_;
 
-    public function S2Container_MethodNotFoundRuntimeException(
-        $targetClass,
+    /**
+     * 
+     */
+    public function __construct($targetClass,
         $methodName,
-        $methodArgs) {
-
-        parent::__construct(
-            "ESSR0049",array($targetClass->getName(),$methodName));
+        $methodArgs)
+    {
+        parent::__construct("ESSR0049",
+            array($targetClass->getName(),$methodName));
         $this->targetClass_ = $targetClass;
         $this->methodName_ = $methodName;
     }
 
-    public function getTargetClass() {
+    /**
+     * 
+     */
+    public function getTargetClass()
+    {
         return $this->targetClass_;
     }
 
-    public function getMethodName() {
+    /**
+     * 
+     */
+    public function getMethodName()
+    {
         return $this->methodName_;
     }
 
-    public function getMethodArgClasses() {
+    /**
+     * 
+     */
+    public function getMethodArgClasses()
+    {
         return $this->methodArgClasses_;
     }
-
 }
 ?>

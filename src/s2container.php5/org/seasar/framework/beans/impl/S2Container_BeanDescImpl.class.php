@@ -25,8 +25,8 @@
  * @package org.seasar.framework.beans.impl
  * @author klove
  */
-final class S2Container_BeanDescImpl implements S2Container_BeanDesc {
-
+final class S2Container_BeanDescImpl implements S2Container_BeanDesc
+{
     private static $EMPTY_ARGS = array();
     private $beanClass_;
     private $constructors_;
@@ -35,57 +35,70 @@ final class S2Container_BeanDescImpl implements S2Container_BeanDesc {
     private $methodsCache_ = array();
     private $fieldCache_ = array();
     private $constCache_ = array();
-    
-    public function S2Container_BeanDescImpl(ReflectionClass $beanClass) {
+
+    /**
+     * @param ReflectionClass
+     */    
+    public function __construct(ReflectionClass $beanClass)
+    {
         $this->beanClass_ = $beanClass;
         $this->constructors_ = $this->beanClass_->getConstructor();
-        $this->setupMethods();
-        $this->setupPropertyDescs();
-        $this->setupField();
-        $this->setupConstant();
+        $this->_setupMethods();
+        $this->_setupPropertyDescs();
+        $this->_setupField();
+        $this->_setupConstant();
     }
 
     /**
      * @see S2Container_BeanDesc::getBeanClass()
      */
-    public function getBeanClass() {
+    public function getBeanClass()
+    {
         return $this->beanClass_;
     }
 
-    public function hasPropertyDesc($propertyName) {
+    /**
+     * @param string property name
+     */
+    public function hasPropertyDesc($propertyName)
+    {
         return array_key_exists($propertyName,$this->propertyDescCache_);
     }
 
     /**
      * @see S2Container_BeanDesc::getPropertyDesc()
      */
-    public function getPropertyDesc($propertyName) {
-
-        if(is_int($propertyName)){
+    public function getPropertyDesc($propertyName)
+    {
+        if (is_int($propertyName)) {
             if ($propertyName >= count($this->propertyDescCacheIndex_)) {
-                throw new S2Container_PropertyNotFoundRuntimeException(
-                    $this->beanClass_, 'index '.$propertyName);
+                throw new S2Container_PropertyNotFoundRuntimeException($this->beanClass_,
+                               'index ' . $propertyName);
             }
             return $this->propertyDescCache_[
                        $this->propertyDescCacheIndex_[$propertyName]];
         }
         $pd = null;
-        if(array_key_exists($propertyName,$this->propertyDescCache_)){
+        if (array_key_exists($propertyName,$this->propertyDescCache_)) {
             $pd = $this->propertyDescCache_[$propertyName];
         }
 
         if ($pd == null) {
-            throw new S2Container_PropertyNotFoundRuntimeException(
-                $this->beanClass_, $propertyName);
+            throw new S2Container_PropertyNotFoundRuntimeException($this->beanClass_,
+                              $propertyName);
         }
         
         return $pd;
     }
     
-    private function getPropertyDesc0($propertyName) {
-        if(array_key_exists($propertyName,$this->propertyDescCache_)){
+    /**
+     * 
+     */
+    private function _getPropertyDesc0($propertyName)
+    {
+        if (array_key_exists($propertyName,$this->propertyDescCache_)) {
             return $this->propertyDescCache_[$propertyName];
-        }else{
+        } else {
             return null;
         }
     }
@@ -93,25 +106,29 @@ final class S2Container_BeanDescImpl implements S2Container_BeanDesc {
     /**
      * @see S2Container_BeanDesc::getPropertyDescSize()
      */
-    public function getPropertyDescSize() {
+    public function getPropertyDescSize()
+    {
         return count($this->propertyDescCache_);
     }
     
     /**
      * @see S2Container_BeanDesc::hasField()
      */
-    public function hasField($fieldName) {
+    public function hasField($fieldName)
+    {
         return array_key_exists($fieldName,$this->fieldCache_);
     }
     
     /**
      * @see S2Container_BeanDesc::getField()
      */
-    public function getField($fieldName) {
-        if(array_key_exists($fieldName,$this->fieldCache_)){
+    public function getField($fieldName)
+    {
+        if (array_key_exists($fieldName,$this->fieldCache_)) {
             $field = $this->fieldCache_[$fieldName];
-        }else{
-            throw new S2Container_FieldNotFoundRuntimeException($this->beanClass_, $fieldName);
+        } else {
+            throw new S2Container_FieldNotFoundRuntimeException($this->beanClass_,
+                                                          $fieldName);
         }
         return $field;
     }
@@ -119,18 +136,21 @@ final class S2Container_BeanDescImpl implements S2Container_BeanDesc {
     /**
      * @see S2Container_BeanDesc::hasConstant()
      */
-    public function hasConstant($constName) {
+    public function hasConstant($constName)
+    {
         return array_key_exists($constName,$this->constCache_);
     }
     
     /**
      * @see S2Container_BeanDesc::getConstant()
      */
-    public function getConstant($constName) {
-        if(array_key_exists($constName,$this->constCache_)){
+    public function getConstant($constName)
+    {
+        if (array_key_exists($constName,$this->constCache_)) {
             $constant = $this->constCache_[$constName];
-        }else{
-            throw new S2Container_ConstantNotFoundRuntimeException($this->beanClass_, $constName);
+        } else {
+            throw new S2Container_ConstantNotFoundRuntimeException($this->beanClass_,
+                      $constName);
         }
         return $constant;
     }
@@ -138,9 +158,10 @@ final class S2Container_BeanDescImpl implements S2Container_BeanDesc {
     /**
      * @see S2Container_BeanDesc::newInstance()
      */
-    public function newInstance($args,$componentDef=null){
-        if($componentDef != null and 
-           $componentDef->getAspectDefSize()>0){
+    public function newInstance($args,$componentDef = null)
+    {
+        if ($componentDef != null and 
+           $componentDef->getAspectDefSize() > 0) {
             return S2Container_AopProxyUtil::getProxyObject($componentDef,$args); 
         }
         return S2Container_ConstructorUtil::newInstance($this->beanClass_, $args);
@@ -149,7 +170,8 @@ final class S2Container_BeanDescImpl implements S2Container_BeanDesc {
     /**
      * @see S2Container_BeanDesc::invoke()
      */
-    public function invoke($target,$methodName,$args) {
+    public function invoke($target,$methodName,$args)
+    {
         $method = $this->getMethods($methodName);
         return S2Container_MethodUtil::invoke($method,$target,$args);
     }
@@ -157,19 +179,21 @@ final class S2Container_BeanDescImpl implements S2Container_BeanDesc {
     /**
      * @see S2Container_BeanDesc::getSuitableConstructor()
      */
-    public function getSuitableConstructor() {
-    	return $this->constructors_;
+    public function getSuitableConstructor()
+    {
+        return $this->constructors_;
     }
     
     /**
      * @see S2Container_BeanDesc::getMethods()
      */
-    public function getMethods($methodName){
-
-        if(array_key_exists($methodName,$this->methodsCache_)){
+    public function getMethods($methodName)
+    {
+        if (array_key_exists($methodName,$this->methodsCache_)) {
             $methods = $this->methodsCache_[$methodName];
-        }else{
-            throw new S2Container_MethodNotFoundRuntimeException($this->beanClass_, $methodName, null);
+        } else {
+            throw new S2Container_MethodNotFoundRuntimeException($this->beanClass_,
+                                                                $methodName, null);
         }
         return $methods;
     }
@@ -177,135 +201,168 @@ final class S2Container_BeanDescImpl implements S2Container_BeanDesc {
     /**
      * @see S2Container_BeanDesc::hasMethod()
      */
-    public function hasMethod($methodName) {
-        if(array_key_exists($methodName,$this->methodsCache_)){
+    public function hasMethod($methodName)
+    {
+        if (array_key_exists($methodName,$this->methodsCache_)) {
             return $this->methodsCache_[$methodName] != null;
-        }else{
+        } else {
             return false;
         }
     }
     
-    public function getMethodNames() {
+    /**
+     * @return array
+     */
+    public function getMethodNames()
+    {
         return array_keys($this->methodsCache_);
     }
 
-    private function isFirstCapitalize($str){
+    /**
+     * @param string
+     * @return boolean
+     */
+    private function _isFirstCapitalize($str)
+    {
         $top = substr($str,0,1);
         $upperTop = strtoupper($top);
         return $upperTop == $top;
     }
     
-    private function setupPropertyDescs() {
+    /**
+     * 
+     */
+    private function _setupPropertyDescs() 
+    {
         $methods = $this->beanClass_->getMethods();
         for ($i = 0; $i < count($methods); $i++) {
             $mRef = $methods[$i];
             $methodName = $mRef->getName();
             if (preg_match("/^get(.+)/",$methodName,$regs)) {
-                if (count($mRef->getParameters()) != 0){
+                if (count($mRef->getParameters()) != 0) {
                     continue;
                 }
-                if(!$this->isFirstCapitalize($regs[1])){
+                if (!$this->_isFirstCapitalize($regs[1])) {
                     continue;
                 }
                 $propertyName = 
-                    $this->decapitalizePropertyName($regs[1]);
-                $this->setupReadMethod($mRef, $propertyName);
+                    $this->_decapitalizePropertyName($regs[1]);
+                $this->_setupReadMethod($mRef, $propertyName);
             } else if (preg_match("/^is(.+)/",$methodName,$regs)) {
-                if (count($mRef->getParameters()) != 0){
+                if (count($mRef->getParameters()) != 0) {
                     continue;
                 }
-                if(!$this->isFirstCapitalize($regs[1])){
+                if (!$this->_isFirstCapitalize($regs[1])) {
                     continue;
                 }
                 $propertyName =
-                    $this->decapitalizePropertyName($regs[1]);
-                $this->setupReadMethod($mRef, $propertyName);
+                    $this->_decapitalizePropertyName($regs[1]);
+                $this->_setupReadMethod($mRef, $propertyName);
             } else if (preg_match("/^set(.+)/",$methodName,$regs)) {
-                if (count($mRef->getParameters()) != 1){
+                if (count($mRef->getParameters()) != 1) {
                     continue;
                 }
-                if(!$this->isFirstCapitalize($regs[1])){
+                if (!$this->_isFirstCapitalize($regs[1])) {
                     continue;
                 }
                 $propertyName =
-                    $this->decapitalizePropertyName($regs[1]);
-                $this->setupWriteMethod($mRef, $propertyName);
+                    $this->_decapitalizePropertyName($regs[1]);
+                $this->_setupWriteMethod($mRef, $propertyName);
             } else if (preg_match("/^(__set)$/",$methodName,$regs)) {
                 $propertyName = $regs[1];
-                $this->setupWriteMethod($mRef, $propertyName);
+                $this->_setupWriteMethod($mRef, $propertyName);
             }
         }
     }
 
-    private function decapitalizePropertyName($name) {
+    /**
+     * @param string property name
+     * @return string 
+     */
+    private function _decapitalizePropertyName($name)
+    {
         $top = substr($name,0,1);
         $top = strtolower($top);
         return substr_replace($name,$top,0,1);
     }
 
-    private function addPropertyDesc(S2Container_PropertyDesc $propertyDesc) {
+    /**
+     * @param S2Container_PropertyDesc
+     */
+    private function _addPropertyDesc(S2Container_PropertyDesc $propertyDesc)
+    {
         $this->propertyDescCache_[$propertyDesc->getPropertyName()] = $propertyDesc;
         array_push($this->propertyDescCacheIndex_,$propertyDesc->getPropertyName());
     }
 
-    private function setupReadMethod($readMethod, $propertyName) {
-		$propDesc = $this->getPropertyDesc0($propertyName);
-		if ($propDesc != null) {
-			$propDesc->setReadMethod($readMethod);
-		} else {
-    		$writeMethod = null;	
-			$propDesc =
-				new S2Container_PropertyDescImpl(
-					$propertyName,
-					null,
-					$readMethod,
-					null,
-					$this);
-					
-			$this->addPropertyDesc($propDesc);
-		}
+    /**
+     * @param ReflectionMethod
+     * @param string property name
+     */
+    private function _setupReadMethod($readMethod, $propertyName)
+    {
+        $propDesc = $this->_getPropertyDesc0($propertyName);
+        if ($propDesc != null) {
+            $propDesc->setReadMethod($readMethod);
+        } else {
+            $writeMethod = null;
+            $propDesc =
+                new S2Container_PropertyDescImpl($propertyName,
+                    null,
+                    $readMethod,
+                    null,
+                    $this);
+            $this->_addPropertyDesc($propDesc);
+        }
     }
 
     /**
      * @param ReflectionMethod writeMethod
      * @param string propertyName
      */
-    private function setupWriteMethod($writeMethod,$propertyName) {
-        $propDesc = $this->getPropertyDesc0($propertyName);
+    private function _setupWriteMethod($writeMethod,$propertyName)
+    {
+        $propDesc = $this->_getPropertyDesc0($propertyName);
         if ($propDesc != null) {
             $propDesc->setWriteMethod($writeMethod);
             
         } else {
-            if($propertyName == "__set"){
+            if ($propertyName == "__set") {
                 $propDesc =
-                    new S2Container_UuSetPropertyDescImpl(
-                        $propertyName,
+                    new S2Container_UuSetPropertyDescImpl($propertyName,
                         null,
                         null,
                         $writeMethod,
                         $this);
-            }else{
+            } else {
                 $propertyTypes = $writeMethod->getParameters();
                 $propDesc =
-                    new S2Container_PropertyDescImpl(
-                        $propertyName,
+                    new S2Container_PropertyDescImpl($propertyName,
                         $propertyTypes[0]->getClass(),
                         null,
                         $writeMethod,
                         $this);
             }
-            $this->addPropertyDesc($propDesc);
+            $this->_addPropertyDesc($propDesc);
         }       
     }
 
-    private function setupMethods() {
+    /**
+     * 
+     */
+    private function _setupMethods()
+    {
         $methods = $this->beanClass_->getMethods();
         for ($i = 0; $i < count($methods); $i++) {
             $this->methodsCache_[$methods[$i]->getName()] = $methods[$i];
         }
     }
     
-    private function setupField() {
+    /**
+     * 
+     */
+    private function _setupField()
+    {
         $fields = $this->beanClass_->getProperties();
         for ($i = 0; $i < count($fields); $i++) {
             if ($fields[$i]->isStatic()) {
@@ -314,7 +371,11 @@ final class S2Container_BeanDescImpl implements S2Container_BeanDesc {
         }
     }
 
-    private function setupConstant() {
+    /**
+     * 
+     */
+    private function _setupConstant()
+    {
         $this->constCache_ = $this->beanClass_->getConstants();
     }
 }
