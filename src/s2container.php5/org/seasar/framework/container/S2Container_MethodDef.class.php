@@ -22,23 +22,39 @@
 //
 // $Id$
 /**
- * メソッドを定義します。
- * 
  * @package org.seasar.framework.container
  * @author klove
  */
-interface S2Container_MethodDef extends S2Container_ArgDefAware {
-    
+interface S2Container_MethodDef extends S2Container_ArgDefAware
+{
+    /**
+     * @return string
+     */    
     public function getMethodName();
     
+    /**
+     * @return array
+     */
     public function getArgs();
-    
+
+    /**
+     * @return S2Container
+     */
     public function getContainer();
     
+    /**
+     * @param S2Container
+     */
     public function setContainer(S2Container $container);
     
+    /**
+     * @return string
+     */
     public function getExpression();
     
+    /**
+     * @param string
+     */
     public function setExpression($expression);
 }
 ?>

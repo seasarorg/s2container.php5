@@ -22,13 +22,11 @@
 //
 // $Id$
 /**
- * S2Container‚Åg‚¤’è”‚ğ’è‹`‚µ‚Ü‚·B
- * 
  * @package org.seasar.framework.container
  * @author klove
  */
-interface S2Container_ContainerConstants {
-
+interface S2Container_ContainerConstants
+{
     const INSTANCE_SINGLETON = "singleton";
 
     const INSTANCE_PROTOTYPE = "prototype";
@@ -48,7 +46,8 @@ interface S2Container_ContainerConstants {
     const AUTO_BINDING_NONE = "none";
 
     /**
-     * preg_match(/"(.+)". S2Container_ContainerConstants::NS_SEP ."(.+)"/);
+     * preg_match(/"(.+)". 
+     *   S2Container_ContainerConstants::NS_SEP ."(.+)"/);
      */
     const NS_SEP = '\.';
 

@@ -22,24 +22,42 @@
 //
 // $Id$
 /**
- * ˆø”‚ð’è‹`‚µ‚Ü‚·B
- * 
  * @package org.seasar.framework.container
  * @author klove
  */
-interface S2Container_ArgDef extends S2Container_MetaDefAware {
-    
+interface S2Container_ArgDef extends S2Container_MetaDefAware
+{
+    /**
+     *
+     */
     public function getValue();
     
+    /**
+     * @return S2Container
+     */
     public function getContainer();
     
+    /**
+     * @param S2Container
+     */
     public function setContainer($container);
     
+    /**
+     * @return string
+     */
     public function getExpression();
 
+    /**
+     * @param string
+     */
     public function setExpression($str);
     
-    public function setChildComponentDef(S2Container_ComponentDef $componentDef);
+    /**
+     * @param S2Container_ComponentDef
+     */
+    public function setChildComponentDef(S2Container_ComponentDef 
+                                                    $componentDef);
 
 }
 ?>
+

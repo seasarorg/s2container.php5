@@ -22,17 +22,25 @@
 //
 // $Id$
 /**
- * InitMethodDef‚ÌÝ’è‚ª‰Â”\‚É‚È‚è‚Ü‚·B
- * 
  * @package org.seasar.framework.container
  * @author klove
  */
-interface S2Container_InitMethodDefAware {
-    
+interface S2Container_InitMethodDefAware
+{
+    /**
+     * @param S2Container_InitMethodDef
+     */
     public function addInitMethodDef(S2Container_InitMethodDef $methodDef);
     
+    /**
+     * @return int
+     */
     public function getInitMethodDefSize();
     
+    /**
+     * @param int
+     * @return S2Container_InitMethodDef
+     */
     public function getInitMethodDef($index);
 }
 ?>

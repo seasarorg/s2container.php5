@@ -22,17 +22,26 @@
 //
 // $Id$
 /**
- * DestroyMethodDef‚ÌÝ’è‚ª‰Â”\‚É‚È‚è‚Ü‚·B
- * 
  * @package org.seasar.framework.container
  * @author klove
  */
-interface S2Container_DestroyMethodDefAware {
+interface S2Container_DestroyMethodDefAware
+{
+    /**
+     * @param S2Container_DestroyMethodDef
+     */
+    public function addDestroyMethodDef(S2Container_DestroyMethodDef 
+                                        $methodDef);
     
-    public function addDestroyMethodDef(S2Container_DestroyMethodDef $methodDef);
-    
+    /**
+     * @return int
+     */
     public function getDestroyMethodDefSize();
     
+    /**
+     * @param int
+     * @return S2Container_DestroyMethodDef
+     */
     public function getDestroyMethodDef($index);
 }
 ?>

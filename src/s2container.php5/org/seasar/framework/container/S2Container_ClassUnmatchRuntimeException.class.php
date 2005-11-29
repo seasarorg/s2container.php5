@@ -22,33 +22,45 @@
 //
 // $Id$
 /**
- * 定義されたコンポーネントのクラスと実際のコンポーネントのクラスが異なるときの実行時例外
- * 
  * @package org.seasar.framework.container
  * @author klove
  */
-class S2Container_ClassUnmatchRuntimeException extends S2Container_S2RuntimeException {
-
+class S2Container_ClassUnmatchRuntimeException
+    extends S2Container_S2RuntimeException
+{
     private $componentClass_;
     private $realComponentClass_;
     
-    public function S2Container_ClassUnmatchRuntimeException(
-        $componentClass,
-        $realComponentClass) {
+    /**
+     * @param ReflectionClass
+     * @param ReflectionClass
+     */
+    public function __construct($componentClass,
+                                $realComponentClass)
+    {
         parent::__construct("ESSR0069", 
-            array(
-            $componentClass != null ? $componentClass->getName() : "null",
-            $realComponentClass != null ? $realComponentClass->getName() : "null"));
+            array($componentClass != null ? 
+                      $componentClass->getName() : "null",
+                  $realComponentClass != null ? 
+                      $realComponentClass->getName() : "null"));
             
         $this->componentClass_ = $componentClass;
         $this->realComponentClass_ = $realComponentClass;
     }
     
-    public function getComponentClass() {
+    /**
+     * @return ReflectionClass
+     */
+    public function getComponentClass()
+    {
         return $ths->componentClass_;
     }
     
-    public function getRealComponentClass() {
+    /**
+     * @return ReflectionClass
+     */
+    public function getRealComponentClass()
+    {
         return $this->realComponentClass_;
     }
 }

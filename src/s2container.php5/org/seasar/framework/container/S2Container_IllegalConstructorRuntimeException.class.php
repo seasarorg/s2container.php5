@@ -22,23 +22,31 @@
 //
 // $Id$
 /**
- * コンポーネントのコンストラクタ引数の設定に失敗ときの実行時例外
- * 
  * @package org.seasar.framework.container
  * @author klove
  */
 class S2Container_IllegalConstructorRuntimeException
-    extends S2Container_S2RuntimeException {
-
+    extends S2Container_S2RuntimeException
+{
     private $componentClass_;
 
-    public function S2Container_IllegalConstructorRuntimeException(
-        $componentClass,$cause) {
-        parent::__construct("ESSR0058",array($componentClass->getName(), $cause ),$cause);
+    /**
+     *
+     */
+    public function __construct($componentClass,$cause)
+    {
+        parent::__construct("ESSR0058",
+                            array($componentClass->getName(),
+                                  $cause),
+                            $cause);
         $this->componentClass_ = $componentClass;
     }
 
-    public function getComponentClass() {
+    /**
+     * @return ReflectionClass
+     */
+    public function getComponentClass()
+    {
         return $this->componentClass_;
     }
 }

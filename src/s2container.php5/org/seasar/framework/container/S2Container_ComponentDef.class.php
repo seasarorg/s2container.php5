@@ -22,52 +22,99 @@
 //
 // $Id$
 /**
- * コンポーネントを定義します。
- * 
  * @package org.seasar.framework.container
  * @author klove
  */
 interface S2Container_ComponentDef
-    extends
-        S2Container_ArgDefAware,
+    extends S2Container_ArgDefAware,
         S2Container_PropertyDefAware,
         S2Container_InitMethodDefAware,
         S2Container_DestroyMethodDefAware,
         S2Container_AspectDefAware,
-        S2Container_MetaDefAware {
+        S2Container_MetaDefAware
+{
 
+    /**
+     * @return object
+     */
     public function getComponent();
         
+    /**
+     * @param object
+     */
     public function injectDependency($outerComponent);
 
+    /**
+     * @return S2Container
+     */
     public function getContainer();
 
+    /**
+     * @param S2Container
+     */
     public function setContainer(S2Container $container);
 
+    /**
+     * @return ReflectionClass
+     */
     public function getComponentClass();
 
+    /**
+     * @return string
+     */
     public function getComponentName();
 
+    /**
+     * @return ReflectionClass
+     */
     public function getConcreteClass();
 
+    /**
+     * @return int
+     */
     public function getAutoBindingMode();
 
+    /**
+     * @param int
+     */
     public function setAutoBindingMode($mode);
 
+    /**
+     * @return int
+     */
     public function getInstanceMode();
 
+    /**
+     * @param int
+     */
     public function setInstanceMode($mode);
     
+    /**
+     * @return string
+     */
     public function getExpression();
 
+    /**
+     * @param string
+     */
     public function setExpression($expression);
 
+    /**
+     * 
+     */
     public function init();
 
+    /**
+     * 
+     */
     public function destroy();
     
+    /**
+     * 
+     */
+    public function reconstruct($mode = 
+                           S2Container_ComponentDef::RECONSTRUCT_NORMAL);
     const RECONSTRUCT_NORMAL = 0;
     const RECONSTRUCT_FORCE = 1;
-    public function reconstruct($mode=S2Container_ComponentDef::RECONSTRUCT_NORMAL);
 }
 ?>

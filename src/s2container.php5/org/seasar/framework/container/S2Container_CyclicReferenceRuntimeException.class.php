@@ -22,23 +22,29 @@
 //
 // $Id$
 /**
- * コンポーネントの循環参照が起きたときの実行時例外
- * 
  * @package org.seasar.framework.container
  * @author klove
  */
-class S2Container_CyclicReferenceRuntimeException extends S2Container_S2RuntimeException {
-
+class S2Container_CyclicReferenceRuntimeException
+    extends S2Container_S2RuntimeException
+{
     private $componentClass_;
     
-    public function S2Container_CyclicReferenceRuntimeException(
-        $componentClass) {
+    /**
+     * @param ReflectionClass
+     */
+    public function __construct($componentClass)
+    {
         parent::__construct("ESSR0047",array($componentClass->getName()));
             
         $this->componentClass_ = $componentClass;
     }
     
-    public function getComponentClass() {
+    /**
+     * @return ReflectionClass
+     */
+    public function getComponentClass()
+    {
         return $this->componentClass_;
     }
 }
