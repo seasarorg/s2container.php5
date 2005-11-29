@@ -25,14 +25,26 @@
  * @package org.seasar.framework.container.deployer
  * @author klove
  */
-interface S2Container_ComponentDeployer {
-
+interface S2Container_ComponentDeployer
+{
+    /**
+     * 
+     */
     public function deploy();
     
+    /**
+     * 
+     */
     public function injectDependency($outerComponent);
     
+    /**
+     * 
+     */
     public function init();
     
+    /**
+     * 
+     */
     public function destroy();
 }
 ?>

@@ -26,23 +26,34 @@
  * @author klove
  */
 class S2Container_AutoConstructorAssembler
-    extends S2Container_AbstractConstructorAssembler {
-
-    public function S2Container_AutoConstructorAssembler(S2Container_ComponentDef $componentDef) {
+    extends S2Container_AbstractConstructorAssembler
+{
+    /**
+     * @param S2Container_ComponentDef
+     */
+    public function __construct(S2Container_ComponentDef $componentDef)
+    {
         parent::__construct($componentDef);
     }
 
-    public function assemble(){
+    /**
+     * 
+     */
+    public function assemble()
+    {
         $args = array();
         $refMethod = $this->getComponentDef()->getConcreteClass()->getConstructor();
-        if($refMethod != null){
-            $args = $this->getArgs($this->getComponentDef()->getConcreteClass()->getConstructor()->getParameters());
+        if ($refMethod != null) {
+            $args = $this->getArgs($this->getComponentDef()->
+                       getConcreteClass()->getConstructor()->getParameters());
         }
-        if($this->getComponentDef() != null and 
-           $this->getComponentDef()->getAspectDefSize()>0){
-            return S2Container_AopProxyUtil::getProxyObject($this->getComponentDef(),$args); 
+        if ($this->getComponentDef() != null and 
+            $this->getComponentDef()->getAspectDefSize() > 0) {
+            return S2Container_AopProxyUtil::getProxyObject($this->
+                                                 getComponentDef(),$args); 
         }                
-        return S2Container_ConstructorUtil::newInstance($this->getComponentDef()->getConcreteClass(), $args);
+        return S2Container_ConstructorUtil::newInstance($this->
+               getComponentDef()->getConcreteClass(), $args);
     }
 }
 ?>

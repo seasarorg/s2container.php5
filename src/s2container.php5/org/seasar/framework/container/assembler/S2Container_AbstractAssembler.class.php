@@ -25,38 +25,48 @@
  * @package org.seasar.framework.container.assembler
  * @author klove
  */
-abstract class S2Container_AbstractAssembler {
-    
+abstract class S2Container_AbstractAssembler
+{
     private $log_;
     
     private $componentDef_;
 
-    public function S2Container_AbstractAssembler(S2Container_ComponentDef $componentDef) {
+    /**
+     * @param S2Container_ComponentDef
+     */
+    public function __construct(S2Container_ComponentDef $componentDef)
+    {
         $this->componentDef_ = $componentDef;
         $this->log_ = S2Container_S2Logger::getLogger(get_class($this));
     }
 
-    protected final function getComponentDef() {
+    /**
+     * @return S2Container_ComponentDef
+     */
+    protected final function getComponentDef()
+    {
         return $this->componentDef_;
     }
 
     /**
      * @param object
      */
-    protected final function getBeanDesc($component=null) {
-        if(!is_object($component)){
-            return S2Container_BeanDescFactory::getBeanDesc(
-                $this->getComponentDef()->getComponentClass());
+    protected final function getBeanDesc($component = null)
+    {
+        if (!is_object($component)) {
+            return S2Container_BeanDescFactory::getBeanDesc($this->
+                getComponentDef()->getComponentClass());
         }
         
-        return S2Container_BeanDescFactory::getBeanDesc(
-            $this->getComponentClass($component));
+        return S2Container_BeanDescFactory::getBeanDesc($this->
+                                 getComponentClass($component));
     }
     
     /**
      * @param object
      */
-    protected final function getComponentClass($component) {
+    protected final function getComponentClass($component)
+    {
         $clazz = $this->componentDef_->getComponentClass();
         if ($clazz != null) {
             return $clazz;
@@ -68,19 +78,21 @@ abstract class S2Container_AbstractAssembler {
     /**
      * @param ReflectionParameter[] 
      */    
-    protected function getArgs($argTypes) {
+    protected function getArgs($argTypes)
+    {
         $args = array();
         for ($i = 0; $i < count($argTypes); ++$i) {
             try {
-                if($argTypes[$i]->getClass() != null &&
-                    S2Container_AutoBindingUtil::isSuitable($argTypes[$i]->getClass())){
-                    $args[$i]= $this->getComponentDef()->getContainer()->getComponent($argTypes[$i]->getClass()->getName());
-                }else{
-                	if($argTypes[$i]->isOptional()){
+                if ($argTypes[$i]->getClass() != null &&
+                    S2Container_AutoBindingUtil::isSuitable($argTypes[$i]->getClass())) {
+                    $args[$i] = $this->getComponentDef()->getContainer()->
+                        getComponent($argTypes[$i]->getClass()->getName());
+                } else {
+                    if ($argTypes[$i]->isOptional()) {
                         $args[$i] = $argTypes[$i]->getDefaultValue();
-                	}else{
-                		$args[$i] = null;
-                	}
+                    } else {
+                        $args[$i] = null;
+                    }
                 }
             } catch (S2Container_ComponentNotFoundRuntimeException $ex) {
                 $this->log_->warn($ex->getMessage(),__METHOD__);

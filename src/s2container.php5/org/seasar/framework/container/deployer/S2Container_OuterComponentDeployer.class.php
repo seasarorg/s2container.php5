@@ -25,51 +25,63 @@
  * @package org.seasar.framework.container.deployer
  * @author klove
  */
-class S2Container_OuterComponentDeployer extends S2Container_AbstractComponentDeployer {
-
+class S2Container_OuterComponentDeployer
+    extends S2Container_AbstractComponentDeployer
+{
     /**
      * @param S2Container_ComponentDef
      */
-    public function S2Container_OuterComponentDeployer(S2Container_ComponentDef $componentDef) {
+    public function __construct(S2Container_ComponentDef $componentDef)
+    {
         parent::__construct($componentDef);
     }
 
     /**
      * @see S2Container_ComponentDeployer::deploy()
      */
-    public function deploy() {
+    public function deploy()
+    {
         throw new S2Container_UnsupportedOperationException("deploy");
     }
     
-    public function injectDependency($outerComponent) {
-        $this->checkComponentClass($outerComponent);
+    /**
+     * 
+     */
+    public function injectDependency($outerComponent)
+    {
+        $this->_checkComponentClass($outerComponent);
         $this->getPropertyAssembler()->assemble($outerComponent);
         $this->getInitMethodAssembler()->assemble($outerComponent);
     }
-    
-    private function checkComponentClass($outerComponent){
+
+    /**
+     * 
+     */    
+    private function _checkComponentClass($outerComponent)
+    {
         $componentClass = $this->getComponentDef()->getComponentClass();
         if ($componentClass == null) {
             return;
         }
 
         if (!is_a($outerComponent,$componentClass->getName())) {
-            throw new S2Container_ClassUnmatchRuntimeException(
-                $componentClass,
-                new ReflectionClass($outerComponent));
+            throw new S2Container_ClassUnmatchRuntimeException($componentClass,
+                                            new ReflectionClass($outerComponent));
         }
     }
     
     /**
      * @see S2Container_ComponentDeployer::init()
      */    
-    public function init() {
+    public function init()
+    {
     }
     
     /**
      * @see S2Container_ComponentDeployer::destroy()
      */    
-    public function destroy() {
+    public function destroy()
+    {
     }
 }
 ?>

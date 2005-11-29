@@ -26,38 +26,45 @@
  * @author klove
  */
 class S2Container_ExpressionConstructorAssembler
-    extends S2Container_AbstractConstructorAssembler {
-
+    extends S2Container_AbstractConstructorAssembler
+{
     /**
      * @param S2Container_ComponentDef
      */
-    public function S2Container_ExpressionConstructorAssembler(S2Container_ComponentDef $componentDef) {
+    public function __construct(S2Container_ComponentDef $componentDef)
+    {
         parent::__construct($componentDef);
     }
 
-    public function assemble() {
+    /**
+     * 
+     */
+    public function assemble()
+    {
         $cd = $this->getComponentDef();
         $container = $cd->getContainer();
         $expression = $cd->getExpression();
         $componentClass = $cd->getComponentClass();
         $component = null;
 
-        if($container->hasComponentDef($expression)){
+        if ($container->hasComponentDef($expression)) {
             $component = $container->getComponent($expression);
-        }else{
+        } else {
             $exp = S2Container_EvalUtil::getExpression($expression);
             $component = eval($exp);
         }
         
-        if(!is_object($component)){
-        	throw new S2Container_S2RuntimeException('ESSR0017',array("eval() result isnt an Object. "));
+        if (!is_object($component)) {
+            throw new S2Container_S2RuntimeException('ESSR0017',
+                               array("eval() result isnt an Object. "));
         }
-        if($componentClass instanceof ReflectionClass){
-     		$refExpClass = new ReflectionClass($component);
-       		if(!$refExpClass->isSubclassOf($componentClass)){
-      		    throw new S2Container_ClassUnmatchRuntimeException($componentClass,$refExpClass);	
-       		}
-       	}
+        if ($componentClass instanceof ReflectionClass) {
+             $refExpClass = new ReflectionClass($component);
+               if (!$refExpClass->isSubclassOf($componentClass)) {
+                  throw new S2Container_ClassUnmatchRuntimeException($componentClass,
+                                                                     $refExpClass);    
+               }
+           }
         $cd->setComponentClass(new ReflectionClass($component));
         return $component;        
     }

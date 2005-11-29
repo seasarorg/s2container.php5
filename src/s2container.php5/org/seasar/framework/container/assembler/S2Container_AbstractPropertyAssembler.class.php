@@ -27,38 +27,49 @@
  */
 abstract class S2Container_AbstractPropertyAssembler
     extends S2Container_AbstractAssembler
-    implements S2Container_PropertyAssembler {
-
-    public function S2Container_AbstractPropertyAssembler(S2Container_ComponentDef $componentDef) {
+    implements S2Container_PropertyAssembler
+{
+    /**
+     * @param S2Container_ComponentDef
+     */
+    public function __construct(S2Container_ComponentDef $componentDef)
+    {
         parent::__construct($componentDef);
     }
 
-    protected function getValue(S2Container_PropertyDef $propertyDef, $component) {
+    /**
+     * @param S2Container_PropertyDef
+     * @param object
+     */
+    protected function getValue(S2Container_PropertyDef $propertyDef, $component)
+    {
         try {
             return $propertyDef->getValue();
         } catch (S2Container_ComponentNotFoundRuntimeException $cause) {
-            throw new S2Container_IllegalPropertyRuntimeException(
-                $this->getComponentClass($component),
-                $propertyDef->getPropertyName(),
-                $cause);
+            throw new S2Container_IllegalPropertyRuntimeException($this->
+                                          getComponentClass($component),
+                                          $propertyDef->getPropertyName(),
+                                          $cause);
         }
     }
 
-    protected function setValue(
-        S2Container_PropertyDesc $propertyDesc,
-        $component,
-        $value){
-        
+    /**
+     * 
+     */
+    protected function setValue(S2Container_PropertyDesc $propertyDesc,
+                                $component,
+                                $value)
+    {
         if ($value == null) {
             return;
-        }
+        } 
         try {
             $propertyDesc->setValue($component,$value);
         } catch (Exception $ex) {
-            throw new S2Container_IllegalPropertyRuntimeException(
-                $this->getComponentDef()->getComponentClass(),
-                $propertyDesc->getPropertyName(),
-                $ex);
+            throw new S2Container_IllegalPropertyRuntimeException($this->
+                                      getComponentDef()->getComponentClass(),
+                                      $propertyDesc->getPropertyName(),
+                                      $ex);
         }
     }
 }

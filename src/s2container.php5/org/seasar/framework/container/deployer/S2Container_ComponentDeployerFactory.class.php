@@ -25,19 +25,31 @@
  * @package org.seasar.framework.container.deployer
  * @author klove
  */
-final class S2Container_ComponentDeployerFactory {
-
-    private function S2Container_ComponentDeployerFactory() {
+final class S2Container_ComponentDeployerFactory
+{
+    /**
+     * 
+     */
+    private function __construct()
+    {
     }
 
-    public static function create(S2Container_ComponentDef $componentDef) {
-        if (S2Container_InstanceModeUtil::isSingleton($componentDef->getInstanceMode())) {
+    /**
+     * @param S2Container_ComponentDef
+     */
+    public static function create(S2Container_ComponentDef $componentDef)
+    {
+        if (S2Container_InstanceModeUtil::isSingleton($componentDef->
+                                                 getInstanceMode())) {
             return new S2Container_SingletonComponentDeployer($componentDef);
-        } else if (S2Container_InstanceModeUtil::isPrototype($componentDef->getInstanceMode())) {
+        } else if (S2Container_InstanceModeUtil::isPrototype($componentDef->
+                                                 getInstanceMode())) {
             return new S2Container_PrototypeComponentDeployer($componentDef);
-        } else if (S2Container_InstanceModeUtil::isRequest($componentDef->getInstanceMode())) {
+        } else if (S2Container_InstanceModeUtil::isRequest($componentDef->
+                                                 getInstanceMode())) {
             return new S2Container_RequestComponentDeployer($componentDef);
-        } else if (S2Container_InstanceModeUtil::isSession($componentDef->getInstanceMode())) {
+        } else if (S2Container_InstanceModeUtil::isSession($componentDef->
+                                                 getInstanceMode())) {
             return new S2Container_SessionComponentDeployer($componentDef);
         } else {
             return new S2Container_OuterComponentDeployer($componentDef);

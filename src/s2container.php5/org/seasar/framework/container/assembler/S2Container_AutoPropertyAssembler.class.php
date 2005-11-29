@@ -25,11 +25,16 @@
  * @package org.seasar.framework.container.assembler
  * @author klove
  */
-class S2Container_AutoPropertyAssembler extends S2Container_ManualPropertyAssembler {
-
+class S2Container_AutoPropertyAssembler 
+    extends S2Container_ManualPropertyAssembler
+{
     private $log_;
-    
-    public function S2Container_AutoPropertyAssembler(S2Container_ComponentDef $componentDef) {
+
+    /**
+     * @param S2Container_ComponentDef
+     */    
+    public function __construct(S2Container_ComponentDef $componentDef)
+    {
         parent::__construct($componentDef);
         $this->log_ = S2Container_S2Logger::getLogger(get_class($this));
     }
@@ -37,7 +42,8 @@ class S2Container_AutoPropertyAssembler extends S2Container_ManualPropertyAssemb
     /**
      * @see S2Container_PropertyAssembler::assemble()
      */
-    public function assemble($component) {
+    public function assemble($component)
+    {
         parent::assemble($component);
         $beanDesc = $this->getBeanDesc($component);
         $container = $this->getComponentDef()->getContainer();
@@ -48,21 +54,20 @@ class S2Container_AutoPropertyAssembler extends S2Container_ManualPropertyAssemb
             $propName = $propDesc->getPropertyName();
             if (!$this->getComponentDef()->hasPropertyDef($propName) and
                 $propDesc->getWriteMethod() != null and
-                S2Container_AutoBindingUtil::isSuitable($propDesc->getPropertyType())) {
-
+                S2Container_AutoBindingUtil::isSuitable($propDesc->
+                                                     getPropertyType())) {
                 try {
-                    $value = $container->getComponent($propDesc->getPropertyType()->getName());
-
+                    $value = $container->getComponent($propDesc->
+                                               getPropertyType()->getName());
                 } catch (S2Container_ComponentNotFoundRuntimeException $ex) {
                     if ($propDesc->getReadMethod() != null and
                         $propDesc->getValue($component) != null) {
                         continue;
                     }
-                    $this->log_->info($ex->getMessage().". skip property<$propName>.",
+                    $this->log_->info($ex->getMessage() . ". skip property<$propName>.",
                                       __METHOD__);
                     continue;
                 }
-
                 $this->setValue($propDesc,$component,$value);
             }
         }

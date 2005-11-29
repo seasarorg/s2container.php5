@@ -25,19 +25,25 @@
  * @package org.seasar.framework.container.deployer
  * @author klove
  */
-class S2Container_RequestComponentDeployer extends S2Container_AbstractComponentDeployer {
-
+class S2Container_RequestComponentDeployer
+    extends S2Container_AbstractComponentDeployer
+{
     private static $logger_;
 
     /**
      * @param S2Container_ComponentDef
      */
-    public function S2Container_RequestComponentDeployer(S2Container_ComponentDef $componentDef) {
+    public function __construct(S2Container_ComponentDef $componentDef)
+    {
         parent::__construct($componentDef);
         $this->logger_ = S2Container_S2Logger::getLogger(get_class($this));
     }
 
-    public function deploy() {
+    /**
+     * 
+     */
+    public function deploy()
+    {
         $cd = $this->getComponentDef();
         $className = $cd->getComponentClass()->getName();
 
@@ -46,18 +52,17 @@ class S2Container_RequestComponentDeployer extends S2Container_AbstractComponent
             $componentName = $className;
         }
         $component = null;
-        if(array_key_exists($componentName,$_REQUEST)){
+        if (array_key_exists($componentName,$_REQUEST)) {
             $component = $_REQUEST[$componentName];
         }
-        if ($component != null){
-            if($component instanceof $className) {
+        if ($component != null) {
+            if ($component instanceof $className) {
                 return $component;
-            }else{
-                $this->logger_->warn(
-                    S2ContainerMessageUtil::getMessageWithArgs(
-                        'ESSR1005',
-                        array('Request',$componentName,$className)),
-                        __METHOD__);
+            } else {
+                $this->logger_->
+                    warn(S2ContainerMessageUtil::getMessageWithArgs('ESSR1005',
+                                    array('Request',$componentName,$className)),
+                                     __METHOD__);
             }
         }
 
@@ -68,20 +73,26 @@ class S2Container_RequestComponentDeployer extends S2Container_AbstractComponent
         return $component;
     }
 
-    public function injectDependency($component) {
+    /**
+     * 
+     */
+    public function injectDependency($component)
+    {
         throw new S2Container_UnsupportedOperationException("injectDependency");
     }
 
     /**
      * @see S2Container_ComponentDeployer::init()
      */
-    public function init() {
+    public function init()
+    {
     }
 
     /**
      * @see S2Container_ComponentDeployer::destroy()
      */
-    public function destroy() {
+    public function destroy()
+    {
     }
 }
 ?>
