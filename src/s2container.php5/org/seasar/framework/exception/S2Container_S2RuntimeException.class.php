@@ -25,18 +25,20 @@
  * @package org.seasar.framework.exception
  * @author klove
  */
-class S2Container_S2RuntimeException extends Exception {
-
+class S2Container_S2RuntimeException extends Exception
+{
     private $messageCode_;
     private $args_;
     private $message_;
     private $simpleMessage_;
 
-    public function S2Container_S2RuntimeException(
-        $messageCode,
-        $args = null,
-        $cause = null) {
-
+    /**
+     * 
+     */
+    public function __construct($messageCode,
+                                $args = null,
+                                $cause = null)
+    {
         $cause instanceof Exception ? 
             $msg = $cause->getMessage() . "\n" :
             $msg = "";

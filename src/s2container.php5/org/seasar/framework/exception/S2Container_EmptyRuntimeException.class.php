@@ -22,24 +22,28 @@
 //
 // $Id$
 /**
- * ‘ÎÛ‚ªÝ’è‚³‚ê‚Ä‚¢‚È‚¢ê‡‚ÌŽÀsŽž—áŠO‚Å‚·B
- * 
  * @package org.seasar.framework.exception
  * @author klove
  */
-final class S2Container_EmptyRuntimeException extends S2Container_S2RuntimeException {
-
+final class S2Container_EmptyRuntimeException 
+    extends S2Container_S2RuntimeException
+{
     private $targetName_;
 
     /**
      * @param string 
      */
-    public function S2Container_EmptyRuntimeException($targetName) {
+    public function __construct($targetName)
+    {
         parent::__construct("ESSR0007",array($targetName));
         $this->targetName_ = $targetName;
     }
-    
-    public function getTargetName() {
+  
+    /**
+     * 
+     */  
+    public function getTargetName()
+    {
         return $this->targetName_;
     }
 }

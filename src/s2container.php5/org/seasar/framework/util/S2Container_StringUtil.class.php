@@ -25,17 +25,21 @@
  * @package org.seasar.framework.util
  * @author klove
  */
-final class S2Container_StringUtil {
-
-    private function S2Container_StringUtil() {
+final class S2Container_StringUtil
+{
+    /**
+     * 
+     */
+    private function __construct() 
+    {
     }
     
     /**
      * @param string
      */
-    public static function expandPath($path){
-        
-        if(preg_match('/^\%([0-9a-zA-Z_]+)\%(.*)/',$path,$regs)){
+    public static function expandPath($path)
+    {
+        if (preg_match('/^\%([0-9a-zA-Z_]+)\%(.*)/',$path,$regs)) {
             $prefix = $regs[1];
             $expand = "return " . $regs[1] . ". '" . $regs[2] . "';";
             $path = eval($expand);

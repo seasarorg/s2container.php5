@@ -22,17 +22,17 @@
 //
 // $Id$
 /**
- * IllegalAccessExceptionをラップする実行時例外です
- * 
  * @package org.seasar.framework.exception
  * @author klove
  */
-class S2Container_IllegalArgumentException extends S2Container_S2RuntimeException {
-
+class S2Container_IllegalArgumentException
+    extends S2Container_S2RuntimeException
+{
     /**
      * @param string message
      */
-    public function S2Container_IllegalArgumentException($cause = null){
+    public function __construct($cause = null)
+    {
         parent::__construct('ESSR1002', array($cause));
     }
 }

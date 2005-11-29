@@ -25,12 +25,20 @@
  * @package org.seasar.framework.log
  * @author klove
  */
-class S2Container_S2LogFactory {
-
-    private function LogFactory() {
+class S2Container_S2LogFactory
+{
+    /**
+     * 
+     */
+    private function __construct()
+    {
     }
     
-    public static function getLog($className){
+    /**
+     * @param string class name
+     */
+    public static function getLog($className)
+    {
         return new S2Container_SimpleLogger($className);
     }
 }

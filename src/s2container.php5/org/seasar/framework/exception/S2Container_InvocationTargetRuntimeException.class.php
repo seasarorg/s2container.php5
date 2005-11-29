@@ -22,28 +22,33 @@
 //
 // $Id$
 /**
- * InvocationTargetExceptionをラップする実行時例外です。
- * 
  * @package org.seasar.framework.exception
  * @author klove
  */
-class S2Container_InvocationTargetRuntimeException extends S2Container_S2RuntimeException {
+class S2Container_InvocationTargetRuntimeException
+    extends S2Container_S2RuntimeException
+{
 
     private $targetClass_;
 
-    public function S2Container_InvocationTargetRuntimeException(
-        $targetClass = null,
-        $cause = null) {
-
-        parent::__construct(
-            "ESSR0043",
+    /**
+     * 
+     */
+    public function __construct($targetClass = null,
+                                $cause = null) 
+    {
+        parent::__construct("ESSR0043",
             array($targetClass != null ? $targetClass->getName() : "null",
                    $cause != null ? $cause->getTargetException() : "null"),
             $cause->getTargetException());
         $this->targetClass_ = $targetClass;
     }
     
-    public function getTargetClass() {
+    /**
+     * 
+     */
+    public function getTargetClass()
+    {
         return $this->targetClass_;
     }
 }

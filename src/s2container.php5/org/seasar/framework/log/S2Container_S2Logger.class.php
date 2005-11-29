@@ -25,30 +25,41 @@
  * @package org.seasar.framework.log
  * @author klove
  */
-final class S2Container_S2Logger {
-
+final class S2Container_S2Logger
+{
     private static $loggerMap_ = array();
 
     private $log_;
 
-    private function S2Container_S2Logger($className) {
+    /**
+     * @param string class name
+     */
+    private function __construct($className)
+    {
         $this->log_ = S2Container_S2LogFactory::getLog($className);
     }
 
-    public static final function getLogger($className) {
-        
+    /**
+     * @param string class name 
+     */
+    public static final function getLogger($className)
+    {
         $logger = null;
-        if(array_key_exists($className,S2Container_S2Logger::$loggerMap_)){
+        if (array_key_exists($className,S2Container_S2Logger::$loggerMap_)) {
             $logger = S2Container_S2Logger::$loggerMap_[$className];
         }
         if ($logger == null) {
             $logger = new S2Container_S2Logger($className);
             S2Container_S2Logger::$loggerMap_[$className] = $logger;
         }
-        return $logger->getLog();
+        return $logger->_getLog();
     }
     
-    private function getLog(){
+    /**
+     * 
+     */
+    private function _getLog()
+    {
         return $this->log_;
     }
 }

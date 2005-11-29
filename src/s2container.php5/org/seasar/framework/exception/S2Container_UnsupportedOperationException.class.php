@@ -25,12 +25,14 @@
  * @package org.seasar.framework.exception
  * @author klove
  */
-class S2Container_UnsupportedOperationException extends S2Container_S2RuntimeException {
-
+class S2Container_UnsupportedOperationException
+    extends S2Container_S2RuntimeException
+{
     /**
      * @param string message
      */
-    public function S2Container_UnsupportedOperationException($cause){
+    public function __construct($cause)
+    {
         parent::__construct('ESSR1003',array($cause));
     }
 }

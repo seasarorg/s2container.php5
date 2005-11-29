@@ -22,14 +22,17 @@
 //
 // $Id$
 /**
- * InstantiationExceptionをラップする実行時例外です。
- * 
  * @package org.seasar.framework.exception
  * @author klove
  */
-class S2Container_InstantiationException extends S2Container_S2RuntimeException{
-
-    function S2Container_InstantiationException() {
+class S2Container_InstantiationException
+    extends S2Container_S2RuntimeException
+{
+    /**
+     * 
+     */
+    function __construct()
+    {
         parent::__construct('ESSR1004',array());
     }
 }
