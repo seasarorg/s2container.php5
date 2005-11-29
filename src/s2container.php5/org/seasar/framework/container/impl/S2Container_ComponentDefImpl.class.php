@@ -25,8 +25,9 @@
  * @package org.seasar.framework.container.impl
  * @author klove
  */
-class S2Container_ComponentDefImpl implements S2Container_ComponentDef {
-
+class S2Container_ComponentDefImpl 
+    implements S2Container_ComponentDef
+{
     private $componentClass_;
 
     private $componentClassName_;
@@ -57,20 +58,19 @@ class S2Container_ComponentDefImpl implements S2Container_ComponentDef {
 
     private $componentDeployer_;
 
-    public function S2Container_ComponentDefImpl($componentClass="", $componentName="") {
-/*
-        if($componentClass!=""){
-        	$this->componentClass_ = new ReflectionClass($componentClass);
-        }
-        $this->componentName_ = $componentName;
-*/
-
-        if($componentClass instanceof ReflectionClass){
+    /**
+     * @param ReflectionClass component name
+     * @param string component name  
+     */
+    public function __construct($componentClass = "",
+                                                 $componentName = "")
+    {
+        if ($componentClass instanceof ReflectionClass) {
             $this->componentClass_ = $componentClass;
             $this->componentClassName_ = $componentClass->getName();
-        }else{
-            if(class_exists($componentClass) or
-               interface_exists($componentClass)){
+        } else {
+            if (class_exists($componentClass) or
+               interface_exists($componentClass)) {
                $this->componentClass_ = new ReflectionClass($componentClass);
             }
             $this->componentClassName_ = $componentClass;
@@ -87,56 +87,64 @@ class S2Container_ComponentDefImpl implements S2Container_ComponentDef {
     /**
      * @see S2Container_ComponentDef::getComponent()
      */
-    public function getComponent() {
-        return $this->getComponentDeployer()->deploy();
+    public function getComponent()
+    {
+        return $this->_getComponentDeployer()->deploy();
     }
 
     /**
      * @see S2Container_ComponentDef::injectDependency()
      */
-    public function injectDependency($outerComponent) {
-        $this->getComponentDeployer()->injectDependency($outerComponent);
+    public function injectDependency($outerComponent)
+    {
+        $this->_getComponentDeployer()->injectDependency($outerComponent);
     }
 
     /**
      * @see S2Container_ComponentDef::getComponentClass()
      */
-    public final function getComponentClass() {
+    public final function getComponentClass()
+    {
         return $this->componentClass_;
     }
 
     /**
      * @see S2Container_ComponentDef::getComponentClass()
      */
-    public final function setComponentClass(ReflectionClass $componentClass) {
+    public final function setComponentClass(ReflectionClass $componentClass)
+    {
         $this->componentClass_ = $componentClass;
     }
 
     /**
      * @see S2Container_ComponentDef::getComponentName()
      */
-    public final function getComponentName() {
+    public final function getComponentName()
+    {
         return $this->componentName_;
     }
 
     /**
      * @see S2Container_ComponentDef::getConcreteClass()
      */
-    public final function getConcreteClass() {
+    public final function getConcreteClass()
+    {
         return $this->componentClass_;
     }
 
     /**
      * @see S2Container_ComponentDef::getContainer()
      */
-    public final function getContainer() {
+    public final function getContainer()
+    {
         return $this->container_;
     }
 
     /**
      * @see S2Container_ComponentDef::setContainer()
      */
-    public final function setContainer(S2Container $container) {
+    public final function setContainer(S2Container $container)
+    {
         $this->container_ = $container;
         $this->argDefSupport_->setContainer($container);
         $this->metaDefSupport_->setContainer($container);
@@ -149,35 +157,40 @@ class S2Container_ComponentDefImpl implements S2Container_ComponentDef {
     /**
      * @see S2Container_ComponentDef::addArgDef()
      */
-    public function addArgDef(S2Container_ArgDef $argDef) {
+    public function addArgDef(S2Container_ArgDef $argDef)
+    {
         $this->argDefSupport_->addArgDef($argDef);
     }
 
     /**
      * @see S2Container_ComponentDef::addPropertyDef()
      */
-    public function addPropertyDef(S2Container_PropertyDef $propertyDef) {
+    public function addPropertyDef(S2Container_PropertyDef $propertyDef)
+    {
         $this->propertyDefSupport_->addPropertyDef($propertyDef);
     }
 
     /**
      * @see S2Container_InitMethodDefAware::addInitMethodDef()
      */
-    public function addInitMethodDef(S2Container_InitMethodDef $methodDef) {
+    public function addInitMethodDef(S2Container_InitMethodDef $methodDef)
+    {
         $this->initMethodDefSupport_->addInitMethodDef($methodDef);
     }
 
     /**
      * @see S2Container_DestroyMethodDefAware::addDestroyMethodDef()
      */
-    public function addDestroyMethodDef(S2Container_DestroyMethodDef $methodDef) {
+    public function addDestroyMethodDef(S2Container_DestroyMethodDef $methodDef)
+    {
         $this->destroyMethodDefSupport_->addDestroyMethodDef($methodDef);
     }
 
     /**
      * @see S2Container_ComponentDef::addAspectDef()
      */
-    public function addAspectDef(S2Container_AspectDef $aspectDef) {
+    public function addAspectDef(S2Container_AspectDef $aspectDef)
+    {
         $this->aspectDefSupport_->addAspectDef($aspectDef);
         $this->concreteClass_ = null;
     }
@@ -185,55 +198,61 @@ class S2Container_ComponentDefImpl implements S2Container_ComponentDef {
     /**
      * @see S2Container_ArgDefAware::getArgDefSize()
      */
-    public function getArgDefSize() {
+    public function getArgDefSize()
+    {
         return $this->argDefSupport_->getArgDefSize();
     }
 
     /**
      * @see S2Container_PropertyDefAware::getPropertyDefSize()
      */
-    public function getPropertyDefSize() {
+    public function getPropertyDefSize()
+    {
         return $this->propertyDefSupport_->getPropertyDefSize();
     }
 
     /**
      * @see S2Container_InitMethodDefAware::getInitMethodDefSize()
      */
-    public function getInitMethodDefSize() {
+    public function getInitMethodDefSize()
+    {
         return $this->initMethodDefSupport_->getInitMethodDefSize();
     }
 
     /**
      * @see S2Container_DestroyMethodDefAware::getDestroyMethodDefSize()
      */
-    public function getDestroyMethodDefSize() {
+    public function getDestroyMethodDefSize()
+    {
         return $this->destroyMethodDefSupport_->getDestroyMethodDefSize();
     }
 
     /**
      * @see S2Container_AspectDefAware::getAspectDefSize()
      */
-    public function getAspectDefSize() {
+    public function getAspectDefSize()
+    {
         return $this->aspectDefSupport_->getAspectDefSize();
     }
 
     /**
      * @see S2Container_ComponentDef::getInstanceMode()
      */
-    public function getInstanceMode() {
+    public function getInstanceMode()
+    {
         return $this->instanceMode_;
     }
 
     /**
      * @see S2Container_ComponentDef::setInstanceMode()
      */
-    public function setInstanceMode($instanceMode) {
+    public function setInstanceMode($instanceMode)
+    {
         if (S2Container_InstanceModeUtil::isSingleton($instanceMode)
                 || S2Container_InstanceModeUtil::isPrototype($instanceMode)
                 || S2Container_InstanceModeUtil::isRequest($instanceMode)
                 || S2Container_InstanceModeUtil::isSession($instanceMode)
                 || S2Container_InstanceModeUtil::isOuter($instanceMode)) {
-
             $this->instanceMode_ = $instanceMode;
         } else {
             throw new S2Container_IllegalArgumentException($instanceMode);
@@ -243,14 +262,16 @@ class S2Container_ComponentDefImpl implements S2Container_ComponentDef {
     /**
      * @see S2Container_ComponentDef::getAutoBindingMode()
      */
-    public function getAutoBindingMode() {
+    public function getAutoBindingMode()
+    {
         return $this->autoBindingMode_;
     }
 
     /**
      * @see S2Container_ComponentDef::setAutoBindingMode()
      */
-    public function setAutoBindingMode($autoBindingMode) {
+    public function setAutoBindingMode($autoBindingMode)
+    {
         if (S2Container_AutoBindingUtil::isAuto($autoBindingMode)
                 || S2Container_AutoBindingUtil::isConstructor($autoBindingMode)
                 || S2Container_AutoBindingUtil::isProperty($autoBindingMode)
@@ -265,30 +286,35 @@ class S2Container_ComponentDefImpl implements S2Container_ComponentDef {
     /**
      * @see S2Container_ComponentDef::init()
      */
-    public function init() {
-        $this->getComponentDeployer()->init();
+    public function init()
+    {
+        $this->_getComponentDeployer()->init();
     }
 
     /**
      * @see S2Container_ComponentDef::destroy()
      */
-    public function destroy() {
-        $this->getComponentDeployer()->destroy();
+    public function destroy()
+    {
+        $this->_getComponentDeployer()->destroy();
     }
 
     /**
      * @see S2Container_ComponentDef::reconstruct()
      */
-    public function reconstruct($mode=S2Container_ComponentDef::RECONSTRUCT_NORMAL) {
+    public function reconstruct($mode = 
+                                S2Container_ComponentDef::RECONSTRUCT_NORMAL)
+    {
 
-        if($mode == S2Container_ComponentDef::RECONSTRUCT_NORMAL and
-           $this->componentClass_ != null){
+        if ($mode == S2Container_ComponentDef::RECONSTRUCT_NORMAL and
+           $this->componentClass_ != null) {
             return false;
         }
 
-        if(class_exists($this->componentClassName_) or
-           interface_exists($this->componentClassName_)){
-            $this->componentClass_ = new ReflectionClass($this->componentClassName_);
+        if (class_exists($this->componentClassName_) or
+           interface_exists($this->componentClassName_)) {
+            $this->componentClass_ = new ReflectionClass($this->
+                                                      componentClassName_);
             return true;
         }
 
@@ -298,96 +324,113 @@ class S2Container_ComponentDefImpl implements S2Container_ComponentDef {
     /**
      * @see S2Container_ComponentDef::getExpression()
      */
-    public function getExpression() {
+    public function getExpression()
+    {
         return $this->expression_;
     }
 
     /**
      * @see S2Container_ComponentDef::setExpression()
      */
-    public function setExpression($expression) {
+    public function setExpression($expression)
+    {
         $this->expression_ = $expression;
     }
 
     /**
      * @see S2Container_ArgDefAware::getArgDef()
      */
-    public function getArgDef($index) {
+    public function getArgDef($index)
+    {
         return $this->argDefSupport_->getArgDef($index);
     }
 
     /**
      * @see S2Container_PropertyDefAware::getPropertyDef()
      */
-    public function getPropertyDef($index) {
+    public function getPropertyDef($index)
+    {
         return $this->propertyDefSupport_->getPropertyDef($index);
     }
 
     /**
      * @see S2Container_PropertyDefAware::hasPropertyDef()
      */
-    public function hasPropertyDef($propertyName) {
+    public function hasPropertyDef($propertyName)
+    {
         return $this->propertyDefSupport_->hasPropertyDef($propertyName);
     }
 
     /**
      * @see S2Container_InitMethodDefAware::getInitMethodDef()
      */
-    public function getInitMethodDef($index) {
+    public function getInitMethodDef($index)
+    {
         return $this->initMethodDefSupport_->getInitMethodDef($index);
     }
 
     /**
      * @see S2Container_DestroyMethodDefAware::getDestroyMethodDef()
      */
-    public function getDestroyMethodDef($index) {
+    public function getDestroyMethodDef($index)
+    {
         return $this->destroyMethodDefSupport_->getDestroyMethodDef($index);
     }
 
     /**
      * @see S2Container_AspectDefAware::getAspectDef()
      */
-    public function getAspectDef($index) {
+    public function getAspectDef($index)
+    {
         return $this->aspectDefSupport_->getAspectDef($index);
     }
 
     /**
      * @see S2Container_MetaDefAware::addMetaDef()
      */
-    public function addMetaDef(S2Container_MetaDef $metaDef) {
-        
+    public function addMetaDef(S2Container_MetaDef $metaDef)
+    {
         $this->metaDefSupport_->addMetaDef($metaDef);
     }
 
     /**
      * @see S2Container_MetaDefAware::getMetaDef()
      */
-    public function getMetaDef($name) {
+    public function getMetaDef($name)
+    {
         return $this->metaDefSupport_->getMetaDef($name);
     }
     
     /**
      * @see S2Container_MetaDefAware::getMetaDefs()
      */
-    public function getMetaDefs($name) {
+    public function getMetaDefs($name)
+    {
         return $this->metaDefSupport_->getMetaDefs($name);
     }
     
     /**
      * @see S2Container_MetaDefAware::getMetaDefSize()
      */
-    public function getMetaDefSize() {
+    public function getMetaDefSize()
+    {
         return $this->metaDefSupport_->getMetaDefSize();
     }
 
-    private function getComponentDeployer() {
+    /**
+     * 
+     */
+    private function _getComponentDeployer()
+    {
         if ($this->componentDeployer_ == null) {
-            if($this->expression_ == null and 
-               $this->componentClass_ == null){
+            if ($this->expression_ == null and 
+               $this->componentClass_ == null) {
                 throw new S2Container_S2RuntimeException('ESSR1008',
-                           array($this->componentName_,$this->componentClassName_));
+                           array($this->componentName_,
+                                 $this->componentClassName_));
             }
-            $this->componentDeployer_ = S2Container_ComponentDeployerFactory::create($this);
+            $this->componentDeployer_ = 
+                S2Container_ComponentDeployerFactory::create($this);
         }
         return $this->componentDeployer_;
     }   

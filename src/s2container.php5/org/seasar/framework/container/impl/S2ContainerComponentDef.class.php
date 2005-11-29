@@ -25,34 +25,47 @@
  * @package org.seasar.framework.container.impl
  * @author klove
  */
-class S2ContainerComponentDef extends S2Container_SimpleComponentDef {
-
-    public function S2ContainerComponentDef(S2Container $container, $name) {
+class S2ContainerComponentDef 
+    extends S2Container_SimpleComponentDef
+{
+    /**
+     * @param S2Container
+     * @param string
+     */
+    public function __construct(S2Container $container, $name)
+    {
         parent::__construct($container, $name);
     }
 
-    public function getContainer() {
+    /**
+     * @return S2Container
+     */
+    public function getContainer()
+    {
         return parent::getComponent();
     }
     
     /**
      * @see S2Container_ComponentDef::getComponent()
      */
-    public function getComponent() {
+    public function getComponent()
+    {
         return $this->getContainer();
     }
 
     /**
      * @see S2Container_ComponentDef::init()
      */
-    public function init() {
+    public function init()
+    {
         $this->getContainer()->init();
     }
     
     /**
      * @see S2Container_ComponentDef::destroy()
      */
-    public function destroy() {
+    public function destroy()
+    {
         $this->getContainer()->destroy();
     }
 }

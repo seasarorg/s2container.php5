@@ -27,9 +27,13 @@
  */
 class S2Container_DestroyMethodDefImpl
     extends S2Container_MethodDefImpl
-    implements S2Container_DestroyMethodDef {
-
-    public function S2Container_DestroyMethodDefImpl($methodName=null) {
+    implements S2Container_DestroyMethodDef
+{
+    /**
+     * @param string method name
+     */
+    public function __construct($methodName = null)
+    {
         parent::__construct($methodName);
     }
 }

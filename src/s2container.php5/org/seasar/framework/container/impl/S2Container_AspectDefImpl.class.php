@@ -25,24 +25,29 @@
  * @package org.seasar.framework.container.impl
  * @author klove
  */
-class S2Container_AspectDefImpl extends S2Container_ArgDefImpl implements S2Container_AspectDef {
-
+class S2Container_AspectDefImpl 
+    extends S2Container_ArgDefImpl 
+    implements S2Container_AspectDef
+{
     private $pointcut_;
 
-    public function S2Container_AspectDefImpl($arg1=null,$arg2=null) {
-
+    /**
+     * 
+     */
+    public function __construct($arg1 = null,$arg2 = null)
+    {
         parent::__construct();
         
-        if($arg1 instanceof S2Container_Pointcut){
+        if ($arg1 instanceof S2Container_Pointcut) {
             $this->pointcut_ = $arg1;
         }
-        if($arg2 instanceof S2Container_Pointcut){
+        if ($arg2 instanceof S2Container_Pointcut) {
             $this->pointcut_ = $arg2;
         }
-        if($arg1 instanceof S2Container_MethodInterceptor){
+        if ($arg1 instanceof S2Container_MethodInterceptor) {
             $this->setValue($arg1);
         }
-        if($arg2 instanceof S2Container_MethodInterceptor){
+        if ($arg2 instanceof S2Container_MethodInterceptor) {
             $this->setValue($arg2);
         }
     }
@@ -50,8 +55,10 @@ class S2Container_AspectDefImpl extends S2Container_ArgDefImpl implements S2Cont
     /**
      * @see S2Container_AspectDef::getAspect()
      */    
-    public function getAspect() {
+    public function getAspect()
+    {
         $interceptor = $this->getValue();
         return new S2Container_AspectImpl($interceptor, $this->pointcut_);
     }
 }
+?>

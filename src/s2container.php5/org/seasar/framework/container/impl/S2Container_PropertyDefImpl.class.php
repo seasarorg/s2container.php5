@@ -25,13 +25,19 @@
  * @package org.seasar.framework.container.impl
  * @author klove
  */
-class S2Container_PropertyDefImpl extends S2Container_ArgDefImpl implements S2Container_PropertyDef {
-
+class S2Container_PropertyDefImpl 
+    extends S2Container_ArgDefImpl 
+    implements S2Container_PropertyDef
+{
     private $propertyName_;
     
-    public function S2Container_PropertyDefImpl($propertyName=null, $value=null) {
+    /**
+     * 
+     */
+    public function __construct($propertyName = null, $value = null)
+    {
         parent::__construct($value);
-        if($propertyName != null){
+        if ($propertyName != null) {
             $this->propertyName_ = $propertyName;
         }
     }
@@ -39,7 +45,8 @@ class S2Container_PropertyDefImpl extends S2Container_ArgDefImpl implements S2Co
     /**
      * @see S2Container_PropertyDef::getPropertyName()
      */
-    public function getPropertyName() {
+    public function getPropertyName()
+    {
         return $this->propertyName_;
     }
 }

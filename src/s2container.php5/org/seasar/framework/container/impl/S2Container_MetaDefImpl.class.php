@@ -25,14 +25,21 @@
  * @package org.seasar.framework.container.impl
  * @author klove
  */
-class S2Container_MetaDefImpl extends S2Container_ArgDefImpl implements S2Container_MetaDef {
-
+class S2Container_MetaDefImpl
+    extends S2Container_ArgDefImpl
+    implements S2Container_MetaDef
+{
     private $name_;
-    
-    public function S2Container_MetaDefImpl($name=null,$value=null) {
+ 
+    /**
+     * @param string 
+     * @param value
+     */   
+    public function __construct($name = null,$value = null)
+    {
         parent::__construct($value);
         
-        if($name != null){
+        if ($name != null) {
             $this->name_ = $name;
         }
     }
@@ -40,7 +47,8 @@ class S2Container_MetaDefImpl extends S2Container_ArgDefImpl implements S2Contai
     /**
      * @see S2Container_MetaDef::getName()
      */    
-    public function getName() {
+    public function getName()
+    {
         return $this->name_;
     }
 }
