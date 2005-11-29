@@ -22,35 +22,54 @@
 //
 // $Id$
 /**
- * AspectDefの設定をサポートします。
- * 
  * @package org.seasar.framework.container.util
  * @author klove
  */
-final class S2Container_AspectDefSupport {
-
+final class S2Container_AspectDefSupport
+{
     private $aspectDefs_ = array();
     private $container_;
 
-    public function S2Container_AspectDefSupport() {
+    /**
+     * 
+     */
+    public function __construct()
+    {
     }
 
-    public function addAspectDef(S2Container_AspectDef $aspectDef) {
+    /**
+     * @param S2Container_AspectDef
+     */
+    public function addAspectDef(S2Container_AspectDef $aspectDef)
+    {
         if ($this->container_ != null) {
             $aspectDef->setContainer($this->container_);
         }
         array_push($this->aspectDefs_,$aspectDef);
     }
 
-    public function getAspectDefSize() {
+    /**
+     * @return int
+     */
+    public function getAspectDefSize()
+    {
         return count($this->aspectDefs_);
     }
 
-    public function getAspectDef($index) {
+    /**
+     * @param int
+     * @return S2Container_AspectDef
+     */
+    public function getAspectDef($index)
+    {
         return $this->aspectDefs_[$index];
     }
 
-    public function setContainer(S2Container $container) {
+    /**
+     * @param S2Container
+     */
+    public function setContainer(S2Container $container)
+    {
         $this->container_ = $container;
         for ($i = 0; $i < $this->getAspectDefSize(); ++$i) {
             $this->getAspectDef($i)->setContainer($container);

@@ -25,45 +25,69 @@
  * @package org.seasar.framework.container.util
  * @author klove
  */
-final class S2Container_AutoBindingUtil {
-
-    private function S2Container_AutoBindingUtil() {
+final class S2Container_AutoBindingUtil
+{
+    /**
+     * 
+     */
+    private function __construct()
+    {
     }
 
-    public static final function isSuitable($classes) {
-        
-        if(is_array($classes)){
+    /**
+     * 
+     */
+    public static final function isSuitable($classes)
+    {
+        if (is_array($classes)) {
             for ($i = 0; $i < count($classes); ++$i) {
                 if (!S2Container_AutoBindingUtil::isSuitable($classes[$i])) {
                     return false;
                 }
             }
-        }else{
-            if($classes != null){
+        } else {
+            if ($classes != null) {
                 return $classes->isInterface();
-            }else{
+            } else {
                 return false;
             }
         }
         return true;
     }
     
-    public static final function isAuto($mode) {
+    /**
+     * @return boolean
+     */
+    public static final function isAuto($mode)
+    {
         return strtolower(S2Container_ContainerConstants::AUTO_BINDING_AUTO)
                 == strtolower($mode);
     }
     
-    public static final function isConstructor($mode) {
-        return strtolower(S2Container_ContainerConstants::AUTO_BINDING_CONSTRUCTOR)
+    /**
+     * @return boolean
+     */
+    public static final function isConstructor($mode)
+    {
+        return 
+            strtolower(S2Container_ContainerConstants::AUTO_BINDING_CONSTRUCTOR)
                 == strtolower($mode);
     }
     
-    public static final function isProperty($mode) {
+    /**
+     * @return boolean
+     */
+    public static final function isProperty($mode)
+    {
         return strtolower(S2Container_ContainerConstants::AUTO_BINDING_PROPERTY)
                 == strtolower($mode);
     }
     
-    public static final function isNone($mode) {
+    /**
+     * @return boolean
+     */
+    public static final function isNone($mode)
+    {
         return strtolower(S2Container_ContainerConstants::AUTO_BINDING_NONE)
                 == strtolower($mode);
     }

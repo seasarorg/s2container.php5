@@ -22,37 +22,56 @@
 //
 // $Id$
 /**
- * InitMethodDefの設定をサポートします。
- * 
  * @package org.seasar.framework.container.util
  * @author klove
  */
-final class S2Container_InitMethodDefSupport {
-
+final class S2Container_InitMethodDefSupport
+{
     private $methodDefs_ = array();
     private $container_;
 
-    public function S2Container_InitMethodDefSupport() {
+    /**
+     * 
+     */
+    public function __construct()
+    {
     }
 
-    public function addInitMethodDef(S2Container_InitMethodDef $methodDef) {
+    /**
+     * @param S2Container_InitMethodDef
+     */
+    public function addInitMethodDef(S2Container_InitMethodDef $methodDef)
+    {
         if ($this->container_ != null) {
             $methodDef->setContainer($this->container_);
         }
         array_push($this->methodDefs_,$methodDef);
     }
 
-    public function getInitMethodDefSize() {
+    /**
+     * @return int
+     */
+    public function getInitMethodDefSize()
+    {
         return count($this->methodDefs_);
     }
 
-    public function getInitMethodDef($index) {
+    /**
+     * @param int
+     * @return S2Container_InitMethodDef
+     */
+    public function getInitMethodDef($index)
+    {
         return $this->methodDefs_[$index];
     }
 
-    public function setContainer(S2Container $container) {
+    /**
+     * @param S2Container
+     */
+    public function setContainer(S2Container $container)
+    {
         $this->container_ = $container;
-        for ($i = 0;$i < $this->getInitMethodDefSize(); ++$i) {
+        for ($i = 0; $i < $this->getInitMethodDefSize(); ++$i) {
             $this->getInitMethodDef($i)->setContainer($container);
         }
     }

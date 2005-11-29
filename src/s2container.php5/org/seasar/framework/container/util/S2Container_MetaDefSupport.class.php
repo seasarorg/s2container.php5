@@ -27,31 +27,47 @@
  * @package org.seasar.framework.container.util
  * @author klove
  */
-final class S2Container_MetaDefSupport {
-
+final class S2Container_MetaDefSupport
+{
     private $metaDefs_ = array();
 
     private $container_;
 
-    public function S2Container_MetaDefSupport($container=null) {
-        if($container instanceof S2Container){
+    /**
+     * @param S2Container
+     */
+    public function __construct($container = null)
+    {
+        if ($container instanceof S2Container) {
             $this->setContainer($container);
         }
     }
 
-    public function addMetaDef(S2Container_MetaDef $metaDef) {
+    /**
+     * @param S2Container_MetaDef
+     */
+    public function addMetaDef(S2Container_MetaDef $metaDef)
+    {
         if ($this->container_ != null) {
             $metaDef->setContainer($this->container_);
         }
         array_push($this->metaDefs_,$metaDef);
     }
 
-    public function getMetaDefSize() {
+    /**
+     * @return int
+     */
+    public function getMetaDefSize()
+    {
         return count($this->metaDefs_);
     }
 
-    public function getMetaDef($name) {
-        if(is_int($name)){
+    /**
+     * @return S2Container_MetaDef
+     */
+    public function getMetaDef($name)
+    {
+        if (is_int($name)) {
             return $this->metaDefs_[$name];
         }
         
@@ -65,7 +81,11 @@ final class S2Container_MetaDefSupport {
         return null;
     }
 
-    public function getMetaDefs($name) {
+    /**
+     * @return array
+     */
+    public function getMetaDefs($name)
+    {
         $defs = array();
         for ($i = 0; $i < $this->getMetaDefSize(); ++$i) {
             $metaDef = $this->getMetaDef($i);
@@ -77,7 +97,11 @@ final class S2Container_MetaDefSupport {
         return $defs;
     }
 
-    public function setContainer(S2Container $container) {
+    /**
+     * @param S2Container
+     */
+    public function setContainer(S2Container $container)
+    {
         $this->container_ = $container;
         for ($i = 0; $i < $this->getMetaDefSize(); ++$i) {
             $this->getMetaDef($i)->setContainer($container);

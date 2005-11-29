@@ -25,32 +25,56 @@
  * @package org.seasar.framework.container.util
  * @author klove
  */
-final class S2Container_InstanceModeUtil {
-
-    private function S2Container_InstanceModeUtil() {
+final class S2Container_InstanceModeUtil
+{
+    /**
+     * 
+     */
+    private function __construct()
+    {
     }
 
-    public static final function isSingleton($mode) {
+    /**
+     * @return boolean
+     */
+    public static final function isSingleton($mode)
+    {
         return strtolower(S2Container_ContainerConstants::INSTANCE_SINGLETON)
                 == strtolower($mode);
     }
     
-    public static final function isPrototype($mode) {
+    /**
+     * @return boolean
+     */
+    public static final function isPrototype($mode)
+    {
         return strtolower(S2Container_ContainerConstants::INSTANCE_PROTOTYPE)
                 == strtolower($mode);
     }
     
-    public static final function isRequest($mode) {
+    /**
+     * @return boolean
+     */
+    public static final function isRequest($mode)
+    {
         return strtolower(S2Container_ContainerConstants::INSTANCE_REQUEST)
                 == strtolower($mode);
     }
     
-    public static final function isSession($mode) {
+    /**
+     * @return boolean
+     */
+    public static final function isSession($mode)
+    {
         return strtolower(S2Container_ContainerConstants::INSTANCE_SESSION)
                 == strtolower($mode);
     }
     
-    public static final function isOuter($mode) {
+    /**
+     * @return boolean
+     */
+    public static final function isOuter($mode)
+    {
         return strtolower(S2Container_ContainerConstants::INSTANCE_OUTER)
                 == strtolower($mode);
     }

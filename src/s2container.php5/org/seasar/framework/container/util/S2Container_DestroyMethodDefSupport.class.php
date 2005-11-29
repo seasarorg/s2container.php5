@@ -22,35 +22,54 @@
 //
 // $Id$
 /**
- * DestroyMethodDefの設定をサポートします。
- * 
  * @package org.seasar.framework.container.util
  * @author klove
  */
-final class S2Container_DestroyMethodDefSupport {
-
+final class S2Container_DestroyMethodDefSupport
+{
     private $methodDefs_ = array();
     private $container_;
 
-    public function S2Container_DestroyMethodDefSupport() {
+    /**
+     * 
+     */
+    public function __construct()
+    {
     }
 
-    public function addDestroyMethodDef(S2Container_DestroyMethodDef $methodDef) {
+    /**
+     * @param S2Container_DestroyMethodDef 
+     */
+    public function addDestroyMethodDef(S2Container_DestroyMethodDef $methodDef)
+    {
         if ($this->container_ != null) {
             $methodDef->setContainer($this->container_);
         }
         array_push($this->methodDefs_,$methodDef);
     }
 
-    public function getDestroyMethodDefSize() {
+    /**
+     * @return int
+     */
+    public function getDestroyMethodDefSize()
+    {
         return count($this->methodDefs_);
     }
 
-    public function getDestroyMethodDef($index) {
+    /**
+     * @param int
+     * @return S2Container_DestroyMethodDef 
+     */
+    public function getDestroyMethodDef($index)
+    {
         return $this->methodDefs_[$index];
     }
 
-    public function setContainer(S2Container $container) {
+    /**
+     * @param S2Container
+     */
+    public function setContainer(S2Container $container)
+    {
         $this->container_ = $container;
         for ($i = 0; $i < $this->getDestroyMethodDefSize(); ++$i) {
             $this->getDestroyMethodDef($i)->setContainer($container);
