@@ -25,49 +25,79 @@
  * @package org.seasar.framework.container.factory
  * @author klove
  */
-final class S2Container_SingletonS2ContainerFactory {
-
+final class S2Container_SingletonS2ContainerFactory
+{
     private static $container_;
     
-    private function S2Container_SingletonS2ContainerFactory() {
+    /**
+     * 
+     */
+    private function __construct()
+    {
     }
     
-    public static function getConfigPath() {
+    /**
+     * 
+     */
+    public static function getConfigPath()
+    {
         return S2CONTAINER_PHP5_APP_DICON;
     }
 
-    public static function init($path=null) {
-        if($path==null){
-            if(!defined('S2CONTAINER_PHP5_APP_DICON')){
+    /**
+     * 
+     */
+    public static function init($path = null)
+    {
+        if ($path == null) {
+            if (!defined('S2CONTAINER_PHP5_APP_DICON')) {
                 throw new S2Container_EmptyRuntimeException('S2CONTAINER_PHP5_APP_DICON');
             }
-            S2Container_SingletonS2ContainerFactory::$container_ = S2ContainerFactory::create(S2CONTAINER_PHP5_APP_DICON);
-        }else{
-            if(!is_readable($path)){
+            S2Container_SingletonS2ContainerFactory::$container_ = 
+                         S2ContainerFactory::create(S2CONTAINER_PHP5_APP_DICON);
+        } else {
+            if (!is_readable($path)) {
                 throw new S2Container_S2RuntimeException('ESSR0001',array($path));
             }            
-            S2Container_SingletonS2ContainerFactory::$container_ = S2ContainerFactory::create($path);
+            S2Container_SingletonS2ContainerFactory::$container_ = 
+                                              S2ContainerFactory::create($path);
         }
         S2Container_SingletonS2ContainerFactory::$container_->init();
     }
     
-    public static function destroy() {
+    /**
+     * 
+     */
+    public static function destroy()
+    {
         S2Container_SingletonS2ContainerFactory::$container_->destroy();
         S2Container_SingletonS2ContainerFactory::$container_ = null;
     }
     
-    public static function getContainer($path=null) {
+    /**
+     * 
+     */
+    public static function getContainer($path = null)
+    {
         if (S2Container_SingletonS2ContainerFactory::$container_ == null) {
             S2Container_SingletonS2ContainerFactory::init($path);
         }
         return S2Container_SingletonS2ContainerFactory::$container_;
     }
     
-    public static function setContainer($container) {
+    /**
+     * 
+     */
+    public static function setContainer($container)
+    {
         S2Container_SingletonS2ContainerFactory::$container_ = $container;
     }
     
-    public static function hasContainer() {
+    /**
+     * 
+     */
+    public static function hasContainer()
+    {
         return S2Container_SingletonS2ContainerFactory::$container_ != null;
     }
 }

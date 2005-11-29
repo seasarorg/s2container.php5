@@ -25,8 +25,8 @@
  * @package org.seasar.framework.container.factory
  * @author klove
  */
-final class S2ContainerFactory {
-
+final class S2ContainerFactory
+{
     public static $DTD_PATH;
     public static $BUILDER_CONFIG_PATH;
     private static $builderProps_;
@@ -35,18 +35,31 @@ final class S2ContainerFactory {
     private static $inited_ = false;
     protected static $processingPaths_ = array();
     
-    private function S2ContainerFactory() {
+    /**
+     * 
+     */
+    private function __construct()
+    {
         $this->init();
     }
 
-    private static function init(){
-        if(!S2ContainerFactory::$inited_){
-            S2ContainerFactory::$defaultBuilder_ = new S2Container_XmlS2ContainerBuilder();
-            S2ContainerFactory::$DTD_PATH = S2CONTAINER_PHP5 . "/org/seasar/framework/container/factory/components21.dtd";
-            S2ContainerFactory::$BUILDER_CONFIG_PATH = S2CONTAINER_PHP5 . "/S2CntainerBuilder.properties";
+    /**
+     * 
+     */
+    private static function init()
+    {
+        if (!S2ContainerFactory::$inited_) {
+            S2ContainerFactory::$defaultBuilder_ = 
+                    new S2Container_XmlS2ContainerBuilder();
+            S2ContainerFactory::$DTD_PATH = 
+                S2CONTAINER_PHP5 . 
+                "/org/seasar/framework/container/factory/components21.dtd";
+            S2ContainerFactory::$BUILDER_CONFIG_PATH = 
+                S2CONTAINER_PHP5 . "/S2CntainerBuilder.properties";
 
-            if(is_readable(S2ContainerFactory::$BUILDER_CONFIG_PATH)){
-                   S2ContainerFactory::$builderProps_ = parse_ini_file(S2ContainerFactory::$BUILDER_CONFIG_PATH);
+            if (is_readable(S2ContainerFactory::$BUILDER_CONFIG_PATH)) {
+                   S2ContainerFactory::$builderProps_ = 
+                       parse_ini_file(S2ContainerFactory::$BUILDER_CONFIG_PATH);
             }
             S2ContainerFactory::$builders_['xml'] = S2ContainerFactory::$defaultBuilder_;
             S2ContainerFactory::$builders_['dicon'] = S2ContainerFactory::$defaultBuilder_;
@@ -54,7 +67,11 @@ final class S2ContainerFactory {
         }
     }
 
-    public static function create($path) {
+    /**
+     * @param string dicon path 
+     */
+    public static function create($path) 
+    {
         S2ContainerFactory::init();
         S2ContainerFactory::enter($path);
         $ext = S2ContainerFactory::getExtension($path);
@@ -64,7 +81,11 @@ final class S2ContainerFactory {
         return $container;
     }
     
-    public static function includeChild(S2Container $parent, $path) {
+    /**
+     * 
+     */
+    public static function includeChild(S2Container $parent, $path)
+    {
         S2ContainerFactory::init();
         S2ContainerFactory::enter($path);
         $root = $parent->getRoot();
@@ -82,16 +103,24 @@ final class S2ContainerFactory {
         return $child;
     }
     
-    private static function getExtension($path) {
+    /**
+     * 
+     */
+    private static function getExtension($path)
+    {
         $filename = basename($path);
         preg_match('/\.([a-zA-Z0-9]+)$/',$filename,$regs);
         return $regs[1];
     }
     
-    private static function getBuilder($ext) {
+    /**
+     * 
+     */
+    private static function getBuilder($ext)
+    {
         $builder = null;
 
-        if(array_key_exists($ext,S2ContainerFactory::$builders_)){
+        if (array_key_exists($ext,S2ContainerFactory::$builders_)) {
             $builder = S2ContainerFactory::$builders_[$ext];
             if ($builder != null) {
                 return $builder;
@@ -108,16 +137,24 @@ final class S2ContainerFactory {
         return $builder;
     }
 
-    protected static function enter($path) {
-        if (in_array($path,S2ContainerFactory::$processingPaths_)){
-            throw new S2Container_CircularIncludeRuntimeException(
-                          $path, S2ContainerFactory::$processingPaths_);
+    /**
+     * 
+     */
+    protected static function enter($path)
+    {
+        if (in_array($path,S2ContainerFactory::$processingPaths_)) {
+            throw new S2Container_CircularIncludeRuntimeException($path,
+                                  S2ContainerFactory::$processingPaths_);
         }
         array_push(S2ContainerFactory::$processingPaths_,$path);
     }
 
-    protected static function leave($path) {
-    	array_pop(S2ContainerFactory::$processingPaths_);
+    /**
+     * 
+     */
+    protected static function leave($path)
+    {
+        array_pop(S2ContainerFactory::$processingPaths_);
     }
 }
 ?>

@@ -25,84 +25,98 @@
  * @package org.seasar.framework.container.factory
  * @author klove
  */
-final class S2Container_IniS2ContainerBuilder implements S2ContainerBuilder {
+final class S2Container_IniS2ContainerBuilder 
+    implements S2ContainerBuilder 
+{
     private $unresolvedCompRef_ = array();
 
-    public function S2Container_IniS2ContainerBuilder (){}
+    /**
+     * 
+     */
+    public function __construct()
+    {
+    }
 
-    public function build($path,$classLoader=null) {
+    /**
+     * 
+     */
+    public function build($path,$classLoader = null)
+    {
         $container = null;
         
-        if(!is_readable($path)){
+        if (!is_readable($path)) {
             throw new S2Container_S2RuntimeException('ESSR0001',array($path));
         }
         
         $root = parse_ini_file($path,true);
         $container = new S2ContainerImpl();
         $container->setPath($path);
-        if(array_key_exists('components',$root)){
-        	$components = $root['components'];
-            array_key_exists('namespace',$components) ? $namespace = trim($components['namespace']) : $namespace ="";
-            if($namespace != ""){
-            	$container->setNamespace($namespace);
+        if (array_key_exists('components',$root)) {
+            $components = $root['components'];
+            array_key_exists('namespace',$components) ? 
+                $namespace = trim($components['namespace']) : $namespace = "";
+            if ($namespace != "") {
+                $container->setNamespace($namespace);
             } 
 
-            for($i=0;;$i++){
-                if(array_key_exists('include{'.$i.'}',$components)){
-                    $path = trim($components['include{'.$i.'}']);
+            for ($i = 0; ; $i++) {
+                if (array_key_exists('include{' . $i . '}',$components)) {
+                    $path = trim($components['include{' . $i . '}']);
                     $path = S2Container_StringUtil::expandPath($path);
-                    if(!is_readable($path)){
-                        throw new S2Container_S2RuntimeException('ESSR0001',array($path));
+                    if (!is_readable($path)) {
+                        throw new S2Container_S2RuntimeException('ESSR0001',
+                                                              array($path));
                     }
                     $child = S2ContainerFactory::includeChild($container,$path);
                     $child->setRoot($container->getRoot());
-                }else{
-                    break;	
+                } else {
+                    break;    
                 }
-               
             }
-
-            $this->setupMetaDef($container,$components);
+            $this->_setupMetaDef($container,$components);
         }
 
-        foreach($root as $key => $val){
-        	if($key == 'components'){
-        		continue;
-        	}
-        	
-            $container->register($this->setupComponentDef($key,$val));               
+        foreach ($root as $key => $val) {
+            if ($key == 'components') {
+                continue;
+            }
+            $container->register($this->_setupComponentDef($key,$val));               
         }
            
-        if(count(array_keys($this->unresolvedCompRef_)>0)){
-            foreach ($this->unresolvedCompRef_ as $key => $val){
-                foreach($val as $argDef){
-                    if($container->hasComponentDef($key)){
-                        $argDef->setChildComponentDef($container->getComponentDef($key));
+        if (count(array_keys($this->unresolvedCompRef_) > 0)) {
+            foreach ($this->unresolvedCompRef_ as $key => $val) {
+                foreach ($val as $argDef) {
+                    if ($container->hasComponentDef($key)) {
+                        $argDef->setChildComponentDef($container->
+                                            getComponentDef($key));
                     }
                 }
             }
         }
         $this->unresolvedCompRef_ = array();
-
         return $container;
     }
 
-    private function setupComponentDef($name,&$component){
-        if(array_key_exists('class',$component)){
+    /**
+     * 
+     */
+    private function _setupComponentDef($name,&$component)
+    {
+        if (array_key_exists('class',$component)) {
             $className = trim($component['class']);
-        }else{
-            if(array_key_exists('exp',$component)){
+        } else {
+            if (array_key_exists('exp',$component)) {
                 $className = "";
-            }else{
+            } else {
                 $className = $name;
                 $name = "";
-            }        	
+            }            
         }   
         
         $componentDef = new S2Container_ComponentDefImpl($className,$name);
 
-        if(array_key_exists('exp',$component)){
-            $componentDef->setExpression(trim($component['exp']));        	
+        if (array_key_exists('exp',$component)) {
+            $componentDef->setExpression(trim($component['exp']));            
         }   
         
         if (array_key_exists('instance',$component)) {
@@ -113,172 +127,198 @@ final class S2Container_IniS2ContainerBuilder implements S2ContainerBuilder {
             $componentDef->setAutoBindingMode(trim($component['autobinding']));
         }
 
-        $this->setupArgDef($componentDef,$component);
-        $this->setupPropertyDef($componentDef,$component);
-        $this->setupInitMethodDef($componentDef,$component);
-        $this->setupDestroyMethodDef($componentDef,$component);
-        $this->setupAspectDef($componentDef,$component,$className);
+        $this->_setupArgDef($componentDef,$component);
+        $this->_setupPropertyDef($componentDef,$component);
+        $this->_setupInitMethodDef($componentDef,$component);
+        $this->_setupDestroyMethodDef($componentDef,$component);
+        $this->_setupAspectDef($componentDef,$component,$className);
         
-        $this->setupMetaDef($componentDef,$component);
+        $this->_setupMetaDef($componentDef,$component);
 
         return $componentDef;
     }    
     
-    private function setupArgDef($componentDef,&$component,$parent=""){
-
-        for($i=0;;$i++){
+    /**
+     * 
+     */
+    private function _setupArgDef($componentDef,&$component,$parent = "")
+    {
+        for ($i = 0; ; $i++) {
             $argDef = null;
             
-            if($parent == ""){
-           	    $key_val = 'arg{'.$i.'}{val}';
-           	    $key_ref = 'arg{'.$i.'}{ref}';
-           	    $key_exp = 'arg{'.$i.'}{exp}';
-           	    $key_arg = 'arg{'.$i.'}';
-            }else{     
-           	    $key_val = $parent.'{arg{'.$i.'}{val}}';
-           	    $key_ref = $parent.'{arg{'.$i.'}{ref}}';
-           	    $key_exp = $parent.'{arg{'.$i.'}{exp}}';
-           	    $key_arg = $parent.'{arg{'.$i.'}';
+            if ($parent == "") {
+                   $key_val = 'arg{' . $i . '}{val}';
+                   $key_ref = 'arg{' . $i . '}{ref}';
+                   $key_exp = 'arg{' . $i . '}{exp}';
+                   $key_arg = 'arg{' . $i . '}';
+            } else {     
+                   $key_val = $parent . '{arg{' . $i . '}{val}}';
+                   $key_ref = $parent . '{arg{' . $i . '}{ref}}';
+                   $key_exp = $parent . '{arg{' . $i . '}{exp}}';
+                   $key_arg = $parent . '{arg{' . $i . '}';
             }
             
-           	if(array_key_exists($key_val,$component)){
+               if (array_key_exists($key_val,$component)) {
                 $argDef = new S2Container_ArgDefImpl();
                 $argDef->setValue(trim($component[$key_val]));
                 $componentDef->addArgDef($argDef);   
-            }else if(array_key_exists($key_ref,$component)){
+            } else if (array_key_exists($key_ref,$component)) {
                 $argDef = new S2Container_ArgDefImpl();
-                if(array_key_exists(trim($component[$key_ref]),$this->unresolvedCompRef_)){
-                   array_push($this->unresolvedCompRef_[trim($component[$key_ref])],$argDef);
-                }else{
+                if (array_key_exists(trim($component[$key_ref]),
+                                  $this->unresolvedCompRef_)) {
+                   array_push($this->unresolvedCompRef_[trim($component[$key_ref])],
+                                                                         $argDef);
+                } else {
                    $this->unresolvedCompRef_[trim($component[$key_ref])] = array($argDef);
                 }
                 $componentDef->addArgDef($argDef);               
-            }else if(array_key_exists($key_exp,$component)){
+            } else if (array_key_exists($key_exp,$component)) {
                 $argDef = new S2Container_ArgDefImpl();
                 $argDef->setExpression(trim($component[$key_exp]));
                 $componentDef->addArgDef($argDef);               
             }
             
-            if($argDef == null){
-            	break;
-            }else{
-                $this->setupMetaDef($argDef,$component,$key_arg);
+            if ($argDef == null) {
+                break;
+            } else {
+                $this->_setupMetaDef($argDef,$component,$key_arg);
             }
         }
     }
 
-    private function setupPropertyDef($componentDef,&$component){
-
-        for($i=0;;$i++){
+    /**
+     * 
+     */
+    private function _setupPropertyDef($componentDef,&$component)
+    {
+        for ($i = 0; ; $i++) {
             $propertyDef = null;
-            $key_name = 'property{'.$i.'}{name}';
-            $key_val = 'property{'.$i.'}{val}';
-            $key_ref = 'property{'.$i.'}{ref}';
-            $key_exp = 'property{'.$i.'}{exp}';
+            $key_name = 'property{' . $i . '}{name}';
+            $key_val = 'property{' . $i . '}{val}';
+            $key_ref = 'property{' . $i . '}{ref}';
+            $key_exp = 'property{' . $i . '}{exp}';
 
-           	if(array_key_exists($key_name,$component)){
-               	if(array_key_exists($key_val,$component)){
-                    $propertyDef = new S2Container_PropertyDefImpl(trim($component[$key_name]));
+               if (array_key_exists($key_name,$component)) {
+                   if (array_key_exists($key_val,$component)) {
+                    $propertyDef = 
+                        new S2Container_PropertyDefImpl(trim($component[$key_name]));
                     $propertyDef->setValue(trim($component[$key_val]));
                     $componentDef->addPropertyDef($propertyDef);   
-                }else if(array_key_exists($key_ref,$component)){
+                } else if (array_key_exists($key_ref,$component)) {
                     $propertyDef = new S2Container_PropertyDefImpl(trim($component[$key_name]));
-                    if(array_key_exists($component[$key_ref],$this->unresolvedCompRef_)){
-                       array_push($this->unresolvedCompRef_[trim($component[$key_ref])],$propertyDef);
-                    }else{
-                       $this->unresolvedCompRef_[trim($component[$key_ref])] = array($propertyDef);
+                    if (array_key_exists($component[$key_ref],$this->unresolvedCompRef_)) {
+                       array_push($this->unresolvedCompRef_[trim($component[$key_ref])],
+                                                                        $propertyDef);
+                    } else {
+                       $this->unresolvedCompRef_[trim($component[$key_ref])] = 
+                                                                  array($propertyDef);
                     }
                     $componentDef->addPropertyDef($propertyDef);               
-                }else if(array_key_exists($key_exp,$component)){
-                    $propertyDef = new S2Container_PropertyDefImpl(trim($component[$key_name]));
+                } else if (array_key_exists($key_exp,$component)) {
+                    $propertyDef = 
+                        new S2Container_PropertyDefImpl(trim($component[$key_name]));
                     $propertyDef->setExpression(trim($component[$key_exp]));
                     $componentDef->addPropertyDef($propertyDef);               
-               	}
-           	}
-           	
-            if($propertyDef == null){
-            	break;
-            }else{
-                $this->setupMetaDef($propertyDef,$component,'property{'.$i.'}');
+                   }
+               }
+               
+            if ($propertyDef == null) {
+                break;
+            } else {
+                $this->_setupMetaDef($propertyDef,$component,'property{' . $i . '}');
             }
         }  
     }
-        
-    private function setupInitMethodDef($componentDef,&$component){
 
-        for($i=0;;$i++){
+    /**
+     * 
+     */        
+    private function _setupInitMethodDef($componentDef,&$component)
+    {
+        for ($i = 0; ; $i++) {
             $initMethodDef = null;
-            $key_name = 'init_method{'.$i.'}{name}';
-            $key_exp = 'init_method{'.$i.'}{exp}';
-            $key_arg = 'init_method{'.$i.'}';
+            $key_name = 'init_method{' . $i . '}{name}';
+            $key_exp = 'init_method{' . $i . '}{exp}';
+            $key_arg = 'init_method{' . $i . '}';
 
-            if(array_key_exists($key_exp,$component)){
+            if (array_key_exists($key_exp,$component)) {
                 $initMethodDef = new S2Container_InitMethodDefImpl();
                 $initMethodDef->setExpression(trim($component[$key_exp]));
                 $componentDef->addInitMethodDef($initMethodDef);
-            }else if(array_key_exists($key_name,$component)){
-                $initMethodDef = new S2Container_InitMethodDefImpl(trim($component[$key_name]));
-                $this->setupArgDef($initMethodDef,$component,$key_arg);
+            } else if (array_key_exists($key_name,$component)) {
+                $initMethodDef = 
+                    new S2Container_InitMethodDefImpl(trim($component[$key_name]));
+                $this->_setupArgDef($initMethodDef,$component,$key_arg);
                 $componentDef->addInitMethodDef($initMethodDef);
             }
 
-            if($initMethodDef == null){
-            	break;
+            if ($initMethodDef == null) {
+                break;
             }
         }
     }
 
-    private function setupDestroyMethodDef($componentDef,&$component){
-
-        for($i=0;;$i++){
+    /**
+     * 
+     */
+    private function _setupDestroyMethodDef($componentDef,&$component)
+    {
+        for ($i = 0; ; $i++) {
             $destroyMethodDef = null;
-            $key_name = 'destroy_method{'.$i.'}{name}';
-            $key_exp = 'destroy_method{'.$i.'}{exp}';
-            $key_arg = 'destroy_method{'.$i.'}';
+            $key_name = 'destroy_method{' . $i . '}{name}';
+            $key_exp = 'destroy_method{' . $i . '}{exp}';
+            $key_arg = 'destroy_method{' . $i . '}';
 
-            if(array_key_exists($key_exp,$component)){
+            if (array_key_exists($key_exp,$component)) {
                 $destroyMethodDef = new S2Container_DestroyMethodDefImpl();
                 $destroyMethodDef->setExpression(trim($component[$key_exp]));
                 $componentDef->addDestroyMethodDef($destroyMethodDef);
-            }else if(array_key_exists($key_name,$component)){
-                $destroyMethodDef = new S2Container_DestroyMethodDefImpl(trim($component[$key_name]));
-                $this->setupArgDef($destroyMethodDef,$component,$key_arg);
+            } else if (array_key_exists($key_name,$component)) {
+                $destroyMethodDef = 
+                    new S2Container_DestroyMethodDefImpl(trim($component[$key_name]));
+                $this->_setupArgDef($destroyMethodDef,$component,$key_arg);
                 $componentDef->addDestroyMethodDef($destroyMethodDef);
             }
 
-            if($destroyMethodDef == null){
-            	break;
+            if ($destroyMethodDef == null) {
+                break;
             }
         }
     }
 
-    private function setupAspectDef($componentDef,&$component,$targetClassName){
-
-        for($i=0;;$i++){
+    /**
+     * 
+     */
+    private function _setupAspectDef($componentDef,&$component,$targetClassName)
+    {
+        for ($i = 0; ; $i++) {
             $aspectDef = null;
-            $key_pointcut = 'aspect{'.$i.'}{pointcut}';
-            $key_ref = 'aspect{'.$i.'}{ref}';
-            $key_exp = 'aspect{'.$i.'}{exp}';
+            $key_pointcut = 'aspect{' . $i . '}{pointcut}';
+            $key_ref = 'aspect{' . $i . '}{ref}';
+            $key_exp = 'aspect{' . $i . '}{exp}';
 
-            if(array_key_exists($key_ref,$component)){
-                if(array_key_exists($key_pointcut,$component)){
+            if (array_key_exists($key_ref,$component)) {
+                if (array_key_exists($key_pointcut,$component)) {
                     $pointcuts = split(",",trim($component[$key_pointcut]));
                     $pointcut = new S2Container_PointcutImpl($pointcuts);
-                }else{
+                } else {
                     $pointcut = new S2Container_PointcutImpl($targetClassName);
                 }
                 $aspectDef = new S2Container_AspectDefImpl($pointcut);
-                if(array_key_exists(trim($component[$key_ref]),$this->unresolvedCompRef_)){
-                   array_push($this->unresolvedCompRef_[trim($component[$key_ref])],$aspectDef);
-                }else{
-                   $this->unresolvedCompRef_[trim($component[$key_ref])] = array($aspectDef);
+                if (array_key_exists(trim($component[$key_ref]),
+                                        $this->unresolvedCompRef_)) {
+                   array_push($this->
+                       unresolvedCompRef_[trim($component[$key_ref])],$aspectDef);
+                } else {
+                   $this->unresolvedCompRef_[trim($component[$key_ref])] = 
+                                                          array($aspectDef);
                 }
                 $componentDef->addAspectDef($aspectDef);               
-            }else if(array_key_exists($key_exp,$component)){
-                if(array_key_exists($key_pointcut,$component)){
+            } else if (array_key_exists($key_exp,$component)) {
+                if (array_key_exists($key_pointcut,$component)) {
                     $pointcuts = split(",",trim($component[$key_pointcut]));
                     $pointcut = new S2Container_PointcutImpl($pointcuts);
-                }else{
+                } else {
                     $pointcut = new S2Container_PointcutImpl($targetClassName);
                 }
                 $aspectDef = new S2Container_AspectDefImpl($pointcut);
@@ -286,67 +326,79 @@ final class S2Container_IniS2ContainerBuilder implements S2ContainerBuilder {
                 $componentDef->addAspectDef($aspectDef);               
             }
 
-            if($aspectDef == null){
-            	break;
+            if ($aspectDef == null) {
+                break;
             }
         }
     }
 
-    private function setupMetaDef($componentDef,&$component,$parent=""){
-
-        for($i=0;;$i++){
+    /**
+     * 
+     */
+    private function _setupMetaDef($componentDef,&$component,$parent = "")
+    {
+        for ($i = 0; ; $i++) {
             $metaDef = null;
-        	if($parent==""){
-                $key_name = 'meta{'.$i.'}{name}';
-                $key_val = 'meta{'.$i.'}{val}';
-                $key_ref = 'meta{'.$i.'}{ref}';
-                $key_exp = 'meta{'.$i.'}{exp}';
-        	}else{
-                $key_name = $parent.'{meta{'.$i.'}{name}}';
-                $key_val = $parent.'{meta{'.$i.'}{val}}';
-                $key_ref = $parent.'{meta{'.$i.'}{ref}}';
-                $key_exp = $parent.'{meta{'.$i.'}{exp}}';
+            if ($parent == "") {
+                $key_name = 'meta{' . $i . '}{name}';
+                $key_val = 'meta{' . $i . '}{val}';
+                $key_ref = 'meta{' . $i . '}{ref}';
+                $key_exp = 'meta{' . $i . '}{exp}';
+            } else {
+                $key_name = $parent . '{meta{' . $i . '}{name}}';
+                $key_val = $parent . '{meta{' . $i . '}{val}}';
+                $key_ref = $parent . '{meta{' . $i . '}{ref}}';
+                $key_exp = $parent . '{meta{' . $i . '}{exp}}';
                 
-                if(preg_match('/init_method/',$parent) or
-                   preg_match('/destroy_method/',$parent)){
+                if (preg_match('/init_method/',$parent) or
+                   preg_match('/destroy_method/',$parent)) {
                     $key_name .= '}';
                     $key_val  .= '}';
                     $key_ref  .= '}';
                     $key_exp  .= '}';
                 }
-        	}
+            }
 
-           	if(array_key_exists($key_val,$component)){
-           		array_key_exists($key_name,$component) ?
-           		    $metaDef = new S2Container_MetaDefImpl(trim($component[$key_name])) :
-           		    $metaDef = new S2Container_MetaDefImpl();
+               if (array_key_exists($key_val,$component)) {
+                   array_key_exists($key_name,$component) ?
+                       $metaDef = 
+                           new S2Container_MetaDefImpl(trim($component[$key_name])) :
+                       $metaDef = new S2Container_MetaDefImpl();
                 $metaDef->setValue(trim($component[$key_val]));
                 $componentDef->addMetaDef($metaDef);   
-            }else if(array_key_exists($key_ref,$component)){
-           		array_key_exists($key_name,$component) ?
-           		    $metaDef = new S2Container_MetaDefImpl(trim($component[$key_name])) :
-           		    $metaDef = new S2Container_MetaDefImpl();
-                if(array_key_exists($component[$key_ref],$this->unresolvedCompRef_)){
-                   array_push($this->unresolvedCompRef_[trim($component[$key_ref])],$metaDef);
-                }else{
+            } else if (array_key_exists($key_ref,$component)) {
+                   array_key_exists($key_name,$component) ?
+                       $metaDef = 
+                          new S2Container_MetaDefImpl(trim($component[$key_name])) :
+                       $metaDef = new S2Container_MetaDefImpl();
+                if (array_key_exists($component[$key_ref],
+                                            $this->unresolvedCompRef_)) {
+                   array_push($this->
+                      unresolvedCompRef_[trim($component[$key_ref])],$metaDef);
+                } else {
                    $this->unresolvedCompRef_[trim($component[$key_ref])] = array($metaDef);
                 }
                 $componentDef->addMetaDef($metaDef);               
-            }else if(array_key_exists($key_exp,$component)){
-           		array_key_exists($key_name,$component) ?
-           		    $metaDef = new S2Container_MetaDefImpl(trim($component[$key_name])) :
-           		    $metaDef = new S2Container_MetaDefImpl();
+            } else if (array_key_exists($key_exp,$component)) {
+                   array_key_exists($key_name,$component) ?
+                       $metaDef = 
+                           new S2Container_MetaDefImpl(trim($component[$key_name])) :
+                       $metaDef = new S2Container_MetaDefImpl();
                 $metaDef->setExpression(trim($component[$key_exp]));
                 $componentDef->addMetaDef($metaDef);               
-           	}
-           	
-            if($metaDef == null){
-            	break;
+               }
+               
+            if ($metaDef == null) {
+                break;
             }
         }  
     }
     
-    public function includeChild(S2Container $parent, $path) {
+    /**
+     * 
+     */
+    public function includeChild(S2Container $parent, $path)
+    {
         $child = null;
 
         $child = $this->build($path);

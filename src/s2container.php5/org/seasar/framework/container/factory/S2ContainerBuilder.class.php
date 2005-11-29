@@ -25,10 +25,17 @@
  * @package org.seasar.framework.container.factory
  * @author klove
  */
-interface S2ContainerBuilder {
-
+interface S2ContainerBuilder
+{
+    /**
+     * @param string dicon path
+     */
     public function build($path);
-    
+ 
+    /**
+     * @param S2Container
+     * @param string dicon path
+     */   
     public function includeChild(S2Container $parent, $path);
 }
 ?>
