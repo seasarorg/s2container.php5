@@ -40,7 +40,8 @@ final class S2Container_AutoBindingUtil
     public static final function isSuitable($classes)
     {
         if (is_array($classes)) {
-            for ($i = 0; $i < count($classes); ++$i) {
+        	$o = count($classes);
+            for ($i = 0; $i < $o; ++$i) {
                 if (!S2Container_AutoBindingUtil::isSuitable($classes[$i])) {
                     return false;
                 }

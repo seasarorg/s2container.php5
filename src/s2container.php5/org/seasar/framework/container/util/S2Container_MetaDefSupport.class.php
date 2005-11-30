@@ -22,8 +22,6 @@
 //
 // $Id$
 /**
- * MetaDefの設定をサポートします。
- * 
  * @package org.seasar.framework.container.util
  * @author klove
  */
@@ -70,8 +68,8 @@ final class S2Container_MetaDefSupport
         if (is_int($name)) {
             return $this->metaDefs_[$name];
         }
-        
-        for ($i = 0; $i < $this->getMetaDefSize(); ++$i) {
+        $o = $this->getMetaDefSize();
+        for ($i = 0; $i < $o; ++$i) {
             $metaDef = $this->getMetaDef($i);
             if ($name == null && $metaDef->getName() == null || $name != null
                     && strtolower($name) == strtolower($metaDef->getName())) {
@@ -87,7 +85,8 @@ final class S2Container_MetaDefSupport
     public function getMetaDefs($name)
     {
         $defs = array();
-        for ($i = 0; $i < $this->getMetaDefSize(); ++$i) {
+        $o = $this->getMetaDefSize();
+        for ($i = 0; $i < $o; ++$i) {
             $metaDef = $this->getMetaDef($i);
             if ($name == null && $metaDef->getName() == null || $name != null
                     && strtolower($name) == strtolower($metaDef->getName())) {
@@ -103,7 +102,8 @@ final class S2Container_MetaDefSupport
     public function setContainer(S2Container $container)
     {
         $this->container_ = $container;
-        for ($i = 0; $i < $this->getMetaDefSize(); ++$i) {
+        $o = $this->getMetaDefSize();
+        for ($i = 0; $i < $o; ++$i) {
             $this->getMetaDef($i)->setContainer($container);
         }
     }

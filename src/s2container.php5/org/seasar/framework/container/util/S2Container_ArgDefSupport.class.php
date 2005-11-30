@@ -71,7 +71,8 @@ final class S2Container_ArgDefSupport
     public function setContainer(S2Container $container)
     {
         $this->container_ = $container;
-        for ($i = 0; $i < $this->getArgDefSize(); $i++) {
+        $o = $this->getArgDefSize();
+        for ($i = 0; $i < $o; $i++) {
             $this->getArgDef($i)->setContainer($container);
         }
     }

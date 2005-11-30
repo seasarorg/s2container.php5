@@ -27,7 +27,6 @@
  */
 final class S2Container_PointcutImpl implements S2Container_Pointcut
 {
-
     private $methodNames_;
     private $patterns_;
 
@@ -59,7 +58,8 @@ final class S2Container_PointcutImpl implements S2Container_Pointcut
      */
     public function isApplied($methodName)
     {
-        for ($i = 0; $i < count($this->methodNames_); ++$i) {
+        $o = count($this->methodNames_);
+        for ($i = 0; $i < $o; ++$i) {
             if (preg_match("/" . $this->methodNames_[$i] . "/",$methodName)) {
                 return true;
             }
@@ -87,14 +87,17 @@ final class S2Container_PointcutImpl implements S2Container_Pointcut
         
         if ($targetClass->isInterface() or $targetClass->isAbstract()) {
             $methods = $targetClass->getMethods();
-            for ($j = 0; $j < count($methods); $j++) {
+            $o = count($methods);
+            for ($j = 0; $j < $o; $j++) {
                 array_push($methodNameSet,$methods[$j]->getName());
             }
         } else {
             $interfaces = $targetClass->getInterfaces();
-            for ($i = 0; $i < count($interfaces); $i++) {
+            $o = count($interfaces);
+            for ($i = 0; $i < $o; $i++) {
                 $methods = $interfaces[$i]->getMethods();
-                for ($j = 0; $j < count($methods); $j++) {
+                $p = count($methods);
+                for ($j = 0; $j < $p; $j++) {
                     array_push($methodNameSet,$methods[$j]->getName());
                 }
             }

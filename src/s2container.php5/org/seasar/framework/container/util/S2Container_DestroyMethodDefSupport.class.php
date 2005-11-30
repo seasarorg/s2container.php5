@@ -71,7 +71,8 @@ final class S2Container_DestroyMethodDefSupport
     public function setContainer(S2Container $container)
     {
         $this->container_ = $container;
-        for ($i = 0; $i < $this->getDestroyMethodDefSize(); ++$i) {
+        $o = $this->getDestroyMethodDefSize();
+        for ($i = 0; $i < $o; ++$i) {
             $this->getDestroyMethodDef($i)->setContainer($container);
         }
     }

@@ -235,7 +235,8 @@ final class S2Container_BeanDescImpl implements S2Container_BeanDesc
     private function _setupPropertyDescs() 
     {
         $methods = $this->beanClass_->getMethods();
-        for ($i = 0; $i < count($methods); $i++) {
+        $o = count($methods);
+        for ($i = 0; $i < $o; $i++) {
             $mRef = $methods[$i];
             $methodName = $mRef->getName();
             if (preg_match("/^get(.+)/",$methodName,$regs)) {
@@ -353,7 +354,8 @@ final class S2Container_BeanDescImpl implements S2Container_BeanDesc
     private function _setupMethods()
     {
         $methods = $this->beanClass_->getMethods();
-        for ($i = 0; $i < count($methods); $i++) {
+        $o = count($methods);
+        for ($i = 0; $i < $o; $i++) {
             $this->methodsCache_[$methods[$i]->getName()] = $methods[$i];
         }
     }
@@ -364,7 +366,8 @@ final class S2Container_BeanDescImpl implements S2Container_BeanDesc
     private function _setupField()
     {
         $fields = $this->beanClass_->getProperties();
-        for ($i = 0; $i < count($fields); $i++) {
+        $o = count($fields);
+        for ($i = 0; $i < $o; $i++) {
             if ($fields[$i]->isStatic()) {
                 $this->fieldCache_[$fields[$i]->getName()] = $fields[$i];
             }

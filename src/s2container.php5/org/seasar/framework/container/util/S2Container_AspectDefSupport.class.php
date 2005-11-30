@@ -71,7 +71,8 @@ final class S2Container_AspectDefSupport
     public function setContainer(S2Container $container)
     {
         $this->container_ = $container;
-        for ($i = 0; $i < $this->getAspectDefSize(); ++$i) {
+        $o = $this->getAspectDefSize();
+        for ($i = 0; $i < $o; ++$i) {
             $this->getAspectDef($i)->setContainer($container);
         }
     }

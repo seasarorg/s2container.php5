@@ -68,7 +68,8 @@ final class S2Container_TooManyRegistrationRuntimeException
     private static function getClassNames($componentClasses)
     {
         $buf = "";
-        for ($i = 0; $i < count($componentClasses); ++$i) {
+        $o = count($componentClasses);
+        for ($i = 0; $i < $o; ++$i) {
             $buf .= $componentClasses[$i];
             $buf .= ", ";
         }

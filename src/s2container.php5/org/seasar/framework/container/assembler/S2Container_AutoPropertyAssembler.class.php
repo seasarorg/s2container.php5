@@ -47,8 +47,8 @@ class S2Container_AutoPropertyAssembler
         parent::assemble($component);
         $beanDesc = $this->getBeanDesc($component);
         $container = $this->getComponentDef()->getContainer();
-
-        for ($i = 0; $i < $beanDesc->getPropertyDescSize(); ++$i) {
+        $o = $beanDesc->getPropertyDescSize();
+        for ($i = 0; $i < $o; ++$i) {
             $value = null;
             $propDesc = $beanDesc->getPropertyDesc($i);
             $propName = $propDesc->getPropertyName();

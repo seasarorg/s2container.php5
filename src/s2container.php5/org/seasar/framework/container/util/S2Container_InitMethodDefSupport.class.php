@@ -71,7 +71,8 @@ final class S2Container_InitMethodDefSupport
     public function setContainer(S2Container $container)
     {
         $this->container_ = $container;
-        for ($i = 0; $i < $this->getInitMethodDefSize(); ++$i) {
+        $o = $this->getInitMethodDefSize();
+        for ($i = 0; $i < $o; ++$i) {
             $this->getInitMethodDef($i)->setContainer($container);
         }
     }

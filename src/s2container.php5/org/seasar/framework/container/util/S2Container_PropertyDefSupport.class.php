@@ -22,8 +22,6 @@
 //
 // $Id$
 /**
- * PropertyDefの設定をサポートします。
- * 
  * @package org.seasar.framework.container.util
  * @author klove
  */
@@ -85,7 +83,8 @@ final class S2Container_PropertyDefSupport
     public function setContainer(S2Container $container)
     {
         $this->container_ = $container;
-        for ($i = 0; $i < $this->getPropertyDefSize(); ++$i) {
+        $o = $this->getPropertyDefSize();
+        for ($i = 0; $i < $o; ++$i) {
             $this->getPropertyDef($i)->setContainer($container);
         }
     }

@@ -22,8 +22,6 @@
 //
 // $Id$
 /**
- * 1つのキーに複数のコンポーネントが登録された場合に使用されます。
- * 
  * @package org.seasar.framework.container.impl
  * @author klove
  */

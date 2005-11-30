@@ -81,7 +81,8 @@ abstract class S2Container_AbstractAssembler
     protected function getArgs($argTypes)
     {
         $args = array();
-        for ($i = 0; $i < count($argTypes); ++$i) {
+        $o = count($argTypes);
+        for ($i = 0; $i < $o; ++$i) {
             try {
                 if ($argTypes[$i]->getClass() != null &&
                     S2Container_AutoBindingUtil::isSuitable($argTypes[$i]->getClass())) {

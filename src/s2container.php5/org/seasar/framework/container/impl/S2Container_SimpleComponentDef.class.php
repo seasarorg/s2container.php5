@@ -22,8 +22,6 @@
 //
 // $Id$
 /**
- * コンポーネントのインスタンスを直接返す場合に使用されます。
- * 
  * @package org.seasar.framework.container.impl
  * @author klove
  */

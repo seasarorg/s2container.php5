@@ -55,7 +55,8 @@ final class S2Container_MethodUtil
         }
 
         $strArg = array();
-        for ($i = 0; $i < count($args); $i++) {
+        $o = count($args);
+        for ($i = 0; $i < $o; $i++) {
             array_push($strArg,"\$args[" . $i . "]");
         }
         $methodName = $method->getName();

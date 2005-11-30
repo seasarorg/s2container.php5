@@ -70,7 +70,8 @@ final class S2Container_AopProxy
             throw new S2Container_EmptyRuntimeException("aspects");
         }
 
-        for ($i = 0; $i < count($aspects); ++$i) {
+        $o = count($aspects);
+        for ($i = 0; $i < $o; ++$i) {
             $aspect = $aspects[$i];
             if ($aspect->getPointcut() == null) {
                 $aspect->setPointcut($this->defaultPointcut_);
@@ -79,7 +80,8 @@ final class S2Container_AopProxy
         
         $methods = $this->targetClass_->getMethods();
         $this->methodInterceptorsMap_ = array();
-        for ($i = 0; $i < count($methods); ++$i) {
+        $o = count($methods);
+        for ($i = 0; $i < $o; ++$i) {
             if (!S2Container_AopProxy::isApplicableAspect($methods[$i])) {
                 $this->log_->info($this->targetClass_->getName() . "::" .
                     $methods[$i]->getName() .
@@ -89,7 +91,8 @@ final class S2Container_AopProxy
             }
 
             $interceptorList = array();
-            for ($j = 0; $j < count($aspects); ++$j) {
+            $p = count($aspects);
+            for ($j = 0; $j < $p; ++$j) {
                 $aspect = $aspects[$j];
                 if ($aspect->getPointcut()->isApplied($methods[$i]->getName())) {
                     array_push($interceptorList,$aspect->getMethodInterceptor());

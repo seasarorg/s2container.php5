@@ -42,7 +42,8 @@ class S2Container_ManualConstructorAssembler
     public function assemble()
     {
         $args = array();
-        for ($i = 0; $i < $this->getComponentDef()->getArgDefSize(); ++$i) {
+        $o = $this->getComponentDef()->getArgDefSize();
+        for ($i = 0; $i < $o; ++$i) {
             try {
                 $args[$i] = $this->getComponentDef()->getArgDef($i)->getValue();
             } catch (S2Container_ComponentNotFoundRuntimeException $cause) {

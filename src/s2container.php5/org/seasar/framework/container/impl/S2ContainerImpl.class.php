@@ -139,7 +139,8 @@ class S2ContainerImpl implements S2Container
     private function _registerByClass(S2Container_ComponentDef $componentDef)
     {
         $classes = $this->getAssignableClasses($componentDef->getComponentClass());
-        for ($i = 0; $i < count($classes); ++$i) {
+        $o = count($classes);
+        for ($i = 0; $i < $o; ++$i) {
             $this->_registerMap($classes[$i], $componentDef);
         }
     }
@@ -234,7 +235,8 @@ class S2ContainerImpl implements S2Container
                 }
             }
         }
-        for ($i = 0; $i < $this->getChildSize(); ++$i) {
+        $o = $this->getChildSize();
+        for ($i = 0; $i < $o; ++$i) {
             $child = $this->getChild($i);
             if ($child->hasComponentDef($key)) {
                 return $child->getComponentDef($key);
@@ -325,10 +327,12 @@ class S2ContainerImpl implements S2Container
         if ($this->inited_) {
             return;
         }
-        for ($i = 0; $i < $this->getChildSize(); ++$i) {
+        $o = $this->getChildSize();
+        for ($i = 0; $i < $o; ++$i) {
             $this->getChild($i)->init();
         }
-        for ($i = 0; $i < $this->getComponentDefSize(); ++$i) {
+        $o = $this->getComponentDefSize();
+        for ($i = 0; $i < $o; ++$i) {
             $this->getComponentDef($i)->init();
         }
         $this->inited_ = true;
@@ -342,7 +346,8 @@ class S2ContainerImpl implements S2Container
         if (!$this->inited_) {
             return;
         }
-        for ($i = $this->getComponentDefSize() - 1; 0 <= $i; --$i) {
+        $o = $this->getComponentDefSize() - 1;
+        for ($i = $o; 0 <= $i; --$i) {
             try {
                 $this->getComponentDef($i)->destroy();
             } catch (Exception $e) {
@@ -350,7 +355,8 @@ class S2ContainerImpl implements S2Container
             }
 
         }
-        for ($i = $this->getChildSize() - 1; 0 <= $i; --$i) {
+        $o = $this->getChildSize() - 1;
+        for ($i = $o; 0 <= $i; --$i) {
             $this->getChild($i)->destroy();
         }
         $this->inited_ = false;
@@ -453,7 +459,8 @@ class S2ContainerImpl implements S2Container
         
         $classes = array();
         $interfaces = $ref->getInterfaces();
-        for ($i = 0; $i < count($interfaces); $i++) {
+        $o = count($interfaces);
+        for ($i = 0; $i < $o; $i++) {
             array_push($classes,$interfaces[$i]->getName());
         }
         while ($ref != null) {

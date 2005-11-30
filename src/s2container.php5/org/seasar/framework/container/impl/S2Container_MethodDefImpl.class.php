@@ -82,7 +82,8 @@ abstract class S2Container_MethodDefImpl
     public function getArgs()
     {
         $args = array();
-        for ($i = 0; $i < $this->getArgDefSize(); ++$i) {
+        $o = $this->getArgDefSize();
+        for ($i = 0; $i < $o; ++$i) {
             $args[$i] = $this->getArgDef($i)->getValue();
         }
         return $args;

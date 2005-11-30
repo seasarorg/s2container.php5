@@ -103,7 +103,8 @@ class S2Container_UuCallAopProxyFactory
         $srcLine = str_replace('S2Container_UuCallAopProxy',
         $concreteClassName,$classSrc[0]);
         $srcLine = str_replace('{',$implLine,$srcLine);
-        for ($i = 1; $i < count($classSrc) - 1; $i++) {
+        $o = count($classSrc) - 1;
+        for ($i = 1; $i < $o; $i++) {
             $srcLine .= str_replace('S2Container_UuCallAopProxy',
             $concreteClassName,$classSrc[$i]);
         }
