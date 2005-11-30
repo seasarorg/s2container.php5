@@ -450,7 +450,7 @@ class S2ContainerImpl implements S2Container
      * @param ReflectionClass
      * @param array 
      */
-    private static function &getAssignableClasses($componentClass)
+    private static function getAssignableClasses($componentClass)
     {
         if (! $componentClass instanceof ReflectionClass) {
             return array();

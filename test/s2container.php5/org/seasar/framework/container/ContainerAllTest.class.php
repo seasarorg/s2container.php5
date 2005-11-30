@@ -29,7 +29,7 @@ class ContainerAllTest {
         $group->addTestCase(new SessionComponentDeployerTests());
 
         $group->addTestCase(new XmlS2ContainerBuilderTests());
-        $group->addTestCase(new IniS2ContainerBuilderTests());
+        //$group->addTestCase(new IniS2ContainerBuilderTests());
         $group->addTestCase(new S2ContainerFactoryTests());
         $group->addTestCase(new SingletonS2ContainerFactoryTests());
 
