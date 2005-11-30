@@ -26,6 +26,9 @@
  */
 class S2ContainerClassLoader {
     static $CLASSES = array(
+        'S2Container_PDODataSource' => '/org/seasar/extension/db/pdo/S2Container_PDODataSource.class.php',
+        'S2Container_PDOTxInterceptor' => '/org/seasar/extension/db/pdo/S2Container_PDOTxInterceptor.class.php',
+        'S2Container_PDOSqlHandler' => '/org/seasar/extension/db/pdo/S2Container_PDOSqlHandler.class.php',
         'S2Container_ADOdbDataSource' => '/org/seasar/extension/db/adodb/S2Container_ADOdbDataSource.class.php',
         'S2Container_ADOdbSqlHandler' => '/org/seasar/extension/db/adodb/S2Container_ADOdbSqlHandler.class.php',
         'S2Container_ADOdbTxInterceptor' => '/org/seasar/extension/db/adodb/S2Container_ADOdbTxInterceptor.class.php',
