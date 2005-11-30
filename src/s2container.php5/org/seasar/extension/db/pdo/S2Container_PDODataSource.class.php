@@ -46,14 +46,7 @@ class S2Container_PDODataSource extends S2Container_AbstractDataSource {
 
     public function getConnection(){
         try {
-            if( !empty($this->option) ){
-                $this->dsn .= " " . $this->option;
-            }
-            if( !empty($this->user) || !empty($this->password) ){
-                $db = new PDO($this->dsn, $this->user, $this->password);
-            } else {
-                $db = new PDO($this->dsn);
-            }
+            $db = new PDO($this->dsn, $this->user, $this->password, $this->option);
         } catch(PDOException $e){
             $this->log_->error($e->getMessage(), __METHOD__);
             $this->log_->error($e->getCode(), __METHOD__);
