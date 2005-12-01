@@ -30,7 +30,7 @@ class S2Container_PDODataSource extends S2Container_AbstractDataSource {
 
     private $log_;
     protected $dsn = "";
-    protected $option = "";
+    protected $option = array();
 
     public function __construct(){
         $this->log_ = S2Container_S2Logger::getLogger(__CLASS__);
