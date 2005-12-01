@@ -1,8 +1,8 @@
 <?php
-class PearDBDeptDaoImpl implements IDeptDao {
+class PdoDeptDaoImpl implements IDeptDao {
     private $session;
     
-    function PearDBDeptDaoImpl() {
+    function PdoDeptDaoImpl() {
     }
     
     function setSession(S2Container_DBSession $session){
@@ -13,7 +13,7 @@ class PearDBDeptDaoImpl implements IDeptDao {
         $this->session->connect();
         $db = $this->session->getConnection();
         $result = $db->query("select * from dept where deptno = $no;"); 
-        $rows = $result->fetchRow();
+        $rows = $result->fetch(PDO::FETCH_BOUND);
         $this->session->disconnect();
         return $rows;
     }
@@ -22,12 +22,7 @@ class PearDBDeptDaoImpl implements IDeptDao {
         $db = $this->session->getConnection();
         $sql = 'select * from dept where dname = \'' . $name . '\';';
         $result = $db->query($sql); 
-        if(DB::isError($result)){
-        	print $result->getMessage();
-        	print $result->getDebugInfo();
-        	throw new Exception();
-        }
-        $rows = $result->fetchRow();
+        $rows = $result->fetch(PDO::FETCH_BOUND);
         return $rows;
     }
 
@@ -36,11 +31,6 @@ class PearDBDeptDaoImpl implements IDeptDao {
         $sql = 'update dept set dname = \'' . $dname . 
                '\' where deptno = \'' . $deptno . '\';';
         $result = $db->query($sql); 
-        if(DB::isError($result)){
-        	print $result->getMessage();
-        	print $result->getDebugInfo();
-        	throw new Exception();
-        }
         print "something happen.\n";
         throw new Exception();
         return null;

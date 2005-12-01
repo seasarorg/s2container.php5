@@ -45,7 +45,7 @@ class S2Container_PDOTxInterceptor extends S2Container_AbstractTxInterceptor {
             $this->session->disconnect();
             throw $e;
         }
-        $this->log_->info("auto commit false. (start transaction.)",__METHOD__);
+        $this->log_->info("start transaction.",__METHOD__);
     }
 
     function commit(){

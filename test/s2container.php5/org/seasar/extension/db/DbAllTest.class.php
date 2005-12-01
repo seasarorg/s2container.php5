@@ -13,8 +13,7 @@ class DbAllTest {
         $group = new GroupTest('');
 
         //$group->addTestCase(new MySQLConnectTests());
-        //$group->addTestCase(new PearDBTests());
-        //$group->addTestCase(new PostgresTests());
+        $group->addTestCase(new PdoTests());
 
         return $group;    	
     }

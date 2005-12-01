@@ -61,10 +61,10 @@ class S2Container_PDODataSource extends S2Container_AbstractDataSource {
     }
 
     public function __toString(){
-        $str .= 'user = ' . $this->user . ', ';
+        $str = 'user = ' . $this->user . ', ';
         $str .= 'password = ' . $this->password . ', ';
         $str .= 'dsn = ' . $this->dsn . ', ';
-        $str .= 'option = ' . $this->option;
+        $str .= 'option = ' . implode(',',$this->option);
         return $str;
     }
 

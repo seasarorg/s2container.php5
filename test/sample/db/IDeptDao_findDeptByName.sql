@@ -1,1 +1,0 @@
-select * from dept where dname = '{$name}';
