@@ -1,7 +1,6 @@
 <?php
 require_once(dirname(__FILE__) . '/example.inc.php');
 $PATH = EXAMPLE_DIR . "/dicon/include/root.dicon";
-$PATH = EXAMPLE_DIR . "/dicon/include/root.ini";
 		
 $container = S2ContainerFactory::create($PATH);
 $hello = $container->getComponent('root');

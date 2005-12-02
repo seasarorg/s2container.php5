@@ -1,7 +1,6 @@
 <?php
 require_once(dirname(dirname(__FILE__)) . '/example.inc.php');
 $PATH = EXAMPLE_DIR . "/dicon/expression/ComponentExp.dicon";
-$PATH = EXAMPLE_DIR . "/dicon/expression/ComponentExp.ini";
 		
 $container = S2ContainerFactory::create($PATH);
 $hello = $container->getComponent('hello');
