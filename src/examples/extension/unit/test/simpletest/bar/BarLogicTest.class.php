@@ -10,7 +10,7 @@ class BarLogicTest extends S2Container_S2SimpleTestCase {
     function setUp(){
         print "\nTEST : ".get_class($this)."::".$this->getName()."\n";
         print "------------------------------------\n";   
-        $this->includeDicon(UNIT_EXAMPLE . "/src/bar/bar.ini");
+        $this->includeDicon(UNIT_EXAMPLE . "/src/bar/bar.dicon");
     }
     
     function tearDown(){
