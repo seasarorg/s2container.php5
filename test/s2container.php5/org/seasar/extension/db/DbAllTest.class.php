@@ -12,7 +12,6 @@ class DbAllTest {
     public static function group() {
         $group = new GroupTest('');
 
-        //$group->addTestCase(new MySQLConnectTests());
         $group->addTestCase(new PdoTests());
 
         return $group;    	

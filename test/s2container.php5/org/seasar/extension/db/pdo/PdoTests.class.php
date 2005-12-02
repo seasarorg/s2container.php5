@@ -24,52 +24,5 @@ class PdoTests extends UnitTestCase {
         $db = null;
         print "\n";
     }
-
-    function testComponent() {
-       
-        print __METHOD__ . "\n";
-
-        $container = S2ContainerFactory::create(TEST_DIR . '/s2container.php5/org/seasar/extension/db/pdo/testPdo.dicon');
-        $dao = $container->getComponent('deptDao');
-        $this->assertNotNull($dao);
-        
-        $rows = $dao->findDeptByDeptno(10);
-        $this->assertEqual($rows,array('10','ACCOUNTING','NEW YORK','0'));
-
-        print "\n";
-    }
-
-    function testTxAspect() {
-       
-        print __METHOD__ . "\n";
-
-        $container = S2ContainerFactory::create(TEST_DIR . '/s2container.php5/org/seasar/extension/db/pdo/testTx.dicon');
-
-        $dao = $container->getComponent('deptDao');
-        $this->assertNotNull($dao);
-        $rows = $dao->findDeptByName('ACCOUNTING');
-        $this->assertEqual($rows,array('10','ACCOUNTING','NEW YORK','0'));
-
-        print "\n";
-    }
-
-    function testTxAspectUpdate() {
-       
-        print __METHOD__ . "\n";
-
-        $container = S2ContainerFactory::create(TEST_DIR . '/s2container.php5/org/seasar/extension/db/pdo/testTx.dicon');
-
-        $dao = $container->getComponent('deptDao');
-        $this->assertNotNull($dao);
-        try{
-            $ret = $dao->updateDnameByDeptno('40','SALES');
-            $this->assertEqual($ret,null);
-        }catch(Exception $e){
-            print "Exception catched.\n";
-        }
-
-        print "\n";
-    }
-
 }
 ?>
