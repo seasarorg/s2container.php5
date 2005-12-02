@@ -8,7 +8,4 @@
         <property name="password">"test"</property>
         <property name="option">array('foo'=>'bar')</property>
     </component>
-    <component class="S2Container_PDOSqlHandler" />
-    <component name="dbtx" class="S2Container_PDOTxInterceptor" />
-    <component name="session" class="S2Container_DBSessionImpl"/>
 </components>

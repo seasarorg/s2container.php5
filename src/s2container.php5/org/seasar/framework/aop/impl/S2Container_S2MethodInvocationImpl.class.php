@@ -125,10 +125,10 @@ class S2Container_S2MethodInvocationImpl
         if ($this->interceptorIndex < count($this->interceptors)) {
             return $this->interceptors[$this->interceptorIndex++]->invoke($this);
         } else {
-            $method = $this->method->getName();
             if (!is_object($this->target)) {
                 throw new S2Container_S2RuntimeException('ESSR1009',
-                              array($method,$this->targetClass->getName()));
+                              array($this->method->getName(),
+                                    $this->targetClass->getName()));
             }
             return S2Container_MethodUtil::invoke($this->method,
                                     $this->target,$this->methodArgs);
