@@ -11,7 +11,7 @@ class FooLogicTest extends S2Container_S2PHPUnit2TestCase {
         print "\nTEST : ".get_class($this)."::".$this->getName()."\n";
         print "------------------------------------\n";   
 
-        $this->includeDicon(UNIT_EXAMPLE . "/src/foo/foo.ini");
+        $this->includeDicon(UNIT_EXAMPLE . "/src/foo/foo.dicon");
     }
 
     function tearDown(){

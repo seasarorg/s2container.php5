@@ -22,19 +22,31 @@
 //
 // $Id$
 /**
- * PropertyDef‚ÌÝ’è‚ª‰Â”\‚É‚È‚è‚Ü‚·B
- * 
  * @package org.seasar.framework.container
  * @author klove
  */
-interface S2Container_PropertyDefAware {
-    
+interface S2Container_PropertyDefAware
+{
+    /**
+     * @param S2Container_PropertyDef
+     */    
     public function addPropertyDef(S2Container_PropertyDef $propertyDef);
     
+    /**
+     * @return int
+     */
     public function getPropertyDefSize();
     
+    /**
+     * @param int
+     * @return S2Container_PropertyDef
+     */
     public function getPropertyDef($index);
     
+    /**
+     * @param string
+     * @return boolean
+     */
     public function hasPropertyDef($propertyName);
 }
 ?>

@@ -25,39 +25,48 @@
  * @package org.seasar.framework.container.deployer
  * @author klove
  */
-class S2Container_PrototypeComponentDeployer extends S2Container_AbstractComponentDeployer {
-
+class S2Container_PrototypeComponentDeployer
+    extends S2Container_AbstractComponentDeployer
+{
     /**
      * @param S2Container_ComponentDef
      */
-    public function S2Container_PrototypeComponentDeployer(S2Container_ComponentDef $componentDef) {
+    public function __construct(S2Container_ComponentDef $componentDef)
+    {
         parent::__construct($componentDef);
     }
 
     /**
      * @see S2Container_ComponentDeployer::deploy()
      */
-    public function deploy() {
+    public function deploy()
+    {
         $component = $this->getConstructorAssembler()->assemble();
         $this->getPropertyAssembler()->assemble($component);
         $this->getInitMethodAssembler()->assemble($component);
         return $component;
     }
     
-    public function injectDependency($component) {
+    /**
+     * 
+     */
+    public function injectDependency($component)
+    {
         throw new S2Container_UnsupportedOperationException("injectDependency");
     }
     
     /**
      * @see S2Container_ComponentDeployer::init()
      */
-    public function init() {
+    public function init()
+    {
     }
     
     /**
      * @see S2Container_ComponentDeployer::destroy()
      */
-    public function destroy() {
+    public function destroy()
+    {
     }
 }
 ?>

@@ -25,7 +25,8 @@
  * @package org.seasar.framework.container.assembler
  * @author klove
  */
-interface S2Container_PropertyAssembler {
+interface S2Container_PropertyAssembler
+{
 
     /**
      * @param object

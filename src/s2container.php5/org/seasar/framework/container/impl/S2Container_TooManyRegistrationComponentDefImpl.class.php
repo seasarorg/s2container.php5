@@ -22,47 +22,65 @@
 //
 // $Id$
 /**
- * 1つのキーに複数のコンポーネントが登録された場合に使用されます。
- * 
  * @package org.seasar.framework.container.impl
  * @author klove
  */
-class S2Container_TooManyRegistrationComponentDefImpl extends S2Container_SimpleComponentDef
-                          implements S2Container_TooManyRegistrationComponentDef{
-
+class S2Container_TooManyRegistrationComponentDefImpl 
+    extends S2Container_SimpleComponentDef
+    implements S2Container_TooManyRegistrationComponentDef
+{
     private $key_;
     private $componentDefs_ = array();
 
-    public function S2Container_TooManyRegistrationComponentDefImpl($key) {
+    /**
+     * @param string key
+     */
+    public function __construct($key)
+    {
         $this->key_ = $key;
     }
 
-    public function addComponentDef($componentDef) {
+    /**
+     * @param S2Container_ComponentDef
+     */
+    public function addComponentDef($componentDef)
+    {
         array_push($this->componentDefs_,$componentDef);
     }
 
-    public function getComponentDefSize() {
+    /**
+     * @return int
+     */
+    public function getComponentDefSize()
+    {
         return count($this->componentDefs_);
     }
     
     /**
      * @see S2Container_ComponentDef::getComponent()
      */
-    public function getComponent() {
-
-        throw new S2Container_TooManyRegistrationRuntimeException(
-            $this->key_,
+    public function getComponent()
+    {
+        throw new S2Container_TooManyRegistrationRuntimeException($this->key_,
             $this->getComponentClasses());
     }
 
-    public function getComponentDefs() {
+    /**
+     * @return array 
+     */
+    public function getComponentDefs()
+    {
         return $this->componentDefs_;
     }
 
-    public function getComponentClasses() {
+    /**
+     * @return array
+     */
+    public function getComponentClasses()
+    {
         $classes = array();
         $size = $this->getComponentDefSize();
-        foreach($this->componentDefs_ as $componentDef) {
+        foreach ($this->componentDefs_ as $componentDef) {
             array_push($classes,$componentDef->getComponentClass());
         }
         return $classes;

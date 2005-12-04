@@ -25,36 +25,43 @@
  * package org.seasar.framework.exception
  * @author klove
  */
- class S2Container_NoSuchMethodRuntimeException extends S2Container_S2RuntimeException {
-
-	private $targetClass_;
-	private $methodName_;
+class S2Container_NoSuchMethodRuntimeException
+    extends S2Container_S2RuntimeException
+{
+    private $targetClass_;
+    private $methodName_;
 
     /**
      * @param ReflectionClass
      * @param string
      * @param Exception
      */
-	public function S2Container_NoSuchMethodRuntimeException(
-		$targetClass = null,
-		$methodName,
-		$cause = null) {
+    public function __construct($targetClass,
+                                $methodName,
+                                $cause = null)
+    {
+        parent::__construct("ESSR0057",
+            array($targetClass != null ? $targetClass->getName() : "null",
+                  $methodName),
+                  $cause);
+        $this->targetClass_ = $targetClass;
+        $this->methodName_ = $methodName;
+    }
 
-		parent::__construct(
-			"ESSR0057",
-			array($targetClass != null ? $targetClass->getName() : "null",
-			       $methodName),
-			$cause);
-		$this->targetClass_ = $targetClass;
-		$this->methodName_ = $methodName;
-	}
-	
-	public function getTargetClass() {
-		return $this->targetClass_;
-	}
-	
-	public function getMethodName() {
-		return $this->methodName_;
-	}
+    /**
+     * @return ReflectionClass
+     */
+    public function getTargetClass()
+    {
+        return $this->targetClass_;
+    }
+
+    /**
+     * @return string method name
+     */
+    public function getMethodName()
+    {
+        return $this->methodName_;
+    }
 }
 ?>

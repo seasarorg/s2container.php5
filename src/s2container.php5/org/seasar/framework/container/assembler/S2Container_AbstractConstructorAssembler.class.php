@@ -25,19 +25,29 @@
  * @package org.seasar.framework.container.assembler
  * @author klove
  */
-abstract class S2Container_AbstractConstructorAssembler extends S2Container_AbstractAssembler
-        implements S2Container_ConstructorAssembler {
-
-    public function S2Container_AbstractConstructorAssembler(S2Container_ComponentDef $componentDef) {
+abstract class S2Container_AbstractConstructorAssembler
+    extends S2Container_AbstractAssembler
+    implements S2Container_ConstructorAssembler
+{
+    /**
+     * @param S2Container_ComponentDef
+     */
+    public function __construct(S2Container_ComponentDef $componentDef)
+    {
         parent::__construct($componentDef);
     }
 
-    protected function assembleDefault() {
+    /**
+     * 
+     */
+    protected function assembleDefault()
+    {
         $clazz = $this->getComponentDef()->getConcreteClass();
         
-        if($this->getComponentDef() != null and 
-           $this->getComponentDef()->getAspectDefSize()>0){
-            return S2Container_AopProxyUtil::getProxyObject($this->getComponentDef(),$args); 
+        if ($this->getComponentDef() != null and 
+            $this->getComponentDef()->getAspectDefSize() > 0) {
+            return S2Container_AopProxyUtil::getProxyObject($this->
+                                               getComponentDef(),$args); 
         }        
         return S2Container_ConstructorUtil::newInstance($clazz, null);
     }

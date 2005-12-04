@@ -10,7 +10,7 @@ class DeptDaoImpl implements DeptDao {
     function findDeptByDeptno($deptno){
         $db = $this->dataSource->getConnection();
         $result = $db->query("select * from dept where deptno = '{$deptno}';"); 
-        $row = $result->fetchRow();
+        $row = $result->fetch();
         //$db->disconnect();
         $this->dataSource->disconnect($db);
         return $row;

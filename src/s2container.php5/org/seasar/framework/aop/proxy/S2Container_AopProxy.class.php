@@ -22,42 +22,56 @@
 //
 // $Id$
 /**
- * Aspect‚ð“K—p‚µ‚½Proxy‚ðì¬‚µ‚Ü‚·B
- * 
  * @package org.seasar.framework.aop.proxy
  * @author klove
  */
-final class S2Container_AopProxy {
-	private $log_;
+final class S2Container_AopProxy
+{
+    private $log_;
     private $targetClass_;
     private $enhancedClass_;
     private $defaultPointcut_;
     private $parameters_;
     private $methodInterceptorsMap_;
 
-    public function S2Container_AopProxy($targetClass,$aspects,$parameters=null) {
-		$this->log_ = S2Container_S2Logger::getLogger(get_class($this));
+    /**
+     * @param ReflectionClass
+     * @param array Aspect array
+     * @param array 
+     */
+    public function __construct($targetClass,$aspects,$parameters = null)
+    {
+        $this->log_ = S2Container_S2Logger::getLogger(get_class($this));
 
         $this->parameters_ = $parameters;
-        if($targetClass instanceof ReflectionClass){ 
-            $this->setTargetClass($targetClass);
-        }else{
-            $this->setTargetClass(new ReflectionClass($targetClass));
+        if ($targetClass instanceof ReflectionClass) { 
+            $this->_setTargetClass($targetClass);
+        } else {
+            $this->_setTargetClass(new ReflectionClass($targetClass));
         }
-        $this->setAspects($aspects);
+        $this->_setAspects($aspects);
     }
 
-    private function setTargetClass($targetClass) {
+    /**
+     * @param ReflectionClass 
+     */
+    private function _setTargetClass($targetClass)
+    {
         $this->targetClass_ = $targetClass;
         $this->defaultPointcut_ = new S2Container_PointcutImpl($targetClass);
     }
 
-    private function setAspects($aspects) {
+    /**
+     * @param array Aspect array
+     */
+    private function _setAspects($aspects)
+    {
         if ($aspects == null || count($aspects) == 0) {
             throw new S2Container_EmptyRuntimeException("aspects");
         }
 
-        for ($i = 0; $i < count($aspects); ++$i) {
+        $o = count($aspects);
+        for ($i = 0; $i < $o; ++$i) {
             $aspect = $aspects[$i];
             if ($aspect->getPointcut() == null) {
                 $aspect->setPointcut($this->defaultPointcut_);
@@ -66,43 +80,57 @@ final class S2Container_AopProxy {
         
         $methods = $this->targetClass_->getMethods();
         $this->methodInterceptorsMap_ = array();
-        for ($i = 0;$i < count($methods); ++$i) {
-        	if(!S2Container_AopProxy::isApplicableAspect($methods[$i])){
-        		$this->log_->info($this->targetClass_->getName()."::".
-        		                   $methods[$i]->getName() ."() is a constructor or a static method. ignored.",__METHOD__);
-                continue;        		                  
-        	}
-        	
+        $o = count($methods);
+        for ($i = 0; $i < $o; ++$i) {
+            if (!S2Container_AopProxy::isApplicableAspect($methods[$i])) {
+                $this->log_->info($this->targetClass_->getName() . "::" .
+                    $methods[$i]->getName() .
+                    "() is a constructor or a static method. ignored.",
+                    __METHOD__);
+                continue;
+            }
+
             $interceptorList = array();
-            for ($j = 0; $j < count($aspects); ++$j) {
+            $p = count($aspects);
+            for ($j = 0; $j < $p; ++$j) {
                 $aspect = $aspects[$j];
                 if ($aspect->getPointcut()->isApplied($methods[$i]->getName())) {
                     array_push($interceptorList,$aspect->getMethodInterceptor());
-                }else{
+                } else {
                     $this->log_->info("no pointcut defined for " . 
                         $this->targetClass_->getName() . "::" .
                         $methods[$i]->getName() . "()",__METHOD__);
                 }
             }
             
-            if(count($interceptorList) > 0){
+            if (count($interceptorList) > 0) {
                 $this->methodInterceptorsMap_[$methods[$i]->getName()] = $interceptorList;
             }
         }
     }
 
-    public function getEnhancedClass() {
+    /**
+     * @param object
+     */
+    public function getEnhancedClass()
+    {
         return $this->enhancedClass_;
     }
 
-    public function create($argTypes=null,$args=null) {
-
-        if($this->targetClass_->isFinal()){
-        	throw new S2Container_S2RuntimeException('ESSR0017',
-        	                               array("cannot aspect. target class [{$this->targetClass_->getName()}] is final class. "));
+    /**
+     * @param array
+     * @param array
+     */
+    public function create($argTypes = null,$args = null)
+    {
+        if ($this->targetClass_->isFinal()) {
+            throw new S2Container_S2RuntimeException('ESSR0017',
+            array("cannot aspect. target class [" . 
+                   $this->targetClass_->getName() . 
+                  "] is final class. "));
         }
-        $this->enhancedClass_ = S2Container_UuCallAopProxyFactory::create(
-                                    $this->targetClass_,
+        $this->enhancedClass_ = 
+            S2Container_UuCallAopProxyFactory::create($this->targetClass_,
                                     $this->methodInterceptorsMap_,
                                     $args,
                                     $this->parameters_);
@@ -110,10 +138,14 @@ final class S2Container_AopProxy {
 
     }
 
-    public static function isApplicableAspect(ReflectionMethod $method) {
-    	return $method->isPublic() and
-    	       !$method->isStatic() and
-    	       !$method->isConstructor();
+    /**
+     * @param ReflectionMethod
+     */
+    public static function isApplicableAspect(ReflectionMethod $method)
+    {
+        return $method->isPublic() and
+               !$method->isStatic() and
+               !$method->isConstructor();
     }
 }
 ?>

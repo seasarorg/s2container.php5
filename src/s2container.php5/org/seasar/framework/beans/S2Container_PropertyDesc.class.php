@@ -25,28 +25,61 @@
  * @package org.seasar.framework.beans
  * @author klove
  */
-interface S2Container_PropertyDesc {
-
+interface S2Container_PropertyDesc
+{
+    /**
+     * @return string
+     */
     public function getPropertyName();
 
+    /**
+     * 
+     */
     public function getPropertyType();
 
+    /**
+     * 
+     */
     public function getReadMethod();
 
+    /**
+     * 
+     */
     public function setReadMethod($readMethod);
     
+    /**
+     * @return boolean
+     */
     public function hasReadMethod();
 
+    /**
+     * 
+     */
     public function getWriteMethod();
 
+    /**
+     * 
+     */
     public function setWriteMethod($writeMethod);
     
+    /**
+     * @return boolean
+     */
     public function hasWriteMethod();
 
+    /**
+     * 
+     */
     public function getValue($target);
 
+    /**
+     * 
+     */
     public function setValue($target,$value);
     
+    /**
+     * 
+     */
     public function convertIfNeed($value);
 }
 ?>

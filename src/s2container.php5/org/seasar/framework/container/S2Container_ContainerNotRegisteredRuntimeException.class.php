@@ -25,16 +25,25 @@
  * @package org.seasar.framework.container
  * @author klove
  */
-class S2Container_ContainerNotRegisteredRuntimeException extends S2Container_S2RuntimeException {
-
+class S2Container_ContainerNotRegisteredRuntimeException
+    extends S2Container_S2RuntimeException
+{
     private $path_;
     
-    public function S2Container_ContainerNotRegisteredRuntimeException($path) {
+    /**
+     * @param string
+     */
+    public function __construct($path)
+    {
         parent::__construct("ESSR0075", array($path));
         $this->path_ = $path;
     }
     
-    public function getPath() {
+    /**
+     * @return string
+     */
+    public function getPath()
+    {
         return $this->path_;
     }
 }

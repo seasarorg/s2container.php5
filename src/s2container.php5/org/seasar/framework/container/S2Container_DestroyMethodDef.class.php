@@ -22,11 +22,11 @@
 //
 // $Id$
 /**
- * 終了メソッドを定義します。
- * 
  * @package org.seasar.framework.container
  * @author klove
  */
-interface S2Container_DestroyMethodDef extends S2Container_MethodDef {
+interface S2Container_DestroyMethodDef
+    extends S2Container_MethodDef
+{
 }
 ?>

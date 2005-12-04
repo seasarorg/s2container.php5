@@ -25,12 +25,14 @@
  * @package org.seasar.framework.aop.interceptors
  * @author klove
  */
-class S2Container_TraceInterceptor extends S2Container_AbstractInterceptor {
-
+class S2Container_TraceInterceptor 
+    extends S2Container_AbstractInterceptor
+{
     /**
      * @see S2Container_MethodInterceptor::invoke()
      */
-    public function invoke(S2Container_MethodInvocation $invocation){
+    public function invoke(S2Container_MethodInvocation $invocation)
+    {
         $buf = "";
         $buf .= $this->getTargetClass($invocation)->getName();
         $buf .= "#";
@@ -43,7 +45,7 @@ class S2Container_TraceInterceptor extends S2Container_AbstractInterceptor {
         $buf .= ")";
         $ret = null;
         $cause = null;
-        print "BEGIN " . $buf ."\n";
+        print "BEGIN " . $buf . "\n";
         try {
             $ret = $invocation->proceed();
             $buf .= " : ";
@@ -53,7 +55,7 @@ class S2Container_TraceInterceptor extends S2Container_AbstractInterceptor {
             $buf .= $t->getMessage();
             $cause = $t;
         }
-        print "END   " . $buf ."\n";
+        print "END   " . $buf . "\n";
         if ($cause == null) {
             return $ret;
         } else {

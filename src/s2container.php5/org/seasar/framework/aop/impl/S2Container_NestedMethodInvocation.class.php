@@ -25,51 +25,80 @@
  * @package org.seasar.framework.aop.impl
  * @author klove
  */
-class S2Container_NestedMethodInvocation implements S2Container_S2MethodInvocation {
+class S2Container_NestedMethodInvocation 
+                                  implements S2Container_S2MethodInvocation
+{
     private $parent;
     private $interceptors;
     private $interceptorsIndex = 0;
 
-    public function S2Container_NestedMethodInvocation(S2Container_S2MethodInvocation $parent,
-            $interceptors) {
+    /**
+     */
+    public function __construct(S2Container_S2MethodInvocation $parent,
+                                                               $interceptors)
+    {
         $this->parent = $parent;
         $this->interceptors = $interceptors;
     }
 
-    public function proceed() {
+    /**
+     */
+    public function proceed()
+    {
         if ($this->interceptorsIndex < count($this->interceptors)) {
-            return $this->invokeInterceptor(
-                $this->interceptors[$this->interceptorsIndex++]);
+            return $this->_invokeInterceptor($this->interceptors[
+                                             $this->interceptorsIndex++]);
         }
         return $this->parent->proceed();
     }
 
-    public function getThis() {
+    /**
+     */
+    public function getThis()
+    {
         return $this->parent->getThis();
     }
 
-    public function getArguments() {
+    /**
+     */
+    public function getArguments()
+    {
         return $this->parent->getArguments();
     }
 
-    public function getMethod() {
+    /**
+     */
+    public function getMethod()
+    {
         return $this->parent->getMethod();
     }
 
-    public function getStaticPart() {
+    /**
+     */
+    public function getStaticPart()
+    {
         return $this->parent->getStaticPart();
     }
 
-    public function getTargetClass() {
+    /**
+     */
+    public function getTargetClass()
+    {
         return $this->parent->getTargetClass();
     }
 
-    public function getParameter($name) {
+    /**
+     */
+    public function getParameter($name)
+    {
         return $this->parent->getParameter($name);
     }
     
-    private function invokeInterceptor(S2Container_MethodInterceptor $interceptor){
-    	return $interceptor->invoke($this);
+    /**
+     */
+    private function _invokeInterceptor(S2Container_MethodInterceptor $interceptor)
+    {
+        return $interceptor->invoke($this);
     }
 }
 ?>

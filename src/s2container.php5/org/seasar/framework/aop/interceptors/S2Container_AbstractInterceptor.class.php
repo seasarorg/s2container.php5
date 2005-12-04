@@ -25,26 +25,35 @@
  * @package org.seasar.framework.aop.interceptors
  * @author klove
  */
-abstract class S2Container_AbstractInterceptor implements S2Container_MethodInterceptor {
+abstract class S2Container_AbstractInterceptor 
+    implements S2Container_MethodInterceptor
+{
 
-    public function createProxy($targetClass) {
-
-        $aspect = new S2Container_AspectImpl($this, new S2Container_PointcutImpl(array(".*")));
-        $proxy = S2Container_AopProxyFactory::create(
-                   null,
-                   $targetClass,
-                   array($aspect),
-                   array());
-
+    /**
+     * 
+     */
+    public function createProxy($targetClass)
+    {
+        $aspect = new S2Container_AspectImpl($this, 
+                              new S2Container_PointcutImpl(array(".*")));
+        $proxy = S2Container_AopProxyFactory::create(null,
+                                                     $targetClass,
+                                                     array($aspect),
+                                                     array());
         return $proxy;
 /*    	
-        $aspect = new S2Container_AspectImpl($this, new S2Container_PointcutImpl(array(".*")));
+        $aspect = new S2Container_AspectImpl($this,
+                      new S2Container_PointcutImpl(array(".*")));
         $proxy = new S2Container_AopProxy($targetClass, array($aspect));
         return $proxy->create();
 */
     }
 
-    protected function getTargetClass(S2Container_MethodInvocation $invocation) {
+    /**
+     * 
+     */
+    protected function getTargetClass(S2Container_MethodInvocation $invocation)
+    {
         if ($invocation instanceof S2Container_S2MethodInvocation) {
             return $invocation->getTargetClass();
         }
@@ -58,9 +67,14 @@ abstract class S2Container_AbstractInterceptor implements S2Container_MethodInte
         }
     }
 
-    protected function getComponentDef(S2Container_MethodInvocation $invocation) {
+    /**
+     * 
+     */
+    protected function getComponentDef(S2Container_MethodInvocation $invocation)
+    {
         if ($invocation instanceof S2Container_S2MethodInvocation) {
-            return $invocation->getParameter(S2Container_ContainerConstants::COMPONENT_DEF_NAME);
+            return $invocation->
+                getParameter(S2Container_ContainerConstants::COMPONENT_DEF_NAME);
         }
         return null;
     }

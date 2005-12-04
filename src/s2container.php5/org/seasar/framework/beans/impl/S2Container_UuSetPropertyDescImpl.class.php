@@ -25,18 +25,18 @@
  * @package org.seasar.framework.beans.impl
  * @author klove
  */
-final class S2Container_UuSetPropertyDescImpl extends S2Container_PropertyDescImpl {
-
+final class S2Container_UuSetPropertyDescImpl 
+    extends S2Container_PropertyDescImpl
+{
     private $setterPropertyName_;
     
-    public function S2Container_UuSetPropertyDescImpl(
-                          $propertyName,
+    public function __construct($propertyName,
                           $propertyType,
                           $readMethod,
                           $writeMethod,
-                          S2Container_BeanDesc $beanDesc) {
-        parent::__construct(
-                          $propertyName,
+                          S2Container_BeanDesc $beanDesc)
+    {
+        parent::__construct($propertyName,
                           $propertyType,
                           $readMethod,
                           $writeMethod,
@@ -44,20 +44,33 @@ final class S2Container_UuSetPropertyDescImpl extends S2Container_PropertyDescIm
                     
     }
     
-    public final function getSetterPropertyName() {
+    /**
+     * 
+     */
+    public final function getSetterPropertyName()
+    {
         return $this->setterPropertyName_;
     }
     
-    public final function setSetterPropertyName($name) {
+    /**
+     * @param string property name
+     */
+    public final function setSetterPropertyName($name)
+    {
         $this->setterPropertyName_ = $name;
     }
     
-    public function setValue($target,$value) {
+    /**
+     * 
+     */
+    public function setValue($target,$value)
+    {
         try {
-            S2Container_MethodUtil::invoke($this->writeMethod_,$target, array($this->setterPropertyName_,$value));
+            S2Container_MethodUtil::invoke($this->writeMethod_,$target,
+                                      array($this->setterPropertyName_,$value));
         } catch (Exception $t) {
-            throw new S2Container_IllegalPropertyRuntimeException(
-                    $this->beanDesc_->getBeanClass(), $this->propertyName_, $t);
+            throw new S2Container_IllegalPropertyRuntimeException($this->
+                     beanDesc_->getBeanClass(), $this->propertyName_, $t);
         }
     }    
 }

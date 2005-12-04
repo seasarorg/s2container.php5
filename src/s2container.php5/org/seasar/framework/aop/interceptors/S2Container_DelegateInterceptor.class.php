@@ -25,46 +25,67 @@
  * @package org.seasar.framework.aop.interceptors
  * @author klove
  */
-class S2Container_DelegateInterceptor extends S2Container_AbstractInterceptor {
+class S2Container_DelegateInterceptor 
+    extends S2Container_AbstractInterceptor
+{
 
     private $target_;
     private $beanDesc_;
     private $methodNameMap_ = array();
 
-    public function S2Container_DelegateInterceptor($target=null) {
-        if($target != null){
+    /**
+     * 
+     */
+    public function __construct($target = null)
+    {
+        if ($target != null) {
             $this->setTarget($target);
         }
     }
-    
-    public function getTarget() {
+
+    /**
+     * 
+     */
+    public function getTarget()
+    {
         return $this->target_;
     }
 
-    public function setTarget($target) {
+    /**
+     * 
+     */
+    public function setTarget($target)
+    {
         $this->target_ = $target;
-        $this->beanDesc_ = S2Container_BeanDescFactory::getBeanDesc(new ReflectionClass($target));
+        $this->beanDesc_ = 
+            S2Container_BeanDescFactory::getBeanDesc(new ReflectionClass($target));
     }
     
-    public function addMethodNameMap($methodName,$targetMethodName) {
+    /**
+     * 
+     */
+    public function addMethodNameMap($methodName,$targetMethodName)
+    {
         $this->methodNameMap_[$methodName] = $targetMethodName;
     }
 
     /**
      * @see S2Container_MethodInterceptor::invoke()
      */
-    public function invoke(S2Container_MethodInvocation $invocation) {
+    public function invoke(S2Container_MethodInvocation $invocation)
+    {
         if ($this->target_ == null) {
             throw new S2Container_EmptyRuntimeException("target");
         }
         $method = $invocation->getMethod();
         $methodName = $method->getName();
-        if (array_key_exists($methodName,$this->methodNameMap_)){
+        if (array_key_exists($methodName,$this->methodNameMap_)) {
             $methodName = $this->methodNameMap_[$methodName];
         }
         if ($this->beanDesc_->hasMethod($methodName)) {
-            return $this->beanDesc_->invoke($this->target_, $methodName, $invocation->getArguments());
-        }else{
+            return $this->beanDesc_->invoke($this->target_,
+                               $methodName, $invocation->getArguments());
+        } else {
             return $invocation->proceed();
         }
     }

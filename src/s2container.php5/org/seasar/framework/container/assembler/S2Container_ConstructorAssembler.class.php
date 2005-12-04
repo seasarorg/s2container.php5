@@ -26,7 +26,6 @@
  * @author klove
  */
 interface S2Container_ConstructorAssembler {
-
     public function assemble();
 }
 ?>

@@ -22,21 +22,27 @@
 //
 // $Id$
 /**
- * PropertyDefの設定をサポートします。
- * 
  * @package org.seasar.framework.container.util
  * @author klove
  */
-final class S2Container_PropertyDefSupport {
-
+final class S2Container_PropertyDefSupport
+{
     private $propertyDefs_ = array();
     private $propertyDefList_ = array();
     private $container_;
 
-    public function S2Container_PropertyDefSupport() {
+    /**
+     * 
+     */
+    public function __construct()
+    {
     }
 
-    public function addPropertyDef(S2Container_PropertyDef $propertyDef) {
+    /**
+     * @param S2Container_PropertyDef
+     */
+    public function addPropertyDef(S2Container_PropertyDef $propertyDef)
+    {
         if ($this->container_ != null) {
             $propertyDef->setContainer($this->container_);
         }
@@ -44,24 +50,41 @@ final class S2Container_PropertyDefSupport {
         array_push($this->propertyDefList_,$propertyDef->getPropertyName());
     }
 
-    public function getPropertyDefSize() {
+    /**
+     * @return int
+     */
+    public function getPropertyDefSize()
+    {
         return count($this->propertyDefs_);
     }
 
-    public function getPropertyDef($propertyName) {
-        if(is_int($propertyName)){
+    /**
+     * @param string property name
+     */
+    public function getPropertyDef($propertyName)
+    {
+        if (is_int($propertyName)) {
             return $this->propertyDefs_[$this->propertyDefList_[$propertyName]];
         }
         return $this->propertyDefs_[$propertyName];
     }
     
-    public function hasPropertyDef($propertyName) {
+    /**
+     * @return boolean
+     */
+    public function hasPropertyDef($propertyName)
+    {
         return array_key_exists($propertyName,$this->propertyDefs_);
     }
 
-    public function setContainer(S2Container $container) {
+    /**
+     * @param S2Container
+     */
+    public function setContainer(S2Container $container)
+    {
         $this->container_ = $container;
-        for ($i = 0; $i < $this->getPropertyDefSize(); ++$i) {
+        $o = $this->getPropertyDefSize();
+        for ($i = 0; $i < $o; ++$i) {
             $this->getPropertyDef($i)->setContainer($container);
         }
     }

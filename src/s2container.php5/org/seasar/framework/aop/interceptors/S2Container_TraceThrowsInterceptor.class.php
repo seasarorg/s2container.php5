@@ -25,11 +25,18 @@
  * @package org.seasar.framework.aop.interceptors
  * @author klove
  */
-class S2Container_TraceThrowsInterceptor extends S2Container_ThrowsInterceptor {
-
-    public function handleThrowable(Exception $t, S2Container_MethodInvocation $invocation) {
+class S2Container_TraceThrowsInterceptor 
+   extends S2Container_ThrowsInterceptor
+{
+    /**
+     * @param Exception 
+     * @param S2Container_MethodInvocation
+     * @throws Exception
+     */
+    public function handleThrowable(Exception $t, 
+               S2Container_MethodInvocation $invocation)
+    {
         throw $t;
     }
-
 }
 ?>

@@ -25,33 +25,51 @@
  * @package org.seasar.framework.container
  * @author klove
  */
-final class S2Container_TooManyRegistrationRuntimeException extends S2Container_S2RuntimeException {
-
+final class S2Container_TooManyRegistrationRuntimeException
+    extends S2Container_S2RuntimeException
+{
     private $key_;
     private $componentClasses_;
 
-    public function S2Container_TooManyRegistrationRuntimeException(
-        $key,$componentClasses) {
-
+    /**
+     * @param string key
+     * @param array
+     */
+    public function __construct($key,$componentClasses)
+    {
         $args = array($key);
-        foreach($componentClasses as $clazz){
+        foreach ($componentClasses as $clazz) {
             array_push($args,$clazz->getName());
         }
         parent::__construct("ESSR0045",$args);
         $this->componentClasses_ = $componentClasses;
     }
     
-    public function getKey() {
+    /**
+     * @return string
+     */
+    public function getKey()
+    {
         return $this->key_;
     }
     
-    public function getComponentClasses() {
+    /**
+     * @return array
+     */
+    public function getComponentClasses()
+    {
         return $this->componentClasses_;
     }
 
-    private static function getClassNames($componentClasses) {
+    /**
+     * @param array
+     * @return array
+     */
+    private static function getClassNames($componentClasses)
+    {
         $buf = "";
-        for ($i = 0; $i < count($componentClasses); ++$i) {
+        $o = count($componentClasses);
+        for ($i = 0; $i < $o; ++$i) {
             $buf .= $componentClasses[$i];
             $buf .= ", ";
         }

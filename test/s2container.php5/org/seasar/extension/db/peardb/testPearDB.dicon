@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="Shift_JIS"?>
-<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
-"components21.dtd">
-<components>
-    <include path="%S2CONTAINER_PHP5%/org/seasar/extension/db/peardb.dicon"/>
-    <component name="deptDao" class="PearDBDeptDaoImpl"/>
-</components>

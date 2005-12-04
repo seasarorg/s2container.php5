@@ -22,19 +22,31 @@
 //
 // $Id$
 /**
- * MetaDef‚ÌÝ’è‚ª‰Â”\‚É‚È‚è‚Ü‚·B
- * 
  * @package org.seasar.framework.container
  * @author klove
  */
-interface S2Container_MetaDefAware {
-    
+interface S2Container_MetaDefAware
+{
+    /**
+     * @param S2Container_MetaDef
+     */    
     public function addMetaDef(S2Container_MetaDef $metaDef);
     
+    /**
+     * @return int
+     */
     public function getMetaDefSize();
     
+    /**
+     * @param int
+     * @return S2Container_MetaDef
+     */
     public function getMetaDef($index);
     
+    /**
+     * @param string
+     * @return array
+     */
     public function getMetaDefs($name);
 }
 ?>

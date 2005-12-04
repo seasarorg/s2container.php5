@@ -26,16 +26,21 @@
  * @author klove
  */
 class S2Container_DefaultConstructorAssembler
-              extends S2Container_AbstractConstructorAssembler {
-
+              extends S2Container_AbstractConstructorAssembler
+{
     /**
      * @param S2Container_ComponentDef
      */
-    public function S2Container_DefaultConstructorAssembler(S2Container_ComponentDef $componentDef) {
+    public function __construct(S2Container_ComponentDef $componentDef)
+    {
         parent::__construct($componentDef);
     }
 
-    public function assemble(){
+    /**
+     * 
+     */
+    public function assemble()
+    {
         return $this->assembleDefault();
     }
 }

@@ -25,39 +25,42 @@
  * @package org.seasar.framework.container.assembler
  * @author klove
  */
-class S2Container_ManualPropertyAssembler extends S2Container_AbstractPropertyAssembler {
-
+class S2Container_ManualPropertyAssembler
+    extends S2Container_AbstractPropertyAssembler
+{
     /**
      * @param S2Container_ComponentDef
      */
-    public function S2Container_ManualPropertyAssembler(S2Container_ComponentDef $componentDef) {
+    public function __construct(S2Container_ComponentDef $componentDef)
+    {
         parent::__construct($componentDef);
     }
 
     /**
      * @see S2Container_PropertyAssembler::assemble()
      */
-    public function assemble($component) {
+    public function assemble($component)
+    {
         $beanDesc = $this->getBeanDesc($component);
         $size = $this->getComponentDef()->getPropertyDefSize();
         for ($i = 0; $i < $size; ++$i) {
             $propDef = $this->getComponentDef()->getPropertyDef($i);
             $value = $this->getValue($propDef, $component);
-            try{
+            try {
                 $propDesc =
                     $beanDesc->getPropertyDesc($propDef->getPropertyName());
-            }catch(S2Container_PropertyNotFoundRuntimeException $e1){
-                try{
-                	$propDesc =
+            } catch (S2Container_PropertyNotFoundRuntimeException $e1) {
+                try {
+                    $propDesc =
                         $beanDesc->getPropertyDesc('__set');
                     $propDesc->setSetterPropertyName($propDef->getPropertyName());    
-                }catch(S2Container_PropertyNotFoundRuntimeException $e2){
+                } catch(S2Container_PropertyNotFoundRuntimeException $e2) {
                     throw $e1;
                 }
             }
 
-            if(!$propDesc->hasWriteMethod()){
-            	$propDesc =
+            if (!$propDesc->hasWriteMethod()) {
+                $propDesc =
                     $beanDesc->getPropertyDesc('__set');
                 $propDesc->setSetterPropertyName($propDef->getPropertyName());    
             }    

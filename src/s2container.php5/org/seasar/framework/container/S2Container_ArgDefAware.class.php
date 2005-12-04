@@ -22,17 +22,25 @@
 //
 // $Id$
 /**
- * ArgDef‚ÌÝ’è‚ª‰Â”\‚É‚È‚è‚Ü‚·B
- * 
  * @package org.seasar.framework.container
  * @author klove
  */
-interface S2Container_ArgDefAware {
-    
+interface S2Container_ArgDefAware
+{
+    /**
+     * @param S2Container_ArgDef
+     */
     public function addArgDef(S2Container_ArgDef $argDef);
     
+    /**
+     * @return int
+     */
     public function getArgDefSize();
     
+    /**
+     * @param int
+     * @return S2Container_ArgDef
+     */
     public function getArgDef($index);
 }
 ?>

@@ -25,18 +25,22 @@
  * @package org.seasar.framework.container.assembler
  * @author klove
  */
-class S2Container_DefaultPropertyAssembler extends S2Container_AbstractPropertyAssembler {
-
+class S2Container_DefaultPropertyAssembler
+    extends S2Container_AbstractPropertyAssembler
+{
     /**
      * @param S2Container_ComponentDef
      */
-    public function S2Container_DefaultPropertyAssembler(S2Container_ComponentDef $componentDef) {
+    public function __construct(S2Container_ComponentDef $componentDef)
+    {
         parent::__construct($componentDef);
     }
 
     /**
      * @see S2Container_PropertyAssembler::assemble()
      */
-    public function assemble($component) {}
+    public function assemble($component)
+    {
+    }
 }
 ?>

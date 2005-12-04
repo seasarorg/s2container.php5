@@ -27,7 +27,6 @@
  */
  
 class S2Container_DefaultAopProxy {
-
     private $methodInterceptorsMap_;
 
     private $parameters_;
@@ -42,7 +41,14 @@ class S2Container_DefaultAopProxy {
      */
     public $targetClass_;
     
-    function __construct($target,$targetClass,$methodInterceptorsMap,$parameters) {
+    /**
+     * @param object target object
+     * @param ReflectionClass target ReflectionClass
+     * @param array interceptor map
+     * @param array parameters
+     */
+    function __construct($target,$targetClass,$methodInterceptorsMap,$parameters)
+    {
         $this->target_ = $target;
         $this->targetClass_ = $targetClass;
         $this->methodInterceptorsMap_ = $methodInterceptorsMap;
@@ -53,19 +59,21 @@ class S2Container_DefaultAopProxy {
      * @param string Method name
      * @param array Args 
      */
-    function __call($name,$args){
-        if(array_key_exists($name,$this->methodInterceptorsMap_)){
-            $methodInvocation = new S2Container_S2MethodInvocationImpl(
-                                    $this->target_,
+    function __call($name,$args)
+    {
+        if (array_key_exists($name,$this->methodInterceptorsMap_)) {
+            $methodInvocation = 
+                new S2Container_S2MethodInvocationImpl($this->target_,
                                     $this->targetClass_,
                                     $this->targetClass_->getMethod($name),
                                     $args,
                                     $this->methodInterceptorsMap_[$name],
                                     $this->parameters_);
             return $methodInvocation->proceed();
-        }else{
-            if(!is_object($this->target_)){
-                throw new S2Container_S2RuntimeException('ESSR1009',array($name,$this->targetClass_->getName()));
+        } else {
+            if (!is_object($this->target_)) {
+                throw new S2Container_S2RuntimeException('ESSR1009',
+                    array($name,$this->targetClass_->getName()));
             }
             return S2Container_MethodUtil::invoke($this->targetClass_->getMethod($name),
                                                   $this->target_,

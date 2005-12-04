@@ -22,32 +22,42 @@
 //
 // $Id$
 /**
- * クラスのpublic staticなフィールドが見つからなかったときの実行時例外
- * 
  * @package org.seasar.framework.beans
  * @author klove
  */
 class S2Container_FieldNotFoundRuntimeException
-    extends S2Container_S2RuntimeException {
+    extends S2Container_S2RuntimeException
+{
 
     private $targetClass_;
     private $fieldName_;
 
-    public function S2Container_FieldNotFoundRuntimeException(
-        $componentClass,
-        $fieldName) {
-        parent::__construct(
-            "ESSR0070",array($componentClass->getName(),$fieldName));
+    /**
+     * 
+     */
+    public function __construct($componentClass,
+        $fieldName)
+    {
+        parent::__construct("ESSR0070",
+                  array($componentClass->getName(),$fieldName));
             
         $this->targetClass_ = $componentClass;
         $this->fieldName_ = $fieldName;
     }
 
-    public function getTargetClass() {
+    /**
+     * 
+     */
+    public function getTargetClass()
+    {
         return $this->targetClass_;
     }
     
-    public function getFieldName() {
+    /**
+     * 
+     */
+    public function getFieldName()
+    {
         return $this->fieldName_;
     }
 }

@@ -25,33 +25,47 @@
  * @package org.seasar.framework.container.deployer
  * @author klove
  */
-class S2Container_SingletonComponentDeployer extends S2Container_AbstractComponentDeployer {
-
+class S2Container_SingletonComponentDeployer
+    extends S2Container_AbstractComponentDeployer
+ {
     private $component_;
     private $instantiating_ = false;
 
     /**
      * @param S2Container_ComponentDef
      */
-    public function S2Container_SingletonComponentDeployer(S2Container_ComponentDef $componentDef) {
+    public function __construct(S2Container_ComponentDef $componentDef)
+    {
         parent::__construct($componentDef);
     }
 
-    public function deploy() {
+    /**
+     * 
+     */
+    public function deploy()
+    {
         if ($this->component_ == null) {
-            $this->assemble();
+            $this->_assemble();
         }
         return $this->component_;
     }
     
-    public function injectDependency($component) {
+    /**
+     * 
+     */
+    public function injectDependency($component)
+    {
         throw new S2Container_UnsupportedOperationException("injectDependency");
     }
 
-    private function assemble() {
+    /**
+     * 
+     */
+    private function _assemble()
+    {
         if ($this->instantiating_) {
-            throw new S2Container_CyclicReferenceRuntimeException(
-                $this->getComponentDef()->getComponentClass());
+            throw new S2Container_CyclicReferenceRuntimeException($this->
+                                  getComponentDef()->getComponentClass());
         }
         $this->instantiating_ = true;
         $this->component_ = $this->getConstructorAssembler()->assemble();
@@ -63,14 +77,16 @@ class S2Container_SingletonComponentDeployer extends S2Container_AbstractCompone
     /**
      * @see S2Container_ComponentDeployer::init()
      */
-    public function init() {
+    public function init()
+    {
         $this->deploy();
     }
   
     /**
      * @see S2Container_ComponentDeployer::destroy()
      */  
-    public function destroy() {
+    public function destroy()
+    {
         if ($this->component_ == null) {
             return;
         }

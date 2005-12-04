@@ -12,12 +12,7 @@ class DbAllTest {
     public static function group() {
         $group = new GroupTest('');
 
-        //$group->addTestCase(new MySQLConnectTests());
-        $group->addTestCase(new PearDBTests());
-        $group->addTestCase(new ADOdbTests());
-        $group->addTestCase(new MySQLTests());
-        //$group->addTestCase(new PostgresTests());
-        $group->addTestCase(new SqlCommandImplTests());
+        $group->addTestCase(new PdoTests());
 
         return $group;    	
     }

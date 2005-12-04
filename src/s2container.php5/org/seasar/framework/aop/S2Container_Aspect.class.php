@@ -22,20 +22,24 @@
 //
 // $Id$
 /**
- * プログラムに適用する関心を定義します。
- * 
- * AroundAdviceとPointcutで構成されます。
- *
  * @package org.seasar.framework.aop
  * @author klove
  */
-interface S2Container_Aspect {
-    
+interface S2Container_Aspect
+{
+    /**
+     * 
+     */
     public function getMethodInterceptor();
     
+    /**
+     * 
+     */
     public function getPointcut();
     
+    /**
+     * 
+     */
     public function setPointcut(S2Container_Pointcut $pointcut);
-
 }
 ?>

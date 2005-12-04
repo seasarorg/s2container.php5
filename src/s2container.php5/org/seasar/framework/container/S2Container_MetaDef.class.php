@@ -25,8 +25,11 @@
  * @package org.seasar.framework.container
  * @author klove
  */
-interface S2Container_MetaDef extends S2Container_ArgDef {
-
+interface S2Container_MetaDef extends S2Container_ArgDef
+{
+    /**
+     * @return string
+     */
     public function getName();
 }
 ?>

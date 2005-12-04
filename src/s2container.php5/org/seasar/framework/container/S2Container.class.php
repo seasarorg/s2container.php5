@@ -22,156 +22,103 @@
 //
 // $Id$
 /**
- * コンポーネントを管理するDIコンテナのインターフェースです。
- * 
  * @package org.seasar.framework.container
  * @author klove
  */
-interface S2Container extends S2Container_MetaDefAware{
-
+interface S2Container extends S2Container_MetaDefAware
+{
     /**
-     * キーを指定してコンポーネントを取得します。
-     * 
-     * キーが文字列の場合、一致するコンポーネント名を持つコンポーネントを
-     * 取得します。
-     * キーがクラス名またはインターフェース名の場合、
-     * 「コンポーネント instanceof キー」
-     * を満たすコンポーネントを取得します。
-     *
-     * @param string コンポーネントを取得するためのキー
+     * @param string
      * @return object
-     * @throws S2Container_ComponentNotFoundRuntimeException コンポーネントが見つからない場合
-     * @throws S2Container_TooManyRegistrationRuntimeException 同じ名前、または同じクラスに複数のコンポーネントが登録されている場合
-     * @throws S2Container_CyclicReferenceRuntimeException constructor injectionでコンポーネントの参照が循環している場合
+     * @throws S2Container_ComponentNotFoundRuntimeException
+     * @throws S2Container_TooManyRegistrationRuntimeException
+     * @throws S2Container_CyclicReferenceRuntimeException
      */
     public function getComponent($componentKey);
 
-	/**
-     * キーを指定してコンポーネントを検索します。
-     * キーが文字列の場合、一致するコンポーネント名を持つコンポーネントを
-     * 検索します。
-     * キーがクラスまたはインターフェースの場合、
-     * 「コンポーネント instanceof キー」
-     * を満たすコンポーネントを検索します。
-     *
-     * @param componentKey コンポーネントを取得するためのキー
-     * @return コンポーネントの配列。キーに対応するコンポーネントが存在しない場合は空の配列を返します。
-     * @throws S2Container_CyclicReferenceRuntimeException constructor injectionでコンポーネントの参照が循環している場合
+    /**
+     * @param string componentKey
+     * @throws S2Container_CyclicReferenceRuntimeException
      */
-	public function findComponents($componentKey);
+    public function findComponents($componentKey);
 
     /**
-     * 外部コンポーネントにセッター・インジェクション、メソッド・インジェクションを実行します。
-     * 
-     * componentClassをキーとしてコンポーネント定義を取得します。
-     * instanceモードが"outer"と定義されたコンポーネントのみ有効です。
-     * 「コンポーネント instanceof 外部コンポーネント」
-     * を満たす外部コンポーネント定義を利用します。
-     *
      * @param object
-     * @param string 外部コンポーネント定義のキー (名前)
-     * @throws S2Container_ClassUnmatchRuntimeException 「外部コンポーネント instanceof 取得したコンポーネントのクラス」がfalseを返す場合
+     * @param string
+     * @throws S2Container_ClassUnmatchRuntimeException
      */
-    public function injectDependency($outerComponent,$componentName="");
+    public function injectDependency($outerComponent,$componentName = "");
     
     /**
-     * オブジェクトを名前付きコンポーネントとして登録します。
-     *
      * @param object
-     * @param string コンポーネント名
+     * @param string
      */
-    public function register($component, $componentName="");
+    public function register($component, $componentName = "");
 
     /**
-     * コンポーネント定義の数を取得します。
-     *
-     * @return int コンポーネント定義の数
+     * @return int
      */
     public function getComponentDefSize();
 
     /**
-     * 指定したキーに対応するコンポーネント定義を取得します。
-     *
-     * @param int キー
-     * @return S2Container_ComponentDef コンポーネント定義
-     * @throws S2Container_ComponentNotFoundRuntimeException コンポーネント定義が見つからない場合
+     * @param int
+     * @return S2Container_ComponentDef
+     * @throws S2Container_ComponentNotFoundRuntimeException
      */
     public function getComponentDef($index);
 
-	/**
-     * 指定したキーに対応するコンポーネント定義を検索します。
-     *
-     * @param componentKey キー
-     * @return コンポーネント定義の配列。キーに対応するコンポーネントが存在しない場合は空の配列を返します。
+    /**
+     * @param string componentKey
      */
-	public function findComponentDefs($componentKey);
+    public function findComponentDefs($componentKey);
 
     /**
-     * 指定したキーに対応するコンポーネント定義を持つどうか判定します。
-     *
-     * @param string キー
-     * @return boolean 存在するならtrue
+     * @param string
+     * @return boolean
      */
     public function hasComponentDef($componentKey);
     
     /**
-     * rootのコンテナで、pathに対応するコンテナが既にロードされているかを返します。
-     *
-     * @param string パス
-     * @return boolean ロードされているならtrue
+     * @param string
+     * @return boolean
      */
     public function hasDescendant($path);
 
     /**
-     * rootのコンテナで、指定したパスに対応するロード済みのコンテナを取得します。
-     *
-     * @param string パス
-     * @return S2Container コンテナ
-     * @throws S2Container_ContainerNotRegisteredRuntimeException コンテナが見つからない場合
+     * @param string
+     * @return S2Container
+     * @throws S2Container_ContainerNotRegisteredRuntimeException
      */    
     public function getDescendant($path);
     
     /**
-     * rootのコンテナに、ロード済みのコンテナを登録します。
-     *
-     * @param S2Container ロード済みのコンテナ
+     * @param S2Container
      */
     public function registerDescendant(S2Container $descendant);
 
     /**
-     * 子コンテナをincludeします。
-     *
-     * @param S2Container includeする子コンテナ
+     * @param S2Container
      */
     public function includeChild(S2Container $child);
     
     /**
-     * 子コンテナの数を取得します。
-     *
-     * @return int 子コンテナの数
+     * @return int
      */
     public function getChildSize();
     
     /**
-     * 番号を指定して子コンテナを取得します。
-     *
-     * @param int 子コンテナの番号
-     * @return S2Container 子コンテナ
+     * @param int
+     * @return S2Container
      */
     public function getChild($index);
 
     /**
-     * コンテナを初期化します。
      * 
-     * 子コンテナを持つ場合、子コンテナを全て初期化した後、自分を初期化します。
      */
     public function init();
 
     /**
-     * コンテナの終了処理をおこないます。
      * 
-     * 子コンテナを持つ場合、自分の終了処理を実行した後、
-     * 子コンテナ全ての終了処理を行います。
      */
     public function destroy();
 
@@ -182,47 +129,36 @@ interface S2Container extends S2Container_MetaDefAware{
      *        S2Container_ComponentDef::RECONSTRUCT_NORMAL
      *        S2Container_ComponentDef::RECONSTRUCT_FORCE 
      */
-    public function reconstruct($mode=S2Container_ComponentDef::RECONSTRUCT_NORMAL);
+    public function reconstruct($mode = 
+                                S2Container_ComponentDef::RECONSTRUCT_NORMAL);
 
     /**
-     * 名前空間を取得します。
-     *
-     * @return string 名前空間
+     * @return string
      */    
     public function getNamespace();
 
     /**
-     * 名前空間をセットします。
-     *
-     * @param string セットする名前空間
+     * @param string
      */    
     public function setNamespace($namespace);
 
     /**
-     * 設定ファイルのパスを取得します。
-     *
-     * @return string 設定ファイルのパス
+     * @return string
      */    
     public function getPath();
 
     /**
-     * 設定ファイルのパスをセットします。
-     *
-     * @param string セットする設定ファイルのパス
+     * @param string
      */    
     public function setPath($path);
 
     /**
-     * ルートのコンテナを取得します。
-     *
-     * @return S2Container ルートのコンテナ
+     * @return S2Container
      */
     public function getRoot();
 
     /**
-     * ルートのコンテナをセットします。
-     *
-     * @param S2Container セットするルートのコンテナ
+     * @param S2Container
      */    
     public function setRoot(S2Container $root);
 }

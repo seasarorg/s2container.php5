@@ -25,7 +25,11 @@
  * @package org.seasar.framework.aop
  * @author klove
  */
-interface S2Container_MethodInvocation extends S2Container_Invocation{
+interface S2Container_MethodInvocation extends S2Container_Invocation
+{
+    /**
+     * 
+     */
     function getMethod();
 }
 ?>

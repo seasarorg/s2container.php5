@@ -22,13 +22,14 @@
 //
 // $Id$
 /**
- * Aspect‚ð’è‹`‚µ‚Ü‚·B
- * 
  * @package org.seasar.framework.container
  * @author klove
  */
-interface S2Container_AspectDef extends S2Container_ArgDef {
-
+interface S2Container_AspectDef extends S2Container_ArgDef
+{
+    /**
+     * 
+     */
     public function getAspect();
 }
 ?>

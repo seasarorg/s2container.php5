@@ -22,18 +22,14 @@
 //
 // $Id$
 /**
- * プログラム中のどこに特定のコード(S2Container_Advice)を挿入するのかを定義します。
- *
  * @package org.seasar.framework.aop
  * @author klove
  */
-interface S2Container_Pointcut { 
-    
+interface S2Container_Pointcut
+{ 
     /**
-     * このメソッドがtrueを返したメソッドに対してAdviceが適用されます。
-     *
      * @param string Method Name
-     * @return boolean Adviceが適用されるかどうかを返します。
+     * @return boolean Advice
      */
     public function isApplied($methodName);
 }

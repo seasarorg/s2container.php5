@@ -27,17 +27,25 @@
  */
 abstract class S2Container_AbstractMethodAssembler
     extends S2Container_AbstractAssembler
-    implements S2Container_MethodAssembler {
-
-    public function S2Container_AbstractMethodAssembler(S2Container_ComponentDef $componentDef) {
+    implements S2Container_MethodAssembler
+{
+    /**
+     * @param S2Container_ComponentDef
+     */
+    public function __construct(S2Container_ComponentDef $componentDef)
+    {
         parent::__construct($componentDef);
     }
     
-    protected function invoke(
-        S2Container_BeanDesc $beanDesc,
-        $component,
-        S2Container_MethodDef $methodDef) {
-
+    /**
+     * @param S2Container_BeanDesc
+     * @param S2Container_ComponentDef
+     * @param S2Container_MethodDef
+     */
+    protected function invoke(S2Container_BeanDesc $beanDesc,
+                              $component,
+                              S2Container_MethodDef $methodDef)
+    {
         $expression = $methodDef->getExpression();
         $methodName = $methodDef->getMethodName();
         if ($methodName != null) {
@@ -48,67 +56,78 @@ abstract class S2Container_AbstractMethodAssembler
                     $args = $methodDef->getArgs();
                 } else {
                     $methods = $beanDesc->getMethods($methodName);
-                    $method = $this->getSuitableMethod($methods);
+                    $method = $this->_getSuitableMethod($methods);
 
                     if ($method != null) {
                         $args = $this->getArgs($method->getParameters());
                     }
                 }
             } catch (S2Container_ComponentNotFoundRuntimeException $cause) {
-                throw new S2Container_IllegalMethodRuntimeException(
-                    $this->getComponentClass($component),
-                    $methodName,
-                    $cause);
+                throw new S2Container_IllegalMethodRuntimeException($this->
+                                              getComponentClass($component),
+                                              $methodName,
+                                              $cause);
             }
             if ($method != null) {
                 S2Container_MethodUtil::invoke($method, $component, $args);
             } else {
-                $this->invoke0($beanDesc,$component,$methodName,$args);
+                $this->_invoke0($beanDesc,$component,$methodName,$args);
             }
         } else {
-            $this->invokeExpression($component,$expression);
+            $this->_invokeExpression($component,$expression);
         }
     }
     
-    private function invokeExpression($component,$expression) {
-    	$exp = S2Container_EvalUtil::addSemiColon($expression);
-    	eval($exp);
+    /**
+     * @param S2Container_ComponentDef
+     * @param string 
+     */
+    private function _invokeExpression($component,$expression)
+    {
+        $exp = S2Container_EvalUtil::addSemiColon($expression);
+        eval($exp);
     }
     
-    private function getSuitableMethod($methods) {
+    /**
+     * 
+     */
+    private function _getSuitableMethod($methods)
+    {
         $params = $methods->getParameters();
         $suitable = 1;
-        if(count($params) == 0){
+        if (count($params) == 0) {
             return $methods;
         }
-        foreach($params as $param){
-            if($param->getClass() != null){
-                if(!S2Container_AutoBindingUtil::isSuitable($param->getClass())){
+        foreach ($params as $param) {
+            if ($param->getClass() != null) {
+                if (!S2Container_AutoBindingUtil::isSuitable($param->getClass())) {
                     $suitable *= 0;
                 }                    
             }
         }
 
-        if($suitable == 1){
+        if ($suitable == 1) {
             return $methods;
         }
 
         return null;
     }
 
-    private function invoke0(
-        S2Container_BeanDesc $beanDesc,
-        $component,
-        $methodName,
-        $args){
-
+    /**
+     * 
+     */
+    private function _invoke0(S2Container_BeanDesc $beanDesc,
+                             $component,
+                             $methodName,
+                             $args)
+    {
         try {
             $beanDesc->invoke($component,$methodName,$args);
         } catch (Exception $ex) {
-            throw new S2Container_IllegalMethodRuntimeException(
-                $this->getComponentClass($component),
-                $methodName,
-                $ex);
+            throw new S2Container_IllegalMethodRuntimeException($this->
+                                                 getComponentClass($component),
+                                                 $methodName,
+                                                 $ex);
         }
     }
 }

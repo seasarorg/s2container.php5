@@ -25,42 +25,69 @@
  * @package org.seasar.framework.util
  * @author klove
  */
-final class S2Container_FileCacheUtil {
- 
-    private function __construct() {
+final class S2Container_FileCacheUtil 
+{
+    /**
+     * 
+     */
+    private function __construct()
+    {
     }
-
-    public static function isUpdated($file,$targetFile){
-        if(filemtime($targetFile) > filemtime($file)){
+    
+    /**
+     * @param string file path
+     * @param string file path
+     * @return boolean
+     */
+    public static function isUpdated($file,$targetFile)
+    {
+        if (filemtime($targetFile) > filemtime($file)) {
             return true;
         }
         return false;
     }
 
-    public static function isAopCache(){
-        if(defined('S2AOP_PHP5_FILE_CACHE') and
+    /**
+     * @return boolean
+     */
+    public static function isAopCache()
+    {
+        if (defined('S2AOP_PHP5_FILE_CACHE') and
            S2AOP_PHP5_FILE_CACHE and
            defined('S2AOP_PHP5_FILE_CACHE_DIR') and
            is_dir(S2AOP_PHP5_FILE_CACHE_DIR) and
-           is_writable(S2AOP_PHP5_FILE_CACHE_DIR)){
+           is_writable(S2AOP_PHP5_FILE_CACHE_DIR)) {
             return true;
         }
         return false;
     }
 
-    public static function loadAopCache($className,$targetClassFile){
-        $path = S2AOP_PHP5_FILE_CACHE_DIR.DIRECTORY_SEPARATOR.$className.'.class.php';
-        if(is_readable($path) and
-           !S2Container_FileCacheUtil::isUpdated($path,$targetClassFile)){
+    /**
+     * @param string class name
+     * @param string file path
+     * @return boolean
+     */
+    public static function loadAopCache($className,$targetClassFile)
+    {
+        $path = S2AOP_PHP5_FILE_CACHE_DIR . DIRECTORY_SEPARATOR . 
+                $className . '.class.php';
+        if (is_readable($path) and
+           !S2Container_FileCacheUtil::isUpdated($path,$targetClassFile)) {
             require_once($path);
             return true;
         }
         return false;
     }
 
-    public static function saveAopCache($className,$src){
-        $path = S2AOP_PHP5_FILE_CACHE_DIR.DIRECTORY_SEPARATOR.$className.'.class.php';
-        $src = '<?php '.$src.' ?>';
+    /**
+     * @param string class name
+     * @param string src 
+     */
+    public static function saveAopCache($className,$src)
+    {
+        $path = S2AOP_PHP5_FILE_CACHE_DIR . DIRECTORY_SEPARATOR .
+                $className . '.class.php';
+        $src = '<?php ' . $src . ' ?>';
         file_put_contents($path,$src);
     }
 }

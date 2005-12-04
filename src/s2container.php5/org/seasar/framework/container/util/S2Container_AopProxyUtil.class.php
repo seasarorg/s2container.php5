@@ -25,23 +25,33 @@
  * @package org.seasar.framework.container.util
  * @author klove
  */
-class S2Container_AopProxyUtil {
-    private function S2Container_AopProxyUtil() {
+class S2Container_AopProxyUtil
+{
+    /**
+     * 
+     */
+    private function __construct()
+    {
     }
 
-    public static function getProxyObject(S2Container_ComponentDef $componentDef,$args) {
-
+    /**
+     * 
+     */
+    public static function getProxyObject(S2Container_ComponentDef $componentDef,
+                                                                   $args)
+    {
         $parameters = array();
-        $parameters[S2Container_ContainerConstants::COMPONENT_DEF_NAME] = $componentDef;
+        $parameters[S2Container_ContainerConstants::COMPONENT_DEF_NAME] = 
+                                                                  $componentDef;
 
         $target = null;
-        if(!$componentDef->getComponentClass()->isInterface() and
-           !$componentDef->getComponentClass()->isAbstract()){
-            $target = S2Container_ConstructorUtil::newInstance($componentDef->getComponentClass(),$args);
+        if (!$componentDef->getComponentClass()->isInterface() and
+           !$componentDef->getComponentClass()->isAbstract()) {
+            $target = S2Container_ConstructorUtil::newInstance($componentDef->
+                                                      getComponentClass(),$args);
         }
 
-        $proxy = S2Container_AopProxyFactory::create(
-                   $target,
+        $proxy = S2Container_AopProxyFactory::create($target,
                    $componentDef->getComponentClass(),
                    S2Container_AopProxyUtil::getAspects($componentDef),
                    $parameters);
@@ -50,15 +60,20 @@ class S2Container_AopProxyUtil {
 
 /*
         $parameters = array();
-        $parameters[S2Container_ContainerConstants::COMPONENT_DEF_NAME] = $componentDef;
+        $parameters[S2Container_ContainerConstants::COMPONENT_DEF_NAME] = 
+                                                              $componentDef;
         $proxy = new S2Container_AopProxy($componentDef->getComponentClass(),
-                               S2Container_AopProxyUtil::getAspects($componentDef),
-                               $parameters);
+                         S2Container_AopProxyUtil::getAspects($componentDef),
+                            $parameters);
         return $proxy->create("",$args);
 */
     }
 
-    private static function getAspects(S2Container_ComponentDef $componentDef) {
+    /**
+     * 
+     */
+    private static function getAspects(S2Container_ComponentDef $componentDef)
+    {
         $size = $componentDef->getAspectDefSize();
         $aspects = array();
         for ($i = 0; $i < $size; ++$i) {

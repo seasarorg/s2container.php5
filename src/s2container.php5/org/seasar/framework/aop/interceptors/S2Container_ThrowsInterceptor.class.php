@@ -25,24 +25,25 @@
  * @package org.seasar.framework.aop.interceptors
  * @author klove
  */
-abstract class S2Container_ThrowsInterceptor extends S2Container_AbstractInterceptor {
+abstract class S2Container_ThrowsInterceptor 
+    extends S2Container_AbstractInterceptor
+{
 
     public static $METHOD_NAME = "handleThrowable";
     private $methods_ = array();
 
-    public abstract function handleThrowable(Exception $t, S2Container_MethodInvocation $invocation);
-
-    public function S2Container_ThrowsInterceptor() {
-    }
-
-    private function isHandleThrowable(Method $method) {
-    }
+    /**
+     * @param Exception
+     * @param S2Container_MethodInvocation
+     */
+    public abstract function handleThrowable(Exception $t, 
+                      S2Container_MethodInvocation $invocation);
 
     /**
      * @see S2Container_MethodInterceptor::invoke()
      */
-    public function invoke(S2Container_MethodInvocation $invocation) {
-        
+    public function invoke(S2Container_MethodInvocation $invocation)
+    {      
         try {
             return $invocation->proceed();
         } catch (Exception $t) {
@@ -52,9 +53,6 @@ abstract class S2Container_ThrowsInterceptor extends S2Container_AbstractInterce
                 throw $t;
             }
         }
-    }
-
-    private function getMethod(Exception $t) {
     }
 }
 ?>

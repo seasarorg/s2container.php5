@@ -25,32 +25,36 @@
  * @package org.seasar.framework.util
  * @author klove
  */
-final class S2Container_ConstructorUtil {
- 
-    private function S2Container_ConstructorUtil() {
+final class S2Container_ConstructorUtil
+{
+    /**
+     * 
+     */
+    private function __construct()
+    {
     }
 
-    public static function newInstance($refClass,$args){
-/*          
-            if($componentDef != null and 
-               $componentDef->getAspectDefSize()>0){
-               return S2Container_AopProxyUtil::getEnhancedClass($componentDef,$args); 
-            }
-*/
+    /**
+     * @param ReflectionClass
+     * @param array args
+     */
+    public static function newInstance($refClass,$args)
+    {
 
-        if(! $refClass instanceof ReflectionClass){
-            throw new S2Container_IllegalArgumentException('args[0] must be <ReflectionClass>');
+        if (! $refClass instanceof ReflectionClass) {
+            throw new 
+              S2Container_IllegalArgumentException('args[0] must be <ReflectionClass>');
         }
 
         $cmd = "return new " . $refClass->getName() . "(";
-        if(count($args) == 0){
+        if (count($args) == 0) {
             $cmd = $cmd . ");";
             return eval($cmd);
         }
             
-        $strArg=array();
+        $strArg = array();
         $c = count($args);
-        for($i=0;$i<$c;$i++){
+        for ($i = 0; $i < $c; $i++) {
             array_push($strArg,"\$args[" . $i . "]");
         }
           

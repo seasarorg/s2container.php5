@@ -25,8 +25,9 @@
  * @package org.seasar.framework.container.impl
  * @author klove
  */
-class S2Container_ArgDefImpl implements S2Container_ArgDef {
-
+class S2Container_ArgDefImpl 
+    implements S2Container_ArgDef 
+{
     private $value_;
     private $container_;
     private $expression_ = "";
@@ -34,9 +35,13 @@ class S2Container_ArgDefImpl implements S2Container_ArgDef {
     private $childComponentDef_ = null;
     private $metaDefSupport_;
 
-    public function S2Container_ArgDefImpl($value=null) {
+    /**
+     * @param value
+     */
+    public function __construct($value = null)
+    {
         $this->metaDefSupport_ = new S2Container_MetaDefSupport();
-        if($value != null){
+        if ($value != null) {
             $this->setValue($value);
         }
     }
@@ -44,7 +49,8 @@ class S2Container_ArgDefImpl implements S2Container_ArgDef {
     /**
      * @see S2Container_ArgDef::getValue()
      */
-    public final function getValue() {
+    public final function getValue()
+    {
         if ($this->exp_ != null) {
             return eval($this->exp_);
         }
@@ -54,21 +60,24 @@ class S2Container_ArgDefImpl implements S2Container_ArgDef {
         return $this->value_;
     }
 
-    public final function setValue($value) {
+    public final function setValue($value)
+    {
         $this->value_ = $value;
     }
     
     /**
      * @see S2Container_ArgDef::getContainer()
      */
-    public final function getContainer() {
+    public final function getContainer()
+    {
         return $this->container_;
     }
 
     /**
      * @see S2Container_ArgDef::setContaine()
      */
-    public final function setContainer($container) {
+    public final function setContainer($container)
+    {
         $this->container_ = $container;
         if ($this->childComponentDef_ != null) {
             $this->childComponentDef_->setContainer($container);
@@ -79,18 +88,20 @@ class S2Container_ArgDefImpl implements S2Container_ArgDef {
     /**
      * @see S2Container_ArgDef::getExpression()
      */
-    public final function getExpression() {
+    public final function getExpression()
+    {
         return $this->expression_;
     }
 
     /**
      * @see S2Container_ArgDef::setExpression()
      */
-    public final function setExpression($expression) {
+    public final function setExpression($expression)
+    {
         $this->expression_ = trim($expression);
-        if($this->expression_ == ""){
+        if ($this->expression_ == "") {
             $this->exp_ = null;
-        }else{
+        } else {
             $this->exp_ = S2Container_EvalUtil::getExpression($this->expression_);
         }
     }
@@ -98,7 +109,9 @@ class S2Container_ArgDefImpl implements S2Container_ArgDef {
     /**
      * @see S2Container_ArgDef::setChildComponentDef()
      */
-    public final function setChildComponentDef(S2Container_ComponentDef $componentDef) {
+    public final function setChildComponentDef(S2Container_ComponentDef 
+                                               $componentDef)
+    {
         if ($this->container_ != null) {
             $componentDef->setContainer($this->container_);
         }
@@ -108,28 +121,32 @@ class S2Container_ArgDefImpl implements S2Container_ArgDef {
     /**
      * @see S2Container_MetaDefAware::addMetaDef()
      */
-    public function addMetaDef(S2Container_MetaDef $metaDef) {
+    public function addMetaDef(S2Container_MetaDef $metaDef)
+    {
         $this->metaDefSupport_->addMetaDef($metaDef);
     }
     
     /**
      * @see S2Container_MetaDefAware::getMetaDef()
      */
-    public function getMetaDef($indexOrName) {
+    public function getMetaDef($indexOrName)
+    {
         return $this->metaDefSupport_->getMetaDef($indexOrName);
     }
 
     /**
      * @see S2Container_MetaDefAware::getMetaDefs()
      */
-    public function getMetaDefs($name) {
+    public function getMetaDefs($name)
+    {
         return $this->metaDefSupport_->getMetaDefs($name);
     }
     
     /**
      * @see S2Container_MetaDefAware::getMetaDefSize()
      */
-    public function getMetaDefSize() {
+    public function getMetaDefSize()
+    {
         return $this->metaDefSupport_->getMetaDefSize();
     }
 }

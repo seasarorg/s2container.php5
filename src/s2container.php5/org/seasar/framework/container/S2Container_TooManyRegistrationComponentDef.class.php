@@ -22,13 +22,19 @@
 //
 // $Id$
 /**
- * 1つのキーに複数のコンポーネントが登録された場合に使用されます。
- * 
  * @package org.seasar.framework.container
  * @author klove
  */
-interface S2Container_TooManyRegistrationComponentDef {
+interface S2Container_TooManyRegistrationComponentDef
+{
+    /**
+     * @param S2Container_ComponentDef
+     */
     public function addComponentDef($componentDef);
+
+    /**
+     * @return array
+     */
     public function getComponentClasses();
 }
 ?>

@@ -1,5 +1,5 @@
 <?php
 interface IBase {
-	public abstract function run();
+	public function run();
 }
 ?>

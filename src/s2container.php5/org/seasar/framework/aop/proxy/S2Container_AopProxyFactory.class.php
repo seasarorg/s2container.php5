@@ -25,57 +25,76 @@
  * @package org.seasar.framework.aop.proxy
  * @author klove
  */
-final class S2Container_AopProxyFactory {
+final class S2Container_AopProxyFactory
+{
+    /**
+     * 
+     */
+    private function __construct()
+    {
+    }
 
-    private function __construct(){}
-
-    public function create($target=null,
-                           $targetClass=null,
-                           $aspects=null,
-                           $parameters=null) {
+    /**
+     * 
+     */
+    public function create($target = null,
+                           $targetClass = null,
+                           $aspects = null,
+                           $parameters = null)
+    {
         //$log = S2Container_S2Logger::getLogger('S2Container_AopProxyFactor');
 
-        if(!$targetClass instanceof ReflectionClass){ 
-        	if(is_string($targetClass)){
+        if (!$targetClass instanceof ReflectionClass) {
+            if (is_string($targetClass)) {
                 $targetClass = new ReflectionClass($targetClass);
-        	}else if(is_object($target)){
+            } else if (is_object($target)) {
                 $targetClass = new ReflectionClass($target);
-            }else{
-                throw new S2Container_S2RuntimeException('ESSR1010',array($target,$targetClass));
+            } else {
+                throw new S2Container_S2RuntimeException('ESSR1010',
+                    array($target,$targetClass));
             }
         }
 
         /*
         if($targetClass->isFinal()){
         	throw new S2Container_S2RuntimeException('ESSR0017',
-        	                               array("cannot aspect. target class [{$targetClass->getName()}] is final class. "));
+            array("cannot aspect. target class [" . 
+            $targetClass->getName() . 
+            "] is final class. "));
         }
         */
 
-        if(!$targetClass->isUserDefined() or
-           S2Container_ClassUtil::hasMethod($targetClass,'__call')){
+        if (!$targetClass->isUserDefined() or
+           S2Container_ClassUtil::hasMethod($targetClass,'__call')) {
             //$log->info("target class has __call(). ignore aspect.",__METHOD__);
             return $target;
         }
 
-        $methodInterceptorsMap = S2Container_AopProxyFactory::creatMethodInterceptorsMap($targetClass,$aspects);
+        $methodInterceptorsMap = 
+            S2Container_AopProxyFactory::_creatMethodInterceptorsMap($targetClass,
+                               $aspects);
 
         $interfaces = S2Container_ClassUtil::getInterfaces($targetClass); 
-        if(count($interfaces) == 0){
+        if (count($interfaces) == 0) {
             return new S2Container_DefaultAopProxy($target,
                                                    $targetClass,
                                                    $methodInterceptorsMap,
                                                    $parameters);
         }
 
-        $concreteClassName = S2Container_AopProxyGenerator::generate(
-                                                $target,
+        $concreteClassName = S2Container_AopProxyGenerator::generate($target,
                                                 $targetClass,
                                                 $parameters);
-        return new $concreteClassName($target,$targetClass,$methodInterceptorsMap,$parameters);
+        return new $concreteClassName($target,
+                       $targetClass,$methodInterceptorsMap,$parameters);
     }
 
-    private function creatMethodInterceptorsMap($targetClass,$aspects) {
+    /**
+     * @param ReflectionClass
+     * @param array Aspect array
+     */
+    private function _creatMethodInterceptorsMap($targetClass,$aspects)
+    {
         if ($aspects == null || count($aspects) == 0) {
             throw new S2Container_EmptyRuntimeException("aspects");
         }
@@ -91,10 +110,14 @@ final class S2Container_AopProxyFactory {
         $methods = $targetClass->getMethods();
         $methodInterceptorsMap = array();
         $o = count($methods);
-        for ($i = 0;$i < $o; ++$i) {
-            if(!S2Container_AopProxyFactory::isApplicableAspect($methods[$i])){
-                //$log->info($this->targetClass_->getName()."::".
-                //           $methods[$i]->getName() ."() is a constructor or a static method. ignored.",__METHOD__);
+        for ($i = 0; $i < $o; ++$i) {
+            if (!S2Container_AopProxyFactory::isApplicableAspect($methods[$i])) {
+/*
+                $log->info($this->targetClass_->getName()."::".
+                           $methods[$i]->getName() .
+                           "() is a constructor or a static method. ignored.",
+                           __METHOD__);
+*/
                 continue;
             }
         
@@ -114,15 +137,19 @@ final class S2Container_AopProxyFactory {
                 */
             }
             
-            if(count($interceptorList) > 0){
+            if (count($interceptorList) > 0) {
                 $methodInterceptorsMap[$methods[$i]->getName()] = $interceptorList;
             }
         }
         return $methodInterceptorsMap;
     }
 
-    public static function isApplicableAspect(ReflectionMethod $method) {
-    	return $method->isPublic() and
+    /**
+     * @param ReflectionMethod
+     */
+    public static function isApplicableAspect(ReflectionMethod $method)
+    {
+        return $method->isPublic() and
                !$method->isStatic() and 
                !$method->isConstructor();
     }

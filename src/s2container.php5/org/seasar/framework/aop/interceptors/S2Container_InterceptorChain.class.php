@@ -25,15 +25,24 @@
  * @package org.seasar.framework.aop.interceptors
  * @author klove
  */
-class S2Container_InterceptorChain extends S2Container_AbstractInterceptor {
+class S2Container_InterceptorChain extends S2Container_AbstractInterceptor
+{
     
     private $interceptors = array();
 
-    public function add(S2Container_MethodInterceptor $interceptor) {
+    /**
+     * 
+     */
+    public function add(S2Container_MethodInterceptor $interceptor)
+    {
         array_push($this->interceptors,$interceptor);
     }
 
-    public function invoke(S2Container_MethodInvocation $invocation){
+    /**
+     * 
+     */
+    public function invoke(S2Container_MethodInvocation $invocation)
+    {
         $nestInvocation = new S2Container_NestedMethodInvocation($invocation,
                 $this->interceptors);
         return $nestInvocation->proceed();

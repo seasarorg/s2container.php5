@@ -22,32 +22,44 @@
 //
 // $Id$
 /**
- * コンポーネントのメソッドの引数の設定に失敗ときの実行時例外
- * 
  * @package org.seasar.framework.container
  * @author klove
  */
 class S2Container_IllegalMethodRuntimeException
-    extends S2Container_S2RuntimeException {
-
+    extends S2Container_S2RuntimeException
+{
     private $componentClass_;
     private $methodName_;
 
-    public function S2Container_IllegalMethodRuntimeException(
-        $componentClass,
+    /**
+     *
+     */
+    public function __construct($componentClass,
         $methodName,
-        $cause) {
-        parent::__construct("ESSR0060",array($componentClass->getName(), $methodName, $cause),
-            $cause);
+        $cause)
+    {
+        parent::__construct("ESSR0060",
+                            array($componentClass->getName(),
+                                  $methodName,
+                                  $cause),
+                            $cause);
         $this->componentClass_ = $componentClass;
         $this->methodName_ = $methodName;
     }
 
-    public function getComponentClass() {
+    /**
+     * @return ReflectionClass
+     */
+    public function getComponentClass()
+    {
         return $this->componentClass_;
     }
     
-    public function getMethodName() {
+    /**
+     * @return string
+     */
+    public function getMethodName()
+    {
         return $this->methodName_;
     }
 }

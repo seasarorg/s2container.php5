@@ -11,7 +11,7 @@ class S2SimplTestCaseTests extends S2Container_S2SimpleTestCase {
 
     function setUp(){
         print "setUp() called.\n";
-        $this->includeDicon(TEST_DIR . "/s2container.php5/org/seasar/extension/unit/phpunit/test1.dicon");
+        $this->includeDicon(TEST_DIR . "/s2container.php5/org/seasar/extension/unit/simpletest/test1.dicon");
     }
 
     function setUpTest1(){

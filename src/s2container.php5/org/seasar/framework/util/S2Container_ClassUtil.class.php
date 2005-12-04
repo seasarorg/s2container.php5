@@ -25,26 +25,31 @@
  * @package org.seasar.framework.util
  * @author klove
  */
-final class S2Container_ClassUtil {
-
-    private function S2Container_ClassUtil() {
+final class S2Container_ClassUtil
+{
+    /**
+     * 
+     */
+    private function __construct()
+    {
     }
     
     /**
      * @param ReflectionClass
      * @return array class source
      */
-    static function getClassSource($refClass){
-    
-        if(!is_readable($refClass->getFileName())){
-            throw new S2Container_S2RuntimeException('ESSR1006',array($refClass->getFileName()));
+    static function getClassSource($refClass)
+    {
+        if (!is_readable($refClass->getFileName())) {
+            throw new S2Container_S2RuntimeException('ESSR1006',
+                      array($refClass->getFileName()));
         }
         
         $ret = array();
         $lines = file($refClass->getFileName());
         $start = $refClass->getStartLine();
         $end   = $refClass->getEndLine();
-        for($i=$start-1;$i<$end;$i++){
+        for ($i = $start - 1; $i < $end; $i++) {
             array_push($ret,$lines[$i]);
         }
 
@@ -55,47 +60,59 @@ final class S2Container_ClassUtil {
      * @param ReflectionClass
      * @return array source
      */
-    static function getSource($refClass){
-    
-        if(!is_readable($refClass->getFileName())){
-            throw new S2Container_S2RuntimeException('ESSR1006',array($refClass->getFileName()));
+    static function getSource($refClass)
+    {
+        if (!is_readable($refClass->getFileName())) {
+            throw new S2Container_S2RuntimeException('ESSR1006',
+                      array($refClass->getFileName()));
         }
         
         $ret = array();
         return file($refClass->getFileName());
     }
 
-	public static function getMethod(
-		                          ReflectionClass $clazz,
-		                          $methodName) {
-        try{
+    /**
+     * @param ReflectionClass
+     * @param string method name
+     */
+    public static function getMethod(ReflectionClass $clazz,
+                                     $methodName)
+    {
+        try {
             return $clazz->getMethod($methodName);
-        }catch(ReflectionException $e){
+        } catch (ReflectionException $e) {
             throw new S2Container_NoSuchMethodRuntimeException($clazz,$methodName,$e);
         }
-	}
+    }
 
-	public static function hasMethod(
-		                          ReflectionClass $clazz,
-		                          $methodName) {
-    	//return $clazz->hasMethod(methodName); php ver 5.1
+    /**
+     * @param ReflectionClass
+     * @param string method name
+     */
+    public static function hasMethod(ReflectionClass $clazz,
+                                     $methodName)
+    {
+        //return $clazz->hasMethod(methodName); php ver 5.1
 
-        try{
+        try {
             $m = $clazz->getMethod($methodName);
             return true;
-        }catch(ReflectionException $e){
+        } catch (ReflectionException $e) {
             return false;
         }
-	}
+    }
 
-	public static function getInterfaces(ReflectionClass $clazz){
-
+    /**
+     * @param ReflectionClass
+     */
+    public static function getInterfaces(ReflectionClass $clazz)
+    {
         $interfaces = $clazz->getInterfaces();
-        if($clazz->isInterface()){
+        if ($clazz->isInterface()) {
             array_push($interfaces,$clazz);
         }       
         
         return $interfaces;
-	}
+    }
 }
 ?>

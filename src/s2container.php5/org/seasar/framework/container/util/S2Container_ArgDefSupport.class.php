@@ -22,37 +22,57 @@
 //
 // $Id$
 /**
- * ArgDefの設定をサポートします。
- * 
  * @package org.seasar.framework.container.util
  * @author klove
  */
-final class S2Container_ArgDefSupport {
-
+final class S2Container_ArgDefSupport
+{
     private $argDefs_ = array();
     private $container_;
     
-    public function S2Container_ArgDefSupport() {
+    /**
+     * 
+     */
+    public function __construct()
+    {
     }
 
-    public function addArgDef(S2Container_ArgDef $argDef) {
+    /**
+     * @param S2Container_ArgDef
+     */
+    public function addArgDef(S2Container_ArgDef $argDef)
+    {
         if ($this->container_ != null) {
             $argDef->setContainer($this->container_);
         }
         array_push($this->argDefs_,$argDef);
     }
     
-    public function getArgDefSize() {
+    /**
+     * @return int
+     */
+    public function getArgDefSize()
+    {
         return count($this->argDefs_);
     }
     
-    public function getArgDef($index) {
+    /**
+     * @param int
+     * @return S2Container_ArgDef
+     */
+    public function getArgDef($index)
+    {
         return $this->argDefs_[$index];
     }
-    
-    public function setContainer(S2Container $container) {
+  
+    /**
+     * @param S2Container
+     */  
+    public function setContainer(S2Container $container)
+    {
         $this->container_ = $container;
-        for($i=0;$i<$this->getArgDefSize();$i++) {
+        $o = $this->getArgDefSize();
+        for ($i = 0; $i < $o; $i++) {
             $this->getArgDef($i)->setContainer($container);
         }
     }

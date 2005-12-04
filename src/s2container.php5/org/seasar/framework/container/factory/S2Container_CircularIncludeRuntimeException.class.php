@@ -25,30 +25,45 @@
  * @package org.seasar.framework.container
  * @author klove
  */
-class S2Container_CircularIncludeRuntimeException extends S2Container_S2RuntimeException {
+class S2Container_CircularIncludeRuntimeException 
+    extends S2Container_S2RuntimeException
+{
     protected $path_;
     protected $paths_;
 
     /**
      * @param componentClasses
      */
-    public function S2Container_CircularIncludeRuntimeException($path,$paths) {
+    public function __construct($path,$paths)
+    {
         parent::__construct("ESSR0076",array($path,$this->toString($path,$paths)));
         $this->path_ = $path;
         $this->paths_ = $paths;
     }
 
-    public function getPath() {
+    /**
+     * @param string path
+     */
+    public function getPath()
+    {
         return $this->path_;
     }
 
-    public function getPaths() {
+    /**
+     * 
+     */
+    public function getPaths()
+    {
         return $this->paths_;
     }
 
-    protected static function toString($path, $paths) {
+    /**
+     * 
+     */
+    protected static function toString($path, $paths)
+    {
         $buf = "";
-        foreach($paths as $val){
+        foreach ($paths as $val) {
             $buf .= '"' . $val . '"';
             $buf .= " includes ";
         }

@@ -25,8 +25,8 @@
  * @package org.seasar.framework.aop.interceptors
  * @author klove
  */
-class S2Container_MockInterceptor extends S2Container_AbstractInterceptor {
-
+class S2Container_MockInterceptor extends S2Container_AbstractInterceptor
+{
     private $returnValueMap_ = array();
 
     private $throwableMap_ = array();
@@ -35,33 +35,61 @@ class S2Container_MockInterceptor extends S2Container_AbstractInterceptor {
 
     private $argsMap_ = array();
 
-    public function S2Container_MockInterceptor($methodName=null,$value=null) {
-        if($methodName != null and $value != null){
+    /**
+     * @param string method name
+     * @param value
+     */
+    public function __construct($methodName = null,$value = null)
+    {
+        if ($methodName != null and $value != null) {
             $this->setReturnValue($methodName,$value);
         }
     }
-    public function setReturnValue($methodName,$returnValue) {
+    
+    /**
+     * @param string method name
+     * @param value
+     */
+    public function setReturnValue($methodName,$returnValue)
+    {
         $this->returnValueMap_[$methodName] = $returnValue;
     }
-    public function setThrowable($methodName,$throwable) {
+    
+    /**
+     * @param string method name
+     * @param Exception 
+     */
+    public function setThrowable($methodName,$throwable)
+    {
         $this->throwableMap_[$methodName] = $throwable;
     }
 
-    public function isInvoked($methodName) {
+    /**
+     * @param string method name
+     * @return boolean
+     */
+    public function isInvoked($methodName)
+    {
         return array_key_exists($methodName,$this->invokedMap_);
     }
 
-    public function getArgs($methodName) {
-    	if(array_key_exists($methodName,$this->argsMap_)){
+    /**
+     * @param string method name
+     * @return array args
+     */
+    public function getArgs($methodName)
+    {
+        if (array_key_exists($methodName,$this->argsMap_)) {
             return $this->argsMap_[$methodName];
-    	}
-  	    return null;	
+        }
+        return null;
     }
 
     /**
      * @see S2Container_MethodInterceptor::invoke()
      */
-    public function invoke(S2Container_MethodInvocation $invocation){
+    public function invoke(S2Container_MethodInvocation $invocation)
+    {
         $methodName = $invocation->getMethod()->getName(); 
         $this->invokedMap_[$methodName] = true;
 

@@ -25,9 +25,15 @@
  * @package org.seasar.framework.container.impl
  * @author klove
  */
-class S2Container_InitMethodDefImpl extends S2Container_MethodDefImpl implements S2Container_InitMethodDef {
-
-    public function S2Container_InitMethodDefImpl($methodName=null) {
+class S2Container_InitMethodDefImpl
+    extends S2Container_MethodDefImpl
+    implements S2Container_InitMethodDef
+{
+    /**
+     * @param string method name
+     */
+    public function __construct($methodName = null)
+    {
         parent::__construct($methodName);
     }
 }

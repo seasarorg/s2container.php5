@@ -26,28 +26,35 @@
  * @author klove
  */
 class S2Container_ManualConstructorAssembler
-    extends S2Container_AbstractConstructorAssembler {
-
+    extends S2Container_AbstractConstructorAssembler
+{
     /**
      * @param S2Container_ComponentDef
      */
-    public function S2Container_ManualConstructorAssembler(S2Container_ComponentDef $componentDef) {
+    public function __construct(S2Container_ComponentDef $componentDef)
+    {
         parent::__construct($componentDef);
     }
 
-    public function assemble(){
+    /**
+     * 
+     */
+    public function assemble()
+    {
         $args = array();
-        for ($i = 0; $i < $this->getComponentDef()->getArgDefSize(); ++$i) {
+        $o = $this->getComponentDef()->getArgDefSize();
+        for ($i = 0; $i < $o; ++$i) {
             try {
                 $args[$i] = $this->getComponentDef()->getArgDef($i)->getValue();
             } catch (S2Container_ComponentNotFoundRuntimeException $cause) {
-                throw new S2Container_IllegalConstructorRuntimeException(
-                    $this->getComponentDef()->getComponentClass(),
-                    $cause);
+                throw new S2Container_IllegalConstructorRuntimeException($this->
+                                         getComponentDef()->getComponentClass(),
+                                         $cause);
             }
         }
         $beanDesc =
-            S2Container_BeanDescFactory::getBeanDesc($this->getComponentDef()->getConcreteClass());
+            S2Container_BeanDescFactory::getBeanDesc($this->
+                                     getComponentDef()->getConcreteClass());
         return $beanDesc->newInstance($args,$this->getComponentDef());
     }
 }

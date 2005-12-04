@@ -22,17 +22,25 @@
 //
 // $Id$
 /**
- * AspectDef‚ÌÝ’è‚ª‰Â”\‚É‚È‚è‚Ü‚·B
- * 
  * @package org.seasar.framework.container
  * @author klove
  */
-interface S2Container_AspectDefAware {
-    
+interface S2Container_AspectDefAware
+{
+    /**
+     * @param S2Container_AspectDef
+     */    
     public function addAspectDef(S2Container_AspectDef $aspectDef);
     
+    /**
+     * @return int
+     */
     public function getAspectDefSize();
     
+    /**
+     * @param int
+     * @return S2Container_AspectDef
+     */
     public function getAspectDef($index);
 }
 ?>

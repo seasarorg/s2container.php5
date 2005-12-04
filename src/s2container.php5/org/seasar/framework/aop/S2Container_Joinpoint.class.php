@@ -25,13 +25,21 @@
  * @package org.seasar.framework.aop
  * @author klove
  */
-interface S2Container_Joinpoint {
-
+interface S2Container_Joinpoint
+{
+    /**
+     * 
+     */
     function getStaticPart();
 
+    /**
+     * 
+     */
     function getThis();
 
+    /**
+     * 
+     */
     function proceed();
-    
 }
 ?>

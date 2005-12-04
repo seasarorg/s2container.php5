@@ -22,21 +22,28 @@
 //
 // $Id$
 /**
- * コンポーネントが見つからなかったときの実行時例外
- * 
  * @package org.seasar.framework.container
  * @author klove
  */
-class S2Container_ComponentNotFoundRuntimeException extends S2Container_S2RuntimeException {
-
+class S2Container_ComponentNotFoundRuntimeException
+    extends S2Container_S2RuntimeException
+{
     private $componentKey_;
     
-    public function S2Container_ComponentNotFoundRuntimeException($componentKey) {
+    /**
+     * 
+     */
+    public function __construct($componentKey)
+    {
         parent::__construct("ESSR0046", array($componentKey));
         $this->componentKey_ = $componentKey;
     }
     
-    public function getComponentKey() {
+    /**
+     * 
+     */
+    public function getComponentKey()
+    {
         return $this->componentKey_;
     }
 }

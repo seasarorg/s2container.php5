@@ -25,34 +25,52 @@
  * @package org.seasar.framework.util
  * @author klove
  */
-final class S2Container_MethodUtil {
-
-    private function S2Container_MethodUtil() {
+final class S2Container_MethodUtil
+{
+    /**
+     * 
+     */
+    private function __construct()
+    {
     }
 
-    public static function invoke($method,$target,$args=null) {
-        if(! $method instanceof ReflectionMethod){
-            throw new S2Container_IllegalArgumentException('args[0] must be <ReflectionMethod>');
+    /**
+     * @param ReflectionMethod
+     * @param object
+     * @param array args
+     */
+    public static function invoke($method,$target,$args = null)
+    {
+        if (! $method instanceof ReflectionMethod) {
+            throw new 
+            S2Container_IllegalArgumentException('args[0] must be <ReflectionMethod>');
         }
-        if(! is_object($target)){
-            throw new S2Container_IllegalArgumentException('args[1] must be <object>');
+        if (! is_object($target)) {
+            throw new 
+            S2Container_IllegalArgumentException('args[1] must be <object>');
         }
 
-        if(count($args) == 0){
+        if (count($args) == 0) {
             return $method->invoke($target,array());
         }
 
-        $strArg=array();
-        for($i=0;$i<count($args);$i++){
+        $strArg = array();
+        $o = count($args);
+        for ($i = 0; $i < $o; $i++) {
             array_push($strArg,"\$args[" . $i . "]");
         }
         $methodName = $method->getName();
-        $cmd = 'return $target->' . $methodName . '('.
+        $cmd = 'return $target->' . $methodName . '(' .
                implode(',',$strArg) . ");";
         return eval($cmd);
     }
     
-    public static function isAbstract(ReflectionMethod $method) {
+    /**
+     * @param ReflectioinMethod
+     * @return boolean
+     */
+    public static function isAbstract(ReflectionMethod $method)
+    {
         return $method->isAbstract();
     }
 
@@ -61,16 +79,17 @@ final class S2Container_MethodUtil {
      * @param array result of S2Container_ClassUtil::getSource()
      */
     public static function getSource(ReflectionMethod $method,
-                                        $src = null) {
-        if($src == null){
-        	$src = S2Container_ClassUtil::getSource($method->getDeclaringClass());
+                                     $src = null)
+    {
+        if ($src == null) {
+            $src = S2Container_ClassUtil::getSource($method->getDeclaringClass());
         }
         
         $def = array();
         $start = $method->getStartLine();
         $end = $method->getEndLine();
 
-        for($i=$start-1;$i<$end;$i++){
+        for ($i = $start - 1; $i < $end; $i++) {
             array_push($def,$src[$i]);
         }
         

@@ -25,19 +25,22 @@
  * @package org.seasar.framework.container.assembler
  * @author klove
  */
-class S2Container_DefaultDestroyMethodAssembler extends S2Container_AbstractMethodAssembler {
-
+class S2Container_DefaultDestroyMethodAssembler
+    extends S2Container_AbstractMethodAssembler
+{
     /**
      * @param S2Container_ComponentDef
      */
-    public function S2Container_DefaultDestroyMethodAssembler(S2Container_ComponentDef $componentDef) {
+    public function __construct(S2Container_ComponentDef $componentDef)
+    {
         parent::__construct($componentDef);
     }
 
     /**
      * @see S2Container_MethodAssembler::assemble()
      */
-    public function assemble($component){
+    public function assemble($component)
+    {
         $beanDesc = $this->getBeanDesc($component);
         $size = $this->getComponentDef()->getDestroyMethodDefSize();
         for ($i = 0; $i < $size; ++$i) {
@@ -45,6 +48,5 @@ class S2Container_DefaultDestroyMethodAssembler extends S2Container_AbstractMeth
             $this->invoke($beanDesc,$component,$methodDef);
         }
     }
-
 }
 ?>

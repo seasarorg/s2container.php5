@@ -25,16 +25,21 @@
  * @package org.seasar.framework.container.impl
  * @author klove
  */
-abstract class S2Container_MethodDefImpl implements S2Container_MethodDef {
-
+abstract class S2Container_MethodDefImpl
+    implements S2Container_MethodDef
+{
     private $methodName_;
     private $argDefSupport_;
     private $container_;
     private $expression_;
 
-    public function S2Container_MethodDefImpl($methodName=null) {
+    /**
+     * @param stirng method name
+     */
+    public function __construct($methodName = null)
+    {
         $this->argDefSupport_ = new S2Container_ArgDefSupport();
-        if($methodName != null){
+        if ($methodName != null) {
             $this->methodName_ = $methodName;
         }
     }
@@ -42,37 +47,43 @@ abstract class S2Container_MethodDefImpl implements S2Container_MethodDef {
     /**
      * @see S2Container_MethodDef::getMethodName()
      */
-    public function getMethodName() {
+    public function getMethodName()
+    {
         return $this->methodName_;
     }
 
     /**
      * @see S2Container_MethodDef::addArgDef()
      */
-    public function addArgDef(S2Container_ArgDef $argDef) {
+    public function addArgDef(S2Container_ArgDef $argDef)
+    {
         $this->argDefSupport_->addArgDef($argDef);
     }
 
     /**
      * @see S2Container_ArgDefAware::getArgDefSize()
      */
-    public function getArgDefSize() {
+    public function getArgDefSize()
+    {
         return $this->argDefSupport_->getArgDefSize();
     }
 
     /**
      * @see S2Container_ArgDefAware::getArgDef()
      */
-    public function getArgDef($index) {
+    public function getArgDef($index)
+    {
         return $this->argDefSupport_->getArgDef($index);
     }
 
     /**
      * @see S2Container_MethodDef::getArgs()
      */
-    public function getArgs() {
+    public function getArgs()
+    {
         $args = array();
-        for ($i = 0; $i < $this->getArgDefSize(); ++$i) {
+        $o = $this->getArgDefSize();
+        for ($i = 0; $i < $o; ++$i) {
             $args[$i] = $this->getArgDef($i)->getValue();
         }
         return $args;
@@ -81,14 +92,16 @@ abstract class S2Container_MethodDefImpl implements S2Container_MethodDef {
     /**
      * @see S2Container_MethodDef::getContainer()
      */
-    public function getContainer() {
+    public function getContainer()
+    {
         return $this->container_;
     }
 
     /**
      * @see S2Container_MethodDef::setContainer()
      */
-    public function setContainer(S2Container $container) {
+    public function setContainer(S2Container $container)
+    {
         $this->container_ = $container;
         $this->argDefSupport_->setContainer($container);
     }
@@ -96,14 +109,16 @@ abstract class S2Container_MethodDefImpl implements S2Container_MethodDef {
     /**
      * @see S2Container_MethodDef::getExpression()
      */
-    public function getExpression() {
+    public function getExpression()
+    {
         return $this->expression_;
     }
 
     /**
      * @see S2Container_MethodDef::setExpression()
      */
-    public function setExpression($expression) {
+    public function setExpression($expression)
+    {
         $this->expression_ = $expression;
     }
 }
