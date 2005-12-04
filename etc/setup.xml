@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!--$Id$-->
+<project name="Phing maven" default="maven" basedir="..">
+
+	<taskdef name="phingMaven"
+		classname="phing.tasks.ext.soya.maven.PhingMavenTask"/>
+
+ 	<target name="read-properties">
+		<echo msg="Reading property files..." />
+        <!--copy file-->
+        <copy file="build-dist.properties" tofile="build.properties"/>
+	    <!--read properties-->
+    	<property file="./build.properties" override="true"/>
+	    <!--read common properties-->
+	    <property file="./common.properties"/>
+	</target>
+
+	<!--create directories-->
+	<target name="prepare" depends="read-properties">
+		<echo msg="Preparing build..." />
+	</target>
+
+    <!--clean up working copy-->
+	<target name="clean" depends="prepare">
+		<echo msg="Cleaning up..."/>
+		<delete dir="${build}"/>
+		<delete dir="${lib}"/>
+	</target>
+
+	<!--phing maven-->
+	<target name="maven" depends="prepare">
+		<echo msg="Starting resolve dependencies..."/>
+		<phingMaven projectFile="./project.xml" 
+			        localRepository="${phingMaven.local.repository}"/>
+		<echo msg="Done"/>
+	</target>
+</project>
