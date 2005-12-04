@@ -148,21 +148,22 @@ class PhingSetup{
     public function callPhingMaven(){
         putenv("PHING_PHP_OPTION=-d output_buffering=off -d output_handler= -d implicit_flush=True -d max_execution_time=");
         $this->showMessage("Now we are completed phing setup, calling phingMaven.");
-        $this->showMessage("On WINDOWS, there will be no messages while phing executing. Wait for 5 minuite.");
+        $this->showMessage("On WINDOWS, there will be no messages while phing executing.  Please wait for least 5 minuite.");
         $this->copyFile("./build-dist.properties", "./build.properties");
         $file = file_get_contents($this->normalizePath("./build.properties"));
 
         $localRepos = $this->getProperty("phingMaven.local.repository", $file);
 
-        $this->showMessage("Please input your phing maven local repository[$localRepos] >");
+        echo("Please input your phing maven local repository[$localRepos] >");
+        flush();
+        ob_flush();
+        
         $line = trim(fgets(STDIN));
         if($line != ""){
             $localRepos = $line;
         }
 
-        echo"Going to use $localRepos as local repository of phing maven.";
-        flush();
-        ob_flush();
+        $this->showMessage("Going to use $localRepos as local repository of phing maven.");
         
         $command = $this->normalizePath("./phing -f etc/setup.xml") . " -DphingMaven.local.repository=$localRepos";
         passthru($command);
