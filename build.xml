@@ -7,7 +7,7 @@
 		classname="phing.tasks.ext.soya.maven.PhingMavenCleanTask"/>
 	<taskdef name="coverage-setup2"
 		classname="phing.tasks.ext.soya.coverage.CoverageSetupTask2"/>
-	<taskdef name="coverage-report2"
+	<taskdef name="report.coverage2"
 		classname="phing.tasks.ext.soya.coverage.CoverageReportTask2"/>
 	<taskdef name="checkstyle"
 		classname="phing.tasks.ext.soya.CheckStyleTask"/>
@@ -38,6 +38,8 @@
 
 		<mkdir dir="${build}" />
 		<mkdir dir="${build.report}"/>
+		<mkdir dir="${build.report.coverage}"/>
+		<mkdir dir="${build.report.checkstyle}"/>
 	</target>
 
 	<target name="copy" depends="prepare">
@@ -77,7 +79,7 @@
 				classname="phing.tasks.ext.soya.phpunit2.${formatter}SummaryPHPUnit2ResultFormatterWithClassName"/>
 			<formatter type="xml" todir="${build.report}"/>
 			<batchtest>
-				<fileset dir="${src.tests}">
+				<fileset dir="${test.s2container.php5}">
 					<include name="${file}Test.php" />
 				</fileset>
 			</batchtest>
@@ -88,12 +90,12 @@
 		<echo msg="Tests done, please see build/report/php-noframes.html"/>
 	</target>                                                                
 
-	<!--coverage report-->
+	<!--report.coverage-->
 	<target name="coverage" depends="prepare">
 		<echo msg="setup coverage"/>
 		<property name="formatter" value=""/>
-		<coverage-setup2 database="${build.coverage.report}/coverage.db">
-			<fileset dir="${src.php}" >
+		<coverage-setup2 database="${build.report.coverage}/coverage.db">
+			<fileset dir="${php}" >
 				<include name="**/*.php"/>
 			</fileset>
 		</coverage-setup2>
@@ -101,21 +103,21 @@
 		<phpunit2 printsummary="true">
 			<formatter usefile="false"
 				classname="phing.tasks.ext.soya.phpunit2.${formatter}SummaryPHPUnit2ResultFormatterWithClassName"/>
-			<formatter type="xml" todir="${build.coverage.report}"/>
+			<formatter type="xml" todir="${build.report.coverage}"/>
 			<formatter classname="phing.tasks.ext.coverage.CoverageFormatter" usefile="false"/>
 			<batchtest>
-				<fileset dir="${src.tests}">
+				<fileset dir="${test.s2container.php5}">
 					<include name="*Test.php" />
 					<include name="**/*Test.php" />
 				</fileset>
 			</batchtest>
 		</phpunit2>
 		<echo msg="test finished."/>
-		<phpunit2report infile="${build.coverage.report}/testsuites.xml" format="frames" todir="${build.coverage.report}" styledir="${etc.phing.style}"/>
-		<coverage-report2 outfile="${build.coverage.report}/coverage.xml">
+		<phpunit2report infile="${build.report.coverage}/testsuites.xml" format="frames" todir="${build.coverage.report}" styledir="${etc.phing.style}"/>
+		<report.coverage2 outfile="${build.coverage.report}/coverage.xml">
 			<classpath refid="project.class.path"/>
-			<report styledir="${etc.phing.style}" todir="${build.coverage.report}"/>
-		</coverage-report2>
+			<report styledir="${etc.phing.style}" todir="${build.report.coverage}"/>
+		</report.coverage2>
 	</target>
 
 	<!--execute all tests and all copy-->
@@ -176,8 +178,8 @@
 	<!-- Spike checkstyle -->
 	<target name="checkstyle" depends="build">
 		<echo msg="Starting check style ..."/>
-		 <checkstyle src="${src.php}"
-			outdir="${build.style.report}" />
+		 <checkstyle src="${php}"
+			outdir="${build.report.checkstyle}" />
 	</target>
 
 </project>
