@@ -26,6 +26,14 @@
  */
 
 /**
+ * PHP version check
+ */
+if(!version_compare(phpversion(), "5.1.0", ">=")){
+    print "[ERROR] requirement : PHP-5.1 or later. exit.\n";
+    exit;
+}
+
+/**
  * S2Container.PHP5 ROOT Directory
  */
 define('S2CONTAINER_PHP5',dirname(__FILE__).'/src/s2container.php5');
@@ -38,7 +46,7 @@ require_once(S2CONTAINER_PHP5 . '/S2ContainerClassLoader.class.php');
 /**
  * S2Container.PHP5 Core Classes
  */
-//require_once(S2CONTAINER_PHP5 . '/s2container.core.classes.php');
+require_once(S2CONTAINER_PHP5 . '/s2container.core.classes.php');
 
 /**
  * Messages Resouce File
