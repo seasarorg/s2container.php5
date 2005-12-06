@@ -8,6 +8,4 @@
         <property name="password">"test"</property>
         <property name="option">array('foo'=>'bar')</property>
     </component>
-    <component name="dao" class="S2DaoInterceptor"/>
-    <component class="S2Dao_DaoMetaDataFactoryImpl" />
 </components>

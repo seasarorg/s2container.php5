@@ -2,12 +2,11 @@ S2Container.PHP5 変更履歴
 
 1.1.0-beta1
 -------------------------------------------------------------------------------
-* PHP-5.0 のサポートを終了しました。
-* PHP-5.1 のサポートを開始しました。PHP-5.1.1にて動作確認しました。
-* INI形式のダイコンファイルをサポート中止しました。
-* extension/dbで、native関数(mysql,postgresql)、PearDB、ADOdbのサポートを中止し
-  PDOのサポートを開始しました。
-* extension/unitで、PHPUnitのサポートを中止しました。
+* PHP-5.0での開発を終了しました。
+* PHP-5.1での開発を開始しました。PHP-5.1.1で動作確認しました。
+* INI形式ダイコンファイルのサポートを中止しました。
+* extension/dbで、PDOのみサポートしました。
+* extension/unitで、PHPUnit2、SimpleTestをサポートしました。
 
 
 1.0.0-beta3
