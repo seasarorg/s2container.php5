@@ -379,7 +379,6 @@ class DeptDaoImpl implements DeptDao {
 &lt;?php
 require_once(dirname(__FILE__) . '/db.inc.php');
 $PATH = EXAMPLE_DIR . "/extension/db/deptDao.dicon";
-//$PATH = EXAMPLE_DIR . "/extension/db/deptDao.ini";
 
 $container = S2ContainerFactory::create($PATH);
 $dao = $container->getComponent('deptDao');
@@ -436,10 +435,13 @@ class FooLogic {
 
 <p><b>diconファイル</b></p>
 
-<p>s2container.php5/src/examples/extension/unit/src/foo/foo.ini</p>
-<pre>
-[logic]
-class = FooLogic
+<p>s2container.php5/src/examples/extension/unit/src/foo/foo.dicon</p>
+<pre>&lt;?xml version="1.0" encoding="Shift_JIS"?&gt;
+&lt;!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd"&gt;
+&lt;components&gt;
+    &lt;component name="logic" class="FooLogic"/&gt;
+&lt;/components&gt;
 </pre>
 
 <p><b>テストクラス</b></p>
@@ -456,7 +458,7 @@ class FooLogicTest extends S2Container_S2PHPUnit2TestCase {
     }
 
     function setUp(){
-        $this->includeDicon(UNIT_EXAMPLE . "/src/foo/foo.ini");   //--- dicon ファイルを include します
+        $this->includeDicon(UNIT_EXAMPLE . "/src/foo/foo.dicon");   //--- dicon ファイルを include します
     }
 
     function testShowYear(){
