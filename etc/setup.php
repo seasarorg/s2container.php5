@@ -47,7 +47,11 @@ class PhingSetup{
      */
     public static function main($args){
         $setupTool = new PhingSetup();
-        $setupTool->execute($args);
+        try{
+            $setupTool->execute($args);
+        }catch(Exception $e){
+            echo $e->getMessage();
+        }
     }
 
     /**
@@ -121,7 +125,7 @@ class PhingSetup{
         $archiveURI = "$remoteRepository/$archiveName";
 
         $this->showMessage("Download $name from $archiveURI");
-        $localFileName = $this->normalizePath($this->localRepository . "/$filename");
+        $localFileName = $this->normalizePath($this->localRepository . "/$archiveName");
         $archive = file_get_contents($archiveURI);
         file_put_contents($localFileName, $archive);
         $this->showMessage("  $name downloaded as $localFileName");
@@ -133,7 +137,10 @@ class PhingSetup{
         $this->deleteDirectory($path);
         $this->createDirectory(dirname($path));
 
-        exec("tar xfz " . $localFileName . " -C " . dirname($path));
+        require_once("Archive/Tar.php");
+
+        $tar = new Archive_Tar($this->normalizePath($localFileName));
+        $tar->extract(dirname($this->normalizePath($path)));
 
         if($name == "phing" || $type == "pear"){
             $this->renameFile(dirname($path) . "/$filename", $path);
@@ -148,7 +155,6 @@ class PhingSetup{
     public function callPhingMaven(){
         putenv("PHING_PHP_OPTION=-d output_buffering=off -d output_handler= -d implicit_flush=True -d max_execution_time=");
         $this->showMessage("Now we are completed phing setup, calling phingMaven.");
-        $this->showMessage("On WINDOWS, there will be no messages while phing executing.  Please wait for least 5 minuite.");
         $this->copyFile("./build-dist.properties", "./build.properties");
         $file = file_get_contents($this->normalizePath("./build.properties"));
 
@@ -156,7 +162,6 @@ class PhingSetup{
 
         echo("Please input your phing maven local repository[$localRepos] >");
         flush();
-        ob_flush();
         
         $line = trim(fgets(STDIN));
         if($line != ""){
@@ -270,7 +275,6 @@ class PhingSetup{
     public function showMessage($msg){
         echo $msg . "\n";
         flush();
-        ob_flush();
     }
 
     /**

@@ -30,7 +30,7 @@
 	<!--phing maven-->
 	<target name="maven" depends="prepare">
 		<echo msg="Starting resolve dependencies..."/>
-		<phingMaven projectFile="./project.xml" 
+		<phingMaven projectFile="./project.xml" type="required"
 			        localRepository="${phingMaven.local.repository}"/>
 		<echo msg="Done"/>
 	</target>
