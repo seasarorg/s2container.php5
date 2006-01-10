@@ -88,7 +88,7 @@ final class S2Container_FileCacheUtil
         $path = S2AOP_PHP5_FILE_CACHE_DIR . DIRECTORY_SEPARATOR .
                 $className . '.class.php';
         $src = '<?php ' . $src . ' ?>';
-        file_put_contents($path,$src);
+        file_put_contents($path,$src,LOCK_EX);
     }
 }
 ?>
