@@ -50,10 +50,12 @@ final class S2Container_MethodUtil
             S2Container_IllegalArgumentException('args[1] must be <object>');
         }
 
+/*
+### S2AOP enhanced class issue.
         if (count($args) == 0) {
             return $method->invoke($target,array());
         }
-
+*/
         $strArg = array();
         $o = count($args);
         for ($i = 0; $i < $o; $i++) {
