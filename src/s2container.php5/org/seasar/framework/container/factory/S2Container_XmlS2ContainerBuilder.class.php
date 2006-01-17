@@ -52,7 +52,8 @@ final class S2Container_XmlS2ContainerBuilder
             throw new S2Container_S2RuntimeException('ESSR0001',array($path));
         }
         
-        if (S2CONTAINER_PHP5_DOM_VALIDATE) {
+        if (defined('S2CONTAINER_PHP5_DOM_VALIDATE') and 
+            S2CONTAINER_PHP5_DOM_VALIDATE) {
             $dom = new DomDocument();
             $dom->validateOnParse = true;
             $dom->load($path);

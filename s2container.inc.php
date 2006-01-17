@@ -60,7 +60,9 @@ if( class_exists("S2ContainerMessageUtil") ){
 /**
  * DICON XML format DTD Validation Switch
  */
-define('S2CONTAINER_PHP5_DOM_VALIDATE',true);
+if(!defined('S2CONTAINER_PHP5_DOM_VALIDATE')){
+    define('S2CONTAINER_PHP5_DOM_VALIDATE',true);
+}
 
 /**
  * S2Container_SingletonS2ContainerFactory app.dicon
