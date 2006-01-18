@@ -31,13 +31,13 @@
 			<dependency>
 				<name>phing</name>
 				<version>2.2.0-cvs</version>
-				<localModification>2005.12.12</localModification>
+				<localModification>2006.01.18</localModification>
 				<type>tar</type>
 				<deployPath>etc/phing</deployPath>
 			</dependency>
 			<dependency>
 				<name>soya_tasks</name>
-				<version>0.0.16</version>
+				<version>0.0.17</version>
 				<localModification></localModification>
 				<type>tar</type>
 				<deployPath>etc/phing/classes/phing/tasks/ext/soya</deployPath>
