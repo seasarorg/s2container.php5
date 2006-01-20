@@ -131,7 +131,8 @@ class S2Container_S2MethodInvocationImpl
                                     $this->targetClass->getName()));
             }
             return S2Container_MethodUtil::invoke($this->method,
-                                    $this->target,$this->methodArgs);
+                                                  $this->target,
+                                                  $this->methodArgs);
         }
     }
 }

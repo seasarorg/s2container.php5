@@ -94,7 +94,8 @@ class S2Container_PrototypeDelegateInterceptor
                                                $invocation->getArguments());
         }
         return $this->beanDesc->invoke($target, 
-                          $methodName, $invocation->getArguments());
+                                       $methodName, 
+                                       $invocation->getArguments());
     }
 }
 ?>

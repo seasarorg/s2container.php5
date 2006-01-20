@@ -78,13 +78,14 @@ final class S2Container_PointcutImpl implements S2Container_Pointcut
     /**
      * 
      */
-    private function _getMethodNames($targetClass = null)
+    private function _getMethodNames($targetClass)
     {
+/*
         if ($targetClass == null) {
             return $this->methodNames_;
         }
+*/
         $methodNameSet = array();
-        
         if ($targetClass->isInterface() or $targetClass->isAbstract()) {
             $methods = $targetClass->getMethods();
             $o = count($methods);

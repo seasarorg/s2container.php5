@@ -29,8 +29,8 @@ abstract class S2Container_ThrowsInterceptor
     extends S2Container_AbstractInterceptor
 {
 
-    public static $METHOD_NAME = "handleThrowable";
-    private $methods_ = array();
+//    public static $METHOD_NAME = "handleThrowable";
+//    private $methods_ = array();
 
     /**
      * @param Exception

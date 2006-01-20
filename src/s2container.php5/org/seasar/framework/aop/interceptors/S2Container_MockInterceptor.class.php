@@ -92,6 +92,7 @@ class S2Container_MockInterceptor extends S2Container_AbstractInterceptor
     {
         $methodName = $invocation->getMethod()->getName(); 
         $this->invokedMap_[$methodName] = true;
+        $this->argsMap_[$methodName] = $invocation->getArguments();
 
         if (array_key_exists($methodName,$this->throwableMap_)) {
             throw $this->throwableMap_[$methodName];

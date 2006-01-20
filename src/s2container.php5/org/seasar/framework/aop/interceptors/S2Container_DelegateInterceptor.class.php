@@ -84,7 +84,8 @@ class S2Container_DelegateInterceptor
         }
         if ($this->beanDesc_->hasMethod($methodName)) {
             return $this->beanDesc_->invoke($this->target_,
-                               $methodName, $invocation->getArguments());
+                                            $methodName, 
+                                            $invocation->getArguments());
         } else {
             return $invocation->proceed();
         }
