@@ -88,7 +88,6 @@ final class S2Container_ClassUtil
     /**
      * @param ReflectionClass
      * @param string method name
-     */
     public static function hasMethod(ReflectionClass $clazz,
                                      $methodName)
     {
@@ -101,6 +100,7 @@ final class S2Container_ClassUtil
             return false;
         }
     }
+     */
 
     /**
      * @param ReflectionClass

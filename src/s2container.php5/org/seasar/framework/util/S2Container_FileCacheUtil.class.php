@@ -72,7 +72,7 @@ final class S2Container_FileCacheUtil
         $path = S2AOP_PHP5_FILE_CACHE_DIR . DIRECTORY_SEPARATOR . 
                 $className . '.class.php';
         if (is_readable($path) and
-           !S2Container_FileCacheUtil::isUpdated($path,$targetClassFile)) {
+           !self::isUpdated($path,$targetClassFile)) {
             require_once($path);
             return true;
         }

@@ -10,7 +10,7 @@ class W implements IW{
         print __METHOD__ . " called.\n";    
     }
 
-    function wm1($arg1,IA &$a){
+    function wm1($arg1=null,IA &$a){
         print __METHOD__ . " called.\n";    
     }
 

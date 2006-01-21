@@ -24,7 +24,7 @@ class MethodUtilTests extends UnitTestCase {
         $src = S2Container_ClassUtil::getSource($ref);
         $m = $ref->getMethod('wm1');
         $src = S2Container_MethodUtil::getSource($m,$src);
-        $this->assertEqual(trim($src[0]),'function wm1($arg1,IA &$a);');     
+        $this->assertEqual(trim($src[0]),'function wm1($arg1=null,IA &$a);');     
        
         print "\n";
     }

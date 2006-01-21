@@ -46,8 +46,7 @@ class S2Container_AopProxyGenerator
         //$log = S2Container_S2Logger::getLogger('S2Container_AopProxyGenerator');
 
         $concreteClassName = 
-            S2Container_AopProxyGenerator::getConcreteClassName($targetClass->
-                                                                getName());
+            self::getConcreteClassName($targetClass->getName());
 
         if (class_exists($concreteClassName,false)) {
             return $concreteClassName;
@@ -148,7 +147,8 @@ class S2Container_AopProxyGenerator
         if (preg_match("/\((.*)\)/",$defLine,$regs)) {
             $argLine = $regs[1];
         }
-                
+
+/*                
         $argsTmp = split('[ ,]',$argLine);
         $args = array();
         foreach ($argsTmp as $item) {
@@ -160,8 +160,19 @@ class S2Container_AopProxyGenerator
             }
         }
         $argLine = implode(',',$args);
+*/
+        $argLine = preg_replace('/\".*?\"/','',$argLine);
+        $argLine = preg_replace('/\'.*?\'/','',$argLine);
+        $argsTmp = preg_split('/[ ,\&=]/',$argLine);
+        $args = array();
+        foreach ($argsTmp as $item) {
+            if (preg_match('/^\$/',trim($item))) {
+                array_push($args,$item);
+            }
+        }
+        
         $defLine .= ' return $this->__call(\'' . $refMethod->getName() .
-                    '\',array(' . $argLine . ')); }';
+                    '\',array(' . implode(',',$args) . ')); }';
         
         return $defLine;
     }

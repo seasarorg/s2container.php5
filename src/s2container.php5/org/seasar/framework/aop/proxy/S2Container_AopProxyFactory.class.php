@@ -62,17 +62,22 @@ final class S2Container_AopProxyFactory
             $targetClass->getName() . 
             "] is final class. "));
         }
-        */
 
         if (!$targetClass->isUserDefined() or
            S2Container_ClassUtil::hasMethod($targetClass,'__call')) {
             //$log->info("target class has __call(). ignore aspect.",__METHOD__);
             return $target;
         }
+        */
+
+        if (!$targetClass->isUserDefined() or
+             $targetClass->hasMethod('__call')) {
+            return $target;
+        }
 
         $methodInterceptorsMap = 
-            S2Container_AopProxyFactory::_creatMethodInterceptorsMap($targetClass,
-                               $aspects);
+            self::_creatMethodInterceptorsMap($targetClass,
+                                              $aspects);
 
         $interfaces = S2Container_ClassUtil::getInterfaces($targetClass); 
         if (count($interfaces) == 0) {
@@ -86,7 +91,9 @@ final class S2Container_AopProxyFactory
                                                 $targetClass,
                                                 $parameters);
         return new $concreteClassName($target,
-                       $targetClass,$methodInterceptorsMap,$parameters);
+                                      $targetClass,
+                                      $methodInterceptorsMap,
+                                      $parameters);
     }
 
     /**

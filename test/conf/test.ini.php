@@ -19,7 +19,6 @@ require_once(HOME_DIR . '/build/phar/s2container.php5-1.1.0-beta2.phar');
 define("S2CONTAINER_PHP5", "phar://s2container.php5-1.1.0-beta2.phar/s2container.php5");
 require_once(S2CONTAINER_PHP5 . "/S2ContainerClassLoader.class.php");
 require_once(S2CONTAINER_PHP5 . "/S2ContainerMessageUtil.class.php");
-
 if( class_exists("S2ContainerMessageUtil") ){
     S2ContainerMessageUtil::addMessageResource(
                        S2CONTAINER_PHP5 . '/SSRMessages.properties');

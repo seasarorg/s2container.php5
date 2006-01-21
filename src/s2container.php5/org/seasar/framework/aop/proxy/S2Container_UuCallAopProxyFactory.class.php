@@ -42,7 +42,7 @@ class S2Container_UuCallAopProxyFactory
     {
         $log = S2Container_S2Logger::getLogger('S2Container_UuCallAopProxyFactory');
 
-        if (S2Container_ClassUtil::hasMethod($targetClass,'__call')) {
+        if ($targetClass->hasMethod('__call')) {
             $log->info("target class has __call(). ignore aspect.",__METHOD__);
             return S2Container_ConstructorUtil::newInstance($targetClass,$args);
         }

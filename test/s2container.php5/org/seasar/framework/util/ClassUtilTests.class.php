@@ -42,7 +42,7 @@ class ClassUtilTests extends UnitTestCase {
         }
         print "\n";
     }
-
+/*
     function testHasMethod() {
        
         print __METHOD__ . "\n";
@@ -53,7 +53,7 @@ class ClassUtilTests extends UnitTestCase {
 
         print "\n";
     }
-
+*/
     function testGetInterfaces() {
        
         print __METHOD__ . "\n";
