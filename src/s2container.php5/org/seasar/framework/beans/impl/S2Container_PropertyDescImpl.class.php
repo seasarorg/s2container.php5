@@ -107,6 +107,8 @@ class S2Container_PropertyDescImpl implements S2Container_PropertyDesc
     public final function setWriteMethod($writeMethod)
     {
         $this->writeMethod_ = $writeMethod;
+        $propertyTypes = $writeMethod->getParameters();
+        $this->propertyType_ = $propertyTypes[0]->getClass();
     }
 
     /**

@@ -331,8 +331,7 @@ class S2ContainerImpl implements S2Container
         for ($i = 0; $i < $o; ++$i) {
             $this->getChild($i)->init();
         }
-        $o = $this->getComponentDefSize();
-        for ($i = 0; $i < $o; ++$i) {
+        for ($i = 0; $i < $this->getComponentDefSize(); ++$i) {
             $this->getComponentDef($i)->init();
         }
         $this->inited_ = true;
