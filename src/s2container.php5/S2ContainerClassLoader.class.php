@@ -160,7 +160,37 @@ class S2ContainerClassLoader {
         'S2Container_EvalUtil' => '/org/seasar/framework/util/S2Container_EvalUtil.class.php',
         'S2Container_FileCacheUtil' => '/org/seasar/framework/util/S2Container_FileCacheUtil.class.php',
         'S2Container_MethodUtil' => '/org/seasar/framework/util/S2Container_MethodUtil.class.php',
-        'S2Container_StringUtil' => '/org/seasar/framework/util/S2Container_StringUtil.class.php');
+        'S2Container_StringUtil' => '/org/seasar/framework/util/S2Container_StringUtil.class.php',
+
+        'S2Container_ComponentAnnotation' => '/org/seasar/extension/annotation/type/S2Container_ComponentAnnotation.class.php',
+        'S2Container_AspectAnnotation' => '/org/seasar/extension/annotation/type/S2Container_AspectAnnotation.class.php',
+        'S2Container_BindingAnnotation' => '/org/seasar/extension/annotation/type/S2Container_BindingAnnotation.class.php',
+        'S2Container_InitMethodAnnotation' => '/org/seasar/extension/annotation/type/S2Container_InitMethodAnnotation.class.php',
+        'S2Container_Annotations' => '/org/seasar/extension/annotation/S2Container_Annotations.class.php',
+        'S2Container_AnnotationReader' => '/org/seasar/extension/annotation/reader/S2Container_AnnotationReader.class.php',
+        'S2Container_CommentAnnotationReader' => '/org/seasar/extension/annotation/reader/impl/S2Container_CommentAnnotationReader.class.php',
+        'S2Container_AnnotationRuntimeException' => '/org/seasar/extension/annotation/exception/S2Container_AnnotationRuntimeException.class.php',
+        'S2Container_AnnotationContainer' => '/org/seasar/extension/annotation/container/S2Container_AnnotationContainer.class.php',
+        'S2Container_AnnotationFactory' => '/org/seasar/extension/annotation/factory/S2Container_AnnotationFactory.class.php',
+
+        'S2Container_ClassPattern' => '/org/seasar/extension/annotation/autoregister/S2Container_ClassPattern.class.php',
+        'S2Container_ClassTraversalClassHandler' => '/org/seasar/extension/annotation/util/S2Container_ClassTraversalClassHandler.class.php',
+        'S2Container_ChildComponentDefBindingUtil' => '/org/seasar/extension/annotation/util/S2Container_ChildComponentDefBindingUtil.class.php',
+        'S2Container_ClassTraversal' => '/org/seasar/extension/annotation/util/S2Container_ClassTraversal.class.php',
+        'S2Container_AutoNaming' => '/org/seasar/extension/annotation/autoregister/S2Container_AutoNaming.class.php',
+        'S2Container_AbstractAutoNaming' => '/org/seasar/extension/annotation/autoregister/S2Container_AbstractAutoNaming.class.php',
+        'S2Container_DefaultAutoNaming' => '/org/seasar/extension/annotation/autoregister/S2Container_DefaultAutoNaming.class.php',
+
+        'S2Container_AbstractAutoRegister' => '/org/seasar/extension/annotation/autoregister/S2Container_AbstractAutoRegister.class.php',
+        'S2Container_AbstractComponentAutoRegister' => '/org/seasar/extension/annotation/autoregister/S2Container_AbstractComponentAutoRegister.class.php',
+        'S2Container_FileSystemComponentAutoRegister' => '/org/seasar/extension/annotation/autoregister/S2Container_FileSystemComponentAutoRegister.class.php',
+
+        'S2Container_AnnotationHandlerFactory' => '/org/seasar/extension/annotation/factory/S2Container_AnnotationHandlerFactory.class.php',
+        'S2Container_AnnotationHandler' => '/org/seasar/extension/annotation/factory/S2Container_AnnotationHandler.class.php',
+        'S2Container_AbstractAnnotationHandler' => '/org/seasar/extension/annotation/factory/S2Container_AbstractAnnotationHandler.class.php',
+        'S2Container_ConstantAnnotationHandler' => '/org/seasar/extension/annotation/factory/S2Container_ConstantAnnotationHandler.class.php',
+        'S2Container_DefaultAnnotationHandler' => '/org/seasar/extension/annotation/factory/S2Container_DefaultAnnotationHandler.class.php'
+        );
 
     function load($className){
         if(array_key_exists($className,self::$CLASSES)){

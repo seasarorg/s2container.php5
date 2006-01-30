@@ -65,6 +65,11 @@ interface S2Container_ComponentDef
     public function getComponentName();
 
     /**
+     * @param string
+     */
+    public function setComponentName($name);
+
+    /**
      * @return ReflectionClass
      */
     public function getConcreteClass();

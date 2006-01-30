@@ -109,7 +109,7 @@ class S2Container_ComponentDefImpl
     }
 
     /**
-     * @see S2Container_ComponentDef::getComponentClass()
+     * @see S2Container_ComponentDef::setComponentClass()
      */
     public final function setComponentClass(ReflectionClass $componentClass)
     {
@@ -122,6 +122,14 @@ class S2Container_ComponentDefImpl
     public final function getComponentName()
     {
         return $this->componentName_;
+    }
+
+    /**
+     * @see S2Container_ComponentDef::setComponentName()
+     */
+    public final function setComponentName($name)
+    {
+        $this->componentName_ = $name;
     }
 
     /**
