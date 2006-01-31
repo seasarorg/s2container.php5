@@ -160,7 +160,11 @@ class S2ContainerClassLoader {
         'S2Container_EvalUtil' => '/org/seasar/framework/util/S2Container_EvalUtil.class.php',
         'S2Container_FileCacheUtil' => '/org/seasar/framework/util/S2Container_FileCacheUtil.class.php',
         'S2Container_MethodUtil' => '/org/seasar/framework/util/S2Container_MethodUtil.class.php',
-        'S2Container_StringUtil' => '/org/seasar/framework/util/S2Container_StringUtil.class.php');
+        'S2Container_StringUtil' => '/org/seasar/framework/util/S2Container_StringUtil.class.php',
+
+        'S2Container_ChildComponentDefBindingUtil' => '/org/seasar/framework/container/util/S2Container_ChildComponentDefBindingUtil.class.php'
+        );
+
 
     function load($className){
         if(array_key_exists($className,self::$CLASSES)){
