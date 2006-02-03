@@ -9,6 +9,6 @@ $hello = $container->getComponent('Hello');
 $hello->showMessage();
 		
 $hello2 = $container->getComponent("hello");
-echo $hello2->showMessage();
+$hello2->showMessage();
 
 ?>
