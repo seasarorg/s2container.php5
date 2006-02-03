@@ -31,36 +31,20 @@
  *    meta:
  *        name: foo-components-meta
  *        - foo components meta values in
- *    component:
+ *    fooClass:
  *        name: fooComponent
- *        class: fooClass
- *            arg:
- *                name: fooArgName
- *                - foo arg values in
- *            property: 
- *                name: fooPropertyName
- *                - foo property values in
- *            initMethod:
- *                name: fooInitmethodName
- *                - foo initmethod values in
- *            destroyMethod:
- *                name: fooDestroymethodName
- *                - foo destroymethod values in
- *            aspect: foo aspect value
- *#    component:
- *#         -
- *#             class: foo class 2
- *#             - class value in 2
- *#         -
- *#             class: baz class
- *#             meta: baz meta 2
- *#             - meta value in 2
- *#         -
- *#             class: foo class 3
- *#             - class value in 3
- *#         -
- *#             class: foo class 4
- *#             name: foo class 4
+ *        arg:
+ *            - foo arg values in
+ *        property: 
+ *            name: fooPropertyName
+ *            - foo property values in
+ *        initMethod:
+ *            name: fooInitmethodName
+ *            - foo initmethod values in
+ *        destroyMethod:
+ *            name: fooDestroymethodName
+ *            - foo destroymethod values in
+ *        aspect: foo aspect value
  * ----- AS XML (foo.dicon.xml)-----
  * <components namespace="foonamespace">
  *      <include path="foopath" />
@@ -130,6 +114,7 @@ final class S2Container_YamlS2ContainerBuilder
         if (isset($root["namespace"])) {
             $container->setNamespace($root["namespace"]); 
         }
+        unset($root["namespace"]);
 
         if(isset($root["include"])){
             $includepath = $root["include"];
@@ -139,10 +124,19 @@ final class S2Container_YamlS2ContainerBuilder
             $child = S2ContainerFactory::includeChild($container, $includepath);
             $child->setRoot($container->getRoot());
         }
+        unset($root["include"]);
 
+        foreach($root as $component => $value){
+            $container->register($this->_setupComponentDef($value));
+        }
+
+        var_dump(__CLASS__, __LINE__);
+        die;
+
+        // FIXME, TODO...
         $component = array();
-        if(!isset($root["component"][0])){
-            $component[] = $root["component"];
+        if(isset($root["component"])){
+            $component[] = $this->array_append($root["component"]);
         }
         foreach($component as $value){
             $container->register($this->_setupComponentDef($value));

@@ -1,5 +1,6 @@
 components:
-    component:
-        name: hello
-        class: HelloConstructorInjection
-        arg: "Hello World!"
+    namespace: hoge
+    HelloConstructorInjection:
+        name: hello1
+        arg:
+            - Hello World!
