@@ -100,6 +100,7 @@ class S2ContainerClassLoader {
         'S2Container_IniS2ContainerBuilder' => '/org/seasar/framework/container/factory/S2Container_IniS2ContainerBuilder.class.php',
         'S2Container_SingletonS2ContainerFactory' => '/org/seasar/framework/container/factory/S2Container_SingletonS2ContainerFactory.class.php',
         'S2Container_XmlS2ContainerBuilder' => '/org/seasar/framework/container/factory/S2Container_XmlS2ContainerBuilder.class.php',
+        'S2Container_YamlS2ContainerBuilder' => '/org/seasar/framework/container/factory/S2Container_YamlS2ContainerBuilder.class.php',
         'S2ContainerComponentDef' => '/org/seasar/framework/container/impl/S2ContainerComponentDef.class.php',
         'S2ContainerImpl' => '/org/seasar/framework/container/impl/S2ContainerImpl.class.php',
         'S2Container_ArgDefImpl' => '/org/seasar/framework/container/impl/S2Container_ArgDefImpl.class.php',
