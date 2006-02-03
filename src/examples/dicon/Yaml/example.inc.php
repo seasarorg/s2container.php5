@@ -11,4 +11,6 @@ function __autoload($class=null){
 require_once('Spyc.php5');
 require_once('Hello.class.php');
 require_once('HelloConstructorInjection.class.php');
+require_once('HelloMethodInjection.class.php');
+require_once('HelloSetterInjection.class.php');
 ?>

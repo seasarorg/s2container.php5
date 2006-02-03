@@ -82,16 +82,15 @@ final class S2Container_YamlS2ContainerBuilder
         unset($root['include']);
 
         foreach($root as $componentClass => $value){
-            $container->register($this->_setupComponentDef($componentClass, $value));
+            if(isset($value[0])){
+                foreach($value as $cmpClass => $val){
+                    $container->register($this->_setupComponentDef($cmpClass, $val));
+                }
+            } else {
+                $container->register($this->_setupComponentDef($componentClass, $value));
+            }
         }
 
-        $component = array();
-        if(isset($root['component'])){
-            $component[] = $this->array_append($root['component']);
-        }
-        foreach($component as $value){
-            $container->register($this->_setupComponentDef($value));
-        }
         $this->_setupMetaDef($root, $container);
 
         foreach ($this->yetRegisteredCompRef_ as $compRef) {
@@ -110,7 +109,6 @@ final class S2Container_YamlS2ContainerBuilder
             }
         }
         $this->unresolvedCompRef_ = array();
-        
         return $container;
     }
 
@@ -119,7 +117,7 @@ final class S2Container_YamlS2ContainerBuilder
      */
     private function _setupComponentDef($className, array $component)
     {
-        $name = isset($component['name']) ? $component['name'] : null;
+        $name = isset($component['name']) ? $component['name'] : "";
         $componentDef = new S2Container_ComponentDefImpl($className, $name);
         $componentDef->setExpression("");
 
@@ -133,7 +131,7 @@ final class S2Container_YamlS2ContainerBuilder
 
         $arg = array();
         if(isset($component['arg'])){
-            $arg[] = $component['arg'];
+            $arg[] = $this->array_value($component, 'arg');
         }
         foreach ($arg as $val) {
             $componentDef->addArgDef($this->_setupArgDef($val));
@@ -141,34 +139,62 @@ final class S2Container_YamlS2ContainerBuilder
 
         $property = array();
         if(isset($component['property'])){
-            $property[] = $component['property'];
+            $property[] = $this->array_value($component, 'property');
         }
         foreach ($property as $val) {
-            $componentDef->addPropertyDef($this->_setupPropertyDef($val));
+            // FIXME no.1
+            if(isset($val[0]) && is_array($val[0])){
+                foreach($val as $v){
+                    $componentDef->addPropertyDef($this->_setupPropertyDef($v));
+                }
+            } else {
+                $componentDef->addPropertyDef($this->_setupPropertyDef($val));
+            }
         }
 
         $initMethod = array();
         if(isset($component['initMethod'])){
-            $initMethod[] = $component['initMethod'];
+            $initMethod[] = $this->array_value($component, 'initMethod');
         }
         foreach ($initMethod as $val) {
-            $componentDef->addInitMethodDef($this->_setupInitMethodDef($val));
+            // FIXME no.2
+            if(isset($val[0]) && is_array($val[0])){
+                foreach($val as $v){
+                    $componentDef->addInitMethodDef($this->_setupInitMethodDef($v));
+                }
+            } else {
+                $componentDef->addInitMethodDef($this->_setupInitMethodDef($val));
+            }
         }
 
         $destroyMethod = array();
         if(isset($component['destroyMethod'])){
-            $destroyMethod[] = $component["destroyMethod"];
+            $destroyMethod[] = $this->array_value($component, "destroyMethod");
         }
-        foreach ($destroyMethod as $index => $val) {
-            $componentDef->addDestroyMethodDef($this->_setupDestroyMethodDef($val));
+        foreach ($destroyMethod as $val) {
+            // FIXME no.3
+            if(isset($val[0]) && is_array($val[0])){
+                foreach($val as $v){
+                    $componentDef->addDestroyMethodDef($this->_setupDestroyMethodDef($v));
+                }
+            } else {
+                $componentDef->addDestroyMethodDef($this->_setupDestroyMethodDef($val));
+            }
         }
 
         $aspect = array();
         if(isset($component['aspect'])){
-            $aspect[] = $component['aspect'];
+            $aspect[] = $this->array_value($component, 'aspect');
         }
         foreach ($aspect as $val) {
-            $componentDef->addAspectDef($this->_setupAspectDef($val, $className, $component));
+            // FIXME no.4
+            if(isset($val[0]) && is_array($val[0])){
+                foreach($val as $v){
+                    $componentDef->addAspectDef($this->_setupAspectDef($v, $className));
+                }
+            } else {
+                $componentDef->addAspectDef($this->_setupAspectDef($val, $className));
+            }
         }
         $this->_setupMetaDef($component, $componentDef);
 
@@ -200,7 +226,6 @@ final class S2Container_YamlS2ContainerBuilder
             $argDef->setChildComponentDef($childComponent);
             array_push($this->yetRegisteredCompRef_, $childComponent);
         }
-
         $this->_setupMetaDef($arg, $argDef);
         
         return $argDef;
@@ -211,7 +236,11 @@ final class S2Container_YamlS2ContainerBuilder
      */
     private function _setupPropertyDef(array $property)
     {
-        $propertyDef = new S2Container_PropertyDefImpl($property['name']);
+        $name = "";
+        if(isset($property['name'])){
+            $name = $property['name'];
+        }
+        $propertyDef = new S2Container_PropertyDefImpl($name);
 
         if (!isset($property['component'])) {
             $propertyValue = $property[0];
@@ -232,7 +261,7 @@ final class S2Container_YamlS2ContainerBuilder
             array_push($this->yetRegisteredCompRef_, $childComponent);
         }
 
-        $this->_setupMetaDef($property, $propertyDef, $property['component']);
+        $this->_setupMetaDef($property, $propertyDef);
         
         return $propertyDef;
     }
@@ -242,14 +271,19 @@ final class S2Container_YamlS2ContainerBuilder
      */
     private function _setupInitMethodDef(array $initMethod)
     {
-        $initMethodDef = new S2Container_InitMethodDefImpl($initMethod['name']);
+        $name = "";
+        if(isset($initMethod['name'])){
+            $name = $initMethod['name'];
+        }
+        $initMethodDef = new S2Container_InitMethodDefImpl($name);
 
-        if (isset($initMethod[0])) {
+        if (isset($initMethod[0]) && is_string($initMethod[0])) {
             $initMethodDef->setExpression($initMethod[0]);
         }
+
         $arg = array();
-        if(!isset($initMethod['arg'])){
-            $arg[] = $initMethod['arg'];
+        if(isset($initMethod['arg'])){
+            $arg[] = $this->array_value($initMethod, 'arg');
         }
         foreach ($arg as $val) {
             $initMethodDef->addArgDef($this->_setupArgDef($val));
@@ -263,7 +297,11 @@ final class S2Container_YamlS2ContainerBuilder
      */
     private function _setupDestroyMethodDef(array $destroyMethod)
     {
-        $destroyMethodDef = new S2Container_DestroyMethodDefImpl($destroyMethod['name']);
+        $name = "";
+        if(isset($destroyMethod['name'])){
+            $name = $destroyMethod['name'];
+        }
+        $destroyMethodDef = new S2Container_DestroyMethodDefImpl($name);
 
         if (isset($destroyMethod[0])) {
             $destroyMethodDef->setExpression($destroyMethod[0]);
@@ -271,7 +309,7 @@ final class S2Container_YamlS2ContainerBuilder
 
         $arg = array();
         if(isset($destroyMethod['arg'])){
-            $arg = $destroyMethod['arg'];
+            $arg = $this->array_value($destroyMethod, 'arg');
         }
         foreach ($arg as $val) {
             $destroyMethodDef->addArgDef($this->_setupArgDef($val));
@@ -285,16 +323,15 @@ final class S2Container_YamlS2ContainerBuilder
      */
     private function _setupAspectDef(array $aspect, $targetClassName)
     {
-        
-        if (!isset($aspect['pointcut'])) {
-            $pointcut = new S2Container_PointcutImpl($targetClassName);
-        } else {
+        if (isset($aspect['pointcut'])) {
             $pointcuts = split(",", $aspect['pointcut']);
             $pointcut = new S2Container_PointcutImpl($pointcuts);
+        } else {
+            $pointcut = new S2Container_PointcutImpl($targetClassName);
         }
         
         $aspectDef = new S2Container_AspectDefImpl($pointcut);
-        if (!isset($aspect['$component'])) {
+        if (!isset($aspect['component'])) {
             $aspectValue = $aspect[0];
             if(preg_match(self::regex_php_value, $aspectValue, $regs)){
                 $value = $regs[1];
@@ -327,7 +364,11 @@ final class S2Container_YamlS2ContainerBuilder
         }
 
         foreach ($meta as $val) {
-            $metaDef = new S2Container_MetaDefImpl($val['name']);
+            $name = "";
+            if(isset($val['name'])){
+                $name = $val['name'];
+            }
+            $metaDef = new S2Container_MetaDefImpl($name);
 
             if (!isset($val['component'])) {
                 $metaValue = $val[0];
@@ -343,7 +384,7 @@ final class S2Container_YamlS2ContainerBuilder
                     $metaDef->setValue($metaValue);
                 }
             } else {
-                $childComponent = $this->_setupComponentDef($component);
+                $childComponent = $this->_setupComponentDef($val['component']);
                 $metaDef->setChildComponentDef($childComponent);
                 array_push($this->yetRegisteredCompRef_, $childComponent);
             }
@@ -361,6 +402,14 @@ final class S2Container_YamlS2ContainerBuilder
         $child = $this->build($path);
         $parent->includeChild($child);
         return $child;
+    }
+
+    private function array_value(array $array, $key){
+        if(isset($array[$key]) && isset($array[$key])){
+            return $array[$key];
+        } else {
+            return array($array);
+        }
     }
 }
 ?>

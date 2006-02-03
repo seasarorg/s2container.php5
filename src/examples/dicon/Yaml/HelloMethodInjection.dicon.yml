@@ -1,0 +1,9 @@
+components:
+    HelloMethodInjection:
+        initMethod:
+            -
+                name: addMessage
+                arg:
+                    - Hello
+            -
+                - ($component->addMessage("World!"))
