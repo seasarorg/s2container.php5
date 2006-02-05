@@ -1,7 +1,7 @@
 <?php
 /**
  * @S2Container_ComponentAnnotation(
- *              name => bbB
+ *              name = bbB
  *              )
  */
 class B {

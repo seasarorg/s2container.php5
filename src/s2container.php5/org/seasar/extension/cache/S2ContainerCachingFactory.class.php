@@ -27,6 +27,7 @@
  */
 final class S2ContainerCachingFactory
 {
+    public static $INITIALIZE_BEFORE_CACHE = false;
     /**
      * @param string dicon path 
      * @param string cache file name 
@@ -34,15 +35,17 @@ final class S2ContainerCachingFactory
     public static function create($diconPath,$cacheName = null) 
     {
         if (!self::_isCacheDirectoryAvailable()){
-            print "[INFO ] cache directory not available.\n";
+            S2Container_S2Logger::getLogger(__CLASS__)->
+                info("cache directory not available.",__METHOD__);
             return S2ContainerFactory::create($diconPath);
         }
-        
+
         $cacheFilePath = self::_getCacheFilePath($diconPath,$cacheName);
         
         if (self::_isValidCache($cacheFilePath,$diconPath)){
             $container = unserialize(file_get_contents($cacheFilePath));
-            print "[INFO ] cached container available.\n";
+            S2Container_S2Logger::getLogger(__CLASS__)->
+                info("cached container available.",__METHOD__);
             if (is_object($container) and 
                 $container instanceof S2Container){
                 $container->reconstruct(S2Container_ComponentDef::RECONSTRUCT_FORCE);
@@ -52,8 +55,14 @@ final class S2ContainerCachingFactory
             }
         }
         
-        print "[INFO ] create container and cache it.\n";
+        S2Container_S2Logger::getLogger(__CLASS__)->
+            info("create container and cache it.",__METHOD__);
         $container = S2ContainerFactory::create($diconPath);
+
+        if(self::$INITIALIZE_BEFORE_CACHE){
+           $container->init(); 
+        }
+
         if(!file_put_contents($cacheFilePath,
                              serialize($container),
                              LOCK_EX)){
@@ -66,9 +75,9 @@ final class S2ContainerCachingFactory
      * 
      */  
     private static function _isCacheDirectoryAvailable(){
-        if (defined('S2CONTAINER_CACHE_DIR') and
-            is_dir(S2CONTAINER_CACHE_DIR) and 
-            is_writable(S2CONTAINER_CACHE_DIR)){
+        if (defined('S2CONTAINER_PHP5_CACHE_DIR') and
+            is_dir(S2CONTAINER_PHP5_CACHE_DIR) and 
+            is_writable(S2CONTAINER_PHP5_CACHE_DIR)){
             return true;
         }else{
             return false;
@@ -80,9 +89,9 @@ final class S2ContainerCachingFactory
      */
     private static function _getCacheFilePath($path,$cacheName){
         if($cacheName != null){
-            return S2CONTAINER_CACHE_DIR . DIRECTORY_SEPARATOR . $cacheName;
+            return S2CONTAINER_PHP5_CACHE_DIR . DIRECTORY_SEPARATOR . $cacheName;
         }else{
-            return S2CONTAINER_CACHE_DIR . DIRECTORY_SEPARATOR . md5($path);
+            return S2CONTAINER_PHP5_CACHE_DIR . DIRECTORY_SEPARATOR . md5($path);
         }
     }
     

@@ -94,12 +94,16 @@ class S2Container_CommentAnnotationReader
                 $argType = null;
                 $args = array();
                 foreach($items as $item){
-                    if(preg_match("/^(.*?)=>(.+)/s",$item,$matches)){
+                    if(preg_match("/^(.+?)=(.+)/s",$item,$matches)){
                         if($argType == S2Container_AnnotationFactory::ARGS_TYPE_ARRAY){
                             throw new S2Container_AnnotationRuntimeException('ERR003',array($line,$item));
                         }
                         $key = self::removeQuote($matches[1]);
                         $val = self::removeQuote($matches[2]);
+                        
+                        if($key == ""){
+                            throw new S2Container_AnnotationRuntimeException('ERR004',array($line,$item));
+                        }
                         $args[$key] = $val;
                         $argType = S2Container_AnnotationFactory::ARGS_TYPE_HASH;
                     }else{
@@ -125,7 +129,7 @@ class S2Container_CommentAnnotationReader
         $str = trim($str);
         $str = preg_replace("/^[\"']/",'',$str);
         $str = preg_replace("/[\"']$/",'',$str);
-        return $str;
+        return trim($str);
     }
 }
 ?>

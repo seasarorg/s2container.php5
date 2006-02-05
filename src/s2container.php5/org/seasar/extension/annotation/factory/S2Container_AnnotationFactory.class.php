@@ -36,8 +36,6 @@ final class S2Container_AnnotationFactory {
                                   $args = array(),
                                   $argType = self::ARGS_TYPE_ARRAY){
 
-        $log = S2Container_S2Logger::getLogger(__CLASS__);
-        
         if(class_exists($annotationType)){
             $annoObj= new $annotationType();        
         }else{
@@ -60,8 +58,8 @@ final class S2Container_AnnotationFactory {
         foreach($args as $arg=>$val){
             if(!array_key_exists($arg,$annoObj)){
                 $className = get_class($annoObj);
-                $log->info("$arg property not defined. ignored. [ $className ] ",__METHOD__);
-                continue;
+                S2Container_S2Logger::getLogger(__CLASS__)->
+                    info("class : <$className> property <$arg> should be define as public.",__METHOD__);
             }
 
             $annoObj->$arg = $val;

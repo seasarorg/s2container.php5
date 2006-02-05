@@ -43,6 +43,9 @@ class S2Container_AnnotationRuntimeException
         	case 'ERR003':
         	    $msg = "array and hash can not mix. [ {$args[0]} ] [ {$args[1]} ]";
         	    break;
+            case 'ERR004':
+                $msg = "empty property name. [ {$args[0]} ] [ {$args[1]} ]";
+                break;
         }
         
         parent::__construct($msg);

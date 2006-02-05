@@ -9,6 +9,8 @@ $time = $time_end - $time_start;
 
 require_once('example.inc.php');
 
+define('S2CONTAINER_PHP5_LOG_LEVEL',S2Container_SimpleLogger::INFO);
+
 $PATH_A = EXAMPLE_DIR . "/cache/testA.dicon";
 $time_start = microtime_float();
 $container = S2ContainerCachingFactory::create($PATH_A);
@@ -17,7 +19,7 @@ $time = $time_end - $time_start;
 print "time : $time \n";
 
 
-define('S2CONTAINER_CACHE_DIR',EXAMPLE_DIR . "/cache/var");
+define('S2CONTAINER_PHP5_CACHE_DIR',EXAMPLE_DIR . "/cache/var");
 
 $PATH_B = EXAMPLE_DIR . "/cache/testB.dicon";
 $time_start = microtime_float();
