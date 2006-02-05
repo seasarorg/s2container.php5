@@ -27,8 +27,8 @@
  */
 final class S2Container_SingletonS2ContainerFactory
 {
+    public static $INITIALIZE = true;
     private static $container_;
-    private static $INITIALIZE = true;
     
     /**
      * 

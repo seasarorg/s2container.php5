@@ -44,15 +44,12 @@ final class S2Container_S2Logger
      */
     public static final function getLogger($className)
     {
-        $logger = null;
-        if (array_key_exists($className,S2Container_S2Logger::$loggerMap_)) {
-            $logger = S2Container_S2Logger::$loggerMap_[$className];
+        if (!array_key_exists($className,S2Container_S2Logger::$loggerMap_)) {
+            S2Container_S2Logger::$loggerMap_[$className] = 
+                new S2Container_S2Logger($className);
         }
-        if ($logger == null) {
-            $logger = new S2Container_S2Logger($className);
-            S2Container_S2Logger::$loggerMap_[$className] = $logger;
-        }
-        return $logger->_getLog();
+        return S2Container_S2Logger::$loggerMap_[$className]->_getLog();
+
     }
     
     /**
