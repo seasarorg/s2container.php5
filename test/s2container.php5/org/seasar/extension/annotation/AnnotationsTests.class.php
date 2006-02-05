@@ -82,7 +82,7 @@ class A_AnnotationsTests{
     }    
 
     /**
-     * @Annotation01_AnnotationsTests(name=>hoge,year=>2000)
+     * @Annotation01_AnnotationsTests(name=hoge,year=2000)
      * @Annotation02_AnnotationsTests(hoge,2000)
      */
     public function m02(){

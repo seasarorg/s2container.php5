@@ -1,6 +1,6 @@
 <?php
 /**
- * @S2Container_ComponentAnnotation(name => 'interceptor')
+ * @S2Container_ComponentAnnotation(name = 'interceptor')
  *      
  */
 class Interceptor_FileSystemComponentAutoRegisterTests 

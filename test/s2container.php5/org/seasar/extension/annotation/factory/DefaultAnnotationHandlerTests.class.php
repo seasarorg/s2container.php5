@@ -98,9 +98,9 @@ class DefaultAnnotationHandlerTests extends UnitTestCase {
 class A_DefaultAnnotationHandlerTests{}
 
 /**
- * @S2Container_ComponentAnnotation(name => 'a',
- *                                  instance => 'prototype',
- *                                  autoBinding => 'none')
+ * @S2Container_ComponentAnnotation(name = 'a',
+ *                                  instance = 'prototype',
+ *                                  autoBinding = 'none')
  */
 class B_DefaultAnnotationHandlerTests{
 
@@ -133,11 +133,11 @@ class B_DefaultAnnotationHandlerTests{
 }
 
 /**
- * @S2Container_ComponentAnnotation(name => 'c')
+ * @S2Container_ComponentAnnotation(name = 'c')
  * 
  * test annotation
- * @S2Container_AspectAnnotation(interceptor => TestInterceptor,
- *                               pointcut => foo bar)
+ * @S2Container_AspectAnnotation(interceptor = TestInterceptor,
+ *                               pointcut = foo bar)
  */
 class C_DefaultAnnotationHandlerTests{
 
@@ -178,11 +178,11 @@ class C_DefaultAnnotationHandlerTests{
 }
 
 /**
- * @S2Container_ComponentAnnotation(name => 'c')
+ * @S2Container_ComponentAnnotation(name = 'c')
  * 
  * test annotation
- * @S2Container_AspectAnnotation(interceptor => TestInterceptor,
- *                               pointcut => foo bar)
+ * @S2Container_AspectAnnotation(interceptor = TestInterceptor,
+ *                               pointcut = foo bar)
  */
 class D_DefaultAnnotationHandlerTests{
 

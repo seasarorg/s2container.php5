@@ -248,6 +248,27 @@ class CommentAnnotationReaderTests extends UnitTestCase {
         print "\n";
     }
 
+    function testGetAnnotations07() {
+        print __METHOD__ . "\n";
+
+        $reader = new S2Container_CommentAnnotationReader();
+
+        try{
+            $annos = $reader->getAnnotations(
+                new ReflectionClass('E_CommentAnnotationReaderTests'),'m02');
+        }catch(Exception $e){
+            print "{$e->getMessage()}\n";    
+        }
+        
+        $annos = $reader->getAnnotations(
+                new ReflectionClass('E_CommentAnnotationReaderTests'),'m03');
+        $this->assertEqual($annos['Annotation02_CommentAnnotationReaderTests']->name ,
+                           "");
+            print_r($annos);
+
+        print "\n";
+    }
+
 }
     
 /**
@@ -360,20 +381,20 @@ class C_CommentAnnotationReaderTests{
 
 class D_CommentAnnotationReaderTests{
     /** 
-     * @Annotation02_CommentAnnotationReaderTests(name=>'hoge',year=>'2000')
+     * @Annotation02_CommentAnnotationReaderTests(name='hoge',year='2000')
      * @Annotation01_CommentAnnotationReaderTests('hoge','2000')
      */
     public function m01(){}
 
     /** 
-     * @Annotation02_CommentAnnotationReaderTests(name=>hoge , 'year'=>2000)
+     * @Annotation02_CommentAnnotationReaderTests(name=hoge , 'year'=2000)
      * @Annotation01_CommentAnnotationReaderTests('hoge')
      */
     public function m02(){}
 
     /** 
      * @Annotation02_CommentAnnotationReaderTests(
-     *                    name=>'hoge',year=>'2000')
+     *                    name='hoge',year='2000')
      * @Annotation01_CommentAnnotationReaderTests('hoge',
      *                                            '2000')
      */
@@ -381,9 +402,9 @@ class D_CommentAnnotationReaderTests{
 
     /** 
      * @Annotation02_CommentAnnotationReaderTests(
-     *                    name=>'hoge',
+     *                    name='hoge',
      * 
-     *                    year=>'2000')
+     *                    year='2000')
      * @Annotation01_CommentAnnotationReaderTests('hoge',
      * 
      *                                            '2000')
@@ -394,9 +415,9 @@ class D_CommentAnnotationReaderTests{
      * Zzzz Zzzz Zzzz
      * Zzzz Zzzz Zzzz
      * @Annotation02_CommentAnnotationReaderTests(
-     *                    name=>
+     *                    name=
      *                    'hoge',
-     *                    year=>'2000')
+     *                    year='2000')
      * Zzzz Zzzz Zzzz
      * @Annotation01_CommentAnnotationReaderTests('hoge',
      *                                            '2000')
@@ -409,9 +430,9 @@ class D_CommentAnnotationReaderTests{
      * @Zzzz Zzzz Zzzz
      * @Zzzz Zzzz Zzzz
      * @Annotation02_CommentAnnotationReaderTests(
-     *                    name=>
+     *                    name=
      *                    'hoge',
-     *                    year=>'2000')
+     *                    year='2000')
      * @Zzzz Zzzz Zzzz
      * @Annotation01_CommentAnnotationReaderTests('hoge',
      *                                            '2000')
@@ -423,11 +444,21 @@ class D_CommentAnnotationReaderTests{
 
 class E_CommentAnnotationReaderTests{
     /** 
-     * @Annotation02_CommentAnnotationReaderTests(name=>'hoge',year,'2000')
+     * @Annotation02_CommentAnnotationReaderTests(name='hoge',year,'2000')
      */
     public function m01(){}
 
+    /** 
+     * @Annotation02_CommentAnnotationReaderTests( ='hoge')
+     */
+    public function m02(){}
+
+    /** 
+     * @Annotation02_CommentAnnotationReaderTests( name = )
+     */
+    public function m03(){}
 }
+
 class Annotation01_CommentAnnotationReaderTests{}
 class Annotation02_CommentAnnotationReaderTests{}
 

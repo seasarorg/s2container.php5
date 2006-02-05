@@ -1,8 +1,8 @@
 <?php
 /**
- * @S2Container_ComponentAnnotation(name => 'testC')
- * @S2Container_AspectAnnotation(interceptor => new S2Container_TraceInterceptor(),
- *                               pointcut => testTrace)
+ * @S2Container_ComponentAnnotation(name = 'testC')
+ * @S2Container_AspectAnnotation(interceptor = new S2Container_TraceInterceptor(),
+ *                               pointcut = testTrace)
  *      
  */
 class C_FileSystemComponentAutoRegisterTests {
