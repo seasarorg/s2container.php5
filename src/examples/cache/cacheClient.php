@@ -12,6 +12,14 @@ require_once('example.inc.php');
 define('S2CONTAINER_PHP5_LOG_LEVEL',S2Container_SimpleLogger::INFO);
 
 $PATH_A = EXAMPLE_DIR . "/cache/testA.dicon";
+
+
+$time_start = microtime_float();
+$container = S2ContainerCachingFactory::create($PATH_A);
+$time_end = microtime_float();
+$time = $time_end - $time_start;
+print "time : $time \n";
+
 $time_start = microtime_float();
 $container = S2ContainerCachingFactory::create($PATH_A);
 $time_end = microtime_float();
@@ -28,7 +36,7 @@ $time_end = microtime_float();
 $time = $time_end - $time_start;
 print "time : $time \n";
 
-$a = $container->getComponent("A");
+$a = $container->getComponent("a");
 print_r($a);
 
 $PATH_C = EXAMPLE_DIR . "/cache/testC.dicon";
@@ -38,7 +46,7 @@ $time_end = microtime_float();
 $time = $time_end - $time_start;
 print "time : $time \n";
 
-$a = $container->getComponent("A");
+$a = $container->getComponent("a");
 print_r($a);
 
 
