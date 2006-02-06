@@ -84,7 +84,7 @@ final class S2Container_SingletonS2ContainerFactory
     /**
      * 
      */
-    public static function setContainer(S2Container $container)
+    public static function setContainer($container)
     {
         self::$container_ = $container;
     }
