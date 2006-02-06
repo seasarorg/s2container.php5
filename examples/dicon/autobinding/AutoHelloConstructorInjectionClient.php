@@ -5,7 +5,7 @@ require_once('Map.class.php');
 require_once('HashMap.class.php');
 require_once('AutoHelloConstructorInjection.class.php');
 
-$PATH =	"AutoHelloConstructorInjection.dicon";
+$PATH =	EXAMPLE_DIR . "/dicon/autobinding/AutoHelloConstructorInjection.dicon";
 		
 $container = S2ContainerFactory::create($PATH);
 $hello = $container->getComponent('Hello');

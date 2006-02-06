@@ -2,7 +2,7 @@
 require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php');
 require_once('ComponentExp.class.php');        
 
-$PATH = "ComponentExp.dicon";
+$PATH = EXAMPLE_DIR . "/dicon/expression/ComponentExp.dicon";
 		
 $container = S2ContainerFactory::create($PATH);
 $hello = $container->getComponent('hello');
