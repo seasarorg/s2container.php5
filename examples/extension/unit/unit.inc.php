@@ -1,5 +1,5 @@
 <?php
-require_once(dirname(dirname(__FILE__)) . '/example.inc.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php');
 define('UNIT_EXAMPLE', EXAMPLE_DIR . '/extension/unit');
 define('S2CONTAINER_PHP5_LOG_LEVEL',S2Container_SimpleLogger::DEBUG);
 
