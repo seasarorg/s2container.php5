@@ -31,20 +31,17 @@ class S2Container_ClassPattern {
     
     private $shortClassNamePatterns = array();
     
-    public function __construct($directoryPath,$shortClassNames = null) {
-        $this->setDirectoryPath($directoryPath);
-        $this->setShortClassNames($shortClassNames);
-    }
-    
     public function getDirectoryPath() {
         return $this->directoryPath;
     }
     
     public function setDirectoryPath($directoryPath) {
-        if(!is_dir($directoryPath)){
-            throw new Exception("not dir [$directoryPath]");
-        }
         $this->directoryPath= $directoryPath;
+    }
+
+    public function getShortClassNames()
+    {
+        return $this->shortClassNamePatterns;
     }
     
     public function setShortClassNames($shortClassNames) {

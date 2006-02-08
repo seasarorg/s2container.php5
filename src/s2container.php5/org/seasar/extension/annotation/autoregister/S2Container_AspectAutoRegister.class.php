@@ -25,81 +25,79 @@
  * @package org.seasar.extension.annotation.autoregister
  * @author klove
  */
-abstract class S2Container_AbstractAutoRegister {
+class S2Container_AspectAutoRegister 
+    extends S2Container_AbstractAutoRegister
+{
+    private $interceptor;
+    private $pointcut;
 
-    const INIT_METHOD = "registerAll";
-
-    protected $container;
-    
-    private $classPatterns = array();
-    
-    private $ignoreClassPatterns = array();
-    
-    public abstract function registerAll();
-
-    public function getContainer() {
-        return $this->container;
+    public function setInterceptor(S2Container_MethodInterceptor $interceptor) {
+        $this->interceptor = $interceptor;
     }
 
-    public function setContainer(S2Container $container) {
-        $this->container = $container;    
-    }
-
-    public function getClassPatternSize() {
-        return count($this->classPatterns);
-    }
-    
-    public function getClassPattern($index) {
-        return isset($this->classPatterns[$index]) ? 
-                        $this->classPatterns[$index] : null;
-    }
-    
-    /**
-     * @param S2Container_ClassPattern object
-     */
-    public function addClassPatternInternal(S2Container_ClassPattern $pattern) {
-        array_push($this->classPatterns,$pattern);
+    public function setPointcut($pointcut) {
+        $this->pointcut = $pointcut;
     }
 
     /**
-     * @param S2Container_ClassPattern object
+     * @param string class name string
      */
-    public function addIgnoreClassPatternInternal(S2Container_ClassPattern $pattern) {
-        array_push($this->ignoreClassPatterns,$pattern);
-    }    
-
-    protected function hasComponentDef($name) {
-        return $this->findComponentDef($name) != null;
+    public function addClassPattern($patterns) {
+        $pat = new S2Container_ClassPattern();
+        $pat->setShortClassNames($patterns);
+        parent::addClassPatternInternal($pat);
     }
 
-    protected function findComponentDef($name) {
-        if (!is_string($name)) {
-            return null;
-        }
-        
+    /**
+     * @param string class name string
+     */
+    public function addIgnoreClassPattern($patterns) {
+        $pat = new S2Container_ClassPattern();
+        $pat->setShortClassNames($patterns);        
+        parent::addIgnoreClassPatternInternal($pat);
+    }
+
+    public function registerAll() {
         $container = $this->getContainer();
         $c = $container->getComponentDefSize();
         for ($i = 0; $i < $c; ++$i) {
             $cd = $container->getComponentDef($i);
-            if ($name == $cd->getComponentName()) {
-                return $cd;
-            }
+            $this->register($cd);
         }
-        return null;
     }
     
-    protected function isIgnore($shortClassName) {
-        if (count($this->ignoreClassPatterns) == 0) {
-            return false;
+    protected function register(S2Container_ComponentDef $componentDef) {
+        $componentClass = $componentDef->getComponentClass();
+        if ($componentClass == null) {
+            return;
         }
-        $c = count($this->ignoreClassPatterns);
+
+        $shortClassName = $componentClass->getName();
+        $c = $this->getClassPatternSize();
         for ($i = 0; $i < $c; ++$i) {
-            $cp = $this->ignoreClassPatterns[$i];
+            $cp = $this->getClassPattern($i);
+            if ($this->isIgnore($shortClassName)) {
+                continue;
+            }
             if ($cp->isAppliedShortClassName($shortClassName)) {
-                return true;
+                $this->registerInterceptor($componentDef);
+                return;
             }
         }
-        return false;
+    }
+
+    protected function registerInterceptor(S2Container_ComponentDef $componentDef) {
+        if(is_string($this->pointcut)){
+            $pointcut = new S2Container_PointcutImpl(
+                            explode(',',$this->pointcut));
+        }else{
+            $pointcut = new S2Container_PointcutImpl(
+                            $componentDef->getComponentClass());
+        }
+        
+        $aspectDef = new S2Container_AspectDefImpl($this->interceptor,
+                                                   $pointcut);
+        $componentDef->addAspectDef($aspectDef);
     }
 }
 ?>

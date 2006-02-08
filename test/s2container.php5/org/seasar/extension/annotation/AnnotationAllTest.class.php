@@ -23,6 +23,8 @@ class AnnotationAllTest {
         $group->addTestCase(new FileSystemComponentAutoRegisterTests());
         $group->addTestCase(new AbstractComponentAutoRegisterTests());
         $group->addTestCase(new DefaultAnnotationHandlerTests());
+        $group->addTestCase(new AspectAutoRegisterTests());
+        $group->addTestCase(new InterfaceAspectAutoRegisterTests());
 
         return $group;    	
     }

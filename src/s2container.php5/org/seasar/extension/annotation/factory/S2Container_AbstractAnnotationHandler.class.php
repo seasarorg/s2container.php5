@@ -100,6 +100,35 @@ abstract class S2Container_AbstractAnnotationHandler
         return $propertyDef;
     }
 
+
+    public function appendAspectInternal(S2Container_ComponentDef $componentDef,
+                                 $interceptor,
+                                 $pointcut) {
+        
+        if ($interceptor == null) {
+            throw new S2Container_EmptyRuntimeException("interceptor");
+        }
+        
+        if(is_string($pointcut)){
+            $aspectDef = new S2Container_AspectDefImpl(
+                             new S2Container_PointcutImpl(explode(" ",$pointcut)));
+        }else{
+            $aspectDef = new S2Container_AspectDefImpl(
+                             new S2Container_PointcutImpl(
+                             $componentDef->getComponentClass()));
+        }
+        S2Container_ChildComponentDefBindingUtil::put($interceptor,
+                                                      $aspectDef);
+        $aspectDef->setExpression($interceptor);
+        $componentDef->addAspectDef($aspectDef);
+    }
+
+    protected function appendInitMethodInternal(S2Container_ComponentDef $componentDef,
+                                         $methodName) {
+        $initMethodDef = new S2Container_InitMethodDefImpl($methodName);
+        $componentDef->addInitMethodDef($initMethodDef);
+    }
+
 /*    
     protected function isInitMethodRegisterable(S2Container_ComponentDef $cd, 
                                                 $methodName) {

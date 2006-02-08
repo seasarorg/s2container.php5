@@ -20,18 +20,6 @@ class AbstractComponentAutoRegisterTests extends UnitTestCase {
         $this->assertEqual($register->hasComponentDef('Test'),null);
         print "\n";
     }
-
-    function testIsIgnore() {
-        print __METHOD__ . "\n";
-
-        $register = new Test_AbstractComponentAutoRegisterTests();
-        $register->addIgnoreClassPattern(dirname(__FILE__),"Foo,Bar");
-        $this->assertEqual($register->isIgnore('d:/tmp','Foo'),true);
-        $this->assertEqual($register->isIgnore('d:/tmp','Bar'),true);
-        $this->assertEqual($register->isIgnore('d:/tmp','Hoge'),false);
-        print "\n";
-    }
-
 }
 class Test_AbstractComponentAutoRegisterTests
     extends S2Container_AbstractComponentAutoRegister{
@@ -40,8 +28,8 @@ class Test_AbstractComponentAutoRegisterTests
         
     }
     
-    public function isIgnore($path,$name){
-        return parent::isIgnore($path,$name);    
+    public function isIgnore($name){
+        return parent::isIgnore($name);    
     }
 
     public function hasComponentDef($name){

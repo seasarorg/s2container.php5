@@ -26,7 +26,7 @@
  * @author klove
  */
 class S2Container_DefaultAnnotationHandler 
-    extends S2Container_ConstantAnnotationHandler {
+    extends S2Container_AbstractAnnotationHandler {
 
     public function createComponentDef(ReflectionClass $componentClass,
                                        $instanceMode) {

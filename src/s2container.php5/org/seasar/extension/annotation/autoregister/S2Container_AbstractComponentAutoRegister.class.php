@@ -30,6 +30,10 @@ abstract class S2Container_AbstractComponentAutoRegister
     implements S2Container_ClassTraversalClassHandler {
 
     const CLASS_SUFFIX = ".class.php";
+
+    const autoNaming_BINDING = "bindingType=may";
+    const instanceMode_BINDING = "bindingType=may";
+
     
     private $autoNaming = null;
     
@@ -42,8 +46,6 @@ abstract class S2Container_AbstractComponentAutoRegister
     public function getAutoNaming() {
         return $this->autoNaming;
     }
-
-    const autoNaming_BINDING = "bindingType=may";
     
     public function setAutoNaming(S2Container_AutoNaming $autoNaming) {
         $this->autoNaming = $autoNaming;
@@ -53,14 +55,12 @@ abstract class S2Container_AbstractComponentAutoRegister
         return $this->instanceMode;
     }
 
-    const instanceMode_BINDING = "bindingType=may";
-
     public function setInstanceMode($instanceMode) {
         $this->instanceMode = $instanceMode;
     }
 
     public function processClass($classFilePath, $className) {
-        if ($this->isIgnore($classFilePath, $className)) {
+        if ($this->isIgnore($className)) {
             return;
         }
     

@@ -183,6 +183,8 @@ class S2ContainerClassLoader {
         'S2Container_DefaultAutoNaming' => '/org/seasar/extension/annotation/autoregister/S2Container_DefaultAutoNaming.class.php',
 
         'S2Container_AbstractAutoRegister' => '/org/seasar/extension/annotation/autoregister/S2Container_AbstractAutoRegister.class.php',
+        'S2Container_AspectAutoRegister' => '/org/seasar/extension/annotation/autoregister/S2Container_AspectAutoRegister.class.php',
+        'S2Container_InterfaceAspectAutoRegister' => '/org/seasar/extension/annotation/autoregister/S2Container_InterfaceAspectAutoRegister.class.php',
         'S2Container_AbstractComponentAutoRegister' => '/org/seasar/extension/annotation/autoregister/S2Container_AbstractComponentAutoRegister.class.php',
         'S2Container_FileSystemComponentAutoRegister' => '/org/seasar/extension/annotation/autoregister/S2Container_FileSystemComponentAutoRegister.class.php',
 

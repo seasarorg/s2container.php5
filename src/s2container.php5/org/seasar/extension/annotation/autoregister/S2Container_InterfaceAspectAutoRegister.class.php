@@ -25,60 +25,58 @@
  * @package org.seasar.extension.annotation.autoregister
  * @author klove
  */
-class S2Container_FileSystemComponentAutoRegister 
-    extends S2Container_AbstractComponentAutoRegister
+class S2Container_InterfaceAspectAutoRegister
 {
-    /**
-     * 
-     */
-    public function registerAll() {
-        S2Container_ChildComponentDefBindingUtil::init();
 
-        $c = $this->getClassPatternSize();
-        for ($i = 0; $i < $c; ++$i) {
-            $cp = $this->getClassPattern($i);
-            $this->registerInternal($cp);
-        }
-        S2Container_ChildComponentDefBindingUtil::bind($this->getContainer());
-        
-    }
+    public static $INIT_METHOD = "registerAll";
 
-    /**
-     * @param string dir path
-     * @param string null or class name string
-     */
-    public function addClassPattern($directoryPath,$patterns = null) {
+    private $container;
+    
+    private $interceptor;
+    
+    private $targetInterface;
+    
+    private $pointcut;
 
-        $directoryPath = S2Container_StringUtil::expandPath($directoryPath);
-        
-        if(!is_dir($directoryPath)){
-            throw new Exception("not dir [$directoryPath]");
-        }
-
-        $pat = new S2Container_ClassPattern();
-        $pat->setDirectoryPath($directoryPath);
-        $pat->setShortClassNames($patterns);
-        
-        parent::addClassPatternInternal($pat);
-    }
-
-    /**
-     * @param string null or class name string
-     */
-    public function addIgnoreClassPattern($patterns) {
-        
-        $pat = new S2Container_ClassPattern();
-        $pat->setShortClassNames($patterns);
-        
-        parent::addIgnoreClassPatternInternal($pat);
+    public function setContainer(S2Container $container) {
+        $this->container = $container;
     }
     
-    /**
-     * 
-     */
-    protected function registerInternal(S2Container_ClassPattern $classPattern) {
-        S2Container_ClassTraversal::forEachTime(
-            $classPattern->getDirectoryPath(), $this);
+    public function setInterceptor(S2Container_MethodInterceptor $interceptor) {
+        $this->interceptor = $interceptor;
+    }
+    
+    public function setTargetInterface($targetInterface) {
+        if (!interface_exists($targetInterface)) {
+            throw new S2Container_IllegalArgumentException($targetInterface);
+        }
+        $this->targetInterface = $targetInterface;
+        $this->pointcut = new S2Container_PointcutImpl($targetInterface);
+    }
+
+    public function registerAll() {
+        $c = $this->container->getComponentDefSize();
+        for ($i = 0; $i < $c; ++$i) {
+            $cd = $this->container->getComponentDef($i);
+            $this->register($cd);
+        }
+    }
+    
+    protected function register(S2Container_ComponentDef $componentDef) {
+        $componentClass = $componentDef->getComponentClass();
+        if ($componentClass == null) {
+            return;
+        }
+        if (! $componentClass->implementsInterface($this->targetInterface)) {
+            return;
+        }
+        $this->registerInterceptor($componentDef);
+    }
+   
+    protected function registerInterceptor(S2Container_ComponentDef $componentDef) {
+        $aspectDef = new S2Container_AspectDefImpl($this->interceptor,
+                                                   $this->pointcut);
+        $componentDef->addAspectDef($aspectDef);
     }
 }
 ?>

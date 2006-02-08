@@ -55,13 +55,46 @@ class FileSystemComponentAutoRegisterTests extends UnitTestCase {
 
         $register = new S2Container_FileSystemComponentAutoRegister();
 
-        $pat = new S2Container_ClassPattern(dirname(__FILE__),"");
         $this->assertEqual($register->getClassPatternSize(),0);
-        $register->addClassPattern($pat);
+        $register->addClassPattern(dirname(__FILE__));
         $this->assertEqual($register->getClassPatternSize(),1);
-        $this->assertReference($register->getClassPattern(0),$pat);
         
         print "\n";
     }    
+
+    function testDirException() {
+        print __METHOD__ . "\n";
+
+        $register = new S2Container_FileSystemComponentAutoRegister();
+
+        try{
+            $register->addClassPattern('dddd');
+            $this->assertTrue(false);
+        }catch(Exception $e){
+            $this->assertTrue(true);
+            print "{$e->getMessage()}\n";
+        }
+        
+        print "\n";
+    }    
+
+    function testIsIgnore() {
+        print __METHOD__ . "\n";
+
+        $register = new Test_FileSystemComponentAutoRegisterTests();
+        $register->addIgnoreClassPattern("Foo,Bar");
+        $this->assertEqual($register->isIgnore('Foo'),true);
+        $this->assertEqual($register->isIgnore('Bar'),true);
+        $this->assertEqual($register->isIgnore('Hoge'),false);
+        print "\n";
+    }
+}
+
+class Test_FileSystemComponentAutoRegisterTests
+    extends S2Container_FileSystemComponentAutoRegister{
+
+    public function isIgnore($name){
+        return parent::isIgnore($name);    
+    }
 }
 ?>
