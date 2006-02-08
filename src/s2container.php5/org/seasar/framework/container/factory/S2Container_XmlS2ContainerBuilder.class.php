@@ -3,7 +3,7 @@
 // +----------------------------------------------------------------------+
 // | PHP version 5                                                        |
 // +----------------------------------------------------------------------+
-// | Copyright 2004-2005 the Seasar Foundation and the Others.            |
+// | Copyright 2005-2006 the Seasar Foundation and the Others.            |
 // +----------------------------------------------------------------------+
 // | Licensed under the Apache License, Version 2.0 (the "License");      |
 // | you may not use this file except in compliance with the License.     |
@@ -28,26 +28,50 @@
 final class S2Container_XmlS2ContainerBuilder
     implements S2ContainerBuilder
 {
-    public static $DTD_PATH21 = "components21.dtd";
-    private $unresolvedCompRef_ = array();
-    private $yetRegisteredCompRef_ = array();
+    private $container = null;
  
     /**
      * 
      */
-    public function __construct()
+    public function includeChild(S2Container $parent, $path) 
     {
-        $this->DTD_PATH21 = S2CONTAINER_PHP5 .
-             "/org/seasar/framework/container/factory/components21.dtd";
+        $child = $this->build($path);
+        $parent->includeChild($child);
+        return $child;
     }
-
+         
     /**
      * 
      */
-    public function build($path,$classLoader = null)
+    public function build($path)
     {
-        $container = null;
-        
+        $root = $this->_loadDicon($path);
+
+        $container = new S2ContainerImpl();
+        $container->setPath($path);
+    
+        $namespace = trim((string)$root['namespace']);
+        if ($namespace != "") {
+            $container->setNamespace($namespace); 
+        }
+
+        $this->_setupInclude($container,$root);
+
+        $this->container = $container;
+        S2Container_ChildComponentDefBindingUtil::init();
+        foreach ($root->component as $index => $val) {
+            $this->_setupComponentDef($val);               
+        }
+        $this->_setupMetaDef($root,$this->container);
+        S2Container_ChildComponentDefBindingUtil::bind($this->container);
+
+        return $this->container;
+    }
+    
+    /**
+     * 
+     */
+    private function _loadDicon($path){
         if (!is_readable($path)) {
             throw new S2Container_S2RuntimeException('ESSR0001',array($path));
         }
@@ -57,23 +81,21 @@ final class S2Container_XmlS2ContainerBuilder
             $dom = new DomDocument();
             $dom->validateOnParse = true;
             $dom->load($path);
-          
             if (!$dom->validate()) {
                 throw new S2Container_S2RuntimeException('ESSR1001',array($path));
             }
-
             $root = simplexml_import_dom($dom);
         } else {
             $root = simplexml_load_file($path);
         }
-        $namespace = trim((string)$root['namespace']);
 
-        $container = new S2ContainerImpl();
-        $container->setPath($path);
-        if ($namespace != "") {
-            $container->setNamespace($namespace); 
-        }
+        return $root;        
+    }
 
+    /**
+     * 
+     */
+    private function _setupInclude(S2Container $container,$root){
         foreach ($root->include as $index => $val) {
             $path = trim((string)$val['path']);
             $path = S2Container_StringUtil::expandPath($path);
@@ -84,46 +106,20 @@ final class S2Container_XmlS2ContainerBuilder
             $child = S2ContainerFactory::includeChild($container,$path);
             $child->setRoot($container->getRoot());
         }
-           
-        foreach ($root->component as $index => $val) {
-            $container->register($this->_setupComponentDef($val));               
-        }
-           
-        $this->_setupMetaDef($root,$container);
-           
-        foreach ($this->yetRegisteredCompRef_ as $compRef) {
-               $container->register($compRef);
-        }
-        $this->yetRegisteredCompRef_ = array();
-           
-        if (count(array_keys($this->unresolvedCompRef_) > 0)) {
-            foreach ($this->unresolvedCompRef_ as $key => $val) {
-                foreach ($val as $argDef) {
-                    if ($container->hasComponentDef($key)) {
-                        $argDef->setChildComponentDef($container->
-                                                       getComponentDef($key));
-                        $argDef->setExpression("");
-                    }
-                }
-            }
-        }
-        $this->unresolvedCompRef_ = array();
-        return $container;
     }
 
     /**
      * 
      */
-    private function _setupComponentDef($component)
+    private function _createComponentDef($component,$className)
     {
-        $className = trim((string)$component['class']);
         $name = trim((string)$component['name']);
         $instanceMode = trim((string)$component['instance']);
         $autoBindingMode = trim((string)$component['autoBinding']);
+        $compExp = trim((string)$component);
         
         $componentDef = new S2Container_ComponentDefImpl($className,$name);
 
-        $compExp = trim((string)$component);
         if ($compExp != "") {
             $componentDef->setExpression($compExp);            
         }   
@@ -136,6 +132,18 @@ final class S2Container_XmlS2ContainerBuilder
             $componentDef->setAutoBindingMode($autoBindingMode);
         }
            
+        return $componentDef;
+    }
+    
+    /**
+     * 
+     */
+    private function _setupComponentDef($component)
+    {
+        $className = trim((string)$component['class']);
+        $componentDef = $this->_createComponentDef($component,$className);
+        $this->container->register($componentDef );
+
         foreach ($component->arg as $index => $val) {
             $componentDef->addArgDef($this->_setupArgDef($val));               
         }
@@ -170,30 +178,33 @@ final class S2Container_XmlS2ContainerBuilder
     private function _setupArgDef($arg)
     {
         $argDef = new S2Container_ArgDefImpl();
-
-        if (count($arg->component[0]) == null) {
-            $argValue = trim((string)$arg);
-            if (preg_match("/^\"(.+)\"$/",$argValue,$regs) or
-               preg_match("/^\'(.+)\'$/",$argValue,$regs)) {
-                $argDef->setValue($regs[1]);
-            } else {
-                 $argDef->setExpression($argValue);
-                if (array_key_exists($argValue,$this->unresolvedCompRef_)) {
-                   array_push($this->unresolvedCompRef_[$argValue],$argDef);
-                } else {
-                   $this->unresolvedCompRef_[$argValue] = array($argDef);
-                }
-            }
-        } else {
-            $childComponent = $this->_setupComponentDef($arg->component[0]);
-            $argDef->setChildComponentDef($childComponent);
-            array_push($this->yetRegisteredCompRef_,$childComponent);
-        }
-
+        $this->_setupArgDefInternal($arg,$argDef);
         $this->_setupMetaDef($arg,$argDef);
         
         return $argDef;
     }
+
+    /**
+     * @param SimpleXMLElement arg | property | meta
+     * @param S2Container_ArgDef
+     */
+    private function _setupArgDefInternal($arg,S2Container_ArgDef $argDef)
+    {
+        if (count($arg->component[0]) == null) {
+            $argValue = trim((string)$arg);
+            $injectValue = $this->_getInjectionValue($argValue);
+            if ($injectValue != null){
+                $argDef->setValue($injectValue);
+            }else{
+                $argDef->setExpression($argValue);
+                S2Container_ChildComponentDefBindingUtil::put($argValue,$argDef);
+            }
+        } else {
+            $childComponent = $this->_setupComponentDef($arg->component[0]);
+            $argDef->setChildComponentDef($childComponent);
+        }
+    }
+
 
     /**
      * 
@@ -202,26 +213,7 @@ final class S2Container_XmlS2ContainerBuilder
     {
         $name = (string)$property['name'];
         $propertyDef = new S2Container_PropertyDefImpl($name);
-
-        if (count($property->component[0]) == null) {
-            $propertyValue = trim((string)$property);
-            if (preg_match("/^\"(.+)\"$/",$propertyValue,$regs) or
-               preg_match("/^\'(.+)\'$/",$propertyValue,$regs)) {
-                  $propertyDef->setValue($regs[1]);
-            } else {
-                 $propertyDef->setExpression($propertyValue);
-                if (array_key_exists($propertyValue,$this->unresolvedCompRef_)) {
-                   array_push($this->unresolvedCompRef_[$propertyValue],$propertyDef);
-                } else {
-                   $this->unresolvedCompRef_[$propertyValue] = array($propertyDef);
-                }
-            }
-        } else {
-            $childComponent = $this->_setupComponentDef($property->component[0]);
-            $propertyDef->setChildComponentDef($childComponent);
-            array_push($this->yetRegisteredCompRef_,$childComponent);            
-        }
-
+        $this->_setupArgDefInternal($property,$propertyDef);
         $this->_setupMetaDef($property,$propertyDef);
         
         return $propertyDef;
@@ -233,16 +225,8 @@ final class S2Container_XmlS2ContainerBuilder
     private function _setupInitMethodDef($initMethod)
     {
         $name = (string)$initMethod['name'];
-        $exp = trim((string)$initMethod);
-
         $initMethodDef = new S2Container_InitMethodDefImpl($name);
-        if ($exp != "") {
-            $initMethodDef->setExpression($exp);
-        }
-        foreach ($initMethod->arg as $index => $val) {
-            $initMethodDef->addArgDef($this->_setupArgDef($val));               
-        }
-
+        $this->_setupMethodDefInternal($initMethod,$initMethodDef);
         return $initMethodDef;
     }
 
@@ -252,17 +236,25 @@ final class S2Container_XmlS2ContainerBuilder
     private function _setupDestroyMethodDef($destroyMethod)
     {
         $name = (string)$destroyMethod['name'];
-        $exp = trim((string)$destroyMethod);
         $destroyMethodDef = new S2Container_DestroyMethodDefImpl($name);
-        if ($exp != "") {
-            $destroyMethodDef->setExpression($exp);
-        }
-
-        foreach ($destroyMethod->arg as $index => $val) {
-            $destroyMethodDef->addArgDef($this->_setupArgDef($val));               
-        }
-
+        $this->_setupMethodDefInternal($destroyMethod,$destroyMethodDef);
         return $destroyMethodDef;
+    }
+
+    /**
+     * @param SimpleXMLElement initMethod | destroyMethod element
+     * @param S2Container_MethodDef
+     */
+    private function _setupMethodDefInternal($method,S2Container_MethodDef $methodDef)
+    {
+        $exp = trim((string)$method);
+        if ($exp != "") {
+            $methodDef->setExpression($exp);
+        }
+
+        foreach ($method->arg as $index => $val) {
+            $methodDef->addArgDef($this->_setupArgDef($val));               
+        }
     }
 
     /**
@@ -282,21 +274,15 @@ final class S2Container_XmlS2ContainerBuilder
         $aspectDef = new S2Container_AspectDefImpl($pointcut);
         if (count($aspect->component[0]) == null) {
             $aspectValue = trim((string)$aspect);
-            if (preg_match("/^\"(.+)\"$/",$aspectValue,$regs) or
-               preg_match("/^\'(.+)\'$/",$aspectValue,$regs)) {
-                  $aspectDef->setValue($regs[1]);
-            } else {
-                 $aspectDef->setExpression($aspectValue);
-                if (array_key_exists($aspectValue,$this->unresolvedCompRef_)) {
-                   array_push($this->unresolvedCompRef_[$aspectValue],$aspectDef);
-                } else {
-                   $this->unresolvedCompRef_[$aspectValue] = array($aspectDef);
-                }
+            $injectValue = $this->_getInjectionValue($aspectValue);
+            if ($injectValue != null){
+                 $aspectValue = $injectValue;
             }
+            $aspectDef->setExpression($aspectValue);
+            S2Container_ChildComponentDefBindingUtil::put($aspectValue,$aspectDef);
         } else {
             $childComponent = $this->_setupComponentDef($aspect->component[0]);
             $aspectDef->setChildComponentDef($childComponent);
-            array_push($this->yetRegisteredCompRef_,$childComponent);            
         }
         
         return $aspectDef;
@@ -310,25 +296,7 @@ final class S2Container_XmlS2ContainerBuilder
         foreach ($parent->meta as $index => $val) {
             $name = trim((string)$val['name']);
             $metaDef = new S2Container_MetaDefImpl($name);
-
-            if (count($val->component[0]) == null) {
-                $metaValue = trim((string)$val);
-                if (preg_match("/^\"(.+)\"$/",$metaValue,$regs) or
-                   preg_match("/^\'(.+)\'$/",$metaValue,$regs)) {
-                   $metaDef->setValue($regs[1]);
-                } else {
-                     $metaDef->setExpression($metaValue);
-                    if (array_key_exists($metaValue,$this->unresolvedCompRef_)) {
-                       array_push($this->unresolvedCompRef_[$metaValue],$metaDef);
-                    } else {
-                       $this->unresolvedCompRef_[$metaValue] = array($metaDef);
-                    }
-                }
-            } else {
-                $childComponent = $this->_setupComponentDef($meta->component[0]);
-                $metaDef->setChildComponentDef($childComponent);
-                array_push($this->yetRegisteredCompRef_,$childComponent);            
-            }
+            $this->_setupArgDefInternal($val,$metaDef);
             $parentDef->addMetaDef($metaDef);
         }
     }
@@ -336,14 +304,12 @@ final class S2Container_XmlS2ContainerBuilder
     /**
      * 
      */
-    public function includeChild(S2Container $parent, $path) 
-    {
-        $child = null;
-
-        $child = $this->build($path);
-        $parent->includeChild($child);
-
-        return $child;
+    private function _getInjectionValue($value){
+        if (preg_match("/^\"(.*)\"$/",$value,$matches) or
+            preg_match("/^\'(.*)\'$/",$value,$matches)) {
+            return $matches[1];
+        }
+        return null;
     }
 }
 ?>

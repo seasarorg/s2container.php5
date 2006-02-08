@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
+"components21.dtd">
+<components>
+    <component name="mockInterceptor" 
+               class="S2Container_MockInterceptor">
+        <initMethod name="setReturnValue">
+            <arg>"greeting"</arg>
+            <arg>"Hello"</arg>
+        </initMethod>
+        <initMethod name="setReturnValue">
+            <arg>"echoo"</arg>
+            <arg>"Hoge"</arg>
+        </initMethod>
+    </component>
+    <component class="Hello">
+        <aspect>
+            mockInterceptor
+        </aspect>
+    </component>
+</components>

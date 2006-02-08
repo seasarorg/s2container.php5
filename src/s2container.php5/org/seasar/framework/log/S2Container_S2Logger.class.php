@@ -3,7 +3,7 @@
 // +----------------------------------------------------------------------+
 // | PHP version 5                                                        |
 // +----------------------------------------------------------------------+
-// | Copyright 2004-2005 the Seasar Foundation and the Others.            |
+// | Copyright 2005-2006 the Seasar Foundation and the Others.            |
 // +----------------------------------------------------------------------+
 // | Licensed under the Apache License, Version 2.0 (the "License");      |
 // | you may not use this file except in compliance with the License.     |
@@ -44,15 +44,12 @@ final class S2Container_S2Logger
      */
     public static final function getLogger($className)
     {
-        $logger = null;
-        if (array_key_exists($className,S2Container_S2Logger::$loggerMap_)) {
-            $logger = S2Container_S2Logger::$loggerMap_[$className];
+        if (!array_key_exists($className,S2Container_S2Logger::$loggerMap_)) {
+            S2Container_S2Logger::$loggerMap_[$className] = 
+                new S2Container_S2Logger($className);
         }
-        if ($logger == null) {
-            $logger = new S2Container_S2Logger($className);
-            S2Container_S2Logger::$loggerMap_[$className] = $logger;
-        }
-        return $logger->_getLog();
+        return S2Container_S2Logger::$loggerMap_[$className]->_getLog();
+
     }
     
     /**
