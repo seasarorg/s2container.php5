@@ -162,6 +162,7 @@ class S2ContainerClassLoader {
         'S2Container_FileCacheUtil' => '/org/seasar/framework/util/S2Container_FileCacheUtil.class.php',
         'S2Container_MethodUtil' => '/org/seasar/framework/util/S2Container_MethodUtil.class.php',
         'S2Container_StringUtil' => '/org/seasar/framework/util/S2Container_StringUtil.class.php',
+        'S2Container_ChildComponentDefBindingUtil' => '/org/seasar/framework/container/util/S2Container_ChildComponentDefBindingUtil.class.php',
 
         'S2Container_ComponentAnnotation' => '/org/seasar/extension/annotation/type/S2Container_ComponentAnnotation.class.php',
         'S2Container_AspectAnnotation' => '/org/seasar/extension/annotation/type/S2Container_AspectAnnotation.class.php',
@@ -176,7 +177,6 @@ class S2ContainerClassLoader {
 
         'S2Container_ClassPattern' => '/org/seasar/extension/annotation/autoregister/S2Container_ClassPattern.class.php',
         'S2Container_ClassTraversalClassHandler' => '/org/seasar/extension/annotation/util/S2Container_ClassTraversalClassHandler.class.php',
-        'S2Container_ChildComponentDefBindingUtil' => '/org/seasar/extension/annotation/util/S2Container_ChildComponentDefBindingUtil.class.php',
         'S2Container_ClassTraversal' => '/org/seasar/extension/annotation/util/S2Container_ClassTraversal.class.php',
         'S2Container_AutoNaming' => '/org/seasar/extension/annotation/autoregister/S2Container_AutoNaming.class.php',
         'S2Container_AbstractAutoNaming' => '/org/seasar/extension/annotation/autoregister/S2Container_AbstractAutoNaming.class.php',
