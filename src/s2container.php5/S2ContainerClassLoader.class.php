@@ -194,7 +194,8 @@ class S2ContainerClassLoader {
         'S2Container_ConstantAnnotationHandler' => '/org/seasar/extension/annotation/factory/S2Container_ConstantAnnotationHandler.class.php',
         'S2Container_DefaultAnnotationHandler' => '/org/seasar/extension/annotation/factory/S2Container_DefaultAnnotationHandler.class.php',
 
-        'S2ContainerCachingFactory' => '/org/seasar/extension/cache/S2ContainerCachingFactory.class.php'
+        'S2ContainerCachingFactory' => '/org/seasar/extension/cache/S2ContainerCachingFactory.class.php',
+        'S2ContainerMemcacheFactory' => '/org/seasar/extension/cache/S2ContainerMemcacheFactory.class.php',
         );
 
     function load($className){
