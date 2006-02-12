@@ -71,10 +71,15 @@ final class S2ContainerMemcacheFactory {
         }
     }
 
-    public static function getInstance(){
+    public static function connection(){
         if(null === self::$memcache){
             self::$memcache = new Memcache();
-            if(!self::$memcache->connect(self::$host, self::$port, self::$timeout)){
+            if(isset(self::$timeout)){
+                $conn = self::$memcache->connect(self::$host, self::$port, self::$timeout);
+            } else {
+                $conn = self::$memcache->connect(self::$host, self::$port);
+            }
+            if(!$conn){
                 throw new Exception("connection failure");
             }
         }
@@ -87,7 +92,7 @@ final class S2ContainerMemcacheFactory {
     }
 
     public static function create($diconPath, $cacheName = null){
-        $memcache = self::getInstance();
+        self::connection();
         if($cacheName == null){
             $cacheName = self::getCacheKeyName($diconPath);
         }
@@ -118,6 +123,10 @@ final class S2ContainerMemcacheFactory {
         return $container;
     }
 
+    protected static function add($key, $item){
+        return self::$memcache->add($key, $item, self::$cache_compress, self::$cache_expire);
+    }
+
     protected static function set($key, $item){
         return self::$memcache->set($key, $item, self::$cache_compress, self::$cache_expire);
     }
@@ -126,7 +135,7 @@ final class S2ContainerMemcacheFactory {
         return self::$memcache->get($key);
     }
 
-    protected static function remove($key){
+    protected static function delete($key){
         return self::$memcache->delete($key);
     }
 
