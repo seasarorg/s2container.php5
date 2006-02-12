@@ -1,6 +1,6 @@
 <?php
 require_once(dirname(__FILE__) . '/example.inc.php');
-$PATH =	EXAMPLE_DIR . "/dicon/Yaml/HelloConstructorInjection.dicon.yml";
+$PATH =	dirname(__FILE__) . "/HelloConstructorInjection.dicon.yml";
 
 $container = S2ContainerFactory::create($PATH);
 
