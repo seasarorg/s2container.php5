@@ -25,11 +25,11 @@
 <!-- don't edit end -->
 <!-- document start -->
 	<ul>
-		<li><a href="#S2AOPReference">S2AOP儕僼傽儗儞僗</a>
+		<li><a href="#S2AOPReference">S2AOPリファレンス</a>
             <ul>
-            <li><a href="#AOPMakeFile">嶌惉偡傋偒僼傽僀儖</a></li>
-            <li><a href="#AOPExplanationFile">愝掕僼傽僀儖偺愢柧</a></li>
-			<li><a href="#AOPInterceptor">S2AOP偱梡堄偝傟偰偄傞Interceptor</a>
+            <li><a href="#AOPMakeFile">侯喇すべきファイル</a></li>
+            <li><a href="#AOPExplanationFile">肋年ファイルの棱汤</a></li>
+			<li><a href="#AOPInterceptor">S2AOPで脱罢されているInterceptor</a>
 				<ul>
 				<li><a href="#TraceInterceptor">TraceInterceptor</a></li>
 				<li><a href="#ThrowsInterceptor">ThrowsInterceptor</a></li>
@@ -37,10 +37,10 @@
 				<li><a href="#DelegateInterceptor">DelegateInterceptor</a></li>
 <li><a href="#PrototypeDelegateInterceptor">PrototypeDelegateInterceptor</a></li>
 				<li><a href="#InterceptorChain">InterceptorChain</a></li>
-				<li><a href="#OriginalInterceptor">撈帺幚憰偵傛傞Interceptor</a></li>
+				<li><a href="#OriginalInterceptor">迫极悸刘によるInterceptor</a></li>
 				</ul>
                         </li>
-	        <li><a href="#nodicon">dicon僼傽僀儖傪巊梡偟側偄偱傾僗儁僋僩傪慻傒崬傓曽朄</a></li>
+	        <li><a href="#nodicon">diconファイルを蝗脱しないでアスペクトを寥み哈む数恕</a></li>
 		</ul></li>
 		<li><a href="#Example">Example</a>
 		<ul>
@@ -48,38 +48,38 @@
            	<li><a href="#ThrowsInterceptorSample">ThrowsInterceptor</a></li>
            	<li><a href="#DelegateInterceptorSample">DelegateInterceptor</a></li>
 <li><a href="#PrototypeDelegateInterceptorSample">PrototypeDelegateInterceptor</a></li>
-			<li><a href="#OriginalInterceptorSample">撈帺幚憰偵傛傞Interceptor</a></li>
+			<li><a href="#OriginalInterceptorSample">迫极悸刘によるInterceptor</a></li>
         </ul></li>
 	</ul>
 
 <br>
 
-<h3><a name="Warning">拲堄揰</a></h3>
+<h3><a name="Warning">庙罢爬</a></h3>
 <ul>
-<li>Public側儊僜僢僪偵傾僗儁僋僩傪揔梡偱偒傑偡丅</li>
-<li>static側儊僜僢僪偵偼傾僗儁僋僩傪揔梡偱偒傑偣傫丅</li>
-<li>pointcut懏惈傪巜掕偟側偄応崌丄偡傋偰偺儊僜僢僪偑懳徾偵側傞傢偗偱偼偁傝傑偣傫丅幚憰偟偰偄傞僀儞僞乕僼僃乕僗偺偡傋偰偺儊僜僢僪偑懳徾偵側傝傑偡丅偡傋偰偺儊僜僢僪傪懳徾偵偡傞偵偼丄pointcut懏惈偵".*"偲巜掕偟傑偡丅</li>
+<li>Publicなメソッドにアスペクトを努脱できます。</li>
+<li>staticなメソッドにはアスペクトを努脱できません。</li>
+<li>pointcut掳拉を回年しない眷圭、すべてのメソッドが滦据になるわけではありません。悸刘しているインタ〖フェ〖スのすべてのメソッドが滦据になります。すべてのメソッドを滦据にするには、pointcut掳拉に".*"と回年します。</li>
 </ul>
 
-	<h2><a name="S2AOPReference">S2AOP儕僼傽儗儞僗</a></h2>
-    <h3><a name="AOPMakeFile">嶌惉偡傋偒僼傽僀儖</a></h3>
+	<h2><a name="S2AOPReference">S2AOPリファレンス</a></h2>
+    <h3><a name="AOPMakeFile">侯喇すべきファイル</a></h3>
     <p>S2AOP
-傪巊梡偡傞偵偼S2Container
-偺愝掕僼傽僀儖(dicon僼傽僀儖)偱峴偄傑偡丅愝掕僼傽僀儖偺攝抲応強偼丄偲偔偵巜掕偑偁傝傑偣傫偑丄捠忢乽Crosscutting
-Concern乿偲摨偠応強偵攝抲偡傞偐丄愝掕傪峴偆僐儞億乕僱儞僩偲摨偠応強偵攝抲偟傑偡丅</p>
-    <h3><a name="AOPExplanationFile">愝掕僼傽僀儖偺愢柧</a></h3>
-    <h4><a name="aspecTtag">aspect僞僌乮AOP傪巊梡偡傞応崌偼昁恵乯</a></h4>
-    <p>傾僗儁僋僩傪僐儞億乕僱儞僩偵慻傒崬傒傑偡丅Interceptor偺巜掕偼丄儃僨傿偱PHP幃傪巊偆偐丄巕僞僌偱component僞僌傪巊偄傑偡丅<br>
-1偮偺僐儞億乕僱儞僩偵暋悢偺傾僗儁僋僩傪慻傒崬傫偩応崌偼傾僗儁僋僩偺搊榐弴偵慻傒崬傑傟幚峴偝傟傑偡丅徻偟偄愢柧偼<a href="#OriginalInterceptor">撈帺幚憰偺Interceptor</a>傪嶲徠偟偰偔偩偝偄丅</p>
-<h5>拲堄揰</h5>
-<p>aspect僞僌偱巜掕偝傟偨僐儞億乕僱儞僩偼丄僐儞僥僫偺弶婜壔帪偵僐儞僥僫偐傜庢摼偝傟傑偡丅偦偺偨傔丄aspect僞僌偱巜掕偝傟偨僐儞億乕僱儞僩偺instance懏惈偑prototype偩偭偨偲偟偰傕丄Interceptor
-偺儊僜僢僪偑屇傃弌偝傟傞搙偵怴偟偄僀儞僗僞儞僗偑嶌惉偝傟傞傢偗偱偼偁傝傑偣傫丅</p>
-<h5>pointcut懏惈(擟堄)</h5>
-    <p>僇儞儅嬫愗傝偱懳徾偲側傞儊僜僢僪柤傪巜掕偡傞偙偲偑偱偒傑偡丅pointcut傪巜掕偟側偄応崌偼丄僐儞億乕僱儞僩偑幚憰偟偰偄傞僀儞僞乕僼僃乕僗偺偡傋偰偺儊僜僢僪偑懳徾偵側傝傑偡丅儊僜僢僪柤偵偼惓婯昞尰傕巊偊傑偡丅</p>
-    <h5>愝掕椺</h5>
+を蝗脱するにはS2Container
+の肋年ファイル(diconファイル)で乖います。肋年ファイルの芹弥眷疥は、とくに回年がありませんが、奶撅≈Crosscutting
+Concern∽と票じ眷疥に芹弥するか、肋年を乖うコンポ〖ネントと票じ眷疥に芹弥します。</p>
+    <h3><a name="AOPExplanationFile">肋年ファイルの棱汤</a></h3>
+    <h4><a name="aspecTtag">aspectタグ∈AOPを蝗脱する眷圭は涩寇∷</a></h4>
+    <p>アスペクトをコンポ〖ネントに寥み哈みます。Interceptorの回年は、ボディでPHP及を蝗うか、灰タグでcomponentタグを蝗います。<br>
+1つのコンポ〖ネントに剩眶のアスペクトを寥み哈んだ眷圭はアスペクトの判峡界に寥み哈まれ悸乖されます。拒しい棱汤は<a href="#OriginalInterceptor">迫极悸刘のInterceptor</a>を徊救してください。</p>
+<h5>庙罢爬</h5>
+<p>aspectタグで回年されたコンポ〖ネントは、コンテナの介袋步箕にコンテナから艰评されます。そのため、aspectタグで回年されたコンポ〖ネントのinstance掳拉がprototypeだったとしても、Interceptor
+のメソッドが钙び叫される刨に糠しいインスタンスが侯喇されるわけではありません。</p>
+<h5>pointcut掳拉(扦罢)</h5>
+    <p>カンマ惰磊りで滦据となるメソッド叹を回年することができます。pointcutを回年しない眷圭は、コンポ〖ネントが悸刘しているインタ〖フェ〖スのすべてのメソッドが滦据になります。メソッド叹には赖惮山附も蝗えます。</p>
+    <h5>肋年毋</h5>
     <p>pointcut
-懏惈傪巜掕偟偰Date偺getTime()儊僜僢僪傪懳徾偲偡傞応崌埲壓偺傛偆偵側傝傑偡丅
-pointcut懏惈傪巜掕偟側偄応崌偼Date偑幚憰偟偰偄傞僀儞僞乕僼僃乕僗偺儊僜僢僪偑懳徾偵側傝傑偡丅</p>
+掳拉を回年してDateのgetTime()メソッドを滦据とする眷圭笆布のようになります。
+pointcut掳拉を回年しない眷圭はDateが悸刘しているインタ〖フェ〖スのメソッドが滦据になります。</p>
 
 <pre>&lt;?php
 class Date {
@@ -96,7 +96,7 @@ class Date {
 ?&gt;
 </pre>
 
- 惓婯昞尰傪巊偭偰java.util.Date偺public側儊僜僢僪偡傋偰傪懳徾偲偟偨偄応崌偼丄埲壓偺傛偆偵愝掕偟傑偡丅
+ 赖惮山附を蝗ってjava.util.Dateのpublicなメソッドすべてを滦据としたい眷圭は、笆布のように肋年します。
 <pre>&lt;component class="Date"&gt;
     &lt;aspect pointcut=".*"&gt;
         &lt;component class="S2Container_TraceInterceptor"/&gt;
@@ -104,71 +104,71 @@ class Date {
 &lt;/component&gt;
 </pre>
 
-    <h3><a name="AOPInterceptor">S2AOP偱梡堄偝傟偰偄傞Interceptor</a></h3>
-    <p>S2AOP偱偼丄埲壓偺Interceptor傪梡堄偟偰偄傑偡丅傑偨撈帺偺Interceptor傪娙扨偵嶌惉偱偒傞傛偆偵側偭偰偄傑偡丅</p>
+    <h3><a name="AOPInterceptor">S2AOPで脱罢されているInterceptor</a></h3>
+    <p>S2AOPでは、笆布のInterceptorを脱罢しています。また迫极のInterceptorを词帽に侯喇できるようになっています。</p>
     <h4><a name="S2Container_TraceInterceptor">(1) TraceInterceptor</a></h4>
-    <h5>僋儔僗柤</h5>
+    <h5>クラス叹</h5>
     <p>TraceInterceptor</p>
-    <h5>愢柧</h5>
-    <p>僩儗乕僗張棟傪乽Crosscutting Concern乿偲偟偰埖偆偨傔偺Interceptor偱偡丅Date僋儔僗偵TraceInterceptor傪揔梡偟偨dicon僼傽僀儖偼丄埲壓偺傛偆偵側傝傑偡丅懳徾偲偡傞儊僜僢僪偼getTime()偲偟傑偡丅</p>
+    <h5>棱汤</h5>
+    <p>トレ〖ス借妄を≈Crosscutting Concern∽として胺うためのInterceptorです。DateクラスにTraceInterceptorを努脱したdiconファイルは、笆布のようになります。滦据とするメソッドはgetTime()とします。</p>
 <pre>&lt;component class="Date"&gt;
     &lt;aspect pointcut="getTime"&gt;
         &lt;component class="S2Container_TraceInterceptor"/&gt;
     &lt;/aspect&gt;
 &lt;/component&gt;
 </pre>
-    <p>徻偟偄巊梡曽朄偼<a href="#TraceInterceptorSample">TraceInterceptor</a>傪嶲徠偟偰偔偩偝偄丅</p>
+    <p>拒しい蝗脱数恕は<a href="#TraceInterceptorSample">TraceInterceptor</a>を徊救してください。</p>
     <h4><a name="S2Container_ThrowsInterceptor">(2) ThrowsInterceptor</a></h4>
-    <h5>僋儔僗柤</h5>
+    <h5>クラス叹</h5>
     <p>ThrowsInterceptor</p>
-    <h5>愢柧</h5>
-    <p>椺
-奜張棟傪乽Crosscutting
-concern乿偲偟偰埖偆偨傔偺Interceptor偱偡丅巊梡偡傞偵偼ThrowsInterceptor傪宲彸偟丄function
+    <h5>棱汤</h5>
+    <p>毋
+嘲借妄を≈Crosscutting
+concern∽として胺うためのInterceptorです。蝗脱するにはThrowsInterceptorを费镜し、function
 handleThrowable(Exception,
-S2Container_MethodInvocation)傪幚憰偡傞偩偗偱偡丅徻偟偄巊梡曽朄偼<a href="#ThrowsInterceptorSample">ThrowsInterceptor</a>傪嶲徠偟偰偔偩偝偄丅</p>
+S2Container_MethodInvocation)を悸刘するだけです。拒しい蝗脱数恕は<a href="#ThrowsInterceptorSample">ThrowsInterceptor</a>を徊救してください。</p>
     <h4><a name="S2Container_MockInterceptor">(3) MockInterceptor</a></h4>
-    <h5>僋儔僗柤</h5>
+    <h5>クラス叹</h5>
     <p>MockInterceptor</p>
-    <h5>愢柧</h5>
-    <p>Mock傪巊偭偨僥僗僩傪娙扨偵峴偆偨傔偺Interceptor偱偡丅徻偟偄愢柧偼僥僗僩媄朄偺<a href="http://homepage3.nifty.com/seasar/testtech.html#MockMake">儌僢僋傪嶌惉偡傞偨傔偺愝掕</a>傪嶲徠偟偰偔偩偝偄丅</p>
+    <h5>棱汤</h5>
+    <p>Mockを蝗ったテストを词帽に乖うためのInterceptorです。拒しい棱汤はテスト祷恕の<a href="http://homepage3.nifty.com/seasar/testtech.html#MockMake">モックを侯喇するための肋年</a>を徊救してください。</p>
     <h4><a name="S2Container_DelegateInterceptor">(4) DelegateInterceptor</a></h4>
-    <h5>僋儔僗柤</h5>
+    <h5>クラス叹</h5>
     <p>DelegateInterceptor</p>
-    <h5>愢柧</h5>
-    <p>儊
-僜僢僪屇傃弌偟傪暿偺僐儞億乕僱儞僩偵埾忳偡傞偨傔偺Interceptor偱偡丅巊梡曽朄偼DelegateInterceptor偺target僾儘
-僷僥傿偵埾忳偟偨偄憡庤傪巜掕偟傑偡丅埾忳偡傞偲偒偺儊僜僢僪柤偑堎側傞応崌偵偼丄
+    <h5>棱汤</h5>
+    <p>メ
+ソッド钙び叫しを侍のコンポ〖ネントに把均するためのInterceptorです。蝗脱数恕はDelegateInterceptorのtargetプロ
+パティに把均したい陵缄を回年します。把均するときのメソッド叹が佰なる眷圭には、
 DeleateInterceptor#addMethodNameMap(
 $methodName, 
-$targetMethodName)偱巜掕偟傑偡丅椺偊偽丄bar()偲偄偆儊僜僢僪傪foo->bar2()偵埾忳偡傞応崌丄
-DeleateInterceptor#setTarget(foo)丆DeleateInterceptor#addMethodNameMap
+$targetMethodName)で回年します。毋えば、bar()というメソッドをfoo->bar2()に把均する眷圭、
+DeleateInterceptor#setTarget(foo)·DeleateInterceptor#addMethodNameMap
 ("bar",
-"bar2")偺傛偆偵巜掕偟傑偡丅徻偟偄巊梡曽朄偼<a href="#DelegateInterceptorSample">DelegateInterceptor</a>傪嶲徠偟偰偔偩偝偄丅</p>
-<h5>拲堄</h5>
-<p>target僾儘僷僥傿偵巜掕偝傟偨僐儞億乕僱儞僩偼丄僐儞僥僫偺弶婜壔帪偵僐儞僥僫偐傜庢摼偝傟傑偡丅偙偺偨傔丄target僾儘僷僥傿偵巜掕偝
-傟偨僐儞億乕僱儞僩偺instance懏惈偑prototype偱偁偭偰傕丄忢偵摨偠僀儞僗僞儞僗偑巊傢傟傑偡丅儊僜僢僪屇傃弌偟偺搙偵怴偟偄僀儞僗僞儞
-僗傪僐儞僥僫偐傜庢摼偟偨偄応崌偼師偺PrototypeDelegateInterceptor傪巊梡偟偰偔偩偝偄丅</p>
+"bar2")のように回年します。拒しい蝗脱数恕は<a href="#DelegateInterceptorSample">DelegateInterceptor</a>を徊救してください。</p>
+<h5>庙罢</h5>
+<p>targetプロパティに回年されたコンポ〖ネントは、コンテナの介袋步箕にコンテナから艰评されます。このため、targetプロパティに回年さ
+れたコンポ〖ネントのinstance掳拉がprototypeであっても、撅に票じインスタンスが蝗われます。メソッド钙び叫しの刨に糠しいインスタン
+スをコンテナから艰评したい眷圭は肌のPrototypeDelegateInterceptorを蝗脱してください。</p>
 <h4><a name="S2Container_PrototypeDelegateInterceptor">(5) PrototypeDelegateInterceptor</a></h4>
-    <h5>僋儔僗柤</h5>
+    <h5>クラス叹</h5>
     <p>PrototypeDelegateInterceptor</p>
-    <h5>愢柧</h5>
-    <p>儊
-僜僢僪屇傃弌偟傪暿偺僐儞億乕僱儞僩偵埾忳偡傞偨傔偺Interceptor偱偡丅儊僜僢僪屇傃弌偟偺搙偵僐儞億乕僱儞僩傪僐儞僥僫偐傜庢摼偟傑偡丅巊梡
-曽朄偼PrototypeDelegateInterceptor偺targetName僾儘僷僥傿偵埾忳偟偨偄憡庤偺柤慜傪巜掕偟傑偡丅埾忳偡傞偲偒偺
-儊僜僢僪柤偑堎側傞応崌偵偼丄PrototypeDeleateInterceptor#addMethodNameMap($methodName, $targetMethodName)偱巜掕偟傑偡丅椺偊偽丄bar()偲偄偆儊僜僢僪傪foo->bar2()偵埾忳偡傞応崌丄
-PrototypeDeleateInterceptor#setTarget(foo)丆
+    <h5>棱汤</h5>
+    <p>メ
+ソッド钙び叫しを侍のコンポ〖ネントに把均するためのInterceptorです。メソッド钙び叫しの刨にコンポ〖ネントをコンテナから艰评します。蝗脱
+数恕はPrototypeDelegateInterceptorのtargetNameプロパティに把均したい陵缄の叹涟を回年します。把均するときの
+メソッド叹が佰なる眷圭には、PrototypeDeleateInterceptor#addMethodNameMap($methodName, $targetMethodName)で回年します。毋えば、bar()というメソッドをfoo->bar2()に把均する眷圭、
+PrototypeDeleateInterceptor#setTarget(foo)·
 PrototypeDeleateInterceptor#addMethodNameMap("bar",
-"bar2")偺傛偆偵巜掕偟傑偡丅徻偟偄巊梡曽朄偼<a href="#PrototypeDelegateInterceptorSample">PrototypeDelegateInterceptor</a>傪嶲徠偟偰偔偩偝偄丅</p>
+"bar2")のように回年します。拒しい蝗脱数恕は<a href="#PrototypeDelegateInterceptorSample">PrototypeDelegateInterceptor</a>を徊救してください。</p>
 
 	<h4><a name="S2Container_InterceptorChain">(6) InterceptorChain</a></h4>
-    <h5>僋儔僗柤</h5>
+    <h5>クラス叹</h5>
     <p>InterceptorChain</p>
-    <h5>愢柧</h5>
-    <p>暋
-悢偺Interceptor傪僌儖乕僺儞僌壔偟丄嵞棙梡偟傗偡偔偟傑偡丅暋悢偺Interceptor偺慻傒崌傢偣傪暋悢僐儞億乕僱儞僩偵揔梡偡傞応崌
-偼丄InterceptorChain偱暋悢偺Interceptor1偮偵傑偲傔偰丄奺僐儞億乕僱儞僩偵偼InterceptorChain傪巜掕偡傞
-傛偆偵偡傞偲偄偄偱偟傚偆丅</p>
+    <h5>棱汤</h5>
+    <p>剩
+眶のInterceptorをグル〖ピング步し、浩网脱しやすくします。剩眶のInterceptorの寥み圭わせを剩眶コンポ〖ネントに努脱する眷圭
+は、InterceptorChainで剩眶のInterceptor1つにまとめて、称コンポ〖ネントにはInterceptorChainを回年する
+ようにするといいでしょう。</p>
 	<pre>&lt;component name="interceptor1" .../&gt;
 &lt;component name="interceptor2" .../&gt;
 &lt;component name="interceptor3" .../&gt;<br>&lt;component name="chain" class="S2Container_InterceptorChain"&gt;<br>    &lt;initMethod name="add"&gt;&lt;arg&gt;interceptor1&lt;/arg&gt;&lt;/initMethod&gt;<br>    &lt;initMethod name="add"&gt;&lt;arg&gt;interceptor2&lt;/arg&gt;&lt;/initMethod&gt;<br>    &lt;initMethod name="add"&gt;&lt;arg&gt;interceptor3&lt;/arg&gt;&lt;/initMethod&gt;<br>&lt;/component&gt;
@@ -179,63 +179,63 @@ PrototypeDeleateInterceptor#addMethodNameMap("bar",
     &lt;aspect&gt;chain&lt;/aspect&gt;
 &lt;/component&gt;</pre>
 
-<h4><a name="OriginalInterceptor">(7) 撈帺幚憰偵傛傞Interceptor</a></h4>
-    <h5>愢柧</h5>
-    <p>撈帺偵Interceptor傪嶌惉偡傞応崌偼丄師偺僀儞僞乕僼僃乕僗傑偨偼丄拪徾僋儔僗傪幚憰偟傑偡丅</p>
+<h4><a name="OriginalInterceptor">(7) 迫极悸刘によるInterceptor</a></h4>
+    <h5>棱汤</h5>
+    <p>迫极にInterceptorを侯喇する眷圭は、肌のインタ〖フェ〖スまたは、藐据クラスを悸刘します。</p>
     <dl>
     	<dt style="text-indent: 1em;">MethodInterceptor</dt>
     	<dt style="text-indent: 1em;">AbstractInterceptor</dt>
     </dl>
-    <p>偳偪傜偺応崌傕幚憰偡傞儊僜僢僪偼丄埲壓偺invoke()儊僜僢僪偺侾偮偩偗偱偡丅</p>
+    <p>どちらの眷圭も悸刘するメソッドは、笆布のinvoke()メソッドの１つだけです。</p>
     <dl>
     	<dt style="text-indent: 1em;">public function invoke(S2Container_MethodInvocation $methodInvocation)</dt>
     </dl>
     <p>AbstractInterceptor
-偼丄MethodInterceptor傪implements偟偨拪徾僋儔僗偱偡丅AbstractInterceptor偵偼丄Proxy僆僽僕僃僋
-僩傪庢摼偡傞createProxy()儊僜僢僪偲傾僗儁僋僩傪揔梡偡傞僋儔僗傪庢摼偡傞getTargetClass()儊僜僢僪偑偁傝傑偡丅傾僗儁僋
-僩傪揔梡偟偨僋儔僗柤傪昁梫偲偡傞Interceptor(椺偊偽丄儘僌弌椡傪峴偆Interceptor)傪嶌惉偡傞応崌偼丄
-AbstractInterceptor傪巊梡偡傞偙偲偱娙扨偵僋儔僗柤傪庢摼偡傞偙偲偑偱偒傑偡丅</p>
+は、MethodInterceptorをimplementsした藐据クラスです。AbstractInterceptorには、Proxyオブジェク
+トを艰评するcreateProxy()メソッドとアスペクトを努脱するクラスを艰评するgetTargetClass()メソッドがあります。アスペク
+トを努脱したクラス叹を涩妥とするInterceptor(毋えば、ログ叫蜗を乖うInterceptor)を侯喇する眷圭は、
+AbstractInterceptorを蝗脱することで词帽にクラス叹を艰评することができます。</p>
     <dl>
     	<dt style="text-indent: 1em;">public function createProxy($proxyClass)</dt>
     	<dt style="text-indent: 1em;">protected function getTargetClass(S2Container_MethodInvocation $methodInvocation)</dt>
     </dl>
    	<p>MethodInvocation
-偺getThis()丄getMethod()丄getArguments()偱懳徾偲側傞僆僽僕僃僋僩丄儊僜僢僪丄堷悢傪庢摼偱偒傑偡丅proceed()傪屇傃弌偡偲幚嵺偺儊僜僢僪偑屇傃弌偝傟幚峴寢壥傪庢
-摼偡傞偙偲偑偱偒傑偡丅埲壓偺傛偆側撈帺偺Interceptor傪嶌惉偟偨偲偟傑偡丅</p>
-    <h5>嶌惉椺</h5>
+のgetThis()、getMethod()、getArguments()で滦据となるオブジェクト、メソッド、苞眶を艰评できます。proceed()を钙び叫すと悸狠のメソッドが钙び叫され悸乖冯蔡を艰
+评することができます。笆布のような迫极のInterceptorを侯喇したとします。</p>
+    <h5>侯喇毋</h5>
 <pre>&lt;?php
 class ABS implements S2Container_MethodInterceptor {
     public function invoke(S2Container_MethodInvocation $invocation){
 
-        print "Before \n";             <-- 屇傇慜偼 Before
+        print "Before \n";             <-- 钙ぶ涟は Before
 
         $ret = $invocation->proceed();
 
-        print "After \n";              <-- 屇傫偩屻偼 After
+        print "After \n";              <-- 钙んだ稿は After
 
         return $ret;
     }
 }
 ?&gt;
 </pre>
-    <p>MethodInvocation#proceed()傪屇傇慜偲屻偱2暘偝傟丄屇傇慜偼 Before偺屄強傪幚峴偟丄屇傫偩屻偼After偺屄強傪幚峴偟傑偡丅1偮偺僐儞億乕僱儞僩偵暋悢偺傾僗儁僋僩偑掕媊偝傟偰偄傞応崌偼丄埲壓偺傛偆幚峴偝傟傑偡丅</p>
+    <p>MethodInvocation#proceed()を钙ぶ涟と稿で2尸され、钙ぶ涟は Beforeの改疥を悸乖し、钙んだ稿はAfterの改疥を悸乖します。1つのコンポ〖ネントに剩眶のアスペクトが年盗されている眷圭は、笆布のよう悸乖されます。</p>
    	<ol>
-    	<li>Aspect偺搊榐弴偵MethodInterceptor偺before晹暘偑幚峴偝傟傑偡丅</li>
-    	<li>嵟屻偺MethodInterceptor偺before晹暘傪幚峴偟偨屻偵僐儞億乕僱儞僩帺恎偺儊僜僢僪偑屇傃弌偝傟傑偡丅</li>
-    	<li>Aspect偺搊榐偺媡弴偵MethodInterceptor偺after晹暘偑幚峴偝傟傑偡丅</li>
+    	<li>Aspectの判峡界にMethodInterceptorのbefore婶尸が悸乖されます。</li>
+    	<li>呵稿のMethodInterceptorのbefore婶尸を悸乖した稿にコンポ〖ネント极咳のメソッドが钙び叫されます。</li>
+    	<li>Aspectの判峡の嫡界にMethodInterceptorのafter婶尸が悸乖されます。</li>
    	</ol>
-    <p>徻偟偄巊梡曽朄偼<a href="#OriginalInterceptorSample">撈帺幚憰偵傛傞Interceptor</a>傪嶲徠偟偰偔偩偝偄丅</p>
-    <h3><a name="nodicon">dicon僼傽僀儖傪巊梡偟側偄偱傾僗儁僋僩傪慻傒崬傓曽朄</a></h3>
-    <p>dicon僼傽僀儖偺愝掕傪峴傢偢僾儘僌儔儉忋偱傾僗儁僋僩傪慻傒崬傓偙偲傕偱偒傑偡丅嶌惉曽朄偼師偺傛偆偵側傝傑偡丅</p>
+    <p>拒しい蝗脱数恕は<a href="#OriginalInterceptorSample">迫极悸刘によるInterceptor</a>を徊救してください。</p>
+    <h3><a name="nodicon">diconファイルを蝗脱しないでアスペクトを寥み哈む数恕</a></h3>
+    <p>diconファイルの肋年を乖わずプログラム惧でアスペクトを寥み哈むこともできます。侯喇数恕は肌のようになります。</p>
     <ul>
 	    <li>PointcutImpl
-偺僐儞僗僩儔僋僞偺堷悢偱懳徾偲側傞儊僜僢僪柤傪巜掕(暋悢壜)偟傑偡僋儔僗傪巜掕偡傞偙偲偱丄偦偺僋儔僗偑幚憰偟偰偄傞僀儞僞乕僼僃乕僗偺儊僜僢僪傪偡傋偰
-帺摦揑偵揔梡偝偣傞偙偲傕偱偒傑偡丅</li>
-        <li>AspectImpl偺僐儞僗僩儔僋僞偺戞1堷悢偵Interceptor傪巜掕偟偰丄戞2堷悢偵PointcutImpl偱嶌惉偟偨Pointcut傪巜掕偟傑偡丅</li>
-        <li>AopProxy偺僐儞僗僩儔僋僞偱丄懳徾偲側傞僋儔僗偲AspectImpl偱嶌惉偟偨Aspect偺攝楍傪巜掕偟傑偡丅</li>
-        <li>AopProxy#create()偱Aspect偑揔梡偝傟偨僆僽僕僃僋僩傪庢摼偱偒傑偡丅</li>
+のコンストラクタの苞眶で滦据となるメソッド叹を回年(剩眶材)しますクラスを回年することで、そのクラスが悸刘しているインタ〖フェ〖スのメソッドをすべて
+极瓢弄に努脱させることもできます。</li>
+        <li>AspectImplのコンストラクタの妈1苞眶にInterceptorを回年して、妈2苞眶にPointcutImplで侯喇したPointcutを回年します。</li>
+        <li>AopProxyのコンストラクタで、滦据となるクラスとAspectImplで侯喇したAspectの芹误を回年します。</li>
+        <li>AopProxy#create()でAspectが努脱されたオブジェクトを艰评できます。</li>
 	</ul>
-    <p>Date僋儔僗偵TraceInterceptor傪僾儘僌儔儉忋偱揔梡偡傞応崌偼丄師偺傛偆偵側傝傑偡丅懳徾偲側傞儊僜僢僪偼getTime()偲偟傑偡丅</p>
+    <p>DateクラスにTraceInterceptorをプログラム惧で努脱する眷圭は、肌のようになります。滦据となるメソッドはgetTime()とします。</p>
 <pre>&lt;?php
 $pointcut = new S2Container_PointcutImpl(array("getTime"));
 $aspect = new S2Container_AspectImpl(new S2Container_TraceInterceptor(), $pointcut);
@@ -246,19 +246,19 @@ $proxy->getTime();
 </pre>
 <br>
 	<h2><a name="Example">Example</a></h2>
-	<p>埲壓偺僒儞僾儖傪幚峴偡傞応崌偼丄<a href="setup.html">僙僢僩傾僢僾</a>傪峴偆昁梫偑偁傝傑偡丅</p>
+	<p>笆布のサンプルを悸乖する眷圭は、<a href="setup.html">セットアップ</a>を乖う涩妥があります。</p>
     <h3><a name="TraceInterceptorSample">TraceInterceptor</a></h3>
     <p>TraceInterceptor
-傪巊梡偟偰Date僋儔僗偺getTime()儊僜僢僪偑屇偽傟偨応崌偵僩儗乕僗傪弌椡偝偣傑偟傚偆丅嶌惉偡傞僼傽僀儖偼埲壓偺偲偍傝偱偡丅</p>
+を蝗脱してDateクラスのgetTime()メソッドが钙ばれた眷圭にトレ〖スを叫蜗させましょう。侯喇するファイルは笆布のとおりです。</p>
     <ul>
-    	<li type="circle">僐儞億乕僱儞僩傪掕媊偡傞dicon僼傽僀儖(Trace.dicon)</li>
-		<li type="circle">愝掕偑惓偟偔峴傢傟偰偄傞偐妋擣偡傞幚峴僗僋儕僾僩(AopTraceClient.php)</li>
+    	<li type="circle">コンポ〖ネントを年盗するdiconファイル(Trace.dicon)</li>
+		<li type="circle">肋年が赖しく乖われているか澄千する悸乖スクリプト(AopTraceClient.php)</li>
 	</ul>
-    <p><b>dicon僼傽僀儖偺嶌惉</b></p>
+    <p><b>diconファイルの侯喇</b></p>
     <ul>
-        <li type="circle">TraceInterceptor傪僐儞億乕僱儞僩掕媊偟傑偡丅name懏惈傪traceInterceptor偲偟傑偡丅</li>
+        <li type="circle">TraceInterceptorをコンポ〖ネント年盗します。name掳拉をtraceInterceptorとします。</li>
         <li type="circle">Date
-僋儔僗偺僐儞億乕僱儞僩偺掕媊偟傑偡丅pointcut懏惈偵getTime()儊僜僢僪傪巜掕偟傑偡丅aspect僞僌偵Interceptor傪巜掕偟傑偡丅</li>
+クラスのコンポ〖ネントの年盗します。pointcut掳拉にgetTime()メソッドを回年します。aspectタグにInterceptorを回年します。</li>
     </ul>
 	<p>Trace.dicon</p>
 <pre>&lt;?xml version="1.0" encoding="Shift_JIS"?&gt;
@@ -273,13 +273,13 @@ $proxy->getTime();
     &lt;/component&gt;
 &lt;/components&gt;
 </pre>
-	<p><b>幚峴僗僋儕僾僩偺嶌惉</b></p>
+	<p><b>悸乖スクリプトの侯喇</b></p>
     <ul>
-		<li type="circle">S2Container#create()儊僜僢僪偺嵟弶偺堷悢偵嶌惉偟偨dicon僼傽僀儖(Trace.dicon)偺僷僗傪巜掕偟偰僐儞僥僫傪嶌惉偟傑偡丅</li>
+		<li type="circle">S2Container#create()メソッドの呵介の苞眶に侯喇したdiconファイル(Trace.dicon)のパスを回年してコンテナを侯喇します。</li>
         <li type="circle">S2Container#getComponent
-()儊僜僢僪偺戞侾堷悢偵僐儞億乕僱儞僩偵搊榐偟偨僋儔僗柤乮Date)傪巜掕偟偰僐儞億乕僱儞僩傪庢摼偟
-傑偡丅</li>
-        <li type="circle">僩儗乕僗偑Aspect偝傟傞偐妋擣偡傞偨傔偵庢摼偟偨僐儞億乕僱儞僩偺Date偺getTime()儊僜僢僪傪幚峴偟傑偡丅</li>
+()メソッドの妈１苞眶にコンポ〖ネントに判峡したクラス叹∈Date)を回年してコンポ〖ネントを艰评し
+ます。</li>
+        <li type="circle">トレ〖スがAspectされるか澄千するために艰评したコンポ〖ネントのDateのgetTime()メソッドを悸乖します。</li>
 	</ul>
     <p>AopTraceClient.php</p>
 <pre>&lt;?php
@@ -292,27 +292,27 @@ $date = $container->getComponent('Date');
 $date->getTime();
 ?&gt;
 </pre>
-	<p><b>幚峴寢壥</b></p>
-    <p>儊僜僢僪偑屇偽傟傞慜偲屻偱僩儗乕僗偑弌椡偝傟偰偄傞偺偑妋擣偱偒傑偡丅</p>
+	<p><b>悸乖冯蔡</b></p>
+    <p>メソッドが钙ばれる涟と稿でトレ〖スが叫蜗されているのが澄千できます。</p>
 <pre>% php AopTraceClient.php
 BEGIN Date#getTime()
 END   Date#getTime() : 12:00:30
 %
 </pre>
-	<p>偙偺僒儞僾儖偼丄s2container.php5/src/examples/aop/traceinterceptor埲壓偵梡堄偝傟偰偄傑偡丅</p>
+	<p>このサンプルは、s2container.php5/examples/aop/traceinterceptor笆布に脱罢されています。</p>
 	<br>
 	<h3><a name="ThrowsInterceptorSample">ThrowsInterceptor</a></h3>
-	<p>(1) ThrowsInterceptor傪巊偭偰丄椺奜偑敪惗偟偨応崌偱傕張棟傪懕偗傜傟傞傛偆偵偟傑偟傚偆丅嶌惉偡傞僼傽僀儖偼埲壓偺傛偆偵側傝傑偡丅</p>
+	<p>(1) ThrowsInterceptorを蝗って、毋嘲が券栏した眷圭でも借妄を鲁けられるようにしましょう。侯喇するファイルは笆布のようになります。</p>
 	<ul>
-		<li type="circle">Exception傪敪惗偝偣傞僋儔僗(Checker.class.php)</li>
-		<li type="circle">ThrowsInterceptor傪宲彸偟偰嶌惉偡傞Interceptor(HandleThrowableInterceptor.class.php)</li>
-		<li type="circle">僐儞億乕僱儞僩偺掕媊傪偡傞dicon僼傽僀儖(Checker.dicon)</li>
-		<li type="circle">愝掕偑惓偟偔峴傢傟偰偄傞偐妋擣偡傞幚峴僼傽僀儖(AopCheckerClient.php)</li>
+		<li type="circle">Exceptionを券栏させるクラス(Checker.class.php)</li>
+		<li type="circle">ThrowsInterceptorを费镜して侯喇するInterceptor(HandleThrowableInterceptor.class.php)</li>
+		<li type="circle">コンポ〖ネントの年盗をするdiconファイル(Checker.dicon)</li>
+		<li type="circle">肋年が赖しく乖われているか澄千する悸乖ファイル(AopCheckerClient.php)</li>
 	</ul>
-    <p><b>椺奜傪敪惗偝偣傞僋儔僗偺嶌惉</b></p>
+    <p><b>毋嘲を券栏させるクラスの侯喇</b></p>
     <ul>
-     	<li type="circle">run()儊僜僢僪偺堷悢偑null偱偼柍偄応崌偼丄堷悢偺暥帤傪僐儞僜乕儖偵弌椡偟傑偡丅</li>
-		<li type="circle">堷悢偑null偺応崌偼丄Exception傪敪惗偝偣傑偡丅</li>
+     	<li type="circle">run()メソッドの苞眶がnullでは痰い眷圭は、苞眶の矢机をコンソ〖ルに叫蜗します。</li>
+		<li type="circle">苞眶がnullの眷圭は、Exceptionを券栏させます。</li>
 	</ul>
     <p>Checker.class.php</p>
 <pre>&lt;?php
@@ -327,10 +327,10 @@ class Checker {
 }
 ?&gt;
 </pre>
-	<p><b>ThrowsInterceptor傪宲彸偡傞Interceptor偺嶌惉</b></p>
+	<p><b>ThrowsInterceptorを费镜するInterceptorの侯喇</b></p>
 	<ul>
-        <li type="circle">ThrowsInterceptor傪宲彸偟傑偡丅</li>
-	    <li type="circle">handleThrowable(Exception, S2Container_MethodInvocation)傪幚憰偟傑偡丅</li>
+        <li type="circle">ThrowsInterceptorを费镜します。</li>
+	    <li type="circle">handleThrowable(Exception, S2Container_MethodInvocation)を悸刘します。</li>
     </ul>
 	<p>HandleThrowableInterceptor.class.php</p>
 <pre>&lt;?php
@@ -341,10 +341,10 @@ class HandleThrowableInterceptor extends S2Container_ThrowsInterceptor {
 }
 ?&gt;
 </pre>
-    <p><b>dicon僼傽僀儖偺嶌惉</b></p>
+    <p><b>diconファイルの侯喇</b></p>
 	<ul>
-    	<li type="circle">嶌惉偟偨Interceptor傪僐儞億乕僱儞僩掕媊偟傑偡丅name懏惈傪handleThrowableInterceptor偲偟傑偡丅</li>
-		<li type="circle">椺奜傪敪惗偝偣傞Checker僋儔僗偺check()儊僜僢僪偵嶌惉偟偨HandleThrowableInterceptor傪傾僗儁僋僩偟傑偡丅</li>
+    	<li type="circle">侯喇したInterceptorをコンポ〖ネント年盗します。name掳拉をhandleThrowableInterceptorとします。</li>
+		<li type="circle">毋嘲を券栏させるCheckerクラスのcheck()メソッドに侯喇したHandleThrowableInterceptorをアスペクトします。</li>
 	</ul>
     <p>Checker.dicon</p>
 <pre>&lt;?xml version="1.0" encoding="Shift_JIS"?&gt;
@@ -359,13 +359,13 @@ class HandleThrowableInterceptor extends S2Container_ThrowsInterceptor {
     &lt;/component&gt;
 &lt;/components&gt;
 </pre>
-    <p><b>幚峴僼傽僀儖偺嶌惉</b></p>
+    <p><b>悸乖ファイルの侯喇</b></p>
     <ul>
-        <li type="circle">S2Container#create()儊僜僢僪偺戞侾堷悢偵嶌惉偟偨dicon僼傽僀儖(Checker.dicon)偺僷僗傪巜掕偟偰僐儞僥僫傪嶌惉偟傑偡丅</li>
-        <li type="circle">S2Container#getComponent()儊僜僢僪偺戞侾堷悢偵僐儞億乕僱儞僩偵搊榐偟偨僋儔僗柤乮Foo.class)傪巜掕偟偰庢摼偟傑偡丅</li>
-        <li type="circle">Checker#check()儊僜僢僪偺堷悢偵"foo"偺暥帤楍傪搉偟傑偡丅</li>
-        <li type="circle">Checker#check()儊僜僢僪偺堷悢偵null傪搉偟偰椺奜傪敪惗偝偣傑偡丅</li>
-        <li type="circle">Checker#check()儊僜僢僪偺堷悢偵"hoge"偺暥帤楍傪搉偟傑偡丅</li>
+        <li type="circle">S2Container#create()メソッドの妈１苞眶に侯喇したdiconファイル(Checker.dicon)のパスを回年してコンテナを侯喇します。</li>
+        <li type="circle">S2Container#getComponent()メソッドの妈１苞眶にコンポ〖ネントに判峡したクラス叹∈Foo.class)を回年して艰评します。</li>
+        <li type="circle">Checker#check()メソッドの苞眶に"foo"の矢机误を畔します。</li>
+        <li type="circle">Checker#check()メソッドの苞眶にnullを畔して毋嘲を券栏させます。</li>
+        <li type="circle">Checker#check()メソッドの苞眶に"hoge"の矢机误を畔します。</li>
     </ul>
     <p>AopCheckerClient.php</p>
 <pre>&lt;?php
@@ -393,23 +393,23 @@ try{
 }
 ?&gt;
 </pre>
-	<p><b>幚峴寢壥</b></p>
-	<p>椺奜偱張棟偑巭傑偭偰偄側偄偙偲偑妋擣偱偒傑偡丅</p>
+	<p><b>悸乖冯蔡</b></p>
+	<p>毋嘲で借妄が贿まっていないことが澄千できます。</p>
 <pre>% php AopCheckerClient.php
 foo
 hoge
 %
 </pre>
-	<p>偙偺僒儞僾儖偼丄s2container.php5/src/examples/aop/throwsinterceptor埲壓偵梡堄偝傟偰偄傑偡丅</p>
+	<p>このサンプルは、s2container.php5/examples/aop/throwsinterceptor笆布に脱罢されています。</p>
     <br>
 
 
     <p>(2)
-椺奜傪暿偺椺奜偵曄姺偡傞Interceptor傪嶌惉偟偰曄姺偟偨儊僢僙乕僕傪昞帵偝偣傑偟傚偆丅嶌惉偡傞Interceptor偼丄愭傎偳
-ThrowsInterceptor傪宲彸偟偰嶌惉偟偨僋儔僗(HandleThrowableInterceptor.class.php)傪墳梡偟偰嶌惉偟傑
-偟傚偆</p>
- 丂 <b>椺奜傪暿偺椺奜偵曄姺偡傞Interceptor偺嶌惉</b>
-    <p>S2RuntimeException傪敪惗偝偣偰儊僢僙乕僕傪曄峏偟傑偡丅</p>
+毋嘲を侍の毋嘲に恃垂するInterceptorを侯喇して恃垂したメッセ〖ジを山绩させましょう。侯喇するInterceptorは、黎ほど
+ThrowsInterceptorを费镜して侯喇したクラス(HandleThrowableInterceptor.class.php)を炳脱して侯喇しま
+しょう</p>
+ 　 <b>毋嘲を侍の毋嘲に恃垂するInterceptorの侯喇</b>
+    <p>S2RuntimeExceptionを券栏させてメッセ〖ジを恃构します。</p>
 <pre>&lt;?php
 class HandleThrowableInterceptor extends S2Container_ThrowsInterceptor {
 	
@@ -419,29 +419,29 @@ class HandleThrowableInterceptor extends S2Container_ThrowsInterceptor {
 }
 ?&gt;
 </pre>
-	<p>愭傎偳嶌惉偟偨幚峴僼傽僀儖傪巊偭偰幚峴偟傑偡丅</p>
-    <b>幚峴寢壥</b>
-    <p>僄儔乕儊僢僙乕僕偑曄傢偭偰偄傞偺偑妋擣偱偒傑偡丅</p>
+	<p>黎ほど侯喇した悸乖ファイルを蝗って悸乖します。</p>
+    <b>悸乖冯蔡</b>
+    <p>エラ〖メッセ〖ジが恃わっているのが澄千できます。</p>
 <pre>% php AopCheckerClient.php
 foo
 Exception : arg should not be null or empty
 hoge
 %
 </pre>
-	<p>偙偺僒儞僾儖偼丄s2container.php5/src/examples/aop/throwsinterceptor埲壓偵梡堄偝傟偰偄傑偡丅</p>
+	<p>このサンプルは、s2container.php5/examples/aop/throwsinterceptor笆布に脱罢されています。</p>
 <h3><a name="DelegateInterceptorSample">DelegateInterceptor</a></h3>
-    <p>S2AOP偱梡堄偝傟偰偄傞DelegateInterceptor傪巊偭偰丄懠偺僋儔僗偺儊僜僢僪偵埾忳偝偣傑偟傚偆丅<br>
-    偙偙偱偼丄僀儞僞乕僼僃乕僗偱拪徾儊僜僢僪傪嶌惉偟偰丄拪徾僋儔僗偲晛捠偺僋儔僗偺椉曽偵偦偺僀儞僞乕僼僃乕僗傪幚憰偝偣傑偡丅拪徾僋儔僗偱幚憰偟偨儊僜僢僪傪晛捠偺僋儔僗偱幚憰偟偨儊僜僢僪偵埾忳偝偣傑偟傚偆丅嶌惉偡傞僼傽僀儖偼埲壓偺偲偍傝偱偡丅</p>
+    <p>S2AOPで脱罢されているDelegateInterceptorを蝗って、戮のクラスのメソッドに把均させましょう。<br>
+    ここでは、インタ〖フェ〖スで藐据メソッドを侯喇して、藐据クラスと舍奶のクラスの尉数にそのインタ〖フェ〖スを悸刘させます。藐据クラスで悸刘したメソッドを舍奶のクラスで悸刘したメソッドに把均させましょう。侯喇するファイルは笆布のとおりです。</p>
     <ul>
-		<li type="circle">僀儞僞乕僼僃乕僗(IBase.class.php)</li>
-		<li type="circle">僀儞僞乕僼僃乕僗傪幚憰偟偨拪徾僋儔僗(Dummy.class.php)</li>
-		<li type="circle">僀儞僞乕僼僃乕僗傪幚憰偟偨僋儔僗(Substance.class.php)</li>
-		<li type="circle">埾忳傪愝掕偡傞dicon僼傽僀儖(Delegate.dicon)</li>
-		<li type="circle">愝掕偑惓偟偔峴傢傟偰偄傞偐妋擣偡傞幚峴僼傽僀儖(AopDelegateClient.class.php)</li>
+		<li type="circle">インタ〖フェ〖ス(IBase.class.php)</li>
+		<li type="circle">インタ〖フェ〖スを悸刘した藐据クラス(Dummy.class.php)</li>
+		<li type="circle">インタ〖フェ〖スを悸刘したクラス(Substance.class.php)</li>
+		<li type="circle">把均を肋年するdiconファイル(Delegate.dicon)</li>
+		<li type="circle">肋年が赖しく乖われているか澄千する悸乖ファイル(AopDelegateClient.class.php)</li>
 	</ul>
-    <p><b>僀儞僞乕僼僃乕僗偺嶌惉</b></p>
+    <p><b>インタ〖フェ〖スの侯喇</b></p>
 	<ul>
-	    <li type="circle">拪徾儊僜僢僪傪嶌惉偟傑偡丅</li>
+	    <li type="circle">藐据メソッドを侯喇します。</li>
 	</ul>
     <p>IBase.class.php</p>
 <pre>&lt;?php
@@ -451,9 +451,9 @@ interface IBase {
 ?&gt;
 </pre>
 
-	<p><b>僀儞僞乕僼僃乕僗傪幚憰偟偨拪徾僋儔僗偺嶌惉</b></p>
+	<p><b>インタ〖フェ〖スを悸刘した藐据クラスの侯喇</b></p>
 	<ul>
-		<li type="circle">嶌惉偟偨僀儞僞乕僼僃乕僗傪幚憰偟傑偡丅</li>
+		<li type="circle">侯喇したインタ〖フェ〖スを悸刘します。</li>
 	</ul>
     <p>Dummy.class.php</p>
 <pre>&lt;?php
@@ -461,10 +461,10 @@ abstract class Dummy implements IBase {
 }
 ?&gt;
 </pre>
-    <p><b>僀儞僞乕僼僃乕僗傪幚憰偟偨僋儔僗偺嶌惉</b></p>
+    <p><b>インタ〖フェ〖スを悸刘したクラスの侯喇</b></p>
 	<ul>
-		<li type="circle">嶌惉偟偨僀儞僞乕僼僃乕僗傪幚憰偟傑偡丅</li>
-		<li type="circle">幚憰偟偨僀儞僞僼僃乕僗偺拪徾儊僜僢僪偺幚憰偟傑偡丅</li>
+		<li type="circle">侯喇したインタ〖フェ〖スを悸刘します。</li>
+		<li type="circle">悸刘したインタフェ〖スの藐据メソッドの悸刘します。</li>
 	</ul>
 	<p>Substance.class.php</p>
 <pre>&lt;?php
@@ -475,13 +475,13 @@ class Substance implements IBase{
 }
 ?&gt;
 </pre>
-	<p><b>dicon僼傽僀儖偺嶌惉</b></p>
+	<p><b>diconファイルの侯喇</b></p>
 	<ul>
-		<li type="circle">拪徾僋儔僗(Dummy)傪僐儞億乕僱儞僩掕媊偟傑偡丅</li>
+		<li type="circle">藐据クラス(Dummy)をコンポ〖ネント年盗します。</li>
         <li type="circle">DelegateInterceptor
-偺僐儞億乕僱儞僩傪aspect僞僌偵掕媊偟傑偡丅DelegateInterceptor#setTarget()傪巊偭偰埾忳偟偨偄憡庤傪巜掕偟傑
-偡丅埾忳偟偨偄僋儔僗偼Substance僋儔僗側偺偱儊僜僢僪丒僀儞僕僃僋僔儑儞
-傪巊偭偰僙僢僩偟傑偡丅</li>
+のコンポ〖ネントをaspectタグに年盗します。DelegateInterceptor#setTarget()を蝗って把均したい陵缄を回年しま
+す。把均したいクラスはSubstanceクラスなのでメソッドˇインジェクション
+を蝗ってセットします。</li>
 	</ul>
 	<p>Delegate.dicon</p>
 <pre>&lt;?xml version="1.0" encoding="Shift_JIS"?&gt;
@@ -498,11 +498,11 @@ class Substance implements IBase{
         &lt;/aspect&gt;
     &lt;/component&gt;
 &lt;/components&gt;</pre>
-	<p><b>幚峴僼傽僀儖偺嶌惉</b></p>
+	<p><b>悸乖ファイルの侯喇</b></p>
 	<ul>
-    	<li type="circle">S2Container#create()儊僜僢僪偺嵟弶偺堷悢偵嶌惉偟偨dicon僼傽僀儖(Delegate.dicon)偺僷僗傪巜掕偟偰僐儞僥僫傪嶌惉偟傑偡丅</li>
-        <li type="circle">S2Container#getComponent()儊僜僢僪偺戞侾堷悢偵僐儞億乕僱儞僩偵搊榐偟偨僋儔僗柤乮IBase)傪巜掕偟偰庢摼偟傑偡丅</li>
-        <li type="circle">僐儞僥僫偐傜庢摼偟偨IBase#run()儊僜僢僪傪幚峴偟傑偡丅</li>
+    	<li type="circle">S2Container#create()メソッドの呵介の苞眶に侯喇したdiconファイル(Delegate.dicon)のパスを回年してコンテナを侯喇します。</li>
+        <li type="circle">S2Container#getComponent()メソッドの妈１苞眶にコンポ〖ネントに判峡したクラス叹∈IBase)を回年して艰评します。</li>
+        <li type="circle">コンテナから艰评したIBase#run()メソッドを悸乖します。</li>
 	</ul>
     AopDelegateCilent.php
 <pre>&lt;?php
@@ -514,28 +514,28 @@ $base->run();
 ?&gt;
 </pre>
 
-	<p><b>幚峴寢壥</b></p>
-	<p>僐儞僜乕儖偵"substance"偲昞帵偝傟偰偄傞偺偱Dummy#run()偑Substance#run()偵埾忳偝傟偰偄傞偺偑妋擣偱偒傑偡丅</p>
+	<p><b>悸乖冯蔡</b></p>
+	<p>コンソ〖ルに"substance"と山绩されているのでDummy#run()がSubstance#run()に把均されているのが澄千できます。</p>
 <pre>% php AopDelegateCilent.php
 substance
 %
 </pre>
-	<p>偙偺僒儞僾儖偼丄s2container.php5/src/examples/aop/delegateinterceptor埲壓偵梡堄偝傟偰偄傑偡丅</p>
+	<p>このサンプルは、s2container.php5/examples/aop/delegateinterceptor笆布に脱罢されています。</p>
     <br>
 <h3><a name="PrototypeDelegateInterceptorSample">PrototypeDelegateInterceptor</a></h3>
-    <p>S2AOP偱梡堄偝傟偰偄傞PrototypeDelegateInterceptor傪巊偭偰丄singleton偺僐儞億乕僱儞僩偐傜prototype偺僐儞億乕僱儞僩偺儊僜僢僪偵埾忳偝偣傑偟傚偆丅<br>
-偙偙偱偼丄僀儞僞乕僼僃乕僗偱拪徾儊僜僢僪傪嶌惉偟偰丄拪徾僋儔僗(singleton)偲晛捠偺僋儔僗(prototype)偺椉曽偵偦偺僀儞僞乕
-僼僃乕僗傪幚憰偝偣傑偡丅拪徾僋儔僗偱幚憰偟偨儊僜僢僪傪晛捠偺僋儔僗偱幚憰偟偨儊僜僢僪偵埾忳偝偣傑偟傚偆丅嶌惉偡傞僼傽僀儖偼埲壓偺偲偍傝偱偡丅</p>
+    <p>S2AOPで脱罢されているPrototypeDelegateInterceptorを蝗って、singletonのコンポ〖ネントからprototypeのコンポ〖ネントのメソッドに把均させましょう。<br>
+ここでは、インタ〖フェ〖スで藐据メソッドを侯喇して、藐据クラス(singleton)と舍奶のクラス(prototype)の尉数にそのインタ〖
+フェ〖スを悸刘させます。藐据クラスで悸刘したメソッドを舍奶のクラスで悸刘したメソッドに把均させましょう。侯喇するファイルは笆布のとおりです。</p>
     <ul>
-		<li type="circle">僀儞僞乕僼僃乕僗(IBase.class.php)</li>
-		<li type="circle">僀儞僞乕僼僃乕僗傪幚憰偟偨singleton偺拪徾僋儔僗(Dummy.class.php)</li>
-		<li type="circle">僀儞僞乕僼僃乕僗傪幚憰偟偨prototype偺僋儔僗(Substance.class.php)</li>
-		<li type="circle">埾忳傪愝掕偡傞dicon僼傽僀儖(Delegate.dicon)</li>
-		<li type="circle">愝掕偑惓偟偔峴傢傟偰偄傞偐妋擣偡傞幚峴僼傽僀儖(AopPrototypeDelegateClient.php)</li>
+		<li type="circle">インタ〖フェ〖ス(IBase.class.php)</li>
+		<li type="circle">インタ〖フェ〖スを悸刘したsingletonの藐据クラス(Dummy.class.php)</li>
+		<li type="circle">インタ〖フェ〖スを悸刘したprototypeのクラス(Substance.class.php)</li>
+		<li type="circle">把均を肋年するdiconファイル(Delegate.dicon)</li>
+		<li type="circle">肋年が赖しく乖われているか澄千する悸乖ファイル(AopPrototypeDelegateClient.php)</li>
 	</ul>
-    <p><b>僀儞僞乕僼僃乕僗偺嶌惉</b></p>
+    <p><b>インタ〖フェ〖スの侯喇</b></p>
 	<ul>
-	    <li type="circle">拪徾儊僜僢僪傪嶌惉偟傑偡丅</li>
+	    <li type="circle">藐据メソッドを侯喇します。</li>
 	</ul>
     <p>IBase.class.php</p>
 <pre>&lt;?php
@@ -545,9 +545,9 @@ interface IBase {
 ?&gt;
 </pre>
 
-	<p><b>僀儞僞乕僼僃乕僗傪幚憰偟偨拪徾僋儔僗偺嶌惉</b></p>
+	<p><b>インタ〖フェ〖スを悸刘した藐据クラスの侯喇</b></p>
 	<ul>
-		<li type="circle">嶌惉偟偨僀儞僞乕僼僃乕僗傪幚憰偟傑偡丅</li>
+		<li type="circle">侯喇したインタ〖フェ〖スを悸刘します。</li>
 	</ul>
     <p>Dummy.class.php</p>
 <pre>&lt;?php
@@ -555,10 +555,10 @@ abstract class Dummy implements IBase {
 }
 ?&gt;
 </pre>
-    <p><b>僀儞僞乕僼僃乕僗傪幚憰偟偨僋儔僗偺嶌惉</b></p>
+    <p><b>インタ〖フェ〖スを悸刘したクラスの侯喇</b></p>
 	<ul>
-		<li type="circle">嶌惉偟偨僀儞僞乕僼僃乕僗傪幚憰偟傑偡丅</li>
-		<li type="circle">幚憰偟偨僀儞僞僼僃乕僗偺拪徾儊僜僢僪偺幚憰偟傑偡丅</li>
+		<li type="circle">侯喇したインタ〖フェ〖スを悸刘します。</li>
+		<li type="circle">悸刘したインタフェ〖スの藐据メソッドの悸刘します。</li>
 	</ul>
 	<p>Substance.class.php</p>
 <pre>&lt;?php
@@ -572,11 +572,11 @@ class Substance implements IBase{
 }
 ?&gt;
 </pre>
-	<p><b>dicon僼傽僀儖偺嶌惉</b></p>
+	<p><b>diconファイルの侯喇</b></p>
 	<ul>
-		<li type="circle">拪徾僋儔僗(Dummy)傪僐儞億乕僱儞僩掕媊偟傑偡丅偙偺僐儞億乕僱儞僩偼singleton偱偡丅</li>
-<li type="circle">PrototypeDelegateInterceptor偺僐儞億乕僱儞僩傪aspect僞僌偵掕媊偟傑偡丅PrototypeDelegateInterceptor偺targetName僾儘僷僥傿偵埾忳偟偨偄憡庤偺柤慜("target")傪巜掕偟傑偡丅</li>
-<li type="circle">埾忳偟偨偄僋儔僗(Substance)傪僐儞億乕僱儞僩掕媊偟傑偡丅偙偺僐儞億乕僱儞僩偺instance懏惈偼prototype偱偡丅
+		<li type="circle">藐据クラス(Dummy)をコンポ〖ネント年盗します。このコンポ〖ネントはsingletonです。</li>
+<li type="circle">PrototypeDelegateInterceptorのコンポ〖ネントをaspectタグに年盗します。PrototypeDelegateInterceptorのtargetNameプロパティに把均したい陵缄の叹涟("target")を回年します。</li>
+<li type="circle">把均したいクラス(Substance)をコンポ〖ネント年盗します。このコンポ〖ネントのinstance掳拉はprototypeです。
 </li></ul>
 	<p>PrototypeDelegate.dicon</p>
 <pre>&lt;?xml version="1.0" encoding="Shift_JIS"?&gt;
@@ -593,11 +593,11 @@ class Substance implements IBase{
 
     &lt;component name="target" class="Substance" instance="prototype"/&gt;
 &lt;/components&gt;</pre>
-	<p><b>幚峴僼傽僀儖偺嶌惉</b></p>
+	<p><b>悸乖ファイルの侯喇</b></p>
 	<ul>
-    	<li type="circle">S2Container#create()儊僜僢僪偺嵟弶偺堷悢偵嶌惉偟偨dicon僼傽僀儖(PrototypeDelegate.dicon)偺僷僗傪巜掕偟偰僐儞僥僫傪嶌惉偟傑偡丅</li>
-        <li type="circle">S2Container#getComponent()儊僜僢僪偺戞侾堷悢偵僐儞億乕僱儞僩偵搊榐偟偨僋儔僗柤乮IBase)傪巜掕偟偰庢摼偟傑偡丅</li>
-        <li type="circle">僐儞僥僫偐傜庢摼偟偨IBase#run()儊僜僢僪傪孞傝曉偟幚峴偟傑偡丅</li>
+    	<li type="circle">S2Container#create()メソッドの呵介の苞眶に侯喇したdiconファイル(PrototypeDelegate.dicon)のパスを回年してコンテナを侯喇します。</li>
+        <li type="circle">S2Container#getComponent()メソッドの妈１苞眶にコンポ〖ネントに判峡したクラス叹∈IBase)を回年して艰评します。</li>
+        <li type="circle">コンテナから艰评したIBase#run()メソッドを帆り手し悸乖します。</li>
 	</ul>
 AopPrototypeDelegateCilent.php
 <pre>&lt;?php
@@ -612,10 +612,10 @@ for ($i = 0; $i < 5; ++$i) {
 ?&gt;
 </pre>
 
-	<p><b>幚峴寢壥</b></p>
-	<p>僐
-儞僜乕儖偵"sum : 0"偲昞帵偝傟偰偄傞偺偱
-Dummy#run()偑Substance#run()偵埾忳偝傟偰偄傞偺偑妋擣偱偒傑偡丅傑偨丄sum偺抣偑偡傋偰"0"偲側偭偰偄傞偙偲偐傜丆run()儊僜僢僪傪屇傃弌偡偨傃偵怴偟偄Substance偺僀儞僗僞儞僗偑嶌惉偝傟偰偄傞偙偲偑暘偐傝傑偡丅</p>
+	<p><b>悸乖冯蔡</b></p>
+	<p>コ
+ンソ〖ルに"sum : 0"と山绩されているので
+Dummy#run()がSubstance#run()に把均されているのが澄千できます。また、sumの猛がすべて"0"となっていることから·run()メソッドを钙び叫すたびに糠しいSubstanceのインスタンスが侯喇されていることが尸かります。</p>
 <pre>% php AopPrototypeDelegateCilent.php
 sum : 0
 sum : 0
@@ -624,24 +624,24 @@ sum : 0
 sum : 0
 %
 </pre>
-	<p>偙偺僒儞僾儖偼丄s2container.php5/src/examples/aop/delegateinterceptor埲壓偵梡堄偝傟偰偄傑偡丅</p>
+	<p>このサンプルは、s2container.php5/examples/aop/delegateinterceptor笆布に脱罢されています。</p>
     <br>
-    <h3><a name="OriginalInterceptorSample">撈帺幚憰偵傛傞Interceptor</a></h3>
-    <p>僋儔僗柤丄儊僜僢僪柤丄堷悢偲儊僜僢僪偺張棟帪娫傪寁應偟偰僩儗乕僗偡傞Interceptor傪嶌惉偟傑偟傚偆丅傑偨丄偦偺Interceptor傪巊梡偟偰廳偄張棟傪峴偭偨帪娫傪僩儗乕僗偝偣傑偟傚偆丅嶌惉偡傞僼傽僀儖偼埲壓偺偲偍傝偱偡丅</p>
+    <h3><a name="OriginalInterceptorSample">迫极悸刘によるInterceptor</a></h3>
+    <p>クラス叹、メソッド叹、苞眶とメソッドの借妄箕粗を纷卢してトレ〖スするInterceptorを侯喇しましょう。また、そのInterceptorを蝗脱して脚い借妄を乖った箕粗をトレ〖スさせましょう。侯喇するファイルは笆布のとおりです。</p>
     <ul>
-		<li type="circle">僋儔僗柤丄儊僜僢僪柤丄堷悢偲儊僜僢僪偺張棟帪娫傪寁應偟偰弌椡偡傞Interceptor(MeasurementInterceptor.java)</li>
-    	<li type="circle">廳偄張棟傪峴偆僋儔僗(HeavyProcess.java)</li>
-    	<li type="circle">僐儞億乕僱儞僩偺掕媊傪峴偆dicon僼傽僀儖(Measurement.dicon)</li>
-    	<li type="circle">愝掕偑惓偟偔峴傢傟偰偄傞偐妋擣偡傞幚峴僼傽僀儖(AopMeasurementClient.java)</li>
+		<li type="circle">クラス叹、メソッド叹、苞眶とメソッドの借妄箕粗を纷卢して叫蜗するInterceptor(MeasurementInterceptor.java)</li>
+    	<li type="circle">脚い借妄を乖うクラス(HeavyProcess.java)</li>
+    	<li type="circle">コンポ〖ネントの年盗を乖うdiconファイル(Measurement.dicon)</li>
+    	<li type="circle">肋年が赖しく乖われているか澄千する悸乖ファイル(AopMeasurementClient.java)</li>
     </ul>
-	<p><b>撈帺幚憰偺Intercepter偺嶌惉</b></p>
+	<p><b>迫极悸刘のIntercepterの侯喇</b></p>
 	<ul>
-    	<li type="circle">AbstractInterceptor僋儔僗傪幚憰偟傑偡丅</li>
-	    <li type="circle">invoke(S2Container_MethodInvocation $invocation)儊僜僢僪傪幚憰偟傑偡丅</li>
-        <li type="circle">getTargetClass($invocation)->getName()偱僋儔僗柤傪庢摼偟傑偡丅</li>
-        <li type="circle">$invocation->getMethod()->getName()偱儊僜僢僪柤傪庢摼偟傑偡丅</li>
-        <li type="circle">$invocation->getArguments()偱堷悢傪庢摼偟傑偡丅</li>
-        <li type="circle">$invocation->proceed()偱幚嵺偺儊僜僢僪偑屇偽傟傞偺偱丄偦偺慜偺帪娫傪庢摼偟傑偡丅</li>
+    	<li type="circle">AbstractInterceptorクラスを悸刘します。</li>
+	    <li type="circle">invoke(S2Container_MethodInvocation $invocation)メソッドを悸刘します。</li>
+        <li type="circle">getTargetClass($invocation)->getName()でクラス叹を艰评します。</li>
+        <li type="circle">$invocation->getMethod()->getName()でメソッド叹を艰评します。</li>
+        <li type="circle">$invocation->getArguments()で苞眶を艰评します。</li>
+        <li type="circle">$invocation->proceed()で悸狠のメソッドが钙ばれるので、その涟の箕粗を艰评します。</li>
 	</ul>
     <p>MeasurementInterceptor.class.php</p>
 <pre>&lt;?php
@@ -680,9 +680,9 @@ class MeasurementInterceptor extends S2Container_AbstractInterceptor {
 ?&gt;
 </pre>
 
-    <p><b>廳偄張棟傪峴偆僋儔僗偺嶌惉</b></p>
+    <p><b>脚い借妄を乖うクラスの侯喇</b></p>
 	<ul>
-		<li type="circle">廳偄張棟傪峴偭偨偲偄偆偙偲偵偡傞偨傔偵5昩娫sleep偟傑偡丅</li>
+		<li type="circle">脚い借妄を乖ったということにするために5擅粗sleepします。</li>
 	</ul>
     <p>HeavyProcess.class.php</p>
 <pre>&lt;?php
@@ -694,10 +694,10 @@ class HeavyProcess {
 ?&gt;
 </pre>
 
-    <b>dicon僼傽僀儖偺嶌惉</b>
+    <b>diconファイルの侯喇</b>
 	<ul>
-        <li type="circle">嶌惉偟偨MeasurementInterceptor傪僐儞億乕僱儞僩掕媊偟傑偡丅name懏惈傪measurement偲偟傑偡丅</li>
-		<li type="circle">HeavyProcess僋儔僗偺heavy()儊僜僢僪偵MeasurementInterceptor傪aspect偟傑偡丅</li>
+        <li type="circle">侯喇したMeasurementInterceptorをコンポ〖ネント年盗します。name掳拉をmeasurementとします。</li>
+		<li type="circle">HeavyProcessクラスのheavy()メソッドにMeasurementInterceptorをaspectします。</li>
 	</ul>
     <p>Measurement.dicon</p>
 
@@ -714,11 +714,11 @@ class HeavyProcess {
 &lt;/components&gt;
 </pre>
 
-	<p><b>幚峴僼傽僀儖偺嶌惉</b></p>
+	<p><b>悸乖ファイルの侯喇</b></p>
     <ul>
-    	<li type="circle">S2Container#create()儊僜僢僪偺戞侾堷悢偵嶌惉偟偨dicon僼傽僀儖(Measurement.dicon)偺僷僗傪巜掕偟偰僐儞僥僫傪嶌惉偟傑偡丅</li>
-        <li type="circle">S2Container#getComponent()儊僜僢僪偺戞侾堷悢偵僐儞億乕僱儞僩偵搊榐偟偨僋儔僗柤乮HeavyProcess)傪巜掕偟偰庢摼偟傑偡丅</li>
-        <li type="circle">僐儞僥僫偐傜庢摼偟偨HeavyProcess#heavy()儊僜僢僪傪幚峴偟傑偡丅</li>
+    	<li type="circle">S2Container#create()メソッドの妈１苞眶に侯喇したdiconファイル(Measurement.dicon)のパスを回年してコンテナを侯喇します。</li>
+        <li type="circle">S2Container#getComponent()メソッドの妈１苞眶にコンポ〖ネントに判峡したクラス叹∈HeavyProcess)を回年して艰评します。</li>
+        <li type="circle">コンテナから艰评したHeavyProcess#heavy()メソッドを悸乖します。</li>
 	</ul>
     <p>AopMeasurementClient.php</p>
 <pre>&lt;?php
@@ -731,13 +731,13 @@ $heavyProcess->heavy();
 ?&gt;
 </pre>
 
-	<p><b>幚峴寢壥</b></p>
-    <p>僋儔僗柤丄儊僜僢僪柤丄堷悢偲儊僜僢僪偺張棟帪娫偑僩儗乕僗偝傟偰偄傞偺偑妋擣偱偒傑偡丅</p>
+	<p><b>悸乖冯蔡</b></p>
+    <p>クラス叹、メソッド叹、苞眶とメソッドの借妄箕粗がトレ〖スされているのが澄千できます。</p>
 <pre>% php AopMeasurementClient.php
 HeavyProcess#heavy() : 5.0025010108948
 %
 </pre>
-	<p>偙偺僒儞僾儖偼丄s2container.php5/src/examples/aop/originalinterceptor埲壓偵梡堄偝傟偰偄傑偡丅</p>
+	<p>このサンプルは、s2container.php5/examples/aop/originalinterceptor笆布に脱罢されています。</p>
 
 <!-- document end -->
 <!-- don't edit start -->

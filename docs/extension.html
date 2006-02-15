@@ -24,14 +24,14 @@
 <!-- document start -->
 
 <ul>
-<li><a href="#diconInclude">diconƒtƒ@ƒCƒ‹‚ÌincludeƒpƒXİ’è</a></li>
-<li><a href="#uuset">__set()‚Å‚ÌƒZƒbƒ^[EƒCƒ“ƒWƒFƒNƒVƒ‡ƒ“</a></li>
-<li><a href="#dba">ƒf[ƒ^ƒx[ƒXÚ‘±</a></li>
+<li><a href="#diconInclude">dicon¥Õ¥¡¥¤¥ë¤Îinclude¥Ñ¥¹ÀßÄê</a></li>
+<li><a href="#uuset">__set()¤Ç¤Î¥»¥Ã¥¿¡¼¡¦¥¤¥ó¥¸¥§¥¯¥·¥ç¥ó</a></li>
+<li><a href="#dba">¥Ç¡¼¥¿¥Ù¡¼¥¹ÀÜÂ³</a></li>
     <ul>
-    <li><a href="#dba-ds">DataSource‚É‚Â‚¢‚Ä</a></li>
+    <li><a href="#dba-ds">DataSource¤Ë¤Ä¤¤¤Æ</a></li>
         <ul>
-        <li type="circle"><a href="#dba-ds-peardb">pdo.dicon ƒeƒ“ƒvƒŒ[ƒg</a></li>
-        <li type="circle"><a href="#dba-ds-use">g—p•û–@</a></li>
+        <li type="circle"><a href="#dba-ds-peardb">pdo.dicon ¥Æ¥ó¥×¥ì¡¼¥È</a></li>
+        <li type="circle"><a href="#dba-ds-use">»ÈÍÑÊıË¡</a></li>
         </ul>
     </ul>
 
@@ -43,46 +43,46 @@
 
 <li><a href="#loader">S2ContainerClassLoader</a></li>
     <ul>
-    <li><a href="#loader-file">ƒNƒ‰ƒX’è‹`ƒtƒ@ƒCƒ‹‚ğw’è‚·‚é</a></li>
-    <li><a href="#loader-dir">ƒfƒBƒŒƒNƒgƒŠ‚ğw’è‚·‚é</a></li>
-    <li><a href="#loader-array">ƒNƒ‰ƒX’è‹`‚Ì”z—ñ‚ğg—p‚·‚é</a></li>
+    <li><a href="#loader-file">¥¯¥é¥¹ÄêµÁ¥Õ¥¡¥¤¥ë¤ò»ØÄê¤¹¤ë</a></li>
+    <li><a href="#loader-dir">¥Ç¥£¥ì¥¯¥È¥ê¤ò»ØÄê¤¹¤ë</a></li>
+    <li><a href="#loader-array">¥¯¥é¥¹ÄêµÁ¤ÎÇÛÎó¤ò»ÈÍÑ¤¹¤ë</a></li>
     </ul>
 </li>
 </ul>
 
 <br>
 <b><h2>Extension</h2></b>
-<a name="diconInclude"><h3>diconƒtƒ@ƒCƒ‹‚ÌincludeƒpƒXİ’è</h3></a>
+<a name="diconInclude"><h3>dicon¥Õ¥¡¥¤¥ë¤Îinclude¥Ñ¥¹ÀßÄê</h3></a>
 
-<p>diconƒtƒ@ƒCƒ‹‚Ìincludeƒ^ƒO‚Ìpath‘®«‚Å‚ÍAæ“ª‚É%...%‚ÅˆÍ‚Ş‚±‚Æ‚Å’è”‚ğ–„‚ß‚Ş‚±‚Æ‚ª‚Å‚«‚Ü‚·B<br>
+<p>dicon¥Õ¥¡¥¤¥ë¤Îinclude¥¿¥°¤ÎpathÂ°À­¤Ç¤Ï¡¢ÀèÆ¬¤Ë%...%¤Ç°Ï¤à¤³¤È¤ÇÄê¿ô¤òËä¤á¹ş¤à¤³¤È¤¬¤Ç¤­¤Ş¤¹¡£<br>
 </p>
 <pre>
-define(DICON_DIR,'/path/to/dir');   //’è‹`Ï‚İ‚Æ‚·‚é
+define(DICON_DIR,'/path/to/dir');   //ÄêµÁºÑ¤ß¤È¤¹¤ë
 
 &lt;components&gt;
     &lt;include path="%DICON_DIR%/bar.dicon"/&gt;
 &lt;/components&gt;
-’) ƒpƒX‚Ìæ“ª‚Ì%...%‚Ì‚İ“WŠJ‚³‚ê‚Ü‚·B
+Ãí) ¥Ñ¥¹¤ÎÀèÆ¬¤Î%...%¤Î¤ßÅ¸³«¤µ¤ì¤Ş¤¹¡£
 </pre>
 
 <br>
-<a name="uuset"><h3>__set()‚Å‚ÌƒZƒbƒ^[EƒCƒ“ƒWƒFƒNƒVƒ‡ƒ“</h3></a>
-<p>PHP5‚©‚ç’Ç‰Á‚³‚ê‚½__set()‚ğg—p‚µ‚ÄAƒZƒbƒ^[EƒCƒ“ƒWƒFƒNƒVƒ‡ƒ“‚ğs‚¤‚±‚Æ‚ª‚Å‚«‚Ü‚·B</p>
+<a name="uuset"><h3>__set()¤Ç¤Î¥»¥Ã¥¿¡¼¡¦¥¤¥ó¥¸¥§¥¯¥·¥ç¥ó</h3></a>
+<p>PHP5¤«¤éÄÉ²Ã¤µ¤ì¤¿__set()¤ò»ÈÍÑ¤·¤Æ¡¢¥»¥Ã¥¿¡¼¡¦¥¤¥ó¥¸¥§¥¯¥·¥ç¥ó¤ò¹Ô¤¦¤³¤È¤¬¤Ç¤­¤Ş¤¹¡£</p>
 <ul>
-<li>ƒvƒƒpƒeƒB‚ª–¾¦“I‚Éw’è‚³‚ê‚Ä‚¢‚é (diconƒtƒ@ƒCƒ‹‚Å propertyƒ^ƒO‚ª‹Lq‚³‚ê‚Ä‚¢‚é)</li>
-<li>ƒCƒ“ƒWƒFƒNƒVƒ‡ƒ“‘ÎÛƒNƒ‰ƒX‚ªƒZƒbƒ^[ƒƒ\ƒbƒh‚ğÀ‘•‚µ‚Ä‚¢‚È‚¢</li>
-<li>ƒCƒ“ƒWƒFƒNƒVƒ‡ƒ“‘ÎÛƒNƒ‰ƒX‚ª__set()‚ğÀ‘•‚µ‚Ä‚¢‚é</li>
+<li>¥×¥í¥Ñ¥Æ¥£¤¬ÌÀ¼¨Åª¤Ë»ØÄê¤µ¤ì¤Æ¤¤¤ë (dicon¥Õ¥¡¥¤¥ë¤Ç property¥¿¥°¤¬µ­½Ò¤µ¤ì¤Æ¤¤¤ë)</li>
+<li>¥¤¥ó¥¸¥§¥¯¥·¥ç¥óÂĞ¾İ¥¯¥é¥¹¤¬¥»¥Ã¥¿¡¼¥á¥½¥Ã¥É¤ò¼ÂÁõ¤·¤Æ¤¤¤Ê¤¤</li>
+<li>¥¤¥ó¥¸¥§¥¯¥·¥ç¥óÂĞ¾İ¥¯¥é¥¹¤¬__set()¤ò¼ÂÁõ¤·¤Æ¤¤¤ë</li>
 </ul>
-ã‹LğŒ‚Éˆê’v‚·‚éê‡‚ÉA__set()‚É‚æ‚èƒZƒbƒ^[EƒCƒ“ƒWƒFƒNƒVƒ‡ƒ“‚ªÀs‚³‚ê‚Ü‚·B<br>
+¾åµ­¾ò·ï¤Ë°ìÃ×¤¹¤ë¾ì¹ç¤Ë¡¢__set()¤Ë¤è¤ê¥»¥Ã¥¿¡¼¡¦¥¤¥ó¥¸¥§¥¯¥·¥ç¥ó¤¬¼Â¹Ô¤µ¤ì¤Ş¤¹¡£<br>
 
 <br>
-<b>À‘•ƒNƒ‰ƒX‚Ìì¬</b>
+<b>¼ÂÁõ¥¯¥é¥¹¤ÎºîÀ®</b>
 <ul>
-<li type="circle">ƒZƒbƒ^[Eƒƒ\ƒbƒh(setMessageA)‚ğ’è‹`‚µ‚Ü‚·B</li>
-<li type="circle">__set()‚ğÀ‘•‚µ‚Ü‚·B</li>
-<li type="circle">showMessage()‚ğÀ‘•‚µ‚Ü‚·B</li>
+<li type="circle">¥»¥Ã¥¿¡¼¡¦¥á¥½¥Ã¥É(setMessageA)¤òÄêµÁ¤·¤Ş¤¹¡£</li>
+<li type="circle">__set()¤ò¼ÂÁõ¤·¤Ş¤¹¡£</li>
+<li type="circle">showMessage()¤ò¼ÂÁõ¤·¤Ş¤¹¡£</li>
 </ul>
-<p>$messageBƒvƒƒpƒeƒB‚ÌƒZƒbƒ^[ƒƒ\ƒbƒh‚Í’è‹`‚µ‚Ä‚¢‚Ü‚¹‚ñB</p>
+<p>$messageB¥×¥í¥Ñ¥Æ¥£¤Î¥»¥Ã¥¿¡¼¥á¥½¥Ã¥É¤ÏÄêµÁ¤·¤Æ¤¤¤Ş¤»¤ó¡£</p>
 <pre>&lt;?php
 class HelloImpl {
 
@@ -107,12 +107,12 @@ class HelloImpl {
 </pre>
 
 <br>
-<b>diconƒtƒ@ƒCƒ‹‚Ìì¬</b>
+<b>dicon¥Õ¥¡¥¤¥ë¤ÎºîÀ®</b>
 <ul>
-<li type="circle">componentƒ^ƒO‚ÅƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ’è‹`‚µ‚Ü‚·B</li>
-<li type="circle">componentƒ^ƒO‚Ìqƒ^ƒO‚Ìpropertyƒ^ƒO‚ÅƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌƒvƒƒpƒeƒB’l‚ğ’è‹`‚µ‚Ü‚·B</li>
+<li type="circle">component¥¿¥°¤Ç¥³¥ó¥İ¡¼¥Í¥ó¥È¤òÄêµÁ¤·¤Ş¤¹¡£</li>
+<li type="circle">component¥¿¥°¤Î»Ò¥¿¥°¤Îproperty¥¿¥°¤Ç¥³¥ó¥İ¡¼¥Í¥ó¥È¤Î¥×¥í¥Ñ¥Æ¥£ÃÍ¤òÄêµÁ¤·¤Ş¤¹¡£</li>
 </ul>
-<p>s2container.php5/src/examples/extension/uuset/uuset.dicon</p>
+<p>s2container.php5/examples/extension/uuset/uuset.dicon</p>
 <pre>&lt;components&gt;
     &lt;component class="HelloImpl"&gt;
         &lt;property name="messageA"&gt;"Hello"&lt;/property&gt;
@@ -122,15 +122,15 @@ class HelloImpl {
 </pre>
 
 <br>
-<b>ÀsƒXƒNƒŠƒvƒg‚Ìì¬</b>
+<b>¼Â¹Ô¥¹¥¯¥ê¥×¥È¤ÎºîÀ®</b>
 
 <ul>
-<li type="circle">S2ContainerFactory#create($path)‚ğŒÄ‚Ño‚µ‚ÄS2Container‚ğì¬‚µ‚Ü‚·B</li>
-<li type="circle">getComponent()‚ğg—p‚µ‚ÄAS2Container‚©‚çƒRƒ“ƒ|[ƒlƒ“ƒg‚ğæ‚èo‚µ‚Ü‚·B</li>
-<li type="circle">æ“¾‚µ‚½ƒRƒ“ƒ|[ƒlƒ“ƒg‚Ìƒƒ\ƒbƒh‚ğŒÄ‚Ño‚µ‚Ü‚·B</li>
+<li type="circle">S2ContainerFactory#create($path)¤ò¸Æ¤Ó½Ğ¤·¤ÆS2Container¤òºîÀ®¤·¤Ş¤¹¡£</li>
+<li type="circle">getComponent()¤ò»ÈÍÑ¤·¤Æ¡¢S2Container¤«¤é¥³¥ó¥İ¡¼¥Í¥ó¥È¤ò¼è¤ê½Ğ¤·¤Ş¤¹¡£</li>
+<li type="circle">¼èÆÀ¤·¤¿¥³¥ó¥İ¡¼¥Í¥ó¥È¤Î¥á¥½¥Ã¥É¤ò¸Æ¤Ó½Ğ¤·¤Ş¤¹¡£</li>
 </ul>
 
-<p>s2container.php5/src/examples/extension/uuset/uusetClient.php</p>
+<p>s2container.php5/examples/extension/uuset/uusetClient.php</p>
 <pre>&lt;?php
 require_once(dirname(__FILE__) . '/uuset.inc.php');
 $PATH = EXAMPLE_DIR . "/extension/uuset/uuset.dicon";
@@ -140,8 +140,8 @@ $hello->showMessage();
 ?&gt;
 </pre>
 <br>
-<b>ÀsŒ‹‰Ê</b>
-<p>propertyƒ^ƒO‚Åw’è‚µ‚½•¶š—ñ‚ª³‚µ‚­•\¦‚³‚ê‚Ä‚¢‚é‚±‚Æ‚ªŠm”F‚Å‚«‚Ü‚·B</p>
+<b>¼Â¹Ô·ë²Ì</b>
+<p>property¥¿¥°¤Ç»ØÄê¤·¤¿Ê¸»úÎó¤¬Àµ¤·¤¯É½¼¨¤µ¤ì¤Æ¤¤¤ë¤³¤È¤¬³ÎÇ§¤Ç¤­¤Ş¤¹¡£</p>
 
 <pre>
 % php uusetClient.php
@@ -149,39 +149,39 @@ Hello World
 %
 </pre>
 
-‚±‚Ìexample‚ÍAs2container.php5/src/examples/extension/uuset/ˆÈ‰º‚É—pˆÓ‚³‚ê‚Ä‚¢‚Ü‚·B<br>
+¤³¤Îexample¤Ï¡¢s2container.php5/examples/extension/uuset/°Ê²¼¤ËÍÑ°Õ¤µ¤ì¤Æ¤¤¤Ş¤¹¡£<br>
 
 
 <br>
-<a name="dba"><h3>ƒf[ƒ^ƒx[ƒXÚ‘±</h3></a>
-<p>ƒf[ƒ^ƒx[ƒX‚Ö‚ÌÚ‘±ƒtƒŒ[ƒ€ƒ[ƒN‚ğextennsion‚Æ‚µ‚ÄŠÜ‚ß‚Ä‚¢‚Ü‚·B
+<a name="dba"><h3>¥Ç¡¼¥¿¥Ù¡¼¥¹ÀÜÂ³</h3></a>
+<p>¥Ç¡¼¥¿¥Ù¡¼¥¹¤Ø¤ÎÀÜÂ³¥Õ¥ì¡¼¥à¥ï¡¼¥¯¤òextennsion¤È¤·¤Æ´Ş¤á¤Æ¤¤¤Ş¤¹¡£
 </p>
-<p>ˆÈ~‚Ìà–¾‚Å‚ÍAˆÈ‰º‚ÌƒTƒ“ƒvƒ‹ƒe[ƒuƒ‹‚ğ—p‚¢‚Ü‚·B
-ƒTƒ“ƒvƒ‹ƒe[ƒuƒ‹‚ğì¬‚·‚é demo.sql ‚Í s2container.php5/src/s2container.php5/org/seasar/extension/db/sql/ 
-‚É‚ ‚è‚Ü‚·B
+<p>°Ê¹ß¤ÎÀâÌÀ¤Ç¤Ï¡¢°Ê²¼¤Î¥µ¥ó¥×¥ë¥Æ¡¼¥Ö¥ë¤òÍÑ¤¤¤Ş¤¹¡£
+¥µ¥ó¥×¥ë¥Æ¡¼¥Ö¥ë¤òºîÀ®¤¹¤ë demo.sql ¤Ï s2container.php5/src/s2container.php5/org/seasar/extension/db/sql/ 
+¤Ë¤¢¤ê¤Ş¤¹¡£
 </p>
 
-    	ƒe[ƒuƒ‹FEMP
+    	¥Æ¡¼¥Ö¥ë¡§EMP
 		<table border="1" class="main">
 			<tr bgcolor="#d1f3f4" align="center">
-			  <th>ƒJƒ‰ƒ€–¼</th>
-			  <th>˜_—–¼</th>
-			  <th>Œ^</th>
+			  <th>¥«¥é¥àÌ¾</th>
+			  <th>ÏÀÍıÌ¾</th>
+			  <th>·¿</th>
 			  <th>NotNull</th>
 
-			  <th>åƒL[</th>
+			  <th>¼ç¥­¡¼</th>
 			</tr>
 			<tr>
 			  <td>EMPNO</td>
-		      <td>]‹Æˆõ”Ô†</td>
+		      <td>½¾¶È°÷ÈÖ¹æ</td>
 			  <td>NUMBER</td>
-			  <td align="center">Z</td>
+			  <td align="center">¡»</td>
 
-			  <td align="center">Z</td>
+			  <td align="center">¡»</td>
 			</tr>
 			<tr>
 			  <td>ENAME</td>
-			  <td>]‹Æˆõ–¼</td>
+			  <td>½¾¶È°÷Ì¾</td>
 			  <td>VARCHAR</td>
 			  <td><br /></td>
 
@@ -189,7 +189,7 @@ Hello World
 			</tr>
 			<tr>
 			  <td>JOB</td>
-			  <td>d–</td>
+			  <td>»Å»ö</td>
 			  <td>VARCHAR</td>
 			  <td><br /></td>
 
@@ -197,7 +197,7 @@ Hello World
 			</tr>
 			<tr>
 			  <td>MGR</td>
-			  <td>ãi</td>
+			  <td>¾å»Ê</td>
 			  <td>NUMBER</td>
 			  <td><br /></td>
 
@@ -205,7 +205,7 @@ Hello World
 			</tr>
 			<tr>
 			  <td>HIREDATE</td>
-			  <td>ŒÙ—p“ú</td>
+			  <td>¸ÛÍÑÆü</td>
 			  <td>DATE</td>
 			  <td><br /></td>
 
@@ -213,7 +213,7 @@ Hello World
 			</tr>
 			<tr>
 			  <td>SAL</td>
-			  <td>‹‹—¿</td>
+			  <td>µëÎÁ</td>
 			  <td>NUMBER</td>
 			  <td><br /></td>
 
@@ -221,7 +221,7 @@ Hello World
 			</tr>
 			<tr>
 			  <td>COMM</td>
-			  <td>è”—¿</td>
+			  <td>¼ê¿ôÎÁ</td>
 			  <td>NUMBER</td>
 			  <td><br /></td>
 
@@ -229,7 +229,7 @@ Hello World
 			</tr>
 			<tr>
 			  <td>DEPTNO</td>
-			  <td>•””Ô†</td>
+			  <td>Éô½ğÈÖ¹æ</td>
 			  <td>NUMBER</td>
 			  <td><br /></td>
 
@@ -237,34 +237,34 @@ Hello World
 			</tr>
 			<tr>
 			  <td>TSTAMP</td>
-			  <td>ƒ^ƒCƒ€ƒXƒ^ƒ“ƒv</td>
+			  <td>¥¿¥¤¥à¥¹¥¿¥ó¥×</td>
 			  <td>TIMESTAMP</td>
 			  <td><br /></td>
 
 			  <td><br /></td>
 			</tr>
 		</table>
-    	<br />ƒe[ƒuƒ‹FDEPT
+    	<br />¥Æ¡¼¥Ö¥ë¡§DEPT
 		<table border="1" class="main">
 			<tr bgcolor="#d1f3f4" align="center">
-			  <th>ƒJƒ‰ƒ€–¼</th>
-			   <th>˜_—–¼</th>
+			  <th>¥«¥é¥àÌ¾</th>
+			   <th>ÏÀÍıÌ¾</th>
 
-			  <th>Œ^</th>
+			  <th>·¿</th>
 			  <th>NotNull</th>
-			  <th>åƒL[</th>
+			  <th>¼ç¥­¡¼</th>
 			</tr>
 			<tr>
 			  <td>DEPTNO</td>
-			  <td>•””Ô†</td>
+			  <td>Éô½ğÈÖ¹æ</td>
 
 			  <td>NUMBER</td>
-			  <td align="center">Z</td>
-			  <td align="center">Z</td>
+			  <td align="center">¡»</td>
+			  <td align="center">¡»</td>
 			</tr>
 			<tr>
 			  <td>DNAME</td>
-			  <td>•”–¼</td>
+			  <td>Éô½ğÌ¾</td>
 
 			  <td>VARCHAR</td>
 			  <td><br /></td>
@@ -272,7 +272,7 @@ Hello World
 			</tr>
 			<tr>
 			  <td>LOC</td>
-			  <td>ƒƒP[ƒVƒ‡ƒ“</td>
+			  <td>¥í¥±¡¼¥·¥ç¥ó</td>
 
 			  <td>VARCHAR</td>
 			  <td><br /></td>
@@ -280,7 +280,7 @@ Hello World
 			</tr>
 			<tr>
 			  <td>VERSIONNO</td>
-			  <td>ƒo[ƒWƒ‡ƒ“”Ô†</td>
+			  <td>¥Ğ¡¼¥¸¥ç¥óÈÖ¹æ</td>
 
 			  <td>NUMBER</td>
 			  <td><br /></td>
@@ -289,10 +289,10 @@ Hello World
 		</table>
 
 <br>
-<a name="dba-ds"><h3>DataSource‚É‚Â‚¢‚Ä</h3></a>
-<a name="dba-ds-peardb"><h3>pdo.dicon ƒeƒ“ƒvƒŒ[ƒg</h3></a>
-<p>pdo.dicon‚Ìƒeƒ“ƒvƒŒ[ƒg‚ğˆÈ‰º‚É¦‚µ‚Ü‚·B
-dataSourceƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌdsnƒvƒƒpƒeƒB‚ğA‚²g—p‚Ìƒf[ƒ^ƒx[ƒX‚ÉÚ‘±‚Å‚«‚é’l‚Éİ’è‚µ‚Ä‰º‚³‚¢B</p>
+<a name="dba-ds"><h3>DataSource¤Ë¤Ä¤¤¤Æ</h3></a>
+<a name="dba-ds-peardb"><h3>pdo.dicon ¥Æ¥ó¥×¥ì¡¼¥È</h3></a>
+<p>pdo.dicon¤Î¥Æ¥ó¥×¥ì¡¼¥È¤ò°Ê²¼¤Ë¼¨¤·¤Ş¤¹¡£
+dataSource¥³¥ó¥İ¡¼¥Í¥ó¥È¤Îdsn¥×¥í¥Ñ¥Æ¥£¤ò¡¢¤´»ÈÍÑ¤Î¥Ç¡¼¥¿¥Ù¡¼¥¹¤ËÀÜÂ³¤Ç¤­¤ëÃÍ¤ËÀßÄê¤·¤Æ²¼¤µ¤¤¡£</p>
 
 <pre>
 &lt;?xml version="1.0" encoding="Shift_JIS"?&gt;
@@ -310,13 +310,13 @@ dataSourceƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌdsnƒvƒƒpƒeƒB‚ğA‚²g—p‚Ìƒf[ƒ^ƒx[ƒX‚ÉÚ‘±‚Å‚«‚é’l‚É
 
 <br>
 
-<a name="dba-ds-use"><h3>g—p•û–@</h3></a>
-<p>ƒTƒ“ƒvƒ‹‚Æ‚µ‚ÄAˆø”‚Åó‚¯æ‚Á‚½DEPTNO’l‚ÅDEPTƒe[ƒuƒ‹‚ğŒŸõ‚µA‚»‚ÌŒ‹‰Ê‚ğ•Ô‚·DAO‚ğÀ‘•‚µ‚Ä‚İ‚Ü‚·B<br>
-‚±‚Ì‰‰K‚ÍAs2container.php5/src/examples/extension/db/ˆÈ‰º‚É—pˆÓ‚³‚ê‚Ä‚¢‚Ü‚·B</p>
-<p><b>ƒCƒ“ƒ^ƒtƒF[ƒX‚Ì’è‹`</b></p>
+<a name="dba-ds-use"><h3>»ÈÍÑÊıË¡</h3></a>
+<p>¥µ¥ó¥×¥ë¤È¤·¤Æ¡¢°ú¿ô¤Ç¼õ¤±¼è¤Ã¤¿DEPTNOÃÍ¤ÇDEPT¥Æ¡¼¥Ö¥ë¤ò¸¡º÷¤·¡¢¤½¤Î·ë²Ì¤òÊÖ¤¹DAO¤ò¼ÂÁõ¤·¤Æ¤ß¤Ş¤¹¡£<br>
+¤³¤Î±é½¬¤Ï¡¢s2container.php5/examples/extension/db/°Ê²¼¤ËÍÑ°Õ¤µ¤ì¤Æ¤¤¤Ş¤¹¡£</p>
+<p><b>¥¤¥ó¥¿¥Õ¥§¡¼¥¹¤ÎÄêµÁ</b></p>
 <ul>
-<li type="circle">DeptDaoƒCƒ“ƒ^ƒtƒF[ƒX‚ğ’è‹`‚µ‚Ü‚·B</li>
-<li type="circle">DEPTNO’l‚ÅŒŸõ‚ğs‚¤ findDeptByDeptnoƒƒ\ƒbƒh‚ğ’è‹`‚µ‚Ü‚·B</li>
+<li type="circle">DeptDao¥¤¥ó¥¿¥Õ¥§¡¼¥¹¤òÄêµÁ¤·¤Ş¤¹¡£</li>
+<li type="circle">DEPTNOÃÍ¤Ç¸¡º÷¤ò¹Ô¤¦ findDeptByDeptno¥á¥½¥Ã¥É¤òÄêµÁ¤·¤Ş¤¹¡£</li>
 </ul>
 
 <pre>
@@ -327,11 +327,11 @@ interface DeptDao {
 ?&gt;
 </pre>
 
-<p><b>À‘•ƒNƒ‰ƒX‚Ìì¬</b></p>
+<p><b>¼ÂÁõ¥¯¥é¥¹¤ÎºîÀ®</b></p>
 <ul>
-<li type="circle">DeptDaoƒCƒ“ƒ^ƒtƒF[ƒX‚ğ implements ‚·‚é DeptDaoImplƒNƒ‰ƒX‚ğì¬‚µ‚Ü‚·B</li>
-<li type="circle">ƒRƒ“ƒXƒgƒ‰ƒNƒ^ˆø”‚Å S2Container_DataSource ‚ğó‚¯æ‚é‚æ‚¤‚É‚µ‚Ü‚·B</li>
-<li type="circle">findDeptByDeptno ƒƒ\ƒbƒh‚ğÀ‘•‚µ‚Ü‚·Bƒf[ƒ^ƒx[ƒX‚Ö‚ÌƒRƒlƒNƒVƒ‡ƒ“‚ÍADataSource‚æ‚èæ“¾‚µ‚Ü‚·B</li>
+<li type="circle">DeptDao¥¤¥ó¥¿¥Õ¥§¡¼¥¹¤ò implements ¤¹¤ë DeptDaoImpl¥¯¥é¥¹¤òºîÀ®¤·¤Ş¤¹¡£</li>
+<li type="circle">¥³¥ó¥¹¥È¥é¥¯¥¿°ú¿ô¤Ç S2Container_DataSource ¤ò¼õ¤±¼è¤ë¤è¤¦¤Ë¤·¤Ş¤¹¡£</li>
+<li type="circle">findDeptByDeptno ¥á¥½¥Ã¥É¤ò¼ÂÁõ¤·¤Ş¤¹¡£¥Ç¡¼¥¿¥Ù¡¼¥¹¤Ø¤Î¥³¥Í¥¯¥·¥ç¥ó¤Ï¡¢DataSource¤è¤ê¼èÆÀ¤·¤Ş¤¹¡£</li>
 </ul>
 
 <pre>
@@ -356,9 +356,9 @@ class DeptDaoImpl implements DeptDao {
 </pre>
 <br>
 
-<p><b>diconƒtƒ@ƒCƒ‹‚Ìì¬</b></p>
+<p><b>dicon¥Õ¥¡¥¤¥ë¤ÎºîÀ®</b></p>
 
-<p>deptDao.dicon ‚ğì¬‚µApdo.dicon ‚ğ include ‚µ‚Ü‚·B</p>
+<p>deptDao.dicon ¤òºîÀ®¤·¡¢pdo.dicon ¤ò include ¤·¤Ş¤¹¡£</p>
 <pre>
 &lt;components&gt;
     &lt;include path="%S2CONTAINER_PHP5%/org/seasar/extension/db/pdo.dicon"/&gt;
@@ -367,11 +367,11 @@ class DeptDaoImpl implements DeptDao {
 </pre>
 
 <br>
-<p><b>ÀsƒXƒNƒŠƒvƒg‚Ìì¬</b></p>
+<p><b>¼Â¹Ô¥¹¥¯¥ê¥×¥È¤ÎºîÀ®</b></p>
 <ul>
-<li type="circle">deptDao.dicon‚ğw’è‚µ‚ÄƒRƒ“ƒeƒi‚ğì¬‚µ‚Ü‚·B</li>
-<li type="circle">ƒRƒ“ƒeƒi‚æ‚èAdeptDaoƒRƒ“ƒ|[ƒlƒ“ƒg‚ğæ“¾‚µ‚Ü‚·B</li>
-<li type="circle">DEPTNO(10) ‚Å findDeptByDeptno ƒƒ\ƒbƒh‚ğŒÄ‚Ño‚µ‚Ü‚·B</li>
+<li type="circle">deptDao.dicon¤ò»ØÄê¤·¤Æ¥³¥ó¥Æ¥Ê¤òºîÀ®¤·¤Ş¤¹¡£</li>
+<li type="circle">¥³¥ó¥Æ¥Ê¤è¤ê¡¢deptDao¥³¥ó¥İ¡¼¥Í¥ó¥È¤ò¼èÆÀ¤·¤Ş¤¹¡£</li>
+<li type="circle">DEPTNO(10) ¤Ç findDeptByDeptno ¥á¥½¥Ã¥É¤ò¸Æ¤Ó½Ğ¤·¤Ş¤¹¡£</li>
 </ul>
 
 <p>dataSourceClient.php</p>
@@ -388,7 +388,7 @@ print_r($result);
 ?&gt;
 </pre>
 
-<p><b>ÀsŒ‹‰Ê</b></p>
+<p><b>¼Â¹Ô·ë²Ì</b></p>
 <pre>
 % php dataSourceClient.php
 Array
@@ -404,21 +404,21 @@ Array
 
 <br>
 <a name="unit"><h3>S2Unit</h3></a>
-<p>S2‚Å‚ÍAƒRƒ“ƒeƒi‚ğg‚Á‚½ŠJ”­‚ÌƒeƒXƒg‚ğŠy‚µ‚­‚¨‚±‚È‚¦‚é‚æ‚¤‚ÉƒeƒXƒeƒBƒ“ƒOƒtƒŒ[ƒ€ƒ[ƒN‚ª‘g‚İ‚Ü‚ê‚Ä‚¢‚Ü‚·BPHPUnit2ASimpleTest‚ğŠg’£‚µ‚Ä‚¢‚Ü‚·Bå‚È‹@”\‚ÍˆÈ‰º‚Ì‚Æ‚¨‚è‚Å‚·B</p>
+<p>S2¤Ç¤Ï¡¢¥³¥ó¥Æ¥Ê¤ò»È¤Ã¤¿³«È¯¤Î¥Æ¥¹¥È¤ò³Ú¤·¤¯¤ª¤³¤Ê¤¨¤ë¤è¤¦¤Ë¥Æ¥¹¥Æ¥£¥ó¥°¥Õ¥ì¡¼¥à¥ï¡¼¥¯¤¬ÁÈ¤ß¹ş¤Ş¤ì¤Æ¤¤¤Ş¤¹¡£PHPUnit2¡¢SimpleTest¤ò³ÈÄ¥¤·¤Æ¤¤¤Ş¤¹¡£¼ç¤Êµ¡Ç½¤Ï°Ê²¼¤Î¤È¤ª¤ê¤Ç¤¹¡£</p>
 <ul>
-<li>ƒeƒXƒgƒƒ\ƒbƒh(testXxx)‚²‚Æ‚É©“®“I‚ÉS2Container‚ğì¬‚µ‚Ü‚·B</li>
+<li>¥Æ¥¹¥È¥á¥½¥Ã¥É(testXxx)¤´¤È¤Ë¼«Æ°Åª¤ËS2Container¤òºîÀ®¤·¤Ş¤¹¡£</li>
 
-<li>S2Container‚É‘Î‚·‚éregister()AgetComponent()Ainclude() ‚ª—pˆÓ‚³‚ê‚Ä‚¢‚Ü‚·B</li>
-<li>TestCase‚É public ‚ÈƒtƒB[ƒ‹ƒh‚ª‚ ‚é‚ÆAƒtƒB[ƒ‹ƒh–¼‚Æ“¯‚¶–¼‘O‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ªƒRƒ“ƒeƒi‚É‘¶İ‚·‚ê‚Î©“®“I‚ÉƒZƒbƒg‚³‚ê‚Ü‚·B</li>
-<li>ƒeƒXƒgƒƒ\ƒbƒh‚ªI‚í‚é‚Æ©“®ƒZƒbƒg‚³‚ê‚½’l‚Í©“®“I‚ÉƒNƒŠƒA( null ‚ğƒZƒbƒg)‚³‚ê‚Ü‚·B</li>
-<li>ƒeƒXƒgƒƒ\ƒbƒh( testXxx )‚É‘Î‰‚·‚é setUpXxx()AtearDownXxx() ‚ğ’è‹`‚µ‚Ä‚¨‚­‚ÆAsetUp()‚ÌŒãAtearDown()‚Ì‘O‚É©“®“I‚ÉŒÄ‚Ño‚³‚ê‚Ü‚·BŒÂ•Ê‚ÌƒeƒXƒgƒƒ\ƒbƒh‚²‚Æ‚Ì‰Šú‰»EI—¹ˆ—‚ğŠÈ’P‚És‚¦‚é‚æ‚¤‚É‚È‚è‚Ü‚·B</li>
+<li>S2Container¤ËÂĞ¤¹¤ëregister()¡¢getComponent()¡¢include() ¤¬ÍÑ°Õ¤µ¤ì¤Æ¤¤¤Ş¤¹¡£</li>
+<li>TestCase¤Ë public ¤Ê¥Õ¥£¡¼¥ë¥É¤¬¤¢¤ë¤È¡¢¥Õ¥£¡¼¥ë¥ÉÌ¾¤ÈÆ±¤¸Ì¾Á°¤Î¥³¥ó¥İ¡¼¥Í¥ó¥È¤¬¥³¥ó¥Æ¥Ê¤ËÂ¸ºß¤¹¤ì¤Ğ¼«Æ°Åª¤Ë¥»¥Ã¥È¤µ¤ì¤Ş¤¹¡£</li>
+<li>¥Æ¥¹¥È¥á¥½¥Ã¥É¤¬½ª¤ï¤ë¤È¼«Æ°¥»¥Ã¥È¤µ¤ì¤¿ÃÍ¤Ï¼«Æ°Åª¤Ë¥¯¥ê¥¢( null ¤ò¥»¥Ã¥È)¤µ¤ì¤Ş¤¹¡£</li>
+<li>¥Æ¥¹¥È¥á¥½¥Ã¥É( testXxx )¤ËÂĞ±ş¤¹¤ë setUpXxx()¡¢tearDownXxx() ¤òÄêµÁ¤·¤Æ¤ª¤¯¤È¡¢setUp()¤Î¸å¡¢tearDown()¤ÎÁ°¤Ë¼«Æ°Åª¤Ë¸Æ¤Ó½Ğ¤µ¤ì¤Ş¤¹¡£¸ÄÊÌ¤Î¥Æ¥¹¥È¥á¥½¥Ã¥É¤´¤È¤Î½é´ü²½¡¦½ªÎ»½èÍı¤ò´ÊÃ±¤Ë¹Ô¤¨¤ë¤è¤¦¤Ë¤Ê¤ê¤Ş¤¹¡£</li>
 </ul>
 <h3><a name="unit-example">Example</a></h3>
-<p>Pear PHPUnit2 ‚ğŠg’£‚µ‚½ S2Container_S2PHPUnit2TestCase ‚ğ—p‚¢‚Ü‚·B<br>
-‚±‚ÌƒTƒ“ƒvƒ‹‚ÍAs2container.php5/src/examples/extension/unit/ˆÈ‰º‚É‚ ‚è‚Ü‚·B</p>
+<p>Pear PHPUnit2 ¤ò³ÈÄ¥¤·¤¿ S2Container_S2PHPUnit2TestCase ¤òÍÑ¤¤¤Ş¤¹¡£<br>
+¤³¤Î¥µ¥ó¥×¥ë¤Ï¡¢s2container.php5/examples/extension/unit/°Ê²¼¤Ë¤¢¤ê¤Ş¤¹¡£</p>
 
-<p><b>ƒeƒXƒg‘ÎÛ</b></p>
-<p>s2container.php5/src/examples/extension/unit/src/foo/FooLogic.class.php</p>
+<p><b>¥Æ¥¹¥ÈÂĞ¾İ</b></p>
+<p>s2container.php5/examples/extension/unit/src/foo/FooLogic.class.php</p>
 <pre>
 &lt;?php
 class FooLogic {
@@ -433,9 +433,9 @@ class FooLogic {
 ?&gt;
 </pre>
 
-<p><b>diconƒtƒ@ƒCƒ‹</b></p>
+<p><b>dicon¥Õ¥¡¥¤¥ë</b></p>
 
-<p>s2container.php5/src/examples/extension/unit/src/foo/foo.dicon</p>
+<p>s2container.php5/examples/extension/unit/src/foo/foo.dicon</p>
 <pre>&lt;?xml version="1.0" encoding="Shift_JIS"?&gt;
 &lt;!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
 "http://www.seasar.org/dtd/components21.dtd"&gt;
@@ -444,21 +444,21 @@ class FooLogic {
 &lt;/components&gt;
 </pre>
 
-<p><b>ƒeƒXƒgƒNƒ‰ƒX</b></p>
+<p><b>¥Æ¥¹¥È¥¯¥é¥¹</b></p>
 
-<p>s2container.php5/src/examples/extension/unit/test/phpunit2/foo/FooLogicTest.class.php</p>
+<p>s2container.php5/examples/extension/unit/test/phpunit2/foo/FooLogicTest.class.php</p>
 <pre>
 &lt;?php
 class FooLogicTest extends S2Container_S2PHPUnit2TestCase {
 
-    public $logic;   //--- dicon ƒtƒ@ƒCƒ‹‚É logic ‚Æ‚¢‚¤–¼‘O‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ª‘¶İ‚·‚ê‚Îİ’è‚³‚ê‚Ü‚·
+    public $logic;   //--- dicon ¥Õ¥¡¥¤¥ë¤Ë logic ¤È¤¤¤¦Ì¾Á°¤Î¥³¥ó¥İ¡¼¥Í¥ó¥È¤¬Â¸ºß¤¹¤ì¤ĞÀßÄê¤µ¤ì¤Ş¤¹
     
     function __construct($name) {
     	parent::__construct($name);
     }
 
     function setUp(){
-        $this->includeDicon(UNIT_EXAMPLE . "/src/foo/foo.dicon");   //--- dicon ƒtƒ@ƒCƒ‹‚ğ include ‚µ‚Ü‚·
+        $this->includeDicon(UNIT_EXAMPLE . "/src/foo/foo.dicon");   //--- dicon ¥Õ¥¡¥¤¥ë¤ò include ¤·¤Ş¤¹
     }
 
     function testShowYear(){
@@ -469,7 +469,7 @@ class FooLogicTest extends S2Container_S2PHPUnit2TestCase {
 ?&gt;
 </pre>
 
-<p>s2container.php5/src/examples/extension/unit/test/phpunit2/foo/FooAllTest.class.php</p>
+<p>s2container.php5/examples/extension/unit/test/phpunit2/foo/FooAllTest.class.php</p>
 <pre>
 &lt;?php
 class FooAllTest {
@@ -487,8 +487,8 @@ class FooAllTest {
 ?&gt;
 </pre>
 
-<p><b>ÀsƒXƒNƒŠƒvƒg</b></p>
-<p>s2container.php5/src/examples/extension/unit/test/phpunit2/foo/fooTests.php</p>
+<p><b>¼Â¹Ô¥¹¥¯¥ê¥×¥È</b></p>
+<p>s2container.php5/examples/extension/unit/test/phpunit2/foo/fooTests.php</p>
 <pre>
 &lt;?php
 define('PHPUnit2_MAIN_METHOD', 'FooAllTest::main()');
@@ -500,7 +500,7 @@ FooAllTest::main();
 </pre>
 
 
-<p><b>ÀsŒ‹‰Ê</b></p>
+<p><b>¼Â¹Ô·ë²Ì</b></p>
 <pre>
 % php allTests.php
 
@@ -515,16 +515,16 @@ OK (1 test)
 %
 </pre>
 
-<p>SimpleTest ‚ğ—p‚¢‚½“¯—l‚ÌƒTƒ“ƒvƒ‹‚ª s2container.php5/src/examples/extension/unit/test/ˆÈ‰º‚É‚ ‚è‚Ü‚·B</p>
+<p>SimpleTest ¤òÍÑ¤¤¤¿Æ±ÍÍ¤Î¥µ¥ó¥×¥ë¤¬ s2container.php5/examples/extension/unit/test/°Ê²¼¤Ë¤¢¤ê¤Ş¤¹¡£</p>
 
 <br>
 <a name="loader"><h3>S2ContainerClassLoader</h3></a>
 <p>
-S2Container.PHP5‚Å‚ÍAƒNƒ‰ƒX’è‹`‚Ì“Ç‚İ‚İ‚ğ S2ContainerClassLoader ‚ªŠÇ—‚µ‚Ü‚·B
-S2ContainerClassLoader ‚É‚Í importƒƒ\ƒbƒh‚ª’è‹`‚³‚ê‚Ä‚¨‚èA”CˆÓ‚ÌƒNƒ‰ƒX‚ğ“o˜^‚Å‚«‚Ü‚·B“o˜^‚³‚ê‚½ƒNƒ‰ƒX‚ÍA__autoloadŠÖ”“à‚Å“Ç‚İ‚Ü‚ê‚Ü‚·B
+S2Container.PHP5¤Ç¤Ï¡¢¥¯¥é¥¹ÄêµÁ¤ÎÆÉ¤ß¹ş¤ß¤ò S2ContainerClassLoader ¤¬´ÉÍı¤·¤Ş¤¹¡£
+S2ContainerClassLoader ¤Ë¤Ï import¥á¥½¥Ã¥É¤¬ÄêµÁ¤µ¤ì¤Æ¤ª¤ê¡¢Ç¤°Õ¤Î¥¯¥é¥¹¤òÅĞÏ¿¤Ç¤­¤Ş¤¹¡£ÅĞÏ¿¤µ¤ì¤¿¥¯¥é¥¹¤Ï¡¢__autoload´Ø¿ôÆâ¤ÇÆÉ¤ß¹ş¤Ş¤ì¤Ş¤¹¡£
 </p>
 
-<h3><a name="loader-file">ƒNƒ‰ƒX’è‹`ƒtƒ@ƒCƒ‹‚ğw’è‚·‚é</a></h3>
+<h3><a name="loader-file">¥¯¥é¥¹ÄêµÁ¥Õ¥¡¥¤¥ë¤ò»ØÄê¤¹¤ë</a></h3>
 
 <pre>
 &lt;?php
@@ -533,10 +533,10 @@ S2ContainerClassLoader::import('/path/to/Foo.php');
 ?&gt;
 </pre>
 
-ƒNƒ‰ƒX–¼‚Íw’è‚³‚ê‚½ƒtƒ@ƒCƒ‹–¼‚Ìæ“ª‚©‚çu.v‚Ü‚Å‚É‚È‚è‚Ü‚·BHoge.class.php‚Ìê‡‚ÍuHogev‚Æ‚È‚è‚Ü‚·B
+¥¯¥é¥¹Ì¾¤Ï»ØÄê¤µ¤ì¤¿¥Õ¥¡¥¤¥ëÌ¾¤ÎÀèÆ¬¤«¤é¡Ö.¡×¤Ş¤Ç¤Ë¤Ê¤ê¤Ş¤¹¡£Hoge.class.php¤Î¾ì¹ç¤Ï¡ÖHoge¡×¤È¤Ê¤ê¤Ş¤¹¡£
 <br>
 <br>
-<p><b>ƒNƒ‰ƒX–¼‚ğw’è‚·‚é</b></p>
+<p><b>¥¯¥é¥¹Ì¾¤ò»ØÄê¤¹¤ë</b></p>
 <pre>
 &lt;?php
 S2ContainerClassLoader::import('/path/to/Hoge.class.php','Hoge');
@@ -544,19 +544,19 @@ S2ContainerClassLoader::import('/path/to/classes.php','Foo');
 S2ContainerClassLoader::import('/path/to/classes.php','Bar');
 ?&gt;
 </pre>
-importƒƒ\ƒbƒh‚Ì‘æ“ñˆø”‚ÅƒNƒ‰ƒX–¼‚ğw’è‚Å‚«‚Ü‚·B
+import¥á¥½¥Ã¥É¤ÎÂèÆó°ú¿ô¤Ç¥¯¥é¥¹Ì¾¤ò»ØÄê¤Ç¤­¤Ş¤¹¡£
 
 <br>
-<h3><a name="loader-dir">ƒfƒBƒŒƒNƒgƒŠ‚ğw’è‚·‚é</a></h3>
+<h3><a name="loader-dir">¥Ç¥£¥ì¥¯¥È¥ê¤ò»ØÄê¤¹¤ë</a></h3>
 <pre>
 &lt;?php
 S2ContainerClassLoader::import('/path/to/dir');
 ?&gt;
 </pre>
 
-w’è‚³‚ê‚½ƒfƒBƒŒƒNƒgƒŠ‚É‚ ‚éƒNƒ‰ƒX’è‹`ƒtƒ@ƒCƒ‹‚ğimport‚µ‚Ü‚·B
+»ØÄê¤µ¤ì¤¿¥Ç¥£¥ì¥¯¥È¥ê¤Ë¤¢¤ë¥¯¥é¥¹ÄêµÁ¥Õ¥¡¥¤¥ë¤òimport¤·¤Ş¤¹¡£
 
-<h3><a name="loader-array">ƒNƒ‰ƒX’è‹`‚Ì”z—ñ‚ğg—p‚·‚é</a></h3>
+<h3><a name="loader-array">¥¯¥é¥¹ÄêµÁ¤ÎÇÛÎó¤ò»ÈÍÑ¤¹¤ë</a></h3>
 
 <pre>
 &lt;?php
@@ -566,7 +566,7 @@ S2ContainerClassLoader::import($classes);
 ?&gt;
 </pre>
 
-ƒNƒ‰ƒX–¼‚ğƒL[‚Æ‚µ‚ÄƒNƒ‰ƒX’è‹`ƒtƒ@ƒCƒ‹‚ªw’è‚³‚ê‚½˜A‘z”z—ñ‚ğimport‚µ‚Ü‚·B
+¥¯¥é¥¹Ì¾¤ò¥­¡¼¤È¤·¤Æ¥¯¥é¥¹ÄêµÁ¥Õ¥¡¥¤¥ë¤¬»ØÄê¤µ¤ì¤¿Ï¢ÁÛÇÛÎó¤òimport¤·¤Ş¤¹¡£
 
 <!-- document end -->
 <!-- don't edit start -->
