@@ -140,6 +140,7 @@ class S2ContainerClassLoader {
         'S2Container_ArgDefSupport' => '/org/seasar/framework/container/util/S2Container_ArgDefSupport.class.php',
         'S2Container_AspectDefSupport' => '/org/seasar/framework/container/util/S2Container_AspectDefSupport.class.php',
         'S2Container_AutoBindingUtil' => '/org/seasar/framework/container/util/S2Container_AutoBindingUtil.class.php',
+        'S2Container_ChildComponentDefBindingUtil' => '/org/seasar/framework/container/util/S2Container_ChildComponentDefBindingUtil.class.php',
         'S2Container_DestroyMethodDefSupport' => '/org/seasar/framework/container/util/S2Container_DestroyMethodDefSupport.class.php',
         'S2Container_InitMethodDefSupport' => '/org/seasar/framework/container/util/S2Container_InitMethodDefSupport.class.php',
         'S2Container_InstanceModeUtil' => '/org/seasar/framework/container/util/S2Container_InstanceModeUtil.class.php',
@@ -160,10 +161,7 @@ class S2ContainerClassLoader {
         'S2Container_EvalUtil' => '/org/seasar/framework/util/S2Container_EvalUtil.class.php',
         'S2Container_FileCacheUtil' => '/org/seasar/framework/util/S2Container_FileCacheUtil.class.php',
         'S2Container_MethodUtil' => '/org/seasar/framework/util/S2Container_MethodUtil.class.php',
-        'S2Container_StringUtil' => '/org/seasar/framework/util/S2Container_StringUtil.class.php',
-
-        'S2Container_ChildComponentDefBindingUtil' => '/org/seasar/framework/container/util/S2Container_ChildComponentDefBindingUtil.class.php'
-        );
+        'S2Container_StringUtil' => '/org/seasar/framework/util/S2Container_StringUtil.class.php');
 
 
     function load($className){

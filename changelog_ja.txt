@@ -1,65 +1,84 @@
-S2Container.PHP5 •ÏX—š—ğ
+S2Container.PHP5 ÊÑ¹¹ÍúÎò
+
+1.1.0-beta2
+-------------------------------------------------------------------------------
+* examples¥Ç¥£¥ì¥¯¥È¥ê¤ò¥È¥Ã¥×¥Ç¥£¥ì¥¯¥È¥ê¤Ë°ÜÆ°¤·¤Ş¤·¤¿¡£
+* s2container.inc.php defined³ÎÇ§¤òÄÉ²Ã¤·¤Ş¤·¤¿¡£
+* S2Container_MethodUtil::invoke¥á¥½¥Ã¥É¤Ç¥á¥½¥Ã¥É¼Â¹Ô¤òeval¤Ç¹Ô¤¦¤è¤¦¤Ë
+  ²ş½¤¤·¤Ş¤·¤¿¡£
+* PropertyDesc::setWriteMethod¥á¥½¥Ã¥É¤ÇpropertyType¤ò¼èÆÀ¤¹¤ë¤è¤¦¤Ë
+  ²ş½¤¤·¤Ş¤·¤¿¡£
+* S2Container_SingletonS2ContainerFactory¤Ëstatic¤ÊINITIALIZE¥×¥í¥Ñ¥Æ¥£¤ò
+  ÄÉ²Ã¤·¤Ş¤·¤¿¡£
+* S2Container_ClassUtil::hasMethod¤òReflectionClass::hasMethod¤Ë
+  ÃÖ¤­´¹¤¨¤Ş¤·¤¿¡£
+* S2ContainerImpl::init¥á¥½¥Ã¥É¤ÎforÊ¸¤ò½¤Àµ¤·¤Ş¤·¤¿¡£
+* SSRMessages.properties ¤ÎÌ¤»ÈÍÑ¤Î¥á¥Ã¥»¡¼¥¸¤òºï½ü¤·¤Ş¤·¤¿¡£
+* S2ContainerFactory refactoring
+* S2Container_XmlS2ContainerBuilder refactoring
+* S2Container_S2Logger refactoring
+
 
 1.1.0-beta1
 -------------------------------------------------------------------------------
-* PHP-5.0‚Å‚ÌŠJ”­‚ğI—¹‚µ‚Ü‚µ‚½B
-* PHP-5.1‚Å‚ÌŠJ”­‚ğŠJn‚µ‚Ü‚µ‚½BPHP-5.1.1‚Å“®ìŠm”F‚µ‚Ü‚µ‚½B
-* INIŒ`®ƒ_ƒCƒRƒ“ƒtƒ@ƒCƒ‹‚ÌƒTƒ|[ƒg‚ğ’†~‚µ‚Ü‚µ‚½B
-* extension/db‚ÅAPDO‚Ì‚İƒTƒ|[ƒg‚µ‚Ü‚µ‚½B
-* extension/unit‚ÅAPHPUnit2ASimpleTest‚ğƒTƒ|[ƒg‚µ‚Ü‚µ‚½B
+* PHP-5.0¤Ç¤Î³«È¯¤ò½ªÎ»¤·¤Ş¤·¤¿¡£
+* PHP-5.1¤Ç¤Î³«È¯¤ò³«»Ï¤·¤Ş¤·¤¿¡£PHP-5.1.1¤ÇÆ°ºî³ÎÇ§¤·¤Ş¤·¤¿¡£
+* INI·Á¼°¥À¥¤¥³¥ó¥Õ¥¡¥¤¥ë¤Î¥µ¥İ¡¼¥È¤òÃæ»ß¤·¤Ş¤·¤¿¡£
+* extension/db¤Ç¡¢PDO¤Î¤ß¥µ¥İ¡¼¥È¤·¤Ş¤·¤¿¡£
+* extension/unit¤Ç¡¢PHPUnit2¡¢SimpleTest¤ò¥µ¥İ¡¼¥È¤·¤Ş¤·¤¿¡£
 
 
 1.0.0-beta3
 -------------------------------------------------------------------------------
-* ƒ‰ƒCƒZƒ“ƒX‚ğuThe Seasar Software License, Version 1.1v‚©‚ç
-  uThe Apache License, Version 2.0v‚ÉØ‚è‘Ö‚¦‚Ü‚µ‚½B
-* ƒNƒ‰ƒX–¼‚ªuS2Containerv‚Ån‚Ü‚Á‚Ä‚¢‚È‚¢ƒNƒ‰ƒX‚É‚Â‚¢‚ÄAuS2Container_v
-  ƒvƒŒƒtƒBƒbƒNƒX‚ğ•t‰Á‚µ‚Ü‚µ‚½B
-* ƒfƒtƒHƒ‹ƒg‚Å__autoloadŠÖ”‚ğ–¢’è‹`‚Æ‚µ‚Ü‚µ‚½B(ƒRƒƒ“ƒgƒAƒEƒg‚µ‚Ä‚¢‚Ü‚·B)
-* S2ContainerClassLoader‚Éimportƒƒ\ƒbƒh‚ğ’Ç‰Á‚µ‚Ü‚µ‚½B
-* extensionƒhƒLƒ…ƒƒ“ƒg‚ÉS2ContainerClassLoader‚É‚Â‚¢‚Ä’Ç‰Á‚µ‚Ü‚µ‚½B
-* ƒZƒbƒ^[ƒCƒ“ƒWƒFƒNƒVƒ‡ƒ“‚É‚Äexpression‚Åì¬‚µ‚½”z—ñ‚ªƒCƒ“ƒWƒFƒNƒVƒ‡ƒ“
-  ‚Å‚«‚È‚¢“_‚ğC³‚µ‚Ü‚µ‚½B
-* S2Container_ComponentDefImpl‚ÅAƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌƒNƒ‰ƒX’è‹`‚ª“Ç‚İ‚Ü‚ê‚Ä
-  ‚¢‚È‚­‚Ä‚àƒCƒ“ƒXƒ^ƒ“ƒX‚ğì¬‚Å‚«‚é‚æ‚¤‚É‚µ‚Ü‚µ‚½B
-* S2Container_MessageUtil‚ğƒŠƒ\[ƒXƒtƒ@ƒCƒ‹‚ğ’Ç‰Á‚Å‚«‚é‚æ‚¤‚É‰üC‚µ‚Ü‚µ‚½B
-* S2AOP‚ÅAEnhance‚µ‚½ProxyƒNƒ‰ƒX‚ğƒtƒ@ƒCƒ‹‚Éo—Í‚Å‚«‚é‚æ‚¤‚É‚µ‚Ü‚µ‚½B
+* ¥é¥¤¥»¥ó¥¹¤ò¡ÖThe Seasar Software License, Version 1.1¡×¤«¤é
+  ¡ÖThe Apache License, Version 2.0¡×¤ËÀÚ¤êÂØ¤¨¤Ş¤·¤¿¡£
+* ¥¯¥é¥¹Ì¾¤¬¡ÖS2Container¡×¤Ç»Ï¤Ş¤Ã¤Æ¤¤¤Ê¤¤¥¯¥é¥¹¤Ë¤Ä¤¤¤Æ¡¢¡ÖS2Container_¡×
+  ¥×¥ì¥Õ¥£¥Ã¥¯¥¹¤òÉÕ²Ã¤·¤Ş¤·¤¿¡£
+* ¥Ç¥Õ¥©¥ë¥È¤Ç__autoload´Ø¿ô¤òÌ¤ÄêµÁ¤È¤·¤Ş¤·¤¿¡£(¥³¥á¥ó¥È¥¢¥¦¥È¤·¤Æ¤¤¤Ş¤¹¡£)
+* S2ContainerClassLoader¤Ëimport¥á¥½¥Ã¥É¤òÄÉ²Ã¤·¤Ş¤·¤¿¡£
+* extension¥É¥­¥å¥á¥ó¥È¤ËS2ContainerClassLoader¤Ë¤Ä¤¤¤ÆÄÉ²Ã¤·¤Ş¤·¤¿¡£
+* ¥»¥Ã¥¿¡¼¥¤¥ó¥¸¥§¥¯¥·¥ç¥ó¤Ë¤Æexpression¤ÇºîÀ®¤·¤¿ÇÛÎó¤¬¥¤¥ó¥¸¥§¥¯¥·¥ç¥ó
+  ¤Ç¤­¤Ê¤¤ÅÀ¤ò½¤Àµ¤·¤Ş¤·¤¿¡£
+* S2Container_ComponentDefImpl¤Ç¡¢¥³¥ó¥İ¡¼¥Í¥ó¥È¤Î¥¯¥é¥¹ÄêµÁ¤¬ÆÉ¤ß¹ş¤Ş¤ì¤Æ
+  ¤¤¤Ê¤¯¤Æ¤â¥¤¥ó¥¹¥¿¥ó¥¹¤òºîÀ®¤Ç¤­¤ë¤è¤¦¤Ë¤·¤Ş¤·¤¿¡£
+* S2Container_MessageUtil¤ò¥ê¥½¡¼¥¹¥Õ¥¡¥¤¥ë¤òÄÉ²Ã¤Ç¤­¤ë¤è¤¦¤Ë²ş½¤¤·¤Ş¤·¤¿¡£
+* S2AOP¤Ç¡¢Enhance¤·¤¿Proxy¥¯¥é¥¹¤ò¥Õ¥¡¥¤¥ë¤Ë½ĞÎÏ¤Ç¤­¤ë¤è¤¦¤Ë¤·¤Ş¤·¤¿¡£
 
 org.seasar.framework.aop.proxy
-* S2Container_AopProxy‚ğS2Container_AopProxyFactory‚É•ÏX
-* S2Container_UuCallAopProxyFactory‚ğS2Container_AopProxyGenerator‚É•ÏX
-* S2Container_UuCallAopProxy‚ğS2Container_DefaultAopProxy‚É•ÏX
+* S2Container_AopProxy¤òS2Container_AopProxyFactory¤ËÊÑ¹¹
+* S2Container_UuCallAopProxyFactory¤òS2Container_AopProxyGenerator¤ËÊÑ¹¹
+* S2Container_UuCallAopProxy¤òS2Container_DefaultAopProxy¤ËÊÑ¹¹
 
 org.seasar.framework.util
-* S2Container_FileCacheUtil‚ğ’Ç‰Á
+* S2Container_FileCacheUtil¤òÄÉ²Ã
 
 org.seasar.framework.container.util
-* S2Container_AopProxyUtil‚ğS2Container_AopProxyFactory‚ğg—p‚·‚é‚æ‚¤‚É•ÏX
+* S2Container_AopProxyUtil¤òS2Container_AopProxyFactory¤ò»ÈÍÑ¤¹¤ë¤è¤¦¤ËÊÑ¹¹
 
 
 1.0.0-beta2
 -------------------------------------------------------------------------------
-* PHP-5.0.5 ‚Å“®ìŠm”F‚µ‚Ü‚µ‚½B
-* s2container.php5.ini ‚ğ s2container.inc.php ‚ÉƒŠƒl[ƒ€‚µ‚Ü‚µ‚½B
-* S2ClassLoader ‚ğ S2ContainerClassLoader ‚ÉƒŠƒl[ƒ€‚µ‚Ü‚µ‚½B
+* PHP-5.0.5 ¤ÇÆ°ºî³ÎÇ§¤·¤Ş¤·¤¿¡£
+* s2container.php5.ini ¤ò s2container.inc.php ¤Ë¥ê¥Í¡¼¥à¤·¤Ş¤·¤¿¡£
+* S2ClassLoader ¤ò S2ContainerClassLoader ¤Ë¥ê¥Í¡¼¥à¤·¤Ş¤·¤¿¡£
 
-org.seasar.framework.aop.impl ƒpƒbƒP[ƒW
-* S2MethodInvocationImpl‚ÌgetThis()‚ªƒ^[ƒQƒbƒgƒIƒuƒWƒFƒNƒg‚ğ•Ô‚·‚æ‚¤‚ÉC³‚µ‚Ü‚µ‚½B
+org.seasar.framework.aop.impl ¥Ñ¥Ã¥±¡¼¥¸
+* S2MethodInvocationImpl¤ÎgetThis()¤¬¥¿¡¼¥²¥Ã¥È¥ª¥Ö¥¸¥§¥¯¥È¤òÊÖ¤¹¤è¤¦¤Ë½¤Àµ¤·¤Ş¤·¤¿¡£
 
-org.seasar.framework.container ƒpƒbƒP[ƒW
-* S2Container ƒCƒ“ƒ^ƒtƒF[ƒX‚É findComponents(),findComponentDefs() ƒƒ\ƒbƒh‚ğ’Ç‰Á‚µ‚Ü‚µ‚½B
-* TooManyComponentRegistrationDef ƒCƒ“ƒ^ƒtƒF[ƒX‚ğ’Ç‰Á‚µ‚Ü‚µ‚½B
+org.seasar.framework.container ¥Ñ¥Ã¥±¡¼¥¸
+* S2Container ¥¤¥ó¥¿¥Õ¥§¡¼¥¹¤Ë findComponents(),findComponentDefs() ¥á¥½¥Ã¥É¤òÄÉ²Ã¤·¤Ş¤·¤¿¡£
+* TooManyComponentRegistrationDef ¥¤¥ó¥¿¥Õ¥§¡¼¥¹¤òÄÉ²Ã¤·¤Ş¤·¤¿¡£
 
-org.seasar.framework.container.assembler ƒpƒbƒP[ƒW
+org.seasar.framework.container.assembler ¥Ñ¥Ã¥±¡¼¥¸
 * AutoConstructorAssembler, DefaultConstructorAssembler,
-  ExpressionConstructorAssembler, ManualConstructorAssembler ƒNƒ‰ƒX‚Ì 
-  final Cüq‚ğíœ‚µ‚Ü‚µ‚½B
+  ExpressionConstructorAssembler, ManualConstructorAssembler ¥¯¥é¥¹¤Î 
+  final ½¤¾ş»Ò¤òºï½ü¤·¤Ş¤·¤¿¡£
 
-org.seasar.framework.container.factory ƒpƒbƒP[ƒW
-* CircularIncludeRuntimeException —áŠO‚ğ’Ç‰Á‚µ‚Ü‚µ‚½B
+org.seasar.framework.container.factory ¥Ñ¥Ã¥±¡¼¥¸
+* CircularIncludeRuntimeException Îã³°¤òÄÉ²Ã¤·¤Ş¤·¤¿¡£
 
-org.seasar.framework.container.impl ƒpƒbƒP[ƒW
-* TooManyRegistrationComponentDef ƒNƒ‰ƒX‚ğ TooManyRegistrationComponentDefImpl ‚É
-  ƒŠƒl[ƒ€‚µ‚Ü‚µ‚½B
+org.seasar.framework.container.impl ¥Ñ¥Ã¥±¡¼¥¸
+* TooManyRegistrationComponentDef ¥¯¥é¥¹¤ò TooManyRegistrationComponentDefImpl ¤Ë
+  ¥ê¥Í¡¼¥à¤·¤Ş¤·¤¿¡£
 
 

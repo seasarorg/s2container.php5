@@ -283,8 +283,7 @@ class S2ContainerImpl implements S2Container
         for ($i = 0; $i < $o; ++$i) {
             $this->getChild($i)->init();
         }
-        $o = $this->getComponentDefSize();
-        for ($i = 0; $i < $o; ++$i) {
+        for ($i = 0; $i < $this->getComponentDefSize(); ++$i) {
             $this->getComponentDef($i)->init();
         }
         $this->inited_ = true;
@@ -691,6 +690,38 @@ interface S2Container_ContainerConstants
     const SESSION_NAME = "session";
     const SERVLET_CONTEXT_NAME = "servletContext";
     const COMPONENT_DEF_NAME = "componentDef";
+}
+final class S2Container_ChildComponentDefBindingUtil {
+    private static $unresolved = array();
+    private function __construct()
+    {
+    }
+    public static function init()
+    {
+        self::$unresolved = array();
+    }
+    public static function put($componentName, 
+                               S2Container_ArgDef $argDef)
+    {
+        if(isset(self::$unresolved[$componentName])){
+            array_push(self::$unresolved[$componentName],$argDef);
+        }else{
+            self::$unresolved[$componentName] = array($argDef);
+        }
+    }
+    public static function bind(S2Container $container)
+    {
+        foreach (self::$unresolved as $componentName => $argDefs) {
+            foreach ($argDefs as $argDef) {
+                if ($container->hasComponentDef($componentName)) {
+                    $argDef->setChildComponentDef($container->
+                                               getComponentDef($componentName));
+                    $argDef->setExpression("");
+                }
+            }
+        }
+        self::init();
+    }
 }
 class S2Container_ComponentDefImpl 
     implements S2Container_ComponentDef
@@ -1269,11 +1300,8 @@ final class S2Container_PointcutImpl implements S2Container_Pointcut
     {
         $this->methodNames_ = $methodNames;
     }
-    private function _getMethodNames($targetClass = null)
+    private function _getMethodNames($targetClass)
     {
-        if ($targetClass == null) {
-            return $this->methodNames_;
-        }
         $methodNameSet = array();
         if ($targetClass->isInterface() or $targetClass->isAbstract()) {
             $methods = $targetClass->getMethods();
@@ -1702,15 +1730,11 @@ final class S2Container_S2Logger
     }
     public static final function getLogger($className)
     {
-        $logger = null;
-        if (array_key_exists($className,S2Container_S2Logger::$loggerMap_)) {
-            $logger = S2Container_S2Logger::$loggerMap_[$className];
+        if (!array_key_exists($className,S2Container_S2Logger::$loggerMap_)) {
+            S2Container_S2Logger::$loggerMap_[$className] = 
+                new S2Container_S2Logger($className);
         }
-        if ($logger == null) {
-            $logger = new S2Container_S2Logger($className);
-            S2Container_S2Logger::$loggerMap_[$className] = $logger;
-        }
-        return $logger->_getLog();
+        return S2Container_S2Logger::$loggerMap_[$className]->_getLog();
     }
     private function _getLog()
     {
@@ -2367,6 +2391,8 @@ class S2Container_PropertyDescImpl implements S2Container_PropertyDesc
     public final function setWriteMethod($writeMethod)
     {
         $this->writeMethod_ = $writeMethod;
+        $propertyTypes = $writeMethod->getParameters();
+        $this->propertyType_ = $propertyTypes[0]->getClass();
     }
     public final function hasWriteMethod()
     {
@@ -2488,13 +2514,12 @@ final class S2Container_AopProxyFactory
             }
         }
         if (!$targetClass->isUserDefined() or
-           S2Container_ClassUtil::hasMethod($targetClass,'__call')) {
-            //$log->info("target class has __call(). ignore aspect.",__METHOD__);
+             $targetClass->hasMethod('__call')) {
             return $target;
         }
         $methodInterceptorsMap = 
-            S2Container_AopProxyFactory::_creatMethodInterceptorsMap($targetClass,
-                               $aspects);
+            self::_creatMethodInterceptorsMap($targetClass,
+                                              $aspects);
         $interfaces = S2Container_ClassUtil::getInterfaces($targetClass); 
         if (count($interfaces) == 0) {
             return new S2Container_DefaultAopProxy($target,
@@ -2506,7 +2531,9 @@ final class S2Container_AopProxyFactory
                                                 $targetClass,
                                                 $parameters);
         return new $concreteClassName($target,
-                       $targetClass,$methodInterceptorsMap,$parameters);
+                                      $targetClass,
+                                      $methodInterceptorsMap,
+                                      $parameters);
     }
     private function _creatMethodInterceptorsMap($targetClass,$aspects)
     {
@@ -2639,17 +2666,6 @@ final class S2Container_ClassUtil
             throw new S2Container_NoSuchMethodRuntimeException($clazz,$methodName,$e);
         }
     }
-    public static function hasMethod(ReflectionClass $clazz,
-                                     $methodName)
-    {
-        //return $clazz->hasMethod(methodName); php ver 5.1
-        try {
-            $m = $clazz->getMethod($methodName);
-            return true;
-        } catch (ReflectionException $e) {
-            return false;
-        }
-    }
     public static function getInterfaces(ReflectionClass $clazz)
     {
         $interfaces = $clazz->getInterfaces();
@@ -2707,9 +2723,6 @@ final class S2Container_MethodUtil
         if (! is_object($target)) {
             throw new 
             S2Container_IllegalArgumentException('args[1] must be <object>');
-        }
-        if (count($args) == 0) {
-            return $method->invoke($target,array());
         }
         $strArg = array();
         $o = count($args);
@@ -2825,7 +2838,8 @@ class S2Container_S2MethodInvocationImpl
                                     $this->targetClass->getName()));
             }
             return S2Container_MethodUtil::invoke($this->method,
-                                    $this->target,$this->methodArgs);
+                                                  $this->target,
+                                                  $this->methodArgs);
         }
     }
 }

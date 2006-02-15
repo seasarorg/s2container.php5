@@ -60,4 +60,3 @@ interface S2Container_ArgDef extends S2Container_MetaDefAware
 
 }
 ?>
-
