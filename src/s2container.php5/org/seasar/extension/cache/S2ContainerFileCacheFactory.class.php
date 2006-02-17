@@ -25,7 +25,7 @@
  * @package org.seasar.extension.cache
  * @author klove
  */
-final class S2ContainerCachingFactory
+final class S2ContainerFileCacheFactory
 {
     public static $INITIALIZE_BEFORE_CACHE = false;
     /**
