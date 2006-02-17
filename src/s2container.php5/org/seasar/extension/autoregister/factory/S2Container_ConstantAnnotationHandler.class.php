@@ -28,161 +28,117 @@
 class S2Container_ConstantAnnotationHandler 
     extends S2Container_AbstractAnnotationHandler
 {
+
     public function createComponentDef(ReflectionClass $componentClass,
                                                          $instanceMode) {
         $beanDesc = S2Container_BeanDescFactory::getBeanDesc($componentClass);
         if (!$beanDesc->hasConstant(S2Container_AbstractAnnotationHandler::COMPONENT)) {
             return $this->createComponentDefInternal($componentClass,$instanceMode);
         }
-        $field = $beanDesc->getConstant(S2Container_AbstractAnnotationHandler::COMPONENT);
-print "$field \n";
-/*
-        $componentStr = (String) FieldUtil.get(field, null);
-        String[] array = StringUtil.split(componentStr, "=, ");
-        ComponentDef componentDef = createComponentDefInternal(componentClass, instanceDef);
-        for (int i = 0; i < array.length; i += 2) {
-            String key = array[i].trim();
-            String value = array[i + 1].trim();
-            if (NAME.equalsIgnoreCase(key)) {
-                componentDef.setComponentName(value);
-            } else if (INSTANCE.equalsIgnoreCase(key)) {
-                componentDef.setInstanceDef(
-                        InstanceDefFactory.getInstanceDef(value));
-            } else if (AUTO_BINDING.equalsIgnoreCase(key)) {
-                componentDef.setAutoBindingDef(
-                        AutoBindingDefFactory.getAutoBindingDef(value));
+        $componentStr = $beanDesc->getConstant(S2Container_AbstractAnnotationHandler::COMPONENT);
+
+        $items = preg_split("/[=,]+/",$componentStr,-1,PREG_SPLIT_NO_EMPTY);
+        $componentDef = $this->createComponentDefInternal($componentClass,$instanceMode);
+        $c = count($items);
+        for ($i = 0; $i < $c; $i += 2) {
+            $key = trim($items[$i]);
+            $value = trim($items[$i + 1]);
+            if (strcasecmp($key,'NAME') == 0) {
+                $componentDef->setComponentName($value);
+            } else if (strcasecmp($key,'INSTANCE') == 0) {
+                $componentDef->setInstanceMode($value);
+            } else if (strcasecmp($key,'AUTO_BINDING') == 0) {
+                $componentDef->setAutoBindingMode($value);
             } else {
-                throw new IllegalArgumentException(componentStr);
+                throw new S2Container_IllegalArgumentException("$componentStr [ $key ] [ $value ] ");
             }
         }
-        */
+        
         return $componentDef;
     }
 
     public function createPropertyDef(S2Container_BeanDesc $beanDesc,
                                       S2Container_PropertyDesc $propertyDesc) {
-/*
-        String propName = propertyDesc.getPropertyName();
-        String fieldName = propName + BINDING_SUFFIX;
-        if (!beanDesc.hasField(fieldName)) {
+
+        $propName = $propertyDesc->getPropertyName();
+        $fieldName = $propName . S2Container_AbstractAnnotationHandler::BINDING_SUFFIX;
+        if (!$beanDesc->hasConstant($fieldName)) {
             return null;
         }
-        String bindingStr = (String) beanDesc.getFieldValue(fieldName, null);
-        String bindingTypeName = null;
-        String expression = null;
-        if (bindingStr != null) {
-            String[] array = StringUtil.split(bindingStr, "=, ");
-            if (array.length == 1) {
-                expression = array[0];
-            } else {
-                for (int i = 0; i < array.length; i += 2) {
-                    String key = array[i].trim();
-                    String value = array[i + 1].trim();
-                    if (BINDING_TYPE.equalsIgnoreCase(key)) {
-                        bindingTypeName = value;
-                    } else if (VALUE.equalsIgnoreCase(key)) {
-                        expression = value;
-                    } else {
-                        throw new IllegalArgumentException(bindingStr);
-                    }
-                }
-            }
-        }
-        return createPropertyDef(propName, expression, bindingTypeName);
-*/
+        
+        $bindingTypeName = null;
+        $expression = trim($beanDesc->getConstant($fieldName));
+        return $this->createPropertyDefInternal($propName, 
+                                                $expression,
+                                                $bindingTypeName);
+
     }
 
     public function appendAspect(S2Container_ComponentDef $componentDef) {
-/*
-        Class componentClass = componentDef.getComponentClass();
-        if (componentClass == null) {
+
+        $componentClass = $componentDef->getComponentClass();
+        if ($componentClass == null) {
             return;
         }
-        BeanDesc beanDesc = BeanDescFactory.getBeanDesc(componentClass);
-        if (!beanDesc.hasField(ASPECT)) {
+        $beanDesc = S2Container_BeanDescFactory::getBeanDesc($componentClass);
+        if (!$beanDesc->hasConstant(S2Container_AbstractAnnotationHandler::ASPECT)) {
             return;
         }
-        String aspectStr = (String) beanDesc.getFieldValue(ASPECT, null);
-        String[] array = StringUtil.split(aspectStr, "=, ");
-        String interceptor = null;
-        String pointcut = null;
-        if (array.length == 1) {
-            interceptor = array[0];
+        $aspectStr = $beanDesc->getConstant(S2Container_AbstractAnnotationHandler::ASPECT);
+        $items = preg_split("/[=,]+/",$aspectStr,-1,PREG_SPLIT_NO_EMPTY);
+        $interceptor = null;
+        $pointcut = null;
+        if (count($items) == 1) {
+            $interceptor = trim($items[0]);
         } else {
-            for (int i = 0; i < array.length; i += 2) {
-                String key = array[i].trim();
-                String value = array[i + 1].trim();
-                if (VALUE.equalsIgnoreCase(key)) {
-                    interceptor = value;
-                } else if (POINTCUT.equalsIgnoreCase(key)) {
-                    pointcut = value;
+            $c = count($items);
+            for ($i = 0; $i < $c; $i += 2) {
+                $key = trim($items[$i]);
+                $value = trim($items[$i + 1]);
+                if (strcasecmp($key,'INTERCEPTOR') == 0) {
+                    $interceptor = $value;
+                } else if (strcasecmp($key,'POINTCUT') == 0) {
+                    $pointcut = $value;
                 } else {
-                    throw new IllegalArgumentException(aspectStr);
+                    throw new S2Container_IllegalArgumentException("$aspectStr [ $key ] [ $value ]");
                 }
             }
         }
-        appendAspect(componentDef, interceptor, pointcut);
-*/    
-    }
-
-    public function appendAspectInternal(S2Container_ComponentDef $componentDef,
-                                 $interceptor,
-                                 $pointcut) {
-        
-        if ($interceptor == null) {
-            throw new S2Container_EmptyRuntimeException("interceptor");
-        }
-        
-        if(is_string($pointcut)){
-            $aspectDef = new S2Container_AspectDefImpl(
-                             new S2Container_PointcutImpl(explode(" ",$pointcut)));
-        }else{
-            $aspectDef = new S2Container_AspectDefImpl(
-                             new S2Container_PointcutImpl(
-                             $componentDef->getComponentClass()));
-        }
-        S2Container_ChildComponentDefBindingUtil::put($interceptor,
-                                                      $aspectDef);
-        $aspectDef->setExpression($interceptor);
-        $componentDef->addAspectDef($aspectDef);
+        $this->appendAspectInternal($componentDef, $interceptor, $pointcut);
+    
     }
 
     public function appendInitMethod(S2Container_ComponentDef $componentDef) {
-/* 
-        Class componentClass = componentDef.getComponentClass();
-        if (componentClass == null) {
+ 
+        $componentClass = $componentDef->getComponentClass();
+        if ($componentClass == null) {
             return;
         }
-        BeanDesc beanDesc = BeanDescFactory.getBeanDesc(componentClass);
-        if (!beanDesc.hasField(INIT_METHOD)) {
+        $beanDesc = S2Container_BeanDescFactory::getBeanDesc($componentClass);
+        if (!$beanDesc->hasConstant(S2Container_AbstractAnnotationHandler::INIT_METHOD)) {
             return;
         }
-        String initMethodStr = (String) beanDesc.getFieldValue(INIT_METHOD, null);
-        if (StringUtil.isEmpty(initMethodStr)) {
+        $initMethodStr = $beanDesc->getConstant(S2Container_AbstractAnnotationHandler::INIT_METHOD);
+        if ($initMethodStr == '') {
             return;
         }
-        String[] array = StringUtil.split(initMethodStr, ", ");
-        for (int i = 0; i < array.length; ++i) {
-            String methodName = array[i].trim();
-            if (!beanDesc.hasMethod(methodName)) {
-                throw new IllegalInitMethodAnnotationRuntimeException(componentClass, methodName);
+        $items = preg_split("/[,]+/",$initMethodStr,-1,PREG_SPLIT_NO_EMPTY);
+        $c = count($items);
+        for ($i = 0; $i < $c; ++$i) {
+            $methodName = trim($items[$i]);
+            if (!$beanDesc->hasMethod($methodName)) {
+                throw new S2Container_IllegalInitMethodAnnotationRuntimeException($componentClass, $methodName);
             }
-            Method[] methods = beanDesc.getMethods(methodName);
-            if (methods.length != 1 || methods[0].getParameterTypes().length != 0) {
-                throw new IllegalInitMethodAnnotationRuntimeException(componentClass, methodName);
+            $method = $beanDesc->getMethods($methodName);
+            if ($method->getNumberOfParameters() != 0) {
+                throw new Exception();
+                //throw new S2Container_IllegalInitMethodAnnotationRuntimeException($componentClass, $methodName);
             }
-            if (!isInitMethodRegisterable(componentDef, methodName)) {
+            if (!$this->isInitMethodRegisterable($componentDef, $methodName)) {
                 continue;
             }
-            appendInitMethod(componentDef, methodName);
+            $this->appendInitMethodInternal($componentDef, $methodName);
         }
-*/    
-    }
-
-    protected function appendInitMethodInternal(S2Container_ComponentDef $componentDef,
-                                         $methodName) {
-        $initMethodDef = new S2Container_InitMethodDefImpl($methodName);
-        $componentDef->addInitMethodDef($initMethodDef);
     }
 }
 ?>

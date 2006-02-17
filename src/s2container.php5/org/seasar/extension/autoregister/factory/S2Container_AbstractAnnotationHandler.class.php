@@ -129,7 +129,6 @@ abstract class S2Container_AbstractAnnotationHandler
         $componentDef->addInitMethodDef($initMethodDef);
     }
 
-/*    
     protected function isInitMethodRegisterable(S2Container_ComponentDef $cd, 
                                                 $methodName) {
         if (!is_string($methodName) or $methodName == "") {
@@ -139,13 +138,12 @@ abstract class S2Container_AbstractAnnotationHandler
         $c = $cd->getInitMethodDefSize();
         for ($i = 0; $i < $c; ++$i) {
             $other = $cd->getInitMethodDef($i);
-            if ($methodName == $other->getMethodName() and   ///
-                $other->getArgDefSize() == 0) {              ///
-                return false;                                ///
+            if ($methodName == $other->getMethodName() and   
+                $other->getArgDefSize() == 0) {              
+                return false;                                
             }
         }
         return true;
     }
-*/
 }
 ?>

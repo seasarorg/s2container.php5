@@ -98,8 +98,8 @@ class S2Container_CommentAnnotationReader
                         if($argType == S2Container_AnnotationFactory::ARGS_TYPE_ARRAY){
                             throw new S2Container_AnnotationRuntimeException('ERR003',array($line,$item));
                         }
-                        $key = self::removeQuote($matches[1]);
-                        $val = self::removeQuote($matches[2]);
+                        $key = $this->removeQuote($matches[1]);
+                        $val = $this->removeQuote($matches[2]);
                         
                         if($key == ""){
                             throw new S2Container_AnnotationRuntimeException('ERR004',array($line,$item));
@@ -110,7 +110,7 @@ class S2Container_CommentAnnotationReader
                         if($argType == S2Container_AnnotationFactory::ARGS_TYPE_HASH){
                             throw new S2Container_AnnotationRuntimeException('ERR003',array($line,$item));
                         }
-                        $item = self::removeQuote($item);
+                        $item = $this->removeQuote($item);
                         array_push($args,$item);
                         $argType = S2Container_AnnotationFactory::ARGS_TYPE_ARRAY;
                     }
