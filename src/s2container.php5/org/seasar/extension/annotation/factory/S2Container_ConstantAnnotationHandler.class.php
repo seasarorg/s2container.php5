@@ -30,13 +30,14 @@ class S2Container_ConstantAnnotationHandler
 {
     public function createComponentDef(ReflectionClass $componentClass,
                                                          $instanceMode) {
-/*
-        BeanDesc beanDesc = BeanDescFactory.getBeanDesc(componentClass);
-        if (!beanDesc.hasField(COMPONENT)) {
-            return createComponentDefInternal(componentClass, instanceDef);
+        $beanDesc = S2Container_BeanDescFactory::getBeanDesc($componentClass);
+        if (!$beanDesc->hasConstant(S2Container_AbstractAnnotationHandler::COMPONENT)) {
+            return $this->createComponentDefInternal($componentClass,$instanceMode);
         }
-        Field field = beanDesc.getField(COMPONENT);
-        String componentStr = (String) FieldUtil.get(field, null);
+        $field = $beanDesc->getConstant(S2Container_AbstractAnnotationHandler::COMPONENT);
+print "$field \n";
+/*
+        $componentStr = (String) FieldUtil.get(field, null);
         String[] array = StringUtil.split(componentStr, "=, ");
         ComponentDef componentDef = createComponentDefInternal(componentClass, instanceDef);
         for (int i = 0; i < array.length; i += 2) {
@@ -54,8 +55,8 @@ class S2Container_ConstantAnnotationHandler
                 throw new IllegalArgumentException(componentStr);
             }
         }
-        return componentDef;
-*/
+        */
+        return $componentDef;
     }
 
     public function createPropertyDef(S2Container_BeanDesc $beanDesc,

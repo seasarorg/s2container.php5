@@ -25,7 +25,7 @@ class AnnotationAllTest {
         $group->addTestCase(new DefaultAnnotationHandlerTests());
         $group->addTestCase(new AspectAutoRegisterTests());
         $group->addTestCase(new InterfaceAspectAutoRegisterTests());
-
+        
         return $group;    	
     }
 }

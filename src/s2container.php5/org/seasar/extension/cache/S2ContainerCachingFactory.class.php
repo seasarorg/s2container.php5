@@ -91,7 +91,8 @@ final class S2ContainerCachingFactory
         if($cacheName != null){
             return S2CONTAINER_PHP5_CACHE_DIR . DIRECTORY_SEPARATOR . $cacheName;
         }else{
-            return S2CONTAINER_PHP5_CACHE_DIR . DIRECTORY_SEPARATOR . md5($path);
+            return S2CONTAINER_PHP5_CACHE_DIR . DIRECTORY_SEPARATOR . 
+                   sha1($path) . ".dicon";
         }
     }
     
