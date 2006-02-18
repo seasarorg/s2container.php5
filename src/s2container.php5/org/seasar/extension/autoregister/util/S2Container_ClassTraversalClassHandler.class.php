@@ -22,7 +22,7 @@
 //
 // $Id$
 /**
- * @package org.seasar.extension.annotation.util
+ * @package org.seasar.extension.autoregister.util
  * @author klove
  */
 interface S2Container_ClassTraversalClassHandler {

@@ -22,12 +22,12 @@
 //
 // $Id$
 /**
- * @package org.seasar.extension.annotation.factory
+ * @package org.seasar.extension.autoregister.factory
  * @author klove
  */
 class S2Container_AnnotationHandlerFactory {
 
-    private static $DEFAULT_ANNOTATION_HANDLER_CLASS_NAME = "S2Container_DefaultAnnotationHandler";
+    public static $DEFAULT_ANNOTATION_HANDLER = "S2Container_CommentAnnotationHandler";
     
     private static $annotationHandler = null;
   
@@ -36,7 +36,12 @@ class S2Container_AnnotationHandlerFactory {
    
     public static function getAnnotationHandler() {
         if(self::$annotationHandler == null){
-            self::$annotationHandler = new S2Container_DefaultAnnotationHandler();
+            if(defined('S2CONTAINER_ANNOTATION_HANDLER')){
+                $handler = S2CONTAINER_ANNOTATION_HANDLER;
+            }else{
+                $handler = self::$DEFAULT_ANNOTATION_HANDLER;
+            }
+            self::$annotationHandler = new $handler();
         }
         return self::$annotationHandler;  
     }

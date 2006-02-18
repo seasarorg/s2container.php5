@@ -22,7 +22,7 @@
 //
 // $Id$
 /**
- * @package org.seasar.extension.annotation.factory
+ * @package org.seasar.extension.autoregister.factory
  * @author klove
  */
 class S2Container_ConstantAnnotationHandler 
@@ -131,8 +131,7 @@ class S2Container_ConstantAnnotationHandler
             }
             $method = $beanDesc->getMethods($methodName);
             if ($method->getNumberOfParameters() != 0) {
-                throw new Exception();
-                //throw new S2Container_IllegalInitMethodAnnotationRuntimeException($componentClass, $methodName);
+                throw new S2Container_IllegalInitMethodAnnotationRuntimeException($componentClass, $methodName);
             }
             if (!$this->isInitMethodRegisterable($componentDef, $methodName)) {
                 continue;

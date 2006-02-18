@@ -22,10 +22,10 @@
 //
 // $Id$
 /**
- * @package org.seasar.extension.annotation.factory
+ * @package org.seasar.extension.autoregister.factory
  * @author klove
  */
-class S2Container_DefaultAnnotationHandler 
+class S2Container_CommentAnnotationHandler 
     extends S2Container_AbstractAnnotationHandler {
 
     public function createComponentDef(ReflectionClass $componentClass,

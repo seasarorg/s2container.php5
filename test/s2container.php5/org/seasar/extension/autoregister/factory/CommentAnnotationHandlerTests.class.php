@@ -1,5 +1,5 @@
 <?php
-class DefaultAnnotationHandlerTests extends UnitTestCase {
+class CommentAnnotationHandlerTests extends UnitTestCase {
     function __construct() {
         $this->UnitTestCase();
     }
@@ -7,16 +7,16 @@ class DefaultAnnotationHandlerTests extends UnitTestCase {
     function testCreateComponentDef() {
         print __METHOD__ . "\n";
       
-        $handler = new S2Container_DefaultAnnotationHandler();
+        $handler = new S2Container_CommentAnnotationHandler();
         $cd = $handler->createComponentDef(
-              new ReflectionClass('A_DefaultAnnotationHandlerTests'),
+              new ReflectionClass('A_CommentAnnotationHandlerTests'),
                                   "singleton");
       
         $this->assertIsA($cd,'S2Container_ComponentDefImpl');
         $this->assertEqual($cd->getInstanceMode(),'singleton');
 
         $cd = $handler->createComponentDef(
-              new ReflectionClass('B_DefaultAnnotationHandlerTests'),
+              new ReflectionClass('B_CommentAnnotationHandlerTests'),
                                   "singleton");
       
         $this->assertIsA($cd,'S2Container_ComponentDefImpl');
@@ -30,9 +30,9 @@ class DefaultAnnotationHandlerTests extends UnitTestCase {
     function testAppendDI() {
         print __METHOD__ . "\n";
       
-        $handler = new S2Container_DefaultAnnotationHandler();
+        $handler = new S2Container_CommentAnnotationHandler();
         $cd = $handler->createComponentDef(
-              new ReflectionClass('B_DefaultAnnotationHandlerTests'),
+              new ReflectionClass('B_CommentAnnotationHandlerTests'),
                                   "singleton");
       
         $this->assertIsA($cd,'S2Container_ComponentDefImpl');
@@ -46,9 +46,9 @@ class DefaultAnnotationHandlerTests extends UnitTestCase {
     function testAppendAspect() {
         print __METHOD__ . "\n";
       
-        $handler = new S2Container_DefaultAnnotationHandler();
+        $handler = new S2Container_CommentAnnotationHandler();
         $cd = $handler->createComponentDef(
-              new ReflectionClass('C_DefaultAnnotationHandlerTests'),
+              new ReflectionClass('C_CommentAnnotationHandlerTests'),
                                   "singleton");
       
         $this->assertIsA($cd,'S2Container_ComponentDefImpl');
@@ -64,9 +64,9 @@ class DefaultAnnotationHandlerTests extends UnitTestCase {
     function testAppendInitMethod() {
         print __METHOD__ . "\n";
       
-        $handler = new S2Container_DefaultAnnotationHandler();
+        $handler = new S2Container_CommentAnnotationHandler();
         $cd = $handler->createComponentDef(
-              new ReflectionClass('C_DefaultAnnotationHandlerTests'),
+              new ReflectionClass('C_CommentAnnotationHandlerTests'),
                                   "singleton");
       
         $this->assertIsA($cd,'S2Container_ComponentDefImpl');
@@ -77,9 +77,9 @@ class DefaultAnnotationHandlerTests extends UnitTestCase {
                            "initTest");
 
         try{
-            $handler = new S2Container_DefaultAnnotationHandler();
+            $handler = new S2Container_CommentAnnotationHandler();
             $cd = $handler->createComponentDef(
-                  new ReflectionClass('D_DefaultAnnotationHandlerTests'),
+                  new ReflectionClass('D_CommentAnnotationHandlerTests'),
                                       "singleton");
       
             $this->assertIsA($cd,'S2Container_ComponentDefImpl');
@@ -95,14 +95,14 @@ class DefaultAnnotationHandlerTests extends UnitTestCase {
     }    
 }
 
-class A_DefaultAnnotationHandlerTests{}
+class A_CommentAnnotationHandlerTests{}
 
 /**
  * @S2Container_ComponentAnnotation(name = 'a',
  *                                  instance = 'prototype',
  *                                  autoBinding = 'none')
  */
-class B_DefaultAnnotationHandlerTests{
+class B_CommentAnnotationHandlerTests{
 
     private $foo;
     private $bar;
@@ -139,7 +139,7 @@ class B_DefaultAnnotationHandlerTests{
  * @S2Container_AspectAnnotation(interceptor = TestInterceptor,
  *                               pointcut = foo bar)
  */
-class C_DefaultAnnotationHandlerTests{
+class C_CommentAnnotationHandlerTests{
 
     private $foo;
     private $bar;
@@ -184,7 +184,7 @@ class C_DefaultAnnotationHandlerTests{
  * @S2Container_AspectAnnotation(interceptor = TestInterceptor,
  *                               pointcut = foo bar)
  */
-class D_DefaultAnnotationHandlerTests{
+class D_CommentAnnotationHandlerTests{
 
     /**
      * @S2Container_InitMethodAnnotation

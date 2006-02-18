@@ -22,7 +22,7 @@
 //
 // $Id$
 /**
- * @package org.seasar.extension.annotation.type
+ * @package org.seasar.extension.autoregister.type
  * @author klove
  */
 final class S2Container_InitMethodAnnotation {

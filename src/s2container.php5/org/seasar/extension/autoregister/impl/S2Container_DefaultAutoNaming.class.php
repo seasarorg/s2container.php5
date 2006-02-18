@@ -22,7 +22,7 @@
 //
 // $Id$
 /**
- * @package org.seasar.extension.annotation.autoregister
+ * @package org.seasar.extension.autoregister.autoregister
  * @author klove
  */
 class S2Container_DefaultAutoNaming extends S2Container_AbstractAutoNaming {

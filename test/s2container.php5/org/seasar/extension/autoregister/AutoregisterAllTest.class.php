@@ -18,7 +18,7 @@ class AutoregisterAllTest {
         $group->addTestCase(new DefaultAutoNamingTests());
         $group->addTestCase(new FileSystemComponentAutoRegisterTests());
         $group->addTestCase(new AbstractComponentAutoRegisterTests());
-        $group->addTestCase(new DefaultAnnotationHandlerTests());
+        $group->addTestCase(new CommentAnnotationHandlerTests());
         $group->addTestCase(new AspectAutoRegisterTests());
         $group->addTestCase(new InterfaceAspectAutoRegisterTests());
         $group->addTestCase(new ConstantAnnotationHandlerTests());

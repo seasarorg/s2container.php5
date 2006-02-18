@@ -22,7 +22,7 @@
 //
 // $Id$
 /**
- * @package org.seasar.extension.annotation.factory
+ * @package org.seasar.extension.autoregister.factory
  * @author klove
  */
 abstract class S2Container_AbstractAnnotationHandler 

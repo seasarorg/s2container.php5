@@ -192,7 +192,9 @@ class S2ContainerClassLoader {
         'S2Container_AnnotationHandler' => '/org/seasar/extension/autoregister/factory/S2Container_AnnotationHandler.class.php',
         'S2Container_AbstractAnnotationHandler' => '/org/seasar/extension/autoregister/factory/S2Container_AbstractAnnotationHandler.class.php',
         'S2Container_ConstantAnnotationHandler' => '/org/seasar/extension/autoregister/factory/S2Container_ConstantAnnotationHandler.class.php',
-        'S2Container_DefaultAnnotationHandler' => '/org/seasar/extension/autoregister/factory/S2Container_DefaultAnnotationHandler.class.php',
+        'S2Container_CommentAnnotationHandler' => '/org/seasar/extension/autoregister/factory/S2Container_CommentAnnotationHandler.class.php',
+
+        'S2Container_IllegalInitMethodAnnotationRuntimeException' => '/org/seasar/extension/autoregister/exception/S2Container_IllegalInitMethodAnnotationRuntimeException.class.php',
 
         'S2ContainerFileCacheFactory' => '/org/seasar/extension/cache/S2ContainerFileCacheFactory.class.php',
         'S2ContainerMemcacheFactory' => '/org/seasar/extension/cache/S2ContainerMemcacheFactory.class.php',
