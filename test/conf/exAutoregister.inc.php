@@ -1,4 +1,7 @@
 <?php
+
+//define('S2CONTAINER_ANNOTATION_HANDLER','S2Container_CommentAnnotationHandler');
+
 $packages = array(
     TEST_DIR . "/s2container.php5/org/seasar/extension/autoregister" ,
     TEST_DIR . "/s2container.php5/org/seasar/extension/autoregister/factory",

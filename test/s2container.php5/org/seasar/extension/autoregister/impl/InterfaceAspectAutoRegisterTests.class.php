@@ -17,7 +17,7 @@ class InterfaceAspectAutoRegisterTests extends UnitTestCase {
         print __METHOD__ . "\n";
 
         $path = dirname(__FILE__) . 
-                '/sample2/a_InterfaceAspectAutoRegister.dicon';
+                '/sample4/a_InterfaceAspectAutoRegister.dicon';
         $container = S2ContainerFactory::create($path);
         $container->init();
         $a = $container->getComponent('a');
