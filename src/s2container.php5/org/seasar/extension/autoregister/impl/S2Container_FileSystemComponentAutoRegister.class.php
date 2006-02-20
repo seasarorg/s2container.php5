@@ -22,14 +22,16 @@
 //
 // $Id$
 /**
- * @package org.seasar.extension.autoregister.autoregister
+ * @package org.seasar.extension.autoregister.impl
  * @author klove
  */
 class S2Container_FileSystemComponentAutoRegister 
     extends S2Container_AbstractComponentAutoRegister
 {
+    const INIT_METHOD = "registerAll";
+        
     /**
-     * 
+     * @S2Container_InitMethodAnnotation
      */
     public function registerAll() {
         S2Container_ChildComponentDefBindingUtil::init();
@@ -52,7 +54,8 @@ class S2Container_FileSystemComponentAutoRegister
         $directoryPath = S2Container_StringUtil::expandPath($directoryPath);
         
         if(!is_dir($directoryPath)){
-            throw new Exception("not dir [$directoryPath]");
+            throw new S2Container_S2RuntimeException('ESSR0017',
+                      array("invalid directory [$directoryPath]"));
         }
 
         $pat = new S2Container_ClassPattern();

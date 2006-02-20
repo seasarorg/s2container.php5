@@ -22,7 +22,7 @@
 //
 // $Id$
 /**
- * @package org.seasar.extension.autoregister.autoregister
+ * @package org.seasar.extension.autoregister.impl
  * @author klove
  */
 abstract class S2Container_AbstractComponentAutoRegister 
@@ -31,12 +31,7 @@ abstract class S2Container_AbstractComponentAutoRegister
 
     const CLASS_SUFFIX = ".class.php";
 
-    const autoNaming_BINDING = "bindingType=may";
-    const instanceMode_BINDING = "bindingType=may";
-
-    
     private $autoNaming = null;
-    
     private $instanceMode = "singleton";
 
     public function __construct(){
@@ -58,7 +53,7 @@ abstract class S2Container_AbstractComponentAutoRegister
     public function setInstanceMode($instanceMode) {
         $this->instanceMode = $instanceMode;
     }
-
+   
     public function processClass($classFilePath, $className) {
         if ($this->isIgnore($className)) {
             return;

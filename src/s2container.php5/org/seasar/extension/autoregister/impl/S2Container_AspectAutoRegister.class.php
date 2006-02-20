@@ -22,12 +22,14 @@
 //
 // $Id$
 /**
- * @package org.seasar.extension.autoregister.autoregister
+ * @package org.seasar.extension.autoregister.impl
  * @author klove
  */
 class S2Container_AspectAutoRegister 
     extends S2Container_AbstractAutoRegister
 {
+    const INIT_METHOD = "registerAll";
+
     private $interceptor;
     private $pointcut;
 
@@ -57,6 +59,9 @@ class S2Container_AspectAutoRegister
         parent::addIgnoreClassPatternInternal($pat);
     }
 
+    /**
+     * @S2Container_InitMethodAnnotation
+     */
     public function registerAll() {
         $container = $this->getContainer();
         $c = $container->getComponentDefSize();

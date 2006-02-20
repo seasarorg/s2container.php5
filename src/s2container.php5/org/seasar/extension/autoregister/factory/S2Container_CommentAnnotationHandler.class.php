@@ -56,7 +56,6 @@ class S2Container_CommentAnnotationHandler
 
         if (!$propertyDesc->hasWriteMethod()) {
             return null;
-            //return parent::createPropertyDef($beanDesc,$propertyDesc);
         }
         
         $method = $propertyDesc->getWriteMethod();
@@ -75,7 +74,6 @@ class S2Container_CommentAnnotationHandler
             $expression = $binding->value;
             return $this->createPropertyDefInternal($propName,$expression,$bindingTypeName);
         }
-        //return parent::createPropertyDef($beanDesc,$propertyDesc);
         return null;
     }
     
@@ -115,7 +113,6 @@ class S2Container_CommentAnnotationHandler
                 $this->appendAspectInternal($componentDef,$interceptor,$method->getName());
             }
         }
-        //parent::appendAspect($componentDef);
     }
     
     public function appendInitMethod(S2Container_ComponentDef $componentDef) {
@@ -132,18 +129,15 @@ class S2Container_CommentAnnotationHandler
                 continue;
             }
             if (count($method->getParameters()) != 0) {
-                  throw new Exception("init method can not have params.");
-//                throw new IllegalInitMethodAnnotationRuntimeException(componentClass, method.getName());
+                throw new S2Container_IllegalInitMethodAnnotationRuntimeException($componentClass, $method->getName());
             }
 
-/*
             if (!$this->isInitMethodRegisterable($componentDef,$method->getName())) {
                 continue;
             }
-*/
+
             $this->appendInitMethodInternal($componentDef, $method->getName());
         }
-        //super.appendInitMethod(componentDef);
         return null;
     }
 }

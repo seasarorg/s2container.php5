@@ -22,7 +22,7 @@
 //
 // $Id$
 /**
- * @package org.seasar.extension.autoregister.autoregister
+ * @package org.seasar.extension.autoregister.impl
  * @author klove
  */
 interface S2Container_AutoNaming {

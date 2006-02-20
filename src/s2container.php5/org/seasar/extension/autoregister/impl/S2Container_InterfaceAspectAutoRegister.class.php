@@ -22,20 +22,18 @@
 //
 // $Id$
 /**
- * @package org.seasar.extension.autoregister.autoregister
+ * @package org.seasar.extension.autoregister.impl
  * @author klove
+ * 
+ * 
  */
 class S2Container_InterfaceAspectAutoRegister
 {
-
-    public static $INIT_METHOD = "registerAll";
+    const INIT_METHOD = "registerAll";
 
     private $container;
-    
     private $interceptor;
-    
     private $targetInterface;
-    
     private $pointcut;
 
     public function setContainer(S2Container $container) {
@@ -54,6 +52,9 @@ class S2Container_InterfaceAspectAutoRegister
         $this->pointcut = new S2Container_PointcutImpl($targetInterface);
     }
 
+    /**
+     * @S2Container_InitMethodAnnotation
+     */
     public function registerAll() {
         $c = $this->container->getComponentDefSize();
         for ($i = 0; $i < $c; ++$i) {

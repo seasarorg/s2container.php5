@@ -22,10 +22,11 @@
 //
 // $Id$
 /**
- * @package org.seasar.extension.autoregister.autoregister
+ * @package org.seasar.extension.autoregister.impl
  * @author klove
  */
-abstract class S2Container_AbstractAutoNaming implements S2Container_AutoNaming {
+abstract class S2Container_AbstractAutoNaming 
+    implements S2Container_AutoNaming {
 
     const IMPL = "Impl";
     const BEAN = "Bean";
@@ -69,7 +70,6 @@ abstract class S2Container_AbstractAutoNaming implements S2Container_AutoNaming 
     }
 
     protected function getCustomizedName($directoryPath,$shortClassName) {
-        //$fqn = ClassUtil.concatName(packageName, shortClassName);
         return isset($this->customizedNames[$shortClassName]) ? 
                      $this->customizedNames[$shortClassName] : null;
     }
@@ -80,22 +80,10 @@ abstract class S2Container_AbstractAutoNaming implements S2Container_AutoNaming 
         foreach ($this->replaceRules as $key=>$val){
             $name = preg_replace("/$key/",$val,$name);
         }
-        //$name = $this->normalize($name);
         if ($this->decapitalize) {
             $name = strtolower($name[0]) . substr($name,1);
         }
         return $name;
     }
-
-/*
-    protected String normalize(final String name) {
-        final String[] names = name.split("\\.");
-        final StringBuffer buf = new StringBuffer(name.length());
-        for (int i = 0; i < names.length; ++i) {
-            buf.append(StringUtil.capitalize(names[i]));
-        }
-        return new String(buf);
-    }
-*/
 }
 ?>

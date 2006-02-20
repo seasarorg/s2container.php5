@@ -27,7 +27,7 @@
  */
 class S2Container_AnnotationHandlerFactory {
 
-    public static $DEFAULT_ANNOTATION_HANDLER = "S2Container_CommentAnnotationHandler";
+    public static $DEFAULT_ANNOTATION_HANDLER = "S2Container_ConstantAnnotationHandler";
     
     private static $annotationHandler = null;
   

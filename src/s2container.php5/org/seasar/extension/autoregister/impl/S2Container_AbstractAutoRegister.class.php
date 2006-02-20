@@ -22,17 +22,13 @@
 //
 // $Id$
 /**
- * @package org.seasar.extension.autoregister.autoregister
+ * @package org.seasar.extension.autoregister.impl
  * @author klove
  */
 abstract class S2Container_AbstractAutoRegister {
 
-    const INIT_METHOD = "registerAll";
-
     protected $container;
-    
     private $classPatterns = array();
-    
     private $ignoreClassPatterns = array();
     
     public abstract function registerAll();
@@ -51,20 +47,20 @@ abstract class S2Container_AbstractAutoRegister {
     
     public function getClassPattern($index) {
         return isset($this->classPatterns[$index]) ? 
-                        $this->classPatterns[$index] : null;
+                     $this->classPatterns[$index] : null;
     }
     
     /**
      * @param S2Container_ClassPattern object
      */
-    public function addClassPatternInternal(S2Container_ClassPattern $pattern) {
+    protected function addClassPatternInternal(S2Container_ClassPattern $pattern) {
         array_push($this->classPatterns,$pattern);
     }
 
     /**
      * @param S2Container_ClassPattern object
      */
-    public function addIgnoreClassPatternInternal(S2Container_ClassPattern $pattern) {
+    protected function addIgnoreClassPatternInternal(S2Container_ClassPattern $pattern) {
         array_push($this->ignoreClassPatterns,$pattern);
     }    
 
