@@ -6,6 +6,8 @@
 class Interceptor_FileSystemComponentAutoRegisterTests 
     extends S2Container_AbstractInterceptor
 {
+    const COMPONENT = "name = interceptor";
+    
     /**
      * @see S2Container_MethodInterceptor::invoke()
      */

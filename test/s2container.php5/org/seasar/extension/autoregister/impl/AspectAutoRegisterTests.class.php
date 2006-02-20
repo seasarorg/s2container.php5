@@ -17,7 +17,7 @@ class AspectAutoRegisterTests extends UnitTestCase {
         print __METHOD__ . "\n";
 
         $path = dirname(__FILE__) . 
-                '/sample/a_AspectAutoRegister.dicon';
+                '/sample3/a_AspectAutoRegister.dicon';
         $container = S2ContainerFactory::create($path);
         $container->init();
         $a = $container->getComponent('a');

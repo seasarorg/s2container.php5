@@ -7,6 +7,9 @@
  */
 class C_FileSystemComponentAutoRegisterTests {
 
+    const COMPONENT = "name = testC";
+    const ASPECT = "interceptor = new S2Container_TraceInterceptor(),
+                    pointcut = testTrace";
     private $a;
     private $b;
     
@@ -19,6 +22,7 @@ class C_FileSystemComponentAutoRegisterTests {
     function setA(A_FileSystemComponentAutoRegisterTests $a){
         $this->a = $a;
     }
+    const a_BINDING = "a_FileSystemComponentAutoRegisterTests";
     function getA(){
         return $this->a;
     }
@@ -29,6 +33,7 @@ class C_FileSystemComponentAutoRegisterTests {
     function setB(B_FileSystemComponentAutoRegisterTests $b){
         $this->b = $b;
     }
+    const b_BINDING = "testB";
     function getB(){
         return $this->b;
     }
@@ -46,7 +51,8 @@ class C_FileSystemComponentAutoRegisterTests {
     function testInitMethod(){
         print __METHOD__ . " : init method called. \n";
     }
-
+    const INIT_METHOD = "testInitMethod";
+    
     /**
      * @S2Container_AspectAnnotation( new S2Container_TraceInterceptor())
      */
