@@ -4,16 +4,28 @@ class ClassTraversalTests extends UnitTestCase {
         $this->UnitTestCase();
     }
 
-    function testInstantiate() {
+    function testForEachTime() {
 
         print __METHOD__ . "\n";
 
         $handler = new Handler_ClassTraversalTests();
-        S2Container_ClassTraversal::forEachTime(dirname(__FILE__),
+        S2Container_ClassTraversal::forEachTime(dirname(dirname(__FILE__)),
                                                 $handler);
         $classMap = $handler->getClassMap();
-
         $this->assertTrue(isset($classMap[get_class($this)]));
+
+        print "\n";
+    }
+
+    function testNotDirectory() {
+
+        print __METHOD__ . "\n";
+
+        $handler = new Handler_ClassTraversalTests();
+        S2Container_ClassTraversal::forEachTime('12345',
+                                                $handler);
+        $classMap = $handler->getClassMap();
+        $this->assertTrue(count($classMap) == 0);
 
         print "\n";
     }

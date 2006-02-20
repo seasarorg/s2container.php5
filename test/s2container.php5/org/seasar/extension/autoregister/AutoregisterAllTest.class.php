@@ -16,12 +16,17 @@ class AutoregisterAllTest {
         $group->addTestCase(new ClassTraversalTests());
         $group->addTestCase(new AbstractAutoNamingTests());
         $group->addTestCase(new DefaultAutoNamingTests());
-        $group->addTestCase(new FileSystemComponentAutoRegisterTests());
+        $group->addTestCase(new AbstractAutoRegisterTests());
         $group->addTestCase(new AbstractComponentAutoRegisterTests());
-        $group->addTestCase(new CommentAnnotationHandlerTests());
+        $group->addTestCase(new FileSystemComponentAutoRegisterTests());
         $group->addTestCase(new AspectAutoRegisterTests());
+
         $group->addTestCase(new InterfaceAspectAutoRegisterTests());
+
         $group->addTestCase(new ConstantAnnotationHandlerTests());
+        $group->addTestCase(new CommentAnnotationHandlerTests());
+
+ 
         return $group;    	
     }
 }

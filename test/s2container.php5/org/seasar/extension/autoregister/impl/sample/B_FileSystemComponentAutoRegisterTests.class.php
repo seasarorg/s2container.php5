@@ -6,7 +6,9 @@
  *      
  */
 class B_FileSystemComponentAutoRegisterTests {
-
+    const COMPONENT = "name = testB,
+                       instance = prototype,
+                       auto_binding = none";
     function __construct() {
     }
 }
