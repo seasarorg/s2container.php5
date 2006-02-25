@@ -44,6 +44,7 @@
  *
  * Autoload function must be defined
  *   sample : use S2ContainerClassLoader
+ *     S2ContainerClassLoader::import(S2CONTAINER_PHP5);
  *     function __autoload($class=null){
  *         S2ContainerClassLoader::load($class);
  *     }

@@ -44,6 +44,7 @@
  *
  * Autoload function must be defined
  *   sample : use S2ContainerClassLoader
+ *     S2ContainerClassLoader::import(S2CONTAINER_PHP5);
  *     function __autoload($class=null){
  *         S2ContainerClassLoader::load($class);
  *     }
@@ -71,12 +72,6 @@ if(!version_compare(phpversion(), "5.1.0", ">=")){
 define('S2CONTAINER_PHP5',dirname(__FILE__) . DIRECTORY_SEPARATOR . 'src');
 ini_set('include_path', 
         S2CONTAINER_PHP5 . PATH_SEPARATOR . ini_get('include_path'));
-
-/**
- * S2Container.PHP5 Class Loader for Autoload
-require_once(S2CONTAINER_PHP5 . '/S2ContainerClassLoader.class.php');
-S2ContainerClassLoader::import(S2CONTAINER_PHP5);
- */
 
 /**
  * S2Container.PHP5 Core Classes
