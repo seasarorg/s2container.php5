@@ -25,6 +25,8 @@
 /**
  */
 class S2ContainerClassLoader {
+    static $CLASSES = array();
+/*
     static $CLASSES = array(
         'S2Container_AbstractDataSource' => '/org/seasar/extension/db/impl/S2Container_AbstractDataSource.class.php',
         'S2Container_PDODataSource' => '/org/seasar/extension/db/pdo/S2Container_PDODataSource.class.php',
@@ -199,7 +201,7 @@ class S2ContainerClassLoader {
         'S2ContainerFileCacheFactory' => '/org/seasar/extension/cache/S2ContainerFileCacheFactory.class.php',
         'S2ContainerMemcacheFactory' => '/org/seasar/extension/cache/S2ContainerMemcacheFactory.class.php',
         );
-
+*/
     function load($className){
         if(array_key_exists($className,self::$CLASSES)){
             require_once(S2CONTAINER_PHP5 . self::$CLASSES[$className]);

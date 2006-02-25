@@ -25,12 +25,11 @@ if( class_exists("S2ContainerMessageUtil") ){
 }
  */
 
-if( class_exists("S2ContainerClassLoader",false) ){
-    function __autoload($class=null){
-        if(S2ContainerClassLoader::load($class)){return;}
-    }
+S2ContainerClassLoader::import(S2CONTAINER_PHP5);
+function __autoload($class=null){
+    S2ContainerClassLoader::load($class);
+    //require_once($class . ".class.php");
 }
-
 
 define('S2CONTAINER_PHP5_APP_DICON',TEST_DIR . '/s2container.php5/org/seasar/framework/container/factory/app.dicon');
 define('S2CONTAINER_PHP5_LOG_LEVEL',S2Container_SimpleLogger::DEBUG);

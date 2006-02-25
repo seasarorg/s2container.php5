@@ -57,5 +57,38 @@
  * 
  */
 
-require_once('build/s2container.php5/S2Container.php');
+/**
+ * PHP version check
+ */
+if(!version_compare(phpversion(), "5.1.0", ">=")){
+    print "[ERROR] requirement : PHP-5.1 or later. exit.\n";
+    exit;
+}
+
+/**
+ * S2Container.PHP5 ROOT Directory
+ */
+define('S2CONTAINER_PHP5',dirname(__FILE__) . DIRECTORY_SEPARATOR . 'src');
+ini_set('include_path', 
+        S2CONTAINER_PHP5 . PATH_SEPARATOR . ini_get('include_path'));
+
+/**
+ * S2Container.PHP5 Class Loader for Autoload
+require_once(S2CONTAINER_PHP5 . '/S2ContainerClassLoader.class.php');
+S2ContainerClassLoader::import(S2CONTAINER_PHP5);
+ */
+
+/**
+ * S2Container.PHP5 Core Classes
+ */
+require_once('s2container.core.classes.php');
+
+/**
+ * Messages Resouce File
+ */
+require_once(S2CONTAINER_PHP5 .'/S2ContainerMessageUtil.class.php');
+if( class_exists("S2ContainerMessageUtil") ){
+    S2ContainerMessageUtil::addMessageResource(
+                       S2CONTAINER_PHP5 . '/SSRMessages.properties');
+}
 ?>
