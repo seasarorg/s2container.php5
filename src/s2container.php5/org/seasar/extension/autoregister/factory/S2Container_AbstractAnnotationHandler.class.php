@@ -50,11 +50,6 @@ abstract class S2Container_AbstractAnnotationHandler
     
     const POINTCUT = "pointcut";
 
-/*
-    public function createComponentDef($className,$instanceMode) {
-        return $this->createComponentDef(new ReflectionClass($className), $instanceMode);
-    }
-*/
     public function appendDI(S2Container_ComponentDef $componentDef) {
         $beanDesc = S2Container_BeanDescFactory::getBeanDesc($componentDef->getComponentClass());
         $c = $beanDesc->getPropertyDescSize();
@@ -85,13 +80,6 @@ abstract class S2Container_AbstractAnnotationHandler
                                          $bindingTypeName) {
         $propertyDef = new S2Container_PropertyDefImpl($propertyName);
 
-        /*
-        if (!StringUtil.isEmpty(bindingTypeName)) {
-            BindingTypeDef bindingTypeDef = BindingTypeDefFactory.getBindingTypeDef(bindingTypeName);
-            propertyDef.setBindingTypeDef(bindingTypeDef);
-        }
-        */
-        
         if (is_string($expression) and $expression != "") {
             S2Container_ChildComponentDefBindingUtil::put($expression,
                                                              $propertyDef);
@@ -134,7 +122,6 @@ abstract class S2Container_AbstractAnnotationHandler
         if (!is_string($methodName) or $methodName == "") {
             return false;
         }
-        
         $c = $cd->getInitMethodDefSize();
         for ($i = 0; $i < $c; ++$i) {
             $other = $cd->getInitMethodDef($i);
