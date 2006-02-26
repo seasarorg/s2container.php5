@@ -59,14 +59,14 @@ class CommentAnnotationHandlerTests extends UnitTestCase {
                            "TestInterceptor");
 
         print "\n";
-    }    
-
+    }  
+    
     function testAppendInitMethod() {
         print __METHOD__ . "\n";
       
-        $handler = new S2Container_CommentAnnotationHandler();
+        $handler = new S2Container_ConstantAnnotationHandler();
         $cd = $handler->createComponentDef(
-              new ReflectionClass('C_CommentAnnotationHandlerTests'),
+              new ReflectionClass('C_ConstantAnnotationHandlerTests'),
                                   "singleton");
       
         $this->assertIsA($cd,'S2Container_ComponentDefImpl');
@@ -76,10 +76,16 @@ class CommentAnnotationHandlerTests extends UnitTestCase {
         $this->assertEqual($cd->getInitMethodDef(0)->getMethodName(),
                            "initTest");
 
+        print "\n";
+    }
+    
+    function testInitMethodArgException() {
+        print __METHOD__ . "\n";
+      
         try{
-            $handler = new S2Container_CommentAnnotationHandler();
+            $handler = new S2Container_ConstantAnnotationHandler();
             $cd = $handler->createComponentDef(
-                  new ReflectionClass('D_CommentAnnotationHandlerTests'),
+                  new ReflectionClass('D_ConstantAnnotationHandlerTests'),
                                       "singleton");
       
             $this->assertIsA($cd,'S2Container_ComponentDefImpl');
@@ -90,6 +96,25 @@ class CommentAnnotationHandlerTests extends UnitTestCase {
             print "{$e->getMessage()}\n";
             $this->assertTrue(true);
         }
+
+        print "\n";
+    }    
+
+    function testInitMethodRedundantIgnored() {
+        print __METHOD__ . "\n";
+      
+        $handler = new S2Container_ConstantAnnotationHandler();
+        $cd = $handler->createComponentDef(
+                  new ReflectionClass('E_ConstantAnnotationHandlerTests'),
+                                      "singleton");
+      
+        $this->assertIsA($cd,'S2Container_ComponentDefImpl');
+        $cd->addInitMethodDef(
+                new S2Container_InitMethodDefImpl('initExceptionTest'));
+        $this->assertEqual($cd->getInitMethodDefSize(),1);
+          
+        $handler->appendInitMethod($cd);
+        $this->assertEqual($cd->getInitMethodDefSize(),1);
 
         print "\n";
     }    
@@ -177,19 +202,22 @@ class C_CommentAnnotationHandlerTests{
 
 }
 
-/**
- * @S2Container_ComponentAnnotation(name = 'c')
- * 
- * test annotation
- * @S2Container_AspectAnnotation(interceptor = TestInterceptor,
- *                               pointcut = foo bar)
- */
 class D_CommentAnnotationHandlerTests{
 
     /**
      * @S2Container_InitMethodAnnotation
      */
     public function initExceptionTest($arg1){
+        print "init method called.\n";
+    }
+}
+
+class E_CommentAnnotationHandlerTests{
+
+    /**
+     * @S2Container_InitMethodAnnotation
+     */
+    public function initExceptionTest(){
         print "init method called.\n";
     }
 }

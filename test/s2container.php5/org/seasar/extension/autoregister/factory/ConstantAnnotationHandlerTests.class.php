@@ -86,6 +86,12 @@ class ConstantAnnotationHandlerTests extends UnitTestCase {
         $this->assertEqual($cd->getInitMethodDef(0)->getMethodName(),
                            "initTest");
 
+        print "\n";
+    }
+    
+    function testInitMethodArgException() {
+        print __METHOD__ . "\n";
+      
         try{
             $handler = new S2Container_ConstantAnnotationHandler();
             $cd = $handler->createComponentDef(
@@ -100,6 +106,25 @@ class ConstantAnnotationHandlerTests extends UnitTestCase {
             print "{$e->getMessage()}\n";
             $this->assertTrue(true);
         }
+
+        print "\n";
+    }    
+
+    function testInitMethodRedundantIgnored() {
+        print __METHOD__ . "\n";
+      
+        $handler = new S2Container_ConstantAnnotationHandler();
+        $cd = $handler->createComponentDef(
+                  new ReflectionClass('E_ConstantAnnotationHandlerTests'),
+                                      "singleton");
+      
+        $this->assertIsA($cd,'S2Container_ComponentDefImpl');
+        $cd->addInitMethodDef(
+                new S2Container_InitMethodDefImpl('initExceptionTest'));
+        $this->assertEqual($cd->getInitMethodDefSize(),1);
+          
+        $handler->appendInitMethod($cd);
+        $this->assertEqual($cd->getInitMethodDefSize(),1);
 
         print "\n";
     }    
@@ -185,6 +210,14 @@ class D_ConstantAnnotationHandlerTests{
 
     const INIT_METHOD = "initExceptionTest";    
     public function initExceptionTest($arg1){
+        print "init method called.\n";
+    }
+}
+
+class E_ConstantAnnotationHandlerTests{
+
+    const INIT_METHOD = "initExceptionTest";    
+    public function initExceptionTest(){
         print "init method called.\n";
     }
 }
