@@ -24,25 +24,25 @@
 <!-- document start -->
 
 <ul>
-<li><a href="#php">PHP及</a></li>
+<li><a href="#php">PHP幃</a></li>
 <ul>
-<li><a href="#arg">arg、property、aspect、metaタグ</a></li>
-<li><a href="#compoonent">componentタグ</a></li>
-<li><a href="#method">initMethod、destroyMethodタグ</a></li>
+<li><a href="#arg">arg丄property丄aspect丄meta僞僌</a></li>
+<li><a href="#compoonent">component僞僌</a></li>
+<li><a href="#method">initMethod丄destroyMethod僞僌</a></li>
 </ul>
 </ul>
 
 <br>
-<a name="php"><b><h2>PHP及</h2></b></a>
+<a name="php"><b><h2>PHP幃</h2></b></a>
 
-<p>PHP及とは、Seasar2のdiconファイルに淡揭するPHPソ〖スを回します。
-diconファイルの&lt;property&gt;妥燎の戮·
-&lt;component&gt;妥燎ˇ&lt;initMethod&gt;妥燎ˇ&lt;destroyMethod&gt;妥燎ˇ&lt;arg&gt;妥燎ˇ
-&lt;meta&gt;妥燎ˇ&lt;aspect&gt;妥燎にPHP及を淡揭することができます。<br>
-塑棱汤に脱いるdiconファイルを蝗脱したサンプルは、s2container.php5/examples/expression にあります。</p>
+<p>PHP幃偲偼丄Seasar2偺dicon僼傽僀儖偵婰弎偡傞PHP僜乕僗傪巜偟傑偡丅
+dicon僼傽僀儖偺&lt;property&gt;梫慺偺懠丆
+&lt;component&gt;梫慺丒&lt;initMethod&gt;梫慺丒&lt;destroyMethod&gt;梫慺丒&lt;arg&gt;梫慺丒
+&lt;meta&gt;梫慺丒&lt;aspect&gt;梫慺偵PHP幃傪婰弎偡傞偙偲偑偱偒傑偡丅<br>
+杮愢柧偵梡偄傞dicon僼傽僀儖傪巊梡偟偨僒儞僾儖偼丄s2container.php5/examples/expression 偵偁傝傑偡丅</p>
 
-<a name="arg"><b><h3>arg、property、aspect、metaタグ</h3></b></a>
-<p>コンストラクタ苞眶やプロパティに肋年したい猛を手すPHP及を淡揭します。</p>
+<a name="arg"><b><h3>arg丄property丄aspect丄meta僞僌</h3></b></a>
+<p>僐儞僗僩儔僋僞堷悢傗僾儘僷僥傿偵愝掕偟偨偄抣傪曉偡PHP幃傪婰弎偟傑偡丅</p>
 <pre>&lt;?xml version="1.0" encoding="Shift_JIS"?&gt;
 &lt;!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
 "http://www.seasar.org/dtd/components21.dtd"&gt;
@@ -63,17 +63,17 @@ diconファイルの&lt;property&gt;妥燎の戮·
     &lt;/component&gt;
 &lt;/components&gt;
 </pre>
-PHP及が return を崔まない眷圭は、极瓢弄に return が烧裁されます。コンポ〖ネント sample1 では、<br>
-コンストラクタ苞眶は、
+PHP幃偑 return 傪娷傑側偄応崌偼丄帺摦揑偵 return 偑晅壛偝傟傑偡丅僐儞億乕僱儞僩 sample1 偱偼丄<br>
+僐儞僗僩儔僋僞堷悢偼丄
 <pre> return 10; </pre>
-messageプロパティは、
+message僾儘僷僥傿偼丄
 <pre> return file_get_contents(EXAMPLE_DIR . '/dicon/expression/ArgSample.txt');</pre>
-がeval簇眶で借妄されます。<br>
-aspectタグやmetaタグにも票屯にPHP及を淡揭できます。
+偑eval娭悢偱張棟偝傟傑偡丅<br>
+aspect僞僌傗meta僞僌偵傕摨條偵PHP幃傪婰弎偱偒傑偡丅
 
 
-<a name="compoonent"><b><h3>componentタグ</h3></b></a>
-<p>オブジェクトを手すPHP及を淡揭します。</p>
+<a name="compoonent"><b><h3>component僞僌</h3></b></a>
+<p>僆僽僕僃僋僩傪曉偡PHP幃傪婰弎偟傑偡丅</p>
 
 <pre>&lt;?xml version="1.0" encoding="Shift_JIS"?&gt;
 &lt;!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
@@ -90,11 +90,11 @@ aspectタグやmetaタグにも票屯にPHP及を淡揭できます。
 &lt;/components&gt;
 </pre>
 
-componentタグのクラス掳拉が回年されている眷圭は、PHP及で手されたオブジェクトと
-ReflectionClass#isSubclassOf 孺秤を乖います。
+component僞僌偺僋儔僗懏惈偑巜掕偝傟偰偄傞応崌偼丄PHP幃偱曉偝傟偨僆僽僕僃僋僩偲
+ReflectionClass#isSubclassOf 斾妑傪峴偄傑偡丅
 
-<a name="method"><b><h3>initMethod、destroyMethodタグ</h3></b></a>
-<p>コンポ〖ネントの介袋步、姜位箕の借妄をPHP及で淡揭します。$component恃眶により极咳を徊救できます。</p>
+<a name="method"><b><h3>initMethod丄destroyMethod僞僌</h3></b></a>
+<p>僐儞億乕僱儞僩偺弶婜壔丄廔椆帪偺張棟傪PHP幃偱婰弎偟傑偡丅$component曄悢偵傛傝帺恎傪嶲徠偱偒傑偡丅</p>
 
 <pre>&lt;?xml version="1.0" encoding="Shift_JIS"?&gt;
 &lt;!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
