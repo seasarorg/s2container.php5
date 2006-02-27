@@ -29,7 +29,7 @@
         <gcore searchDir="${project.src.dir}/s2container.php5"
                coreFile="${project.build.dir}/${project.name}/s2container.core.classes.php"
                listFile="${project.basedir}/etc/s2container.core.files.txt"/>
-
+        
         <copy2 toDir="${project.build.dir}/${project.name}/src">
             <fileset dir="${project.src.dir}">
                 <include name="${project.name}/**/*.php"/>

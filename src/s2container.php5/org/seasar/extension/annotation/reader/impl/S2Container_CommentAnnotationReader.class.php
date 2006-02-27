@@ -42,12 +42,7 @@ class S2Container_CommentAnnotationReader
         $annoLines = array();
         $annoObjects = array();
         foreach($comments as $line){
-            $line = trim($line);
-            $line = preg_replace("/^\/\*\*/","",$line);
-            $line = preg_replace("/\*\/$/","",$line);
-            $line = preg_replace("/^\*/","",$line);
-            $line = trim($line);
-
+            $line = $this->removeCommentSlashAster($line);
             if(preg_match("/^@\w+$/",$line) or
                preg_match("/^@\w+\s*\(/",$line)){
                 $inAnno = true;
@@ -119,9 +114,13 @@ class S2Container_CommentAnnotationReader
                 return S2Container_AnnotationFactory::create($annotationType,
                                                              $args,
                                                              $argType);
+            }else{
+                $line = implode(" ",$annoLines);
+                S2Container_S2Logger::getLogger(__CLASS__)->
+                    info("ignored : [ $line ]",__METHOD__);               
             }
         }
-        
+
         return null;
     }
 
@@ -130,6 +129,14 @@ class S2Container_CommentAnnotationReader
         $str = preg_replace("/^[\"']/",'',$str);
         $str = preg_replace("/[\"']$/",'',$str);
         return trim($str);
+    }
+
+    private function removeCommentSlashAster($line){
+        $line = trim($line);
+        $line = preg_replace("/^\/\*\*/","",$line);
+        $line = preg_replace("/\*\/$/","",$line);
+        $line = preg_replace("/^\*/","",$line);
+        return trim($line);
     }
 }
 ?>

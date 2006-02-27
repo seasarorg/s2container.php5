@@ -27,6 +27,7 @@
  */
 class S2Container_AnnotationContainer
 {
+    public static $DEFAULT_ANNOTATION_READER = "S2Container_CommentAnnotationReader";
     private static $container = null;
     private $annotationMap = array();
     private $annotationReader = null;
@@ -36,7 +37,13 @@ class S2Container_AnnotationContainer
     public static function getInstance(){
         if(self::$container == null){
             self::$container = new S2Container_AnnotationContainer();
-            self::$container->setAnnotationReader(new S2Container_CommentAnnotationReader());
+            if(defined('S2CONTAINER_ANNOTATION_READER')){
+                $reader = S2CONTAINER_ANNOTATION_READER;
+            }else{
+                $reader = self::$DEFAULT_ANNOTATION_READER;
+            }
+            
+            self::$container->setAnnotationReader(new $reader());
         }    
         return self::$container;
     }
@@ -93,7 +100,7 @@ class S2Container_AnnotationContainer
                                         $methodName=null,
                                         $srcFile=null){
         $annotations = $this->getAnnotations($className,$methodName,$srcFile);
-        $annotationId = $this->getAnnotationId($className,$methodName=null);
+        $annotationId = $this->getAnnotationId($className,$methodName);
 
         if(!is_array($annotations) or !array_key_exists($annotationType,$annotations)){
             return false;
@@ -103,9 +110,9 @@ class S2Container_AnnotationContainer
 
     public function getAnnotationId($className,$methodName){
         if($methodName == null){
-            return $className."_class";
+            return $className.":class";
         }else{
-            return $className."_".$methodName;
+            return $className.":".$methodName;
         }
     }
 }

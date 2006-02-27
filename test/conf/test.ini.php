@@ -28,7 +28,7 @@ if( class_exists("S2ContainerMessageUtil") ){
 S2ContainerClassLoader::import(S2CONTAINER_PHP5);
 function __autoload($class=null){
     S2ContainerClassLoader::load($class);
-    //require_once($class . ".class.php");
+    //@include_once("$class.class.php");
 }
 
 define('S2CONTAINER_PHP5_APP_DICON',TEST_DIR . '/s2container.php5/org/seasar/framework/container/factory/app.dicon');

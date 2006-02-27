@@ -155,6 +155,7 @@ class CommentAnnotationReaderTests extends UnitTestCase {
 
         $annos = $reader->getAnnotations(
             new ReflectionClass('C_CommentAnnotationReaderTests'),'m12');
+        $this->assertEqual(count($annos),0);
 
         print "\n";
     }
@@ -264,8 +265,6 @@ class CommentAnnotationReaderTests extends UnitTestCase {
                 new ReflectionClass('E_CommentAnnotationReaderTests'),'m03');
         $this->assertEqual($annos['Annotation02_CommentAnnotationReaderTests']->name ,
                            "");
-            print_r($annos);
-
         print "\n";
     }
 

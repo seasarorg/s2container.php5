@@ -52,7 +52,7 @@
  *   sample : use require_once directly
  *     function __autoload($class=null){
  *         if($class != null){
- *             require_once("$class.class.php");
+ *             include_once("$class.class.php");
  *         }
  *     }
  * 
