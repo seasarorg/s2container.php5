@@ -35,19 +35,38 @@
         </ul>
     </ul>
 
-<li><a href="#unit">S2Unit</a></li>
+<li><a href="#unit">S2Unit</a>
     <ul>
     <li><a href="#unit-example">Example</a></li>
     </ul>
 </li>
 
-<li><a href="#loader">S2ContainerClassLoader</a></li>
+<li><a href="#loader">S2ContainerClassLoader</a>
     <ul>
     <li><a href="#loader-file">ƒNƒ‰ƒX’è‹`ƒtƒ@ƒCƒ‹‚ğw’è‚·‚é</a></li>
     <li><a href="#loader-dir">ƒfƒBƒŒƒNƒgƒŠ‚ğw’è‚·‚é</a></li>
     <li><a href="#loader-array">ƒNƒ‰ƒX’è‹`‚Ì”z—ñ‚ğg—p‚·‚é</a></li>
     </ul>
 </li>
+
+<li><a href="#cache">Cache</a>
+    <ul>
+    <li><a href="#cache-file">S2ContainerFileCacheFactory</a></li>
+    <li><a href="#cache-mem">S2ContainerMemcacheFactory</a></li>
+    </ul>
+</li>
+
+<li><a href="#autoRegister">©“®“o˜^</a>
+    <ul>
+    <li><a href="#autoRegister-file">FileSystemComponentAutoRegister</a></li>
+    <li><a href="#autoRegister-aspect">AspectAutoRegister</a></li>
+    <li><a href="#autoRegister-interface">InterfaceAspectAutoRegister</a></li>
+    </ul>
+</li>
+
+<li><a href="#commentAnnotation">ƒRƒƒ“ƒgƒAƒmƒe[ƒVƒ‡ƒ“</a></li>
+
+
 </ul>
 
 <br>
@@ -92,11 +111,11 @@ class HelloImpl {
     function HelloImpl() {}
     
     function setMessageA($messageA){
-        $this->messageA = $messageA;	
+        $this->messageA = $messageA;    
     }
 
     function __set($name,$val){
-        $this->$name = $val;	
+        $this->$name = $val;    
     }
     
     function showMessage(){
@@ -112,7 +131,7 @@ class HelloImpl {
 <li type="circle">componentƒ^ƒO‚ÅƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ’è‹`‚µ‚Ü‚·B</li>
 <li type="circle">componentƒ^ƒO‚Ìqƒ^ƒO‚Ìpropertyƒ^ƒO‚ÅƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌƒvƒƒpƒeƒB’l‚ğ’è‹`‚µ‚Ü‚·B</li>
 </ul>
-<p>s2container.php5/src/examples/extension/uuset/uuset.dicon</p>
+<p>s2container.php5/examples/extension/uuset/uuset.dicon</p>
 <pre>&lt;components&gt;
     &lt;component class="HelloImpl"&gt;
         &lt;property name="messageA"&gt;"Hello"&lt;/property&gt;
@@ -130,7 +149,7 @@ class HelloImpl {
 <li type="circle">æ“¾‚µ‚½ƒRƒ“ƒ|[ƒlƒ“ƒg‚Ìƒƒ\ƒbƒh‚ğŒÄ‚Ño‚µ‚Ü‚·B</li>
 </ul>
 
-<p>s2container.php5/src/examples/extension/uuset/uusetClient.php</p>
+<p>s2container.php5/examples/extension/uuset/uusetClient.php</p>
 <pre>&lt;?php
 require_once(dirname(__FILE__) . '/uuset.inc.php');
 $PATH = EXAMPLE_DIR . "/extension/uuset/uuset.dicon";
@@ -149,7 +168,7 @@ Hello World
 %
 </pre>
 
-‚±‚Ìexample‚ÍAs2container.php5/src/examples/extension/uuset/ˆÈ‰º‚É—pˆÓ‚³‚ê‚Ä‚¢‚Ü‚·B<br>
+‚±‚Ìexample‚ÍAs2container.php5/examples/extension/uuset/ˆÈ‰º‚É—pˆÓ‚³‚ê‚Ä‚¢‚Ü‚·B<br>
 
 
 <br>
@@ -161,132 +180,132 @@ Hello World
 ‚É‚ ‚è‚Ü‚·B
 </p>
 
-    	ƒe[ƒuƒ‹FEMP
-		<table border="1" class="main">
-			<tr bgcolor="#d1f3f4" align="center">
-			  <th>ƒJƒ‰ƒ€–¼</th>
-			  <th>˜_—–¼</th>
-			  <th>Œ^</th>
-			  <th>NotNull</th>
+        ƒe[ƒuƒ‹FEMP
+        <table border="1" class="main">
+            <tr bgcolor="#d1f3f4" align="center">
+              <th>ƒJƒ‰ƒ€–¼</th>
+              <th>˜_—–¼</th>
+              <th>Œ^</th>
+              <th>NotNull</th>
 
-			  <th>åƒL[</th>
-			</tr>
-			<tr>
-			  <td>EMPNO</td>
-		      <td>]‹Æˆõ”Ô†</td>
-			  <td>NUMBER</td>
-			  <td align="center">Z</td>
+              <th>åƒL[</th>
+            </tr>
+            <tr>
+              <td>EMPNO</td>
+              <td>]‹Æˆõ”Ô†</td>
+              <td>NUMBER</td>
+              <td align="center">Z</td>
 
-			  <td align="center">Z</td>
-			</tr>
-			<tr>
-			  <td>ENAME</td>
-			  <td>]‹Æˆõ–¼</td>
-			  <td>VARCHAR</td>
-			  <td><br /></td>
+              <td align="center">Z</td>
+            </tr>
+            <tr>
+              <td>ENAME</td>
+              <td>]‹Æˆõ–¼</td>
+              <td>VARCHAR</td>
+              <td><br /></td>
 
-			  <td><br /></td>
-			</tr>
-			<tr>
-			  <td>JOB</td>
-			  <td>d–</td>
-			  <td>VARCHAR</td>
-			  <td><br /></td>
+              <td><br /></td>
+            </tr>
+            <tr>
+              <td>JOB</td>
+              <td>d–</td>
+              <td>VARCHAR</td>
+              <td><br /></td>
 
-			  <td><br /></td>
-			</tr>
-			<tr>
-			  <td>MGR</td>
-			  <td>ãi</td>
-			  <td>NUMBER</td>
-			  <td><br /></td>
+              <td><br /></td>
+            </tr>
+            <tr>
+              <td>MGR</td>
+              <td>ãi</td>
+              <td>NUMBER</td>
+              <td><br /></td>
 
-			  <td><br /></td>
-			</tr>
-			<tr>
-			  <td>HIREDATE</td>
-			  <td>ŒÙ—p“ú</td>
-			  <td>DATE</td>
-			  <td><br /></td>
+              <td><br /></td>
+            </tr>
+            <tr>
+              <td>HIREDATE</td>
+              <td>ŒÙ—p“ú</td>
+              <td>DATE</td>
+              <td><br /></td>
 
-			  <td><br /></td>
-			</tr>
-			<tr>
-			  <td>SAL</td>
-			  <td>‹‹—¿</td>
-			  <td>NUMBER</td>
-			  <td><br /></td>
+              <td><br /></td>
+            </tr>
+            <tr>
+              <td>SAL</td>
+              <td>‹‹—¿</td>
+              <td>NUMBER</td>
+              <td><br /></td>
 
-			  <td><br /></td>
-			</tr>
-			<tr>
-			  <td>COMM</td>
-			  <td>è”—¿</td>
-			  <td>NUMBER</td>
-			  <td><br /></td>
+              <td><br /></td>
+            </tr>
+            <tr>
+              <td>COMM</td>
+              <td>è”—¿</td>
+              <td>NUMBER</td>
+              <td><br /></td>
 
-			  <td><br /></td>
-			</tr>
-			<tr>
-			  <td>DEPTNO</td>
-			  <td>•””Ô†</td>
-			  <td>NUMBER</td>
-			  <td><br /></td>
+              <td><br /></td>
+            </tr>
+            <tr>
+              <td>DEPTNO</td>
+              <td>•””Ô†</td>
+              <td>NUMBER</td>
+              <td><br /></td>
 
-			  <td><br /></td>
-			</tr>
-			<tr>
-			  <td>TSTAMP</td>
-			  <td>ƒ^ƒCƒ€ƒXƒ^ƒ“ƒv</td>
-			  <td>TIMESTAMP</td>
-			  <td><br /></td>
+              <td><br /></td>
+            </tr>
+            <tr>
+              <td>TSTAMP</td>
+              <td>ƒ^ƒCƒ€ƒXƒ^ƒ“ƒv</td>
+              <td>TIMESTAMP</td>
+              <td><br /></td>
 
-			  <td><br /></td>
-			</tr>
-		</table>
-    	<br />ƒe[ƒuƒ‹FDEPT
-		<table border="1" class="main">
-			<tr bgcolor="#d1f3f4" align="center">
-			  <th>ƒJƒ‰ƒ€–¼</th>
-			   <th>˜_—–¼</th>
+              <td><br /></td>
+            </tr>
+        </table>
+        <br />ƒe[ƒuƒ‹FDEPT
+        <table border="1" class="main">
+            <tr bgcolor="#d1f3f4" align="center">
+              <th>ƒJƒ‰ƒ€–¼</th>
+               <th>˜_—–¼</th>
 
-			  <th>Œ^</th>
-			  <th>NotNull</th>
-			  <th>åƒL[</th>
-			</tr>
-			<tr>
-			  <td>DEPTNO</td>
-			  <td>•””Ô†</td>
+              <th>Œ^</th>
+              <th>NotNull</th>
+              <th>åƒL[</th>
+            </tr>
+            <tr>
+              <td>DEPTNO</td>
+              <td>•””Ô†</td>
 
-			  <td>NUMBER</td>
-			  <td align="center">Z</td>
-			  <td align="center">Z</td>
-			</tr>
-			<tr>
-			  <td>DNAME</td>
-			  <td>•”–¼</td>
+              <td>NUMBER</td>
+              <td align="center">Z</td>
+              <td align="center">Z</td>
+            </tr>
+            <tr>
+              <td>DNAME</td>
+              <td>•”–¼</td>
 
-			  <td>VARCHAR</td>
-			  <td><br /></td>
-			  <td><br /></td>
-			</tr>
-			<tr>
-			  <td>LOC</td>
-			  <td>ƒƒP[ƒVƒ‡ƒ“</td>
+              <td>VARCHAR</td>
+              <td><br /></td>
+              <td><br /></td>
+            </tr>
+            <tr>
+              <td>LOC</td>
+              <td>ƒƒP[ƒVƒ‡ƒ“</td>
 
-			  <td>VARCHAR</td>
-			  <td><br /></td>
-			  <td><br /></td>
-			</tr>
-			<tr>
-			  <td>VERSIONNO</td>
-			  <td>ƒo[ƒWƒ‡ƒ“”Ô†</td>
+              <td>VARCHAR</td>
+              <td><br /></td>
+              <td><br /></td>
+            </tr>
+            <tr>
+              <td>VERSIONNO</td>
+              <td>ƒo[ƒWƒ‡ƒ“”Ô†</td>
 
-			  <td>NUMBER</td>
-			  <td><br /></td>
-			  <td><br /></td>
-			</tr>
-		</table>
+              <td>NUMBER</td>
+              <td><br /></td>
+              <td><br /></td>
+            </tr>
+        </table>
 
 <br>
 <a name="dba-ds"><h3>DataSource‚É‚Â‚¢‚Ä</h3></a>
@@ -312,7 +331,7 @@ dataSourceƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌdsnƒvƒƒpƒeƒB‚ğA‚²g—p‚Ìƒf[ƒ^ƒx[ƒX‚ÉÚ‘±‚Å‚«‚é’l‚É
 
 <a name="dba-ds-use"><h3>g—p•û–@</h3></a>
 <p>ƒTƒ“ƒvƒ‹‚Æ‚µ‚ÄAˆø”‚Åó‚¯æ‚Á‚½DEPTNO’l‚ÅDEPTƒe[ƒuƒ‹‚ğŒŸõ‚µA‚»‚ÌŒ‹‰Ê‚ğ•Ô‚·DAO‚ğÀ‘•‚µ‚Ä‚İ‚Ü‚·B<br>
-‚±‚Ì‰‰K‚ÍAs2container.php5/src/examples/extension/db/ˆÈ‰º‚É—pˆÓ‚³‚ê‚Ä‚¢‚Ü‚·B</p>
+‚±‚Ì‰‰K‚ÍAs2container.php5/examples/extension/db/ˆÈ‰º‚É—pˆÓ‚³‚ê‚Ä‚¢‚Ü‚·B</p>
 <p><b>ƒCƒ“ƒ^ƒtƒF[ƒX‚Ì’è‹`</b></p>
 <ul>
 <li type="circle">DeptDaoƒCƒ“ƒ^ƒtƒF[ƒX‚ğ’è‹`‚µ‚Ü‚·B</li>
@@ -415,10 +434,10 @@ Array
 </ul>
 <h3><a name="unit-example">Example</a></h3>
 <p>Pear PHPUnit2 ‚ğŠg’£‚µ‚½ S2Container_S2PHPUnit2TestCase ‚ğ—p‚¢‚Ü‚·B<br>
-‚±‚ÌƒTƒ“ƒvƒ‹‚ÍAs2container.php5/src/examples/extension/unit/ˆÈ‰º‚É‚ ‚è‚Ü‚·B</p>
+‚±‚ÌƒTƒ“ƒvƒ‹‚ÍAs2container.php5/examples/extension/unit/ˆÈ‰º‚É‚ ‚è‚Ü‚·B</p>
 
 <p><b>ƒeƒXƒg‘ÎÛ</b></p>
-<p>s2container.php5/src/examples/extension/unit/src/foo/FooLogic.class.php</p>
+<p>s2container.php5/examples/extension/unit/src/foo/FooLogic.class.php</p>
 <pre>
 &lt;?php
 class FooLogic {
@@ -427,7 +446,7 @@ class FooLogic {
     }
     
     function showYear(){
-    	return 2005;
+        return 2005;
     }
 }
 ?&gt;
@@ -435,7 +454,7 @@ class FooLogic {
 
 <p><b>diconƒtƒ@ƒCƒ‹</b></p>
 
-<p>s2container.php5/src/examples/extension/unit/src/foo/foo.dicon</p>
+<p>s2container.php5/examples/extension/unit/src/foo/foo.dicon</p>
 <pre>&lt;?xml version="1.0" encoding="Shift_JIS"?&gt;
 &lt;!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
 "http://www.seasar.org/dtd/components21.dtd"&gt;
@@ -446,7 +465,7 @@ class FooLogic {
 
 <p><b>ƒeƒXƒgƒNƒ‰ƒX</b></p>
 
-<p>s2container.php5/src/examples/extension/unit/test/phpunit2/foo/FooLogicTest.class.php</p>
+<p>s2container.php5/examples/extension/unit/test/phpunit2/foo/FooLogicTest.class.php</p>
 <pre>
 &lt;?php
 class FooLogicTest extends S2Container_S2PHPUnit2TestCase {
@@ -454,7 +473,7 @@ class FooLogicTest extends S2Container_S2PHPUnit2TestCase {
     public $logic;   //--- dicon ƒtƒ@ƒCƒ‹‚É logic ‚Æ‚¢‚¤–¼‘O‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ª‘¶İ‚·‚ê‚Îİ’è‚³‚ê‚Ü‚·
     
     function __construct($name) {
-    	parent::__construct($name);
+        parent::__construct($name);
     }
 
     function setUp(){
@@ -463,13 +482,13 @@ class FooLogicTest extends S2Container_S2PHPUnit2TestCase {
 
     function testShowYear(){
         $year = $this->logic->showYear();
-        $this->assertEquals($year , 2005);	
+        $this->assertEquals($year , 2005);    
     }
 }
 ?&gt;
 </pre>
 
-<p>s2container.php5/src/examples/extension/unit/test/phpunit2/foo/FooAllTest.class.php</p>
+<p>s2container.php5/examples/extension/unit/test/phpunit2/foo/FooAllTest.class.php</p>
 <pre>
 &lt;?php
 class FooAllTest {
@@ -488,7 +507,7 @@ class FooAllTest {
 </pre>
 
 <p><b>ÀsƒXƒNƒŠƒvƒg</b></p>
-<p>s2container.php5/src/examples/extension/unit/test/phpunit2/foo/fooTests.php</p>
+<p>s2container.php5/examples/extension/unit/test/phpunit2/foo/fooTests.php</p>
 <pre>
 &lt;?php
 define('PHPUnit2_MAIN_METHOD', 'FooAllTest::main()');
@@ -515,7 +534,7 @@ OK (1 test)
 %
 </pre>
 
-<p>SimpleTest ‚ğ—p‚¢‚½“¯—l‚ÌƒTƒ“ƒvƒ‹‚ª s2container.php5/src/examples/extension/unit/test/ˆÈ‰º‚É‚ ‚è‚Ü‚·B</p>
+<p>SimpleTest ‚ğ—p‚¢‚½“¯—l‚ÌƒTƒ“ƒvƒ‹‚ª s2container.php5/examples/extension/unit/test/ˆÈ‰º‚É‚ ‚è‚Ü‚·B</p>
 
 <br>
 <a name="loader"><h3>S2ContainerClassLoader</h3></a>
@@ -567,6 +586,462 @@ S2ContainerClassLoader::import($classes);
 </pre>
 
 ƒNƒ‰ƒX–¼‚ğƒL[‚Æ‚µ‚ÄƒNƒ‰ƒX’è‹`ƒtƒ@ƒCƒ‹‚ªw’è‚³‚ê‚½˜A‘z”z—ñ‚ğimport‚µ‚Ü‚·B
+
+<br>
+<a name="cache"><h3>Cache</h3></a>
+<h3><a name="cache-file">S2ContainerFileCacheFactory</a></h3>
+<h3><a name="cache-mem">S2ContainerMemcacheFactory</a></h3>
+
+<br>
+<a name="autoRegister"><h3>©“®“o˜^</h3></a>
+<h3><a name="autoRegister-file">FileSystemComponentAutoRegister</a></h3>
+
+<p><a href="DIContainer.html#AutoBindingMode">©“®ƒoƒCƒ“ƒfƒBƒ“ƒO</a>‚É‚æ‚èADI‚Ìİ’è‚Í‚Ù‚Ú©“®‰»‚Å‚«‚Ü‚·B
+‚³‚ç‚ÉAƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì“o˜^‚à©“®‰»‚µ‚Ä‚µ‚Ü‚¨‚¤‚Æ‚¢‚¤‚Ì‚ªAƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì©“®“o˜^‹@”\‚Å‚·B
+’è”ƒAƒmƒe[ƒVƒ‡ƒ“‚Ü‚½‚Í<a href="#commentAnnotation">ƒRƒƒ“ƒgƒAƒmƒe[ƒVƒ‡ƒ“</a>‚ğg‚Á‚Ä×‚©‚­§Œä‚·‚é‚±‚Æ‚à‰Â”\‚Å‚·B</p>
+
+<table border="1">
+<tr bgcolor="#d1f3f4" align="center">
+<th>ƒvƒƒpƒeƒB</th>
+
+<th>à–¾</th>
+</tr>
+<tr>
+<td><a href="DIContainer.html#InstanceMode">InstanceMode</a></td>
+<td>©“®“o˜^‚³‚ê‚éƒRƒ“ƒ|[ƒlƒ“ƒg‚É“K—p‚·‚éInstanceMode‚ğw’è‚µ‚Ü‚·B</td>
+</tr>
+<tr>
+<td><code>autoNaming</code></td>
+<td>ƒNƒ‰ƒX–¼‚©‚çƒRƒ“ƒ|[ƒlƒ“ƒg–¼‚ğ©“®“I‚ÉŒˆ’è‚·‚éƒRƒ“ƒ|[ƒlƒ“ƒgB<br>S2Container_AutoNamingƒCƒ“ƒ^[ƒtƒF[ƒX‚ğÀ‘•‚µ‚Ä‚¢‚é•K—v‚ª‚ ‚è‚Ü‚·B<br>ƒfƒtƒHƒ‹ƒg‚Í¤S2Container_DefaultAutoNamingƒNƒ‰ƒX‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚É‚È‚è‚Ü‚·B</td>
+
+</tr>
+</table>
+<br />
+<table border="1">
+<tr bgcolor="#d1f3f4" align="center">
+<th>ƒƒ\ƒbƒh</th>
+<th>à–¾</th>
+</tr>
+<tr>
+<td><code>addClassPattern</code></td>
+<td>©“®“o˜^‚µ‚½‚¢ƒNƒ‰ƒXƒpƒ^[ƒ“‚ğ“o˜^‚µ‚Ü‚·Bˆø”‚ğ2‚Â‚¿‚Ü‚·BÅ‰‚Ìˆø”‚Í¤ƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌƒNƒ‰ƒX’è‹`ƒtƒ@ƒCƒ‹‚ğŒŸõ‚·‚éƒfƒBƒŒƒNƒgƒŠƒpƒX‚Å‚·BƒTƒuƒfƒBƒŒƒNƒgƒŠ‚àÄ‹A“I‚ÉŒŸõ‚µ‚Ü‚·B2”Ô–Ú‚Ìˆø”‚ÍƒNƒ‰ƒX–¼‚Å‚·B³‹K•\Œ»‚ªg‚¦‚Ü‚·Bu,v‹æØ‚è‚Å•¡”‹Lq‚·‚é‚±‚Æ‚à‚Å‚«‚Ü‚·B</td>
+</tr>
+<tr>
+
+<td><code>addIgnoreClassPattern</code></td>
+<td>©“®“o˜^‚µ‚½‚­‚È‚¢ƒNƒ‰ƒXƒpƒ^[ƒ“‚ğ“o˜^‚µ‚Ü‚·Bˆø”‚ğ1‚Â‚¿‚Ü‚·Bˆø”‚ÍƒNƒ‰ƒX–¼‚Å‚·B³‹K•\Œ»‚ªg‚¦‚Ü‚·Bu,v‹æØ‚è‚Å•¡”‹Lq‚·‚é‚±‚Æ‚à‚Å‚«‚Ü‚·B</td>
+</tr>
+</table>
+
+<h4>AutoNaming</h4>
+<p>ƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì–¼‘O‚ÍAutoNaming‚É‚æ‚è§Œä‚µ‚Ü‚·B</p>
+
+<h5><a name="DefaultAutoNaming">DefaultAutoNaming</a></h5>
+<p>ƒNƒ‰ƒX–¼‚ÌÅŒã‚ª Impl ‚Ü‚½‚Í Bean ‚ÅI‚í‚Á‚Ä‚¢‚½‚çíœ‚µAæ“ª‚ğ¬•¶š‚É‚µ‚½–¼‘O‚ğƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì–¼‘O‚Éİ’è‚µ‚Ü‚·B<br>
+—á‚¦‚Î¤HogeImplƒNƒ‰ƒX‚Ìê‡¤ƒRƒ“ƒ|[ƒlƒ“ƒg–¼‚Í hoge ‚É‚È‚è‚Ü‚·B</p>
+
+<table border="1">
+
+<tr bgcolor="#d1f3f4" align="center">
+<th>ƒvƒƒpƒeƒB</th>
+<th>à–¾</th>
+</tr>
+<tr>
+<td><code>decapitalize</code></td>
+<td>ƒRƒ“ƒ|[ƒlƒ“ƒg–¼‚Ìæ“ª‚ğ¬•¶š‚É‚·‚éê‡‚Ítrue‚ğw’è‚µ‚Ü‚·BƒfƒtƒHƒ‹ƒg‚Ítrue‚Å‚·B</td>
+</tr>
+
+</table>
+<br>
+<table border="1">
+<tr bgcolor="#d1f3f4" align="center">
+
+<th>ƒƒ\ƒbƒh</th>
+<th>à–¾</th>
+</tr>
+<tr>
+<td><code>setCustomizedName</code></td>
+<td>ƒfƒtƒHƒ‹ƒg‚Ìƒ‹[ƒ‹‚É]‚í‚È‚¢ƒNƒ‰ƒX‚ğ“o˜^‚µ‚Ü‚·BÅ‰‚Ìˆø”‚Í¤ƒNƒ‰ƒX–¼‚Å‚·B
+2”Ô–Ú‚Ìˆø”‚Í¤ƒRƒ“ƒ|[ƒlƒ“ƒg–¼‚Å‚·B</td>
+</tr>
+<tr>
+<td><code>addIgnoreClassSuffix</code></td>
+<td>ƒNƒ‰ƒX–¼‚Ì––”ö‚©‚çíœ‚·‚é•”•ª‚ğw’è‚µ‚Ü‚·BƒfƒtƒHƒ‹ƒg‚Å Impl ‚¨‚æ‚Ñ Bean ‚ª“o˜^‚³‚ê‚Ä‚¢‚Ü‚·B</td>
+</tr>
+
+<tr>
+<td><code>addReplaceRule</code></td>
+<td>³‹K•\Œ»‚É‚æ‚é’uŠ·ƒ‹[ƒ‹‚ğ’Ç‰Á‚µ‚Ü‚·BÅ‰‚Ìˆø”‚Í³‹K•\Œ»‚Å‚·B2”Ô–Ú‚Ìˆø”‚Í’uŠ·•¶š—ñ‚Å‚·B</td>
+</tr>
+<tr>
+<td><code>clearReplaceRule</code></td>
+<td>setCustomizedNameAaddIgnoreClassSuffixAaddReplaceRule‚Å“o˜^‚µ‚½•ÏŠ·‹K‘¥‚ğƒNƒŠƒA‚µ‚Ü‚·BƒfƒtƒHƒ‹ƒg‚Å“o˜^‚³‚ê‚Ä‚¢‚é Impl ‚¨‚æ‚Ñ Bean ‚àƒNƒŠƒA‚³‚ê‚Ü‚·B</td>
+</tr>
+</table>
+
+<h4>ƒAƒmƒe[ƒVƒ‡ƒ“</h4>
+<p>
+’è”ƒAƒmƒe[ƒVƒ‡ƒ“‚Ü‚½‚ÍƒRƒƒ“ƒgƒAƒmƒe[ƒVƒ‡ƒ“‚ğ—p‚¢‚Ä©“®“o˜^‚·‚éƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ×‚©‚­İ’è‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B
+</p>
+<h5>ComponentƒAƒmƒe[ƒVƒ‡ƒ“</h5>
+<p>
+<a href="DIContainer.html#componentsTag">componentƒ^ƒO</a>‚Ì‚©‚í‚è‚Ég‚¦‚é‚Ì‚ªAComponentƒAƒmƒe[ƒVƒ‡ƒ“‚Å‚·B
+</p>
+’è”ƒAƒmƒe[ƒVƒ‡ƒ“‚ÍˆÈ‰º‚Ì‚æ‚¤‚É‚È‚è‚Ü‚·B
+<pre>
+&lt;?php
+class HogeImpl {
+    const COMPONENT = "name = hoge,
+                       instance = prototype,
+                       autoBinding = property";
+    .....
+}
+?&gt;
+</pre>
+
+ƒRƒƒ“ƒgƒAƒmƒe[ƒVƒ‡ƒ“‚ÍˆÈ‰º‚Ì‚æ‚¤‚É‚È‚è‚Ü‚·B
+<pre>
+&lt;?php
+/**
+ * @S2Container_ComponentAnnotation( name = hoge,
+ *                                   instance = prototype,
+ *                                   autoBinding = property )
+ */
+class HogeImpl {
+    .....
+}
+?&gt;
+</pre>
+
+
+<h5>BindingƒAƒmƒe[ƒVƒ‡ƒ“</h5>
+
+<p>
+<a href="DIContainer.html#propertyTag">propertyƒ^ƒO</a>‚Ì‚©‚í‚è‚Ég‚¦‚é‚Ì‚ªABindingƒAƒmƒe[ƒVƒ‡ƒ“‚Å‚·B
+<br>
+Binding ‚Í expressionˆµ‚¢‚É‚ ‚ñ‚è‚Ü‚·B<br>
+ƒvƒƒpƒeƒB–¼ + _BINDING ’è”–¼<br>
+</p>
+
+’è”ƒAƒmƒe[ƒVƒ‡ƒ“‚ÍˆÈ‰º‚Ì‚æ‚¤‚É‚È‚è‚Ü‚·B
+<pre>
+&lt;?php
+class HogeImpl {
+    private $value = null;
+
+    const value_BINDING = '" string value must be quoted "';
+    public function setValue($value){
+        $this->value = $value;
+    }
+
+    public function getValue(){
+        return $this->value;
+    }
+
+    .....
+}
+?&gt;
+</pre>
+
+ƒRƒƒ“ƒgƒAƒmƒe[ƒVƒ‡ƒ“‚ÍˆÈ‰º‚Ì‚æ‚¤‚É‚È‚è‚Ü‚·B
+<pre>
+&lt;?php
+class HogeImpl {
+    private $value = null;
+
+    /**
+     * @S2Container_BindingAnnotation( "string value must be quoted" )
+     */ 
+    public function setValue($value){
+        $this->value = $value;
+    }
+
+    public function getValue(){
+        return $this->value;
+    }
+
+    .....
+}
+?&gt;
+</pre>
+
+
+<h5>AspectƒAƒmƒe[ƒVƒ‡ƒ“</h5>
+<p>
+<a href="DIContainer.html#aspectTag">aspectƒ^ƒO</a>‚Ì‚©‚í‚è‚Ég‚¦‚é‚Ì‚ªAAspectƒAƒmƒe[ƒVƒ‡ƒ“‚Å‚·Baspectƒ^ƒO‚ÆˆÙ‚È‚è¤•¡”’è‹`‚·‚é‚±‚Æ‚Í‚Å‚«‚È‚¢‚Ì‚Å¤•¡”‚ÌƒCƒ“ƒ^[ƒZƒvƒ^‚ğ“K—p‚µ‚½‚¢ê‡‚Í¤<a href="aop.html#InterceptorChain">InterceptorChain</a>‚ğg‚Á‚Ä‚­‚¾‚³‚¢Bpointcut‚ğw’è‚µ‚È‚¢‚Æ‚«‚ÍA‚»‚ÌƒNƒ‰ƒX‚ªÀ‘•‚µ‚Ä‚¢‚é‚·‚×‚Ä‚ÌƒCƒ“ƒ^[ƒtƒF[ƒX‚Ìƒƒ\ƒbƒh‚ª‘ÎÛ‚É‚È‚è‚Ü‚·B
+
+<br>
+ƒ|ƒCƒ“ƒgƒJƒbƒg‚ÍƒXƒy[ƒX‚Å‹æØ‚Á‚Ä‰º‚³‚¢B
+<br>
+</p>
+
+’è”ƒAƒmƒe[ƒVƒ‡ƒ“‚ÍˆÈ‰º‚Ì‚æ‚¤‚É‚È‚è‚Ü‚·B
+<pre>
+&lt;?php
+class HogeImpl {
+    const ASPECT = "interceptor = new S2Container_TraceInterceptor() ,
+                    pointcut = m1 m2 ";
+
+    public function m1(){
+        .....
+    }
+
+    public function m2(){
+        .....
+    }
+
+    .....
+}
+?&gt;
+</pre>
+
+ƒRƒƒ“ƒgƒAƒmƒe[ƒVƒ‡ƒ“‚ÍˆÈ‰º‚Ì‚æ‚¤‚É‚È‚è‚Ü‚·B
+<pre>
+&lt;?php
+/**
+ * @S2Container_AspectAnnotation (interceptor = new S2Container_TraceInterceptor() ,
+ *                                pointcut = m1)
+ */
+class HogeImpl {
+
+    public function m1(){
+        .....
+    }
+
+    /**
+     * @S2Container_AspectAnnotation(interceptor = new S2Container_TraceInterceptor());
+     */
+    public function m2(){
+        .....
+    }
+
+    .....
+}
+?&gt;
+</pre>
+
+
+
+<h5>InitMethodƒAƒmƒe[ƒVƒ‡ƒ“</h5>
+<p>
+<a href="DIContainer.html#initMethodTag">initMethodƒ^ƒO</a>‚Ì‚©‚í‚è‚Ég‚¦‚é‚Ì‚ªAInitMethodƒAƒmƒe[ƒVƒ‡ƒ“‚Å‚·B initMethodƒ^ƒO‚ÆˆÙ‚È‚è¤PHP®‚ğ‘‚¢‚½‚èAˆø”‚ğİ’è‚·‚é‚±‚Æ‚Í‚Å‚«‚Ü‚¹‚ñB‰Šú‰»ƒƒ\ƒbƒh‚ğ•¡”w’è‚µ‚½‚¢ê‡‚Í¤ƒJƒ“ƒ}(,)‚Å‹æØ‚Á‚Ä‚­‚¾‚³‚¢B
+</p>
+
+’è”ƒAƒmƒe[ƒVƒ‡ƒ“‚ÍˆÈ‰º‚Ì‚æ‚¤‚É‚È‚è‚Ü‚·B
+<pre>
+&lt;?php
+class HogeImpl {
+    const INIT_METHOD = "initA, initB";
+
+    public function initA(){
+        .....
+    }
+
+    public function initB(){
+        .....
+    }
+
+    .....
+}
+?&gt;
+</pre>
+
+ƒRƒƒ“ƒgƒAƒmƒe[ƒVƒ‡ƒ“‚ÍˆÈ‰º‚Ì‚æ‚¤‚É‚È‚è‚Ü‚·B
+<pre>
+&lt;?php
+class HogeImpl {
+
+    /**
+     * @S2Container_InitMethodAnnotation
+     */
+    public function initA(){
+        .....
+    }
+
+    /**
+     * @S2Container_InitMethodAnnotation
+     */
+    public function initB(){
+        .....
+    }
+
+    .....
+}
+?&gt;
+</pre>
+
+<h4>DICON Sample</h4>
+<pre>
+&lt;component class=&quot;S2Container_FileSystemComponentAutoRegister&quot;&gt;
+    &lt;property name=&quot;autoNaming&quot;&gt;
+        &lt;component class=&quot;S2Container_DefaultAutoNaming&quot;&gt;
+            &lt;initMethod name=&quot;setCustomizedName&quot;&gt;
+                &lt;arg&gt;&quot;HogeImpl&quot;&lt;/arg&gt;
+                &lt;arg&gt;&quot;hoge2&quot;&lt;/arg&gt;
+            &lt;/initMethod&gt;
+        &lt;/component&gt;
+    &lt;/property&gt;
+    &lt;initMethod name=&quot;addClassPattern&quot;&gt;
+        &lt;arg&gt;&quot;D:/tmp&quot;&lt;/arg&gt;
+        &lt;arg&gt;&quot;.*Impl&quot;&lt;/arg&gt;
+    &lt;/initMethod&gt;
+    &lt;initMethod name=&quot;registerAll&quot;/&gt;
+&lt;/component&gt;
+</pre>
+
+
+<h3><a name="autoRegister-aspect">AspectAutoRegister</a></h3>
+<p><a href="#autoRegister-file">ƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì©“®“o˜^</a>‚É‚æ‚èAƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì“o˜^‚Í©“®‰»‚Å‚«‚Ü‚·B
+‚³‚ç‚ÉAƒAƒXƒyƒNƒg‚Ì“o˜^‚à©“®‰»‚µ‚Ä‚µ‚Ü‚¨‚¤‚Æ‚¢‚¤‚Ì‚ªAƒAƒXƒyƒNƒg‚Ì©“®“o˜^‹@”\‚Å‚·B
+ƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì©“®“o˜^‚Æ‘g‚İ‡‚í‚¹‚éê‡‚Í¤
+ƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì©“®“o˜^‚Ìİ’è‚æ‚è‚àŒã‚ÉAƒAƒXƒyƒNƒg‚Ì©“®“o˜^‚Ìİ’è‚ğ‹Lq‚·‚é•K—v‚ª‚ ‚è‚Ü‚·B</p>
+
+<table border="1">
+<tr bgcolor="#d1f3f4" align="center">
+<th>ƒvƒƒpƒeƒB</th>
+<th>à–¾</th>
+</tr>
+<tr>
+<td><code>interceptor</code></td>
+<td>ƒCƒ“ƒ^[ƒZƒvƒ^‚ğw’è‚µ‚Ü‚·B•¡”‚ÌƒCƒ“ƒ^[ƒZƒvƒ^‚ğw’è‚µ‚½‚¢ê‡‚Í¤<a href="aop.html#InterceptorChain">InterceptorChain</a>‚ğg‚Á‚Ä‚­‚¾‚³‚¢B</td>
+</tr>
+
+<tr>
+<td><code>pointcut</code></td>
+<td> ƒCƒ“ƒ^[ƒZƒvƒ^‚ğ“K—p‚·‚éƒƒ\ƒbƒh‚ğƒJƒ“ƒ}‹æØ‚è‚Åw’è‚µ‚Ü‚·Bpointcut‚ğw’è‚µ‚È‚¢ê‡‚ÍAƒRƒ“ƒ|[ƒlƒ“ƒg‚ªÀ‘•‚µ‚Ä‚¢‚éƒCƒ“ƒ^[ƒtƒF[ƒX‚Ì‚·‚×‚Ä‚Ìƒƒ\ƒbƒh‚ª‘ÎÛ‚É‚È‚è‚Ü‚·Bƒƒ\ƒbƒh–¼‚É‚Í³‹K•\Œ»‚àg‚¦‚Ü‚·B </td>
+</tr>
+</table>
+<br />
+<table border="1">
+<tr bgcolor="#d1f3f4" align="center">
+<th>ƒƒ\ƒbƒh</th>
+<th>à–¾</th>
+</tr>
+<tr>
+
+<td><code>addClassPattern</code></td>
+<td>©“®“o˜^‚µ‚½‚¢ƒNƒ‰ƒXƒpƒ^[ƒ“‚ğ“o˜^‚µ‚Ü‚·Bˆø”‚ÍƒNƒ‰ƒX–¼‚Å‚·B³‹K•\Œ»‚ªg‚¦‚Ü‚·Bu,v‹æØ‚è‚Å•¡”‹Lq‚·‚é‚±‚Æ‚à‚Å‚«‚Ü‚·B</td>
+</tr>
+<tr>
+<td><code>addIgnoreClassPattern</code></td>
+<td>©“®“o˜^‚µ‚½‚­‚È‚¢ƒNƒ‰ƒXƒpƒ^[ƒ“‚ğ“o˜^‚µ‚Ü‚·Bˆø”‚ÍƒNƒ‰ƒX–¼‚Å‚·B³‹K•\Œ»‚ªg‚¦‚Ü‚·Bu,v‹æØ‚è‚Å•¡”‹Lq‚·‚é‚±‚Æ‚à‚Å‚«‚Ü‚·B</td>
+</tr>
+</table>
+
+<h5>DICON Sample</h5>
+<pre>
+&lt;component class=&quot;S2Container_AspectAutoRegister&quot;&gt;
+    &lt;property name=&quot;interceptor&quot;&gt;new S2Container_TraceInterceptor()&lt;/property&gt;
+    &lt;initMethod name=&quot;addClassPattern&quot;&gt;
+        &lt;arg&gt;&quot;.*Impl&quot;&lt;/arg&gt;
+    &lt;/initMethod&gt;
+    &lt;initMethod name=&quot;registerAll&quot;/&gt;
+&lt;/component&gt;
+</pre>
+
+<h3><a name="autoRegister-interface">InterfaceAspectAutoRegister</a></h3>
+<table border="1">
+<tr bgcolor="#d1f3f4" align="center">
+<th>ƒvƒƒpƒeƒB</th>
+<th>à–¾</th>
+</tr>
+<tr>
+<td><code>interceptor</code></td>
+<td>ƒCƒ“ƒ^[ƒZƒvƒ^‚ğw’è‚µ‚Ü‚·B•¡”‚ÌƒCƒ“ƒ^[ƒZƒvƒ^‚ğw’è‚µ‚½‚¢ê‡‚Í¤<a href="aop.html#InterceptorChain">InterceptorChain</a>‚ğg‚Á‚Ä‚­‚¾‚³‚¢B</td>
+
+</tr>
+<tr>
+<td><code>targetInterface</code></td>
+<td> w’è‚µ‚½ƒCƒ“ƒ^[ƒtƒF[ƒX‚ğÀ‘•‚µ‚Ä‚¢‚éƒRƒ“ƒ|[ƒlƒ“ƒg‚É‘Î‚µ‚Ä¤ƒAƒXƒyƒNƒg‚ğ“K—p‚µ‚Ü‚·B </td>
+</tr>
+</table>
+
+
+<h5>DICON Sample</h5>
+<pre>
+&lt;component class=&quot;S2Container_InterfaceAspectAutoRegister&quot;&gt;
+    &lt;property name=&quot;interceptor&quot;&gt; new S2Container_TraceInterceptor()&lt;/property&gt;
+    &lt;property name=&quot;targetInterface&quot;&gt;Greeing&lt;/property&gt;
+    &lt;initMethod name=&quot;registerAll&quot;/&gt;
+&lt;/component&gt;
+</pre>
+
+
+
+
+<br>
+<a name="commentAnnotation"><h3>ƒRƒƒ“ƒgƒAƒmƒe[ƒVƒ‡ƒ“</h3></a>
+
+<p>
+ƒRƒƒ“ƒgƒAƒmƒe[ƒVƒ‡ƒ“‚ÍAPhpDoc‚É‹Lq‚³‚ê‚½ƒAƒmƒe[ƒVƒ‡ƒ“î•ñ‚ğ“Ç‚İ‚ŞƒtƒŒ[ƒ€ƒ[ƒN‚Å‚·B<br>
+<a href="#autoRegister-file">ƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì©“®“o˜^</a>‚Åg—p‚Å‚«‚Ü‚·B
+</p>
+
+<h4>S2Container_Annotations</h4>
+<p>S2Container_AnnotationsƒNƒ‰ƒX‚ÍˆÈ‰º‚Ì3‚Â‚ÌStaticƒƒ\ƒbƒh‚ğÀ‘•‚µ‚Ä‚¢‚Ü‚·B</p>
+<table border="1">
+<tr bgcolor="#d1f3f4" align="center">
+<th>ƒƒ\ƒbƒh</th>
+<th>à–¾</th>
+</tr>
+
+<tr>
+<td><code>getAnnotations</code></td>
+<td>
+ƒNƒ‰ƒX‚Ü‚½‚Íƒƒ\ƒbƒh‚Ì‚·‚×‚Ä‚ÌƒAƒmƒe[ƒVƒ‡ƒ“‚ğæ“¾‚µ‚Ü‚·B‘æ1ˆø”‚ÍƒNƒ‰ƒX–¼‚Å‚·Bƒƒ\ƒbƒh‚ÌƒAƒmƒe[ƒVƒ‡ƒ“‚ğæ“¾‚·‚éê‡‚Í‘æ2ˆø”‚Åƒƒ\ƒbƒh–¼‚ğw’è‚µ‚Ü‚·B
+</td>
+</tr>
+
+<tr>
+<td><code>getAnnotation</code></td>
+<td>
+ƒNƒ‰ƒX‚Ü‚½‚Íƒƒ\ƒbƒh‚Ìw’è‚µ‚½ƒAƒmƒe[ƒVƒ‡ƒ“‚ğæ“¾‚µ‚Ü‚·B‘æ1ˆø”‚ÅƒAƒmƒe[ƒVƒ‡ƒ“ƒ^ƒCƒv‚ğw’è‚µ‚Ü‚·B‘æ2ˆø”‚ÅƒNƒ‰ƒX–¼A‘æ3ˆø”‚Åƒƒ\ƒbƒh–¼‚ğw’è‚µ‚Ü‚·B
+</td>
+</tr>
+
+<td><code>isAnnotationPresents</code></td>
+<td>
+ƒNƒ‰ƒX‚Ü‚½‚Íƒƒ\ƒbƒh‚Éw’è‚µ‚½ƒAƒmƒe[ƒVƒ‡ƒ“‚ª‘¶İ‚·‚é‚©‚Ç‚¤‚©‚ğ’²‚×‚Ü‚·B‘æ1ˆø”‚ÅƒAƒmƒe[ƒVƒ‡ƒ“ƒ^ƒCƒv‚ğw’è‚µ‚Ü‚·B‘æ2ˆø”‚ÅƒNƒ‰ƒX–¼A‘æ3ˆø”‚Åƒƒ\ƒbƒh–¼‚ğw’è‚µ‚Ü‚·B
+</td>
+</tr>
+</table>
+
+<h4>ƒAƒmƒe[ƒVƒ‡ƒ“‚Ì‹Lq</h4>
+PhpDoc‚É‹Lq‚³‚ê‚éƒRƒƒ“ƒgƒAƒmƒe[ƒVƒ‡ƒ“‚ÍˆÈ‰º‚ÌƒtƒH[ƒ}ƒbƒg‚É‚È‚è‚Ü‚·B
+<pre>
+/**
+ * @Seasar
+ * @Foo ( 2006 )
+ * @Bar ( abc, 2006 )
+ * @Hoge ( name = abc, year = 2006 )
+ */
+class Hello {
+
+}
+</pre>
+
+ƒAƒmƒe[ƒVƒ‡ƒ“ƒ^ƒCƒv‚Í—\‚ßƒNƒ‰ƒX’è‹`‚ª“Ç‚İ‚Ü‚ê‚Ä‚¢‚é•K—v‚ª‚ ‚è‚Ü‚·B<br>
+ã‹L‚Ìê‡AƒAƒmƒe[ƒVƒ‡ƒ“ƒ^ƒCƒv‚ÍASeasarAFooABarAHogeƒNƒ‰ƒX‚É‚È‚è‚Ü‚·B
+
+<pre>
+&lt;?php
+class Seasar{}
+
+class Foo{
+    public $value = "default value";
+}
+
+class Bar{
+    public $value;
+}
+
+class Hoge {
+    public $name = "default name";
+    public $year = 2000;
+}
+?&gt;
+</pre>
+
 
 <!-- document end -->
 <!-- don't edit start -->

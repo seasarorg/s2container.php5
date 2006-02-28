@@ -161,7 +161,7 @@ PrototypeDeleateInterceptor#setTarget(foo)，
 PrototypeDeleateInterceptor#addMethodNameMap("bar",
 "bar2")のように指定します。詳しい使用方法は<a href="#PrototypeDelegateInterceptorSample">PrototypeDelegateInterceptor</a>を参照してください。</p>
 
-	<h4><a name="S2Container_InterceptorChain">(6) InterceptorChain</a></h4>
+	<h4><a name="InterceptorChain">(6) InterceptorChain</a></h4>
     <h5>クラス名</h5>
     <p>InterceptorChain</p>
     <h5>説明</h5>
@@ -299,7 +299,7 @@ BEGIN Date#getTime()
 END   Date#getTime() : 12:00:30
 %
 </pre>
-	<p>このサンプルは、s2container.php5/src/examples/aop/traceinterceptor以下に用意されています。</p>
+	<p>このサンプルは、s2container.php5/examples/aop/traceinterceptor以下に用意されています。</p>
 	<br>
 	<h3><a name="ThrowsInterceptorSample">ThrowsInterceptor</a></h3>
 	<p>(1) ThrowsInterceptorを使って、例外が発生した場合でも処理を続けられるようにしましょう。作成するファイルは以下のようになります。</p>
@@ -400,7 +400,7 @@ foo
 hoge
 %
 </pre>
-	<p>このサンプルは、s2container.php5/src/examples/aop/throwsinterceptor以下に用意されています。</p>
+	<p>このサンプルは、s2container.php5/examples/aop/throwsinterceptor以下に用意されています。</p>
     <br>
 
 
@@ -428,7 +428,7 @@ Exception : arg should not be null or empty
 hoge
 %
 </pre>
-	<p>このサンプルは、s2container.php5/src/examples/aop/throwsinterceptor以下に用意されています。</p>
+	<p>このサンプルは、s2container.php5/examples/aop/throwsinterceptor以下に用意されています。</p>
 <h3><a name="DelegateInterceptorSample">DelegateInterceptor</a></h3>
     <p>S2AOPで用意されているDelegateInterceptorを使って、他のクラスのメソッドに委譲させましょう。<br>
     ここでは、インターフェースで抽象メソッドを作成して、抽象クラスと普通のクラスの両方にそのインターフェースを実装させます。抽象クラスで実装したメソッドを普通のクラスで実装したメソッドに委譲させましょう。作成するファイルは以下のとおりです。</p>
@@ -520,7 +520,7 @@ $base->run();
 substance
 %
 </pre>
-	<p>このサンプルは、s2container.php5/src/examples/aop/delegateinterceptor以下に用意されています。</p>
+	<p>このサンプルは、s2container.php5/examples/aop/delegateinterceptor以下に用意されています。</p>
     <br>
 <h3><a name="PrototypeDelegateInterceptorSample">PrototypeDelegateInterceptor</a></h3>
     <p>S2AOPで用意されているPrototypeDelegateInterceptorを使って、singletonのコンポーネントからprototypeのコンポーネントのメソッドに委譲させましょう。<br>
@@ -624,7 +624,7 @@ sum : 0
 sum : 0
 %
 </pre>
-	<p>このサンプルは、s2container.php5/src/examples/aop/delegateinterceptor以下に用意されています。</p>
+	<p>このサンプルは、s2container.php5/examples/aop/delegateinterceptor以下に用意されています。</p>
     <br>
     <h3><a name="OriginalInterceptorSample">独自実装によるInterceptor</a></h3>
     <p>クラス名、メソッド名、引数とメソッドの処理時間を計測してトレースするInterceptorを作成しましょう。また、そのInterceptorを使用して重い処理を行った時間をトレースさせましょう。作成するファイルは以下のとおりです。</p>
@@ -737,7 +737,7 @@ $heavyProcess->heavy();
 HeavyProcess#heavy() : 5.0025010108948
 %
 </pre>
-	<p>このサンプルは、s2container.php5/src/examples/aop/originalinterceptor以下に用意されています。</p>
+	<p>このサンプルは、s2container.php5/examples/aop/originalinterceptor以下に用意されています。</p>
 
 <!-- document end -->
 <!-- don't edit start -->
