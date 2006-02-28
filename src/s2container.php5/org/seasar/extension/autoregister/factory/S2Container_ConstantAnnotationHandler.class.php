@@ -43,11 +43,11 @@ class S2Container_ConstantAnnotationHandler
         for ($i = 0; $i < $c; $i += 2) {
             $key = trim($items[$i]);
             $value = trim($items[$i + 1]);
-            if (strcasecmp($key,'NAME') == 0) {
+            if (strcasecmp($key,S2Container_AbstractAnnotationHandler::NAME) == 0) {
                 $componentDef->setComponentName($value);
-            } else if (strcasecmp($key,'INSTANCE') == 0) {
+            } else if (strcasecmp($key,S2Container_AbstractAnnotationHandler::INSTANCE) == 0) {
                 $componentDef->setInstanceMode($value);
-            } else if (strcasecmp($key,'AUTO_BINDING') == 0) {
+            } else if (strcasecmp($key,S2Container_AbstractAnnotationHandler::AUTO_BINDING) == 0) {
                 $componentDef->setAutoBindingMode($value);
             } else {
                 throw new S2Container_IllegalArgumentException("$componentStr [ $key ] [ $value ] ");
@@ -95,9 +95,9 @@ class S2Container_ConstantAnnotationHandler
             for ($i = 0; $i < $c; $i += 2) {
                 $key = trim($items[$i]);
                 $value = trim($items[$i + 1]);
-                if (strcasecmp($key,'INTERCEPTOR') == 0) {
+                if (strcasecmp($key,S2Container_AbstractAnnotationHandler::INTERCEPTOR) == 0) {
                     $interceptor = $value;
-                } else if (strcasecmp($key,'POINTCUT') == 0) {
+                } else if (strcasecmp($key,S2Container_AbstractAnnotationHandler::POINTCUT) == 0) {
                     $pointcut = $value;
                 } else {
                     throw new S2Container_IllegalArgumentException("$aspectStr [ $key ] [ $value ]");
