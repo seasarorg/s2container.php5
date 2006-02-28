@@ -135,13 +135,13 @@ class A_ConstantAnnotationHandlerTests{}
 class BERR_ConstantAnnotationHandlerTests{
     const COMPONENT = "name = =b, 
                        instance = prototype, 
-                       auto_binding = none";                  
+                       autoBinding = none";                  
 }
 
 class B_ConstantAnnotationHandlerTests{
     const COMPONENT = "name = a, 
                        instance = prototype, 
-                       auto_binding = none";
+                       autoBinding = none";
     private $foo;
     private $bar;
     private $hoge;

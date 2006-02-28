@@ -11,7 +11,7 @@ require_once(HOME_DIR . '/s2container.inc.php');
 /**
  * require pear package
  */
-//require_once('S2Container/s2container.inc.php'); 
+//require_once('S2Container/S2Container.php'); 
 
 /**
  * require phar package

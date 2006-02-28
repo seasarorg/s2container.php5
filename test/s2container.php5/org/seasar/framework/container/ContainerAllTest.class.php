@@ -43,6 +43,8 @@ class ContainerAllTest {
         $group->addTestCase(new InstanceModeUtilTests());
         $group->addTestCase(new AutoBindingUtilTests());
 
+        $group->addTestCase(new PhpS2ContainerBuilderTests());
+
         return $group;    	
     }
 }
