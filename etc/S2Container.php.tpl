@@ -32,15 +32,20 @@
  * User Definition
  *   User could define these definitions.
  *   - S2CONTAINER_PHP5_DOM_VALIDATE : DICON XML format DTD validation
- *                                     [ boolean default true ]
+ *       [ boolean default true ]
  *   - S2CONTAINER_PHP5_APP_DICON : S2Container_SingletonS2ContainerFactory uses if defined.
- *                                  [ string default not defined ] 
+ *       [ string default not defined ] 
  *   - S2CONTAINER_PHP5_LOG_LEVEL : S2Container.PHP5 Log Level
- *                                  [ integer default S2Container_SimpleLogger::WARN ]
+ *       [ integer default S2Container_SimpleLogger::WARN ]
+ *   - S2CONTAINER_ANNOTATION_HANDLER : constant or comment annotation available
+ *       [ string default S2Container_ConstantAnnotationHandler
+ *         available handler S2Container_CommentAnnotationHandler ]
+ *   - S2CONTAINER_PHP5_CACHE_DIR : S2ContainerFileCacheFactory uses this directory path.
+ *       [ string default not defined ]
  *   - S2AOP_PHP5_FILE_CACHE : S2AOP proxy class file cache
- *                             [ boolean default false ]
+ *       [ boolean default false ]
  *   - S2AOP_PHP5_FILE_CACHE_DIR : S2AOP proxy class file cache directory
- *                             [ string default not defined ]
+ *       [ string default not defined ]
  *
  * Autoload function must be defined
  *   sample : use S2ContainerClassLoader
@@ -49,7 +54,7 @@
  *         S2ContainerClassLoader::load($class);
  *     }
  * 
- *   sample : use require_once directly
+ *   sample : use include_once directly
  *     function __autoload($class=null){
  *         if($class != null){
  *             include_once("$class.class.php");
@@ -69,7 +74,7 @@ if(!version_compare(phpversion(), "5.1.0", ">=")){
 /**
  * S2Container.PHP5 ROOT Directory
  */
-define('S2CONTAINER_PHP5',dirname(__FILE__) . DIRECTORY_SEPARATOR . 'src');
+define('S2CONTAINER_PHP5',dirname(__FILE__) . DIRECTORY_SEPARATOR . 'S2Container');
 ini_set('include_path', 
         S2CONTAINER_PHP5 . PATH_SEPARATOR . ini_get('include_path'));
 
