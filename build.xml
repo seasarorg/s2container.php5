@@ -22,7 +22,7 @@
 
     <target name="prepare" depends="init">
         <mkdir dir="${project.build.dir}" />
-        <mkdir dir="${project.build.dir}/${project.name}/src" />
+        <mkdir dir="${project.build.dir}/${project.name}/S2Container" />
     </target>
 
     <target name="build" depends="prepare">
@@ -30,7 +30,7 @@
                coreFile="${project.build.dir}/${project.name}/s2container.core.classes.php"
                listFile="${project.basedir}/etc/s2container.core.files.txt"/>
         
-        <copy2 toDir="${project.build.dir}/${project.name}/src">
+        <copy2 toDir="${project.build.dir}/${project.name}/S2Container">
             <fileset dir="${project.src.dir}">
                 <include name="${project.name}/**/*.php"/>
                 <include name="${project.name}/**/*.properties"/>
@@ -100,7 +100,7 @@
     </target>
  
     <target name="pear-pkg" depends="pear-pkg-xml">
-        <exec command="pear package -n" 
+        <exec command="pear package " 
               dir="${project.build.dir}/${project.name}" />
 
         <move toDir="${project.build.dir}/pear" overwrite="true">
