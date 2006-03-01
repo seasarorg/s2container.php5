@@ -590,6 +590,41 @@ S2ContainerClassLoader::import($classes);
 <br>
 <a name="cache"><h3>Cache</h3></a>
 <h3><a name="cache-file">S2ContainerFileCacheFactory</a></h3>
+<p>
+S2ContainerFileCacheFactoryはS2Containerインスタンスをserializeし、キャッシュファイルに保存します。
+キャッシュファイルはS2CONTAINER_PHP5_CACHE_DIR定数で指定されたディレクトリに保存されます。
+ファイル名はcreateメソッドの第2引数で指定できます。第2引数が省略された場合は、diconファイルへのパス文字列を
+引数としてsha1関数で作成された文字列が使用されます。
+S2ContainerFileCacheFactoryはdiconファイルが更新されるとキャッシュを更新します。
+</p>
+
+examples/cache/cacheClient.php
+<pre>
+&lt;?php
+...
+define('S2CONTAINER_PHP5_CACHE_DIR',EXAMPLE_DIR . "/cache/var");
+$PATH_B = EXAMPLE_DIR . "/cache/testB.dicon";
+$container = S2ContainerFileCacheFactory::create($PATH_B);
+
+$PATH_C = EXAMPLE_DIR . "/cache/testC.dicon";
+$container = S2ContainerFileCacheFactory::create($PATH_C,'testC.dicon');
+...
+?&gt;
+</pre>
+
+<pre>
+> cd s2container.php5/examples/cache
+> php ./cacheClient.php
+...
+...
+...
+> ls var
+06fb37bcebbfe225537873c3a16dced48b6b2b4e.dicon     testC.dicon
+>
+</pre>
+
+
+<br>
 <h3><a name="cache-mem">S2ContainerMemcacheFactory</a></h3>
 
 <br>
