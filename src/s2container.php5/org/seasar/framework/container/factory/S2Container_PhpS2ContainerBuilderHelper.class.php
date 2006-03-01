@@ -84,11 +84,27 @@ final class S2Container_PhpS2ContainerBuilderHelper
         $cd->addArgDef($def);
     }
 
+    public function constructorInjection(S2Container_ComponentDef $cd,$value){
+        $this->addArg($cd,$value);
+    }
+
+    public function ci(S2Container_ComponentDef $cd,$value){
+        $this->addArg($cd,$value);
+    }
+    
     public function addProperty(S2Container_ComponentDef $cd,$name,$value){
         $def = new S2Container_PropertyDefImpl($name);
         $def->setExpression($value);
         S2Container_ChildComponentDefBindingUtil::put($value,$def);
         $cd->addPropertyDef($def);
+    }
+
+    public function setterInjection(S2Container_ComponentDef $cd,$name,$value){
+        $this->addProperty($cd,$name,$value);
+    }
+
+    public function si(S2Container_ComponentDef $cd,$name,$value){
+        $this->addProperty($cd,$name,$value);
     }
 
     public function addInitMethod(S2Container_ComponentDef $cd,$methods){

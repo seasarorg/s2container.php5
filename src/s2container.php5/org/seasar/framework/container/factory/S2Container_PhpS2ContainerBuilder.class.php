@@ -48,6 +48,9 @@ final class S2Container_PhpS2ContainerBuilder
         }
         $s2dicon = new S2Container_PhpS2ContainerBuilderHelper();
         require($path);
+        if(!$s2dicon instanceof S2Container_PhpS2ContainerBuilderHelper){
+            throw new Exception("invalid PhpS2ContainerBuilderHelper found.");
+        }
         $container = $s2dicon->getContainer();
         $container->setPath($path);
         return $s2dicon->getContainer();
