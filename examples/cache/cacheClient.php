@@ -7,7 +7,7 @@ $time_start = microtime_float();
 $time_end = microtime_float();
 $time = $time_end - $time_start;
 
-require_once('example.inc.php');
+require_once(dirname(dirname(__FILE__)) . '/example.inc.php');
 
 define('S2CONTAINER_PHP5_LOG_LEVEL',S2Container_SimpleLogger::INFO);
 
