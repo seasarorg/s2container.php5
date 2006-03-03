@@ -43,10 +43,10 @@ final class S2Container_YamlS2ContainerBuilder
      */
     public function __construct()
     {
-    	if(!class_exists("Spyc")){
-    		throw new Exception("required Spyc");
-    	}
-    	
+        if(!class_exists("Spyc")){
+            throw new Exception("required Spyc");
+        }
+        
         $this->spyc = new Spyc();
     }
     // }}}
@@ -85,7 +85,7 @@ final class S2Container_YamlS2ContainerBuilder
             throw new S2Container_S2RuntimeException('ESSR0001', array($path));
         }
 
-		$root = null;
+        $root = null;
         $yaml = $this->spyc->load($path);
 
         if(isset($yaml['components'])){
