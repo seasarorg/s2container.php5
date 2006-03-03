@@ -60,22 +60,21 @@ final class S2Container_YamlS2ContainerBuilder
 
     public function build($path)
     {
-        $root = $this->_loadDicon($path);
-
         $container = new S2ContainerImpl();
         $container->setPath($path);
 
+        $root = $this->_loadDicon($path);
         $this->_setupNameSpace($container, $root);
         $this->_setupInclude($container, $root);
 
         $this->container = $container;
         S2Container_ChildComponentDefBindingUtil::init();
-        
-        $root = (array)$root;
-        $this->_setupMetaDef($root, $this->container);
-        foreach($root as $className => $val){
-            $this->_setupComponentDef($className, $val);
+
+        foreach($root['component'] as $component){
+            $this->_setupComponentDef($component);
         }
+        
+        $this->_setupMetaDef($root, $this->container);
         S2Container_ChildComponentDefBindingUtil::bind($this->container);
 
         return $this->container;
@@ -88,78 +87,87 @@ final class S2Container_YamlS2ContainerBuilder
 
 		$root = null;
         $yaml = $this->spyc->load($path);
+
         if(isset($yaml['components'])){
             $root = $yaml['components'];
         } else {
             $root = $yaml[0];
         }
-
-        return $root;        
+        
+        return $root;
     }
     
-    private function _setupNameSpace(S2Container $container, $root){
+    private function _setupNameSpace(S2Container $container, &$root){
         if (isset($root['namespace'])) {
             $container->setNamespace($root['namespace']); 
+            unset($root['namespace']);
         }
-        unset($root['namespace']);
     }
 
-    private function _setupInclude(S2Container $container, $root){
+    private function _setupInclude(S2Container $container, &$root){
         if(isset($root['include'])){
-            $include = array();
-            if(!is_array($root['include'])){
-                $include = (array)$root['include'];
-            } else {
-                $include = $root['include'];
-            }
-            
-            foreach($include as $index => $val){
+            foreach($root['include'] as $path){
                 $path = S2Container_StringUtil::expandPath($path);
                 if (!is_readable($path)) {
                     throw new S2Container_S2RuntimeException('ESSR0001',array($path));
                 }
-                $child = S2ContainerFactory::includeChild($container,$path);
+                $child = S2ContainerFactory::includeChild($container, $path);
                 $child->setRoot($container->getRoot());
             }
+            unset($root['include']);
         }
-        unset($root['include']);
     }
 
-    private function _setupComponentDef($className, array $component)
+    private function _setupComponentDef(array $component)
     {
-        $componentDef = $this->_createComponentDef($className, $component);
+        $className = $component['class'];
+        $componentDef = $this->_createComponentDef($component, $className);
         $this->container->register($componentDef);
 
-        $arg = (array)$component['arg'];
-        foreach ($arg as $val) {
-            $componentDef->addArgDef($this->_setupArgDef($val));               
+        unset($component['class'], $component['name']);
+        foreach($component as $tag){
+            $this->_setupDefs($componentDef, $tag, $className);
         }
         
-        $property = (array)$component['property'];
-        foreach ($property as $val) {
-            $componentDef->addPropertyDef($this->_setupPropertyDef($val));               
-        }
-
-        $initMethod = (array)$component['initMethod'];
-        foreach ($initMethod as $val) {
-            $componentDef->addInitMethodDef($this->_setupInitMethodDef($val));
-        }
-
-        $destroyMethod = (array)$component['destroyMethod'];
-        foreach ($destroyMethod as $val) {
-                $componentDef->addDestroyMethodDef($this->_setupDestroyMethodDef($val));
-        }
-        
-        $aspect = (array)$component['aspect'];
-        foreach ($aspect as $val) {
-            $componentDef->addAspectDef($this->_setupAspectDef($val, $className));
-        }
-        $this->_setupMetaDef($component, $componentDef);
-
-        return $componentDef;
+        return $componentDef;        
     }
 
-    private function _createComponentDef($className, array $component)
+    private function _setupDefs($componentDef, array $component, $className){
+        $name = $this->getName($component);
+        unset($component['name']);
+
+        if(isset($component['arg'])){
+            $val = (array)$component['arg'];
+            $componentDef->addArgDef($this->_setupArgDef($val));
+        }
+        
+        if(isset($component['property'])){
+            unset($component['property']);
+            $propertyDef = $this->_setupPropertyDef($component, $name);
+            $componentDef->addPropertyDef($propertyDef);
+        }
+        
+        if(isset($component['initMethod'])){
+            unset($component['initMethod']);
+            $initMethodDef = $this->_setupInitMethodDef($component, $name);
+            $componentDef->addInitMethodDef($initMethodDef);
+        }
+
+        if(isset($component['destroyMethod'])){
+            unset($component['destroyMethod']);
+            $destroyMethodDef = $this->_setupDestroyMethodDef($component, $name);
+            $componentDef->addDestroyMethodDef($destroyMethodDef);
+        }
+        
+        if(isset($component['aspect'])){
+            $val = (array)$component['aspect'];
+            $componentDef->addAspectDef($this->_setupAspectDef($val, $className));
+        }
+        
+        $this->_setupMetaDef($component, $componentDef);
+    }
+
+    private function _createComponentDef(array $component, $className)
     {
         $name = $this->getName($component);
         $componentDef = new S2Container_ComponentDefImpl($className, $name);
@@ -176,7 +184,7 @@ final class S2Container_YamlS2ContainerBuilder
         return $componentDef;
     }
     
-    private function _setupArgDef($arg)
+    private function _setupArgDef(array $arg)
     {
         $argDef = new S2Container_ArgDefImpl();
         $this->_setupArgDefInternal($arg, $argDef);
@@ -184,16 +192,16 @@ final class S2Container_YamlS2ContainerBuilder
         return $argDef;
     }
 
-    private function _setupArgDefInternal($arg, S2Container_ArgDef $argDef)
+    private function _setupArgDefInternal(array $arg, S2Container_ArgDef $argDef)
     {
         if(!isset($arg['component'])){
             $argValue = $arg[0];
             $injectValue = $this->_getInjectionValue($argValue);
-            if ($injectValue != null){
-                $argDef->setValue($injectValue);
-            }else{
-                $argDef->setExpression($argValue);
-                S2Container_ChildComponentDefBindingUtil::put($argValue, $argDef);
+            if ($injectValue == null){
+                $argDef->setValue($argValue);
+            } else {
+                $argDef->setExpression($injectValue);
+                S2Container_ChildComponentDefBindingUtil::put($injectValue, $argDef);
             }
         } else {
             $childComponent = $this->_setupComponentDef($arg['component']);
@@ -201,44 +209,43 @@ final class S2Container_YamlS2ContainerBuilder
         }
     }
 
-    private function _setupPropertyDef(array $property)
+    private function _setupPropertyDef(array $property, $name)
     {
-        $name = $this->getName($property);
         $propertyDef = new S2Container_PropertyDefImpl($name);
         $this->_setupArgDefInternal($property, $propertyDef);
         $this->_setupMetaDef($property, $propertyDef);
         return $propertyDef;
     }
     
-    private function _setupInitMethodDef(array $initMethod)
+    private function _setupInitMethodDef(array $initMethod, $name)
     {
-        $name = $this->getName($initMethod);
         $initMethodDef = new S2Container_InitMethodDefImpl($name);
         $this->_setupMethodDefInternal($initMethod, $initMethodDef);
         return $initMethodDef;
     }
 
-    private function _setupDestroyMethodDef(array $destroyMethod)
+    private function _setupDestroyMethodDef(array $destroyMethod, $name)
     {
-        $name = $this->getName($destroyMethod);
         $destroyMethodDef = new S2Container_DestroyMethodDefImpl($name);
         $this->_setupMethodDefInternal($destroyMethod, $destroyMethodDef);
         return $destroyMethodDef;
     }
 
-    private function _setupMethodDefInternal($method, S2Container_MethodDef $methodDef)
+    private function _setupMethodDefInternal(array $method, S2Container_MethodDef $methodDef)
     {
         if (isset($method[0]) && is_string($method[0])) {
-            $initMethodDef->setExpression($method[0]);
+            $methodDef->setExpression($method[0]);
         }
-
-        $arg = (array)$method['arg'];
-        foreach ($arg as $val) {
-            $initMethodDef->addArgDef($this->_setupArgDef($val));
+        
+        foreach($method as $val){
+            if(isset($val['arg'])){
+                $arg = (array)$val['arg'];
+                $methodDef->addArgDef($this->_setupArgDef($arg));
+            }
         }
     }
 
-    private function _setupAspectDef($aspect, $targetClassName)
+    private function _setupAspectDef(array $aspect, $targetClassName)
     {
         if (isset($aspect['pointcut'])) {
             $pointcuts = split(',', $aspect['pointcut']);
@@ -264,17 +271,18 @@ final class S2Container_YamlS2ContainerBuilder
         return $aspectDef;
     }
     
-    private function _setupMetaDef(array $parent, $parentDef)
+    private function _setupMetaDef(array &$parent, $parentDef)
     {
-        $meta = (array)$parent['meta'];
-        foreach ($meta as $val) {
-            $name = $this->getName($val);
-            $metaDef = new S2Container_MetaDefImpl($name);
-            $this->_setupArgDefInternal($val, $metaDef);
-            $parentDef->addMetaDef($metaDef);
-        }
-        if($parent['meta']){
-            unset($parent['meta']);
+        if(isset($parent['meta'])){
+            foreach ($parent['meta'] as $val) {
+                $name = $this->getName($val);
+                $metaDef = new S2Container_MetaDefImpl($name);
+                $this->_setupArgDefInternal((array)$val, $metaDef);
+                $parentDef->addMetaDef($metaDef);
+            }
+            if($parent['meta']){
+                unset($parent['meta']);
+            }
         }
     }
     

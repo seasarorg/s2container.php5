@@ -1,15 +1,18 @@
 <?php
-define('__WORKDIR__', dirname(dirname(__FILE__)));
-define('HOME_DIR', dirname(dirname(__WORKDIR__)));
-define('EXAMPLE_DIR', HOME_DIR . '/src/examples');
+error_reporting(E_ALL);
+define('__WORKDIR__', dirname(__FILE__));
+define('HOME_DIR', dirname(dirname(dirname(__WORKDIR__))));
+define('EXAMPLE_DIR', HOME_DIR . '/examples');
 
-require_once(HOME_DIR . '/s2container.inc.php'); 
+require_once(HOME_DIR . '/s2container.inc.php');
+
+//S2ContainerClassLoader::import(S2CONTAINER_PHP5);
 function __autoload($class=null){
-    if(S2ContainerClassLoader::load($class)){return;}
+    S2ContainerClassLoader::load($class);
 }
 
 // please self install 'Spyc'
-require_once('Spyc.php5');
+require_once('Spyc.php');
 require_once('Hello.class.php');
 require_once('HelloConstructorInjection.class.php');
 require_once('HelloMethodInjection.class.php');

@@ -1,5 +1,6 @@
 components:
-    HelloSetterInjection:
-        property:
-            name: message
-            - "Hello World!"
+    component:
+        - class: HelloSetterInjection
+            - property: .
+                name: message
+                - Hello World!
