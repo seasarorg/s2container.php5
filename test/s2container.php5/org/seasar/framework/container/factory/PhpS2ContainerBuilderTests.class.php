@@ -138,6 +138,18 @@ class PhpS2ContainerBuilderTests extends UnitTestCase {
          
         print "\n";
     }
+
+    function testContainerVariable() {
+       
+        print __METHOD__ . "\n";
+
+        $container = S2ContainerFactory::create(TEST_DIR . '/s2container.php5/org/seasar/framework/container/factory/php/test10.php');
+        $c = $container->getComponent('c');
+        $this->assertTrue($c->getDObj() instanceof ID_PhpS2ContainerBuilderTests );
+         
+        print "\n";
+    }
+
 }
 
 class A_PhpS2ContainerBuilderTests{
