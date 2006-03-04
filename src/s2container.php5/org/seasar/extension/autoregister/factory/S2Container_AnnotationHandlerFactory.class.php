@@ -36,8 +36,8 @@ class S2Container_AnnotationHandlerFactory {
    
     public static function getAnnotationHandler() {
         if(self::$annotationHandler == null){
-            if(defined('S2CONTAINER_ANNOTATION_HANDLER')){
-                $handler = S2CONTAINER_ANNOTATION_HANDLER;
+            if(defined('S2CONTAINER_PHP5_ANNOTATION_HANDLER')){
+                $handler = S2CONTAINER_PHP5_ANNOTATION_HANDLER;
             }else{
                 $handler = self::$DEFAULT_ANNOTATION_HANDLER;
             }
