@@ -598,22 +598,22 @@ S2ContainerFileCacheFactory‚ÍS2ContainerƒCƒ“ƒXƒ^ƒ“ƒX‚ğserialize‚µAƒLƒƒƒbƒVƒ…ƒtƒ
 S2ContainerFileCacheFactory‚Ídiconƒtƒ@ƒCƒ‹‚ªXV‚³‚ê‚é‚ÆƒLƒƒƒbƒVƒ…‚ğXV‚µ‚Ü‚·B
 </p>
 
-examples/cache/cacheClient.php
+s2container.php5/examples/extension/cache/cacheClient.php
 <pre>
 &lt;?php
 ...
-define('S2CONTAINER_PHP5_CACHE_DIR',EXAMPLE_DIR . "/cache/var");
-$PATH_B = EXAMPLE_DIR . "/cache/testB.dicon";
+define('S2CONTAINER_PHP5_CACHE_DIR',EXAMPLE_DIR . "/extension/cache/var");
+$PATH_B = EXAMPLE_DIR . "/extension/cache/testB.dicon";
 $container = S2ContainerFileCacheFactory::create($PATH_B);
 
-$PATH_C = EXAMPLE_DIR . "/cache/testC.dicon";
+$PATH_C = EXAMPLE_DIR . "/extension/cache/testC.dicon";
 $container = S2ContainerFileCacheFactory::create($PATH_C,'testC.dicon');
 ...
 ?&gt;
 </pre>
 
 <pre>
-> cd s2container.php5/examples/cache
+> cd s2container.php5/examples/extension/cache
 > php ./cacheClient.php
 ...
 ...
@@ -715,7 +715,7 @@ $container = S2ContainerFileCacheFactory::create($PATH_C,'testC.dicon');
 </table>
 
 <br>
-s2container.php5/examples/autoregister/autoFile.dicon
+s2container.php5/examples/extension/autoregister/autoFile.dicon
 <pre>
 &lt;components&gt;
     &lt;component class="S2Container_FileSystemComponentAutoRegister"&gt;
@@ -729,7 +729,7 @@ s2container.php5/examples/autoregister/autoFile.dicon
             &lt;/component&gt;
         &lt;/property&gt;
         &lt;initMethod name="addClassPattern"&gt;
-            &lt;arg&gt;"%EXAMPLE_DIR%/autoregister/autoFile"&lt;/arg&gt;
+            &lt;arg&gt;"%EXAMPLE_DIR%/extension/autoregister/autoFile"&lt;/arg&gt;
             &lt;arg&gt;".+Bean,.+Service"&lt;/arg&gt;
         &lt;/initMethod&gt;
         &lt;initMethod name="registerAll"/&gt;
@@ -771,7 +771,7 @@ class HogeImpl {
 }
 ?&gt;
 </pre>
-s2container.php5/examples/autoregister/compAnnoClient.php ‚ğQÆ‰º‚³‚¢B
+s2container.php5/examples/extension/autoregister/compAnnoClient.php ‚ğQÆ‰º‚³‚¢B
 
 <h5>BindingƒAƒmƒe[ƒVƒ‡ƒ“</h5>
 
@@ -825,7 +825,7 @@ class HogeImpl {
 }
 ?&gt;
 </pre>
-s2container.php5/examples/autoregister/bindAnnoClient.php ‚ğQÆ‰º‚³‚¢B
+s2container.php5/examples/extension/autoregister/bindAnnoClient.php ‚ğQÆ‰º‚³‚¢B
 
 <h5>AspectƒAƒmƒe[ƒVƒ‡ƒ“</h5>
 <p>
@@ -879,7 +879,7 @@ class HogeImpl {
 }
 ?&gt;
 </pre>
-s2container.php5/examples/autoregister/aspectAnnoClient.php ‚ğQÆ‰º‚³‚¢B
+s2container.php5/examples/extension/autoregister/aspectAnnoClient.php ‚ğQÆ‰º‚³‚¢B
 
 
 <h5>InitMethodƒAƒmƒe[ƒVƒ‡ƒ“</h5>
@@ -931,7 +931,7 @@ class HogeImpl {
 }
 ?&gt;
 </pre>
-s2container.php5/examples/autoregister/methodAnnoClient.php ‚ğQÆ‰º‚³‚¢B
+s2container.php5/examples/extension/autoregister/methodAnnoClient.php ‚ğQÆ‰º‚³‚¢B
 
 <h3><a name="autoRegister-aspect">AspectAutoRegister</a></h3>
 <p><a href="#autoRegister-file">ƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì©“®“o˜^</a>‚É‚æ‚èAƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì“o˜^‚Í©“®‰»‚Å‚«‚Ü‚·B
@@ -971,7 +971,7 @@ s2container.php5/examples/autoregister/methodAnnoClient.php ‚ğQÆ‰º‚³‚¢B
 </tr>
 </table>
 <br>
-s2container.php5/examples/autoregister/autoAspect.dicon
+s2container.php5/examples/extension/autoregister/autoAspect.dicon
 <pre>
 &lt;components&gt;
     &lt;component class="S2Container_AspectAutoRegister"&gt;
@@ -1008,7 +1008,7 @@ s2container.php5/examples/autoregister/autoAspect.dicon
 </table>
 
 <br>
-s2container.php5/examples/autoregister/autoInterface.dicon
+s2container.php5/examples/extension/autoregister/autoInterface.dicon
 <pre>
 &lt;components&gt;
     &lt;component class="S2Container_InterfaceAspectAutoRegister"&gt;
