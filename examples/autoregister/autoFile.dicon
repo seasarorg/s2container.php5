@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
+"components21.dtd">
+<components>
+    <component class="S2Container_FileSystemComponentAutoRegister">
+        <property name="instanceMode">"singleton"</property>
+        <property name="autoNaming">
+            <component class="S2Container_DefaultAutoNaming">
+                <initMethod name="setCustomizedName">
+                    <arg>"HogeService"</arg>
+                    <arg>"service"</arg>
+                </initMethod>
+            </component>
+        </property>
+        <initMethod name="addClassPattern">
+            <arg>"%EXAMPLE_DIR%/autoregister/autoFile"</arg>
+            <arg>".+Bean,.+Service"</arg>
+        </initMethod>
+        <initMethod name="registerAll"/>
+    </component>
+</components>
