@@ -642,7 +642,7 @@ $container = S2ContainerFileCacheFactory::create($PATH_C,'testC.dicon');
 <th>説明</th>
 </tr>
 <tr>
-<td><a href="DIContainer.html#InstanceMode">InstanceMode</a></td>
+<td><a href="DIContainer.html#InstanceMode">instanceMode</a></td>
 <td>自動登録されるコンポーネントに適用するInstanceModeを指定します。</td>
 </tr>
 <tr>
@@ -659,7 +659,7 @@ $container = S2ContainerFileCacheFactory::create($PATH_C,'testC.dicon');
 </tr>
 <tr>
 <td><code>addClassPattern</code></td>
-<td>自動登録したいクラスパターンを登録します。引数を2つ持ちます。最初の引数は､コンポーネントのクラス定義ファイルを検索するディレクトリパスです。サブディレクトリも再帰的に検索します。2番目の引数はクラス名です。正規表現が使えます。「,」区切りで複数記述することもできます。</td>
+<td>自動登録したいクラスパターンを登録します。引数を2つ持ちます。最初の引数は､コンポーネントのクラス定義ファイルを検索するディレクトリパスです。サブディレクトリも再帰的に検索します。クラスファイルのSUFFIXは「.class.php」です。クラス名とファイル名は一致しなければいけません。2番目の引数はクラス名です。正規表現が使えます。「,」区切りで複数記述することもできます。</td>
 </tr>
 <tr>
 
@@ -714,9 +714,33 @@ $container = S2ContainerFileCacheFactory::create($PATH_C,'testC.dicon');
 </tr>
 </table>
 
+<br>
+s2container.php5/examples/autoregister/autoFile.dicon
+<pre>
+&lt;components&gt;
+    &lt;component class="S2Container_FileSystemComponentAutoRegister"&gt;
+        &lt;property name="instanceMode"&gt;"singleton"&lt;/property&gt;
+        &lt;property name="autoNaming"&gt;
+            &lt;component class="S2Container_DefaultAutoNaming"&gt;
+                &lt;initMethod name="setCustomizedName"&gt;
+                    &lt;arg&gt;"HogeService"&lt;/arg&gt;
+                    &lt;arg&gt;"service"&lt;/arg&gt;
+                &lt;/initMethod&gt;
+            &lt;/component&gt;
+        &lt;/property&gt;
+        &lt;initMethod name="addClassPattern"&gt;
+            &lt;arg&gt;"%EXAMPLE_DIR%/autoregister/autoFile"&lt;/arg&gt;
+            &lt;arg&gt;".+Bean,.+Service"&lt;/arg&gt;
+        &lt;/initMethod&gt;
+        &lt;initMethod name="registerAll"/&gt;
+    &lt;/component&gt;
+&lt;/components&gt;
+</pre>
+*** S2Container_FileSystemComponentAutoRegister::registerAllメソッドをinitMthodとして設定して下さい。
+
 <h4>アノテーション</h4>
 <p>
-定数アノテーションまたはコメントアノテーションを用いて自動登録するコンポーネントを細かく設定することができます。
+定数アノテーションまたは<a href="#commentAnnotation">コメントアノテーション</a>を用いて自動登録するコンポーネントを細かく設定することができます。定数アノテーションとコメントアノテーションの選択は、S2CONTAINER_PHP5_ANNOTATION_HANDLER定数で設定します。S2CONTAINER_PHP5_ANNOTATION_HANDLER定数に「S2Container_ConstantAnnotationHandler」または「S2Container_CommentAnnotationHandler」を定義して下さい。デフォルトは定数アノテーションです。
 </p>
 <h5>Componentアノテーション</h5>
 <p>
@@ -726,9 +750,9 @@ $container = S2ContainerFileCacheFactory::create($PATH_C,'testC.dicon');
 <pre>
 &lt;?php
 class HogeImpl {
-    const COMPONENT = "name = hoge,
+    const COMPONENT = "name = hogeComp,
                        instance = prototype,
-                       autoBinding = property";
+                       autoBinding = auto";
     .....
 }
 ?&gt;
@@ -738,33 +762,33 @@ class HogeImpl {
 <pre>
 &lt;?php
 /**
- * @S2Container_ComponentAnnotation( name = hoge,
- *                                   instance = prototype,
- *                                   autoBinding = property )
+ * @S2Container_ComponentAnnotation(name = hogeComp,
+ *                                  instance = prototype,
+ *                                  autoBinding = auto)
  */
 class HogeImpl {
     .....
 }
 ?&gt;
 </pre>
-
+s2container.php5/examples/autoregister/compAnnoClient.php を参照下さい。
 
 <h5>Bindingアノテーション</h5>
 
 <p>
-<a href="DIContainer.html#propertyTag">propertyタグ</a>のかわりに使えるのが、Bindingアノテーションです。
-<br>
-Binding は expression扱いにあんります。<br>
+<a href="DIContainer.html#propertyTag">propertyタグ</a>のかわりに使えるのが、Bindingアノテーションです。Bindingアノテーションで設定される値はコンポーネント名またはexpression(PHP式)として扱われます。<br>
 プロパティ名 + _BINDING 定数名<br>
 </p>
 
-定数アノテーションは以下のようになります。
+定数アノテーションは以下のようになります。プロパティ名 + _BINDING という名前の定数を定義します。
 <pre>
 &lt;?php
 class HogeImpl {
-    private $value = null;
+    .....
 
+    private $value;
     const value_BINDING = '" string value must be quoted "';
+
     public function setValue($value){
         $this->value = $value;
     }
@@ -782,11 +806,13 @@ class HogeImpl {
 <pre>
 &lt;?php
 class HogeImpl {
+    .....
+
     private $value = null;
 
     /**
-     * @S2Container_BindingAnnotation( "string value must be quoted" )
-     */ 
+     * @S2Container_BindingAnnotation('" string value must be quoted "')
+     */
     public function setValue($value){
         $this->value = $value;
     }
@@ -799,32 +825,29 @@ class HogeImpl {
 }
 ?&gt;
 </pre>
-
+s2container.php5/examples/autoregister/bindAnnoClient.php を参照下さい。
 
 <h5>Aspectアノテーション</h5>
 <p>
-<a href="DIContainer.html#aspectTag">aspectタグ</a>のかわりに使えるのが、Aspectアノテーションです。aspectタグと異なり､複数定義することはできないので､複数のインターセプタを適用したい場合は､<a href="aop.html#InterceptorChain">InterceptorChain</a>を使ってください。pointcutを指定しないときは、そのクラスが実装しているすべてのインターフェースのメソッドが対象になります。
-
-<br>
-ポイントカットはスペースで区切って下さい。
-<br>
+<a href="DIContainer.html#aspectTag">aspectタグ</a>のかわりに使えるのが、Aspectアノテーションです。aspectタグと異なり､複数定義することはできないので､複数のインターセプタを適用したい場合は､<a href="aop.html#InterceptorChain">InterceptorChain</a>を使ってください。pointcutを指定しないときは、そのクラスが実装しているすべてのインターフェースのメソッドが対象になります。複数のpointcutを指定する場合はスペース区切りとして下さい。
 </p>
 
 定数アノテーションは以下のようになります。
 <pre>
 &lt;?php
 class HogeImpl {
+    .....
+
     const ASPECT = "interceptor = new S2Container_TraceInterceptor() ,
                     pointcut = m1 m2 ";
 
-    public function m1(){
-        .....
+    public function m1($a,$b){
+        return $a + $b;
     }
 
-    public function m2(){
-        .....
+    public function m2($a,$b){
+        return $a * $b;
     }
-
     .....
 }
 ?&gt;
@@ -838,23 +861,25 @@ class HogeImpl {
  *                                pointcut = m1)
  */
 class HogeImpl {
+    .....
 
-    public function m1(){
-        .....
+    public function m1($a,$b){
+        return $a + $b;
     }
 
     /**
-     * @S2Container_AspectAnnotation(interceptor = new S2Container_TraceInterceptor());
+     * @S2Container_AspectAnnotation(interceptor = 
+     *                               new S2Container_TraceInterceptor());
      */
-    public function m2(){
-        .....
+    public function m2($a,$b){
+        return $a * $b;
     }
 
     .....
 }
 ?&gt;
 </pre>
-
+s2container.php5/examples/autoregister/aspectAnnoClient.php を参照下さい。
 
 
 <h5>InitMethodアノテーション</h5>
@@ -866,16 +891,17 @@ class HogeImpl {
 <pre>
 &lt;?php
 class HogeImpl {
-    const INIT_METHOD = "initA, initB";
+    .....
+
+    const INIT_METHOD = 'initA,initB';
 
     public function initA(){
-        .....
+        print __METHOD__ . " called.\n";
     }
 
     public function initB(){
-        .....
+        print __METHOD__ . " called.\n";
     }
-
     .....
 }
 ?&gt;
@@ -885,45 +911,27 @@ class HogeImpl {
 <pre>
 &lt;?php
 class HogeImpl {
+    .....
 
     /**
      * @S2Container_InitMethodAnnotation
      */
     public function initA(){
-        .....
+        print __METHOD__ . " called.\n";
     }
 
     /**
      * @S2Container_InitMethodAnnotation
      */
     public function initB(){
-        .....
+        print __METHOD__ . " called.\n";
     }
 
     .....
 }
 ?&gt;
 </pre>
-
-<h4>DICON Sample</h4>
-<pre>
-&lt;component class=&quot;S2Container_FileSystemComponentAutoRegister&quot;&gt;
-    &lt;property name=&quot;autoNaming&quot;&gt;
-        &lt;component class=&quot;S2Container_DefaultAutoNaming&quot;&gt;
-            &lt;initMethod name=&quot;setCustomizedName&quot;&gt;
-                &lt;arg&gt;&quot;HogeImpl&quot;&lt;/arg&gt;
-                &lt;arg&gt;&quot;hoge2&quot;&lt;/arg&gt;
-            &lt;/initMethod&gt;
-        &lt;/component&gt;
-    &lt;/property&gt;
-    &lt;initMethod name=&quot;addClassPattern&quot;&gt;
-        &lt;arg&gt;&quot;D:/tmp&quot;&lt;/arg&gt;
-        &lt;arg&gt;&quot;.*Impl&quot;&lt;/arg&gt;
-    &lt;/initMethod&gt;
-    &lt;initMethod name=&quot;registerAll&quot;/&gt;
-&lt;/component&gt;
-</pre>
-
+s2container.php5/examples/autoregister/methodAnnoClient.php を参照下さい。
 
 <h3><a name="autoRegister-aspect">AspectAutoRegister</a></h3>
 <p><a href="#autoRegister-file">コンポーネントの自動登録</a>により、コンポーネントの登録は自動化できます。
@@ -962,17 +970,25 @@ class HogeImpl {
 <td>自動登録したくないクラスパターンを登録します。引数はクラス名です。正規表現が使えます。「,」区切りで複数記述することもできます。</td>
 </tr>
 </table>
-
-<h5>DICON Sample</h5>
+<br>
+s2container.php5/examples/autoregister/autoAspect.dicon
 <pre>
-&lt;component class=&quot;S2Container_AspectAutoRegister&quot;&gt;
-    &lt;property name=&quot;interceptor&quot;&gt;new S2Container_TraceInterceptor()&lt;/property&gt;
-    &lt;initMethod name=&quot;addClassPattern&quot;&gt;
-        &lt;arg&gt;&quot;.*Impl&quot;&lt;/arg&gt;
-    &lt;/initMethod&gt;
-    &lt;initMethod name=&quot;registerAll&quot;/&gt;
-&lt;/component&gt;
+&lt;components&gt;
+    &lt;component class="S2Container_AspectAutoRegister"&gt;
+        &lt;property name="interceptor"&gt;new S2Container_TraceInterceptor()&lt;/property&gt;
+        &lt;property name="pointcut"&gt;"m1,m2"&lt;/property&gt;
+        &lt;initMethod name="addClassPattern"&gt;
+            &lt;arg&gt;".+Service"&lt;/arg&gt;
+        &lt;/initMethod&gt;
+        &lt;initMethod name="registerAll"/&gt;
+    &lt;/component&gt;
+    &lt;component class="HogeService"/&gt;
+    &lt;component class="HogeBean"/&gt;
+&lt;/components&gt;
 </pre>
+*** S2Container_AspectAutoRegister::registerAllメソッドをinitMthodとして設定して下さい。<br>
+*** 他のコンポーネント定義より先に定義する必要があります。<br>
+*** S2Container_FileSystemComponentAutoRegisterと併用する場合は、S2Container_FileSystemComponentAutoRegisterの定義が先になります。<br>
 
 <h3><a name="autoRegister-interface">InterfaceAspectAutoRegister</a></h3>
 <table border="1">
@@ -991,15 +1007,22 @@ class HogeImpl {
 </tr>
 </table>
 
-
-<h5>DICON Sample</h5>
+<br>
+s2container.php5/examples/autoregister/autoInterface.dicon
 <pre>
-&lt;component class=&quot;S2Container_InterfaceAspectAutoRegister&quot;&gt;
-    &lt;property name=&quot;interceptor&quot;&gt; new S2Container_TraceInterceptor()&lt;/property&gt;
-    &lt;property name=&quot;targetInterface&quot;&gt;Greeing&lt;/property&gt;
-    &lt;initMethod name=&quot;registerAll&quot;/&gt;
-&lt;/component&gt;
+&lt;components&gt;
+    &lt;component class="S2Container_InterfaceAspectAutoRegister"&gt;
+        &lt;property name="interceptor"&gt;new S2Container_TraceInterceptor()&lt;/property&gt;
+        &lt;property name="targetInterface"&gt;"HogeService"&lt;/property&gt;
+        &lt;initMethod name="registerAll"/&gt;
+    &lt;/component&gt;
+    &lt;component class="HogeServiceImpl"/&gt;
+    &lt;component class="HogeBeanImpl"/&gt;
+&lt;/components&gt;
 </pre>
+*** S2Container_InterfaceAspectAutoRegister::registerAllメソッドをinitMthodとして設定して下さい。<br>
+*** 他のコンポーネント定義より先に定義する必要があります。<br>
+*** S2Container_FileSystemComponentAutoRegisterと併用する場合は、S2Container_FileSystemComponentAutoRegisterの定義が先になります。<br>
 
 
 
@@ -1013,7 +1036,7 @@ class HogeImpl {
 </p>
 
 <h4>S2Container_Annotations</h4>
-<p>S2Container_Annotationsクラスは以下の3つのStaticメソッドを実装しています。</p>
+<p>S2Container_Annotationsクラスは3つのStaticメソッドを実装しています。</p>
 <table border="1">
 <tr bgcolor="#d1f3f4" align="center">
 <th>メソッド</th>
@@ -1052,6 +1075,13 @@ PhpDocに記述されるコメントアノテーションは以下のフォーマットになります。
  */
 class Hello {
 
+    /**
+     * @Bar ( xyz, 2000 )
+     * @Hoge ( name = xyz, year = 2000 )
+     */
+    public function greeting(){
+        print "Hello ! \n";
+    }
 }
 </pre>
 
@@ -1075,6 +1105,97 @@ class Hoge {
     public $year = 2000;
 }
 ?&gt;
+</pre>
+
+<p>
+アノテーションの引数はアノテーションタイプのプロパティに設定されます。イコール(=)とカンマ(,)は区切り文字として使用されます。上記の例では、@Seasarアノテーションは引数をとりません。@Fooと@Barアノテーションは値引数を持ちます。値引数が1つの場合は(@Fooの場合)、valueプロパティにそのまま代入されます。値引数が複数の場合(@Barの場合)、valueプロパティに値の配列として代入されます。最後の@Hogeは引数としてキーと値のペアーをとります。キーがプロパティ名となり、値が代入されます。
+</p>
+
+<h4>アノテーションの取得</h4>
+<h5>S2Container_Annotations::getAnnotations()</h5>
+s2container.php5/examples/extension/annotation/annoClient.php
+<pre>
+...
+$annos = S2Container_Annotations::getAnnotations('Hello','greeting');
+print_r($annos);
+...
+</pre>
+
+Helloクラスのgreetingメソッドに付いているアノテーションをすべて取得します。
+
+<pre>
+> php annoClient.php
+Array
+(
+    [Bar] => Bar Object
+        (
+            [value] => Array
+                (
+                    [0] => xyz
+                    [1] => 2000
+                )
+        )
+    [Hoge] => Hoge Object
+        (
+            [name] => xyz
+            [year] => 2000
+        )
+)
+>
+</pre>
+
+<h5>S2Container_Annotations::getAnnotation()</h5>
+s2container.php5/examples/extension/annotation/annoClient.php
+<pre>
+...
+$anno = S2Container_Annotations::getAnnotation('Foo','Hello');
+print_r($anno);
+
+$anno = S2Container_Annotations::getAnnotation('Bar','Hello');
+print_r($anno);
+...
+</pre>
+
+Helloクラスに付いているFooとBarアノテーションを取得します。
+
+<pre>
+> php annoClient.php
+Foo Object
+(
+    [value] => 2006
+)
+Bar Object
+(
+    [value] => Array
+        (
+            [0] => abc
+            [1] => 2006
+        )
+)
+>
+</pre>
+
+<h5>S2Container_Annotations::isAnnotationPresent()</h5>
+s2container.php5/examples/extension/annotation/annoClient.php
+<pre>
+...
+if(S2Container_Annotations::isAnnotationPresent('Seasar','Hello')){
+    print "Seasar annotation exists at hello class.\n";
+}
+
+if(!S2Container_Annotations::isAnnotationPresent('Seasar','Hello','greeting')){
+    print "Seasar annotation not exists at greeting method.\n";
+}
+...
+</pre>
+
+HelloクラスとgreetingメソッドにSeasarアノテーションが付いているかどうかを調べます。
+
+<pre>
+> php annoClient.php
+Seasar annotation exists on hello class.
+Seasar annotation not exists on greeting method.
+>
 </pre>
 
 
