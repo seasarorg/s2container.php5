@@ -71,13 +71,23 @@ final class S2Container_XmlS2ContainerBuilder
     /**
      * 
      */
+    private function _isDomValidateOn(){
+        if(defined('S2CONTAINER_PHP5_DOM_VALIDATE')){
+            return S2CONTAINER_PHP5_DOM_VALIDATE;
+        }else{
+            return true;
+        }
+    }
+    
+    /**
+     * 
+     */
     private function _loadDicon($path){
         if (!is_readable($path)) {
             throw new S2Container_S2RuntimeException('ESSR0001',array($path));
         }
         
-        if (defined('S2CONTAINER_PHP5_DOM_VALIDATE') and 
-            S2CONTAINER_PHP5_DOM_VALIDATE) {
+        if ($this->_isDomValidateOn()) {
             $dom = new DomDocument();
             $dom->validateOnParse = true;
             $dom->load($path);
