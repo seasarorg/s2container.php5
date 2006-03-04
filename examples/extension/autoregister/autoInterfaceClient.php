@@ -29,9 +29,9 @@ class HogeBeanImpl implements HogeBean{
     }
 }
 
-require_once(dirname(dirname(__FILE__)) . '/example.inc.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php');
 
-$PATH = EXAMPLE_DIR . "/autoregister/autoInterface.dicon";
+$PATH = EXAMPLE_DIR . "/extension/autoregister/autoInterface.dicon";
 
 $container = S2ContainerFactory::create($PATH);
 $container->init();

@@ -1,7 +1,7 @@
 <?php
-require_once(dirname(dirname(__FILE__)) . '/example.inc.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php');
 
-$PATH = EXAMPLE_DIR . "/autoregister/autoFile.dicon";
+$PATH = EXAMPLE_DIR . "/extension/autoregister/autoFile.dicon";
 
 $container = S2ContainerFactory::create($PATH);
 $container->init();

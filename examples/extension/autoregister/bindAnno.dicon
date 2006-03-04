@@ -4,7 +4,7 @@
 <components>
     <component class="S2Container_FileSystemComponentAutoRegister">
         <initMethod name="addClassPattern">
-            <arg>"%EXAMPLE_DIR%/autoregister/bindAnno"</arg>
+            <arg>"%EXAMPLE_DIR%/extension/autoregister/bindAnno"</arg>
             <arg>".+Impl"</arg>
         </initMethod>
         <initMethod name="registerAll"/>
