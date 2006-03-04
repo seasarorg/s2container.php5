@@ -95,6 +95,14 @@ class S2Container_SimpleComponentDef
     }
 
     /**
+     * @see S2Container_ComponentDef::setComponentName()
+     */
+    public final function setComponentName($name)
+    {
+        $this->componentName_ = $name;
+    }
+
+    /**
      * @see S2Container_ComponentDef::getConcreteClass()
      */
     public function getConcreteClass()
