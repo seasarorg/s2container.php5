@@ -37,7 +37,7 @@
  *       [ string default not defined ] 
  *   - S2CONTAINER_PHP5_LOG_LEVEL : S2Container.PHP5 Log Level
  *       [ integer default S2Container_SimpleLogger::WARN ]
- *   - S2CONTAINER_ANNOTATION_HANDLER : constant or comment annotation available
+ *   - S2CONTAINER_PHP5_ANNOTATION_HANDLER : constant or comment annotation available
  *       [ string default S2Container_ConstantAnnotationHandler
  *         available handler S2Container_CommentAnnotationHandler ]
  *   - S2CONTAINER_PHP5_CACHE_DIR : S2ContainerFileCacheFactory uses this directory path.
