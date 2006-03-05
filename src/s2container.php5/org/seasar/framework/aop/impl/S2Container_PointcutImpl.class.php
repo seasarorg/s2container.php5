@@ -86,14 +86,22 @@ final class S2Container_PointcutImpl implements S2Container_Pointcut
         }
 */
         $methodNameSet = array();
-        if ($targetClass->isInterface() or $targetClass->isAbstract()) {
+        if ($targetClass->isInterface()) {
             $methods = $targetClass->getMethods();
             $o = count($methods);
             for ($j = 0; $j < $o; $j++) {
                 array_push($methodNameSet,$methods[$j]->getName());
             }
+        } else if ($targetClass->isAbstract()) {
+            $methods = $targetClass->getMethods();
+            $o = count($methods);
+            for ($j = 0; $j < $o; $j++) {
+                if($methods[$j]->isAbstract()){
+                    array_push($methodNameSet,$methods[$j]->getName());
+                }
+            }
         } else {
-            $interfaces = $targetClass->getInterfaces();
+            $interfaces = S2Container_ClassUtil::getInterfaces($targetClass);
             $o = count($interfaces);
             for ($i = 0; $i < $o; $i++) {
                 $methods = $interfaces[$i]->getMethods();

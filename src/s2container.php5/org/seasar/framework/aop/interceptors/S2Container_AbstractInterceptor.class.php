@@ -60,7 +60,7 @@ abstract class S2Container_AbstractInterceptor
         $thisClass = new ReflectionClass($invocation->getThis());
         $superClass = $thisClass->getParentClass();
         if ($superClass == null) {
-            $ifs = $thisClass->getInterfaces();
+            $ifs = S2Container_ClassUtil::getInterfaces($thisClass);
             return $ifs[0];
         } else {
             return $superClass;

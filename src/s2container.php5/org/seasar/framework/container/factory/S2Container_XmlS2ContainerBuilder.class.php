@@ -200,7 +200,10 @@ final class S2Container_XmlS2ContainerBuilder
      */
     private function _setupArgDefInternal($arg,S2Container_ArgDef $argDef)
     {
-        if (count($arg->component[0]) == null) {
+        if (isset($arg->component[0])) {
+            $childComponent = $this->_setupComponentDef($arg->component[0]);
+            $argDef->setChildComponentDef($childComponent);
+        } else {
             $argValue = trim((string)$arg);
             $injectValue = $this->_getInjectionValue($argValue);
             if ($injectValue != null){
@@ -209,9 +212,6 @@ final class S2Container_XmlS2ContainerBuilder
                 $argDef->setExpression($argValue);
                 S2Container_ChildComponentDefBindingUtil::put($argValue,$argDef);
             }
-        } else {
-            $childComponent = $this->_setupComponentDef($arg->component[0]);
-            $argDef->setChildComponentDef($childComponent);
         }
     }
 
@@ -282,7 +282,10 @@ final class S2Container_XmlS2ContainerBuilder
         }
         
         $aspectDef = new S2Container_AspectDefImpl($pointcut);
-        if (count($aspect->component[0]) == null) {
+        if (isset($aspect->component[0])) {
+            $childComponent = $this->_setupComponentDef($aspect->component[0]);
+            $aspectDef->setChildComponentDef($childComponent);
+        } else {
             $aspectValue = trim((string)$aspect);
             $injectValue = $this->_getInjectionValue($aspectValue);
             if ($injectValue != null){
@@ -290,9 +293,6 @@ final class S2Container_XmlS2ContainerBuilder
             }
             $aspectDef->setExpression($aspectValue);
             S2Container_ChildComponentDefBindingUtil::put($aspectValue,$aspectDef);
-        } else {
-            $childComponent = $this->_setupComponentDef($aspect->component[0]);
-            $aspectDef->setChildComponentDef($childComponent);
         }
         
         return $aspectDef;

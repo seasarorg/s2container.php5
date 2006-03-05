@@ -107,11 +107,12 @@ final class S2Container_ClassUtil
      */
     public static function getInterfaces(ReflectionClass $clazz)
     {
-        $interfaces = $clazz->getInterfaces();
+        $interfaces = array_values($clazz->getInterfaces());
+
         if ($clazz->isInterface()) {
             array_push($interfaces,$clazz);
         }       
-        
+      
         return $interfaces;
     }
 }

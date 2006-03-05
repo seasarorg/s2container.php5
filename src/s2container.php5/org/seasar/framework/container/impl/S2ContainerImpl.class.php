@@ -454,17 +454,20 @@ class S2ContainerImpl implements S2Container
         if (! $componentClass instanceof ReflectionClass) {
             return array();
         }
-        $ref = $componentClass;
         
         $classes = array();
-        $interfaces = $ref->getInterfaces();
+        $interfaces = S2Container_ClassUtil::getInterfaces($componentClass);
         $o = count($interfaces);
         for ($i = 0; $i < $o; $i++) {
             array_push($classes,$interfaces[$i]->getName());
         }
-        while ($ref != null) {
-            array_push($classes,$ref->getName());
-            $ref = $ref->getParentClass();
+
+        $ref = $componentClass;
+        if(!$ref->isInterface()){
+            while ($ref != null) {
+                array_push($classes,$ref->getName());
+                $ref = $ref->getParentClass();
+            }
         }
         
         return $classes;
