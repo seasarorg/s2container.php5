@@ -81,6 +81,7 @@ ini_set('include_path',
 /**
  * S2Container.PHP5 Core Classes
  */
+//require_once('S2ContainerClassLoader.class.php');
 require_once('s2container.core.classes.php');
 
 /**
