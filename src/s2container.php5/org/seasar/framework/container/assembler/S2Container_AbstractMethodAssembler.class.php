@@ -85,6 +85,8 @@ abstract class S2Container_AbstractMethodAssembler
     private function _invokeExpression($component,$expression)
     {
         $exp = S2Container_EvalUtil::addSemiColon($expression);
+        S2Container_S2Logger::getLogger(__CLASS__)->
+            debug("eval : [ $exp ]",__METHOD__);
         eval($exp);
     }
     

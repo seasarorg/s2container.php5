@@ -8,7 +8,7 @@ class PdoTests extends UnitTestCase {
        
         print __METHOD__ . "\n";
 
-        $container = S2ContainerFactory::create(S2CONTAINER_PHP5 . '/org/seasar/extension/db/pdo.dicon');
+        $container = S2ContainerFactory::create(TEST_DIR . '/s2container.php5/org/seasar/extension/db/pdo/pdo.dicon');
         $this->assertNotNull($container);
         $ds = $container->getComponent('pdo.dataSource');
         $this->assertNotNull($ds);

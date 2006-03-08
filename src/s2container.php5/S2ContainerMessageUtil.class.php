@@ -55,6 +55,9 @@ class S2ContainerMessageUtil {
         $msg = preg_replace('/}/',']}',$msg);
         $msg = S2Container_EvalUtil::getExpression('"'.$msg.'"');
 
+        S2Container_S2Logger::getLogger(__CLASS__)->
+            debug("eval : [ $msg ]",__METHOD__);
+
         return eval($msg);
     }
     

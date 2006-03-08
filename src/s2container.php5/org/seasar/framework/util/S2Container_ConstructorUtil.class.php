@@ -47,18 +47,19 @@ final class S2Container_ConstructorUtil
         }
 
         $cmd = "return new " . $refClass->getName() . "(";
-        if (count($args) == 0) {
-            $cmd = $cmd . ");";
-            return eval($cmd);
-        }
-            
-        $strArg = array();
         $c = count($args);
-        for ($i = 0; $i < $c; $i++) {
-            array_push($strArg,"\$args[" . $i . "]");
+        if($c == 0){
+            $cmd = $cmd . ');';
+        } else {
+            $strArg = array();
+            for ($i = 0; $i < $c; $i++) {
+                array_push($strArg,'$args[' . $i . ']');
+            }
+            $cmd = $cmd . implode(',',$strArg) . ');';
         }
-          
-        $cmd = $cmd . implode(',',$strArg) . ");";
+
+        S2Container_S2Logger::getLogger(__CLASS__)->
+            debug("eval : [ $cmd ]",__METHOD__);
         return eval($cmd);
     }
 }

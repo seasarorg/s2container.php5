@@ -2,6 +2,6 @@
 <!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
 "components21.dtd">
 <components>
-    <include path="%S2CONTAINER_PHP5%/org/seasar/extension/db/pdo.dicon"/>
+    <include path="%EXAMPLE_DIR%/extension/db/pdo.dicon"/>
 	<component name ="deptDao" class="DeptDaoImpl"/>
 </components>
