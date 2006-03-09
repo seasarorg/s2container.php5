@@ -79,7 +79,6 @@ class S2Container_TooManyRegistrationComponentDefImpl
     public function getComponentClasses()
     {
         $classes = array();
-        $size = $this->getComponentDefSize();
         foreach ($this->componentDefs_ as $componentDef) {
             array_push($classes,$componentDef->getComponentClass());
         }

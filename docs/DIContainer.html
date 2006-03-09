@@ -44,7 +44,7 @@
                   <li><a href="#AutoBindingMode">©“®ƒoƒCƒ“ƒfƒBƒ“ƒO</a></li>
                   <li><a href="#UseS2Container">ƒRƒ“ƒ|[ƒlƒ“ƒg‚ÅS2Container‚ğ—˜—p‚·‚é</a></li>
                   <li><a href="#Aop">AOP‚Ì“K—p</a></li>
-				  <li><a href="#Meta">ƒƒ^ƒf[ƒ^</a></li>
+                  <li><a href="#Meta">ƒƒ^ƒf[ƒ^</a></li>
                 </ul>
               </li>
               <li><a href="#DefReference">S2Container’è‹`ƒ^ƒOƒŠƒtƒ@ƒŒƒ“ƒX</a>
@@ -55,7 +55,7 @@
                   <li><a href="#componentTag">componentƒ^ƒO</a></li>
                   <li><a href="#argTag">argƒ^ƒO</a></li>
                   <li><a href="#propertyTag">propertyƒ^ƒO</a></li>
-				  <li><a href="#metaTag">metaƒ^ƒO</a></li>
+                  <li><a href="#metaTag">metaƒ^ƒO</a></li>
                   <li><a href="#initMethodTag">initMethodƒ^ƒO</a></li>
                   <li><a href="#destroyMethodTag">destroyMethodƒ^ƒO</a></li>
                   <li><a href="#aspectTag">aspectƒ^ƒO</a></li>
@@ -149,13 +149,16 @@ $hoge = $container->getComponent('hoge');
 </pre>
 
             <a name="DIType"><h3>Dependency Injection‚Ìƒ^ƒCƒv</h3></a>
-@DependencyInjection‚É‚ÍˆÈ‰º‚Ìƒ^ƒCƒv‚ª‚ ‚è‚Ü‚·B
+<p>Dependency Injection‚É‚ÍˆÈ‰º‚Ìƒ^ƒCƒv‚ª‚ ‚è‚Ü‚·B
+<ul><li>
 <table border="0" vspace="0" hspace="0" cellpadding="0" cellspacing="0">
-<tr><td>@@@ConstructorInjection</td><td>@:@</td><td>ƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì\¬‚É•K—v‚È’l‚ğƒRƒ“ƒXƒgƒ‰ƒNƒ^‚Åİ’è‚·‚é</td><tr>
-<tr><td>@@@SetterInjection</td><td>@:@</td><td>ƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì\¬‚É•K—v‚È’l‚ğƒZƒbƒ^[Eƒƒ\ƒbƒh‚Åİ’è‚·‚é</td><tr>
-<tr><td>@@@MethodInjection</td><td>@:@</td><td>ƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì\¬‚É•K—v‚È’l‚ğ‰Šú‰»ƒƒ\ƒbƒh‚Åİ’è‚·‚é</td><tr>
+<tr><td> - Constructor Injection</td><td> F </td><td>ƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì\¬‚É•K—v‚È’l‚ğƒRƒ“ƒXƒgƒ‰ƒNƒ^‚Åİ’è‚·‚é</td><tr>
+<tr><td> - Setter Injection</td><td> F </td><td>ƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì\¬‚É•K—v‚È’l‚ğƒZƒbƒ^[Eƒƒ\ƒbƒh‚Åİ’è‚·‚é</td><tr>
+<tr><td> - Method Injection</td><td> F </td><td>ƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì\¬‚É•K—v‚È’l‚ğ‰Šú‰»ƒƒ\ƒbƒh‚Åİ’è‚·‚é</td><tr>
 </table>
+</li></ul>
 @MethodInjection‚ÍS2‚ÌƒIƒŠƒWƒiƒ‹‚Å‚·BS2‚Í‚·‚×‚Ä‚Ìƒ^ƒCƒv‚Æ‚»‚ÌƒnƒCƒuƒŠƒbƒhŒ^‚àƒTƒ|[ƒg‚µ‚Ü‚·B
+</p>
             <a name="ConstructorInjection"><b><h3>ƒRƒ“ƒXƒgƒ‰ƒNƒ^EƒCƒ“ƒWƒFƒNƒVƒ‡ƒ“</h3></b></a>
             <p>ƒRƒ“ƒXƒgƒ‰ƒNƒ^EƒCƒ“ƒWƒFƒNƒVƒ‡ƒ“‚Æ‚ÍA”CˆÓ‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^‚Ìˆø”’l‚ÉDependency Injection‚µ‚Ü‚·B<br>S2Container‚Ì’è‹`ƒtƒ@ƒCƒ‹‚É‚ÍAŸ‚Ì“à—e‚ğ‹Lq‚µ‚Ü‚·B</p>
          <ul>
@@ -372,7 +375,7 @@ root.dicon‚ÉHelloImpl‚ğ“o˜^‚µ‚Ä‚¢‚Ä‚àAaaHelloClient‚É‚Í©“®ƒCƒ“ƒWƒFƒNƒVƒ‡ƒ“‚³‚ê‚
 <a name="InstanceMode">
 <h3>ƒCƒ“ƒXƒ^ƒ“ƒXŠÇ—</h3></a>
             <p>S2Container‚ÅAƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğ‚Ç‚Ì‚æ‚¤‚ÉŠÇ—‚·‚é‚Ì‚©‚ğw’è‚·‚é‚Ì‚ªA<a href="#componentTag">componentƒ^ƒO</a>‚Ìinstance
-‘®«‚Å‚·BƒfƒtƒHƒ‹ƒg‚Ísingleton‚ÅA‚±‚ê‚ÍAS2Container#getComponent()‚É‚æ‚Á‚Ä•Ô‚³‚ê‚éƒRƒ“ƒ|[ƒlƒ“ƒg‚Íí‚É“¯‚¶
+‘®«‚Å‚·BƒfƒtƒHƒ‹ƒg‚Ísingleton‚ÅA‚±‚ê‚Í S2Container#getComponent()‚É‚æ‚Á‚Ä•Ô‚³‚ê‚éƒRƒ“ƒ|[ƒlƒ“ƒg‚Íí‚É“¯‚¶
 ‚¾‚Æ‚¢‚¤ˆÓ–¡‚Å‚·BS2Container#getComponent()‚ğŒÄ‚Ño‚·‚½‚Ñ‚ÉAV‚½‚Éì¬‚³‚ê‚½ƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ•Ô‚µ‚Ä—~‚µ‚¢ê‡‚ÍA
 instance‘®«‚Éprototype‚ğw’è‚µ‚Ü‚·BƒŠƒNƒGƒXƒg($_REQUEST)‚²‚Æ‚ÉƒRƒ“ƒ|[ƒlƒ“ƒg‚ğŠÇ—‚µ‚½‚¢ê‡‚ÍA
 instance‘®«‚Érequest‚ğw’è‚µ‚Ü‚·BƒZƒbƒVƒ‡ƒ“($_SESSION)‚²‚Æ‚ÉƒRƒ“ƒ|[ƒlƒ“ƒg‚ğŠÇ—‚µ‚½‚¢ê‡‚ÍAinstance‘®
@@ -473,9 +476,9 @@ S2ContainerŠO‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚É‘Î‚µ‚Ä<a href="http://www.kakutani.com/trans/fowl
             <a name="UseS2Container"><h3>ƒRƒ“ƒ|[ƒlƒ“ƒg‚ÅS2Container‚ğ—˜—p‚·‚é</h3></a>
             <p>ƒR
 ƒ“ƒ|[ƒlƒ“ƒg‚ÍS2Container‚ÉˆË‘¶‚µ‚È‚¢‚±‚Æ‚ª–]‚Ü‚µ‚¢‚Ì‚Å‚·‚ªAƒRƒ“ƒ|[ƒlƒ“ƒg‚É‚æ‚Á‚Ä‚ÍAS2Container‚Ìƒƒ\ƒbƒh‚ğŒÄ‚Ño‚µ‚½‚¢
-ê‡‚à‚ ‚é‚Å‚µ‚å‚¤BS2Container©g‚àcontainer‚Æ‚¢‚¤–¼‘O‚ÅA“o˜^‚³‚ê‚Ä‚¢‚é‚Ì‚ÅAarg,propertyƒ^ƒO‚Ìƒ{ƒfƒB‚Å
+ê‡‚à‚ ‚é‚Å‚µ‚å‚¤BS2Container©g‚àcontainer‚Æ‚¢‚¤–¼‘O‚Å“o˜^‚³‚ê‚Ä‚¢‚é‚Ì‚ÅAargApropertyƒ^ƒO‚Ìƒ{ƒfƒB‚Å
 container‚ğw’è‚·‚é‚±‚Æ‚ÅAƒRƒ“ƒeƒi‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğæ“¾‚Å‚«‚Ü‚·B‚Ü‚½AS2ContainerŒ^‚Ìsetterƒƒ\ƒbƒh‚ğ’è‹`‚µ‚Ä‚¨‚¢‚Ä©
-“®ƒoƒCƒ“ƒfƒBƒ“ƒO‚Åİ’è‚·‚é‚±‚Æ‚à‚Å‚«‚Ü‚·Barg,propertyƒ^ƒO‚Åcontainer‚ğw’è‚·‚éê‡‚ÍAŸ‚Ì‚æ‚¤‚É‚È‚è‚Ü‚·B</p>
+“®ƒoƒCƒ“ƒfƒBƒ“ƒO‚Åİ’è‚·‚é‚±‚Æ‚à‚Å‚«‚Ü‚·BargApropertyƒ^ƒO‚Åcontainer‚ğw’è‚·‚éê‡‚ÍAŸ‚Ì‚æ‚¤‚É‚È‚è‚Ü‚·B</p>
 
 <pre>&lt;components&gt;
     &lt;component class="BarImpl"&gt;
@@ -594,7 +597,7 @@ END   Date#getTime() : 12:00:30
             <a name="componentTag"><h3>componentƒ^ƒO(”CˆÓ)</h3></a>
             <p>ƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ’è‹`‚µ‚Ü‚·B</p>
             <a name="classAttr"><h4>class‘®«(”CˆÓ)</h4></a>
-            <p>ƒNƒ‰ƒX–¼‚ğw’è‚µ‚Ü‚·Bƒ{ƒfƒB‚ÅAPHP®‚ğg‚Á‚ÄƒRƒ“ƒ|[ƒlƒ“ƒg‚ğw’è‚µ‚½ê‡‚ÍAclass‘®«‚ğÈ—ª‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·BPHP®‚ğg‚Á‚½ê‡‚Éclass‘®«‚ğw’è‚·‚é‚ÆAŒ^ƒ`ƒFƒbƒN‚ğs‚¢‚Ü‚·B</p>
+            <p>ƒNƒ‰ƒX–¼‚ğw’è‚µ‚Ü‚·Bƒ{ƒfƒB‚Å<a href="php.html">PHP®</a>‚ğg‚Á‚ÄƒRƒ“ƒ|[ƒlƒ“ƒg‚ğw’è‚µ‚½ê‡‚ÍAclass‘®«‚ğÈ—ª‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·BPHP®‚ğg‚Á‚½ê‡‚Éclass‘®«‚ğw’è‚·‚é‚ÆAŒ^ƒ`ƒFƒbƒN‚ğs‚¢‚Ü‚·B</p>
             <a name="componentTag.nameAttr"><h4>name‘®«(”CˆÓ)</h4></a>
             <p>–¼‘O‚ğw’è‚·‚é‚±‚Æ‚à‚Å‚«‚Ü‚·BPHP‚Ì¯•Êq‚Æ‚µ‚Äg‚¦‚é‚à‚Ì‚É‚µ‚Ü‚·BÚ‚µ‚­‚ÍA<a href="#getComponent">ƒRƒ“ƒ|[ƒlƒ“ƒg‚Ìæ“¾</a>‚ğQÆ‚µ‚Ä‚­‚¾‚³‚¢B</p>
             <a name="instanceAttr"><h4>instance‘®«(”CˆÓ)</h4></a>
@@ -605,22 +608,22 @@ END   Date#getTime() : 12:00:30
             <a name="argTag"><h3>argƒ^ƒO(”CˆÓ)</h3></a>
             <p><a href="#componentTag">componentƒ^ƒO</a>‚Ìqƒ^ƒO‚Æ‚µ‚Äg‚Á‚½ê‡‚ÍAƒRƒ“ƒXƒgƒ‰ƒNƒ^‚Ìˆø”‚É‚È‚è‚Ü‚·B‹Lq‚µ‚½‡”Ô‚ÅƒRƒ“ƒXƒgƒ‰ƒNƒ^‚É“n‚³‚ê‚Ü‚·B
             <a href="#initMethodTag">initMethodƒ^ƒO</a>A<a href="#destroyMethodTag">destroyMethodƒ^ƒO</a>‚Ìqƒ^ƒO‚Æ‚µ‚Äg‚Á‚½ê‡‚ÍAƒƒ\ƒbƒh‚Ìˆø”‚É‚È‚è‚Ü‚·B‹Lq‚µ‚½‡”Ô‚Åƒƒ\ƒbƒh‚É“n‚³‚ê‚Ü‚·B
-            ˆø”‚Æ‚µ‚Ä“n‚³‚ê‚éÀÛ‚Ì’l‚ÍAƒ{ƒfƒB‚ÅPHP®‚ğg‚¤‚©Aqƒ^ƒO‚ÅA<a href="#componentTag">componentƒ^ƒO</a>‚ğg‚¢‚Ü‚·B</p>
+            ˆø”‚Æ‚µ‚Ä“n‚³‚ê‚éÀÛ‚Ì’l‚ÍAƒ{ƒfƒB‚ÅPHP®‚ğg‚¤‚©Aqƒ^ƒO‚Å<a href="#componentTag">componentƒ^ƒO</a>‚ğg‚¢‚Ü‚·B</p>
 
             <a name="propertyTag"><h3>propertyƒ^ƒO(”CˆÓ)</h3></a>
-            <p><a href="#componentTag">componentƒ^ƒO</a>‚Ìqƒ^ƒO‚Æ‚µ‚Äg‚¢‚Ü‚·BƒvƒƒpƒeƒB‚Æ‚µ‚Äİ’è‚³‚ê‚éÀÛ‚Ì’l‚ÍAƒ{ƒfƒB‚ÅPHP®‚ğg‚¤‚©Aqƒ^ƒO‚ÅA<a href="#componentTag">componentƒ^ƒO</a>‚ğg‚¢‚Ü‚·B</p>
+            <p><a href="#componentTag">componentƒ^ƒO</a>‚Ìqƒ^ƒO‚Æ‚µ‚Äg‚¢‚Ü‚·BƒvƒƒpƒeƒB‚Æ‚µ‚Äİ’è‚³‚ê‚éÀÛ‚Ì’l‚ÍAƒ{ƒfƒB‚ÅPHP®‚ğg‚¤‚©Aqƒ^ƒO‚Å<a href="#componentTag">componentƒ^ƒO</a>‚ğg‚¢‚Ü‚·B</p>
             <a name="propertyTag.nameAttr"><h4>name‘®«(•K{)</h4></a>
             <p>ƒvƒƒpƒeƒB–¼‚ğw’è‚µ‚Ü‚·B</p>
 
-			<a name="metaTag"><h3>metaƒ^ƒO(”CˆÓ)</h3></a>
-            <p><a href="#componentsTag">componentsƒ^ƒO</a>A<a href="#componentTag">componentƒ^ƒO</a>A<a href="#argTag">argƒ^ƒO</a>A<a href="#propertyTag">propertyƒ^ƒO</a>‚Ìqƒ^ƒO‚Æ‚µ‚Äg‚¢‚Ü‚·Bƒƒ^ƒf[ƒ^‚Ì’l‚ÍAƒ{ƒfƒB‚ÅPHP‚ğg‚¤‚©Aqƒ^ƒO‚ÅA<a href="#componentTag">componentƒ^ƒO</a>‚ğg‚¢‚Ü‚·B</p>
+            <a name="metaTag"><h3>metaƒ^ƒO(”CˆÓ)</h3></a>
+            <p><a href="#componentsTag">componentsƒ^ƒO</a>A<a href="#componentTag">componentƒ^ƒO</a>A<a href="#argTag">argƒ^ƒO</a>A<a href="#propertyTag">propertyƒ^ƒO</a>‚Ìqƒ^ƒO‚Æ‚µ‚Äg‚¢‚Ü‚·Bƒƒ^ƒf[ƒ^‚Ì’l‚ÍAƒ{ƒfƒB‚ÅPHP‚ğg‚¤‚©Aqƒ^ƒO‚Å<a href="#componentTag">componentƒ^ƒO</a>‚ğg‚¢‚Ü‚·B</p>
             <a name="propertyTag.nameAttr">
 <h4>name‘®«(”CˆÓ)</h4>
 </a>
             <p>ƒƒ^–¼‚ğw’è‚µ‚Ü‚·B</p>
 
             <a name="initMethodTag"><h3>initMethodƒ^ƒO(”CˆÓ)</h3></a>
-            <p><a href="#componentTag">componentƒ^ƒO</a>‚Ìqƒ^ƒO‚Æ‚µ‚Äg‚¢‚Ü‚·Bˆø”‚ÍAqƒ^ƒO‚ÅA<a href="#argTag">argƒ^ƒO</a>‚ğg‚¢‚Ü‚·Bname‘®«‚ğ‘‚©‚¸‚ÉAPHP®‚ğg‚Á‚ÄAƒRƒ“ƒ|[ƒlƒ“ƒg‚Ìƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·‚±‚Æ‚à‚Å‚«‚Ü‚·BinitMethodƒ^ƒO‚ª’è‹`‚³‚ê‚Ä‚¢‚éƒRƒ“ƒ|[ƒlƒ“ƒg©g‚ğ•\‚·$component‚ªinitMethodƒ^ƒO“à‚¾‚¯‚Å—LŒø‚ÈƒIƒuƒWƒFƒNƒg‚Æ‚µ‚Äg‚¦‚Ü‚·B</p>
+            <p><a href="#componentTag">componentƒ^ƒO</a>‚Ìqƒ^ƒO‚Æ‚µ‚Äg‚¢‚Ü‚·Bˆø”‚ÍAqƒ^ƒO‚Å<a href="#argTag">argƒ^ƒO</a>‚ğg‚¢‚Ü‚·Bname‘®«‚ğ‘‚©‚¸‚ÉPHP®‚ğg‚Á‚ÄAƒRƒ“ƒ|[ƒlƒ“ƒg‚Ìƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·‚±‚Æ‚à‚Å‚«‚Ü‚·BinitMethodƒ^ƒO‚ª’è‹`‚³‚ê‚Ä‚¢‚éƒRƒ“ƒ|[ƒlƒ“ƒg©g‚ğ•\‚·$component‚ªinitMethodƒ^ƒO“à‚¾‚¯‚Å—LŒø‚ÈƒIƒuƒWƒFƒNƒg‚Æ‚µ‚Äg‚¦‚Ü‚·B</p>
             <a name="initMethodTag.nameAttr"><h4>name‘®«(”CˆÓ)</h4></a>
             <p>ƒƒ\ƒbƒh–¼‚ğw’è‚µ‚Ü‚·B</p>
 
@@ -731,12 +734,12 @@ class HelloConstructorInjection implements Hello {
 <p>s2container.php5/examples/dicon/injection/HelloConstructorInjectionClient.php</p>
 <pre>&lt;?php
 require_once(dirname(__FILE__) . '/example.inc.php');
-$PATH =	EXAMPLE_DIR . "/dicon/HelloConstructorInjection.dicon";
-		
+$PATH =    EXAMPLE_DIR . "/dicon/HelloConstructorInjection.dicon";
+        
 $container = S2ContainerFactory::create($PATH);
 $hello = $container->getComponent('Hello');
 $hello->showMessage();
-		
+        
 $hello2 = $container->getComponent("hello");
 $hello2->showMessage();
 ?&gt;
@@ -833,7 +836,7 @@ class HelloSetterInjection implements Hello {
 <pre>&lt;?php
 require_once(dirname(__FILE__) . '/example.inc.php');
 $PATH = EXAMPLE_DIR . "/dicon/HelloSetterInjection.dicon";
-		
+        
 $container = S2ContainerFactory::create($PATH);
 $hello = $container->getComponent('Hello');
 $hello->showMessage();
@@ -883,9 +886,9 @@ interface Hello {
 class HelloMethodInjection implements Hello {
 
     private $buf = "";
-	
+    
     public function HelloMethodInjection() {}
-	
+    
     public function addMessage($message) {
         $this->buf .= $message;
     }
@@ -931,7 +934,7 @@ class HelloMethodInjection implements Hello {
 <pre>&lt;?php
 require_once(dirname(__FILE__) . '/example.inc.php');
 $PATH = EXAMPLE_DIR . "/dicon/HelloMethodInjection.dicon";
-		
+        
 $container = S2ContainerFactory::create($PATH);
 $hello = $container->getComponent('Hello');
 $hello->showMessage();
@@ -982,11 +985,11 @@ interface Hello {
 class AutoHelloConstructorInjection implements Hello {
 
     private $messages;
-	
+    
     public function AutoHelloConstructorInjection(Map $messages) {
         $this->messages = $messages;
     }
-	
+    
     public function showMessage() {
         print $this->messages->get('hello') . "\n";
     }
@@ -1022,11 +1025,11 @@ class HashMap implements Map{
     function HashMap() {}
     
     function put($key,$val){
-    	$this->pool[$key] = $val;
+        $this->pool[$key] = $val;
     }
     
     function get($key){
-    	return array_key_exists($key,$this->pool) ? $this->pool[$key] : null;
+        return array_key_exists($key,$this->pool) ? $this->pool[$key] : null;
     }
 }
 ?&gt;
@@ -1071,8 +1074,8 @@ S2Container“à‚ÉMap‚ÌÀ‘•ƒNƒ‰ƒX‚ª“o˜^‚³‚ê‚Ä‚¢‚ê‚ÎAS2Container‚ªƒRƒ“ƒeƒi“à‚ğŒŸõ‚
 
 <pre>&lt;?php
 require_once(dirname(dirname(__FILE__)) . '/example.inc.php');
-$PATH =	EXAMPLE_DIR . "/dicon/autobinding/AutoHelloConstructorInjection.dicon";
-		
+$PATH =    EXAMPLE_DIR . "/dicon/autobinding/AutoHelloConstructorInjection.dicon";
+        
 $container = S2ContainerFactory::create($PATH);
 $hello = $container->getComponent('Hello');
 $hello->showMessage();
@@ -1119,9 +1122,9 @@ interface Hello {
 class AutoHelloSetterInjection implements Hello {
 
     private $messages;
-	
+    
     public function AutoHelloSetterInjection() {}
-	
+    
     public function setMessage(Map $messages) {
         $this->messages = $messages;
     }
@@ -1173,7 +1176,7 @@ class AutoHelloSetterInjection implements Hello {
 <pre>&lt;?php
 require_once(dirname(dirname(__FILE__)) . '/example.inc.php');
 $PATH = EXAMPLE_DIR . "/dicon/autobinding/AutoHelloSetterInjection.dicon";
-		
+        
 $container = S2ContainerFactory::create($PATH);
 $hello = $container->getComponent('Hello');
 $hello->showMessage();

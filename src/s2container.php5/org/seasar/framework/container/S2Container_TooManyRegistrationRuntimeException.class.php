@@ -37,10 +37,14 @@ final class S2Container_TooManyRegistrationRuntimeException
      */
     public function __construct($key,$componentClasses)
     {
+        /*
         $args = array($key);
         foreach ($componentClasses as $clazz) {
             array_push($args,$clazz->getName());
         }
+        */
+        $args[] = $key;
+        $args[] = self::getClassNames($componentClasses);
         parent::__construct("ESSR0045",$args);
         $this->componentClasses_ = $componentClasses;
     }
@@ -67,13 +71,17 @@ final class S2Container_TooManyRegistrationRuntimeException
      */
     private static function getClassNames($componentClasses)
     {
-        $buf = "";
-        $o = count($componentClasses);
-        for ($i = 0; $i < $o; ++$i) {
-            $buf .= $componentClasses[$i];
-            $buf .= ", ";
+        $buf = array();
+
+        foreach ($componentClasses as $clazz) {
+            if($clazz instanceof ReflectionClass){
+                array_push($buf,$clazz->getName());
+            }else{
+                array_push($buf,'class n/a');
+            }
         }
-        return $buf;
+        
+        return implode(', ',$buf);
     }
 }
 ?>
