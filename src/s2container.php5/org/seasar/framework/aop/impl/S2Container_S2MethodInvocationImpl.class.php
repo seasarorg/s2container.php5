@@ -26,7 +26,7 @@
  * @author klove
  */
 class S2Container_S2MethodInvocationImpl 
-                         implements S2Container_S2MethodInvocation
+    implements S2Container_S2MethodInvocation
 {
     private $interceptorIndex = 0;
     private $interceptors;

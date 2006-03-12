@@ -24,33 +24,33 @@
 <tbody><tr align="left" valign="top"><td width="14"><img src="images/spacer.gif" alt="" height="14" width="14"></td><td class="main" width="740">
 <!-- don't edit end -->
 <!-- document start -->
-	<ul>
-		<li><a href="#S2AOPReference">S2AOPƒŠƒtƒ@ƒŒƒ“ƒX</a>
+    <ul>
+        <li><a href="#S2AOPReference">S2AOPƒŠƒtƒ@ƒŒƒ“ƒX</a>
             <ul>
             <li><a href="#AOPMakeFile">ì¬‚·‚×‚«ƒtƒ@ƒCƒ‹</a></li>
             <li><a href="#AOPExplanationFile">İ’èƒtƒ@ƒCƒ‹‚Ìà–¾</a></li>
-			<li><a href="#AOPInterceptor">S2AOP‚Å—pˆÓ‚³‚ê‚Ä‚¢‚éInterceptor</a>
-				<ul>
-				<li><a href="#TraceInterceptor">TraceInterceptor</a></li>
-				<li><a href="#ThrowsInterceptor">ThrowsInterceptor</a></li>
-				<li><a href="#MockInterceptor">MockInterceptor</a></li>
-				<li><a href="#DelegateInterceptor">DelegateInterceptor</a></li>
+            <li><a href="#AOPInterceptor">S2AOP‚Å—pˆÓ‚³‚ê‚Ä‚¢‚éInterceptor</a>
+                <ul>
+                <li><a href="#TraceInterceptor">TraceInterceptor</a></li>
+                <li><a href="#ThrowsInterceptor">ThrowsInterceptor</a></li>
+                <li><a href="#MockInterceptor">MockInterceptor</a></li>
+                <li><a href="#DelegateInterceptor">DelegateInterceptor</a></li>
 <li><a href="#PrototypeDelegateInterceptor">PrototypeDelegateInterceptor</a></li>
-				<li><a href="#InterceptorChain">InterceptorChain</a></li>
-				<li><a href="#OriginalInterceptor">“Æ©À‘•‚É‚æ‚éInterceptor</a></li>
-				</ul>
+                <li><a href="#InterceptorChain">InterceptorChain</a></li>
+                <li><a href="#OriginalInterceptor">“Æ©À‘•‚É‚æ‚éInterceptor</a></li>
+                </ul>
                         </li>
-	        <li><a href="#nodicon">diconƒtƒ@ƒCƒ‹‚ğg—p‚µ‚È‚¢‚ÅƒAƒXƒyƒNƒg‚ğ‘g‚İ‚Ş•û–@</a></li>
-		</ul></li>
-		<li><a href="#Example">Example</a>
-		<ul>
-           	<li><a href="#TraceInterceptorSample">TraceInterceptor</a></li>
-           	<li><a href="#ThrowsInterceptorSample">ThrowsInterceptor</a></li>
-           	<li><a href="#DelegateInterceptorSample">DelegateInterceptor</a></li>
-<li><a href="#PrototypeDelegateInterceptorSample">PrototypeDelegateInterceptor</a></li>
-			<li><a href="#OriginalInterceptorSample">“Æ©À‘•‚É‚æ‚éInterceptor</a></li>
+            <li><a href="#nodicon">diconƒtƒ@ƒCƒ‹‚ğg—p‚µ‚È‚¢‚ÅƒAƒXƒyƒNƒg‚ğ‘g‚İ‚Ş•û–@</a></li>
         </ul></li>
-	</ul>
+        <li><a href="#Example">Example</a>
+        <ul>
+               <li><a href="#TraceInterceptorSample">TraceInterceptor</a></li>
+               <li><a href="#ThrowsInterceptorSample">ThrowsInterceptor</a></li>
+               <li><a href="#DelegateInterceptorSample">DelegateInterceptor</a></li>
+<li><a href="#PrototypeDelegateInterceptorSample">PrototypeDelegateInterceptor</a></li>
+            <li><a href="#OriginalInterceptorSample">“Æ©À‘•‚É‚æ‚éInterceptor</a></li>
+        </ul></li>
+    </ul>
 
 <br>
 
@@ -58,14 +58,13 @@
 <ul>
 <li>Public‚Èƒƒ\ƒbƒh‚ÉƒAƒXƒyƒNƒg‚ğ“K—p‚Å‚«‚Ü‚·B</li>
 <li>static‚Èƒƒ\ƒbƒh‚É‚ÍƒAƒXƒyƒNƒg‚ğ“K—p‚Å‚«‚Ü‚¹‚ñB</li>
-<li>pointcut‘®«‚ğw’è‚µ‚È‚¢ê‡A‚·‚×‚Ä‚Ìƒƒ\ƒbƒh‚ª‘ÎÛ‚É‚È‚é‚í‚¯‚Å‚Í‚ ‚è‚Ü‚¹‚ñBÀ‘•‚µ‚Ä‚¢‚éƒCƒ“ƒ^[ƒtƒF[ƒX‚Ì‚·‚×‚Ä‚Ìƒƒ\ƒbƒh‚ª‘ÎÛ‚É‚È‚è‚Ü‚·B‚·‚×‚Ä‚Ìƒƒ\ƒbƒh‚ğ‘ÎÛ‚É‚·‚é‚É‚ÍApointcut‘®«‚É".*"‚Æw’è‚µ‚Ü‚·B</li>
+<li>pointcut‘®«‚ğw’è‚µ‚È‚¢ê‡AÀ‘•‚µ‚Ä‚¢‚éƒCƒ“ƒ^[ƒtƒF[ƒX‚Ì‚·‚×‚Ä‚Ìƒƒ\ƒbƒh‚ª‘ÎÛ‚É‚È‚è‚Ü‚·B‚·‚×‚Ä‚Ìƒƒ\ƒbƒh‚ğ‘ÎÛ‚É‚·‚é‚É‚ÍApointcut‘®«‚É".*"‚Æw’è‚µ‚Ü‚·B</li>
+<li>S2AOP‚Å‚ÍÀ‘•ãAƒƒ\ƒbƒh‚ğÀ‘•‚·‚éƒNƒ‰ƒXŠO•”‚©‚ç‚ÌŒÄ‚Ño‚µ‚É‚Ì‚İƒAƒXƒyƒNƒg‚ª“K—p‚³‚ê‚Ü‚·B($this->‚Åƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·ê‡‚ÍƒAƒXƒyƒNƒg‚ª“K—p‚³‚ê‚Ü‚¹‚ñB)</li>
 </ul>
 
-	<h2><a name="S2AOPReference">S2AOPƒŠƒtƒ@ƒŒƒ“ƒX</a></h2>
+    <h2><a name="S2AOPReference">S2AOPƒŠƒtƒ@ƒŒƒ“ƒX</a></h2>
     <h3><a name="AOPMakeFile">ì¬‚·‚×‚«ƒtƒ@ƒCƒ‹</a></h3>
-    <p>S2AOP
-‚ğg—p‚·‚é‚É‚ÍS2Container
-‚Ìİ’èƒtƒ@ƒCƒ‹(diconƒtƒ@ƒCƒ‹)‚Ås‚¢‚Ü‚·Bİ’èƒtƒ@ƒCƒ‹‚Ì”z’uêŠ‚ÍA‚Æ‚­‚Éw’è‚ª‚ ‚è‚Ü‚¹‚ñ‚ªA’ÊíuCrosscutting
+    <p>S2AOP‚Ìİ’è‚ÍS2Container‚Ìİ’èƒtƒ@ƒCƒ‹(diconƒtƒ@ƒCƒ‹)‚Ås‚¢‚Ü‚·Bİ’èƒtƒ@ƒCƒ‹‚Ì”z’uêŠ‚Í‚Æ‚­‚Éw’è‚ª‚ ‚è‚Ü‚¹‚ñ‚ªA’ÊíuCrosscutting
 Concernv‚Æ“¯‚¶êŠ‚É”z’u‚·‚é‚©Aİ’è‚ğs‚¤ƒRƒ“ƒ|[ƒlƒ“ƒg‚Æ“¯‚¶êŠ‚É”z’u‚µ‚Ü‚·B</p>
     <h3><a name="AOPExplanationFile">İ’èƒtƒ@ƒCƒ‹‚Ìà–¾</a></h3>
     <h4><a name="aspecTtag">aspectƒ^ƒOiAOP‚ğg—p‚·‚éê‡‚Í•K{j</a></h4>
@@ -79,7 +78,7 @@ Concernv‚Æ“¯‚¶êŠ‚É”z’u‚·‚é‚©Aİ’è‚ğs‚¤ƒRƒ“ƒ|[ƒlƒ“ƒg‚Æ“¯‚¶êŠ‚É”z’u‚µ‚Ü‚·
     <h5>İ’è—á</h5>
     <p>pointcut
 ‘®«‚ğw’è‚µ‚ÄDate‚ÌgetTime()ƒƒ\ƒbƒh‚ğ‘ÎÛ‚Æ‚·‚éê‡ˆÈ‰º‚Ì‚æ‚¤‚É‚È‚è‚Ü‚·B
-pointcut‘®«‚ğw’è‚µ‚È‚¢ê‡‚ÍDate‚ªÀ‘•‚µ‚Ä‚¢‚éƒCƒ“ƒ^[ƒtƒF[ƒX‚Ìƒƒ\ƒbƒh‚ª‘ÎÛ‚É‚È‚è‚Ü‚·B</p>
+</p>
 
 <pre>&lt;?php
 class Date {
@@ -96,7 +95,14 @@ class Date {
 ?&gt;
 </pre>
 
- ³‹K•\Œ»‚ğg‚Á‚Äjava.util.Date‚Ìpublic‚Èƒƒ\ƒbƒh‚·‚×‚Ä‚ğ‘ÎÛ‚Æ‚µ‚½‚¢ê‡‚ÍAˆÈ‰º‚Ì‚æ‚¤‚Éİ’è‚µ‚Ü‚·B
+<pre>&lt;component class="Date"&gt;
+    &lt;aspect pointcut="getTime"&gt;
+        &lt;component class="S2Container_TraceInterceptor"/&gt;
+    &lt;/aspect&gt;
+&lt;/component&gt;
+</pre>
+
+ ³‹K•\Œ»‚ğg‚Á‚ÄDateƒNƒ‰ƒX‚Ìpublic‚Èƒƒ\ƒbƒh‚·‚×‚Ä‚ğ‘ÎÛ‚Æ‚µ‚½‚¢ê‡‚ÍAˆÈ‰º‚Ì‚æ‚¤‚Éİ’è‚µ‚Ü‚·B
 <pre>&lt;component class="Date"&gt;
     &lt;aspect pointcut=".*"&gt;
         &lt;component class="S2Container_TraceInterceptor"/&gt;
@@ -106,9 +112,10 @@ class Date {
 
     <h3><a name="AOPInterceptor">S2AOP‚Å—pˆÓ‚³‚ê‚Ä‚¢‚éInterceptor</a></h3>
     <p>S2AOP‚Å‚ÍAˆÈ‰º‚ÌInterceptor‚ğ—pˆÓ‚µ‚Ä‚¢‚Ü‚·B‚Ü‚½“Æ©‚ÌInterceptor‚ğŠÈ’P‚Éì¬‚Å‚«‚é‚æ‚¤‚É‚È‚Á‚Ä‚¢‚Ü‚·B</p>
+
     <h4><a name="TraceInterceptor">(1) TraceInterceptor</a></h4>
     <h5>ƒNƒ‰ƒX–¼</h5>
-    <p>TraceInterceptor</p>
+    <p>S2Container_TraceInterceptor</p>
     <h5>à–¾</h5>
     <p>ƒgƒŒ[ƒXˆ—‚ğuCrosscutting Concernv‚Æ‚µ‚Äˆµ‚¤‚½‚ß‚ÌInterceptor‚Å‚·BDateƒNƒ‰ƒX‚ÉTraceInterceptor‚ğ“K—p‚µ‚½diconƒtƒ@ƒCƒ‹‚ÍAˆÈ‰º‚Ì‚æ‚¤‚É‚È‚è‚Ü‚·B‘ÎÛ‚Æ‚·‚éƒƒ\ƒbƒh‚ÍgetTime()‚Æ‚µ‚Ü‚·B</p>
 <pre>&lt;component class="Date"&gt;
@@ -117,59 +124,60 @@ class Date {
     &lt;/aspect&gt;
 &lt;/component&gt;
 </pre>
-    <p>Ú‚µ‚¢g—p•û–@‚Í<a href="#TraceInterceptorSample">TraceInterceptor</a>‚ğQÆ‚µ‚Ä‚­‚¾‚³‚¢B</p>
-    <h4><a name="S2Container_ThrowsInterceptor">(2) ThrowsInterceptor</a></h4>
+    <p>Ú‚µ‚¢g—p•û–@‚Í<a href="#TraceInterceptorSample">Example : TraceInterceptor</a>‚ğQÆ‚µ‚Ä‚­‚¾‚³‚¢B</p>
+
+    <h4><a name="ThrowsInterceptor">(2) ThrowsInterceptor</a></h4>
     <h5>ƒNƒ‰ƒX–¼</h5>
-    <p>ThrowsInterceptor</p>
+    <p>S2Container_ThrowsInterceptor</p>
     <h5>à–¾</h5>
     <p>—á
 ŠOˆ—‚ğuCrosscutting
 concernv‚Æ‚µ‚Äˆµ‚¤‚½‚ß‚ÌInterceptor‚Å‚·Bg—p‚·‚é‚É‚ÍThrowsInterceptor‚ğŒp³‚µAfunction
 handleThrowable(Exception,
-S2Container_MethodInvocation)‚ğÀ‘•‚·‚é‚¾‚¯‚Å‚·BÚ‚µ‚¢g—p•û–@‚Í<a href="#ThrowsInterceptorSample">ThrowsInterceptor</a>‚ğQÆ‚µ‚Ä‚­‚¾‚³‚¢B</p>
-    <h4><a name="S2Container_MockInterceptor">(3) MockInterceptor</a></h4>
+S2Container_MethodInvocation)‚ğÀ‘•‚·‚é‚¾‚¯‚Å‚·BÚ‚µ‚¢g—p•û–@‚Í<a href="#ThrowsInterceptorSample">Example : ThrowsInterceptor</a>‚ğQÆ‚µ‚Ä‚­‚¾‚³‚¢B</p>
+
+    <h4><a name="MockInterceptor">(3) MockInterceptor</a></h4>
     <h5>ƒNƒ‰ƒX–¼</h5>
-    <p>MockInterceptor</p>
+    <p>S2Container_MockInterceptor</p>
     <h5>à–¾</h5>
-    <p>Mock‚ğg‚Á‚½ƒeƒXƒg‚ğŠÈ’P‚És‚¤‚½‚ß‚ÌInterceptor‚Å‚·BÚ‚µ‚¢à–¾‚ÍƒeƒXƒg‹Z–@‚Ì<a href="http://homepage3.nifty.com/seasar/testtech.html#MockMake">ƒ‚ƒbƒN‚ğì¬‚·‚é‚½‚ß‚Ìİ’è</a>‚ğQÆ‚µ‚Ä‚­‚¾‚³‚¢B</p>
-    <h4><a name="S2Container_DelegateInterceptor">(4) DelegateInterceptor</a></h4>
+    <p>Mock‚ğg‚Á‚½ƒeƒXƒg‚ğŠÈ’P‚És‚¤‚½‚ß‚ÌInterceptor‚Å‚·BÚ‚µ‚¢à–¾‚ÍƒeƒXƒg‹Z–@‚Ì<a href="http://www.seasar.org/testtech.html">ƒ‚ƒbƒN‚ğì¬‚·‚é‚½‚ß‚Ìİ’è</a>‚ğQÆ‚µ‚Ä‚­‚¾‚³‚¢B</p>
+
+    <h4><a name="DelegateInterceptor">(4) DelegateInterceptor</a></h4>
     <h5>ƒNƒ‰ƒX–¼</h5>
-    <p>DelegateInterceptor</p>
+    <p>S2Container_DelegateInterceptor</p>
     <h5>à–¾</h5>
-    <p>ƒ
-ƒ\ƒbƒhŒÄ‚Ño‚µ‚ğ•Ê‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ÉˆÏ÷‚·‚é‚½‚ß‚ÌInterceptor‚Å‚·Bg—p•û–@‚ÍDelegateInterceptor‚Ìtargetƒvƒ
+    <p>ƒƒ\ƒbƒhŒÄ‚Ño‚µ‚ğ•Ê‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ÉˆÏ÷‚·‚é‚½‚ß‚ÌInterceptor‚Å‚·Bg—p•û–@‚ÍDelegateInterceptor‚Ìtargetƒvƒ
 ƒpƒeƒB‚ÉˆÏ÷‚µ‚½‚¢‘Šè‚ğw’è‚µ‚Ü‚·BˆÏ÷‚·‚é‚Æ‚«‚Ìƒƒ\ƒbƒh–¼‚ªˆÙ‚È‚éê‡‚É‚ÍA
 DeleateInterceptor#addMethodNameMap(
 $methodName, 
 $targetMethodName)‚Åw’è‚µ‚Ü‚·B—á‚¦‚ÎAbar()‚Æ‚¢‚¤ƒƒ\ƒbƒh‚ğfoo->bar2()‚ÉˆÏ÷‚·‚éê‡A
 DeleateInterceptor#setTarget(foo)CDeleateInterceptor#addMethodNameMap
 ("bar",
-"bar2")‚Ì‚æ‚¤‚Éw’è‚µ‚Ü‚·BÚ‚µ‚¢g—p•û–@‚Í<a href="#DelegateInterceptorSample">DelegateInterceptor</a>‚ğQÆ‚µ‚Ä‚­‚¾‚³‚¢B</p>
+"bar2")‚Ì‚æ‚¤‚Éw’è‚µ‚Ü‚·BÚ‚µ‚¢g—p•û–@‚Í<a href="#DelegateInterceptorSample">Example : DelegateInterceptor</a>‚ğQÆ‚µ‚Ä‚­‚¾‚³‚¢B</p>
 <h5>’ˆÓ</h5>
 <p>targetƒvƒƒpƒeƒB‚Éw’è‚³‚ê‚½ƒRƒ“ƒ|[ƒlƒ“ƒg‚ÍAƒRƒ“ƒeƒi‚Ì‰Šú‰»‚ÉƒRƒ“ƒeƒi‚©‚çæ“¾‚³‚ê‚Ü‚·B‚±‚Ì‚½‚ßAtargetƒvƒƒpƒeƒB‚Éw’è‚³
 ‚ê‚½ƒRƒ“ƒ|[ƒlƒ“ƒg‚Ìinstance‘®«‚ªprototype‚Å‚ ‚Á‚Ä‚àAí‚É“¯‚¶ƒCƒ“ƒXƒ^ƒ“ƒX‚ªg‚í‚ê‚Ü‚·Bƒƒ\ƒbƒhŒÄ‚Ño‚µ‚Ì“x‚ÉV‚µ‚¢ƒCƒ“ƒXƒ^ƒ“
 ƒX‚ğƒRƒ“ƒeƒi‚©‚çæ“¾‚µ‚½‚¢ê‡‚ÍŸ‚ÌPrototypeDelegateInterceptor‚ğg—p‚µ‚Ä‚­‚¾‚³‚¢B</p>
-<h4><a name="S2Container_PrototypeDelegateInterceptor">(5) PrototypeDelegateInterceptor</a></h4>
+
+<h4><a name="PrototypeDelegateInterceptor">(5) PrototypeDelegateInterceptor</a></h4>
     <h5>ƒNƒ‰ƒX–¼</h5>
     <p>PrototypeDelegateInterceptor</p>
     <h5>à–¾</h5>
-    <p>ƒ
-ƒ\ƒbƒhŒÄ‚Ño‚µ‚ğ•Ê‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ÉˆÏ÷‚·‚é‚½‚ß‚ÌInterceptor‚Å‚·Bƒƒ\ƒbƒhŒÄ‚Ño‚µ‚Ì“x‚ÉƒRƒ“ƒ|[ƒlƒ“ƒg‚ğƒRƒ“ƒeƒi‚©‚çæ“¾‚µ‚Ü‚·Bg—p
+    <p>ƒƒ\ƒbƒhŒÄ‚Ño‚µ‚ğ•Ê‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ÉˆÏ÷‚·‚é‚½‚ß‚ÌInterceptor‚Å‚·Bƒƒ\ƒbƒhŒÄ‚Ño‚µ‚Ì“x‚ÉƒRƒ“ƒ|[ƒlƒ“ƒg‚ğƒRƒ“ƒeƒi‚©‚çæ“¾‚µ‚Ü‚·Bg—p
 •û–@‚ÍPrototypeDelegateInterceptor‚ÌtargetNameƒvƒƒpƒeƒB‚ÉˆÏ÷‚µ‚½‚¢‘Šè‚Ì–¼‘O‚ğw’è‚µ‚Ü‚·BˆÏ÷‚·‚é‚Æ‚«‚Ì
 ƒƒ\ƒbƒh–¼‚ªˆÙ‚È‚éê‡‚É‚ÍAPrototypeDeleateInterceptor#addMethodNameMap($methodName, $targetMethodName)‚Åw’è‚µ‚Ü‚·B—á‚¦‚ÎAbar()‚Æ‚¢‚¤ƒƒ\ƒbƒh‚ğfoo->bar2()‚ÉˆÏ÷‚·‚éê‡A
 PrototypeDeleateInterceptor#setTarget(foo)C
 PrototypeDeleateInterceptor#addMethodNameMap("bar",
-"bar2")‚Ì‚æ‚¤‚Éw’è‚µ‚Ü‚·BÚ‚µ‚¢g—p•û–@‚Í<a href="#PrototypeDelegateInterceptorSample">PrototypeDelegateInterceptor</a>‚ğQÆ‚µ‚Ä‚­‚¾‚³‚¢B</p>
+"bar2")‚Ì‚æ‚¤‚Éw’è‚µ‚Ü‚·BÚ‚µ‚¢g—p•û–@‚Í<a href="#PrototypeDelegateInterceptorSample">Example : PrototypeDelegateInterceptor</a>‚ğQÆ‚µ‚Ä‚­‚¾‚³‚¢B</p>
 
-	<h4><a name="InterceptorChain">(6) InterceptorChain</a></h4>
+    <h4><a name="InterceptorChain">(6) InterceptorChain</a></h4>
     <h5>ƒNƒ‰ƒX–¼</h5>
-    <p>InterceptorChain</p>
+    <p>S2Container_InterceptorChain</p>
     <h5>à–¾</h5>
     <p>•¡
-”‚ÌInterceptor‚ğƒOƒ‹[ƒsƒ“ƒO‰»‚µAÄ—˜—p‚µ‚â‚·‚­‚µ‚Ü‚·B•¡”‚ÌInterceptor‚Ì‘g‚İ‡‚í‚¹‚ğ•¡”ƒRƒ“ƒ|[ƒlƒ“ƒg‚É“K—p‚·‚éê‡
-‚ÍAInterceptorChain‚Å•¡”‚ÌInterceptor1‚Â‚É‚Ü‚Æ‚ß‚ÄAŠeƒRƒ“ƒ|[ƒlƒ“ƒg‚É‚ÍInterceptorChain‚ğw’è‚·‚é
-‚æ‚¤‚É‚·‚é‚Æ‚¢‚¢‚Å‚µ‚å‚¤B</p>
-	<pre>&lt;component name="interceptor1" .../&gt;
+”‚ÌInterceptor‚ğƒOƒ‹[ƒsƒ“ƒO‰»‚µÄ—˜—p‚µ‚â‚·‚­‚µ‚Ü‚·B•¡”‚ÌInterceptor‚Ì‘g‚İ‡‚í‚¹‚ğ•¡”ƒRƒ“ƒ|[ƒlƒ“ƒg‚É“K—p‚·‚éê‡
+‚ÍAInterceptorChain‚Å•¡”‚ÌInterceptor‚ğ1‚Â‚É‚Ü‚Æ‚ß‚ÄAŠeƒRƒ“ƒ|[ƒlƒ“ƒg‚É‚ÍInterceptorChain‚ğw’è‚·‚é‚æ‚¤‚É‚·‚é‚Æ‚¢‚¢‚Å‚µ‚å‚¤B</p>
+    <pre>&lt;component name="interceptor1" .../&gt;
 &lt;component name="interceptor2" .../&gt;
 &lt;component name="interceptor3" .../&gt;<br>&lt;component name="chain" class="S2Container_InterceptorChain"&gt;<br>    &lt;initMethod name="add"&gt;&lt;arg&gt;interceptor1&lt;/arg&gt;&lt;/initMethod&gt;<br>    &lt;initMethod name="add"&gt;&lt;arg&gt;interceptor2&lt;/arg&gt;&lt;/initMethod&gt;<br>    &lt;initMethod name="add"&gt;&lt;arg&gt;interceptor3&lt;/arg&gt;&lt;/initMethod&gt;<br>&lt;/component&gt;
 &lt;component ...&gt;
@@ -183,12 +191,12 @@ PrototypeDeleateInterceptor#addMethodNameMap("bar",
     <h5>à–¾</h5>
     <p>“Æ©‚ÉInterceptor‚ğì¬‚·‚éê‡‚ÍAŸ‚ÌƒCƒ“ƒ^[ƒtƒF[ƒX‚Ü‚½‚ÍA’ŠÛƒNƒ‰ƒX‚ğÀ‘•‚µ‚Ü‚·B</p>
     <dl>
-    	<dt style="text-indent: 1em;">MethodInterceptor</dt>
-    	<dt style="text-indent: 1em;">AbstractInterceptor</dt>
+        <dt style="text-indent: 1em;">MethodInterceptor</dt>
+        <dt style="text-indent: 1em;">AbstractInterceptor</dt>
     </dl>
     <p>‚Ç‚¿‚ç‚Ìê‡‚àÀ‘•‚·‚éƒƒ\ƒbƒh‚ÍAˆÈ‰º‚Ìinvoke()ƒƒ\ƒbƒh‚Ì‚P‚Â‚¾‚¯‚Å‚·B</p>
     <dl>
-    	<dt style="text-indent: 1em;">public function invoke(S2Container_MethodInvocation $methodInvocation)</dt>
+        <dt style="text-indent: 1em;">public function invoke(S2Container_MethodInvocation $methodInvocation)</dt>
     </dl>
     <p>AbstractInterceptor
 ‚ÍAMethodInterceptor‚ğimplements‚µ‚½’ŠÛƒNƒ‰ƒX‚Å‚·BAbstractInterceptor‚É‚ÍAProxyƒIƒuƒWƒFƒN
@@ -196,15 +204,15 @@ PrototypeDeleateInterceptor#addMethodNameMap("bar",
 ƒg‚ğ“K—p‚µ‚½ƒNƒ‰ƒX–¼‚ğ•K—v‚Æ‚·‚éInterceptor(—á‚¦‚ÎAƒƒOo—Í‚ğs‚¤Interceptor)‚ğì¬‚·‚éê‡‚ÍA
 AbstractInterceptor‚ğg—p‚·‚é‚±‚Æ‚ÅŠÈ’P‚ÉƒNƒ‰ƒX–¼‚ğæ“¾‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B</p>
     <dl>
-    	<dt style="text-indent: 1em;">public function createProxy($proxyClass)</dt>
-    	<dt style="text-indent: 1em;">protected function getTargetClass(S2Container_MethodInvocation $methodInvocation)</dt>
+        <dt style="text-indent: 1em;">public function createProxy($proxyClass)</dt>
+        <dt style="text-indent: 1em;">protected function getTargetClass(S2Container_MethodInvocation $methodInvocation)</dt>
     </dl>
-   	<p>MethodInvocation
+       <p>MethodInvocation
 ‚ÌgetThis()AgetMethod()AgetArguments()‚Å‘ÎÛ‚Æ‚È‚éƒIƒuƒWƒFƒNƒgAƒƒ\ƒbƒhAˆø”‚ğæ“¾‚Å‚«‚Ü‚·Bproceed()‚ğŒÄ‚Ño‚·‚ÆÀÛ‚Ìƒƒ\ƒbƒh‚ªŒÄ‚Ño‚³‚êÀsŒ‹‰Ê‚ğæ
 “¾‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·BˆÈ‰º‚Ì‚æ‚¤‚È“Æ©‚ÌInterceptor‚ğì¬‚µ‚½‚Æ‚µ‚Ü‚·B</p>
     <h5>ì¬—á</h5>
 <pre>&lt;?php
-class ABS implements S2Container_MethodInterceptor {
+class SampleInterceptor implements S2Container_MethodInterceptor {
     public function invoke(S2Container_MethodInvocation $invocation){
 
         print "Before \n";             <-- ŒÄ‚Ô‘O‚Í Before
@@ -219,48 +227,51 @@ class ABS implements S2Container_MethodInterceptor {
 ?&gt;
 </pre>
     <p>MethodInvocation#proceed()‚ğŒÄ‚Ô‘O‚ÆŒã‚Å2•ª‚³‚êAŒÄ‚Ô‘O‚Í Before‚ÌŒÂŠ‚ğÀs‚µAŒÄ‚ñ‚¾Œã‚ÍAfter‚ÌŒÂŠ‚ğÀs‚µ‚Ü‚·B1‚Â‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚É•¡”‚ÌƒAƒXƒyƒNƒg‚ª’è‹`‚³‚ê‚Ä‚¢‚éê‡‚ÍAˆÈ‰º‚Ì‚æ‚¤Às‚³‚ê‚Ü‚·B</p>
-   	<ol>
-    	<li>Aspect‚Ì“o˜^‡‚ÉMethodInterceptor‚Ìbefore•”•ª‚ªÀs‚³‚ê‚Ü‚·B</li>
-    	<li>ÅŒã‚ÌMethodInterceptor‚Ìbefore•”•ª‚ğÀs‚µ‚½Œã‚ÉƒRƒ“ƒ|[ƒlƒ“ƒg©g‚Ìƒƒ\ƒbƒh‚ªŒÄ‚Ño‚³‚ê‚Ü‚·B</li>
-    	<li>Aspect‚Ì“o˜^‚Ì‹t‡‚ÉMethodInterceptor‚Ìafter•”•ª‚ªÀs‚³‚ê‚Ü‚·B</li>
-   	</ol>
+       <ol>
+        <li>Aspect‚Ì“o˜^‡‚ÉMethodInterceptor‚Ìbefore•”•ª‚ªÀs‚³‚ê‚Ü‚·B</li>
+        <li>ÅŒã‚ÌMethodInterceptor‚Ìbefore•”•ª‚ğÀs‚µ‚½Œã‚ÉƒRƒ“ƒ|[ƒlƒ“ƒg©g‚Ìƒƒ\ƒbƒh‚ªŒÄ‚Ño‚³‚ê‚Ü‚·B</li>
+        <li>Aspect‚Ì“o˜^‚Ì‹t‡‚ÉMethodInterceptor‚Ìafter•”•ª‚ªÀs‚³‚ê‚Ü‚·B</li>
+       </ol>
     <p>Ú‚µ‚¢g—p•û–@‚Í<a href="#OriginalInterceptorSample">“Æ©À‘•‚É‚æ‚éInterceptor</a>‚ğQÆ‚µ‚Ä‚­‚¾‚³‚¢B</p>
     <h3><a name="nodicon">diconƒtƒ@ƒCƒ‹‚ğg—p‚µ‚È‚¢‚ÅƒAƒXƒyƒNƒg‚ğ‘g‚İ‚Ş•û–@</a></h3>
     <p>diconƒtƒ@ƒCƒ‹‚Ìİ’è‚ğs‚í‚¸ƒvƒƒOƒ‰ƒ€ã‚ÅƒAƒXƒyƒNƒg‚ğ‘g‚İ‚Ş‚±‚Æ‚à‚Å‚«‚Ü‚·Bì¬•û–@‚ÍŸ‚Ì‚æ‚¤‚É‚È‚è‚Ü‚·B</p>
     <ul>
-	    <li>PointcutImpl
+        <li>PointcutImpl
 ‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^‚Ìˆø”‚Å‘ÎÛ‚Æ‚È‚éƒƒ\ƒbƒh–¼‚ğw’è(•¡”‰Â)‚µ‚Ü‚·ƒNƒ‰ƒX‚ğw’è‚·‚é‚±‚Æ‚ÅA‚»‚ÌƒNƒ‰ƒX‚ªÀ‘•‚µ‚Ä‚¢‚éƒCƒ“ƒ^[ƒtƒF[ƒX‚Ìƒƒ\ƒbƒh‚ğ‚·‚×‚Ä
 ©“®“I‚É“K—p‚³‚¹‚é‚±‚Æ‚à‚Å‚«‚Ü‚·B</li>
         <li>AspectImpl‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^‚Ì‘æ1ˆø”‚ÉInterceptor‚ğw’è‚µ‚ÄA‘æ2ˆø”‚ÉPointcutImpl‚Åì¬‚µ‚½Pointcut‚ğw’è‚µ‚Ü‚·B</li>
-        <li>AopProxy‚ÌƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ÅA‘ÎÛ‚Æ‚È‚éƒNƒ‰ƒX‚ÆAspectImpl‚Åì¬‚µ‚½Aspect‚Ì”z—ñ‚ğw’è‚µ‚Ü‚·B</li>
-        <li>AopProxy#create()‚ÅAspect‚ª“K—p‚³‚ê‚½ƒIƒuƒWƒFƒNƒg‚ğæ“¾‚Å‚«‚Ü‚·B</li>
-	</ul>
+        <li>AopProxyFactory‚Ìcreateƒƒ\ƒbƒh‚ÅA‘ÎÛƒIƒuƒWƒFƒNƒgAƒNƒ‰ƒX–¼AAspectImpl‚Åì¬‚µ‚½Aspect‚Ì”z—ñ‚ğw’è‚µ‚Ü‚·B</li>
+    </ul>
     <p>DateƒNƒ‰ƒX‚ÉTraceInterceptor‚ğƒvƒƒOƒ‰ƒ€ã‚Å“K—p‚·‚éê‡‚ÍAŸ‚Ì‚æ‚¤‚É‚È‚è‚Ü‚·B‘ÎÛ‚Æ‚È‚éƒƒ\ƒbƒh‚ÍgetTime()‚Æ‚µ‚Ü‚·B</p>
 <pre>&lt;?php
+require_once(dirname(__FILE__) . '/trace.inc.php');
+
 $pointcut = new S2Container_PointcutImpl(array("getTime"));
 $aspect = new S2Container_AspectImpl(new S2Container_TraceInterceptor(), $pointcut);
-$aopProxy = new S2Container_AopProxy('Date', array($aspect));
-$proxy = $aopProxy->create();
+$proxy = S2Container_AopProxyFactory::create(new Date(),'Date', array($aspect));
 $proxy->getTime();
 ?&gt;
 </pre>
+<p>‚±‚ÌƒTƒ“ƒvƒ‹‚ÍAs2container.php5/examples/aop/traceinterceptorˆÈ‰º‚É—pˆÓ‚³‚ê‚Ä‚¢‚Ü‚·B</p>
+
+
 <br>
-	<h2><a name="Example">Example</a></h2>
-	<p>ˆÈ‰º‚ÌƒTƒ“ƒvƒ‹‚ğÀs‚·‚éê‡‚ÍA<a href="setup.html">ƒZƒbƒgƒAƒbƒv</a>‚ğs‚¤•K—v‚ª‚ ‚è‚Ü‚·B</p>
+    <h2><a name="Example">Example</a></h2>
+    <p>ˆÈ‰º‚ÌƒTƒ“ƒvƒ‹‚ğÀs‚·‚éê‡‚ÍA<a href="setup.html">ƒZƒbƒgƒAƒbƒv</a>‚ğs‚¤•K—v‚ª‚ ‚è‚Ü‚·B</p>
     <h3><a name="TraceInterceptorSample">TraceInterceptor</a></h3>
     <p>TraceInterceptor
 ‚ğg—p‚µ‚ÄDateƒNƒ‰ƒX‚ÌgetTime()ƒƒ\ƒbƒh‚ªŒÄ‚Î‚ê‚½ê‡‚ÉƒgƒŒ[ƒX‚ğo—Í‚³‚¹‚Ü‚µ‚å‚¤Bì¬‚·‚éƒtƒ@ƒCƒ‹‚ÍˆÈ‰º‚Ì‚Æ‚¨‚è‚Å‚·B</p>
     <ul>
-    	<li type="circle">ƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ’è‹`‚·‚édiconƒtƒ@ƒCƒ‹(Trace.dicon)</li>
-		<li type="circle">İ’è‚ª³‚µ‚­s‚í‚ê‚Ä‚¢‚é‚©Šm”F‚·‚éÀsƒXƒNƒŠƒvƒg(AopTraceClient.php)</li>
-	</ul>
+        <li type="circle">ƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ’è‹`‚·‚édiconƒtƒ@ƒCƒ‹(Trace.dicon)</li>
+        <li type="circle">İ’è‚ª³‚µ‚­s‚í‚ê‚Ä‚¢‚é‚©Šm”F‚·‚éÀsƒXƒNƒŠƒvƒg(AopTraceClient.php)</li>
+    </ul>
     <p><b>diconƒtƒ@ƒCƒ‹‚Ìì¬</b></p>
     <ul>
         <li type="circle">TraceInterceptor‚ğƒRƒ“ƒ|[ƒlƒ“ƒg’è‹`‚µ‚Ü‚·Bname‘®«‚ğtraceInterceptor‚Æ‚µ‚Ü‚·B</li>
         <li type="circle">Date
 ƒNƒ‰ƒX‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì’è‹`‚µ‚Ü‚·Bpointcut‘®«‚ÉgetTime()ƒƒ\ƒbƒh‚ğw’è‚µ‚Ü‚·Baspectƒ^ƒO‚ÉInterceptor‚ğw’è‚µ‚Ü‚·B</li>
     </ul>
-	<p>Trace.dicon</p>
+    <p>Trace.dicon</p>
 <pre>&lt;?xml version="1.0" encoding="Shift_JIS"?&gt;
 &lt;!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
 "http://www.seasar.org/dtd/components21.dtd"&gt;
@@ -273,14 +284,14 @@ $proxy->getTime();
     &lt;/component&gt;
 &lt;/components&gt;
 </pre>
-	<p><b>ÀsƒXƒNƒŠƒvƒg‚Ìì¬</b></p>
+    <p><b>ÀsƒXƒNƒŠƒvƒg‚Ìì¬</b></p>
     <ul>
-		<li type="circle">S2Container#create()ƒƒ\ƒbƒh‚ÌÅ‰‚Ìˆø”‚Éì¬‚µ‚½diconƒtƒ@ƒCƒ‹(Trace.dicon)‚ÌƒpƒX‚ğw’è‚µ‚ÄƒRƒ“ƒeƒi‚ğì¬‚µ‚Ü‚·B</li>
+        <li type="circle">S2Container#create()ƒƒ\ƒbƒh‚ÌÅ‰‚Ìˆø”‚Éì¬‚µ‚½diconƒtƒ@ƒCƒ‹(Trace.dicon)‚ÌƒpƒX‚ğw’è‚µ‚ÄƒRƒ“ƒeƒi‚ğì¬‚µ‚Ü‚·B</li>
         <li type="circle">S2Container#getComponent
 ()ƒƒ\ƒbƒh‚Ì‘æ‚Pˆø”‚ÉƒRƒ“ƒ|[ƒlƒ“ƒg‚É“o˜^‚µ‚½ƒNƒ‰ƒX–¼iDate)‚ğw’è‚µ‚ÄƒRƒ“ƒ|[ƒlƒ“ƒg‚ğæ“¾‚µ
 ‚Ü‚·B</li>
         <li type="circle">ƒgƒŒ[ƒX‚ªAspect‚³‚ê‚é‚©Šm”F‚·‚é‚½‚ß‚Éæ“¾‚µ‚½ƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌDate‚ÌgetTime()ƒƒ\ƒbƒh‚ğÀs‚µ‚Ü‚·B</li>
-	</ul>
+    </ul>
     <p>AopTraceClient.php</p>
 <pre>&lt;?php
 require_once(dirname(__FILE__) . '/trace.inc.php');
@@ -292,28 +303,28 @@ $date = $container->getComponent('Date');
 $date->getTime();
 ?&gt;
 </pre>
-	<p><b>ÀsŒ‹‰Ê</b></p>
+    <p><b>ÀsŒ‹‰Ê</b></p>
     <p>ƒƒ\ƒbƒh‚ªŒÄ‚Î‚ê‚é‘O‚ÆŒã‚ÅƒgƒŒ[ƒX‚ªo—Í‚³‚ê‚Ä‚¢‚é‚Ì‚ªŠm”F‚Å‚«‚Ü‚·B</p>
 <pre>% php AopTraceClient.php
 BEGIN Date#getTime()
 END   Date#getTime() : 12:00:30
 %
 </pre>
-	<p>‚±‚ÌƒTƒ“ƒvƒ‹‚ÍAs2container.php5/examples/aop/traceinterceptorˆÈ‰º‚É—pˆÓ‚³‚ê‚Ä‚¢‚Ü‚·B</p>
-	<br>
-	<h3><a name="ThrowsInterceptorSample">ThrowsInterceptor</a></h3>
-	<p>(1) ThrowsInterceptor‚ğg‚Á‚ÄA—áŠO‚ª”­¶‚µ‚½ê‡‚Å‚àˆ—‚ğ‘±‚¯‚ç‚ê‚é‚æ‚¤‚É‚µ‚Ü‚µ‚å‚¤Bì¬‚·‚éƒtƒ@ƒCƒ‹‚ÍˆÈ‰º‚Ì‚æ‚¤‚É‚È‚è‚Ü‚·B</p>
-	<ul>
-		<li type="circle">Exception‚ğ”­¶‚³‚¹‚éƒNƒ‰ƒX(Checker.class.php)</li>
-		<li type="circle">ThrowsInterceptor‚ğŒp³‚µ‚Äì¬‚·‚éInterceptor(HandleThrowableInterceptor.class.php)</li>
-		<li type="circle">ƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì’è‹`‚ğ‚·‚édiconƒtƒ@ƒCƒ‹(Checker.dicon)</li>
-		<li type="circle">İ’è‚ª³‚µ‚­s‚í‚ê‚Ä‚¢‚é‚©Šm”F‚·‚éÀsƒtƒ@ƒCƒ‹(AopCheckerClient.php)</li>
-	</ul>
+    <p>‚±‚ÌƒTƒ“ƒvƒ‹‚ÍAs2container.php5/examples/aop/traceinterceptorˆÈ‰º‚É—pˆÓ‚³‚ê‚Ä‚¢‚Ü‚·B</p>
+    <br>
+    <h3><a name="ThrowsInterceptorSample">ThrowsInterceptor</a></h3>
+    <p>(1) ThrowsInterceptor‚ğg‚Á‚ÄA—áŠO‚ª”­¶‚µ‚½ê‡‚Å‚àˆ—‚ğ‘±‚¯‚ç‚ê‚é‚æ‚¤‚É‚µ‚Ü‚µ‚å‚¤Bì¬‚·‚éƒtƒ@ƒCƒ‹‚ÍˆÈ‰º‚Ì‚æ‚¤‚É‚È‚è‚Ü‚·B</p>
+    <ul>
+        <li type="circle">Exception‚ğ”­¶‚³‚¹‚éƒNƒ‰ƒX(Checker.class.php)</li>
+        <li type="circle">ThrowsInterceptor‚ğŒp³‚µ‚Äì¬‚·‚éInterceptor(HandleThrowableInterceptor.class.php)</li>
+        <li type="circle">ƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì’è‹`‚ğ‚·‚édiconƒtƒ@ƒCƒ‹(Checker.dicon)</li>
+        <li type="circle">İ’è‚ª³‚µ‚­s‚í‚ê‚Ä‚¢‚é‚©Šm”F‚·‚éÀsƒtƒ@ƒCƒ‹(AopCheckerClient.php)</li>
+    </ul>
     <p><b>—áŠO‚ğ”­¶‚³‚¹‚éƒNƒ‰ƒX‚Ìì¬</b></p>
     <ul>
-     	<li type="circle">run()ƒƒ\ƒbƒh‚Ìˆø”‚ªnull‚Å‚Í–³‚¢ê‡‚ÍAˆø”‚Ì•¶š‚ğƒRƒ“ƒ\[ƒ‹‚Éo—Í‚µ‚Ü‚·B</li>
-		<li type="circle">ˆø”‚ªnull‚Ìê‡‚ÍAException‚ğ”­¶‚³‚¹‚Ü‚·B</li>
-	</ul>
+         <li type="circle">run()ƒƒ\ƒbƒh‚Ìˆø”‚ªnull‚Å‚Í–³‚¢ê‡‚ÍAˆø”‚Ì•¶š‚ğƒRƒ“ƒ\[ƒ‹‚Éo—Í‚µ‚Ü‚·B</li>
+        <li type="circle">ˆø”‚ªnull‚Ìê‡‚ÍAException‚ğ”­¶‚³‚¹‚Ü‚·B</li>
+    </ul>
     <p>Checker.class.php</p>
 <pre>&lt;?php
 class Checker {
@@ -327,25 +338,25 @@ class Checker {
 }
 ?&gt;
 </pre>
-	<p><b>ThrowsInterceptor‚ğŒp³‚·‚éInterceptor‚Ìì¬</b></p>
-	<ul>
+    <p><b>ThrowsInterceptor‚ğŒp³‚·‚éInterceptor‚Ìì¬</b></p>
+    <ul>
         <li type="circle">ThrowsInterceptor‚ğŒp³‚µ‚Ü‚·B</li>
-	    <li type="circle">handleThrowable(Exception, S2Container_MethodInvocation)‚ğÀ‘•‚µ‚Ü‚·B</li>
+        <li type="circle">handleThrowable(Exception, S2Container_MethodInvocation)‚ğÀ‘•‚µ‚Ü‚·B</li>
     </ul>
-	<p>HandleThrowableInterceptor.class.php</p>
+    <p>HandleThrowableInterceptor.class.php</p>
 <pre>&lt;?php
 class HandleThrowableInterceptor extends S2Container_ThrowsInterceptor {
-	
+    
     public function handleThrowable(Exception $t, S2Container_MethodInvocation $invocation){
     }
 }
 ?&gt;
 </pre>
     <p><b>diconƒtƒ@ƒCƒ‹‚Ìì¬</b></p>
-	<ul>
-    	<li type="circle">ì¬‚µ‚½Interceptor‚ğƒRƒ“ƒ|[ƒlƒ“ƒg’è‹`‚µ‚Ü‚·Bname‘®«‚ğhandleThrowableInterceptor‚Æ‚µ‚Ü‚·B</li>
-		<li type="circle">—áŠO‚ğ”­¶‚³‚¹‚éCheckerƒNƒ‰ƒX‚Ìcheck()ƒƒ\ƒbƒh‚Éì¬‚µ‚½HandleThrowableInterceptor‚ğƒAƒXƒyƒNƒg‚µ‚Ü‚·B</li>
-	</ul>
+    <ul>
+        <li type="circle">ì¬‚µ‚½Interceptor‚ğƒRƒ“ƒ|[ƒlƒ“ƒg’è‹`‚µ‚Ü‚·Bname‘®«‚ğhandleThrowableInterceptor‚Æ‚µ‚Ü‚·B</li>
+        <li type="circle">—áŠO‚ğ”­¶‚³‚¹‚éCheckerƒNƒ‰ƒX‚Ìcheck()ƒƒ\ƒbƒh‚Éì¬‚µ‚½HandleThrowableInterceptor‚ğƒAƒXƒyƒNƒg‚µ‚Ü‚·B</li>
+    </ul>
     <p>Checker.dicon</p>
 <pre>&lt;?xml version="1.0" encoding="Shift_JIS"?&gt;
 &lt;!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
@@ -393,14 +404,14 @@ try{
 }
 ?&gt;
 </pre>
-	<p><b>ÀsŒ‹‰Ê</b></p>
-	<p>—áŠO‚Åˆ—‚ª~‚Ü‚Á‚Ä‚¢‚È‚¢‚±‚Æ‚ªŠm”F‚Å‚«‚Ü‚·B</p>
+    <p><b>ÀsŒ‹‰Ê</b></p>
+    <p>—áŠO‚Åˆ—‚ª~‚Ü‚Á‚Ä‚¢‚È‚¢‚±‚Æ‚ªŠm”F‚Å‚«‚Ü‚·B</p>
 <pre>% php AopCheckerClient.php
 foo
 hoge
 %
 </pre>
-	<p>‚±‚ÌƒTƒ“ƒvƒ‹‚ÍAs2container.php5/examples/aop/throwsinterceptorˆÈ‰º‚É—pˆÓ‚³‚ê‚Ä‚¢‚Ü‚·B</p>
+    <p>‚±‚ÌƒTƒ“ƒvƒ‹‚ÍAs2container.php5/examples/aop/throwsinterceptorˆÈ‰º‚É—pˆÓ‚³‚ê‚Ä‚¢‚Ü‚·B</p>
     <br>
 
 
@@ -412,14 +423,14 @@ ThrowsInterceptor‚ğŒp³‚µ‚Äì¬‚µ‚½ƒNƒ‰ƒX(HandleThrowableInterceptor.class.php)‚
     <p>S2RuntimeException‚ğ”­¶‚³‚¹‚ÄƒƒbƒZ[ƒW‚ğ•ÏX‚µ‚Ü‚·B</p>
 <pre>&lt;?php
 class HandleThrowableInterceptor extends S2Container_ThrowsInterceptor {
-	
+    
     public function handleThrowable(Exception $t, S2Container_MethodInvocation $invocation){
         throw new S2Container_S2RuntimeException("ESSR0007", array("arg"));
     }
 }
 ?&gt;
 </pre>
-	<p>æ‚Ù‚Çì¬‚µ‚½Àsƒtƒ@ƒCƒ‹‚ğg‚Á‚ÄÀs‚µ‚Ü‚·B</p>
+    <p>æ‚Ù‚Çì¬‚µ‚½Àsƒtƒ@ƒCƒ‹‚ğg‚Á‚ÄÀs‚µ‚Ü‚·B</p>
     <b>ÀsŒ‹‰Ê</b>
     <p>ƒGƒ‰[ƒƒbƒZ[ƒW‚ª•Ï‚í‚Á‚Ä‚¢‚é‚Ì‚ªŠm”F‚Å‚«‚Ü‚·B</p>
 <pre>% php AopCheckerClient.php
@@ -428,21 +439,21 @@ Exception : arg should not be null or empty
 hoge
 %
 </pre>
-	<p>‚±‚ÌƒTƒ“ƒvƒ‹‚ÍAs2container.php5/examples/aop/throwsinterceptorˆÈ‰º‚É—pˆÓ‚³‚ê‚Ä‚¢‚Ü‚·B</p>
+    <p>‚±‚ÌƒTƒ“ƒvƒ‹‚ÍAs2container.php5/examples/aop/throwsinterceptorˆÈ‰º‚É—pˆÓ‚³‚ê‚Ä‚¢‚Ü‚·B</p>
 <h3><a name="DelegateInterceptorSample">DelegateInterceptor</a></h3>
     <p>S2AOP‚Å—pˆÓ‚³‚ê‚Ä‚¢‚éDelegateInterceptor‚ğg‚Á‚ÄA‘¼‚ÌƒNƒ‰ƒX‚Ìƒƒ\ƒbƒh‚ÉˆÏ÷‚³‚¹‚Ü‚µ‚å‚¤B<br>
     ‚±‚±‚Å‚ÍAƒCƒ“ƒ^[ƒtƒF[ƒX‚Å’ŠÛƒƒ\ƒbƒh‚ğì¬‚µ‚ÄA’ŠÛƒNƒ‰ƒX‚Æ•’Ê‚ÌƒNƒ‰ƒX‚Ì—¼•û‚É‚»‚ÌƒCƒ“ƒ^[ƒtƒF[ƒX‚ğÀ‘•‚³‚¹‚Ü‚·B’ŠÛƒNƒ‰ƒX‚ÅÀ‘•‚µ‚½ƒƒ\ƒbƒh‚ğ•’Ê‚ÌƒNƒ‰ƒX‚ÅÀ‘•‚µ‚½ƒƒ\ƒbƒh‚ÉˆÏ÷‚³‚¹‚Ü‚µ‚å‚¤Bì¬‚·‚éƒtƒ@ƒCƒ‹‚ÍˆÈ‰º‚Ì‚Æ‚¨‚è‚Å‚·B</p>
     <ul>
-		<li type="circle">ƒCƒ“ƒ^[ƒtƒF[ƒX(IBase.class.php)</li>
-		<li type="circle">ƒCƒ“ƒ^[ƒtƒF[ƒX‚ğÀ‘•‚µ‚½’ŠÛƒNƒ‰ƒX(Dummy.class.php)</li>
-		<li type="circle">ƒCƒ“ƒ^[ƒtƒF[ƒX‚ğÀ‘•‚µ‚½ƒNƒ‰ƒX(Substance.class.php)</li>
-		<li type="circle">ˆÏ÷‚ğİ’è‚·‚édiconƒtƒ@ƒCƒ‹(Delegate.dicon)</li>
-		<li type="circle">İ’è‚ª³‚µ‚­s‚í‚ê‚Ä‚¢‚é‚©Šm”F‚·‚éÀsƒtƒ@ƒCƒ‹(AopDelegateClient.class.php)</li>
-	</ul>
+        <li type="circle">ƒCƒ“ƒ^[ƒtƒF[ƒX(IBase.class.php)</li>
+        <li type="circle">ƒCƒ“ƒ^[ƒtƒF[ƒX‚ğÀ‘•‚µ‚½’ŠÛƒNƒ‰ƒX(Dummy.class.php)</li>
+        <li type="circle">ƒCƒ“ƒ^[ƒtƒF[ƒX‚ğÀ‘•‚µ‚½ƒNƒ‰ƒX(Substance.class.php)</li>
+        <li type="circle">ˆÏ÷‚ğİ’è‚·‚édiconƒtƒ@ƒCƒ‹(Delegate.dicon)</li>
+        <li type="circle">İ’è‚ª³‚µ‚­s‚í‚ê‚Ä‚¢‚é‚©Šm”F‚·‚éÀsƒtƒ@ƒCƒ‹(AopDelegateClient.class.php)</li>
+    </ul>
     <p><b>ƒCƒ“ƒ^[ƒtƒF[ƒX‚Ìì¬</b></p>
-	<ul>
-	    <li type="circle">’ŠÛƒƒ\ƒbƒh‚ğì¬‚µ‚Ü‚·B</li>
-	</ul>
+    <ul>
+        <li type="circle">’ŠÛƒƒ\ƒbƒh‚ğì¬‚µ‚Ü‚·B</li>
+    </ul>
     <p>IBase.class.php</p>
 <pre>&lt;?php
 interface IBase {
@@ -451,10 +462,10 @@ interface IBase {
 ?&gt;
 </pre>
 
-	<p><b>ƒCƒ“ƒ^[ƒtƒF[ƒX‚ğÀ‘•‚µ‚½’ŠÛƒNƒ‰ƒX‚Ìì¬</b></p>
-	<ul>
-		<li type="circle">ì¬‚µ‚½ƒCƒ“ƒ^[ƒtƒF[ƒX‚ğÀ‘•‚µ‚Ü‚·B</li>
-	</ul>
+    <p><b>ƒCƒ“ƒ^[ƒtƒF[ƒX‚ğÀ‘•‚µ‚½’ŠÛƒNƒ‰ƒX‚Ìì¬</b></p>
+    <ul>
+        <li type="circle">ì¬‚µ‚½ƒCƒ“ƒ^[ƒtƒF[ƒX‚ğÀ‘•‚µ‚Ü‚·B</li>
+    </ul>
     <p>Dummy.class.php</p>
 <pre>&lt;?php
 abstract class Dummy implements IBase {
@@ -462,11 +473,11 @@ abstract class Dummy implements IBase {
 ?&gt;
 </pre>
     <p><b>ƒCƒ“ƒ^[ƒtƒF[ƒX‚ğÀ‘•‚µ‚½ƒNƒ‰ƒX‚Ìì¬</b></p>
-	<ul>
-		<li type="circle">ì¬‚µ‚½ƒCƒ“ƒ^[ƒtƒF[ƒX‚ğÀ‘•‚µ‚Ü‚·B</li>
-		<li type="circle">À‘•‚µ‚½ƒCƒ“ƒ^ƒtƒF[ƒX‚Ì’ŠÛƒƒ\ƒbƒh‚ÌÀ‘•‚µ‚Ü‚·B</li>
-	</ul>
-	<p>Substance.class.php</p>
+    <ul>
+        <li type="circle">ì¬‚µ‚½ƒCƒ“ƒ^[ƒtƒF[ƒX‚ğÀ‘•‚µ‚Ü‚·B</li>
+        <li type="circle">À‘•‚µ‚½ƒCƒ“ƒ^ƒtƒF[ƒX‚Ì’ŠÛƒƒ\ƒbƒh‚ÌÀ‘•‚µ‚Ü‚·B</li>
+    </ul>
+    <p>Substance.class.php</p>
 <pre>&lt;?php
 class Substance implements IBase{
     public function run() {
@@ -475,15 +486,15 @@ class Substance implements IBase{
 }
 ?&gt;
 </pre>
-	<p><b>diconƒtƒ@ƒCƒ‹‚Ìì¬</b></p>
-	<ul>
-		<li type="circle">’ŠÛƒNƒ‰ƒX(Dummy)‚ğƒRƒ“ƒ|[ƒlƒ“ƒg’è‹`‚µ‚Ü‚·B</li>
+    <p><b>diconƒtƒ@ƒCƒ‹‚Ìì¬</b></p>
+    <ul>
+        <li type="circle">’ŠÛƒNƒ‰ƒX(Dummy)‚ğƒRƒ“ƒ|[ƒlƒ“ƒg’è‹`‚µ‚Ü‚·B</li>
         <li type="circle">DelegateInterceptor
 ‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ğaspectƒ^ƒO‚É’è‹`‚µ‚Ü‚·BDelegateInterceptor#setTarget()‚ğg‚Á‚ÄˆÏ÷‚µ‚½‚¢‘Šè‚ğw’è‚µ‚Ü
 ‚·BˆÏ÷‚µ‚½‚¢ƒNƒ‰ƒX‚ÍSubstanceƒNƒ‰ƒX‚È‚Ì‚Åƒƒ\ƒbƒhEƒCƒ“ƒWƒFƒNƒVƒ‡ƒ“
 ‚ğg‚Á‚ÄƒZƒbƒg‚µ‚Ü‚·B</li>
-	</ul>
-	<p>Delegate.dicon</p>
+    </ul>
+    <p>Delegate.dicon</p>
 <pre>&lt;?xml version="1.0" encoding="Shift_JIS"?&gt;
 &lt;!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
 "http://www.seasar.org/dtd/components21.dtd"&gt;
@@ -498,12 +509,12 @@ class Substance implements IBase{
         &lt;/aspect&gt;
     &lt;/component&gt;
 &lt;/components&gt;</pre>
-	<p><b>Àsƒtƒ@ƒCƒ‹‚Ìì¬</b></p>
-	<ul>
-    	<li type="circle">S2Container#create()ƒƒ\ƒbƒh‚ÌÅ‰‚Ìˆø”‚Éì¬‚µ‚½diconƒtƒ@ƒCƒ‹(Delegate.dicon)‚ÌƒpƒX‚ğw’è‚µ‚ÄƒRƒ“ƒeƒi‚ğì¬‚µ‚Ü‚·B</li>
+    <p><b>Àsƒtƒ@ƒCƒ‹‚Ìì¬</b></p>
+    <ul>
+        <li type="circle">S2Container#create()ƒƒ\ƒbƒh‚ÌÅ‰‚Ìˆø”‚Éì¬‚µ‚½diconƒtƒ@ƒCƒ‹(Delegate.dicon)‚ÌƒpƒX‚ğw’è‚µ‚ÄƒRƒ“ƒeƒi‚ğì¬‚µ‚Ü‚·B</li>
         <li type="circle">S2Container#getComponent()ƒƒ\ƒbƒh‚Ì‘æ‚Pˆø”‚ÉƒRƒ“ƒ|[ƒlƒ“ƒg‚É“o˜^‚µ‚½ƒNƒ‰ƒX–¼iIBase)‚ğw’è‚µ‚Äæ“¾‚µ‚Ü‚·B</li>
         <li type="circle">ƒRƒ“ƒeƒi‚©‚çæ“¾‚µ‚½IBase#run()ƒƒ\ƒbƒh‚ğÀs‚µ‚Ü‚·B</li>
-	</ul>
+    </ul>
     AopDelegateCilent.php
 <pre>&lt;?php
 require_once(dirname(__FILE__) . '/delegate.inc.php');
@@ -514,29 +525,29 @@ $base->run();
 ?&gt;
 </pre>
 
-	<p><b>ÀsŒ‹‰Ê</b></p>
-	<p>ƒRƒ“ƒ\[ƒ‹‚É"substance"‚Æ•\¦‚³‚ê‚Ä‚¢‚é‚Ì‚ÅDummy#run()‚ªSubstance#run()‚ÉˆÏ÷‚³‚ê‚Ä‚¢‚é‚Ì‚ªŠm”F‚Å‚«‚Ü‚·B</p>
+    <p><b>ÀsŒ‹‰Ê</b></p>
+    <p>ƒRƒ“ƒ\[ƒ‹‚É"substance"‚Æ•\¦‚³‚ê‚Ä‚¢‚é‚Ì‚ÅDummy#run()‚ªSubstance#run()‚ÉˆÏ÷‚³‚ê‚Ä‚¢‚é‚Ì‚ªŠm”F‚Å‚«‚Ü‚·B</p>
 <pre>% php AopDelegateCilent.php
 substance
 %
 </pre>
-	<p>‚±‚ÌƒTƒ“ƒvƒ‹‚ÍAs2container.php5/examples/aop/delegateinterceptorˆÈ‰º‚É—pˆÓ‚³‚ê‚Ä‚¢‚Ü‚·B</p>
+    <p>‚±‚ÌƒTƒ“ƒvƒ‹‚ÍAs2container.php5/examples/aop/delegateinterceptorˆÈ‰º‚É—pˆÓ‚³‚ê‚Ä‚¢‚Ü‚·B</p>
     <br>
 <h3><a name="PrototypeDelegateInterceptorSample">PrototypeDelegateInterceptor</a></h3>
     <p>S2AOP‚Å—pˆÓ‚³‚ê‚Ä‚¢‚éPrototypeDelegateInterceptor‚ğg‚Á‚ÄAsingleton‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚©‚çprototype‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚Ìƒƒ\ƒbƒh‚ÉˆÏ÷‚³‚¹‚Ü‚µ‚å‚¤B<br>
 ‚±‚±‚Å‚ÍAƒCƒ“ƒ^[ƒtƒF[ƒX‚Å’ŠÛƒƒ\ƒbƒh‚ğì¬‚µ‚ÄA’ŠÛƒNƒ‰ƒX(singleton)‚Æ•’Ê‚ÌƒNƒ‰ƒX(prototype)‚Ì—¼•û‚É‚»‚ÌƒCƒ“ƒ^[
 ƒtƒF[ƒX‚ğÀ‘•‚³‚¹‚Ü‚·B’ŠÛƒNƒ‰ƒX‚ÅÀ‘•‚µ‚½ƒƒ\ƒbƒh‚ğ•’Ê‚ÌƒNƒ‰ƒX‚ÅÀ‘•‚µ‚½ƒƒ\ƒbƒh‚ÉˆÏ÷‚³‚¹‚Ü‚µ‚å‚¤Bì¬‚·‚éƒtƒ@ƒCƒ‹‚ÍˆÈ‰º‚Ì‚Æ‚¨‚è‚Å‚·B</p>
     <ul>
-		<li type="circle">ƒCƒ“ƒ^[ƒtƒF[ƒX(IBase.class.php)</li>
-		<li type="circle">ƒCƒ“ƒ^[ƒtƒF[ƒX‚ğÀ‘•‚µ‚½singleton‚Ì’ŠÛƒNƒ‰ƒX(Dummy.class.php)</li>
-		<li type="circle">ƒCƒ“ƒ^[ƒtƒF[ƒX‚ğÀ‘•‚µ‚½prototype‚ÌƒNƒ‰ƒX(Substance.class.php)</li>
-		<li type="circle">ˆÏ÷‚ğİ’è‚·‚édiconƒtƒ@ƒCƒ‹(Delegate.dicon)</li>
-		<li type="circle">İ’è‚ª³‚µ‚­s‚í‚ê‚Ä‚¢‚é‚©Šm”F‚·‚éÀsƒtƒ@ƒCƒ‹(AopPrototypeDelegateClient.php)</li>
-	</ul>
+        <li type="circle">ƒCƒ“ƒ^[ƒtƒF[ƒX(IBase.class.php)</li>
+        <li type="circle">ƒCƒ“ƒ^[ƒtƒF[ƒX‚ğÀ‘•‚µ‚½singleton‚Ì’ŠÛƒNƒ‰ƒX(Dummy.class.php)</li>
+        <li type="circle">ƒCƒ“ƒ^[ƒtƒF[ƒX‚ğÀ‘•‚µ‚½prototype‚ÌƒNƒ‰ƒX(Substance.class.php)</li>
+        <li type="circle">ˆÏ÷‚ğİ’è‚·‚édiconƒtƒ@ƒCƒ‹(Delegate.dicon)</li>
+        <li type="circle">İ’è‚ª³‚µ‚­s‚í‚ê‚Ä‚¢‚é‚©Šm”F‚·‚éÀsƒtƒ@ƒCƒ‹(AopPrototypeDelegateClient.php)</li>
+    </ul>
     <p><b>ƒCƒ“ƒ^[ƒtƒF[ƒX‚Ìì¬</b></p>
-	<ul>
-	    <li type="circle">’ŠÛƒƒ\ƒbƒh‚ğì¬‚µ‚Ü‚·B</li>
-	</ul>
+    <ul>
+        <li type="circle">’ŠÛƒƒ\ƒbƒh‚ğì¬‚µ‚Ü‚·B</li>
+    </ul>
     <p>IBase.class.php</p>
 <pre>&lt;?php
 interface IBase {
@@ -545,10 +556,10 @@ interface IBase {
 ?&gt;
 </pre>
 
-	<p><b>ƒCƒ“ƒ^[ƒtƒF[ƒX‚ğÀ‘•‚µ‚½’ŠÛƒNƒ‰ƒX‚Ìì¬</b></p>
-	<ul>
-		<li type="circle">ì¬‚µ‚½ƒCƒ“ƒ^[ƒtƒF[ƒX‚ğÀ‘•‚µ‚Ü‚·B</li>
-	</ul>
+    <p><b>ƒCƒ“ƒ^[ƒtƒF[ƒX‚ğÀ‘•‚µ‚½’ŠÛƒNƒ‰ƒX‚Ìì¬</b></p>
+    <ul>
+        <li type="circle">ì¬‚µ‚½ƒCƒ“ƒ^[ƒtƒF[ƒX‚ğÀ‘•‚µ‚Ü‚·B</li>
+    </ul>
     <p>Dummy.class.php</p>
 <pre>&lt;?php
 abstract class Dummy implements IBase {
@@ -556,11 +567,11 @@ abstract class Dummy implements IBase {
 ?&gt;
 </pre>
     <p><b>ƒCƒ“ƒ^[ƒtƒF[ƒX‚ğÀ‘•‚µ‚½ƒNƒ‰ƒX‚Ìì¬</b></p>
-	<ul>
-		<li type="circle">ì¬‚µ‚½ƒCƒ“ƒ^[ƒtƒF[ƒX‚ğÀ‘•‚µ‚Ü‚·B</li>
-		<li type="circle">À‘•‚µ‚½ƒCƒ“ƒ^ƒtƒF[ƒX‚Ì’ŠÛƒƒ\ƒbƒh‚ÌÀ‘•‚µ‚Ü‚·B</li>
-	</ul>
-	<p>Substance.class.php</p>
+    <ul>
+        <li type="circle">ì¬‚µ‚½ƒCƒ“ƒ^[ƒtƒF[ƒX‚ğÀ‘•‚µ‚Ü‚·B</li>
+        <li type="circle">À‘•‚µ‚½ƒCƒ“ƒ^ƒtƒF[ƒX‚Ì’ŠÛƒƒ\ƒbƒh‚ÌÀ‘•‚µ‚Ü‚·B</li>
+    </ul>
+    <p>Substance.class.php</p>
 <pre>&lt;?php
 class Substance implements IBase{
     private $sum = 0;
@@ -572,13 +583,13 @@ class Substance implements IBase{
 }
 ?&gt;
 </pre>
-	<p><b>diconƒtƒ@ƒCƒ‹‚Ìì¬</b></p>
-	<ul>
-		<li type="circle">’ŠÛƒNƒ‰ƒX(Dummy)‚ğƒRƒ“ƒ|[ƒlƒ“ƒg’è‹`‚µ‚Ü‚·B‚±‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚Ísingleton‚Å‚·B</li>
+    <p><b>diconƒtƒ@ƒCƒ‹‚Ìì¬</b></p>
+    <ul>
+        <li type="circle">’ŠÛƒNƒ‰ƒX(Dummy)‚ğƒRƒ“ƒ|[ƒlƒ“ƒg’è‹`‚µ‚Ü‚·B‚±‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚Ísingleton‚Å‚·B</li>
 <li type="circle">PrototypeDelegateInterceptor‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ğaspectƒ^ƒO‚É’è‹`‚µ‚Ü‚·BPrototypeDelegateInterceptor‚ÌtargetNameƒvƒƒpƒeƒB‚ÉˆÏ÷‚µ‚½‚¢‘Šè‚Ì–¼‘O("target")‚ğw’è‚µ‚Ü‚·B</li>
 <li type="circle">ˆÏ÷‚µ‚½‚¢ƒNƒ‰ƒX(Substance)‚ğƒRƒ“ƒ|[ƒlƒ“ƒg’è‹`‚µ‚Ü‚·B‚±‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚Ìinstance‘®«‚Íprototype‚Å‚·B
 </li></ul>
-	<p>PrototypeDelegate.dicon</p>
+    <p>PrototypeDelegate.dicon</p>
 <pre>&lt;?xml version="1.0" encoding="Shift_JIS"?&gt;
 &lt;!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
 "http://www.seasar.org/dtd/components21.dtd"&gt;
@@ -593,12 +604,12 @@ class Substance implements IBase{
 
     &lt;component name="target" class="Substance" instance="prototype"/&gt;
 &lt;/components&gt;</pre>
-	<p><b>Àsƒtƒ@ƒCƒ‹‚Ìì¬</b></p>
-	<ul>
-    	<li type="circle">S2Container#create()ƒƒ\ƒbƒh‚ÌÅ‰‚Ìˆø”‚Éì¬‚µ‚½diconƒtƒ@ƒCƒ‹(PrototypeDelegate.dicon)‚ÌƒpƒX‚ğw’è‚µ‚ÄƒRƒ“ƒeƒi‚ğì¬‚µ‚Ü‚·B</li>
+    <p><b>Àsƒtƒ@ƒCƒ‹‚Ìì¬</b></p>
+    <ul>
+        <li type="circle">S2Container#create()ƒƒ\ƒbƒh‚ÌÅ‰‚Ìˆø”‚Éì¬‚µ‚½diconƒtƒ@ƒCƒ‹(PrototypeDelegate.dicon)‚ÌƒpƒX‚ğw’è‚µ‚ÄƒRƒ“ƒeƒi‚ğì¬‚µ‚Ü‚·B</li>
         <li type="circle">S2Container#getComponent()ƒƒ\ƒbƒh‚Ì‘æ‚Pˆø”‚ÉƒRƒ“ƒ|[ƒlƒ“ƒg‚É“o˜^‚µ‚½ƒNƒ‰ƒX–¼iIBase)‚ğw’è‚µ‚Äæ“¾‚µ‚Ü‚·B</li>
         <li type="circle">ƒRƒ“ƒeƒi‚©‚çæ“¾‚µ‚½IBase#run()ƒƒ\ƒbƒh‚ğŒJ‚è•Ô‚µÀs‚µ‚Ü‚·B</li>
-	</ul>
+    </ul>
 AopPrototypeDelegateCilent.php
 <pre>&lt;?php
 require_once(dirname(__FILE__) . '/prototype.inc.php');
@@ -612,8 +623,8 @@ for ($i = 0; $i < 5; ++$i) {
 ?&gt;
 </pre>
 
-	<p><b>ÀsŒ‹‰Ê</b></p>
-	<p>ƒR
+    <p><b>ÀsŒ‹‰Ê</b></p>
+    <p>ƒR
 ƒ“ƒ\[ƒ‹‚É"sum : 0"‚Æ•\¦‚³‚ê‚Ä‚¢‚é‚Ì‚Å
 Dummy#run()‚ªSubstance#run()‚ÉˆÏ÷‚³‚ê‚Ä‚¢‚é‚Ì‚ªŠm”F‚Å‚«‚Ü‚·B‚Ü‚½Asum‚Ì’l‚ª‚·‚×‚Ä"0"‚Æ‚È‚Á‚Ä‚¢‚é‚±‚Æ‚©‚çCrun()ƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·‚½‚Ñ‚ÉV‚µ‚¢Substance‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ªì¬‚³‚ê‚Ä‚¢‚é‚±‚Æ‚ª•ª‚©‚è‚Ü‚·B</p>
 <pre>% php AopPrototypeDelegateCilent.php
@@ -624,25 +635,25 @@ sum : 0
 sum : 0
 %
 </pre>
-	<p>‚±‚ÌƒTƒ“ƒvƒ‹‚ÍAs2container.php5/examples/aop/delegateinterceptorˆÈ‰º‚É—pˆÓ‚³‚ê‚Ä‚¢‚Ü‚·B</p>
+    <p>‚±‚ÌƒTƒ“ƒvƒ‹‚ÍAs2container.php5/examples/aop/delegateinterceptorˆÈ‰º‚É—pˆÓ‚³‚ê‚Ä‚¢‚Ü‚·B</p>
     <br>
     <h3><a name="OriginalInterceptorSample">“Æ©À‘•‚É‚æ‚éInterceptor</a></h3>
     <p>ƒNƒ‰ƒX–¼Aƒƒ\ƒbƒh–¼Aˆø”‚Æƒƒ\ƒbƒh‚Ìˆ—ŠÔ‚ğŒv‘ª‚µ‚ÄƒgƒŒ[ƒX‚·‚éInterceptor‚ğì¬‚µ‚Ü‚µ‚å‚¤B‚Ü‚½A‚»‚ÌInterceptor‚ğg—p‚µ‚Äd‚¢ˆ—‚ğs‚Á‚½ŠÔ‚ğƒgƒŒ[ƒX‚³‚¹‚Ü‚µ‚å‚¤Bì¬‚·‚éƒtƒ@ƒCƒ‹‚ÍˆÈ‰º‚Ì‚Æ‚¨‚è‚Å‚·B</p>
     <ul>
-		<li type="circle">ƒNƒ‰ƒX–¼Aƒƒ\ƒbƒh–¼Aˆø”‚Æƒƒ\ƒbƒh‚Ìˆ—ŠÔ‚ğŒv‘ª‚µ‚Äo—Í‚·‚éInterceptor(MeasurementInterceptor.java)</li>
-    	<li type="circle">d‚¢ˆ—‚ğs‚¤ƒNƒ‰ƒX(HeavyProcess.java)</li>
-    	<li type="circle">ƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì’è‹`‚ğs‚¤diconƒtƒ@ƒCƒ‹(Measurement.dicon)</li>
-    	<li type="circle">İ’è‚ª³‚µ‚­s‚í‚ê‚Ä‚¢‚é‚©Šm”F‚·‚éÀsƒtƒ@ƒCƒ‹(AopMeasurementClient.java)</li>
+        <li type="circle">ƒNƒ‰ƒX–¼Aƒƒ\ƒbƒh–¼Aˆø”‚Æƒƒ\ƒbƒh‚Ìˆ—ŠÔ‚ğŒv‘ª‚µ‚Äo—Í‚·‚éInterceptor(MeasurementInterceptor.java)</li>
+        <li type="circle">d‚¢ˆ—‚ğs‚¤ƒNƒ‰ƒX(HeavyProcess.java)</li>
+        <li type="circle">ƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì’è‹`‚ğs‚¤diconƒtƒ@ƒCƒ‹(Measurement.dicon)</li>
+        <li type="circle">İ’è‚ª³‚µ‚­s‚í‚ê‚Ä‚¢‚é‚©Šm”F‚·‚éÀsƒtƒ@ƒCƒ‹(AopMeasurementClient.java)</li>
     </ul>
-	<p><b>“Æ©À‘•‚ÌIntercepter‚Ìì¬</b></p>
-	<ul>
-    	<li type="circle">AbstractInterceptorƒNƒ‰ƒX‚ğÀ‘•‚µ‚Ü‚·B</li>
-	    <li type="circle">invoke(S2Container_MethodInvocation $invocation)ƒƒ\ƒbƒh‚ğÀ‘•‚µ‚Ü‚·B</li>
+    <p><b>“Æ©À‘•‚ÌIntercepter‚Ìì¬</b></p>
+    <ul>
+        <li type="circle">AbstractInterceptorƒNƒ‰ƒX‚ğÀ‘•‚µ‚Ü‚·B</li>
+        <li type="circle">invoke(S2Container_MethodInvocation $invocation)ƒƒ\ƒbƒh‚ğÀ‘•‚µ‚Ü‚·B</li>
         <li type="circle">getTargetClass($invocation)->getName()‚ÅƒNƒ‰ƒX–¼‚ğæ“¾‚µ‚Ü‚·B</li>
         <li type="circle">$invocation->getMethod()->getName()‚Åƒƒ\ƒbƒh–¼‚ğæ“¾‚µ‚Ü‚·B</li>
         <li type="circle">$invocation->getArguments()‚Åˆø”‚ğæ“¾‚µ‚Ü‚·B</li>
         <li type="circle">$invocation->proceed()‚ÅÀÛ‚Ìƒƒ\ƒbƒh‚ªŒÄ‚Î‚ê‚é‚Ì‚ÅA‚»‚Ì‘O‚ÌŠÔ‚ğæ“¾‚µ‚Ü‚·B</li>
-	</ul>
+    </ul>
     <p>MeasurementInterceptor.class.php</p>
 <pre>&lt;?php
 class MeasurementInterceptor extends S2Container_AbstractInterceptor {
@@ -663,7 +674,7 @@ class MeasurementInterceptor extends S2Container_AbstractInterceptor {
             $end = $this->microtime_float();
             $buf .= " : ";
             $t = $end - $start;
-	    print $buf . $t . "\n";
+        print $buf . $t . "\n";
             return $ret;
         } catch (Exception $t) {
             $buf .= " Exception:";
@@ -671,7 +682,7 @@ class MeasurementInterceptor extends S2Container_AbstractInterceptor {
             throw $t;
         }
     }
-	
+    
     private function microtime_float() {
         list($usec, $sec) = explode(" ", microtime());
         return ((float)$usec + (float)$sec);
@@ -681,24 +692,24 @@ class MeasurementInterceptor extends S2Container_AbstractInterceptor {
 </pre>
 
     <p><b>d‚¢ˆ—‚ğs‚¤ƒNƒ‰ƒX‚Ìì¬</b></p>
-	<ul>
-		<li type="circle">d‚¢ˆ—‚ğs‚Á‚½‚Æ‚¢‚¤‚±‚Æ‚É‚·‚é‚½‚ß‚É5•bŠÔsleep‚µ‚Ü‚·B</li>
-	</ul>
+    <ul>
+        <li type="circle">d‚¢ˆ—‚ğs‚Á‚½‚Æ‚¢‚¤‚±‚Æ‚É‚·‚é‚½‚ß‚É5•bŠÔsleep‚µ‚Ü‚·B</li>
+    </ul>
     <p>HeavyProcess.class.php</p>
 <pre>&lt;?php
 class HeavyProcess {
     public function heavy(){
-    	sleep(5);
+        sleep(5);
     }
 }
 ?&gt;
 </pre>
 
     <b>diconƒtƒ@ƒCƒ‹‚Ìì¬</b>
-	<ul>
+    <ul>
         <li type="circle">ì¬‚µ‚½MeasurementInterceptor‚ğƒRƒ“ƒ|[ƒlƒ“ƒg’è‹`‚µ‚Ü‚·Bname‘®«‚ğmeasurement‚Æ‚µ‚Ü‚·B</li>
-		<li type="circle">HeavyProcessƒNƒ‰ƒX‚Ìheavy()ƒƒ\ƒbƒh‚ÉMeasurementInterceptor‚ğaspect‚µ‚Ü‚·B</li>
-	</ul>
+        <li type="circle">HeavyProcessƒNƒ‰ƒX‚Ìheavy()ƒƒ\ƒbƒh‚ÉMeasurementInterceptor‚ğaspect‚µ‚Ü‚·B</li>
+    </ul>
     <p>Measurement.dicon</p>
 
 <pre>&lt;?xml version="1.0" encoding="Shift_JIS"?&gt;
@@ -714,12 +725,12 @@ class HeavyProcess {
 &lt;/components&gt;
 </pre>
 
-	<p><b>Àsƒtƒ@ƒCƒ‹‚Ìì¬</b></p>
+    <p><b>Àsƒtƒ@ƒCƒ‹‚Ìì¬</b></p>
     <ul>
-    	<li type="circle">S2Container#create()ƒƒ\ƒbƒh‚Ì‘æ‚Pˆø”‚Éì¬‚µ‚½diconƒtƒ@ƒCƒ‹(Measurement.dicon)‚ÌƒpƒX‚ğw’è‚µ‚ÄƒRƒ“ƒeƒi‚ğì¬‚µ‚Ü‚·B</li>
+        <li type="circle">S2Container#create()ƒƒ\ƒbƒh‚Ì‘æ‚Pˆø”‚Éì¬‚µ‚½diconƒtƒ@ƒCƒ‹(Measurement.dicon)‚ÌƒpƒX‚ğw’è‚µ‚ÄƒRƒ“ƒeƒi‚ğì¬‚µ‚Ü‚·B</li>
         <li type="circle">S2Container#getComponent()ƒƒ\ƒbƒh‚Ì‘æ‚Pˆø”‚ÉƒRƒ“ƒ|[ƒlƒ“ƒg‚É“o˜^‚µ‚½ƒNƒ‰ƒX–¼iHeavyProcess)‚ğw’è‚µ‚Äæ“¾‚µ‚Ü‚·B</li>
         <li type="circle">ƒRƒ“ƒeƒi‚©‚çæ“¾‚µ‚½HeavyProcess#heavy()ƒƒ\ƒbƒh‚ğÀs‚µ‚Ü‚·B</li>
-	</ul>
+    </ul>
     <p>AopMeasurementClient.php</p>
 <pre>&lt;?php
 require_once(dirname(__FILE__) . '/original.inc.php');
@@ -731,13 +742,13 @@ $heavyProcess->heavy();
 ?&gt;
 </pre>
 
-	<p><b>ÀsŒ‹‰Ê</b></p>
+    <p><b>ÀsŒ‹‰Ê</b></p>
     <p>ƒNƒ‰ƒX–¼Aƒƒ\ƒbƒh–¼Aˆø”‚Æƒƒ\ƒbƒh‚Ìˆ—ŠÔ‚ªƒgƒŒ[ƒX‚³‚ê‚Ä‚¢‚é‚Ì‚ªŠm”F‚Å‚«‚Ü‚·B</p>
 <pre>% php AopMeasurementClient.php
 HeavyProcess#heavy() : 5.0025010108948
 %
 </pre>
-	<p>‚±‚ÌƒTƒ“ƒvƒ‹‚ÍAs2container.php5/examples/aop/originalinterceptorˆÈ‰º‚É—pˆÓ‚³‚ê‚Ä‚¢‚Ü‚·B</p>
+    <p>‚±‚ÌƒTƒ“ƒvƒ‹‚ÍAs2container.php5/examples/aop/originalinterceptorˆÈ‰º‚É—pˆÓ‚³‚ê‚Ä‚¢‚Ü‚·B</p>
 
 <!-- document end -->
 <!-- don't edit start -->

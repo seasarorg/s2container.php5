@@ -601,7 +601,7 @@ END   Date#getTime() : 12:00:30
             <a name="componentTag.nameAttr"><h4>name‘®«(”CˆÓ)</h4></a>
             <p>–¼‘O‚ğw’è‚·‚é‚±‚Æ‚à‚Å‚«‚Ü‚·BPHP‚Ì¯•Êq‚Æ‚µ‚Äg‚¦‚é‚à‚Ì‚É‚µ‚Ü‚·BÚ‚µ‚­‚ÍA<a href="#getComponent">ƒRƒ“ƒ|[ƒlƒ“ƒg‚Ìæ“¾</a>‚ğQÆ‚µ‚Ä‚­‚¾‚³‚¢B</p>
             <a name="instanceAttr"><h4>instance‘®«(”CˆÓ)</h4></a>
-            <p>S2Container‚ª‚Ç‚Ì‚æ‚¤‚ÉƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğŠÇ—‚·‚é‚Ì‚©‚ğw’è‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·Bsingleton(ƒfƒtƒHƒ‹ƒg)AprototypeAouterArequestAsession‚ğw’è‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·BÚ‚µ‚­‚ÍA<a href="#InstanceMode">ƒCƒ“ƒXƒ^ƒ“ƒXŠÇ—</a>‚ğQÆ‚µ‚Ä‚­‚¾‚³‚¢B</p>
+            <p>S2Container‚ª‚Ç‚Ì‚æ‚¤‚ÉƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğŠÇ—‚·‚é‚Ì‚©‚ğw’è‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·Bsingleton(ƒfƒtƒHƒ‹ƒg)AprototypeAouterArequestAsession‚ğw’è‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·BÚ‚µ‚­‚Í<a href="#InstanceMode">ƒCƒ“ƒXƒ^ƒ“ƒXŠÇ—</a>‚ğQÆ‚µ‚Ä‚­‚¾‚³‚¢B</p>
             <a name="autoBindingAttr"><h4>autoBinding‘®«(”CˆÓ)</h4></a>
             <p>S2Container‚ªƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌˆË‘¶ŠÖŒW‚ğ‚Ç‚Ì‚æ‚¤‚É‰ğŒˆ‚·‚é‚Ì‚©‚ğw’è‚Å‚«‚Ü‚·Bauto(ƒfƒtƒHƒ‹ƒg)AconstructorApropertyAnone‚ğw’è‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·BÚ‚µ‚­‚ÍA<a href="#AutoBindingMode">©“®ƒoƒCƒ“ƒfƒBƒ“ƒO</a>‚ğQÆ‚µ‚Ä‚­‚¾‚³‚¢B</p>
 
@@ -733,13 +733,16 @@ class HelloConstructorInjection implements Hello {
         </ul>
 <p>s2container.php5/examples/dicon/injection/HelloConstructorInjectionClient.php</p>
 <pre>&lt;?php
-require_once(dirname(__FILE__) . '/example.inc.php');
-$PATH =    EXAMPLE_DIR . "/dicon/HelloConstructorInjection.dicon";
-        
+require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php');
+require_once('Hello.class.php');
+require_once('HelloConstructorInjection.class.php');
+
+$PATH =	EXAMPLE_DIR . "/dicon/injection/HelloConstructorInjection.dicon";
+		
 $container = S2ContainerFactory::create($PATH);
 $hello = $container->getComponent('Hello');
 $hello->showMessage();
-        
+		
 $hello2 = $container->getComponent("hello");
 $hello2->showMessage();
 ?&gt;
@@ -834,9 +837,12 @@ class HelloSetterInjection implements Hello {
 
 <p>s2container.php5/examples/dicon/injection/HelloSetterInjectionClient.php</p>
 <pre>&lt;?php
-require_once(dirname(__FILE__) . '/example.inc.php');
-$PATH = EXAMPLE_DIR . "/dicon/HelloSetterInjection.dicon";
-        
+require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php');
+require_once('Hello.class.php');
+require_once('HelloSetterInjection.class.php');
+
+$PATH = EXAMPLE_DIR . "/dicon/injection/HelloSetterInjection.dicon";
+		
 $container = S2ContainerFactory::create($PATH);
 $hello = $container->getComponent('Hello');
 $hello->showMessage();
@@ -932,9 +938,12 @@ class HelloMethodInjection implements Hello {
         </ul>
 
 <pre>&lt;?php
-require_once(dirname(__FILE__) . '/example.inc.php');
-$PATH = EXAMPLE_DIR . "/dicon/HelloMethodInjection.dicon";
-        
+require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php');
+require_once('Hello.class.php');
+require_once('HelloMethodInjection.class.php');
+
+$PATH = EXAMPLE_DIR . "/dicon/injection/HelloMethodInjection.dicon";
+		
 $container = S2ContainerFactory::create($PATH);
 $hello = $container->getComponent('Hello');
 $hello->showMessage();
@@ -1073,9 +1082,14 @@ S2Container“à‚ÉMap‚ÌÀ‘•ƒNƒ‰ƒX‚ª“o˜^‚³‚ê‚Ä‚¢‚ê‚ÎAS2Container‚ªƒRƒ“ƒeƒi“à‚ğŒŸõ‚
         </ul>
 
 <pre>&lt;?php
-require_once(dirname(dirname(__FILE__)) . '/example.inc.php');
-$PATH =    EXAMPLE_DIR . "/dicon/autobinding/AutoHelloConstructorInjection.dicon";
-        
+require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php');
+require_once('Hello.class.php');
+require_once('Map.class.php');
+require_once('HashMap.class.php');
+require_once('AutoHelloConstructorInjection.class.php');
+
+$PATH =	EXAMPLE_DIR . "/dicon/autobinding/AutoHelloConstructorInjection.dicon";
+		
 $container = S2ContainerFactory::create($PATH);
 $hello = $container->getComponent('Hello');
 $hello->showMessage();
@@ -1174,9 +1188,14 @@ class AutoHelloSetterInjection implements Hello {
         </ul>
 
 <pre>&lt;?php
-require_once(dirname(dirname(__FILE__)) . '/example.inc.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php');
+require_once('Hello.class.php');
+require_once('Map.class.php');
+require_once('HashMap.class.php');
+require_once('AutoHelloSetterInjection.class.php');
+
 $PATH = EXAMPLE_DIR . "/dicon/autobinding/AutoHelloSetterInjection.dicon";
-        
+		
 $container = S2ContainerFactory::create($PATH);
 $hello = $container->getComponent('Hello');
 $hello->showMessage();

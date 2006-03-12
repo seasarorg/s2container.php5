@@ -41,12 +41,6 @@ abstract class S2Container_AbstractInterceptor
                                                      array($aspect),
                                                      array());
         return $proxy;
-/*    	
-        $aspect = new S2Container_AspectImpl($this,
-                      new S2Container_PointcutImpl(array(".*")));
-        $proxy = new S2Container_AopProxy($targetClass, array($aspect));
-        return $proxy->create();
-*/
     }
 
     /**
@@ -78,5 +72,17 @@ abstract class S2Container_AbstractInterceptor
         }
         return null;
     }
+    
+    /**
+     * 
+     */
+    protected function getProxy(S2Container_MethodInvocation $invocation)
+    {
+        if ($invocation instanceof S2Container_S2MethodInvocation) {
+            return $invocation->
+                getParameter(S2Container_ContainerConstants::S2AOP_PROXY_NAME);
+        }
+        return null;
+    }    
 }
 ?>

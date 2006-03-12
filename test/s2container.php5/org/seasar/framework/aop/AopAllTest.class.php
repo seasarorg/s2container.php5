@@ -13,12 +13,6 @@ class AopAllTest {
         $group = new GroupTest('');
 
         $group->addTestCase(new PointcutImplTests());
-        $group->addTestCase(new InterceptorsTests());
-        $group->addTestCase(new UuCallAopProxyExtensionTests());
-        $group->addTestCase(new DelegateInterceptorTests());
-        $group->addTestCase(new AbstractInterceptorTests());
-        $group->addTestCase(new TraceInterceptorTests());
-
         $group->addTestCase(new AbstractInterceptorTests2());
         $group->addTestCase(new DelegateInterceptorTests2());
         $group->addTestCase(new TraceInterceptorTests2());

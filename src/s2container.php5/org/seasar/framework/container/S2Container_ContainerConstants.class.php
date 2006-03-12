@@ -62,5 +62,7 @@ interface S2Container_ContainerConstants
     const SERVLET_CONTEXT_NAME = "servletContext";
 
     const COMPONENT_DEF_NAME = "componentDef";
+
+    const S2AOP_PROXY_NAME = "aopProxy";
 }
 ?>

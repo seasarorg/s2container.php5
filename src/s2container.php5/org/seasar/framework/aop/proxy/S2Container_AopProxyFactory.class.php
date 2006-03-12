@@ -38,8 +38,8 @@ final class S2Container_AopProxyFactory
      * 
      */
     public function create($target = null,
-                           $targetClass = null,
-                           $aspects = null,
+                           $targetClass,
+                           $aspects,
                            $parameters = null)
     {
         //$log = S2Container_S2Logger::getLogger('S2Container_AopProxyFactor');
@@ -54,21 +54,6 @@ final class S2Container_AopProxyFactory
                     array($target,$targetClass));
             }
         }
-
-        /*
-        if($targetClass->isFinal()){
-        	throw new S2Container_S2RuntimeException('ESSR0017',
-            array("cannot aspect. target class [" . 
-            $targetClass->getName() . 
-            "] is final class. "));
-        }
-
-        if (!$targetClass->isUserDefined() or
-           S2Container_ClassUtil::hasMethod($targetClass,'__call')) {
-            //$log->info("target class has __call(). ignore aspect.",__METHOD__);
-            return $target;
-        }
-        */
 
         if (!$targetClass->isUserDefined() or
              $targetClass->hasMethod('__call')) {
@@ -120,7 +105,8 @@ final class S2Container_AopProxyFactory
         for ($i = 0; $i < $o; ++$i) {
             if (!S2Container_AopProxyFactory::isApplicableAspect($methods[$i])) {
 /*
-                $log->info($this->targetClass_->getName()."::".
+                S2Container_S2Logger::getLogger(__CLASS__)->
+                    info($targetClass->getName()."::".
                            $methods[$i]->getName() .
                            "() is a constructor or a static method. ignored.",
                            __METHOD__);
@@ -135,13 +121,14 @@ final class S2Container_AopProxyFactory
                 if ($aspects[$j]->getPointcut()->isApplied($methods[$i]->getName())) {
                     array_push($interceptorList,$aspects[$j]->getMethodInterceptor());
                 }
-                /*
+/*
                 else{
-                    $this->log_->info("no pointcut defined for " . 
-                        $this->targetClass_->getName() . "::" .
+                    S2Container_S2Logger::getLogger(__CLASS__)->
+                    info("no pointcut defined for " . 
+                        $targetClass->getName() . "::" .
                         $methods[$i]->getName() . "()",__METHOD__);
                 }
-                */
+*/                
             }
             
             if (count($interceptorList) > 0) {

@@ -27,6 +27,7 @@
  */
  
 class S2Container_DefaultAopProxy {
+
     private $methodInterceptorsMap_;
 
     private $parameters_;
@@ -47,12 +48,13 @@ class S2Container_DefaultAopProxy {
      * @param array interceptor map
      * @param array parameters
      */
-    function __construct($target,$targetClass,$methodInterceptorsMap,$parameters)
+    function __construct($target,$targetClass,$methodInterceptorsMap,$parameters = array())
     {
         $this->target_ = $target;
         $this->targetClass_ = $targetClass;
         $this->methodInterceptorsMap_ = $methodInterceptorsMap;
         $this->parameters_ = $parameters;
+        $this->parameters_[S2Container_ContainerConstants::S2AOP_PROXY_NAME] = $this;
     }
     
     /**
