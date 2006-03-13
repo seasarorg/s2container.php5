@@ -2,14 +2,14 @@
 <!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
 "components21.dtd">
 <components>
-	<component class="Dummy">
-	    <aspect>
-			<component 
-				class="S2Container_PrototypeDelegateInterceptor">
-				<property name="targetName">"target"</property>
-			</component>
-	    </aspect>
-	</component>
+    <component class="Dummy">
+        <aspect>
+            <component 
+                class="S2Container_PrototypeDelegateInterceptor">
+                <property name="targetName">"target"</property>
+            </component>
+        </aspect>
+    </component>
 
-	<component name="target" class="Substance" instance="prototype"/>
+    <component name="target" class="Substance" instance="prototype"/>
 </components>

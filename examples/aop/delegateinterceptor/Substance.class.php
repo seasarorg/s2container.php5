@@ -1,7 +1,7 @@
 <?php
 class Substance implements IBase{
-	public function run() {
-		print "substance\n";
-	}
+    public function run() {
+        print __METHOD__ . " called.\n";
+    }
 }
 ?>

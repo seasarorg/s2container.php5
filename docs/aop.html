@@ -258,6 +258,8 @@ $proxy->getTime();
 <br>
     <h2><a name="Example">Example</a></h2>
     <p>ˆÈ‰º‚ÌƒTƒ“ƒvƒ‹‚ğÀs‚·‚éê‡‚ÍA<a href="setup.html">ƒZƒbƒgƒAƒbƒv</a>‚ğs‚¤•K—v‚ª‚ ‚è‚Ü‚·B</p>
+
+
     <h3><a name="TraceInterceptorSample">TraceInterceptor</a></h3>
     <p>TraceInterceptor
 ‚ğg—p‚µ‚ÄDateƒNƒ‰ƒX‚ÌgetTime()ƒƒ\ƒbƒh‚ªŒÄ‚Î‚ê‚½ê‡‚ÉƒgƒŒ[ƒX‚ğo—Í‚³‚¹‚Ü‚µ‚å‚¤Bì¬‚·‚éƒtƒ@ƒCƒ‹‚ÍˆÈ‰º‚Ì‚Æ‚¨‚è‚Å‚·B</p>
@@ -269,7 +271,7 @@ $proxy->getTime();
     <ul>
         <li type="circle">TraceInterceptor‚ğƒRƒ“ƒ|[ƒlƒ“ƒg’è‹`‚µ‚Ü‚·Bname‘®«‚ğtraceInterceptor‚Æ‚µ‚Ü‚·B</li>
         <li type="circle">Date
-ƒNƒ‰ƒX‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì’è‹`‚µ‚Ü‚·Bpointcut‘®«‚ÉgetTime()ƒƒ\ƒbƒh‚ğw’è‚µ‚Ü‚·Baspectƒ^ƒO‚ÉInterceptor‚ğw’è‚µ‚Ü‚·B</li>
+ƒNƒ‰ƒX‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì’è‹`‚µ‚Ü‚·Bpointcut‘®«‚ÉgetTime()ƒƒ\ƒbƒh‚ğw’è‚µ‚Ü‚·Baspectƒ^ƒO‚ÉtraceInterceptor‚ğw’è‚µ‚Ü‚·B</li>
     </ul>
     <p>Trace.dicon</p>
 <pre>&lt;?xml version="1.0" encoding="Shift_JIS"?&gt;
@@ -346,8 +348,8 @@ class Checker {
     <p>HandleThrowableInterceptor.class.php</p>
 <pre>&lt;?php
 class HandleThrowableInterceptor extends S2Container_ThrowsInterceptor {
-    
-    public function handleThrowable(Exception $t, S2Container_MethodInvocation $invocation){
+    public function handleThrowable(Exception $t, 
+                                    S2Container_MethodInvocation $invocation){
     }
 }
 ?&gt;
@@ -373,7 +375,7 @@ class HandleThrowableInterceptor extends S2Container_ThrowsInterceptor {
     <p><b>Àsƒtƒ@ƒCƒ‹‚Ìì¬</b></p>
     <ul>
         <li type="circle">S2Container#create()ƒƒ\ƒbƒh‚Ì‘æ‚Pˆø”‚Éì¬‚µ‚½diconƒtƒ@ƒCƒ‹(Checker.dicon)‚ÌƒpƒX‚ğw’è‚µ‚ÄƒRƒ“ƒeƒi‚ğì¬‚µ‚Ü‚·B</li>
-        <li type="circle">S2Container#getComponent()ƒƒ\ƒbƒh‚Ì‘æ‚Pˆø”‚ÉƒRƒ“ƒ|[ƒlƒ“ƒg‚É“o˜^‚µ‚½ƒNƒ‰ƒX–¼iFoo.class)‚ğw’è‚µ‚Äæ“¾‚µ‚Ü‚·B</li>
+        <li type="circle">S2Container#getComponent()ƒƒ\ƒbƒh‚Ì‘æ‚Pˆø”‚ÉƒRƒ“ƒ|[ƒlƒ“ƒg‚É“o˜^‚µ‚½ƒNƒ‰ƒX–¼iChecker)‚ğw’è‚µ‚Äæ“¾‚µ‚Ü‚·B</li>
         <li type="circle">Checker#check()ƒƒ\ƒbƒh‚Ìˆø”‚É"foo"‚Ì•¶š—ñ‚ğ“n‚µ‚Ü‚·B</li>
         <li type="circle">Checker#check()ƒƒ\ƒbƒh‚Ìˆø”‚Énull‚ğ“n‚µ‚Ä—áŠO‚ğ”­¶‚³‚¹‚Ü‚·B</li>
         <li type="circle">Checker#check()ƒƒ\ƒbƒh‚Ìˆø”‚É"hoge"‚Ì•¶š—ñ‚ğ“n‚µ‚Ü‚·B</li>
@@ -423,8 +425,8 @@ ThrowsInterceptor‚ğŒp³‚µ‚Äì¬‚µ‚½ƒNƒ‰ƒX(HandleThrowableInterceptor.class.php)‚
     <p>S2RuntimeException‚ğ”­¶‚³‚¹‚ÄƒƒbƒZ[ƒW‚ğ•ÏX‚µ‚Ü‚·B</p>
 <pre>&lt;?php
 class HandleThrowableInterceptor extends S2Container_ThrowsInterceptor {
-    
-    public function handleThrowable(Exception $t, S2Container_MethodInvocation $invocation){
+    public function handleThrowable(Exception $t,
+                                    S2Container_MethodInvocation $invocation){
         throw new S2Container_S2RuntimeException("ESSR0007", array("arg"));
     }
 }
@@ -440,6 +442,8 @@ hoge
 %
 </pre>
     <p>‚±‚ÌƒTƒ“ƒvƒ‹‚ÍAs2container.php5/examples/aop/throwsinterceptorˆÈ‰º‚É—pˆÓ‚³‚ê‚Ä‚¢‚Ü‚·B</p>
+
+<br>
 <h3><a name="DelegateInterceptorSample">DelegateInterceptor</a></h3>
     <p>S2AOP‚Å—pˆÓ‚³‚ê‚Ä‚¢‚éDelegateInterceptor‚ğg‚Á‚ÄA‘¼‚ÌƒNƒ‰ƒX‚Ìƒƒ\ƒbƒh‚ÉˆÏ÷‚³‚¹‚Ü‚µ‚å‚¤B<br>
     ‚±‚±‚Å‚ÍAƒCƒ“ƒ^[ƒtƒF[ƒX‚Å’ŠÛƒƒ\ƒbƒh‚ğì¬‚µ‚ÄA’ŠÛƒNƒ‰ƒX‚Æ•’Ê‚ÌƒNƒ‰ƒX‚Ì—¼•û‚É‚»‚ÌƒCƒ“ƒ^[ƒtƒF[ƒX‚ğÀ‘•‚³‚¹‚Ü‚·B’ŠÛƒNƒ‰ƒX‚ÅÀ‘•‚µ‚½ƒƒ\ƒbƒh‚ğ•’Ê‚ÌƒNƒ‰ƒX‚ÅÀ‘•‚µ‚½ƒƒ\ƒbƒh‚ÉˆÏ÷‚³‚¹‚Ü‚µ‚å‚¤Bì¬‚·‚éƒtƒ@ƒCƒ‹‚ÍˆÈ‰º‚Ì‚Æ‚¨‚è‚Å‚·B</p>
@@ -481,7 +485,7 @@ abstract class Dummy implements IBase {
 <pre>&lt;?php
 class Substance implements IBase{
     public function run() {
-        print "substance\n";
+        print __METHOD__ . " called.\n";
     }
 }
 ?&gt;
@@ -512,7 +516,7 @@ class Substance implements IBase{
     <p><b>Àsƒtƒ@ƒCƒ‹‚Ìì¬</b></p>
     <ul>
         <li type="circle">S2Container#create()ƒƒ\ƒbƒh‚ÌÅ‰‚Ìˆø”‚Éì¬‚µ‚½diconƒtƒ@ƒCƒ‹(Delegate.dicon)‚ÌƒpƒX‚ğw’è‚µ‚ÄƒRƒ“ƒeƒi‚ğì¬‚µ‚Ü‚·B</li>
-        <li type="circle">S2Container#getComponent()ƒƒ\ƒbƒh‚Ì‘æ‚Pˆø”‚ÉƒRƒ“ƒ|[ƒlƒ“ƒg‚É“o˜^‚µ‚½ƒNƒ‰ƒX–¼iIBase)‚ğw’è‚µ‚Äæ“¾‚µ‚Ü‚·B</li>
+        <li type="circle">S2Container#getComponent()ƒƒ\ƒbƒh‚Ì‘æ‚Pˆø”‚ÉƒRƒ“ƒ|[ƒlƒ“ƒg‚É“o˜^‚µ‚½ƒNƒ‰ƒX–¼iDummy)‚ğw’è‚µ‚Äæ“¾‚µ‚Ü‚·B</li>
         <li type="circle">ƒRƒ“ƒeƒi‚©‚çæ“¾‚µ‚½IBase#run()ƒƒ\ƒbƒh‚ğÀs‚µ‚Ü‚·B</li>
     </ul>
     AopDelegateCilent.php
@@ -526,13 +530,14 @@ $base->run();
 </pre>
 
     <p><b>ÀsŒ‹‰Ê</b></p>
-    <p>ƒRƒ“ƒ\[ƒ‹‚É"substance"‚Æ•\¦‚³‚ê‚Ä‚¢‚é‚Ì‚ÅDummy#run()‚ªSubstance#run()‚ÉˆÏ÷‚³‚ê‚Ä‚¢‚é‚Ì‚ªŠm”F‚Å‚«‚Ü‚·B</p>
+    <p>ƒRƒ“ƒ\[ƒ‹‚É"Substance::run called."‚Æ•\¦‚³‚ê‚Ä‚¢‚é‚Ì‚ÅDummy#run()‚ªSubstance#run()‚ÉˆÏ÷‚³‚ê‚Ä‚¢‚é‚Ì‚ªŠm”F‚Å‚«‚Ü‚·B</p>
 <pre>% php AopDelegateCilent.php
-substance
+Substance::run called.
 %
 </pre>
     <p>‚±‚ÌƒTƒ“ƒvƒ‹‚ÍAs2container.php5/examples/aop/delegateinterceptorˆÈ‰º‚É—pˆÓ‚³‚ê‚Ä‚¢‚Ü‚·B</p>
-    <br>
+
+<br>
 <h3><a name="PrototypeDelegateInterceptorSample">PrototypeDelegateInterceptor</a></h3>
     <p>S2AOP‚Å—pˆÓ‚³‚ê‚Ä‚¢‚éPrototypeDelegateInterceptor‚ğg‚Á‚ÄAsingleton‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚©‚çprototype‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚Ìƒƒ\ƒbƒh‚ÉˆÏ÷‚³‚¹‚Ü‚µ‚å‚¤B<br>
 ‚±‚±‚Å‚ÍAƒCƒ“ƒ^[ƒtƒF[ƒX‚Å’ŠÛƒƒ\ƒbƒh‚ğì¬‚µ‚ÄA’ŠÛƒNƒ‰ƒX(singleton)‚Æ•’Ê‚ÌƒNƒ‰ƒX(prototype)‚Ì—¼•û‚É‚»‚ÌƒCƒ“ƒ^[
@@ -607,8 +612,8 @@ class Substance implements IBase{
     <p><b>Àsƒtƒ@ƒCƒ‹‚Ìì¬</b></p>
     <ul>
         <li type="circle">S2Container#create()ƒƒ\ƒbƒh‚ÌÅ‰‚Ìˆø”‚Éì¬‚µ‚½diconƒtƒ@ƒCƒ‹(PrototypeDelegate.dicon)‚ÌƒpƒX‚ğw’è‚µ‚ÄƒRƒ“ƒeƒi‚ğì¬‚µ‚Ü‚·B</li>
-        <li type="circle">S2Container#getComponent()ƒƒ\ƒbƒh‚Ì‘æ‚Pˆø”‚ÉƒRƒ“ƒ|[ƒlƒ“ƒg‚É“o˜^‚µ‚½ƒNƒ‰ƒX–¼iIBase)‚ğw’è‚µ‚Äæ“¾‚µ‚Ü‚·B</li>
-        <li type="circle">ƒRƒ“ƒeƒi‚©‚çæ“¾‚µ‚½IBase#run()ƒƒ\ƒbƒh‚ğŒJ‚è•Ô‚µÀs‚µ‚Ü‚·B</li>
+        <li type="circle">S2Container#getComponent()ƒƒ\ƒbƒh‚Ì‘æ‚Pˆø”‚ÉƒRƒ“ƒ|[ƒlƒ“ƒg‚É“o˜^‚µ‚½ƒNƒ‰ƒX–¼iDummy)‚ğw’è‚µ‚Äæ“¾‚µ‚Ü‚·B</li>
+        <li type="circle">ƒRƒ“ƒeƒi‚©‚çæ“¾‚µ‚½Dummy#run()ƒƒ\ƒbƒh‚ğŒJ‚è•Ô‚µÀs‚µ‚Ü‚·B</li>
     </ul>
 AopPrototypeDelegateCilent.php
 <pre>&lt;?php
@@ -624,8 +629,7 @@ for ($i = 0; $i < 5; ++$i) {
 </pre>
 
     <p><b>ÀsŒ‹‰Ê</b></p>
-    <p>ƒR
-ƒ“ƒ\[ƒ‹‚É"sum : 0"‚Æ•\¦‚³‚ê‚Ä‚¢‚é‚Ì‚Å
+    <p>ƒRƒ“ƒ\[ƒ‹‚É"sum : 0"‚Æ•\¦‚³‚ê‚Ä‚¢‚é‚Ì‚Å
 Dummy#run()‚ªSubstance#run()‚ÉˆÏ÷‚³‚ê‚Ä‚¢‚é‚Ì‚ªŠm”F‚Å‚«‚Ü‚·B‚Ü‚½Asum‚Ì’l‚ª‚·‚×‚Ä"0"‚Æ‚È‚Á‚Ä‚¢‚é‚±‚Æ‚©‚çCrun()ƒƒ\ƒbƒh‚ğŒÄ‚Ño‚·‚½‚Ñ‚ÉV‚µ‚¢Substance‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ªì¬‚³‚ê‚Ä‚¢‚é‚±‚Æ‚ª•ª‚©‚è‚Ü‚·B</p>
 <pre>% php AopPrototypeDelegateCilent.php
 sum : 0
@@ -635,15 +639,35 @@ sum : 0
 sum : 0
 %
 </pre>
+
+ˆÏ÷‚µ‚½‚¢ƒNƒ‰ƒX(Substance)‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚Ìinstance‘®«‚ğsingleton‚É‚·‚é‚ÆA“¯ˆê‚ÌSubstanceƒIƒuƒWƒFƒNƒg‚ªg—p‚³‚ê‚é‚½‚ßsum‚Ì’l‚ªƒCƒ“ƒNƒŠƒƒ“ƒg‚³‚ê‚Ü‚·B
+
+<pre>&lt;?xml version="1.0" encoding="Shift_JIS"?&gt;
+&lt;!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd"&gt;
+&lt;components&gt;
+    EEE
+    &lt;component name="target" class="Substance" instance="singleton"/&gt;
+&lt;/components&gt;</pre>
+
+<pre>% php AopPrototypeDelegateCilent.php
+sum : 0
+sum : 1
+sum : 2
+sum : 3
+sum : 4
+%
+</pre>
     <p>‚±‚ÌƒTƒ“ƒvƒ‹‚ÍAs2container.php5/examples/aop/delegateinterceptorˆÈ‰º‚É—pˆÓ‚³‚ê‚Ä‚¢‚Ü‚·B</p>
+
     <br>
     <h3><a name="OriginalInterceptorSample">“Æ©À‘•‚É‚æ‚éInterceptor</a></h3>
     <p>ƒNƒ‰ƒX–¼Aƒƒ\ƒbƒh–¼Aˆø”‚Æƒƒ\ƒbƒh‚Ìˆ—ŠÔ‚ğŒv‘ª‚µ‚ÄƒgƒŒ[ƒX‚·‚éInterceptor‚ğì¬‚µ‚Ü‚µ‚å‚¤B‚Ü‚½A‚»‚ÌInterceptor‚ğg—p‚µ‚Äd‚¢ˆ—‚ğs‚Á‚½ŠÔ‚ğƒgƒŒ[ƒX‚³‚¹‚Ü‚µ‚å‚¤Bì¬‚·‚éƒtƒ@ƒCƒ‹‚ÍˆÈ‰º‚Ì‚Æ‚¨‚è‚Å‚·B</p>
     <ul>
-        <li type="circle">ƒNƒ‰ƒX–¼Aƒƒ\ƒbƒh–¼Aˆø”‚Æƒƒ\ƒbƒh‚Ìˆ—ŠÔ‚ğŒv‘ª‚µ‚Äo—Í‚·‚éInterceptor(MeasurementInterceptor.java)</li>
-        <li type="circle">d‚¢ˆ—‚ğs‚¤ƒNƒ‰ƒX(HeavyProcess.java)</li>
+        <li type="circle">ƒNƒ‰ƒX–¼Aƒƒ\ƒbƒh–¼Aˆø”‚Æƒƒ\ƒbƒh‚Ìˆ—ŠÔ‚ğŒv‘ª‚µ‚Äo—Í‚·‚éInterceptor(MeasurementInterceptor.class.php)</li>
+        <li type="circle">d‚¢ˆ—‚ğs‚¤ƒNƒ‰ƒX(HeavyProces.class.php)</li>
         <li type="circle">ƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì’è‹`‚ğs‚¤diconƒtƒ@ƒCƒ‹(Measurement.dicon)</li>
-        <li type="circle">İ’è‚ª³‚µ‚­s‚í‚ê‚Ä‚¢‚é‚©Šm”F‚·‚éÀsƒtƒ@ƒCƒ‹(AopMeasurementClient.java)</li>
+        <li type="circle">İ’è‚ª³‚µ‚­s‚í‚ê‚Ä‚¢‚é‚©Šm”F‚·‚éÀsƒtƒ@ƒCƒ‹(AopMeasurementClient.php)</li>
     </ul>
     <p><b>“Æ©À‘•‚ÌIntercepter‚Ìì¬</b></p>
     <ul>
@@ -674,7 +698,7 @@ class MeasurementInterceptor extends S2Container_AbstractInterceptor {
             $end = $this->microtime_float();
             $buf .= " : ";
             $t = $end - $start;
-        print $buf . $t . "\n";
+            print $buf . $t . "\n";
             return $ret;
         } catch (Exception $t) {
             $buf .= " Exception:";
@@ -759,7 +783,7 @@ HeavyProcess#heavy() : 5.0025010108948
 <td width="766"><img src="images/spacer.gif" alt="" height="30" width="592"></td>
 </tr><tr>
 <td width="14"><img src="images/spacer.gif" alt="" height="14" width="14"></td>
-<td class="copyright" width="766">&#169; Copyright The Seasar Project and the others 2004-2005, all rights reserved.</td>
+<td class="copyright" width="766">&#169; Copyright The Seasar Project and the others 2005-2006, all rights reserved.</td>
 </tr></tbody></table>
 </td><td class="backright" align="left" valign="top">&nbsp;</td></tr><tr>
 <td class="backunder" align="left" height="16" valign="top" width="780">&nbsp;</td>
