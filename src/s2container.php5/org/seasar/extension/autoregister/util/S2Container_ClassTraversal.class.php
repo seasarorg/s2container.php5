@@ -26,8 +26,9 @@
  * @author klove
  */
 final class S2Container_ClassTraversal {
-    const CLASS_SUFFIX = ".class.php";
-
+    public static $CLASS_SUFFIX = ".class.php";
+    public static $SCANDIR_SORT = 0;
+    
     /**
      * 
      */
@@ -46,22 +47,24 @@ final class S2Container_ClassTraversal {
     private static function traverseFileSystem($dirPath,
                            S2Container_ClassTraversalClassHandler $handler) {
 
-        $d = dir($dirPath);
-        while (false !== ($entry = $d->read())) {
+        $entries = scandir($dirPath,self::$SCANDIR_SORT);
+        if(!$entries){
+            throw new S2Container_S2RuntimeException('ESSR0017',
+                      array("invalid directory [$dirPath]"));
+        }
+        foreach ($entries as $entry) {
             if(preg_match("/^\./",$entry)){
                 continue;
             }
-
             $path = $dirPath . DIRECTORY_SEPARATOR . $entry;
             if(is_dir($path)){
                 self::traverseFileSystem($path,$handler);
-            }else if(preg_match("/^(.+)" . self::CLASS_SUFFIX . "$/",
+            }else if(preg_match("/^(.+)" . self::$CLASS_SUFFIX . "$/",
                      $entry,
                      $matches)){
                 $handler->processClass($path, $matches[1]);
             }
         }
-        $d->close();
     }
 }
 ?>

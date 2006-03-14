@@ -10,10 +10,10 @@
     </component>
     <component name="sample2" class="ArgExp">
         <arg>2+3</arg>
-        <property name="message">
+        <property name="message"><![CDATA[
             $msg1 = "Hello ";
             $msg2 = "World";
             return $msg1 . $msg2;
-        </property>
+        ]]></property>
     </component>
 </components>

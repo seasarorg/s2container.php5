@@ -70,8 +70,10 @@ abstract class S2Container_AbstractComponentAutoRegister
 
     protected function register($classFilePath, $className) {
 
-        require_once($classFilePath);
-
+        if(!class_exists($className,false)){
+            require_once($classFilePath);
+        }
+        
         $annoHandler = S2Container_AnnotationHandlerFactory::getAnnotationHandler();
         $cd = $annoHandler->createComponentDef(new ReflectionClass($className),
                                                $this->instanceMode);

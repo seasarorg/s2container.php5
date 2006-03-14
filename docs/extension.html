@@ -381,7 +381,7 @@ class DeptDaoImpl implements DeptDao {
 <pre>
 &lt;components&gt;
     &lt;include path="%S2CONTAINER_PHP5%/org/seasar/extension/db/pdo.dicon"/&gt;
-    &lt;component name ="deptDao" class="DeptDaoImpl"/&gt;
+    &lt;component name="deptDao" class="DeptDaoImpl"/&gt;
 &lt;/components&gt;
 </pre>
 
@@ -423,7 +423,7 @@ Array
 
 <br>
 <a name="unit"><h3>S2Unit</h3></a>
-<p>S2では、コンテナを使った開発のテストを楽しくおこなえるようにテスティングフレームワークが組み込まれています。PHPUnit2、SimpleTestを拡張しています。主な機能は以下のとおりです。</p>
+<p>S2では、コンテナを使った開発のテストを楽しくおこなえるようにテスティングフレームワークが組み込まれています。<a href="http://pear.php.net/package/PHPUnit2">PHPUnit2</a>、<a href="http://www.lastcraft.com/simple_test.php">SimpleTest</a>を拡張しています。主な機能は以下のとおりです。</p>
 <ul>
 <li>テストメソッド(testXxx)ごとに自動的にS2Containerを作成します。</li>
 
@@ -594,7 +594,7 @@ S2ContainerClassLoader::import($classes);
 S2ContainerFileCacheFactoryはS2Containerインスタンスをserializeし、キャッシュファイルに保存します。
 キャッシュファイルはS2CONTAINER_PHP5_CACHE_DIR定数で指定されたディレクトリに保存されます。
 ファイル名はcreateメソッドの第2引数で指定できます。第2引数が省略された場合は、diconファイルへのパス文字列を
-引数としてsha1関数で作成された文字列が使用されます。
+引数として<a href="http://jp2.php.net/manual/ja/function.sha1.php">sha1関数</a>で作成された文字列が使用されます。
 S2ContainerFileCacheFactoryはdiconファイルが更新されるとキャッシュを更新します。
 </p>
 
@@ -664,7 +664,7 @@ $container = S2ContainerFileCacheFactory::create($PATH_C,'testC.dicon');
 <tr>
 
 <td><code>addIgnoreClassPattern</code></td>
-<td>自動登録したくないクラスパターンを登録します。引数を1つ持ちます。引数はクラス名です。正規表現が使えます。「,」区切りで複数記述することもできます。</td>
+<td>自動登録したくないクラスパターンを登録します。引数を1つ持ちます。引数はクラス名です。正規表現が使えます。カンマ「,」区切りで複数記述することもできます。</td>
 </tr>
 </table>
 

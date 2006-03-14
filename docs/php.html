@@ -39,7 +39,7 @@
 diconファイルの&lt;property&gt;要素の他，
 &lt;component&gt;要素・&lt;initMethod&gt;要素・&lt;destroyMethod&gt;要素・&lt;arg&gt;要素・
 &lt;meta&gt;要素・&lt;aspect&gt;要素にPHP式を記述することができます。<br>
-本説明に用いるdiconファイルを使用したサンプルは、s2container.php5/examples/expression にあります。</p>
+本説明に用いるdiconファイルを使用したサンプルは、s2container.php5/examples/dicon/expression にあります。</p>
 
 <a name="arg"><b><h3>arg、property、aspect、metaタグ</h3></b></a>
 <p>コンストラクタ引数やプロパティに設定したい値を返すPHP式を記述します。</p>
@@ -55,20 +55,19 @@ diconファイルの&lt;property&gt;要素の他，
     &lt;/component&gt;
     &lt;component name="sample2" class="ArgExp"&gt;
         &lt;arg>2+3&lt;/arg&gt;
-        &lt;property name="message"&gt;
+        &lt;property name="message"&gt;&lt;![CDATA[
             $msg1 = "Hello ";
             $msg2 = "World";
             return $msg1 . $msg2;
-        &lt;/property&gt;
+        ]]&gt;&lt;/property&gt;
     &lt;/component&gt;
 &lt;/components&gt;
 </pre>
 PHP式が return を含まない場合は、自動的に return が付加されます。コンポーネント sample1 では、<br>
-コンストラクタ引数は、
+コンストラクタ引数は以下の式がeval関数で処理されます。
 <pre> return 10; </pre>
-messageプロパティは、
+messageプロパティは以下の式がeval関数で処理されます。
 <pre> return file_get_contents(EXAMPLE_DIR . '/dicon/expression/ArgSample.txt');</pre>
-がeval関数で処理されます。<br>
 aspectタグやmetaタグにも同様にPHP式を記述できます。
 
 
