@@ -52,7 +52,6 @@
 <li><a href="#cache">Cache</a>
     <ul>
     <li><a href="#cache-file">S2ContainerFileCacheFactory</a></li>
-    <li><a href="#cache-mem">S2ContainerMemcacheFactory</a></li>
     </ul>
 </li>
 
@@ -590,6 +589,16 @@ S2ContainerClassLoader::import($classes);
 <br>
 <a name="cache"><h3>Cache</h3></a>
 <h3><a name="cache-file">S2ContainerFileCacheFactory</a></h3>
+
+<center>
+<table border="1" width="50%">
+<tr><td align="center">警告</td></tr>
+<tr><td>
+この拡張モジュールは<i> 実験的 </i>なものです。この拡張モジュールの動作・関数名・その他ドキュメントに書かれている事項は、将来変更される可能性があります。
+</td></tr>
+</table>
+</center>
+
 <p>
 S2ContainerFileCacheFactoryはS2Containerインスタンスをserializeし、キャッシュファイルに保存します。
 キャッシュファイルはS2CONTAINER_PHP5_CACHE_DIR定数で指定されたディレクトリに保存されます。
@@ -623,9 +632,6 @@ $container = S2ContainerFileCacheFactory::create($PATH_C,'testC.dicon');
 >
 </pre>
 
-
-<br>
-<h3><a name="cache-mem">S2ContainerMemcacheFactory</a></h3>
 
 <br>
 <a name="autoRegister"><h3>自動登録</h3></a>
