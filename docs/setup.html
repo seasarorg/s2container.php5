@@ -42,10 +42,12 @@ S2Container.version.tgz‚ğæ“¾‚µApear install ‚ğÀ{‚µ‚Ä‰º‚³‚¢B
 </p>
 
 <pre>
-% pear install ./S2Container.version.tgz
+% pear install /path/to/S2Container.version.tgz
+install ok: channel://pear.php.net/S2Container-version
+
 % pear list 
 EEE
-S2Container
+S2Container             version       state
 EEE
 %
 </pre>
@@ -82,6 +84,16 @@ function __autoload($class = null){
 <p>ŠJ”­’†‚ÌƒAƒvƒŠƒP[ƒVƒ‡ƒ“‚âg—p‚µ‚Ä‚¢‚éƒtƒŒ[ƒ€ƒ[ƒN‚ÅŠù‚É__autoloadŠÖ”‚ª’è‹`‚³‚ê‚Ä‚¢‚éê‡‚ÍAã‹L‚Ì __autoloadŠÖ”“à—e‚ğ’è‹`Ï‚İ __autoloadŠÖ”‚É’Ç‹L‚µ‚Ä‰º‚³‚¢B
 </p>
 
+<p>
+S2Container.PHP5‚ğƒAƒ“ƒCƒ“ƒXƒg[ƒ‹‚·‚éê‡‚ÍApear uninstall ‚ğÀ{‚µ‚Ä‰º‚³‚¢B
+</p>
+<pre>
+% pear uninstall S2Container
+uninstall ok: channel://pear.php.net/S2Container-version
+
+%
+</pre>
+
 <br>
 <a name="pear-archive"><h3>PEARƒpƒbƒP[ƒW‚ğ‰ğ“€‚µ‚ÄƒZƒbƒgƒAƒbƒv</h3></a>
 
@@ -90,10 +102,10 @@ S2Container.version.tgz‚ğæ“¾‚µ‰ğ“€‚µ‚Ä‰º‚³‚¢BˆÈ‰º‚ÌƒfƒBƒŒƒNƒgƒŠ‚ª“WŠJ‚³‚ê‚Ü‚·
 </p>
 
 <pre>
-S2Container/
+S2Container-version/
   +-- S2Container/
   +-- Apache_Software_License_2.0.txt
-  +-- changelog_ja.txt
+  +-- s2container.core.classes.php
   +-- S2Container.php
 </pre>
 <p>
