@@ -1,14 +1,16 @@
 <?php
+error_reporting(E_ALL);
 define('HOME_DIR',dirname(dirname(dirname(__FILE__))));
 
-require_once(HOME_DIR . '/s2container.inc.php'); 
+require_once(HOME_DIR . '/S2Container.php'); 
+S2ContainerClassLoader::import(S2CONTAINER_PHP5);
 function __autoload($class=null){
     if(S2ContainerClassLoader::load($class)){return;}
 }
 
 define('S2AOP_PHP5_FILE_CACHE',false);
-define('S2AOP_PHP5_FILE_CACHE_DIR','./cache');
-//define('S2AOP_PHP5_FILE_CACHE_DIR',dirname(__FILE__).'/cache');
+//define('S2AOP_PHP5_FILE_CACHE_DIR','./cache');
+define('S2AOP_PHP5_FILE_CACHE_DIR',dirname(__FILE__).'/cache');
 //define('S2AOP_PHP5_FILE_CACHE_DIR','./not_exists_cache');
 
 require_once('classes.php');
