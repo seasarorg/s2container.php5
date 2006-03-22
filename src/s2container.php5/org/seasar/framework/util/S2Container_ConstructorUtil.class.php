@@ -53,7 +53,7 @@ final class S2Container_ConstructorUtil
         } else {
             $strArg = array();
             for ($i = 0; $i < $c; $i++) {
-                array_push($strArg,'$args[' . $i . ']');
+                $strArg[] = '$args[' . $i . ']';
             }
             $cmd = $cmd . implode(',',$strArg) . ');';
         }

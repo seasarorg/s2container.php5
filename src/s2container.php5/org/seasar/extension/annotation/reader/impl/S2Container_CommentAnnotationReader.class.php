@@ -55,7 +55,7 @@ class S2Container_CommentAnnotationReader
                 }
             }
             if($inAnno){
-                array_push($annoLines,$line);
+                $annoLines[] = $line;
             }
         }
 
@@ -106,7 +106,7 @@ class S2Container_CommentAnnotationReader
                             throw new S2Container_AnnotationRuntimeException('ERR003',array($line,$item));
                         }
                         $item = $this->removeQuote($item);
-                        array_push($args,$item);
+                        $args[] = $item;
                         $argType = S2Container_AnnotationFactory::ARGS_TYPE_ARRAY;
                     }
                 }

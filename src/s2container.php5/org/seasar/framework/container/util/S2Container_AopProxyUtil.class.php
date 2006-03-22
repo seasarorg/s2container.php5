@@ -77,7 +77,7 @@ class S2Container_AopProxyUtil
         $size = $componentDef->getAspectDefSize();
         $aspects = array();
         for ($i = 0; $i < $size; ++$i) {
-            array_push($aspects,$componentDef->getAspectDef($i)->getAspect());
+            $aspects[] = $componentDef->getAspectDef($i)->getAspect();
         }
         return $aspects;
     }

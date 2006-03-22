@@ -44,7 +44,7 @@ final class S2Container_ChildComponentDefBindingUtil {
                                S2Container_ArgDef $argDef)
     {
         if(isset(self::$unresolved[$componentName])){
-            array_push(self::$unresolved[$componentName],$argDef);
+            self::$unresolved[$componentName][] = $argDef;
         }else{
             self::$unresolved[$componentName] = array($argDef);
         }

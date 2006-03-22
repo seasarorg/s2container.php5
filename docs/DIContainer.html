@@ -149,15 +149,15 @@ $hoge = $container->getComponent('hoge');
 </pre>
 
             <a name="DIType"><h3>Dependency Injectionのタイプ</h3></a>
-<p>Dependency Injectionには以下のタイプがあります。
-<ul><li>
+<p>Dependency Injectionには以下のタイプがあります。</p>
+
 <table border="0" vspace="0" hspace="0" cellpadding="0" cellspacing="0">
-<tr><td> - Constructor Injection</td><td> ： </td><td>コンポーネントの構成に必要な値をコンストラクタで設定する</td><tr>
-<tr><td> - Setter Injection</td><td> ： </td><td>コンポーネントの構成に必要な値をセッター・メソッドで設定する</td><tr>
-<tr><td> - Method Injection</td><td> ： </td><td>コンポーネントの構成に必要な値を初期化メソッドで設定する</td><tr>
+<tr><td width="15"></td><td> - Constructor Injection</td><td> ： </td><td>コンポーネントの構成に必要な値をコンストラクタで設定する</td><tr>
+<tr><td></td><td> - Setter Injection</td><td> ： </td><td>コンポーネントの構成に必要な値をセッター・メソッドで設定する</td><tr>
+<tr><td></td><td> - Method Injection</td><td> ： </td><td>コンポーネントの構成に必要な値を初期化メソッドで設定する</td><tr>
 </table>
-</li></ul>
-　MethodInjectionはS2のオリジナルです。S2はすべてのタイプとそのハイブリッド型もサポートします。
+
+<p>MethodInjectionはS2のオリジナルです。S2はすべてのタイプとそのハイブリッド型もサポートします。
 </p>
             <a name="ConstructorInjection"><b><h3>コンストラクタ・インジェクション</h3></b></a>
             <p>コンストラクタ・インジェクションとは、任意のコンストラクタの引数値にDependency Injectionします。<br>S2Containerの定義ファイルには、次の内容を記述します。</p>

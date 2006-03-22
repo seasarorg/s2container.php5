@@ -170,7 +170,7 @@ final class S2ContainerFactory
             throw new S2Container_CircularIncludeRuntimeException($path,
                                   $this->processingPaths_);
         }
-        array_push($this->processingPaths_,$path);
+        $this->processingPaths_[] = $path;
     }
 
     /**

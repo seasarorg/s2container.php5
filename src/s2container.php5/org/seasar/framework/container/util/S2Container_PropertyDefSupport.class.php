@@ -47,7 +47,7 @@ final class S2Container_PropertyDefSupport
             $propertyDef->setContainer($this->container_);
         }
         $this->propertyDefs_[$propertyDef->getPropertyName()] = $propertyDef;
-        array_push($this->propertyDefList_,$propertyDef->getPropertyName());
+        $this->propertyDefList_[] = $propertyDef->getPropertyName();
     }
 
     /**

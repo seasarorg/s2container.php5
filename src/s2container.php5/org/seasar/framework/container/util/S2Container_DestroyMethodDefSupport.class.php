@@ -45,7 +45,7 @@ final class S2Container_DestroyMethodDefSupport
         if ($this->container_ != null) {
             $methodDef->setContainer($this->container_);
         }
-        array_push($this->methodDefs_,$methodDef);
+        $this->methodDefs_[] = $methodDef;
     }
 
     /**

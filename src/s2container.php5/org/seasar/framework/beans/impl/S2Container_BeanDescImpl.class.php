@@ -293,7 +293,7 @@ final class S2Container_BeanDescImpl implements S2Container_BeanDesc
     private function _addPropertyDesc(S2Container_PropertyDesc $propertyDesc)
     {
         $this->propertyDescCache_[$propertyDesc->getPropertyName()] = $propertyDesc;
-        array_push($this->propertyDescCacheIndex_,$propertyDesc->getPropertyName());
+        $this->propertyDescCacheIndex_[] = $propertyDesc->getPropertyName();
     }
 
     /**

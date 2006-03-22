@@ -50,7 +50,7 @@ final class S2Container_ClassUtil
         $start = $refClass->getStartLine();
         $end   = $refClass->getEndLine();
         for ($i = $start - 1; $i < $end; $i++) {
-            array_push($ret,$lines[$i]);
+            $ret[] = $lines[$i];
         }
 
         return $ret;
@@ -110,7 +110,7 @@ final class S2Container_ClassUtil
         $interfaces = array_values($clazz->getInterfaces());
 
         if ($clazz->isInterface()) {
-            array_push($interfaces,$clazz);
+            $interfaces[] = $clazz;
         }       
       
         return $interfaces;

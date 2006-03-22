@@ -45,7 +45,7 @@ final class S2Container_ArgDefSupport
         if ($this->container_ != null) {
             $argDef->setContainer($this->container_);
         }
-        array_push($this->argDefs_,$argDef);
+        $this->argDefs_[] = $argDef;
     }
     
     /**

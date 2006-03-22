@@ -83,7 +83,7 @@ class S2ContainerImpl implements S2Container
         $componentDefs = $this->findComponentDefs($componentKey);
         $components = array();
         foreach ($componentDefs as $componentDef) {
-            array_push($components,$componentDef->getComponent());
+            $components[] = $componentDef->getComponent();
         }
         return $components;
     }
@@ -111,7 +111,7 @@ class S2ContainerImpl implements S2Container
     {
         if ($component instanceof S2Container_ComponentDef) {
             $this->_register0($component);
-            array_push($this->componentDefList_,$component);
+            $this->componentDefList_[] = $component;
         } else if (is_object($component)) {
             $this->register(new S2Container_SimpleComponentDef($component,
                                                          trim($componentName)));
@@ -292,7 +292,7 @@ class S2ContainerImpl implements S2Container
     public function includeChild(S2Container $child)
     {
         $child->setRoot($this->getRoot());
-        array_push($this->children_,$child);
+        $this->children_[] = $child;
         $ns = $child->getNamespace();
         if ($ns != null) {
             $this->_registerMap($ns, new S2ContainerComponentDef($child, $ns));
@@ -459,13 +459,13 @@ class S2ContainerImpl implements S2Container
         $interfaces = S2Container_ClassUtil::getInterfaces($componentClass);
         $o = count($interfaces);
         for ($i = 0; $i < $o; $i++) {
-            array_push($classes,$interfaces[$i]->getName());
+            $classes[] = $interfaces[$i]->getName();
         }
 
         $ref = $componentClass;
         if(!$ref->isInterface()){
             while ($ref != null) {
-                array_push($classes,$ref->getName());
+                $classes[] = $ref->getName();
                 $ref = $ref->getParentClass();
             }
         }

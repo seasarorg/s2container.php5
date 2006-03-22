@@ -35,7 +35,7 @@ class S2Container_InterceptorChain extends S2Container_AbstractInterceptor
      */
     public function add(S2Container_MethodInterceptor $interceptor)
     {
-        array_push($this->interceptors,$interceptor);
+        $this->interceptors[] = $interceptor;
     }
 
     /**

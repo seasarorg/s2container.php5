@@ -90,14 +90,14 @@ final class S2Container_PointcutImpl implements S2Container_Pointcut
             $methods = $targetClass->getMethods();
             $o = count($methods);
             for ($j = 0; $j < $o; $j++) {
-                array_push($methodNameSet,$methods[$j]->getName());
+                $methodNameSet[] = $methods[$j]->getName();
             }
         } else if ($targetClass->isAbstract()) {
             $methods = $targetClass->getMethods();
             $o = count($methods);
             for ($j = 0; $j < $o; $j++) {
                 if($methods[$j]->isAbstract()){
-                    array_push($methodNameSet,$methods[$j]->getName());
+                    $methodNameSet[] = $methods[$j]->getName();
                 }
             }
         } else {
@@ -107,7 +107,7 @@ final class S2Container_PointcutImpl implements S2Container_Pointcut
                 $methods = $interfaces[$i]->getMethods();
                 $p = count($methods);
                 for ($j = 0; $j < $p; $j++) {
-                    array_push($methodNameSet,$methods[$j]->getName());
+                    $methodNameSet[] = $methods[$j]->getName();
                 }
             }
         }

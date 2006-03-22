@@ -20,6 +20,7 @@ class AopAllTest {
         $group->addTestCase(new AopProxyFactoryTests());
         $group->addTestCase(new DefaultAopProxyTests());
         $group->addTestCase(new MethodInvocationTests());
+        $group->addTestCase(new AopProxyGeneratorTests());
 
         return $group;    	
     }

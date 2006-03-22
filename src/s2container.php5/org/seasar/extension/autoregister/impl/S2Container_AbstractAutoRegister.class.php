@@ -54,14 +54,14 @@ abstract class S2Container_AbstractAutoRegister {
      * @param S2Container_ClassPattern object
      */
     protected function addClassPatternInternal(S2Container_ClassPattern $pattern) {
-        array_push($this->classPatterns,$pattern);
+        $this->classPatterns[] = $pattern;
     }
 
     /**
      * @param S2Container_ClassPattern object
      */
     protected function addIgnoreClassPatternInternal(S2Container_ClassPattern $pattern) {
-        array_push($this->ignoreClassPatterns,$pattern);
+        $this->ignoreClassPatterns[] = $pattern;
     }    
 
     protected function hasComponentDef($name) {

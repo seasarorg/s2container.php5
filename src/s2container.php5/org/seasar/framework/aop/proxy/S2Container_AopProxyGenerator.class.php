@@ -43,8 +43,6 @@ class S2Container_AopProxyGenerator
      */
     public static function generate($target,$targetClass,$params = null)
     {
-        //$log = S2Container_S2Logger::getLogger('S2Container_AopProxyGenerator');
-
         $concreteClassName = 
             self::getConcreteClassName($targetClass->getName());
 
@@ -72,9 +70,9 @@ class S2Container_AopProxyGenerator
             foreach ($methods as $method) {
                 if ($method->getDeclaringClass()->getName() == $interface->getName()) {
                     if (S2Container_AopProxyFactory::isApplicableAspect($method)) {
-                        array_push($addMethodSrc,
+                        $addMethodSrc[] =
                              S2Container_AopProxyGenerator::getMethodDefinition($method,
-                             $interfaceSrc));
+                             $interfaceSrc);
                     } else {
                         $unApplicable = true;
                         break;
@@ -82,14 +80,8 @@ class S2Container_AopProxyGenerator
                 }
             }
             if (!$unApplicable) {
-                array_push($interfaceNames,$interface->getName());
+                $interfaceNames[] = $interface->getName();
             }
-            /*
-            else{
-                $log->info("interface [".$interface->getName().
-                "] is unapplicable. not implemented.",__METHOD__);
-            }
-            */
         }          
 
         if (count($interfaceNames) > 0) {
@@ -128,16 +120,16 @@ class S2Container_AopProxyGenerator
      */
     public static function getConcreteClassName($targetClassName)
     {
-        return S2Container_AopProxyGenerator::CLASS_NAME_PREFIX .
+        return self::CLASS_NAME_PREFIX .
                $targetClassName . 
-               S2Container_AopProxyGenerator::CLASS_NAME_POSTFIX;
+               self::CLASS_NAME_POSTFIX;
     }
     
     /**
      * @param ReflectionMethod
      * @param string
      */
-    private static function getMethodDefinition($refMethod,$interfaceSrc)
+    public static function getMethodDefinition($refMethod,$interfaceSrc)
     {
 
         $def = S2Container_MethodUtil::getSource($refMethod,$interfaceSrc);        
@@ -148,28 +140,18 @@ class S2Container_AopProxyGenerator
         
         if (preg_match("/\((.*)\)/",$defLine,$regs)) {
             $argLine = $regs[1];
+        }else{
+            $msg = "cannot get args [ $defLine ]";
+            throw new S2Container_S2RuntimeException('ESSR0017',array($msg));   
         }
 
-/*                
-        $argsTmp = split('[ ,]',$argLine);
-        $args = array();
-        foreach ($argsTmp as $item) {
-            if (preg_match('/^\$/',$item)) {
-                array_push($args,$item);
-            }
-            if (preg_match('/^\&(.+)/',$item,$regs)) {
-                array_push($args,$regs[1]);
-            }
-        }
-        $argLine = implode(',',$args);
-*/
         $argLine = preg_replace('/\".*?\"/','',$argLine);
         $argLine = preg_replace('/\'.*?\'/','',$argLine);
         $argsTmp = preg_split('/[ ,\&=]/',$argLine);
         $args = array();
         foreach ($argsTmp as $item) {
             if (preg_match('/^\$/',trim($item))) {
-                array_push($args,$item);
+                $args[] = $item;
             }
         }
         
@@ -178,5 +160,6 @@ class S2Container_AopProxyGenerator
         
         return $defLine;
     }
+
 }
 ?>

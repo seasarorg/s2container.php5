@@ -119,7 +119,7 @@ final class S2Container_AopProxyFactory
             for ($j = 0; $j < $p; ++$j) {
                 $aspect = $aspects[$j];
                 if ($aspects[$j]->getPointcut()->isApplied($methods[$i]->getName())) {
-                    array_push($interceptorList,$aspects[$j]->getMethodInterceptor());
+                    $interceptorList[] = $aspects[$j]->getMethodInterceptor();
                 }
 /*
                 else{

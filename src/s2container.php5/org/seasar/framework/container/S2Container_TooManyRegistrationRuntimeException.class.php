@@ -40,7 +40,7 @@ final class S2Container_TooManyRegistrationRuntimeException
         /*
         $args = array($key);
         foreach ($componentClasses as $clazz) {
-            array_push($args,$clazz->getName());
+            $args[] = $clazz->getName();
         }
         */
         $args[] = $key;
@@ -75,9 +75,9 @@ final class S2Container_TooManyRegistrationRuntimeException
 
         foreach ($componentClasses as $clazz) {
             if($clazz instanceof ReflectionClass){
-                array_push($buf,$clazz->getName());
+                $buf[] = $clazz->getName();
             }else{
-                array_push($buf,'class n/a');
+                $buf[] = 'class n/a';
             }
         }
         

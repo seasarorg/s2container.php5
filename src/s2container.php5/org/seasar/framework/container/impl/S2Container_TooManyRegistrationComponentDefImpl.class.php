@@ -45,7 +45,7 @@ class S2Container_TooManyRegistrationComponentDefImpl
      */
     public function addComponentDef($componentDef)
     {
-        array_push($this->componentDefs_,$componentDef);
+        $this->componentDefs_[] = $componentDef;
     }
 
     /**
@@ -80,7 +80,7 @@ class S2Container_TooManyRegistrationComponentDefImpl
     {
         $classes = array();
         foreach ($this->componentDefs_ as $componentDef) {
-            array_push($classes,$componentDef->getComponentClass());
+            $classes[] = $componentDef->getComponentClass();
         }
         return $classes;
     }

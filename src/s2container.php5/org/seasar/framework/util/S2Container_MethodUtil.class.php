@@ -59,7 +59,7 @@ final class S2Container_MethodUtil
         $strArg = array();
         $o = count($args);
         for ($i = 0; $i < $o; $i++) {
-            array_push($strArg,"\$args[" . $i . "]");
+            $strArg[] = "\$args[" . $i . "]";
         }
         $methodName = $method->getName();
         $cmd = 'return $target->' . $methodName . '(' .
@@ -95,7 +95,7 @@ final class S2Container_MethodUtil
         $end = $method->getEndLine();
 
         for ($i = $start - 1; $i < $end; $i++) {
-            array_push($def,$src[$i]);
+            $def[] = trim($src[$i]);
         }
         
         return $def;

@@ -45,7 +45,7 @@ final class S2Container_AspectDefSupport
         if ($this->container_ != null) {
             $aspectDef->setContainer($this->container_);
         }
-        array_push($this->aspectDefs_,$aspectDef);
+        $this->aspectDefs_[] = $aspectDef;
     }
 
     /**

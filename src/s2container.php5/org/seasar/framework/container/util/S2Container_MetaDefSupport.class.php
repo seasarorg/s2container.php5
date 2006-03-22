@@ -49,7 +49,7 @@ final class S2Container_MetaDefSupport
         if ($this->container_ != null) {
             $metaDef->setContainer($this->container_);
         }
-        array_push($this->metaDefs_,$metaDef);
+        $this->metaDefs_[] = $metaDef;
     }
 
     /**
@@ -90,7 +90,7 @@ final class S2Container_MetaDefSupport
             $metaDef = $this->getMetaDef($i);
             if ($name == null && $metaDef->getName() == null || $name != null
                     && strtolower($name) == strtolower($metaDef->getName())) {
-                array_push($defs,$metaDef);
+                $defs[] = $metaDef;
             }
         }
         return $defs;
