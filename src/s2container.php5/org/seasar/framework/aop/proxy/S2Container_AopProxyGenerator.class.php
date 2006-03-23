@@ -131,17 +131,21 @@ class S2Container_AopProxyGenerator
      */
     public static function getMethodDefinition($refMethod,$interfaceSrc)
     {
-
-        $def = S2Container_MethodUtil::getSource($refMethod,$interfaceSrc);        
-        $defLine = trim(implode(' ',$def));
-        $defLine = preg_replace("/\;$/","",$defLine);
-        $defLine = preg_replace("/abstract\s/","",$defLine);
-        $defLine .= " {";
+        $srcLines = S2Container_MethodUtil::getSource($refMethod,$interfaceSrc);        
+        $srcLine = implode(' ',$srcLines);
+        $defLine = 'public function ';
         
-        if (preg_match("/\((.*)\)/",$defLine,$regs)) {
-            $argLine = $regs[1];
+        if (preg_match("/\s([^\s]+?)\s*?\((.*)\)\s*?;/",$srcLine,$regs)) {
+            if($refMethod->getName() != $regs[1] or 
+               preg_match("/^[^\"']*function/",$regs[2])){
+                $msg = "cannot get method definition [ $srcLine ]";
+                throw new S2Container_S2RuntimeException('ESSR0017',array($msg));
+            }
+
+            $defLine .= $regs[1] . "(" . $regs[2] . "){";
+            $argLine = $regs[2];
         }else{
-            $msg = "cannot get args [ $defLine ]";
+            $msg = "cannot get args [ $srcLine ]";
             throw new S2Container_S2RuntimeException('ESSR0017',array($msg));   
         }
 
@@ -160,6 +164,5 @@ class S2Container_AopProxyGenerator
         
         return $defLine;
     }
-
 }
 ?>
