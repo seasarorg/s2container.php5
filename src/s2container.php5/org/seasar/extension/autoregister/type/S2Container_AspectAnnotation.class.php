@@ -25,7 +25,8 @@
  * @package org.seasar.extension.autoregister.type
  * @author klove
  */
-final class S2Container_AspectAnnotation {
+final class S2Container_AspectAnnotation
+{
     public $value = null;
     public $interceptor = null;
     public $pointcut = null;

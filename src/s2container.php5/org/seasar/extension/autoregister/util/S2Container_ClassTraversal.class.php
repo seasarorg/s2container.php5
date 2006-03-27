@@ -25,7 +25,8 @@
  * @package org.seasar.extension.autoregister.util
  * @author klove
  */
-final class S2Container_ClassTraversal {
+final class S2Container_ClassTraversal
+{
     public static $CLASS_SUFFIX = ".class.php";
     public static $SCANDIR_SORT = 0;
     
@@ -36,6 +37,9 @@ final class S2Container_ClassTraversal {
     {
     }
 
+    /**
+     * 
+     */
     public static function forEachTime($rootDir, 
                               S2Container_ClassTraversalClassHandler $handler)
     {
@@ -44,24 +48,27 @@ final class S2Container_ClassTraversal {
         }
     }
 
+    /**
+     * 
+     */
     private static function traverseFileSystem($dirPath,
-                           S2Container_ClassTraversalClassHandler $handler) {
-
+                           S2Container_ClassTraversalClassHandler $handler)
+    {
         $entries = scandir($dirPath,self::$SCANDIR_SORT);
-        if(!$entries){
+        if (!$entries) {
             throw new S2Container_S2RuntimeException('ESSR0017',
                       array("invalid directory [$dirPath]"));
         }
         foreach ($entries as $entry) {
-            if(preg_match("/^\./",$entry)){
+            if (preg_match("/^\./",$entry)) {
                 continue;
             }
             $path = $dirPath . DIRECTORY_SEPARATOR . $entry;
-            if(is_dir($path)){
+            if (is_dir($path)) {
                 self::traverseFileSystem($path,$handler);
-            }else if(preg_match("/^(.+)" . self::$CLASS_SUFFIX . "$/",
+            } else if (preg_match("/^(.+)" . self::$CLASS_SUFFIX . "$/",
                      $entry,
-                     $matches)){
+                     $matches)) {
                 $handler->processClass($path, $matches[1]);
             }
         }

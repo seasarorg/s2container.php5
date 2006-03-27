@@ -25,8 +25,8 @@
  * @package org.seasar.extension.unit.simpletest
  * @author klove
  */
-class S2Container_S2SimpleTestCase extends UnitTestCase {
-
+class S2Container_S2SimpleTestCase extends UnitTestCase
+{
     private $container_;
     private $bindedFields_ = array();
     private $methodName_;
@@ -34,11 +34,16 @@ class S2Container_S2SimpleTestCase extends UnitTestCase {
     /**
      * @return S2Container
      */
-    public function getContainer() {
+    public function getContainer()
+    {
         return $this->container_;
     }
 
-    public function getName(){
+    /**
+     * 
+     */
+    public function getName()
+    {
         return $this->methodName_;
     }
 
@@ -47,7 +52,8 @@ class S2Container_S2SimpleTestCase extends UnitTestCase {
      * @return object
      * @see S2Container::getComponent()
      */
-    public function getComponent($componentName) {
+    public function getComponent($componentName)
+    {
         return $this->container_->getComponent($componentName);
     }
 
@@ -56,7 +62,8 @@ class S2Container_S2SimpleTestCase extends UnitTestCase {
      * @return S2Container_ComponentDef
      * @see S2Container::getComponentDef()
      */
-    public function getComponentDef($componentName) {
+    public function getComponentDef($componentName)
+    {
         return $this->container_->getComponentDef($componentName);
     }
 
@@ -65,7 +72,8 @@ class S2Container_S2SimpleTestCase extends UnitTestCase {
      * @param string componentName
      * @see S2Container::register()
      */
-    public function register($component,$componentName="") {
+    public function register($component,$componentName = "")
+    {
         $this->container_->register($component, $componentName);
     }
 
@@ -74,7 +82,8 @@ class S2Container_S2SimpleTestCase extends UnitTestCase {
      *
      * @access public
      */
-    public function runBare($methodName) {
+    public function runBare($methodName)
+    {
         $this->methodName_ = $methodName;
         $this->setUpContainer();
         $this->setUp();
@@ -97,21 +106,23 @@ class S2Container_S2SimpleTestCase extends UnitTestCase {
      * @return SimpleInvoker Individual test runner.
      * @access public
      */
-    function createInvoker() {
+    function createInvoker()
+    {
         return new SimpleErrorTrappingInvoker(new S2Container_S2SimpleInvoker($this));
     }
                         
     /**
      * @param string path
      */
-    protected function includeDicon($path) {
+    protected function includeDicon($path)
+    {
         S2ContainerFactory::includeChild($this->container_,$path);
     }
-
     
     /**
      */
-    protected function setUpContainer(){
+    protected function setUpContainer()
+    {
         $this->container_ = new S2ContainerImpl();
         S2Container_SingletonS2ContainerFactory::setContainer($this->container_);        
     }
@@ -119,7 +130,8 @@ class S2Container_S2SimpleTestCase extends UnitTestCase {
     /**
      * 
      */
-    protected function setUpForEachTestMethod(){
+    protected function setUpForEachTestMethod()
+    {
         $targetName = $this->getTargetName();
         if ($targetName != "") {
             $this->invoke("setUp" . $targetName);
@@ -129,26 +141,34 @@ class S2Container_S2SimpleTestCase extends UnitTestCase {
     /**
      * 
      */
-    protected function setUpAfterContainerInit(){
+    protected function setUpAfterContainerInit()
+    {
     }
 
     /**
      * 
      */
-    protected function setUpAfterBindFields(){
+    protected function setUpAfterBindFields()
+    {
     }
 
     /**
      */
-    protected function tearDownBeforeUnbindFields(){
+    protected function tearDownBeforeUnbindFields()
+    {
     }
 
     /**
      */
-    protected function tearDownBeforeContainerDestroy(){
+    protected function tearDownBeforeContainerDestroy()
+    {
     }
 
-    protected function tearDownContainer(){
+    /**
+     * 
+     */
+    protected function tearDownContainer()
+    {
         $this->container_->destroy();
         S2Container_SingletonS2ContainerFactory::setContainer(null);
         $this->container_ = null;
@@ -156,7 +176,8 @@ class S2Container_S2SimpleTestCase extends UnitTestCase {
 
     /**
      */
-    protected function tearDownForEachTestMethod() {
+    protected function tearDownForEachTestMethod()
+    {
         $targetName = $this->getTargetName();
         if ($targetName != "") {
             $this->invoke("tearDown" . $targetName);
@@ -164,37 +185,42 @@ class S2Container_S2SimpleTestCase extends UnitTestCase {
         
     }
             
-    private function unbindFields() {
-        foreach($this->bindedFields_ as $field){
+    private function unbindFields()
+    {
+        foreach ($this->bindedFields_ as $field) {
             $field->setValue($this, null);
         }
         $this->bindedFields_ = array();
     }
         
-    private function bindFields() {
+    private function bindFields()
+    {
         $ref = new ReflectionClass($this);
         $props = $ref->getProperties();
-        foreach($props as $prop){
+        foreach ($props as $prop) {
             $this->bindField($prop);
         }
     }
 
-    private function bindField(ReflectionProperty $field) {
+    private function bindField(ReflectionProperty $field)
+    {
         if ($this->isAutoBindable($field)) {
             $propName = $field->getName();
-            if($this->getContainer()->hasComponentDef($propName)){
+            if ($this->getContainer()->hasComponentDef($propName)) {
                 $field->setValue($this,$this->getComponent($propName));
                 $this->bindedFields_[] = $field;
             }
         }
     }
 
-    private function isAutoBindable(ReflectionProperty $field) {
+    private function isAutoBindable(ReflectionProperty $field)
+    {
         return !$field->isStatic() and $field->isPublic() and
                 !preg_match("/^SimpleTestCase/",$field->getDeclaringClass()->getName());
     }
         
-    private function invoke($methodName) {
+    private function invoke($methodName)
+    {
         try {
             $method = S2Container_ClassUtil::getMethod(new ReflectionClass($this),
                                            $methodName);
@@ -204,7 +230,8 @@ class S2Container_S2SimpleTestCase extends UnitTestCase {
         }
     }    
 
-    private function getTargetName() {
+    private function getTargetName()
+    {
         return substr($this->methodName_,4);
     }    
 }

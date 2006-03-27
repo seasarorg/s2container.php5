@@ -25,20 +25,28 @@
  * @package org.seasar.extension.autoregister.factory
  * @author klove
  */
-class S2Container_AnnotationHandlerFactory {
-
+class S2Container_AnnotationHandlerFactory 
+{
     public static $DEFAULT_ANNOTATION_HANDLER = "S2Container_ConstantAnnotationHandler";
     
     private static $annotationHandler = null;
-  
-    protected function __construct(){
+ 
+    /**
+     * 
+     */ 
+    protected function __construct()
+    {
     }
    
-    public static function getAnnotationHandler() {
-        if(self::$annotationHandler == null){
-            if(defined('S2CONTAINER_PHP5_ANNOTATION_HANDLER')){
+    /**
+     * 
+     */
+    public static function getAnnotationHandler() 
+    {
+        if (self::$annotationHandler == null) {
+            if (defined('S2CONTAINER_PHP5_ANNOTATION_HANDLER')) {
                 $handler = S2CONTAINER_PHP5_ANNOTATION_HANDLER;
-            }else{
+            } else {
                 $handler = self::$DEFAULT_ANNOTATION_HANDLER;
             }
             self::$annotationHandler = new $handler();
@@ -46,7 +54,11 @@ class S2Container_AnnotationHandlerFactory {
         return self::$annotationHandler;  
     }
     
-    public static function setAnnotationHandler(S2Continer_AnnotationHandler $handler) {
+    /**
+     * 
+     */
+    public static function setAnnotationHandler(S2Continer_AnnotationHandler $handler)
+    {
         self::$annotationHandler = $handler;
     }
 }

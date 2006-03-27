@@ -26,28 +26,45 @@
  * @package org.seasar.extension.db.pdo
  * @author nowel
  */
-class S2Container_PDODataSource extends S2Container_AbstractDataSource {
-
+class S2Container_PDODataSource 
+    extends S2Container_AbstractDataSource 
+{
     private $log_;
     protected $dsn = "";
     protected $option = array();
 
-    public function __construct(){
+    /**
+     * 
+     */
+    public function __construct()
+    {
         $this->log_ = S2Container_S2Logger::getLogger(__CLASS__);
     }
 
-    public function setDsn($dsn){
+    /**
+     * 
+     */
+    public function setDsn($dsn)
+    {
         $this->dsn = $dsn; 
     }
 
-    public function setOption($option){
+    /**
+     * 
+     */
+    public function setOption($option)
+    {
         $this->option = $option;
     }
 
-    public function getConnection(){
+    /**
+     * 
+     */
+    public function getConnection()
+    {
         try {
             $db = new PDO($this->dsn, $this->user, $this->password, $this->option);
-        } catch(PDOException $e){
+        } catch (PDOException $e) {
             $this->log_->error($e->getMessage(), __METHOD__);
             $this->log_->error($e->getCode(), __METHOD__);
             throw $e;
@@ -56,17 +73,24 @@ class S2Container_PDODataSource extends S2Container_AbstractDataSource {
         return $db;
     }
 
-    public function disconnect($connection){
+    /**
+     * 
+     */
+    public function disconnect($connection)
+    {
         unset($connection);
     }
 
-    public function __toString(){
+    /**
+     * 
+     */
+    public function __toString()
+    {
         $str = 'user = ' . $this->user . ', ';
         $str .= 'password = ' . $this->password . ', ';
         $str .= 'dsn = ' . $this->dsn . ', ';
         $str .= 'option = ' . implode(',',$this->option);
         return $str;
     }
-
 }
 ?>

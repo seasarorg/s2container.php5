@@ -26,16 +26,16 @@
  * @author klove
  */
 class S2Container_CommentAnnotationHandler 
-    extends S2Container_AbstractAnnotationHandler {
-
+    extends S2Container_AbstractAnnotationHandler 
+{
     public function createComponentDef(ReflectionClass $componentClass,
-                                       $instanceMode) {
-
-        if(S2Container_Annotations::isAnnotationPresent('S2Container_ComponentAnnotation',
-                                                  $componentClass)){
+                                       $instanceMode) 
+    {
+        if (S2Container_Annotations::isAnnotationPresent('S2Container_ComponentAnnotation',
+                                                  $componentClass)) {
             $component = S2Container_Annotations::getAnnotation('S2Container_ComponentAnnotation',
                                                                 $componentClass);
-        }else{
+        } else {
             return $this->createComponentDefInternal($componentClass, $instanceMode);
         }
 
@@ -51,18 +51,21 @@ class S2Container_CommentAnnotationHandler
         return $componentDef;
     }
 
+    /**
+     * 
+     */
     public function createPropertyDef(S2Container_BeanDesc $beanDesc,
-                                      S2Container_PropertyDesc $propertyDesc) {
-
+                                      S2Container_PropertyDesc $propertyDesc) 
+    {
         if (!$propertyDesc->hasWriteMethod()) {
             return null;
         }
         
         $method = $propertyDesc->getWriteMethod();
         $binding = null;
-        if(S2Container_Annotations::isAnnotationPresent('S2Container_BindingAnnotation',
+        if (S2Container_Annotations::isAnnotationPresent('S2Container_BindingAnnotation',
                                                   $beanDesc->getBeanClass(),
-                                                  $method->getName())){
+                                                  $method->getName())) {
             $binding = S2Container_Annotations::getAnnotation('S2Container_BindingAnnotation',
                                                $beanDesc->getBeanClass(),
                                                $method->getName());
@@ -77,11 +80,15 @@ class S2Container_CommentAnnotationHandler
         return null;
     }
     
-    public function appendAspect(S2Container_ComponentDef $componentDef) {
+    /**
+     * 
+     */
+    public function appendAspect(S2Container_ComponentDef $componentDef)
+    {
         $clazz = $componentDef->getComponentClass();
         $aspect = null;
-        if(S2Container_Annotations::isAnnotationPresent('S2Container_AspectAnnotation',
-                                                  $clazz)){
+        if (S2Container_Annotations::isAnnotationPresent('S2Container_AspectAnnotation',
+                                                  $clazz)) {
             $aspect = S2Container_Annotations::getAnnotation('S2Container_AspectAnnotation',
                                                   $clazz);
         }
@@ -95,11 +102,11 @@ class S2Container_CommentAnnotationHandler
         }
         
         $methods = $clazz->getMethods();
-        foreach($methods as $method) {
+        foreach ($methods as $method) {
             $mAspect = null;
-            if(S2Container_Annotations::isAnnotationPresent('S2Container_AspectAnnotation',
+            if (S2Container_Annotations::isAnnotationPresent('S2Container_AspectAnnotation',
                                                   $clazz,
-                                                  $method->getName())){
+                                                  $method->getName())) {
                 $mAspect = S2Container_Annotations::getAnnotation(
                                          'S2Container_AspectAnnotation',
                                          $clazz,
@@ -115,7 +122,11 @@ class S2Container_CommentAnnotationHandler
         }
     }
     
-    public function appendInitMethod(S2Container_ComponentDef $componentDef) {
+    /**
+     * 
+     */
+    public function appendInitMethod(S2Container_ComponentDef $componentDef)
+    {
         $componentClass = $componentDef->getComponentClass();
         if ($componentClass == null) {
             return;
@@ -123,9 +134,9 @@ class S2Container_CommentAnnotationHandler
         $methods = $componentClass->getMethods();
         $initMethod = null;
         foreach ($methods as $method) {
-            if(!S2Container_Annotations::isAnnotationPresent('S2Container_InitMethodAnnotation',
+            if (!S2Container_Annotations::isAnnotationPresent('S2Container_InitMethodAnnotation',
                                                   $componentClass,
-                                                  $method->getName())){
+                                                  $method->getName())) {
                 continue;
             }
             if (count($method->getParameters()) != 0) {

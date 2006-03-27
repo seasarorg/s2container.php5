@@ -25,9 +25,13 @@
  * @package org.seasar.extension.autoregister.impl
  * @author klove
  */
-class S2Container_DefaultAutoNaming extends S2Container_AbstractAutoNaming {
-
-    public function makeDefineName($directoryPath, $shortClassName) {
+class S2Container_DefaultAutoNaming extends S2Container_AbstractAutoNaming 
+{
+    /**
+     * 
+     */
+    public function makeDefineName($directoryPath, $shortClassName) 
+    {
         return $this->applyRule($shortClassName);
     }
 }

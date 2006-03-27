@@ -33,7 +33,8 @@ class S2Container_FileSystemComponentAutoRegister
     /**
      * @S2Container_InitMethodAnnotation
      */
-    public function registerAll() {
+    public function registerAll()
+    {
         S2Container_ChildComponentDefBindingUtil::init();
 
         $c = $this->getClassPatternSize();
@@ -49,11 +50,11 @@ class S2Container_FileSystemComponentAutoRegister
      * @param string dir path
      * @param string null or class name string
      */
-    public function addClassPattern($directoryPath,$patterns = null) {
-
+    public function addClassPattern($directoryPath,$patterns = null) 
+    {
         $directoryPath = S2Container_StringUtil::expandPath($directoryPath);
         
-        if(!is_dir($directoryPath)){
+        if (!is_dir($directoryPath)) {
             throw new S2Container_S2RuntimeException('ESSR0017',
                       array("invalid directory [$directoryPath]"));
         }
@@ -68,8 +69,8 @@ class S2Container_FileSystemComponentAutoRegister
     /**
      * @param string null or class name string
      */
-    public function addIgnoreClassPattern($patterns) {
-        
+    public function addIgnoreClassPattern($patterns) 
+    {    
         $pat = new S2Container_ClassPattern();
         $pat->setShortClassNames($patterns);
         
@@ -79,7 +80,8 @@ class S2Container_FileSystemComponentAutoRegister
     /**
      * 
      */
-    protected function registerInternal(S2Container_ClassPattern $classPattern) {
+    protected function registerInternal(S2Container_ClassPattern $classPattern)
+    {
         S2Container_ClassTraversal::forEachTime(
             $classPattern->getDirectoryPath(), $this);
     }

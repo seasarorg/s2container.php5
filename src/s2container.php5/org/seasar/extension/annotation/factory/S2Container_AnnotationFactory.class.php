@@ -25,38 +25,46 @@
  * @package org.seasar.extension.annotation.factory
  * @author klove
  */
-final class S2Container_AnnotationFactory {
-
+final class S2Container_AnnotationFactory
+{
     const ARGS_TYPE_ARRAY = 1;
     const ARGS_TYPE_HASH = 2;
+
+    /**
+     * 
+     */    
+    private function __construct()
+    {
+    }
     
-    private function __construct() {}
-    
+    /**
+     * 
+     */
     public static function create($annotationType,
                                   $args = array(),
-                                  $argType = self::ARGS_TYPE_ARRAY){
-
-        if(class_exists($annotationType)){
-            $annoObj= new $annotationType();        
-        }else{
+                                  $argType = self::ARGS_TYPE_ARRAY)
+    {
+        if (class_exists($annotationType)) {
+            $annoObj = new $annotationType();        
+        } else {
             return null;    
         }
  
-        if(count($args) == 0){
+        if (count($args) == 0) {
             return $annoObj;
         }
         
-        if($argType == self::ARGS_TYPE_ARRAY){
-            if(count($args)==1){
+        if ($argType == self::ARGS_TYPE_ARRAY) {
+            if (count($args) == 1) {
                 $annoObj->value = $args[0];
-            }else{
+            } else {
                 $annoObj->value = $args;
             }
             return $annoObj;
         }
 
-        foreach($args as $arg=>$val){
-            if(!array_key_exists($arg,$annoObj)){
+        foreach ($args as $arg=>$val) {
+            if (!array_key_exists($arg,$annoObj)) {
                 $className = get_class($annoObj);
                 S2Container_S2Logger::getLogger(__CLASS__)->
                     info("class : <$className> property <$arg> should be define as public.",__METHOD__);

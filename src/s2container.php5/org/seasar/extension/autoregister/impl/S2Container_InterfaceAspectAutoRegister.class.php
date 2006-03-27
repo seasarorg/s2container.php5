@@ -24,8 +24,6 @@
 /**
  * @package org.seasar.extension.autoregister.impl
  * @author klove
- * 
- * 
  */
 class S2Container_InterfaceAspectAutoRegister
 {
@@ -36,15 +34,27 @@ class S2Container_InterfaceAspectAutoRegister
     private $targetInterface;
     private $pointcut;
 
-    public function setContainer(S2Container $container) {
+    /**
+     * 
+     */
+    public function setContainer(S2Container $container)
+    {
         $this->container = $container;
     }
     
-    public function setInterceptor(S2Container_MethodInterceptor $interceptor) {
+    /**
+     * 
+     */
+    public function setInterceptor(S2Container_MethodInterceptor $interceptor)
+    {
         $this->interceptor = $interceptor;
     }
     
-    public function setTargetInterface($targetInterface) {
+    /**
+     * 
+     */
+    public function setTargetInterface($targetInterface)
+    {
         if (!interface_exists($targetInterface)) {
             throw new S2Container_IllegalArgumentException($targetInterface);
         }
@@ -55,7 +65,8 @@ class S2Container_InterfaceAspectAutoRegister
     /**
      * @S2Container_InitMethodAnnotation
      */
-    public function registerAll() {
+    public function registerAll()
+    {
         $c = $this->container->getComponentDefSize();
         for ($i = 0; $i < $c; ++$i) {
             $cd = $this->container->getComponentDef($i);
@@ -63,7 +74,11 @@ class S2Container_InterfaceAspectAutoRegister
         }
     }
     
-    protected function register(S2Container_ComponentDef $componentDef) {
+    /**
+     * 
+     */
+    protected function register(S2Container_ComponentDef $componentDef)
+    {
         $componentClass = $componentDef->getComponentClass();
         if ($componentClass == null) {
             return;
@@ -74,7 +89,11 @@ class S2Container_InterfaceAspectAutoRegister
         $this->registerInterceptor($componentDef);
     }
    
-    protected function registerInterceptor(S2Container_ComponentDef $componentDef) {
+    /**
+     * 
+     */
+    protected function registerInterceptor(S2Container_ComponentDef $componentDef)
+    {
         $aspectDef = new S2Container_AspectDefImpl($this->interceptor,
                                                    $this->pointcut);
         $componentDef->addAspectDef($aspectDef);

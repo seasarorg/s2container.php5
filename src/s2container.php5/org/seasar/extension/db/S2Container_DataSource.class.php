@@ -25,8 +25,16 @@
  * @package org.seasar.extension.db
  * @author klove
  */
-interface S2Container_DataSource {
+interface S2Container_DataSource 
+{
+    /**
+     * 
+     */
     public function getConnection();
+
+    /**
+     * 
+     */
     public function disconnect($connection);
 }
 ?>

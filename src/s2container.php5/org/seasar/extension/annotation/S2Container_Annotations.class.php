@@ -25,9 +25,11 @@
  * @package org.seasar.extension.annotation
  * @author klove
  */
-final class S2Container_Annotations {
-
-    private function __construct() {}
+final class S2Container_Annotations 
+{
+    private function __construct() 
+    {
+    }
     
     /**
      * @param string or ReflectionClass $classKey
@@ -36,7 +38,8 @@ final class S2Container_Annotations {
      */
     public static function getAnnotations($classKey,
                                           $methodName = null,
-                                          $srcFile = null){
+                                          $srcFile = null)
+    {
         $container = S2Container_AnnotationContainer::getInstance();
         return $container->getAnnotations($classKey,$methodName,$srcFile);
     }
@@ -50,9 +53,13 @@ final class S2Container_Annotations {
     public static function getAnnotation($annotationType,
                                          $classKey,
                                          $methodName = null,
-                                         $srcFile = null){
+                                         $srcFile = null)
+    {
         $container = S2Container_AnnotationContainer::getInstance();
-        return $container->getAnnotation($annotationType,$classKey,$methodName,$srcFile);
+        return $container->getAnnotation($annotationType,
+                                         $classKey,
+                                         $methodName,
+                                         $srcFile);
     }
 
     /**
@@ -64,9 +71,13 @@ final class S2Container_Annotations {
     public static function isAnnotationPresent($annotationType,
                                                $classKey,
                                                $methodName = null,
-                                               $srcFile = null){
+                                               $srcFile = null)
+    {
         $container = S2Container_AnnotationContainer::getInstance();
-        return $container->isAnnotationPresent($annotationType,$classKey,$methodName,$srcFile);
+        return $container->isAnnotationPresent($annotationType,
+                                               $classKey,
+                                               $methodName,
+                                               $srcFile);
     }
 }
 ?>

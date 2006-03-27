@@ -28,21 +28,25 @@
 class S2Container_AnnotationRuntimeException 
     extends Exception 
 {
+    /**
+     * 
+     */
     public function __construct(
         $messageCode,
         $args = null,
-        $cause = null) {
+        $cause = null)
+    {
 
-        switch($messageCode){
-        	case 'ERR001':
-        	    $msg = "UnsupportedOperationException";
-        	    break;
-        	case 'ERR002':
-        	    $msg = "annotation [ {$args[0]} ] not found in class [ {$args[1]} ], method [ {$args[2]} ]";
-        	    break;
-        	case 'ERR003':
-        	    $msg = "array and hash can not mix. [ {$args[0]} ] [ {$args[1]} ]";
-        	    break;
+        switch ($messageCode) {
+            case 'ERR001':
+                $msg = "UnsupportedOperationException";
+                break;
+            case 'ERR002':
+                $msg = "annotation [ {$args[0]} ] not found in class [ {$args[1]} ], method [ {$args[2]} ]";
+                break;
+            case 'ERR003':
+                $msg = "array and hash can not mix. [ {$args[0]} ] [ {$args[1]} ]";
+                break;
             case 'ERR004':
                 $msg = "empty property name. [ {$args[0]} ] [ {$args[1]} ]";
                 break;

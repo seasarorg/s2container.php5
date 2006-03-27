@@ -28,13 +28,14 @@
 final class S2ContainerFileCacheFactory
 {
     public static $INITIALIZE_BEFORE_CACHE = false;
+
     /**
      * @param string dicon path 
      * @param string cache file name 
      */
     public static function create($diconPath,$cacheName = null) 
     {
-        if (!self::_isCacheDirectoryAvailable()){
+        if (!self::_isCacheDirectoryAvailable()) {
             S2Container_S2Logger::getLogger(__CLASS__)->
                 info("cache directory not available.",__METHOD__);
             return S2ContainerFactory::create($diconPath);
@@ -42,15 +43,15 @@ final class S2ContainerFileCacheFactory
 
         $cacheFilePath = self::_getCacheFilePath($diconPath,$cacheName);
         
-        if (self::_isValidCache($cacheFilePath,$diconPath)){
+        if (self::_isValidCache($cacheFilePath,$diconPath)) {
             $container = unserialize(file_get_contents($cacheFilePath));
             S2Container_S2Logger::getLogger(__CLASS__)->
                 info("cached container available.",__METHOD__);
             if (is_object($container) and 
-                $container instanceof S2Container){
+                $container instanceof S2Container) {
                 $container->reconstruct(S2Container_ComponentDef::RECONSTRUCT_FORCE);
                 return $container;    
-            }else{
+            } else {
                 throw new Exception("invalid cache found.");
             }
         }
@@ -59,13 +60,13 @@ final class S2ContainerFileCacheFactory
             info("create container and cache it.",__METHOD__);
         $container = S2ContainerFactory::create($diconPath);
 
-        if(self::$INITIALIZE_BEFORE_CACHE){
+        if (self::$INITIALIZE_BEFORE_CACHE) {
            $container->init(); 
         }
 
-        if(!file_put_contents($cacheFilePath,
+        if (!file_put_contents($cacheFilePath,
                              serialize($container),
-                             LOCK_EX)){
+                             LOCK_EX)) {
                 throw new Exception("cache write fail.");
         }
         return $container;
@@ -74,12 +75,13 @@ final class S2ContainerFileCacheFactory
     /**
      * 
      */  
-    private static function _isCacheDirectoryAvailable(){
+    private static function _isCacheDirectoryAvailable()
+    {
         if (defined('S2CONTAINER_PHP5_CACHE_DIR') and
             is_dir(S2CONTAINER_PHP5_CACHE_DIR) and 
-            is_writable(S2CONTAINER_PHP5_CACHE_DIR)){
+            is_writable(S2CONTAINER_PHP5_CACHE_DIR)) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
@@ -87,10 +89,11 @@ final class S2ContainerFileCacheFactory
     /**
      * 
      */
-    private static function _getCacheFilePath($path,$cacheName){
-        if($cacheName != null){
+    private static function _getCacheFilePath($path,$cacheName)
+    {
+        if ($cacheName != null) {
             return S2CONTAINER_PHP5_CACHE_DIR . DIRECTORY_SEPARATOR . $cacheName;
-        }else{
+        } else {
             return S2CONTAINER_PHP5_CACHE_DIR . DIRECTORY_SEPARATOR . 
                    sha1($path) . ".dicon";
         }
@@ -99,13 +102,13 @@ final class S2ContainerFileCacheFactory
     /**
      * 
      */
-   private static function _isValidCache($cacheFilePath,$diconPath){
-    
+   private static function _isValidCache($cacheFilePath,$diconPath)
+   {    
        if (is_file($cacheFilePath) and 
            is_readable($cacheFilePath) and
-           filemtime($cacheFilePath) > filemtime($diconPath)){
+           filemtime($cacheFilePath) > filemtime($diconPath)) {
            return true;
-       }else{
+       } else {
            return false; 
        }
    }

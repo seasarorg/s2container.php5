@@ -28,16 +28,19 @@
 class S2Container_ConstantAnnotationHandler 
     extends S2Container_AbstractAnnotationHandler
 {
-
+    /**
+     * 
+     */
     public function createComponentDef(ReflectionClass $componentClass,
-                                                         $instanceMode) {
+                                                         $instanceMode)
+    {
         $beanDesc = S2Container_BeanDescFactory::getBeanDesc($componentClass);
         if (!$beanDesc->hasConstant(S2Container_AbstractAnnotationHandler::COMPONENT)) {
             return $this->createComponentDefInternal($componentClass,$instanceMode);
         }
         $componentStr = $beanDesc->getConstant(S2Container_AbstractAnnotationHandler::COMPONENT);
 
-        $items = preg_split("/[=,]+/",$componentStr,-1,PREG_SPLIT_NO_EMPTY);
+        $items = preg_split("/[=,]+/",$componentStr, -1,PREG_SPLIT_NO_EMPTY);
         $componentDef = $this->createComponentDefInternal($componentClass,$instanceMode);
         $c = count($items);
         for ($i = 0; $i < $c; $i += 2) {
@@ -57,8 +60,12 @@ class S2Container_ConstantAnnotationHandler
         return $componentDef;
     }
 
+    /**
+     * 
+     */
     public function createPropertyDef(S2Container_BeanDesc $beanDesc,
-                                      S2Container_PropertyDesc $propertyDesc) {
+                                      S2Container_PropertyDesc $propertyDesc)
+    {
 
         $propName = $propertyDesc->getPropertyName();
         $fieldName = $propName . S2Container_AbstractAnnotationHandler::BINDING_SUFFIX;
@@ -74,8 +81,11 @@ class S2Container_ConstantAnnotationHandler
 
     }
 
-    public function appendAspect(S2Container_ComponentDef $componentDef) {
-
+    /**
+     * 
+     */
+    public function appendAspect(S2Container_ComponentDef $componentDef)
+    {
         $componentClass = $componentDef->getComponentClass();
         if ($componentClass == null) {
             return;
@@ -108,8 +118,11 @@ class S2Container_ConstantAnnotationHandler
     
     }
 
-    public function appendInitMethod(S2Container_ComponentDef $componentDef) {
- 
+    /**
+     * 
+     */
+    public function appendInitMethod(S2Container_ComponentDef $componentDef)
+    {
         $componentClass = $componentDef->getComponentClass();
         if ($componentClass == null) {
             return;
@@ -122,7 +135,7 @@ class S2Container_ConstantAnnotationHandler
         if ($initMethodStr == '') {
             return;
         }
-        $items = preg_split("/[,]+/",$initMethodStr,-1,PREG_SPLIT_NO_EMPTY);
+        $items = preg_split("/[,]+/",$initMethodStr, -1,PREG_SPLIT_NO_EMPTY);
         $c = count($items);
         for ($i = 0; $i < $c; ++$i) {
             $methodName = trim($items[$i]);

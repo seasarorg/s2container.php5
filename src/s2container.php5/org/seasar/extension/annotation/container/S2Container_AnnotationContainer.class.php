@@ -32,14 +32,23 @@ class S2Container_AnnotationContainer
     private $annotationMap = array();
     private $annotationReader = null;
 
-    private function __construct(){}
-    
-    public static function getInstance(){
-        if(self::$container == null){
+    /**
+     * 
+     */
+    private function __construct()
+    {
+    }
+
+    /**
+     * 
+     */    
+    public static function getInstance()
+    {
+        if (self::$container == null) {
             self::$container = new S2Container_AnnotationContainer();
-            if(defined('S2CONTAINER_ANNOTATION_READER')){
+            if (defined('S2CONTAINER_ANNOTATION_READER')) {
                 $reader = S2CONTAINER_ANNOTATION_READER;
-            }else{
+            } else {
                 $reader = self::$DEFAULT_ANNOTATION_READER;
             }
             
@@ -47,30 +56,38 @@ class S2Container_AnnotationContainer
         }    
         return self::$container;
     }
-        
-    public function setAnnotationReader(S2Container_AnnotationReader $reader){
+    
+    /**
+     * 
+     */    
+    public function setAnnotationReader(S2Container_AnnotationReader $reader)
+    {
         $this->annotationReader = $reader;
     }
     
+    /**
+     * 
+     */
     public function getAnnotations($classKey,
-                                   $methodName=null,
-                                   $srcFile=null){
-        if($classKey instanceof ReflectionClass){
+                                   $methodName = null,
+                                   $srcFile = null)
+    {
+        if ($classKey instanceof ReflectionClass) {
             $className = $classKey->getName();
             $clazz = $classKey;
-        }else{
+        } else {
             $className = $classKey;
             $clazz = new ReflectionClass($classKey);
         }
 
         $annotationId = $this->getAnnotationId($className,$methodName);
-        if(array_key_exists($annotationId,$this->annotationMap)){
+        if (array_key_exists($annotationId,$this->annotationMap)) {
             return $this->annotationMap[$annotationId];
         }
 
         $annotations = $this->annotationReader->
                          getAnnotations($clazz,$methodName);
-        if(is_array($annotations)){
+        if (is_array($annotations)) {
             $this->annotationMap[$annotationId] = $annotations;
              return $annotations;
         }
@@ -78,41 +95,52 @@ class S2Container_AnnotationContainer
         return null;
     }
 
+    /**
+     * 
+     */
     public function getAnnotation($annotationType,
                                   $className,
-                                  $methodName=null,
-                                  $srcFile=null){
-
+                                  $methodName = null,
+                                  $srcFile = null)
+    {
         $annotations = $this->getAnnotations($className,$methodName,$srcFile);
         $annotationId = $this->getAnnotationId($className,$methodName);
 
-        if(!is_array($annotations) or !array_key_exists($annotationType,$annotations)){
-            throw new S2Container_AnnotationRuntimeException(
-                          'ERR002',
-                          array($annotationType,$className,$methodName));	
-        }
-        
+        if (!is_array($annotations) or 
+            !array_key_exists($annotationType,$annotations)) {
+            throw new S2Container_AnnotationRuntimeException('ERR002',
+                          array($annotationType,$className,$methodName));
+    }
         return $annotations[$annotationType];
     }
 
+    /**
+     * 
+     */
     public function isAnnotationPresent($annotationType,
                                         $className,
-                                        $methodName=null,
-                                        $srcFile=null){
+                                        $methodName = null,
+                                        $srcFile = null)
+    {
         $annotations = $this->getAnnotations($className,$methodName,$srcFile);
         $annotationId = $this->getAnnotationId($className,$methodName);
 
-        if(!is_array($annotations) or !array_key_exists($annotationType,$annotations)){
+        if (!is_array($annotations) or 
+            !array_key_exists($annotationType,$annotations)) {
             return false;
         }
         return true;
     }    
 
-    public function getAnnotationId($className,$methodName){
-        if($methodName == null){
-            return $className.":class";
-        }else{
-            return $className.":".$methodName;
+    /**
+     * 
+     */
+    public function getAnnotationId($className,$methodName)
+    {
+        if ($methodName == null) {
+            return $className . ":class";
+        } else {
+            return $className . ":" . $methodName;
         }
     }
 }

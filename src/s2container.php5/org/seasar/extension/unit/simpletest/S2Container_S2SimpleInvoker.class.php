@@ -25,9 +25,13 @@
  * @package org.seasar.extension.unit.simpletest
  * @author klove
  */
-class S2Container_S2SimpleInvoker extends SimpleInvoker{
-
-    function S2Container_S2SimpleInvoker($test_case) {
+class S2Container_S2SimpleInvoker extends SimpleInvoker
+{
+    /**
+     * 
+     */
+    public function __construct($test_case)
+    {
     	parent::__construct($test_case);
     }
     
@@ -37,7 +41,8 @@ class S2Container_S2SimpleInvoker extends SimpleInvoker{
      *    @param string $method    Test method to call.
      *    @access public
      */
-    function invoke($method) {
+    public function invoke($method)
+    {
         $this->_test_case->runBare($method);
     }    
 }

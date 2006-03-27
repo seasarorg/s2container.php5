@@ -27,34 +27,58 @@
  */
 abstract class S2Container_AbstractComponentAutoRegister 
     extends S2Container_AbstractAutoRegister 
-    implements S2Container_ClassTraversalClassHandler {
-
+    implements S2Container_ClassTraversalClassHandler
+{
     const CLASS_SUFFIX = ".class.php";
 
     private $autoNaming = null;
     private $instanceMode = "singleton";
 
-    public function __construct(){
+    /**
+     * 
+     */
+    public function __construct()
+    {
         $this->autoNaming = new S2Container_DefaultAutoNaming();
     }
 
-    public function getAutoNaming() {
+    /**
+     * 
+     */
+    public function getAutoNaming()
+    {
         return $this->autoNaming;
     }
     
-    public function setAutoNaming(S2Container_AutoNaming $autoNaming) {
+    /**
+     * 
+     */
+    public function setAutoNaming(S2Container_AutoNaming $autoNaming)
+    {
         $this->autoNaming = $autoNaming;
     }
     
-    public function getInstanceMode() {
+    /**
+     * 
+     */
+    public function getInstanceMode()
+    {
         return $this->instanceMode;
     }
 
-    public function setInstanceMode($instanceMode) {
+    /**
+     * 
+     */
+    public function setInstanceMode($instanceMode)
+    {
         $this->instanceMode = $instanceMode;
     }
    
-    public function processClass($classFilePath, $className) {
+    /**
+     * 
+     */
+    public function processClass($classFilePath, $className)
+    {
         if ($this->isIgnore($className)) {
             return;
         }
@@ -68,9 +92,12 @@ abstract class S2Container_AbstractComponentAutoRegister
         }
     }
 
-    protected function register($classFilePath, $className) {
-
-        if(!class_exists($className,false)){
+    /**
+     * 
+     */
+    protected function register($classFilePath, $className)
+    {
+        if (!class_exists($className,false)) {
             require_once($classFilePath);
         }
         
@@ -78,8 +105,7 @@ abstract class S2Container_AbstractComponentAutoRegister
         $cd = $annoHandler->createComponentDef(new ReflectionClass($className),
                                                $this->instanceMode);
         if ($cd->getComponentName() == null and
-            $this->autoNaming != null)
-        {
+            $this->autoNaming != null) {
             $cd->setComponentName($this->autoNaming->
                                   defineName($classFilePath,$className));
         }

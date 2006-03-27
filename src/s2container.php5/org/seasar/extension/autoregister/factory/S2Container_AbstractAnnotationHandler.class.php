@@ -26,8 +26,8 @@
  * @author klove
  */
 abstract class S2Container_AbstractAnnotationHandler 
-    implements S2Container_AnnotationHandler {
-
+    implements S2Container_AnnotationHandler
+{
     const COMPONENT = "COMPONENT";
 
     const NAME = "name";
@@ -50,7 +50,11 @@ abstract class S2Container_AbstractAnnotationHandler
     
     const POINTCUT = "pointcut";
 
-    public function appendDI(S2Container_ComponentDef $componentDef) {
+    /**
+     * 
+     */
+    public function appendDI(S2Container_ComponentDef $componentDef)
+    {
         $beanDesc = S2Container_BeanDescFactory::getBeanDesc($componentDef->getComponentClass());
         $c = $beanDesc->getPropertyDescSize();
         for ($i = 0; $i < $c; ++$i) {
@@ -66,8 +70,12 @@ abstract class S2Container_AbstractAnnotationHandler
         }
     }
     
+    /**
+     * 
+     */
     protected function createComponentDefInternal(ReflectionClass $componentClass,
-                                                  $instanceMode) {
+                                                  $instanceMode)
+    {
         $componentDef = new S2Container_ComponentDefImpl($componentClass);
         if ($instanceMode != null) {
             $componentDef->setInstanceMode($instanceMode);
@@ -75,9 +83,13 @@ abstract class S2Container_AbstractAnnotationHandler
         return $componentDef;
     }
 
+    /**
+     * 
+     */
     protected function createPropertyDefInternal($propertyName,
                                          $expression, 
-                                         $bindingTypeName) {
+                                         $bindingTypeName)
+    {
         $propertyDef = new S2Container_PropertyDefImpl($propertyName);
 
         if (is_string($expression) and $expression != "") {
@@ -88,19 +100,21 @@ abstract class S2Container_AbstractAnnotationHandler
         return $propertyDef;
     }
 
-
+    /**
+     * 
+     */
     public function appendAspectInternal(S2Container_ComponentDef $componentDef,
                                  $interceptor,
-                                 $pointcut) {
-        
+                                 $pointcut)
+    {
         if ($interceptor == null) {
             throw new S2Container_EmptyRuntimeException("interceptor");
         }
         
-        if(is_string($pointcut)){
+        if (is_string($pointcut)) {
             $aspectDef = new S2Container_AspectDefImpl(
                              new S2Container_PointcutImpl(explode(" ",$pointcut)));
-        }else{
+        } else {
             $aspectDef = new S2Container_AspectDefImpl(
                              new S2Container_PointcutImpl(
                              $componentDef->getComponentClass()));
@@ -111,14 +125,22 @@ abstract class S2Container_AbstractAnnotationHandler
         $componentDef->addAspectDef($aspectDef);
     }
 
+    /**
+     * 
+     */
     protected function appendInitMethodInternal(S2Container_ComponentDef $componentDef,
-                                         $methodName) {
+                                         $methodName)
+    {
         $initMethodDef = new S2Container_InitMethodDefImpl($methodName);
         $componentDef->addInitMethodDef($initMethodDef);
     }
 
+    /**
+     * 
+     */
     protected function isInitMethodRegisterable(S2Container_ComponentDef $cd, 
-                                                $methodName) {
+                                                $methodName)
+    {
         if (!is_string($methodName) or $methodName == "") {
             return false;
         }

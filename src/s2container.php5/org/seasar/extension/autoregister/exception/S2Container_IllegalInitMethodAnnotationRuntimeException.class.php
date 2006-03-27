@@ -26,24 +26,38 @@
  * @author klove
  */
 class S2Container_IllegalInitMethodAnnotationRuntimeException extends
-        S2Container_S2RuntimeException {
-
+        S2Container_S2RuntimeException
+{
     private $componentClass_;
 
     private $methodName_;
 
-    public function __construct($componentClass,$methodName) {
-        parent::__construct("ESSR0081", array($componentClass->getName(),$methodName ));
+    /**
+     * 
+     */
+    public function __construct($componentClass,$methodName)
+    {
+        parent::__construct("ESSR0081", 
+                            array($componentClass->getName(),$methodName));
         $this->componentClass_ = $componentClass;
         $this->methodName_ = $methodName;
     }
 
-    public function getComponentClass() {
+    /**
+     * 
+     */
+    public function getComponentClass()
+    {
         return $this->componentClass_;
     }
 
-    public function getMethodName() {
+    /**
+     * 
+     */
+    public function getMethodName()
+    {
         return $this->methodName_;
     }
 }
 ?>
+

@@ -25,27 +25,46 @@
  * @package org.seasar.extension.autoregister.impl
  * @author klove
  */
-abstract class S2Container_AbstractAutoRegister {
-
+abstract class S2Container_AbstractAutoRegister
+{
     protected $container;
     private $classPatterns = array();
     private $ignoreClassPatterns = array();
-    
+ 
+    /**
+     * 
+     */   
     public abstract function registerAll();
 
-    public function getContainer() {
+    /**
+     * 
+     */
+    public function getContainer()
+    {
         return $this->container;
     }
 
-    public function setContainer(S2Container $container) {
+    /**
+     * 
+     */
+    public function setContainer(S2Container $container)
+    {
         $this->container = $container;    
     }
 
-    public function getClassPatternSize() {
+    /**
+     * 
+     */
+    public function getClassPatternSize() 
+    {
         return count($this->classPatterns);
     }
     
-    public function getClassPattern($index) {
+    /**
+     * 
+     */
+    public function getClassPattern($index) 
+    {
         return isset($this->classPatterns[$index]) ? 
                      $this->classPatterns[$index] : null;
     }
@@ -53,22 +72,32 @@ abstract class S2Container_AbstractAutoRegister {
     /**
      * @param S2Container_ClassPattern object
      */
-    protected function addClassPatternInternal(S2Container_ClassPattern $pattern) {
+    protected function addClassPatternInternal(S2Container_ClassPattern $pattern)
+    {
         $this->classPatterns[] = $pattern;
     }
 
     /**
      * @param S2Container_ClassPattern object
      */
-    protected function addIgnoreClassPatternInternal(S2Container_ClassPattern $pattern) {
+    protected function addIgnoreClassPatternInternal(S2Container_ClassPattern $pattern)
+    {
         $this->ignoreClassPatterns[] = $pattern;
     }    
 
-    protected function hasComponentDef($name) {
+    /**
+     * 
+     */
+    protected function hasComponentDef($name)
+    {
         return $this->findComponentDef($name) != null;
     }
 
-    protected function findComponentDef($name) {
+    /**
+     * 
+     */
+    protected function findComponentDef($name) 
+    {
         if (!is_string($name)) {
             return null;
         }
@@ -84,7 +113,11 @@ abstract class S2Container_AbstractAutoRegister {
         return null;
     }
     
-    protected function isIgnore($shortClassName) {
+    /**
+     * 
+     */
+    protected function isIgnore($shortClassName)
+    {
         if (count($this->ignoreClassPatterns) == 0) {
             return false;
         }

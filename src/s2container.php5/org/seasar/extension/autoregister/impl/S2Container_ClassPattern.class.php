@@ -25,38 +25,57 @@
  * @package org.seasar.extension.autoregister.impl
  * @author klove
  */
-class S2Container_ClassPattern {
-
+class S2Container_ClassPattern
+{
     private $directoryPath;
     
     private $shortClassNamePatterns = array();
     
-    public function getDirectoryPath() {
+    /**
+     * 
+     */
+    public function getDirectoryPath()
+    {
         return $this->directoryPath;
     }
     
-    public function setDirectoryPath($directoryPath) {
-        $this->directoryPath= $directoryPath;
+    /**
+     * 
+     */
+    public function setDirectoryPath($directoryPath)
+    {
+        $this->directoryPath = $directoryPath;
     }
 
+    /**
+     * 
+     */
     public function getShortClassNames()
     {
         return $this->shortClassNamePatterns;
     }
     
-    public function setShortClassNames($shortClassNames) {
-        if(is_string($shortClassNames)){
+    /**
+     * 
+     */
+    public function setShortClassNames($shortClassNames)
+    {
+        if (is_string($shortClassNames)) {
             $this->shortClassNamePatterns = explode(',',$shortClassNames);
         }
     }
     
-    public function isAppliedShortClassName($shortClassName) {
+    /**
+     * 
+     */
+    public function isAppliedShortClassName($shortClassName)
+    {
         if (count($this->shortClassNamePatterns) == 0) {
             return true;
         }
         
-        foreach($this->shortClassNamePatterns as $pattern){
-            if(preg_match("/$pattern/",$shortClassName)){
+        foreach ($this->shortClassNamePatterns as $pattern) {
+            if (preg_match("/$pattern/",$shortClassName)) {
                 return true;
             }
         }

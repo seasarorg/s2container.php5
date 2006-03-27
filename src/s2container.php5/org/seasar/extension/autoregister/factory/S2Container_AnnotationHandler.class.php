@@ -25,19 +25,34 @@
  * @package org.seasar.extension.autoregister.factory
  * @author klove
  */
-interface S2Container_AnnotationHandler {
-
+interface S2Container_AnnotationHandler
+{
+    /**
+     * 
+     */
     public function createComponentDef(ReflectionClass $componentClass,
                                                          $instanceMode);
 
     //public function createComponentDef(Class componentClass, InstanceDef instanceDef);
   
+    /**
+     * 
+     */
     public function appendDI(S2Container_ComponentDef $componentDef);
     
+    /**
+     * 
+     */
     public function appendAspect(S2Container_ComponentDef $componentDef);
     
+    /**
+     * 
+     */
     public function appendInitMethod(S2Container_ComponentDef $componentDef);
     
+    /**
+     * 
+     */
     public function createPropertyDef(S2Container_BeanDesc $beanDesc,
                                       S2Container_PropertyDesc $propertyDesc);
 }

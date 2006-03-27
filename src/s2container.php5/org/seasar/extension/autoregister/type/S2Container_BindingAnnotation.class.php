@@ -25,7 +25,8 @@
  * @package org.seasar.extension.autoregister.type
  * @author klove
  */
-final class S2Container_BindingAnnotation {
+final class S2Container_BindingAnnotation
+{
     public $value = null;
     public $bindingType = null;
 }

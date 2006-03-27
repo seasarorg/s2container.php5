@@ -25,7 +25,8 @@
  * @package org.seasar.extension.autoregister.util
  * @author klove
  */
-interface S2Container_ClassTraversalClassHandler {
+interface S2Container_ClassTraversalClassHandler
+{
     public function processClass($classFilePath, $className);
 }
 ?>

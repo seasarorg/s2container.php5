@@ -26,7 +26,8 @@
  * @author klove
  */
 abstract class S2Container_AbstractAutoNaming 
-    implements S2Container_AutoNaming {
+    implements S2Container_AutoNaming
+{
 
     const IMPL = "Impl";
     const BEAN = "Bean";
@@ -35,33 +36,61 @@ abstract class S2Container_AbstractAutoNaming
     protected $customizedNames = array();
     protected $replaceRules = array();
 
-    public function __construct() {
+    /**
+     * 
+     */
+    public function __construct()
+    {
         $this->addIgnoreClassSuffix(self::IMPL);
         $this->addIgnoreClassSuffix(self::BEAN);
     }
 
-    public function setCustomizedName($fqcn, $name) {
+    /**
+     * 
+     */
+    public function setCustomizedName($fqcn, $name)
+    {
         $this->customizedNames[$fqcn] = $name;
     }
 
-    public function addIgnoreClassSuffix($classSuffix) {
+    /**
+     * 
+     */
+    public function addIgnoreClassSuffix($classSuffix)
+    {
         $this->addReplaceRule($classSuffix . '$', "");
     }
 
-    public function addReplaceRule($regex, $replacement) {
+    /**
+     * 
+     */
+    public function addReplaceRule($regex, $replacement)
+    {
         $this->replaceRules[$regex] = $replacement;
     }
 
-    public function clearReplaceRule() {
+    /**
+     * 
+     */
+    public function clearReplaceRule()
+    {
         $this->customizedNames = array();
         $this->replaceRules = array();
     }
 
-    public function setDecapitalize($decapitalize) {
+    /**
+     * 
+     */
+    public function setDecapitalize($decapitalize)
+    {
         $this->decapitalize = $decapitalize;
     }
 
-    public function defineName($directoryPath, $shortClassName) {
+    /**
+     * 
+     */
+    public function defineName($directoryPath, $shortClassName)
+    {
         $customizedName = $this->getCustomizedName($directoryPath,$shortClassName);
         if ($customizedName != null) {
             return $customizedName;
@@ -69,15 +98,26 @@ abstract class S2Container_AbstractAutoNaming
         return $this->makeDefineName($directoryPath,$shortClassName);
     }
 
-    protected function getCustomizedName($directoryPath,$shortClassName) {
+    /**
+     * 
+     */
+    protected function getCustomizedName($directoryPath,$shortClassName) 
+    {
         return isset($this->customizedNames[$shortClassName]) ? 
                      $this->customizedNames[$shortClassName] : null;
     }
 
+    /**
+     * 
+     */
     abstract function makeDefineName($directoryPath,$shortClassName);
 
-    protected function applyRule($name) {
-        foreach ($this->replaceRules as $key=>$val){
+    /**
+     * 
+     */
+    protected function applyRule($name)
+    {
+        foreach ($this->replaceRules as $key => $val) {
             $name = preg_replace("/$key/",$val,$name);
         }
         if ($this->decapitalize) {

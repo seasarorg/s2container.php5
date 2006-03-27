@@ -25,8 +25,8 @@
  * @package org.seasar.extension.autoregister.impl
  * @author klove
  */
-interface S2Container_AutoNaming {
-
+interface S2Container_AutoNaming
+{
     public function defineName($directoryPath,$shortClassName);
 }
 ?>

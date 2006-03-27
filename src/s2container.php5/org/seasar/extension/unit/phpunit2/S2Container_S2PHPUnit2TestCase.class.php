@@ -25,15 +25,17 @@
  * @package org.seasar.extension.unit.phpunit2
  * @author klove
  */
-class S2Container_S2PHPUnit2TestCase extends PHPUnit2_Framework_TestCase {
-
+class S2Container_S2PHPUnit2TestCase 
+    extends PHPUnit2_Framework_TestCase
+{
     private $container_;
     private $bindedFields_ = array();
     
     /**
      * @return S2Container
      */
-    public function getContainer() {
+    public function getContainer()
+    {
         return $this->container_;
     }
 
@@ -42,7 +44,8 @@ class S2Container_S2PHPUnit2TestCase extends PHPUnit2_Framework_TestCase {
      * @return object 
      * @see S2Container::getComponent()
      */
-    public function getComponent($componentName) {
+    public function getComponent($componentName)
+    {
         return $this->container_->getComponent($componentName);
     }
 
@@ -51,7 +54,8 @@ class S2Container_S2PHPUnit2TestCase extends PHPUnit2_Framework_TestCase {
      * @return S2Container_ComponentDef
      * @see S2Container::getComponentDef()
      */
-    public function getComponentDef($componentName) {
+    public function getComponentDef($componentName)
+    {
         return $this->container_->getComponentDef($componentName);
     }
 
@@ -60,7 +64,8 @@ class S2Container_S2PHPUnit2TestCase extends PHPUnit2_Framework_TestCase {
      * @param string componentName
      * @see S2Container::register()
      */
-    public function register($component,$componentName="") {
+    public function register($component,$componentName = "")
+    {
         $this->container_->register($component, $componentName);
     }
                 
@@ -69,7 +74,8 @@ class S2Container_S2PHPUnit2TestCase extends PHPUnit2_Framework_TestCase {
      *
      * @access public
      */
-    public function runBare() {
+    public function runBare()
+    {
         //print __METHOD__ . " called.\n";
         $catchedException = NULL;
 
@@ -101,21 +107,24 @@ class S2Container_S2PHPUnit2TestCase extends PHPUnit2_Framework_TestCase {
     /**
      * @param string path
      */
-    protected function includeDicon($path) {
+    protected function includeDicon($path)
+    {
         S2ContainerFactory::includeChild($this->container_,$path);
     }
 
     
     /**
      */
-    protected function setUpContainer(){
+    protected function setUpContainer()
+    {
         $this->container_ = new S2ContainerImpl();
         S2Container_SingletonS2ContainerFactory::setContainer($this->container_);        
     }
 
     /**
      */
-    protected function setUpForEachTestMethod(){
+    protected function setUpForEachTestMethod()
+    {
         $targetName = $this->getTargetName();
         if ($targetName != "") {
             $this->invoke("setUp" . $targetName);
@@ -124,25 +133,30 @@ class S2Container_S2PHPUnit2TestCase extends PHPUnit2_Framework_TestCase {
 
     /**
      */
-    protected function setUpAfterContainerInit(){
+    protected function setUpAfterContainerInit()
+    {
     }
 
     /**
      */
-    protected function setUpAfterBindFields(){
+    protected function setUpAfterBindFields()
+    {
     }
 
     /**
      */
-    protected function tearDownBeforeUnbindFields(){
+    protected function tearDownBeforeUnbindFields()
+    {
     }
 
     /**
      */
-    protected function tearDownBeforeContainerDestroy(){
+    protected function tearDownBeforeContainerDestroy()
+    {
     }
 
-    protected function tearDownContainer(){
+    protected function tearDownContainer()
+    {
         $this->container_->destroy();
         S2Container_SingletonS2ContainerFactory::setContainer(null);
         $this->container_ = null;
@@ -150,45 +164,50 @@ class S2Container_S2PHPUnit2TestCase extends PHPUnit2_Framework_TestCase {
 
     /**
      */
-    protected function tearDownForEachTestMethod() {
+    protected function tearDownForEachTestMethod()
+    {
         $targetName = $this->getTargetName();
         if ($targetName != "") {
             $this->invoke("tearDown" . $targetName);
-        }
-        
+        }        
     }
             
-    private function unbindFields() {
-        foreach($this->bindedFields_ as $field){
+    private function unbindFields()
+    {
+        foreach ($this->bindedFields_ as $field) {
             $field->setValue($this, null);
         }
         $this->bindedFields_ = array();
     }
         
-    private function bindFields() {
+    private function bindFields()
+    {
         $ref = new ReflectionClass($this);
         $props = $ref->getProperties();
-        foreach($props as $prop){
+        foreach ($props as $prop) {
             $this->bindField($prop);
         }
     }
 
-    private function bindField(ReflectionProperty $field) {
+    private function bindField(ReflectionProperty $field)
+    {
         if ($this->isAutoBindable($field)) {
             $propName = $field->getName();
-            if($this->getContainer()->hasComponentDef($propName)){
+            if ($this->getContainer()->hasComponentDef($propName)) {
                 $field->setValue($this,$this->getComponent($propName));
                 $this->bindedFields_[] = $field;
             }
         }
     }
 
-    private function isAutoBindable(ReflectionProperty $field) {
+    private function isAutoBindable(ReflectionProperty $field)
+    {
         return !$field->isStatic() and $field->isPublic() and
                 !preg_match("/^PHPUnit2_/",$field->getDeclaringClass()->getName());
     }
         
-    private function invoke($methodName) {
+    private function invoke($methodName)
+    {
         try {
             $method = S2Container_ClassUtil::getMethod(new ReflectionClass($this),
                                            $methodName);
@@ -198,7 +217,8 @@ class S2Container_S2PHPUnit2TestCase extends PHPUnit2_Framework_TestCase {
         }
     }    
 
-    private function getTargetName() {
+    private function getTargetName()
+    {
         return substr($this->getName(),4);
     }    
 }

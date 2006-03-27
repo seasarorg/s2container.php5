@@ -33,18 +33,27 @@ class S2Container_AspectAutoRegister
     private $interceptor;
     private $pointcut;
 
-    public function setInterceptor(S2Container_MethodInterceptor $interceptor) {
+    /**
+     * 
+     */
+    public function setInterceptor(S2Container_MethodInterceptor $interceptor) 
+    {
         $this->interceptor = $interceptor;
     }
 
-    public function setPointcut($pointcut) {
+    /**
+     * 
+     */
+    public function setPointcut($pointcut)
+    {
         $this->pointcut = $pointcut;
     }
 
     /**
      * @param string class name string
      */
-    public function addClassPattern($patterns) {
+    public function addClassPattern($patterns) 
+    {
         $pat = new S2Container_ClassPattern();
         $pat->setShortClassNames($patterns);
         parent::addClassPatternInternal($pat);
@@ -53,7 +62,8 @@ class S2Container_AspectAutoRegister
     /**
      * @param string class name string
      */
-    public function addIgnoreClassPattern($patterns) {
+    public function addIgnoreClassPattern($patterns) 
+    {
         $pat = new S2Container_ClassPattern();
         $pat->setShortClassNames($patterns);        
         parent::addIgnoreClassPatternInternal($pat);
@@ -62,7 +72,8 @@ class S2Container_AspectAutoRegister
     /**
      * @S2Container_InitMethodAnnotation
      */
-    public function registerAll() {
+    public function registerAll() 
+    {
         $container = $this->getContainer();
         $c = $container->getComponentDefSize();
         for ($i = 0; $i < $c; ++$i) {
@@ -71,7 +82,11 @@ class S2Container_AspectAutoRegister
         }
     }
     
-    protected function register(S2Container_ComponentDef $componentDef) {
+    /**
+     * 
+     */
+    protected function register(S2Container_ComponentDef $componentDef) 
+    {
         $componentClass = $componentDef->getComponentClass();
         if ($componentClass == null) {
             return;
@@ -91,11 +106,15 @@ class S2Container_AspectAutoRegister
         }
     }
 
-    protected function registerInterceptor(S2Container_ComponentDef $componentDef) {
-        if(is_string($this->pointcut)){
+    /**
+     * 
+     */
+    protected function registerInterceptor(S2Container_ComponentDef $componentDef) 
+    {
+        if (is_string($this->pointcut)) {
             $pointcut = new S2Container_PointcutImpl(
                             explode(',',$this->pointcut));
-        }else{
+        } else {
             $pointcut = new S2Container_PointcutImpl(
                             $componentDef->getComponentClass());
         }

@@ -25,6 +25,7 @@
  * @package org.seasar.extension.autoregister.type
  * @author klove
  */
-final class S2Container_InitMethodAnnotation {
+final class S2Container_InitMethodAnnotation
+{
 }
 ?>

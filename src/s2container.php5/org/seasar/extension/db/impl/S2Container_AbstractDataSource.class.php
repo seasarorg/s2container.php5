@@ -25,34 +25,53 @@
  * @package org.seasar.extension.db.impl
  * @author klove
  */
-abstract class S2Container_AbstractDataSource implements S2Container_DataSource {
-
-    protected $user ="";
-    protected $password ="";
-    protected $host ="";
-    protected $port ="";
-    protected $database ="";
+abstract class S2Container_AbstractDataSource 
+    implements S2Container_DataSource
+{
+    protected $user = "";
+    protected $password = "";
+    protected $host = "";
+    protected $port = "";
+    protected $database = "";
         
-    public function S2Container_AbstractDataSource(){}
-    
-    public function setUser($user){
-        $this->user = $user;	
+    /**
+     * 
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;    
     }
 
-    public function setPassword($password){
-        $this->password = $password;	
+    /**
+     * 
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;    
     }
 
-    public function setHost($host){
-        $this->host = $host;	
+    /**
+     * 
+     */
+    public function setHost($host)
+    {
+        $this->host = $host;    
     }
 
-    public function setPort($port){
-        $this->port = $port;	
+    /**
+     * 
+     */
+    public function setPort($port)
+    {
+        $this->port = $port;    
     }
 
-    public function setDatabase($database){
-        $this->database = $database;	
+    /**
+     * 
+     */
+    public function setDatabase($database)
+    {
+        $this->database = $database;    
     }
 }
 ?>
