@@ -32,6 +32,7 @@ class S2Container_PDODataSource
     private $log_;
     protected $dsn = "";
     protected $option = array();
+    protected $db = null;
 
     /**
      * 
@@ -56,21 +57,23 @@ class S2Container_PDODataSource
     {
         $this->option = $option;
     }
-
+    
     /**
      * 
      */
     public function getConnection()
     {
-        try {
-            $db = new PDO($this->dsn, $this->user, $this->password, $this->option);
-        } catch (PDOException $e) {
-            $this->log_->error($e->getMessage(), __METHOD__);
-            $this->log_->error($e->getCode(), __METHOD__);
-            throw $e;
+        if($this->db === null){
+            try {
+                $this->db = new PDO($this->dsn, $this->user, $this->password, $this->option);
+            } catch (PDOException $e) {
+                $this->log_->error($e->getMessage(), __METHOD__);
+                $this->log_->error($e->getCode(), __METHOD__);
+                throw $e;
+            }
+            $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         }
-        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        return $db;
+        return $this->db;
     }
 
     /**
