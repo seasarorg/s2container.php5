@@ -12,7 +12,7 @@
         <property name="project.build.dir" value="${project.basedir}/build" />
         <property name="project.src.dir" value="${project.basedir}/src" />
         <property name="license.file" value="Apache_Software_License_2.0.txt" />
-        <property name="release.notes" value="Release Candidate version 1" />
+        <property name="release.notes" value="Release Candidate version 2" />
     </target>
 
     <target name="clean" depends="init">
