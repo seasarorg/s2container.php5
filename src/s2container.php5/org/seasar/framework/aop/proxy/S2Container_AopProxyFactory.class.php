@@ -37,7 +37,7 @@ final class S2Container_AopProxyFactory
     /**
      * 
      */
-    public function create($target = null,
+    public static function create($target = null,
                            $targetClass,
                            $aspects,
                            $parameters = null)
@@ -85,7 +85,7 @@ final class S2Container_AopProxyFactory
      * @param ReflectionClass
      * @param array Aspect array
      */
-    private function _creatMethodInterceptorsMap($targetClass,$aspects)
+    private static function _creatMethodInterceptorsMap($targetClass,$aspects)
     {
         if ($aspects == null || count($aspects) == 0) {
             throw new S2Container_EmptyRuntimeException("aspects");

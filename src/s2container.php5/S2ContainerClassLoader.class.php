@@ -27,7 +27,7 @@
 class S2ContainerClassLoader {
     static $CLASSES = array();
 
-    function load($className){
+    public static function load($className){
         if(array_key_exists($className,self::$CLASSES)){
             require_once(S2CONTAINER_PHP5 . self::$CLASSES[$className]);
             return true;
@@ -42,7 +42,7 @@ class S2ContainerClassLoader {
     }
 
     static $USER_CLASSES = array();
-    function import($path,$key=null){
+    public static function import($path,$key=null){
         if(is_array($path) && $key == null){
             self::$USER_CLASSES = array_merge(self::$USER_CLASSES, $path);
         }else if(is_dir($path) and is_readable($path)){
