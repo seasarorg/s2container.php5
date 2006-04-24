@@ -1,4 +1,7 @@
 <?php
+error_reporting(E_ALL);
+//error_reporting(E_ALL | E_STRICT);
+
 define('HOME_DIR',dirname(dirname(dirname(__FILE__))));
 define('SRC_DIR',HOME_DIR . '/src');
 define('TEST_DIR',HOME_DIR . '/test');

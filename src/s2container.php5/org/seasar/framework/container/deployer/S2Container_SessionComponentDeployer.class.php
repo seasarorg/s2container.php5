@@ -36,7 +36,7 @@ class S2Container_SessionComponentDeployer
     public function __construct(S2Container_ComponentDef $componentDef)
     {
         parent::__construct($componentDef);
-        $this->logger_ = S2Container_S2Logger::getLogger(get_class($this));        
+        self::$logger_ = S2Container_S2Logger::getLogger(get_class($this));        
     }
 
     /**
@@ -61,7 +61,7 @@ class S2Container_SessionComponentDeployer
             if ($component instanceof $className) {
                 return $component;
             } else {
-                $this->logger_->
+                self::$logger_->
                     warn(S2ContainerMessageUtil::getMessageWithArgs('ESSR1005',
                                    array('Session',$componentName,$className)),
                                    __METHOD__);

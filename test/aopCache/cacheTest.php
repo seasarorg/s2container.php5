@@ -1,5 +1,5 @@
 <?php
-error_reporting(E_ALL);
+error_reporting(E_ALL | E_STRICT);
 define('HOME_DIR',dirname(dirname(dirname(__FILE__))));
 
 require_once(HOME_DIR . '/S2Container.php'); 

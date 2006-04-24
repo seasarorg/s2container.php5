@@ -62,7 +62,8 @@ class FileSystemComponentAutoRegisterTests extends UnitTestCase {
 
         $container = new S2ContainerImpl();
         $register->setContainer($container);
-        $this->assertReference($register->getContainer(),$container);
+        $con = $register->getContainer();
+        $this->assertReference($con,$container);
  
         print "\n";
     }    

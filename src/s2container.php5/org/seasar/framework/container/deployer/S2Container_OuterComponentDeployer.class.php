@@ -64,7 +64,8 @@ class S2Container_OuterComponentDeployer
             return;
         }
 
-        if (!is_a($outerComponent,$componentClass->getName())) {
+        $className = $componentClass->getName();
+        if (!$outerComponent instanceof $className) {
             throw new S2Container_ClassUnmatchRuntimeException($componentClass,
                                             new ReflectionClass($outerComponent));
         }
