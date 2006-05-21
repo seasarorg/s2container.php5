@@ -1,4 +1,4 @@
-<?
+<?php
 class HogeImpl {
     const INIT_METHOD = 'initA,initB';
 

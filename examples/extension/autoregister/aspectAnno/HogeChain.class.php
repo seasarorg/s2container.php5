@@ -1,4 +1,4 @@
-<?
+<?php
 interface IHogeChainM1 {
     public function m1($a,$b);
 }

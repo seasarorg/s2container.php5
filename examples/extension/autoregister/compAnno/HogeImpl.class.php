@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  * @S2Container_ComponentAnnotation(name = hogeComp,
  *                                  instance = prototype,

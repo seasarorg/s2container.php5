@@ -34,9 +34,9 @@
 
         <gcore searchDir="${project.build.dir}/${project.name}/S2Container"
                coreFile="${project.build.dir}/${project.name}/s2container.core.classes.php"
-               listFile="${project.basedir}/etc/s2container.core.files.txt"/>
+               listFile="${project.basedir}/src/phing/etc/s2container.core.files.txt"/>
 
-        <copy file="${project.basedir}/etc/S2Container.php.tpl"
+        <copy file="${project.basedir}/src/phing/etc/S2Container.php.tpl"
               tofile="${project.build.dir}/${project.name}/S2Container.php"
               overwrite="true"/>
 

@@ -1,4 +1,4 @@
-<?
+<?php
 /**
  * @S2Container_AspectAnnotation (interceptor = new S2Container_TraceInterceptor() ,
  *                                pointcut = m1)

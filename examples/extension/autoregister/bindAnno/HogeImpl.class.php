@@ -1,4 +1,4 @@
-<?
+<?php
 class HogeImpl {
     private $value;
     const value_BINDING = '" string value must be quoted "';
