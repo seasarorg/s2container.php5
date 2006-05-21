@@ -110,7 +110,7 @@ class S2Container_AopProxyGenerator
         }
 
         S2Container_S2Logger::getLogger(__CLASS__)->
-            debug("eval : [ $srcLine ]",__METHOD__);
+            debugEval("[ $srcLine ]",__METHOD__);
         eval($srcLine);
         return $concreteClassName;
     }

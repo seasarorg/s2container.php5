@@ -86,7 +86,7 @@ abstract class S2Container_AbstractMethodAssembler
     {
         $exp = S2Container_EvalUtil::addSemiColon($expression);
         S2Container_S2Logger::getLogger(__CLASS__)->
-            debug("eval : [ $exp ]",__METHOD__);
+            debugEval("[ $exp ]",__METHOD__);
         eval($exp);
     }
     

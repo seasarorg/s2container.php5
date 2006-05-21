@@ -44,7 +44,7 @@ final class S2Container_StringUtil
             $expand = "return " . $regs[1] . ". '" . $regs[2] . "';";
 
             S2Container_S2Logger::getLogger(__CLASS__)->
-                debug("eval : [ $expand ]",__METHOD__);
+                debugEval("[ $expand ]",__METHOD__);
             $path = eval($expand);
         }    
         

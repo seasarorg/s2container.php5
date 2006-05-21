@@ -56,7 +56,7 @@ class S2ContainerMessageUtil {
         $msg = S2Container_EvalUtil::getExpression('"'.$msg.'"');
 
         S2Container_S2Logger::getLogger(__CLASS__)->
-            debug("eval : [ $msg ]",__METHOD__);
+            debugEval("[ $msg ]",__METHOD__);
 
         return eval($msg);
     }

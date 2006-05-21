@@ -53,7 +53,7 @@ class S2Container_ArgDefImpl
     {
         if ($this->exp_ != null) {
             S2Container_S2Logger::getLogger(__CLASS__)->
-                debug("eval : [ ". $this->exp_ ." ]",__METHOD__);
+                debugEval("[ ". $this->exp_ ." ]",__METHOD__);
             return eval($this->exp_);
         }
         if ($this->childComponentDef_ != null) {

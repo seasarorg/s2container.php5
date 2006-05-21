@@ -59,7 +59,7 @@ final class S2Container_ConstructorUtil
         }
 
         S2Container_S2Logger::getLogger(__CLASS__)->
-            debug("eval : [ $cmd ]",__METHOD__);
+            debugEval("[ $cmd ]",__METHOD__);
         return eval($cmd);
     }
 }
