@@ -51,8 +51,10 @@ class S2Container_ExpressionConstructorAssembler
             $component = $container->getComponent($expression);
         } else {
             $exp = S2Container_EvalUtil::getExpression($expression);
-            S2Container_S2Logger::getLogger(__CLASS__)->
-                debugEval("[ $exp ]",__METHOD__);
+            if(defined('S2CONTAINER_PHP5_DEBUG_EVAL') and S2CONTAINER_PHP5_DEBUG_EVAL){
+                S2Container_S2Logger::getLogger(__CLASS__)->
+                    debug("[ $exp ]",__METHOD__);
+            }
             $component = eval($exp);
         }
         

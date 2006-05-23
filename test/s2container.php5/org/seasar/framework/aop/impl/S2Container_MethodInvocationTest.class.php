@@ -20,49 +20,42 @@
 // | Authors: klove                                                       |
 // +----------------------------------------------------------------------+
 //
-// $Id$
+// $Id:$
 /**
- * @package org.seasar.framework.util
+ * @package org.seasar.framework.aop.impl
  * @author klove
  */
-final class S2Container_ConstructorUtil
-{
-    /**
-     * 
-     */
-    private function __construct()
-    {
+ class S2Container_MethodInvocationTest extends PHPUnit2_Framework_TestCase {
+
+    public function __construct($name) {
+        parent::__construct($name);
     }
 
-    /**
-     * @param ReflectionClass
-     * @param array args
-     */
-    public static function newInstance($refClass,$args)
-    {
-
-        if (! $refClass instanceof ReflectionClass) {
-            throw new 
-              S2Container_IllegalArgumentException('args[0] must be <ReflectionClass>');
-        }
-
-        $cmd = "return new " . $refClass->getName() . "(";
-        $c = count($args);
-        if($c == 0){
-            $cmd = $cmd . ');';
-        } else {
-            $strArg = array();
-            for ($i = 0; $i < $c; $i++) {
-                $strArg[] = '$args[' . $i . ']';
-            }
-            $cmd = $cmd . implode(',',$strArg) . ');';
-        }
-
-        if(defined('S2CONTAINER_PHP5_DEBUG_EVAL') and S2CONTAINER_PHP5_DEBUG_EVAL){
-            S2Container_S2Logger::getLogger(__CLASS__)->
-                debug("[ $cmd ]",__METHOD__);
-        }
-        return eval($cmd);
+    public function setUp(){
+        print get_class($this) . "::{$this->getName()}\n";
     }
+
+    public function tearDown() {
+        print "\n";
+    }
+
+    function testNullTarget() {
+        $pointcut = new S2Container_PointcutImpl(array("om1"));
+        $aspect = new S2Container_AspectImpl(new S2Container_TraceInterceptor(), 
+                      $pointcut);
+        $proxy = S2Container_AopProxyFactory::create(null,
+                             'IO_S2Container_MethodInvocation', array($aspect));
+        try{
+            $proxy->om1();
+        }catch(Exception $e){
+            $this->assertType('S2Container_S2RuntimeException',$e);
+            print $e->getMessage() . "\n";
+        }
+    }
+}
+
+interface IO_S2Container_MethodInvocation {
+    function om1();
+    function om2();
 }
 ?>

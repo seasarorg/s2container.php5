@@ -65,8 +65,10 @@ final class S2Container_MethodUtil
         $cmd = 'return $target->' . $methodName . '(' .
                implode(',',$strArg) . ");";
 
-        S2Container_S2Logger::getLogger(__CLASS__)->
-            debugEval("[ $cmd ]",__METHOD__);
+        if(defined('S2CONTAINER_PHP5_DEBUG_EVAL') and S2CONTAINER_PHP5_DEBUG_EVAL){
+            S2Container_S2Logger::getLogger(__CLASS__)->
+                debug("[ $cmd ]",__METHOD__);
+        }
         return eval($cmd);
     }
     

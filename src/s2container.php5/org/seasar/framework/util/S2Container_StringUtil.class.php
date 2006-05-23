@@ -43,8 +43,10 @@ final class S2Container_StringUtil
             $prefix = $regs[1];
             $expand = "return " . $regs[1] . ". '" . $regs[2] . "';";
 
-            S2Container_S2Logger::getLogger(__CLASS__)->
-                debugEval("[ $expand ]",__METHOD__);
+            if(defined('S2CONTAINER_PHP5_DEBUG_EVAL') and S2CONTAINER_PHP5_DEBUG_EVAL){
+                S2Container_S2Logger::getLogger(__CLASS__)->
+                    debug("[ $expand ]",__METHOD__);
+            }
             $path = eval($expand);
         }    
         

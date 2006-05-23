@@ -13,6 +13,7 @@
         <property name="project.src.dir" value="${project.basedir}/src" />
         <property name="license.file" value="Apache_Software_License_2.0.txt" />
         <property name="release.notes" value="Release 1.1.0" />
+        <property name="td" value="" />
     </target>
 
     <target name="clean" depends="init">
@@ -110,4 +111,16 @@
         </move>
     </target>
 
+    <target name="test" depends="init">
+        <echo>test directory : test/s2container.php5/${td}</echo>
+    	<php expression="require_once('test/test.inc.php')"/>
+    	<phpunit2 haltonfailure="false" haltonerror="false">
+            <formatter type="plain" usefile="false"/>
+            <batchtest>
+                <fileset dir="test/s2container.php5/${td}">
+                    <include name="**/*Test.class.php"/>
+                </fileset>
+            </batchtest>
+        </phpunit2>
+    </target>
 </project>

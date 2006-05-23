@@ -28,7 +28,6 @@
 class S2Container_SimpleLogger
 {
     private $className;
-    const DEBUG_EVAL = 0;
     const DEBUG = 1;
     const INFO  = 2;
     const WARN  = 3;
@@ -52,9 +51,6 @@ class S2Container_SimpleLogger
     private function _cli($level,$msg = "",$methodName = "")
     {
         switch ($level) {
-            case S2Container_SimpleLogger::DEBUG_EVAL :
-                $logLevel = "EVAL";
-                break;    
             case S2Container_SimpleLogger::DEBUG :
                 $logLevel = "DEBUG";
                 break;    
@@ -76,14 +72,6 @@ class S2Container_SimpleLogger
         }
     }
     
-    /**
-     * @param string log message
-     * @param string method name
-     */
-    public function debugEval($msg = "",$methodName = "")
-    {
-        $this->_cli(S2Container_SimpleLogger::DEBUG_EVAL,$msg,$methodName);
-    }
 
     /**
      * @param string log message

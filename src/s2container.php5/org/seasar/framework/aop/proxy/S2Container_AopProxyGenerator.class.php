@@ -109,8 +109,10 @@ class S2Container_AopProxyGenerator
             S2Container_FileCacheUtil::saveAopCache($concreteClassName,$srcLine);
         }
 
-        S2Container_S2Logger::getLogger(__CLASS__)->
-            debugEval("[ $srcLine ]",__METHOD__);
+        if(defined('S2CONTAINER_PHP5_DEBUG_EVAL') and S2CONTAINER_PHP5_DEBUG_EVAL){
+            S2Container_S2Logger::getLogger(__CLASS__)->
+                debug("[ $srcLine ]",__METHOD__);
+        }
         eval($srcLine);
         return $concreteClassName;
     }

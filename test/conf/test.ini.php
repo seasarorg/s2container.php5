@@ -6,6 +6,8 @@ define('HOME_DIR',dirname(dirname(dirname(__FILE__))));
 define('SRC_DIR',HOME_DIR . '/src');
 define('TEST_DIR',HOME_DIR . '/test');
 
+require_once('PHPUnit2/Framework/TestCase.php');
+
 /**
  * require default
  */
@@ -35,7 +37,7 @@ function __autoload($class=null){
 }
 
 define('S2CONTAINER_PHP5_APP_DICON',TEST_DIR . '/s2container.php5/org/seasar/framework/container/factory/app.dicon');
-//define('S2CONTAINER_PHP5_LOG_LEVEL',S2Container_SimpleLogger::DEBUG_EVAL);
+define('S2CONTAINER_PHP5_DEBUG_EVAL',false);
 define('S2CONTAINER_PHP5_LOG_LEVEL',S2Container_SimpleLogger::DEBUG);
 //define('S2CONTAINER_PHP5_LOG_LEVEL',S2Container_SimpleLogger::INFO);
 

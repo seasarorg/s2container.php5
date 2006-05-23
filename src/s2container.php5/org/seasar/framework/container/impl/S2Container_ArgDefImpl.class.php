@@ -52,8 +52,10 @@ class S2Container_ArgDefImpl
     public final function getValue()
     {
         if ($this->exp_ != null) {
-            S2Container_S2Logger::getLogger(__CLASS__)->
-                debugEval("[ ". $this->exp_ ." ]",__METHOD__);
+            if(defined('S2CONTAINER_PHP5_DEBUG_EVAL') and S2CONTAINER_PHP5_DEBUG_EVAL){
+                S2Container_S2Logger::getLogger(__CLASS__)->
+                    debug("[ ". $this->exp_ ." ]",__METHOD__);
+            }
             return eval($this->exp_);
         }
         if ($this->childComponentDef_ != null) {
