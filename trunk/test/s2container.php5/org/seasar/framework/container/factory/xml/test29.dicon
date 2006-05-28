@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
+"components21.dtd">
+<components>
+
+    <component name="b1" class="IB">
+        return new B();
+    </component>
+
+    <component name="b2" class="A">
+        return new B()
+    </component>
+
+    <component name="b3" class="B">
+        new B()
+    </component>
+
+    <component name="b4">
+        new B()
+    </component>
+
+    <component name="b5" class="C">
+        new B()
+    </component>
+
+    <component name="b6">
+        b2
+    </component>
+
+</components>

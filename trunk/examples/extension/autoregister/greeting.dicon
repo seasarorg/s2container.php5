@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
+"components21.dtd">
+<components>
+    <component name="trace" class="S2Container_TraceInterceptor"/>
+
+    <component
+      class="S2Container_FileSystemComponentAutoRegister">
+        <initMethod name="addClassPattern">
+            <arg>"%EXAMPLE_DIR%/extension/autoregister/greeting"</arg>
+            <arg>".*Impl"</arg>
+        </initMethod>
+        <initMethod name="registerAll"/>
+    </component>
+
+    <component
+      class="S2Container_AspectAutoRegister">
+        <property name="interceptor">trace</property>
+        <initMethod name="addClassPattern">
+            <arg>".*Impl"</arg>
+        </initMethod>
+        <initMethod name="registerAll"/>
+    </component>
+</components>

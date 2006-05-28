@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
+"components21.dtd">
+<components namespace="test8">
+
+    <component name="r" class="R">
+        <destroyMethod name="finish">
+            <arg>"end of century."
+                <meta name="m1">"m1-val1"</meta>
+                <meta name="m2">1+1</meta>
+                <meta name="m3">b</meta>
+            </arg>
+        </destroyMethod>
+    </component>
+
+    <component name="b" class="B"/>
+
+</components>
