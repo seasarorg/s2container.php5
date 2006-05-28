@@ -25,7 +25,7 @@
  * @package org.seasar.framework.aop.interceptors
  * @author klove
  */
- class S2Container_AbstractInterceptorTest extends PHPUnit2_Framework_TestCase {
+class S2Container_TraceInterceptorTest extends PHPUnit2_Framework_TestCase {
 
     public function __construct($name) {
         parent::__construct($name);
@@ -39,37 +39,40 @@
         print "\n";
     }
 
-    function testCreateProxy() {
-        $interceptor = new S2Container_TraceInterceptor();
-        $proxy = $interceptor->createProxy(new ReflectionClass('I_S2Container_AbstractInterceptor'));
-        $proxy->target_ = new I_S2Container_AbstractInterceptor();
-        $proxy->culc();
-        $this->assertEquals($proxy->getResult(),2);
-    }
-
-    function testGetTargetClass() {
-        $interceptor = new TestInterceptor_S2Container_AbstractInterceptor();
-        $proxy = $interceptor->createProxy(new ReflectionClass('I_S2Container_AbstractInterceptor'));
-        $proxy->culc();
-        $this->assertType('ReflectionClass',$interceptor->getClazz());
-    }
-
-    function testGetComponentDef() {
+    function testTraceInterceptor() {
         $pointcut = new S2Container_PointcutImpl(array("getTime"));
-        $interceptor = new TestInterceptor_S2Container_AbstractInterceptor();
-        $aspect = new S2Container_AspectImpl($interceptor, $pointcut);
-        $params[S2Container_ContainerConstants::COMPONENT_DEF_NAME] = new S2Container_ComponentDefImpl('Date_S2Container_AbstractInterceptor','date');
-        $proxy = S2Container_AopProxyFactory::create(null,'Date_S2Container_AbstractInterceptor', array($aspect),$params);
-        $proxy->target_ = new Date_S2Container_AbstractInterceptor();
-        $proxy->getTime();
-        $cd = $interceptor->getCd();
-        
-        $this->assertType('S2Container_ComponentDefImpl',$cd);
+        $aspect = new S2Container_AspectImpl(new S2Container_TraceInterceptor(), $pointcut);
+        $proxy = S2Container_AopProxyFactory::create(new Date_S2Container_TraceInterceptor(),
+                   'Date_S2Container_TraceInterceptor',
+                   array($aspect));
+        $this->assertEquals($proxy->getTime(),'12:00:30');
+    }
+
+    function testArgs() {
+        $pointcut = new S2Container_PointcutImpl(array("culc2"));
+        $aspect = new S2Container_AspectImpl(new S2Container_TraceInterceptor(), $pointcut);
+        $proxy = S2Container_AopProxyFactory::create(new I_S2Container_TraceInterceptor(),
+                  'I_S2Container_TraceInterceptor', 
+                  array($aspect));
+        $proxy->culc2(4,8);
+        $this->assertEquals($proxy->getResult(),12);
+    }
+
+    function testTraceInterceptorContaienr() {
+        $container = new S2ContainerImpl();
+        $container->register('Date_S2Container_TraceInterceptor','d');
+        $cd = $container->getComponentDef('d');
+
+        $pointcut = new S2Container_PointcutImpl(array("getTime"));
+        $aspectDef = new S2Container_AspectDefImpl(new S2Container_TraceInterceptor(), $pointcut);
+        $cd->addAspectDef($aspectDef);
+        $d = $container->getComponent('d');
+
+        $this->assertEquals($d->getTime(),'12:00:30');
     }
 }
 
-class Date_S2Container_AbstractInterceptor {
-    
+class Date_S2Container_TraceInterceptor {
     function getTime(){
         return '12:00:30';
     }
@@ -79,48 +82,30 @@ class Date_S2Container_AbstractInterceptor {
     }
 }
 
-class I_S2Container_AbstractInterceptor {
+interface IG_S2Container_TraceInterceptor {}
+
+class D_S2Container_TraceInterceptor implements IG_S2Container_TraceInterceptor{}
+
+class I_S2Container_TraceInterceptor {
 
     private $result = -1;
-    
-    function I() {
-    }
     
     function culc(){
         $this->result = 1+1;
     }
 
     function culc2($a,$b){
-
-        $this->result = $a+$b;
+        return $this->result = $a+$b;
     }
 
-    function culc3(IG $d){
-        if($d instanceof D){
+    function culc3(IG_S2Container_TraceInterceptor $d){
+        if($d instanceof D_S2Container_TraceInterceptor){
             $this->result = 4;
         }else{return -1;}
     }
     
     function getResult(){
         return $this->result;
-    }
-}
-
-class TestInterceptor_S2Container_AbstractInterceptor extends S2Container_AbstractInterceptor {
-    private $clazz;
-    private $cd;
-    
-    public function invoke(S2Container_MethodInvocation $invocation){
-        $this->clazz = $this->getTargetClass($invocation);
-        $this->cd = $this->getComponentDef($invocation);
-    }
-    
-    public function getClazz(){
-        return $this->clazz;    
-    }
-
-    public function getCd(){
-        return $this->cd;   
     }
 }
 ?>
