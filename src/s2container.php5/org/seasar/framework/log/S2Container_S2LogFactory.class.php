@@ -27,6 +27,10 @@
  */
 class S2Container_S2LogFactory
 {
+    const SIMPLE = 'simple';
+    const LOG4PHP = 'log4php';
+    public static $LOGGER = self::SIMPLE;
+
     /**
      * 
      */
@@ -36,10 +40,15 @@ class S2Container_S2LogFactory
     
     /**
      * @param string class name
+     * @return object logger
      */
     public static function getLog($className)
     {
-        return new S2Container_SimpleLogger($className);
+        if (self::$LOGGER == self::LOG4PHP) {
+            return LoggerManager::getLogger($className);
+        } else {
+            return new S2Container_SimpleLogger($className);
+        }
     }
 }
 ?>
