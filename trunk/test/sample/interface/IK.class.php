@@ -1,6 +1,0 @@
-<?php
-
-interface IK {
-
-}
-?>

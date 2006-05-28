@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="Shift_JIS"?>
-<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
-"components21.dtd">
-<components>
-	<component class="HelloImpl">
-        <property name="messageA">"Hello"</property>
-        <property name="messageB">"World"</property>
-	</component>
-</components>
