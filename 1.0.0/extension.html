@@ -1,0 +1,1287 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><!-- don't edit start --><title>Seasar - DI Container with AOP -</title><meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<link href="seasar_b.css" type="text/css" rel="stylesheet" media="screen"><link href="seasar_p.css" type="text/css" rel="stylesheet" media="print"><script src="seasar_b.js" type="text/JavaScript" language="JavaScript"></script></head>
+
+
+<body onload="preload('ja')"><table align="left" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr>
+<td align="left" valign="top" width="780"><table class="white" border="0" cellpadding="0" cellspacing="0" width="780">
+<tbody><tr><td colspan="7"><img src="images/top01_b.gif" alt="" height="5" width="780"></td></tr>
+<tr><td width="235"><img src="images/top02_b.gif" alt="Seasar" height="117" width="235"></td>
+<td colspan="3"><img src="images/top03.gif" alt="DI Container with AOP" height="117" width="289"></td>
+<td colspan="3"><img src="images/spacer.gif" alt="" height="117" width="256"></td>
+</tr><tr><td rowspan="2"><img src="images/top04.gif" alt="" height="49" width="235"></td>
+<td><a href="http://www.seasar.org/index.html"><img src="images/menu01_b_ja.gif" alt="" id="menu01" onmouseover="swap(1)" onmouseout="restore(1)" border="0" height="30" width="78"></a></td>
+<td><a href="http://www.seasar.org/projects.html"><img src="images/menu02_b_ja.gif" alt="" id="menu02" onmouseover="swap(2)" onmouseout="restore(2)" border="0" height="30" width="101"></a></td>
+<td><a href="http://www.seasar.org/products.html"><img src="images/menu03_b_ja.gif" alt="" id="menu03" onmouseover="swap(3)" onmouseout="restore(3)" border="0" height="30" width="110"></a></td>
+<td><a href="http://www.seasar.org/resources.html"><img src="images/menu04_b_ja.gif" alt="" id="menu04" onmouseover="swap(4)" onmouseout="restore(4)" border="0" height="30" width="113"></a></td>
+<td><img src="images/menu05_b_ja.gif" alt="" id="menu05" onmouseover="swap(5)" onmouseout="restore(5)" border="0" height="30" width="109"></td>
+<td width="34"><img src="images/menu06.gif" alt="" height="30" width="34"></td></tr><tr>
+<td colspan="6"><img src="images/spacer.gif" alt="" height="19" width="545"></td></tr></tbody></table>
+<table class="white" border="0" cellpadding="0" cellspacing="0" width="780">
+<tbody><tr align="left" valign="top"><td width="18"><img src="images/spacer.gif" alt="" height="14" width="18"></td><td class="main" width="744">
+<!-- don't edit end -->
+<!-- document start -->
+
+<ul>
+<li><a href="#diconInclude">diconファイルのincludeパス設定</a></li>
+<li><a href="#uuset">__set()でのセッター・インジェクション</a></li>
+<li><a href="#ini-dicon">PHP設定ファイル形式のdiconファイル</a></li>
+    <ul>
+    <li><a href="#ini-components">components セクション</a></li>
+    <li><a href="#ini-component">component セクション</a></li>
+        <ul>
+        <li type="circle"><a href="#ini-arg">arg設定</a></li>
+        <li type="circle"><a href="#ini-property">property設定</a></li>
+        <li type="circle"><a href="#ini-init_method">init_method設定</a></li>
+        <li type="circle"><a href="#ini-destroy_method">destroy_method設定</a></li>
+        <li type="circle"><a href="#ini-aspect">aspect設定</a></li>
+        <li type="circle"><a href="#ini-meta">meta設定</a></li>
+        <li type="circle"><a href="#ini-etc">その他</a></li>
+        </ul>
+    </ul>
+<li><a href="#dba">データベース接続</a></li>
+    <ul>
+    <li><a href="#dba-ds">DataSourceについて</a></li>
+        <ul>
+        <li type="circle"><a href="#dba-ds-peardb">peardb.dicon テンプレート</a></li>
+        <li type="circle"><a href="#dba-ds-use">使用方法</a></li>
+        </ul>
+    <li><a href="#dba-tx">TxIntereceptorを使用する</a></li>
+    <li><a href="#dba-dao">SimpleDaoInterceptorを使用する</a> <i>(この機能は<a href="http://s2dao.php5.sandbox.seasar.org/">S2Dao.PHP5</a> に移ります)</i></li>
+        <ul>
+        <li type="circle"><a href="#dba-dao-array">戻り値が配列の場合</a></li>
+        <li type="circle"><a href="#dba-dao-bean">戻り値がオブジェクトの場合</a></li>
+        </ul>
+    </ul>
+
+<li><a href="#unit">S2Unit</a></li>
+    <ul>
+    <li><a href="#unit-example">Example</a></li>
+    </ul>
+</li>
+
+<li><a href="#loader">S2ContainerClassLoader</a></li>
+    <ul>
+    <li><a href="#loader-file">クラス定義ファイルを指定する</a></li>
+    <li><a href="#loader-dir">ディレクトリを指定する</a></li>
+    <li><a href="#loader-array">クラス定義の配列を使用する</a></li>
+    </ul>
+</li>
+</ul>
+
+<br>
+<b><h2>Extension</h2></b>
+<a name="diconInclude"><h3>diconファイルのincludeパス設定</h3></a>
+
+<p>diconファイルのincludeタグのpath属性では、先頭に%...%で囲むことで定数を埋め込むことができます。<br>
+</p>
+<pre>
+define(DICON_DIR,'/path/to/dir');   //定義済みとする
+
+&lt;components&gt;
+    &lt;include path="%DICON_DIR%/bar.dicon"/&gt;
+&lt;/components&gt;
+注) パスの先頭の%...%のみ展開されます。
+</pre>
+
+<br>
+<a name="uuset"><h3>__set()でのセッター・インジェクション</h3></a>
+<p>PHP5から追加された__set()を使用して、セッター・インジェクションを行うことができます。</p>
+<ul>
+<li>プロパティが明示的に指定されている (diconファイルで propertyタグが記述されている)</li>
+<li>インジェクション対象クラスがセッターメソッドを実装していない</li>
+<li>インジェクション対象クラスが__set()を実装している</li>
+</ul>
+上記条件に一致する場合に、__set()によりセッター・インジェクションが実行されます。<br>
+
+<br>
+<b>実装クラスの作成</b>
+<ul>
+<li type="circle">セッター・メソッド(setMessageA)を定義します。</li>
+<li type="circle">__set()を実装します。</li>
+<li type="circle">showMessage()を実装します。</li>
+</ul>
+<p>$messageBプロパティのセッターメソッドは定義していません。</p>
+<pre>&lt;?php
+class HelloImpl {
+
+    private $messageA = "";
+    private $messageB = "";
+
+    function HelloImpl() {}
+    
+    function setMessageA($messageA){
+        $this->messageA = $messageA;	
+    }
+
+    function __set($name,$val){
+        $this->$name = $val;	
+    }
+    
+    function showMessage(){
+        print "{$this->messageA} {$this->messageB} \n";
+    }
+}
+?&gt;
+</pre>
+
+<br>
+<b>diconファイルの作成</b>
+<ul>
+<li type="circle">componentタグでコンポーネントを定義します。</li>
+<li type="circle">componentタグの子タグのpropertyタグでコンポーネントのプロパティ値を定義します。</li>
+</ul>
+<p>s2container.php5/src/examples/extension/uuset/uuset.dicon</p>
+<pre>&lt;components&gt;
+    &lt;component class="HelloImpl"&gt;
+        &lt;property name="messageA"&gt;"Hello"&lt;/property&gt;
+        &lt;property name="messageB"&gt;"World"&lt;/property&gt;
+    &lt;/component&gt;
+&lt;/components&gt;
+</pre>
+
+<br>
+<b>実行スクリプトの作成</b>
+
+<ul>
+<li type="circle">S2ContainerFactory#create($path)を呼び出してS2Containerを作成します。</li>
+<li type="circle">getComponent()を使用して、S2Containerからコンポーネントを取り出します。</li>
+<li type="circle">取得したコンポーネントのメソッドを呼び出します。</li>
+</ul>
+
+<p>s2container.php5/src/examples/extension/uuset/uusetClient.php</p>
+<pre>&lt;?php
+require_once(dirname(__FILE__) . '/uuset.inc.php');
+$PATH = EXAMPLE_DIR . "/extension/uuset/uuset.dicon";
+$container = S2ContainerFactory::create($PATH);
+$hello = $container->getComponent('HelloImpl');
+$hello->showMessage();
+?&gt;
+</pre>
+<br>
+<b>実行結果</b>
+<p>propertyタグで指定した文字列が正しく表示されていることが確認できます。</p>
+
+<pre>
+% php uusetClient.php
+Hello World
+%
+</pre>
+
+このexampleは、s2container.php5/src/examples/extension/uuset/以下に用意されています。<br>
+
+<br>
+<a name="ini-dicon"><h3>PHP設定ファイル形式のdiconファイル</h3></a>
+<p>PHPの設定ファイル(php.ini等)で使用されるフォーマットで、diconファイルを記述します。<br>
+セクションの種類は、componentsセクションと各コンポーネントセクションの2つになります。</p>
+<pre>
+[components]
+namespace = "dao"
+.....
+.....
+.....
+[componentA]                ＋
+class = "A"                 ｜
+.....                       ｜
+.....                       ｜  各コンポーネントセクション
+[componentB]                ｜
+.....                       ｜
+.....                       ｜
+.....                       ▽
+
+</pre>
+
+<a name="ini-components"><h3>components セクション</h3></a>
+<p>componentsセクションには、3つの設定項目があります。componentsセクションは設定の必要がなければ省略できます。
+<table border="0" vspace="0" hspace="0" cellpadding="0" cellspacing="0">
+<tr>
+<td>　　　・namespace</td>
+<td>　：　</td>
+<td>namespaceを設定します。</td>
+</tr>
+<tr>
+<td>　　　・include</td>
+<td>　：　</td>
+<td>includeするdiconファイルのパスを設定します。include{index}で複数設定します。</td>
+</tr>
+<tr>
+<td valign="top">　　　・meta</td>
+<td valign="top">　：　</td>
+<td><a href="#ini-meta">metaデータを設定</a>します。
+</td>
+</tr>
+</table>
+</p>
+
+<pre>
+[components]
+namespace = "dao"
+include{0} = "/path/to/aaa.dicon"
+include{1} = "/path/to/bbb.dicon"
+meta{0}{name} = "metaA"
+meta{0}{val}  = "meta data"
+・・・
+・・・
+・・・
+</pre>
+
+<a name="ini-component"><h3>component セクション</h3></a>
+<p>componentセクションのセクション名には、コンポーネント名を設定します。class項目が省略されている場合、
+コンポーネント名がclass名として扱われます。componentセクションには10ヶの設定項目があります。
+<table border="0" vspace="0" hspace="0" cellpadding="0" cellspacing="0">
+<tr><td>　　　・class</td><td>　：　</td><td>class名を設定します。省略した場合はセクション名をclass名とします。</td></tr>
+<tr><td>　　　・instance</td><td>　：　</td><td><a href="./DIContainer.html#InstanceMode">instanceモード</a>を設定します。</td></tr>
+<tr><td>　　　・autobinding</td><td>　：　</td><td><a href="./DIContainer.html#AutoBindingMode">自動バインディングモード</a>を設定します。</td></tr>
+<tr><td>　　　・exp</td><td>　：　</td><td><a href="./php.html">PHP式</a>を記述します。</td></tr>
+<tr><td>　　　・arg</td><td>　：　</td><td><a href="#ini-arg">コンストラクタ引数を設定</a>します。</td></tr>
+<tr><td>　　　・property</td><td>　：　</td><td><a href="#ini-property">プロパティを設定</a>します。</td></tr>
+<tr><td>　　　・init_method</td><td>　：　</td><td><a href="#ini-init_method">initMethodを設定</a>します。</td></tr>
+<tr><td>　　　・destroy_method</td><td>　：　</td><td><a href="#ini-destroy_method">destroyMethodを設定</a>します。</td></tr>
+<tr><td>　　　・aspect</td><td>　：　</td><td><a href="#ini-aspect">アスペクトを設定</a>します。</td></tr>
+<tr><td>　　　・meta</td><td>　：　</td><td><a href="#ini-meta">metaデータを設定</a>します。</td></tr>
+</table>
+</p>
+
+<pre>
+[hello]
+class = "Hello"
+instance = "singleton"
+autobinding = "auto"
+
+arg{0}{val} = "hello world"
+arg{1}{ref} = "bye"
+
+property{0}{name} = "message"
+property{0}{val} = "hello world 2 !!"
+
+init_method{0}{name} = "initialize"
+init_method{0}{arg{0}{val}} = "-1"
+
+aspect{0}{pointcut} = "showMessage"
+aspect{0}{exp} = "new S2Container_TraceInterceptor()"
+
+meta{0}{name} = "helloMeta"
+meta{0}{ref} = "bye"
+
+[bye]
+class = "Bye"
+
+・・・
+・・・
+・・・
+</pre>
+
+<a name="ini-arg"><h3>arg設定</h3></a>
+　　　・arg{index}{val} = 値を設定<br>
+　　　・arg{index}{ref} = 参照コンポーネントを指定<br>
+　　　・arg{index}{exp} = PHP式を記述<br>
+　　　・arg{index}{meta{0}{val}} = <a href="#ini-meta">Metaデータを設定</a><br>
+<pre>
+[hello]
+class=Hello
+arg{0}{val} = "hello world"
+arg{1}{ref} = bye
+arg{2}{exp} = "array('hello','world','!!')"
+
+[bye]
+class = Bye
+</pre>
+
+<a name="ini-property"><h3>property設定</h3></a>
+　　　・property{index}{name} = プロパティ名を設定<br>
+　　　・property{index}{val} = 値を設定<br>
+　　　・property{index}{ref} = 参照コンポーネントを指定<br>
+　　　・property{index}{exp} = PHP式を記述<br>
+　　　・property{index}{meta{0}{val}} = <a href="#ini-meta">Metaデータを設定</a><br>
+
+<pre>
+[hello]
+class=Hello
+
+property{0}{name} = "messageA"     --- messageAプロパティに値 Hello を設定
+property{0}{val} = "Hello"
+property{1}{name} = "messageB"     --- messageBプロパティに値 World を設定
+property{1}{val} = "World"
+property{2}{name} = "bye"          --- byeプロパティにコンポーネント bye を設定
+property{2}{ref} = "bye"
+
+[bye]
+class = Bye
+</pre>
+
+<a name="ini-init_method"><h3>init_method設定</h3></a>
+　　　・init_method{index}{name} = メソッド名を設定<br>
+　　　・init_method{index}{arg{0}{val}} = メソッド引数を設定<br>
+　　　・init_method{index}{exp} = PHP式を記述<br>
+
+<pre>
+[hello]
+class=Hello
+
+init_method{0}{name} = "showMessage"
+init_method{0}{arg{0}{val}} = "Hello"
+init_method{0}{arg{1}{val}} = "World"
+
+init_method{1}{exp} = "$component->initialize()"
+
+</pre>
+
+<a name="ini-destroy_method"><h3>destroy_method設定</h3></a>
+<p>init_method設定と同様です。</p>
+
+<a name="ini-aspect"><h3>aspect設定</h3></a>
+　　　・aspect{index}{pointcut} = pointcutを設定<br>
+　　　・aspect{index}{ref} = 参照コンポーネントを設定<br>
+　　　・aspect{index}{exp} = PHP式を記述<br>
+
+<pre>
+[hello]
+class=Hello
+
+aspect{0}{pointcut} = "showMessage"
+aspect{0}{ref} = "trace"
+
+[trace]
+class = "S2Container_TraceInterceptor"
+
+</pre>
+<a name="ini-meta"><h3>meta設定</h3></a>
+<p>meta{index}{name}でmeta名、meta{index}{val}で値を設定します。</p>
+　　　・meta{index}{val} = 値を設定<br>
+　　　・meta{index}{ref} = 参照コンポーネントを指定<br>
+　　　・meta{index}{exp} = PHP式を記述<br>
+
+<pre>
+[components]
+meta{0}{name} = "metaA"
+meta{0}{val} = "5"
+meta{1}{name} = "metaB"
+meta{1}{ref} = hello
+meta{2}{name} = "metaC"
+meta{2}{exp} = "array('a','b','c')"
+
+[hello]
+class = HelloImpl
+</pre>
+
+<a name="ini-etc"><h3>その他</h3></a>
+
+<ul>
+<li>項目名にクォートは使用できません。 ( arg{0}{'val'}、arg{0}{"val"} など)</li>
+<li>設定値は、ダブルクォートで囲むことで改行が有効となります。</li>
+<li>indexは0からの連番になります。</li>
+<li>s2container.php5/src/examples/以下の演習で使用するdiconファイルは、XML形式とPHP設定ファイル形式の2種類を用意しています。参照下さい。
+</li>
+</ul>
+
+<br>
+<a name="dba"><h3>データベース接続</h3></a>
+<p>データベースへの接続フレームワークをextennsionとして含めています。
+</p>
+<p>以降の説明では、以下のサンプルテーブルを用います。
+サンプルテーブルを作成する demo.sql は s2container.php5/src/s2container.php5/org/seasar/extension/db/sql/ 
+にあります。
+</p>
+
+    	テーブル：EMP
+		<table border="1" class="main">
+			<tr bgcolor="#d1f3f4" align="center">
+			  <th>カラム名</th>
+			  <th>論理名</th>
+			  <th>型</th>
+			  <th>NotNull</th>
+
+			  <th>主キー</th>
+			</tr>
+			<tr>
+			  <td>EMPNO</td>
+		      <td>従業員番号</td>
+			  <td>NUMBER</td>
+			  <td align="center">〇</td>
+
+			  <td align="center">〇</td>
+			</tr>
+			<tr>
+			  <td>ENAME</td>
+			  <td>従業員名</td>
+			  <td>VARCHAR</td>
+			  <td><br /></td>
+
+			  <td><br /></td>
+			</tr>
+			<tr>
+			  <td>JOB</td>
+			  <td>仕事</td>
+			  <td>VARCHAR</td>
+			  <td><br /></td>
+
+			  <td><br /></td>
+			</tr>
+			<tr>
+			  <td>MGR</td>
+			  <td>上司</td>
+			  <td>NUMBER</td>
+			  <td><br /></td>
+
+			  <td><br /></td>
+			</tr>
+			<tr>
+			  <td>HIREDATE</td>
+			  <td>雇用日</td>
+			  <td>DATE</td>
+			  <td><br /></td>
+
+			  <td><br /></td>
+			</tr>
+			<tr>
+			  <td>SAL</td>
+			  <td>給料</td>
+			  <td>NUMBER</td>
+			  <td><br /></td>
+
+			  <td><br /></td>
+			</tr>
+			<tr>
+			  <td>COMM</td>
+			  <td>手数料</td>
+			  <td>NUMBER</td>
+			  <td><br /></td>
+
+			  <td><br /></td>
+			</tr>
+			<tr>
+			  <td>DEPTNO</td>
+			  <td>部署番号</td>
+			  <td>NUMBER</td>
+			  <td><br /></td>
+
+			  <td><br /></td>
+			</tr>
+			<tr>
+			  <td>TSTAMP</td>
+			  <td>タイムスタンプ</td>
+			  <td>TIMESTAMP</td>
+			  <td><br /></td>
+
+			  <td><br /></td>
+			</tr>
+		</table>
+    	<br />テーブル：DEPT
+		<table border="1" class="main">
+			<tr bgcolor="#d1f3f4" align="center">
+			  <th>カラム名</th>
+			   <th>論理名</th>
+
+			  <th>型</th>
+			  <th>NotNull</th>
+			  <th>主キー</th>
+			</tr>
+			<tr>
+			  <td>DEPTNO</td>
+			  <td>部署番号</td>
+
+			  <td>NUMBER</td>
+			  <td align="center">〇</td>
+			  <td align="center">〇</td>
+			</tr>
+			<tr>
+			  <td>DNAME</td>
+			  <td>部署名</td>
+
+			  <td>VARCHAR</td>
+			  <td><br /></td>
+			  <td><br /></td>
+			</tr>
+			<tr>
+			  <td>LOC</td>
+			  <td>ロケーション</td>
+
+			  <td>VARCHAR</td>
+			  <td><br /></td>
+			  <td><br /></td>
+			</tr>
+			<tr>
+			  <td>VERSIONNO</td>
+			  <td>バージョン番号</td>
+
+			  <td>NUMBER</td>
+			  <td><br /></td>
+			  <td><br /></td>
+			</tr>
+		</table>
+
+
+<a name="dba-ds"><h3>DataSourceについて</h3></a>
+<p>ネイティブのMySQL関数とPostgreSQL関数、Pear DB、ADOdbを用いるデータベース接続について、
+それぞれDataSource設定diconファイルのテンプレートが、s2container.php5/src/s2container.php5/org/seasar/extension/db/ にあります。
+</p>
+
+<table border="1" vspace="0" hspace="0" cellpadding="2" cellspacing="1">
+<tr bgcolor="#d1f3f4" align="center">
+<th></th>
+<th>XML形式 diconファイル</th>
+<th>INI形式 diconファイル</th>
+<tr>
+<tr>
+<td>ネイティブMySQL関数</td>
+<td>mysql.dicon</td>
+<td>mysql.ini</td>
+<tr>
+<tr>
+<td>ネイティブPostgreSQL関数</td>
+<td>postgres.dicon</td>
+<td>postgres.ini</td>
+<tr>
+<tr>
+<td><a href="http://pear.php.net/package/DB" target="_blank">Pear DB</a></td>
+<td>peardb.dicon</td>
+<td>peardb.ini</td>
+<tr>
+<tr>
+<td><a href="http://adodb.sourceforge.net/" target="_blank">ADOdb</a></td>
+<td>adodb.dicon</td>
+<td>adodb.ini</td>
+<tr>
+</table>
+　・Pear DB を使用する場合は、予め DB.php をrequireして下さい。<br>
+　・ADOdb を使用する場合は、予め adodb-exceptions.inc.php と adodb.inc.php をrequireして下さい。<br>
+
+<a name="dba-ds-peardb"><h3>peardb.dicon テンプレート</h3></a>
+<p>peardb.diconのテンプレートを以下に示します。
+dataSourceコンポーネントの各プロパティ設定値を、ご使用のデータベースに接続できる値に設定して下さい。
+dsnプロパティが設定されている場合は、dsnプロパティ値が優先されます。</p>
+
+<p>XML形式 peardb.diconファイル</p>
+<pre>
+&lt;?xml version="1.0" encoding="Shift_JIS"?&gt;
+&lt;!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
+"components21.dtd"&gt;
+&lt;components namespace="peardb"&gt;
+    &lt;component name="dataSource" class="S2Container_PearDBDataSource"&gt;
+        &lt;property name="dsn"&gt;                                  
+            "mysql://hoge:hoge@localhost:3306/s2container"       
+        &lt;/property&gt;                                            
+    &lt;/component&gt;
+
+    &lt;component class="S2Container_PearDBSqlHandler"/&gt;
+    &lt;component name="dbtx" class="S2Container_PearDBTxInterceptor"/&gt;
+    &lt;component name="dao" class="S2Container_SimpleDaoInterceptor"/&gt;
+    &lt;component class="S2Container_DaoMetaDataFactoryImpl"/&gt;
+    &lt;component name="session" class="S2Container_DBSessionImpl"/&gt;
+&lt;/components&gt;
+</pre>
+
+<br>
+<p>INI形式 peardb.iniファイル</p>
+<pre>
+[components]
+namespace="peardb"
+
+[dataSource]
+class="S2Container_PearDBDataSource"
+
+property{0}{name}="dsn"                                         
+property{0}{val} ="mysql://hoge:hoge@localhost:3306/s2container"
+
+[S2Container_PearDBSqlHandler]
+
+[dbtx]
+class="S2Container_PearDBTxInterceptor"
+
+[dao]
+class="S2Container_SimpleDaoInterceptor"
+
+[S2Container_DaoMetaDataFactoryImpl]
+
+[session]
+class="S2Container_DBSessionImpl"
+</pre>
+
+<a name="dba-ds-use"><h3>使用方法</h3></a>
+<p>サンプルとして、引数で受け取ったDEPTNO値でDEPTテーブルを検索し、その結果を返すDAOを実装してみます。<br>
+この演習は、s2container.php5/src/examples/extension/db/以下に用意されています。</p>
+<p><b>インタフェースの定義</b></p>
+<ul>
+<li type="circle">DeptDaoインタフェースを定義します。</li>
+<li type="circle">DEPTNO値で検索を行う findDeptByDeptnoメソッドを定義します。</li>
+</ul>
+
+<pre>
+&lt;?php
+interface DeptDao {
+    function findDeptByDeptno($deptno);
+}
+?&gt;
+</pre>
+
+<p><b>実装クラスの作成</b></p>
+<ul>
+<li type="circle">DeptDaoインタフェースを implements する DeptDaoImplクラスを作成します。</li>
+<li type="circle">コンストラクタ引数で S2Container_DataSource を受け取るようにします。</li>
+<li type="circle">findDeptByDeptno メソッドを実装します。データベースへのコネクションは、DataSourceより取得します。</li>
+</ul>
+
+<pre>
+&lt;?php
+class DeptDaoImpl implements DeptDao {
+
+    private $dataSource;
+
+    function DeptDaoImpl(S2Container_DataSource $dataSource) {
+        $this->dataSource = $dataSource;
+    }
+    
+    function findDeptByDeptno($deptno){
+        $db = $this->dataSource->getConnection();
+        $result = $db->query("select * from dept where deptno = '{$deptno}';"); 
+        $row = $result->fetchRow();
+        $this->dataSource->disconnect($db);
+        return $row;
+    }
+}
+?&gt;
+</pre>
+
+DataSource->getConnection()の戻り値は、<br>
+<table border="0" vspace="0" hspace="0" cellpadding="0" cellspacing="0">
+<tr>
+<td>　　・Pear DBを用いる場合</td><td>　:　</td><td>DB::connect()の戻り値</td>
+</tr>
+<tr>
+<td>　　・ADOdbを用いる場合</td><td>　:　</td><td>NewADOConnection()の戻り値</td>
+</tr>
+<tr>
+<td>　　・MySQL関数を用いる場合</td><td>　:　</td><td>mysql_connect()の戻り値</td>
+</tr>
+<tr>
+<td>　　・PostgreSQL関数を用いる場合</td><td>　:　</td><td>pg_connect()の戻り値</td>
+</tr>
+</table>
+となります。どのデータベース接続モジュールを使用するかは、以下のdiconファイルで指定します。<br>
+
+<br>
+
+<p><b>diconファイルの作成</b></p>
+<p>
+Pear DB を用いる場合の diconファイルを作成します。includeタグで peardb.diconをインクルードします。
+</p>
+
+<p>XML形式 deptDao.dicon</p>
+<pre>
+&lt;components&gt;
+    &lt;include path="%S2CONTAINER_PHP5%/org/seasar/extension/db/peardb.dicon"/&gt;
+    &lt;component name ="deptDao" class="DeptDaoImpl"/&gt;
+&lt;/components&gt;
+</pre>
+
+<p>INI形式 deptDao.ini</p>
+<pre>
+[components]
+include{0} = "%S2CONTAINER_PHP5%/org/seasar/extension/db/peardb.dicon"
+
+[deptDao]
+class="DeptDaoImpl"
+</pre>
+
+
+<p><b>実行スクリプトの作成</b></p>
+<ul>
+<li type="circle">deptDao.diconを指定してコンテナを作成します。</li>
+<li type="circle">コンテナより、deptDaoコンポーネントを取得します。</li>
+<li type="circle">DEPTNO(10) で findDeptByDeptno メソッドを呼び出します。</li>
+</ul>
+
+<p>dataSourceClient.php</p>
+<pre>
+&lt;?php
+require_once(dirname(__FILE__) . '/db.inc.php');
+$PATH = EXAMPLE_DIR . "/extension/db/deptDao.dicon";
+//$PATH = EXAMPLE_DIR . "/extension/db/deptDao.ini";
+
+$container = S2ContainerFactory::create($PATH);
+$dao = $container->getComponent('deptDao');
+$result = $dao->findDeptByDeptno(10);
+
+print_r($result);
+?&gt;
+</pre>
+
+<p><b>実行結果</b></p>
+<pre>
+% php dataSourceClient.php
+Array
+(
+    [0] => 10
+    [1] => ACCOUNTING
+    [2] => NEW YORK
+    [3] => 0
+)
+%
+</pre>
+<a name="dba-tx"><h3>TxIntereceptorを使用する</h3></a>
+<p>TxInterceptorを使用して、データベースへのトランザクションを管理します。<br>
+この演習は、s2container.php5/src/examples/extension/db/以下に用意されています。</p>
+<p><b>インタフェースの定義</b></p>
+<ul>
+<li type="circle">DeptDaoインタフェースを定義します。</li>
+<li type="circle">DEPTNO値で検索を行う findDeptByDeptnoメソッドを定義します。</li>
+</ul>
+
+<pre>
+&lt;?php
+interface DeptDao {
+    function findDeptByDeptno($deptno);
+}
+?&gt;
+</pre>
+
+<p><b>実装クラスの作成</b></p>
+<ul>
+<li type="circle">DeptDaoインタフェースを implements する TxDeptDaoImplクラスを作成します。</li>
+<li type="circle">コンストラクタ引数で S2Container_DBSession を受け取るようにします。</li>
+<li type="circle">findDeptByDeptno メソッドを実装します。データベースへのコネクションは、DBSessionより取得します。</li>
+</ul>
+
+データベースへの接続、切断や、トランザクションの開始(BEGIN)、COMMITは、TxInterceptorが行います。
+また Exception が throw された場合は、ROLLBACKを実施します。
+<pre>
+&lt;?php
+class TxDeptDaoImpl implements DeptDao {
+
+    private $session;
+
+    function TxDeptDaoImpl(S2Container_DBSession $session) {
+        $this->session = $session;
+    }
+    
+    function findDeptByDeptno($deptno){
+        $db = $this->session->getConnection();
+        $result = $db->query("select * from dept where deptno = '{$deptno}';"); 
+        $row = $result->fetchRow();
+
+        return $row;
+    }
+}
+?&gt;
+</pre>
+DBSession->getConnection()の戻り値は、<br>
+<table border="0" vspace="0" hspace="0" cellpadding="0" cellspacing="0">
+<tr>
+<td>　　・Pear DBを用いる場合</td><td>　:　</td><td>DB::connect()の戻り値</td>
+</tr>
+<tr>
+<td>　　・ADOdbを用いる場合</td><td>　:　</td><td>NewADOConnection()の戻り値</td>
+</tr>
+<tr>
+<td>　　・MySQL関数を用いる場合</td><td>　:　</td><td>mysql_connect()の戻り値</td>
+</tr>
+<tr>
+<td>　　・PostgreSQL関数を用いる場合</td><td>　:　</td><td>pg_connect()の戻り値</td>
+</tr>
+</table>
+となります。<br>
+
+<br>
+<p><b>diconファイルの作成</b></p>
+<p>
+Pear DB を用いる場合の diconファイルを作成します。includeタグで peardb.diconをインクルードします。
+findDeptByDeptnoメソッドに、dbtx (S2Container_PearDBTxInterceptor) をアスペクトします。
+</p>
+
+<p>XML形式 txDeptDao.dicon</p>
+<pre>
+&lt;components&gt;
+    &lt;include path="%S2CONTAINER_PHP5%/org/seasar/extension/db/peardb.dicon"/&gt;
+    &lt;component name ="deptDao" class="TxDeptDaoImpl"&gt;
+        &lt;aspect pointcut="findDeptByDeptno"&gt;
+            dbtx
+        &lt;/aspect&gt;
+    &lt;/component&gt;
+&lt;/components&gt;
+</pre>
+
+<p>INI形式 txDeptDao.ini</p>
+<pre>
+[components]
+include{0} = "%S2CONTAINER_PHP5%/org/seasar/extension/db/peardb.dicon"
+
+[deptDao]
+class="TxDeptDaoImpl"
+aspect{0}{pointcut} = "findDeptByDeptno"
+aspect{0}{ref} = "dbtx"
+</pre>
+
+<p><b>実行スクリプトの作成</b></p>
+<ul>
+<li type="circle">txDeptDao.diconを指定してコンテナを作成します。</li>
+<li type="circle">コンテナより、deptDaoコンポーネントを取得します。</li>
+<li type="circle">DEPTNO(10) で findDeptByDeptno メソッドを呼び出します。</li>
+</ul>
+
+<p>txClient.php</p>
+<pre>
+&lt;?php
+require_once(dirname(__FILE__) . '/db.inc.php');
+
+$PATH = EXAMPLE_DIR . "/extension/db/txDeptDao.dicon";
+//$PATH = EXAMPLE_DIR . "/extension/db/txDeptDao.ini";
+
+$container = S2ContainerFactory::create($PATH);
+$dao = $container->getComponent('deptDao');
+$result = $dao->findDeptByDeptno(10);
+print_r($result);
+?&gt;
+</pre>
+
+<p><b>実行結果</b></p>
+<pre>
+% php dataSourceClient.php
+Array
+(
+    [0] => 10
+    [1] => ACCOUNTING
+    [2] => NEW YORK
+    [3] => 0
+)
+%
+</pre>
+
+<a name="dba-dao"><h3>SimpleDaoInterceptorを使用する<i> (この機能は<a href="http://s2dao.php5.sandbox.seasar.org/">S2Dao.PHP5</a> に移ります)</i></h3></a>
+<p>インタフェース定義とSQL文でデータベース接続を行います。<br>
+この演習は、s2container.php5/src/examples/extension/db/以下に用意されています。</p>
+
+<a name="dba-dao-array"><h3>戻り値が配列の場合</h3></a>
+<p>データベース検索結果を配列で取得します。</p>
+
+<p><b>インタフェースの定義</b></p>
+<ul>
+<li type="circle">DeptDaoインタフェースを定義します。</li>
+<li type="circle">DEPTNO値で検索を行う findDeptByDeptnoメソッドを定義します。</li>
+<li type="circle">定数アノテーション(QUERY)で、SQL文を設定します。</li>
+</ul>
+
+<pre>
+&lt;?php
+interface DeptDao {
+    const findDeptByDeptno_QUERY = 'select * from dept where deptno = \'{$deptno}\'';
+    //const findDeptByDeptno_FILE = '%PATH_PREFIX%/path/to/sql/file';  // 外部SQLファイルを指定する場合
+    function findDeptByDeptno($deptno);
+}
+?&gt;
+</pre>
+
+<p>各メソッドが発行するSQL文を指定する方法は3通りあります。<br>
+　　　・定数アノテーション： メソッド名_QUERY に記述する (上記サンプル)<br>
+　　　・定数アノテーション： メソッド名_FILE で外部ファイルを指定する (パスの先頭に%...%で定数を埋め込めます)<br>
+　　　・インタフェース定義ファイルと同じディレクトリに インタフェース名_メソッド名.sql ファイルを作成する<br>
+</p>
+
+<p><b>実装クラスの作成</b></p>
+<p>必要な実装クラスはありません。</p>
+
+<p><b>diconファイルの作成</b></p>
+<p>
+ADOdb を用いる場合の diconファイルを作成します。includeタグで adodb.diconをインクルードします。
+findDeptByDeptnoメソッドに、dao(S2Container_SimpleDaoInterceptor) をアスペクトします。
+</p>
+
+<p>XML形式 simpleDeptDao.dicon</p>
+<pre>
+&lt;components&gt;
+    &lt;include path="%S2CONTAINER_PHP5%/org/seasar/extension/db/adodb.dicon"/&gt;
+    &lt;component name ="deptDao" class="DeptDao"&gt;
+        &lt;aspect pointcut="findDeptByDeptno"&gt;
+            dao
+        &lt;/aspect&gt;
+    &lt;/component&gt;
+&lt;/components&gt;
+</pre>
+
+<p>INI形式 simpleDeptDao.ini</p>
+<pre>
+[components]
+include{0} = "%S2CONTAINER_PHP5%/org/seasar/extension/db/adodb.dicon"
+
+[deptDao]
+class="DeptDao"
+aspect{0}{pointcut} = "findDeptByDeptno"
+aspect{0}{ref} = dao
+</pre>
+
+<p><b>実行スクリプトの作成</b></p>
+<ul>
+<li type="circle">simpleDeptDao.diconを指定してコンテナを作成します。</li>
+<li type="circle">コンテナより、deptDaoコンポーネントを取得します。</li>
+<li type="circle">DEPTNO(10) で findDeptByDeptno メソッドを呼び出します。</li>
+</ul>
+<p>simpleClient.php</p>
+<pre>
+&lt;?php
+require_once(dirname(__FILE__) . '/db.inc.php');
+$PATH = EXAMPLE_DIR . "/extension/db/simpleDeptDao.dicon";
+//$PATH = EXAMPLE_DIR . "/extension/db/simpleDeptDao.ini";
+
+$container = S2ContainerFactory::create($PATH);
+$dao = $container->getComponent('deptDao');
+$result = $dao->findDeptByDeptno(10);
+print_r($result);
+?&gt;
+</pre>
+
+<p><b>実行結果</b></p>
+<pre>
+% php simpleClient.php
+Array
+(
+    [0] => Array
+        (
+            [0] => 10
+            [1] => ACCOUNTING
+            [2] => NEW YORK
+            [3] => 0
+        )
+)
+%
+</pre>
+
+<a name="dba-dao-bean"><h3>戻り値がオブジェクトの場合</h3></a>
+<p>データベース検索結果を指定したオブジェクトのプロパティ値として取得します。</p>
+<p><b>インタフェースの定義</b></p>
+<ul>
+<li type="circle">BeanDeptDaoインタフェースを定義します。</li>
+<li type="circle">DEPTNO値で検索を行う findDeptByDeptnoメソッドを定義します。</li>
+<li type="circle">定数アノテーション(BEAN)で、DTO(Data Transfer Object)を設定します。</li>
+</ul>
+
+<pre>
+&lt;?php
+interface BeanDeptDao {
+    const BEAN = "DeptDto";
+    function findDeptByDeptno($deptno);
+}
+?&gt;
+</pre>
+
+<p>各メソッドが発行するSQL文を指定する方法は3通りあります。<br>
+　　　・定数アノテーション： メソッド名_QUERY に記述する<br>
+　　　・定数アノテーション： メソッド名_FILE で外部ファイルを指定する (パスの先頭に%...%で定数を埋め込めます)<br>
+　　　・インタフェース定義ファイルと同じディレクトリに インタフェース名_メソッド名.sql ファイルを作成する<br>
+</p>
+
+<p>3番目の方法を用い、findDeptByDeptnoが発行するSQL文を、BeanDeptDaoインタフェース定義ファイルと同じディレクトリに、
+BeanDeptDao_findDeptByDeptno.sqlで作成します。
+<pre>
+select * from dept where deptno = '{$deptno}'
+</pre>
+
+
+<p><b>実装クラスの作成</b></p>
+<p>定数アノテーション(BEAN)で指定したDTOを作成します。</p>
+<pre>
+&lt;?php
+class DeptDto {
+    private $deptno;
+    private $dname;
+    
+    function DeptDto() {}
+    
+    function setDeptno($deptno){
+    	$this->deptno = $deptno;
+    }
+    function getDeptno(){
+        return $this->deptno;	
+    }
+    
+    function setDname($dname){
+    	$this->dname = $dname;
+    }
+    function getDname(){
+        return $this->dname;
+    }
+
+    function __toString(){
+    	$str = "deptno = " . $this->deptno . ", dname = " . $this->dname;
+        return $str;	
+    }
+}
+?&gt;
+</pre>
+<p>データベース検索結果のうち、カラム名とDTOのプロパティ及びそのセッターメソッド名が対応する値のみ、定数アノテーション(BEAN)で指定した DTO のプロパティに設定されます。</p>
+
+　カラム名とプロパティ及びそのセッターメソッド名の対応
+<table border="1" vspace="0" hspace="0" cellpadding="2" cellspacing="1">
+<tr bgcolor="#d1f3f4" align="center">
+<th>カラム名</th>
+<th>プロパティ名</th>
+<th>セッターメソッド名</th>
+<tr>
+<tr>
+<td>deptno</td>
+<td>deptno</td>
+<td>setDeptno</td>
+<tr>
+<tr>
+<td>dept_no</td>
+<td>deptNo</td>
+<td>setDeptNo</td>
+<tr>
+<tr>
+<td>DEPTNO</td>
+<td>deptno</td>
+<td>setDeptno</td>
+<tr>
+<tr>
+<td>DEPT_NO</td>
+<td>deptNo</td>
+<td>setDeptNo</td>
+<tr>
+</table>
+
+<br>
+
+<p><b>diconファイルの作成</b></p>
+<p>
+ADOdb を用いる場合の diconファイルを作成します。includeタグで adodb.diconをインクルードします。
+findDeptByDeptnoメソッドに、dao(S2Container_SimpleDaoInterceptor) をアスペクトします。(Pear DBを使用する場合は、peardb.dicon をインクルードして下さい。)
+</p>
+
+<p>XML形式 simpleDeptDao.dicon</p>
+<pre>
+&lt;components&gt;
+    &lt;include path="%S2CONTAINER_PHP5%/org/seasar/extension/db/adodb.dicon"/&gt;
+    &lt;component name ="beanDeptDao" class="BeanDeptDao"&gt;
+        &lt;aspect pointcut="findDeptByDeptno"&gt;
+            dao
+        &lt;/aspect&gt;
+    &lt;/component&gt;
+&lt;/components&gt;
+</pre>
+
+<p>INI形式 simpleDeptDao.ini</p>
+<pre>
+[components]
+include{0} = "%S2CONTAINER_PHP5%/org/seasar/extension/db/adodb.dicon"
+
+[beanDeptDao]
+class="BeanDeptDao"
+aspect{0}{pointcut} = "findDeptByDeptno"
+aspect{0}{ref} = dao
+</pre>
+
+<p><b>実行スクリプトの作成</b></p>
+<ul>
+<li type="circle">simpleDeptDao.diconを指定してコンテナを作成します。</li>
+<li type="circle">コンテナより、beanDeptDaoコンポーネントを取得します。</li>
+<li type="circle">DEPTNO(10) で findDeptByDeptno メソッドを呼び出します。</li>
+</ul>
+<p>simpleBeanClient.php</p>
+<pre>
+&lt;?php
+require_once(dirname(__FILE__) . '/db.inc.php');
+//$PATH = EXAMPLE_DIR . "/extension/db/simpleDeptDao.dicon";
+$PATH = EXAMPLE_DIR . "/extension/db/simpleDeptDao.ini";
+
+$container = S2ContainerFactory::create($PATH);
+$dao = $container->getComponent('beanDeptDao');
+$result = $dao->findDeptByDeptno(10);
+print_r($result);
+?&gt;
+</pre>
+<p><b>実行結果</b></p>
+<pre>
+% php simpleBeanClient.php
+Array
+(
+    [0] => DeptDto Object
+        (
+            [deptno:private] => 10
+            [dname:private] => ACCOUNTING
+        )
+
+)
+%
+</pre>
+
+<p>DeptDtoクラスのプロパティ deptno と dname に値が設定されています。データベース検索結果のLOCカラムやVERSIONNOカラムのデータは破棄されます。</p>
+
+
+<br>
+<a name="unit"><h3>S2Unit</h3></a>
+<p>S2では、コンテナを使った開発のテストを楽しくおこなえるようにテスティングフレームワークが組み込まれています。PHPUnit、PHPUnit2、SimpleTestを拡張しています。主な機能は以下のとおりです。</p>
+<ul>
+<li>テストメソッド(testXxx)ごとに自動的にS2Containerを作成します。</li>
+
+<li>S2Containerに対するregister()、getComponent()、include() が用意されています。</li>
+<li>TestCaseに public なフィールドがあると、フィールド名と同じ名前のコンポーネントがコンテナに存在すれば自動的にセットされます。</li>
+<li>テストメソッドが終わると自動セットされた値は自動的にクリア( null をセット)されます。</li>
+<li>テストメソッド( testXxx )に対応する setUpXxx()、tearDownXxx() を定義しておくと、setUp()の後、tearDown()の前に自動的に呼び出されます。個別のテストメソッドごとの初期化・終了処理を簡単に行えるようになります。</li>
+</ul>
+<h3><a name="unit-example">Example</a></h3>
+<p>Pear PHPUnit2 を拡張した S2Container_S2PHPUnit2TestCase を用います。<br>
+このサンプルは、s2container.php5/src/examples/extension/unit/以下にあります。</p>
+
+<p><b>テスト対象</b></p>
+<p>s2container.php5/src/examples/extension/unit/src/foo/FooLogic.class.php</p>
+<pre>
+&lt;?php
+class FooLogic {
+
+    function FooLogic() {
+    }
+    
+    function showYear(){
+    	return 2005;
+    }
+}
+?&gt;
+</pre>
+
+<p><b>diconファイル</b></p>
+
+<p>s2container.php5/src/examples/extension/unit/src/foo/foo.ini</p>
+<pre>
+[logic]
+class = FooLogic
+</pre>
+
+<p><b>テストクラス</b></p>
+
+<p>s2container.php5/src/examples/extension/unit/test/phpunit2/foo/FooLogicTest.class.php</p>
+<pre>
+&lt;?php
+class FooLogicTest extends S2Container_S2PHPUnit2TestCase {
+
+    public $logic;   //--- dicon ファイルに logic という名前のコンポーネントが存在すれば設定されます
+    
+    function __construct($name) {
+    	parent::__construct($name);
+    }
+
+    function setUp(){
+        $this->includeDicon(UNIT_EXAMPLE . "/src/foo/foo.ini");   //--- dicon ファイルを include します
+    }
+
+    function testShowYear(){
+        $year = $this->logic->showYear();
+        $this->assertEquals($year , 2005);	
+    }
+}
+?&gt;
+</pre>
+
+<p>s2container.php5/src/examples/extension/unit/test/phpunit2/foo/FooAllTest.class.php</p>
+<pre>
+&lt;?php
+class FooAllTest {
+
+    public static function main() {
+        PHPUnit2_TextUI_TestRunner::run(self::suite());
+    }
+    
+    public static function suite() {
+        $suite = new PHPUnit2_Framework_TestSuite();
+        $suite->addTestSuite('FooLogicTest');
+        return $suite;  
+    }
+}
+?&gt;
+</pre>
+
+<p><b>実行スクリプト</b></p>
+<p>s2container.php5/src/examples/extension/unit/test/phpunit2/foo/fooTests.php</p>
+<pre>
+&lt;?php
+define('PHPUnit2_MAIN_METHOD', 'FooAllTest::main()');
+require_once 'PHPUnit2/Framework/TestSuite.php';
+require_once 'PHPUnit2/TextUI/TestRunner.php';
+
+FooAllTest::main();
+?&gt;
+</pre>
+
+
+<p><b>実行結果</b></p>
+<pre>
+% php allTests.php
+
+TEST : FooLogicTest::testShowYear
+------------------------------------
+
+.
+
+Time: 0.368033
+
+OK (1 test)
+%
+</pre>
+
+<p>Pear PHPUnit と SimpleTest を用いた同様のサンプルが s2container.php5/src/examples/extension/unit/test/以下にあります。</p>
+
+<br>
+<a name="loader"><h3>S2ContainerClassLoader</h3></a>
+<p>
+S2Container.PHP5では、クラス定義の読み込みを S2ContainerClassLoader が管理します。
+S2ContainerClassLoader には importメソッドが定義されており、任意のクラスを登録できます。登録されたクラスは、__autoload関数内で読み込まれます。
+</p>
+
+<h3><a name="loader-file">クラス定義ファイルを指定する</a></h3>
+
+<pre>
+&lt;?php
+S2ContainerClassLoader::import('/path/to/Hoge.class.php');
+S2ContainerClassLoader::import('/path/to/Foo.php');
+?&gt;
+</pre>
+
+クラス名は指定されたファイル名の先頭から「.」までになります。Hoge.class.phpの場合は「Hoge」となります。
+<br>
+<br>
+<p><b>クラス名を指定する</b></p>
+<pre>
+&lt;?php
+S2ContainerClassLoader::import('/path/to/Hoge.class.php','Hoge');
+S2ContainerClassLoader::import('/path/to/classes.php','Foo');
+S2ContainerClassLoader::import('/path/to/classes.php','Bar');
+?&gt;
+</pre>
+importメソッドの第二引数でクラス名を指定できます。
+
+<br>
+<h3><a name="loader-dir">ディレクトリを指定する</a></h3>
+<pre>
+&lt;?php
+S2ContainerClassLoader::import('/path/to/dir');
+?&gt;
+</pre>
+
+指定されたディレクトリにあるクラス定義ファイルをimportします。
+
+<h3><a name="loader-array">クラス定義の配列を使用する</a></h3>
+
+<pre>
+&lt;?php
+$classes = array('Hoge'=>'/path/to/Hoge.class.php',
+                 'Foo'=>'/path/to/classes.php');
+S2ContainerClassLoader::import($classes);
+?&gt;
+</pre>
+
+クラス名をキーとしてクラス定義ファイルが指定された連想配列をimportします。
+
+<!-- document end -->
+<!-- don't edit start -->
+</td>
+<td width="14"><img src="images/spacer.gif" alt="" height="14" width="14"></td>
+</tr><tr>
+<td width="14"><img src="images/spacer.gif" alt="" height="30" width="14"></td>
+<td width="766"><img src="images/spacer.gif" alt="" height="30" width="592"></td>
+</tr><tr>
+<td width="14"><img src="images/spacer.gif" alt="" height="14" width="14"></td>
+<td class="copyright" width="766">&#169; Copyright The Seasar Project and the others 2004-2005, all rights reserved.</td>
+</tr></tbody></table>
+</td><td class="backright" align="left" valign="top">&nbsp;</td></tr><tr>
+<td class="backunder" align="left" height="16" valign="top" width="780">&nbsp;</td>
+<td class="backcorner" align="left" height="16" valign="top">&nbsp;</td>
+</tr></tbody></table><!-- don't edit end -->
+</body></html>
