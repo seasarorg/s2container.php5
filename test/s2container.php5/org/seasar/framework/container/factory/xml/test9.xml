@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
+"components21.dtd">
+<components namespace="test9">
+
+    <component name="date" class="Date">
+        <aspect pointcut="getTime">new S2Container_TraceInterceptor()</aspect>
+    </component>
+
+    <component name="e" class="DelegateA">
+        <aspect>new S2Container_TraceInterceptor()</aspect>
+    </component>
+
+</components>
