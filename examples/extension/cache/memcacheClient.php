@@ -7,8 +7,7 @@ $time_start = microtime_float();
 $time_end = microtime_float();
 $time = $time_end - $time_start;
 
-//require_once('example.inc.php');
-require_once(dirname(dirname(__FILE__)) . '/example.inc.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php');
 
 if(class_exists('S2ContainerMemcacheFactory')){
     $memcache = array('host' => 'localhost', 'port' => 11211);
