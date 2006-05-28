@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
+"components21.dtd">
+<components>
+	<component class="HelloMethodInjection">
+		<initMethod name="addMessage">
+			<arg>"Hello "</arg>
+		</initMethod>
+		<initMethod>$component->addMessage("World!");</initMethod>
+	</component>
+</components>
