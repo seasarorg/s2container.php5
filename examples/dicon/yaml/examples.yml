@@ -1,0 +1,51 @@
+components:
+# ------ name syntax ------
+    name: name_of_components
+    
+# ------ include syntax ------
+    include:
+        - one.class.php
+        - two.class.php
+        - three.class.php
+    # include syntax or
+    include:[
+        one.class.php,
+        two.class.php,
+        three.class.php
+        ]
+
+# ------ meta syntax ------
+    meta:
+        name: name_of_meta
+            - argument 1
+            - argument 2
+
+# ------ component syntax ------
+    component:
+        - class: class_a
+            name: name_of_a_class
+            autoBinding: auto
+            instance: singleton
+            
+            - property: .
+                name:
+                - arg: arg1
+                - arg: arg2
+                    
+            - initMethod: .
+                name:
+                - arg: arg1
+                - arg: arg2
+                    
+            - destoryMethod: .
+                name:
+                - arg: arg1
+                - arg: arg2
+                    
+            - aspect: argument1
+            - aspect: argument2
+
+            - arg: argument1
+            - arg:
+                component:
+                    - class: php_class
