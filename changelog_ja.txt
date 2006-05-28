@@ -1,0 +1,111 @@
+S2Container.PHP5 変更履歴
+
+1.1.0
+-------------------------------------------------------------------------------
+* E_STRICT error_reporting レベルで出力されていたメッセージについて
+  対応しました。(static宣言、is_a関数関連)
+
+
+1.1.0-rc2
+-------------------------------------------------------------------------------
+* S2AOPでインタフェースに定義されているメソッド定義取得の不具合修正
+* S2Container_PDODataSourceにてPDOインスタンスを保持するように改修
+
+
+1.1.0-rc1
+-------------------------------------------------------------------------------
+* PHP-5.1.2で動作確認おこないました。ReflectionClass#getInterfaces()の戻り値
+  変更に対応しました。
+* phingを用いたビルドシステムに移行しました。
+* phingを用いてPEARパッケージを作成しました。
+* AutoRegister関連をextension/autoregisterに移植しました。
+* コメントアノテーションをextension/annotationに追加しました。
+* コンテナのファイルキャッシュを行うS2ContainerFileCacheFactoryを
+  extension/cacheに追加しました。
+* ドキュメントの更新を行いました。
+
+
+1.1.0-beta2
+-------------------------------------------------------------------------------
+* examplesディレクトリをトップディレクトリに移動しました。
+* s2container.inc.php defined確認を追加しました。
+* S2Container_MethodUtil::invokeメソッドでメソッド実行をevalで行うように
+  改修しました。
+* PropertyDesc::setWriteMethodメソッドでpropertyTypeを取得するように
+  改修しました。
+* S2Container_SingletonS2ContainerFactoryにstaticなINITIALIZEプロパティを
+  追加しました。
+* S2Container_ClassUtil::hasMethodをReflectionClass::hasMethodに
+  置き換えました。
+* S2ContainerImpl::initメソッドのfor文を修正しました。
+* SSRMessages.properties の未使用のメッセージを削除しました。
+* S2ContainerFactory refactoring
+* S2Container_XmlS2ContainerBuilder refactoring
+* S2Container_S2Logger refactoring
+
+
+1.1.0-beta1
+-------------------------------------------------------------------------------
+* PHP-5.0での開発を終了しました。
+* PHP-5.1での開発を開始しました。PHP-5.1.1で動作確認しました。
+* INI形式ダイコンファイルのサポートを中止しました。
+* extension/dbで、PDOのみサポートしました。
+* extension/unitで、PHPUnit2、SimpleTestをサポートしました。
+
+
+1.0.0-beta3
+-------------------------------------------------------------------------------
+* ライセンスを「The Seasar Software License, Version 1.1」から
+  「The Apache License, Version 2.0」に切り替えました。
+* クラス名が「S2Container」で始まっていないクラスについて、「S2Container_」
+  プレフィックスを付加しました。
+* デフォルトで__autoload関数を未定義としました。(コメントアウトしています。)
+* S2ContainerClassLoaderにimportメソッドを追加しました。
+* extensionドキュメントにS2ContainerClassLoaderについて追加しました。
+* セッターインジェクションにてexpressionで作成した配列がインジェクション
+  できない点を修正しました。
+* S2Container_ComponentDefImplで、コンポーネントのクラス定義が読み込まれて
+  いなくてもインスタンスを作成できるようにしました。
+* S2Container_MessageUtilをリソースファイルを追加できるように改修しました。
+* S2AOPで、EnhanceしたProxyクラスをファイルに出力できるようにしました。
+
+org.seasar.framework.aop.proxy
+* S2Container_AopProxyをS2Container_AopProxyFactoryに変更
+* S2Container_UuCallAopProxyFactoryをS2Container_AopProxyGeneratorに変更
+* S2Container_UuCallAopProxyをS2Container_DefaultAopProxyに変更
+
+org.seasar.framework.util
+* S2Container_FileCacheUtilを追加
+
+org.seasar.framework.container.util
+* S2Container_AopProxyUtilをS2Container_AopProxyFactoryを使用するように変更
+
+
+1.0.0-beta2
+-------------------------------------------------------------------------------
+* PHP-5.0.5 で動作確認しました。
+* s2container.php5.ini を s2container.inc.php にリネームしました。
+* S2ClassLoader を S2ContainerClassLoader にリネームしました。
+
+org.seasar.framework.aop.impl パッケージ
+* S2MethodInvocationImplのgetThis()がターゲットオブジェクトを返すように修正し
+  ました。
+
+org.seasar.framework.container パッケージ
+* S2Container インタフェースに findComponents(),findComponentDefs() メソッド
+  を追加しました。
+* TooManyComponentRegistrationDef インタフェースを追加しました。
+
+org.seasar.framework.container.assembler パッケージ
+* AutoConstructorAssembler, DefaultConstructorAssembler,
+  ExpressionConstructorAssembler, ManualConstructorAssembler クラスの 
+  final 修飾子を削除しました。
+
+org.seasar.framework.container.factory パッケージ
+* CircularIncludeRuntimeException 例外を追加しました。
+
+org.seasar.framework.container.impl パッケージ
+* TooManyRegistrationComponentDefクラスをTooManyRegistrationComponentDefImplに
+  リネームしました。
+
+
