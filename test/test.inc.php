@@ -14,7 +14,9 @@ require_once(dirname(dirname(__FILE__)) . '/s2container.inc.php');
 
 function __autoload($class = null)
 {
-    include_once("$class.class.php");
+    if($class != null){
+        include_once("$class.class.php");
+    }
 }
 
 define('S2CONTAINER_PHP5_APP_DICON',TEST_DIR . '/s2container.php5/org/seasar/framework/container/factory/app.dicon');
