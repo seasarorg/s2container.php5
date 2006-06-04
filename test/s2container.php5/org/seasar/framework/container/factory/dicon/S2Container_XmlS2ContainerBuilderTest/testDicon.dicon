@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
+"components21.dtd">
+<components namespace="testDicon">
+    <component name="a" class="A_S2Container_XmlS2ContainerBuilder"/>
+    <component class="A_S2Container_XmlS2ContainerBuilder" name="b"/>
+</components>
