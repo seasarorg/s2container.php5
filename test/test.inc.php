@@ -19,7 +19,6 @@ function __autoload($class = null)
     }
 }
 
-define('S2CONTAINER_PHP5_APP_DICON',TEST_DIR . '/s2container.php5/org/seasar/framework/container/factory/app.dicon');
 //define('S2CONTAINER_PHP5_LOG_LEVEL',S2Container_SimpleLogger::DEBUG_EVAL);
 define('S2CONTAINER_PHP5_LOG_LEVEL',S2Container_SimpleLogger::DEBUG);
 //define('S2CONTAINER_PHP5_LOG_LEVEL',S2Container_SimpleLogger::INFO);
