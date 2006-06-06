@@ -32,6 +32,10 @@ class S2Container_XmlS2ContainerBuilderTest
     public function __construct($name) {
         parent::__construct($name);
         $this->diconDir = dirname(__FILE__) . '/dicon/' . __CLASS__;
+        if (!defined('DICON_DIR_S2Container_XmlS2ContainerBuilderTest')){
+            define('DICON_DIR_S2Container_XmlS2ContainerBuilderTest',
+                   $this->diconDir);
+        }
     }
 
     public function setUp(){
@@ -54,122 +58,95 @@ class S2Container_XmlS2ContainerBuilderTest
         $this->assertType('A_S2Container_XmlS2ContainerBuilder',$b);
     }
 
-/*    
     function testComp() {
-       
-        print __METHOD__ . "\n";
-       
-        $container = S2ContainerFactory::create(TEST_DIR . '/s2container.php5/org/seasar/framework/container/factory/xml/test1.xml');
+        $container = S2ContainerFactory::create(
+                                $this->diconDir . '/testComp.xml');
         $this->assertNotNull($container);
        
         $a = $container->getComponent('a');
-        $this->assertIsA($a,'A');
+        $this->assertType('A_S2Container_XmlS2ContainerBuilder',$a);
 
-        $b = $container->getComponent('test1.b');
-        $this->assertIsA($b,'A');
-       
-        print "\n";
+        $b = $container->getComponent('testComp.b');
+        $this->assertType('A_S2Container_XmlS2ContainerBuilder',$b);
     }
 
     function testArgValue() {
-       
-        print __METHOD__ . "\n";
-       
-        $container = S2ContainerFactory::create(TEST_DIR . '/s2container.php5/org/seasar/framework/container/factory/xml/test2.xml');
+        $container = S2ContainerFactory::create(
+                                $this->diconDir . '/testArgValue.xml');
         $this->assertNotNull($container);
        
         $n = $container->getComponent('n');
-        $this->assertEqual($n->getVal1(),'test value.');
-
-        print "\n";
+        $this->assertEquals($n->getVal1(),'test value.');
     }
 
     function testArgExp() {
-       
-        print __METHOD__ . "\n";
-       
-        $container = S2ContainerFactory::create(TEST_DIR . '/s2container.php5/org/seasar/framework/container/factory/xml/test3.xml');
+        $container = S2ContainerFactory::create(
+                                $this->diconDir . '/testArgExp.xml');
         $this->assertNotNull($container);
        
         $n = $container->getComponent('n');
-        $this->assertEqual($n->getVal1(),2);
+        $this->assertEquals($n->getVal1(),2);
 
         $m = $container->getComponent('m');
-        $this->assertEqual($m->getVal1(),9);
+        $this->assertEquals($m->getVal1(),9);
 
         $l = $container->getComponent('l');
-        $this->assertEqual($l->getVal1(),"test desu");
-
-        print "\n";
+        $this->assertEquals($l->getVal1(),"test desu");
     }
 
     function testArgComp() {
-       
-        print __METHOD__ . "\n";
-       
-        $container = S2ContainerFactory::create(TEST_DIR . '/s2container.php5/org/seasar/framework/container/factory/xml/test4.xml');
+        $container = S2ContainerFactory::create(
+                                $this->diconDir . '/testArgComp.xml');
         $this->assertNotNull($container);
        
         $n = $container->getComponent('n');
-        $this->assertIsA($n->getVal1(),'D');
+        $this->assertType('D_S2Container_XmlS2ContainerBuilder',$n->getVal1());
 
         $m = $container->getComponent('m');
-        $this->assertIsA($m->getVal1(),'D');
+        $this->assertType('D_S2Container_XmlS2ContainerBuilder',$m->getVal1());
 
         $o = $container->getComponent('o');
-        $this->assertIsA($o->getVal1(),'D');
-
-        print "\n";
+        $this->assertType('D_S2Container_XmlS2ContainerBuilder',$o->getVal1());
     }
     
     function testArgs() {
-       
-        print __METHOD__ . "\n";
-       
-        $container = S2ContainerFactory::create(TEST_DIR . '/s2container.php5/org/seasar/framework/container/factory/xml/test5.xml');
+        $container = S2ContainerFactory::create(
+                                $this->diconDir . '/testArgs.xml');
         $this->assertNotNull($container);
        
         $r = $container->getComponent('r');
-        $this->assertEqual($r->getVal1(),'val 1');
-        $this->assertEqual($r->getVal2(),'val 2');
+        $this->assertEquals($r->getVal1(),'val 1');
+        $this->assertEquals($r->getVal2(),'val 2');
 
         $r = $container->getComponent('a');
-        $this->assertIsA($r->getVal1(),'D');
-        $this->assertEqual($r->getVal2(),'val 2');
+        $this->assertType('D_S2Container_XmlS2ContainerBuilder',$r->getVal1());
+        $this->assertEquals($r->getVal2(),'val 2');
 
         $r = $container->getComponent('b');
-        $this->assertIsA($r->getVal1(),'D');
-        $this->assertIsA($r->getVal2(),'D');
-
-        print "\n";
+        $this->assertType('D_S2Container_XmlS2ContainerBuilder',$r->getVal1());
+        $this->assertType('D_S2Container_XmlS2ContainerBuilder',$r->getVal2());
     }
 
     function testProperty() {
-       
-        print __METHOD__ . "\n";
-       
-        $container = S2ContainerFactory::create(TEST_DIR . '/s2container.php5/org/seasar/framework/container/factory/xml/test6.xml');
+        $container = S2ContainerFactory::create(
+                                $this->diconDir . '/testProperty.xml');
         $this->assertNotNull($container);
        
         $r = $container->getComponent('s');
-        $this->assertEqual($r->getVal1(),'val 1.');
-        $this->assertIsA($r->getVal2(),'D');
+        $this->assertEquals($r->getVal1(),'val 1.');
+        $this->assertType('D_S2Container_XmlS2ContainerBuilder',$r->getVal2());
 
         $t = $container->getComponent('t');
-        $this->assertEqual($t->getVal1(),2);
-
-        print "\n";
+        $this->assertEquals(2,$t->getVal1());
     }
 
     function testInitMethod() {
-       
-        print __METHOD__ . "\n";
-       
-        $container = S2ContainerFactory::create(TEST_DIR . '/s2container.php5/org/seasar/framework/container/factory/xml/test7.xml');
+        $container = S2ContainerFactory::create(
+                                $this->diconDir . '/testInitMethod.xml');
         $this->assertNotNull($container);
        
         $r = $container->getComponent('r');
-        $this->assertEqual($r->getVal1(),'val 1.');
+        $this->assertEquals('val 1.',$r->getVal1());
 
         $compDef = $container->getComponentDef("r");
         $meDef = $compDef->getInitMethodDef(0);
@@ -178,22 +155,18 @@ class S2Container_XmlS2ContainerBuilderTest
         $this->assertNotNull($argDef);
 
         $m = $argDef->getMetaDef("m1");
-        $this->assertEqual($m->getValue(),'m1-val1');
+        $this->assertEquals($m->getValue(),'m1-val1');
 
         $m = $argDef->getMetaDef("m2");
-        $this->assertEqual($m->getValue(),2);
+        $this->assertEquals($m->getValue(),2);
 
         $m = $argDef->getMetaDef("m3");
-        $this->assertIsA($m->getValue(),'B');
-
-        print "\n";
+        $this->assertType('B_S2Container_XmlS2ContainerBuilder',$m->getValue());
     }
 
     function testDestroyMethod() {
-       
-        print __METHOD__ . "\n";
-       
-        $container = S2ContainerFactory::create(TEST_DIR . '/s2container.php5/org/seasar/framework/container/factory/xml/test8.xml');
+        $container = S2ContainerFactory::create(
+                                $this->diconDir . '/testDestroyMethod.xml');
         $this->assertNotNull($container);
         $container->init();
               
@@ -207,289 +180,216 @@ class S2Container_XmlS2ContainerBuilderTest
         $this->assertNotNull($argDef);
 
         $m = $argDef->getMetaDef("m1");
-        $this->assertEqual($m->getValue(),'m1-val1');
+        $this->assertEquals($m->getValue(),'m1-val1');
 
         $m = $argDef->getMetaDef("m2");
-        $this->assertEqual($m->getValue(),2);
+        $this->assertEquals($m->getValue(),2);
 
         $m = $argDef->getMetaDef("m3");
-        $this->assertIsA($m->getValue(),'B');
+        $this->assertType('B_S2Container_XmlS2ContainerBuilder',$m->getValue());
 
-        $this->assertEqual($argDef->getValue(),'end of century.');
-
-        print "\n";
+        $this->assertEquals($argDef->getValue(),'end of century.');
     }
 
     function testAspect() {
-       
-        print __METHOD__ . "\n";
-       
-        $container = S2ContainerFactory::create(TEST_DIR . '/s2container.php5/org/seasar/framework/container/factory/xml/test9.xml');
+        $container = S2ContainerFactory::create(
+                                $this->diconDir . '/testAspect.xml');
         $this->assertNotNull($container);
               
         $date = $container->getComponent('date');
-        $this->assertEqual($date->getTime(),'12:00:30');
+        $this->assertEquals($date->getTime(),'12:00:30');
 
         $date = $container->getComponent('e');
-        $this->assertEqual($date->ma(),'ma called.');
-
-        print "\n";
+        $this->assertEquals($date->ma(),'ma called.');
     }
 
     function testMeta() {
-       
-        print __METHOD__ . "\n";
-       
-        $container = S2ContainerFactory::create(TEST_DIR . '/s2container.php5/org/seasar/framework/container/factory/xml/test10.xml');
+        $container = S2ContainerFactory::create(
+                                $this->diconDir . '/testMeta.xml');
         $this->assertNotNull($container);
               
         $m = $container->getMetaDef("m1");
-        $this->assertEqual($m->getValue(),'m1-val1');
+        $this->assertEquals($m->getValue(),'m1-val1');
 
         $m = $container->getMetaDef("m2");
-        $this->assertEqual($m->getValue(),2);
+        $this->assertEquals($m->getValue(),2);
 
         $m = $container->getMetaDef("m3");
-        $this->assertIsA($m->getValue(),'N');
+        $this->assertType('N_S2Container_XmlS2ContainerBuilder',$m->getValue());
 
         $c = $container->getComponentDef("n");
         $m = $c->getMetaDef("m4");
-        $this->assertEqual($m->getValue(),'m2-val2');
-
-        print "\n";
+        $this->assertEquals($m->getValue(),'m2-val2');
     }
 
     function testInclude() {
-       
-        print __METHOD__ . "\n";
-        $container = S2ContainerFactory::create(TEST_DIR . '/s2container.php5/org/seasar/framework/container/factory/xml/test11.xml');
+        $container = S2ContainerFactory::create(
+                                $this->diconDir . '/testIncludeA.xml');
         $this->assertNotNull($container);
         $a = $container->getComponent("a");
-        $n = $container->getComponent("test2.n");
-        $this->assertIsA($a,'A');
-        $this->assertIsA($n,'N');
-        print "\n";
+        $n = $container->getComponent("testIncludeB.n");
+        $this->assertType('A_S2Container_XmlS2ContainerBuilder',$a);
+        $this->assertType('N_S2Container_XmlS2ContainerBuilder',$n);
     }
     
     function testCalc() {
-       
-        print __METHOD__ . "\n";
-       
-        $container = S2ContainerFactory::create(TEST_DIR . '/s2container.php5/org/seasar/framework/container/factory/xml/test12.xml');
+        $container = S2ContainerFactory::create(
+                                $this->diconDir . '/testCalc.xml');
         $a = $container->getComponent("addAction");
-        $this->assertEqual($a->add(2,3),5);
-
-        print "\n";
+        $this->assertEquals($a->add(2,3),5);
     }
 
     function testCalcAuto() {
-       
-        print __METHOD__ . "\n";
-       
-        $container = S2ContainerFactory::create(TEST_DIR . '/s2container.php5/org/seasar/framework/container/factory/xml/test13.xml');
-        $a = $container->getComponent("AddActionImpl");
-        $this->assertEqual($a->add(5,3),8);
-
-        print "\n";
+        $container = S2ContainerFactory::create(
+                                $this->diconDir . '/testCalcAuto.xml');
+        $a = $container->getComponent("AddActionImpl_S2Container_XmlS2ContainerBuilder");
+        $this->assertEquals($a->add(5,3),8);
     }
 
     function testPrototype() {
-       
-        print __METHOD__ . "\n";
-       
-        $container = S2ContainerFactory::create(TEST_DIR . '/s2container.php5/org/seasar/framework/container/factory/xml/test14.xml');
-        $a = $container->getComponent("AddActionImpl");
-        $b = $container->getComponent("AddActionImpl");
+        $container = S2ContainerFactory::create(
+                                $this->diconDir . '/testPrototype.xml');
+        $a = $container->getComponent("AddActionImpl_S2Container_XmlS2ContainerBuilder");
+        $b = $container->getComponent("AddActionImpl_S2Container_XmlS2ContainerBuilder");
        
         if($a === $b){
             $this->assertTrue(false);
         }else{
             $this->assertTrue(true);
         }
-        print "\n";
     }
 
     function testOuter() {
-       
-        print __METHOD__ . "\n";
-       
-        $container = S2ContainerFactory::create(TEST_DIR . '/s2container.php5/org/seasar/framework/container/factory/xml/test15.xml');
-        $s = new SubActionImpl();
+        $container = S2ContainerFactory::create(
+                                $this->diconDir . '/testOuter.xml');
+        $s = new SubActionImpl_S2Container_XmlS2ContainerBuilder();
         $container->injectDependency($s);
-        $this->assertEqual($s->sub(3,2),1);
-
-        print "\n";
+        $this->assertEquals($s->sub(3,2),1);
     }
     
     function testAop() {
-       
-        print __METHOD__ . "\n";
-       
-        $container = S2ContainerFactory::create(TEST_DIR . '/s2container.php5/org/seasar/framework/container/factory/xml/test16.xml');
-        $a = $container->getComponent("AddActionImpl");
-        $this->assertEqual($a->add(5,3),8);
-        $s = $container->getComponent("SubActionImpl");
-        $this->assertEqual($s->sub(5,3),2);
-
-        print "\n";
-    }
-
-    function testSingletonFactory() {
-       
-        print __METHOD__ . "\n";
-       
-        $container = S2Container_SingletonS2ContainerFactory::getContainer();
-        $this->assertNotNull($container);
-
-        $a = $container->getComponent("a");
-        $this->assertIsA($a,'A');
-
-        print "\n";
+        $container = S2ContainerFactory::create(
+                                $this->diconDir . '/testAop.xml');
+        $a = $container->getComponent("AddActionImpl_S2Container_XmlS2ContainerBuilder");
+        $this->assertEquals($a->add(5,3),8);
+        $s = $container->getComponent("SubActionImpl_S2Container_XmlS2ContainerBuilder");
+        $this->assertEquals($s->sub(5,3),2);
     }
 
     function testBinding() {
-       
-        print __METHOD__ . "\n";
-       
-        $container = S2ContainerFactory::create(TEST_DIR . '/s2container.php5/org/seasar/framework/container/factory/xml/test17.dicon');
-        $o = $container->getComponent("O");
-        $g = $container->getComponent("G");
+        $container = S2ContainerFactory::create(
+                                $this->diconDir . '/testBinding.dicon');
+        $o = $container->getComponent("O_S2Container_XmlS2ContainerBuilder");
+        $g = $container->getComponent("G_S2Container_XmlS2ContainerBuilder");
 
         $s1 = $container->getComponent("s1");
         $oo = $s1->getRefO();
-        $this->assertReference($oo,$o);
+        $this->assertTrue($oo === $o);
         $gg = $s1->getRefG();
-        $this->assertReference($gg,$g);
+        $this->assertTrue($gg === $g);
 
         $s2 = $container->getComponent("s2");
         $oo = $s2->getRefO();
-        $this->assertReference($oo,$o);
+        $this->assertTrue($oo === $o);
         $gg = $s2->getRefG();
         $this->assertNull($gg);
 
 
         $s3 = $container->getComponent("s3");
         $gg = $s3->getRefG();
-        $this->assertReference($gg,$g);
-        $this->assertEqual($s3->getVal1(),'val 1.');
+        $this->assertTrue($gg === $g);
+        $this->assertEquals($s3->getVal1(),'val 1.');
        
         $s4 = $container->getComponent("s4");
         $oo = $s4->getRefO();
-        $this->assertReference($oo,$o);
+        $this->assertTrue($oo === $o);
         $gg = $s4->getRefG();
         $this->assertNull($gg);
-        $this->assertEqual($s4->getVal1(),'val 1.');
-
-        print "\n";
+        $this->assertEquals($s4->getVal1(),'val 1.');
     }
 
     function testRequest() {
-       
-        print __METHOD__ . "\n";
-       
-        $container = S2ContainerFactory::create(TEST_DIR . '/s2container.php5/org/seasar/framework/container/factory/xml/test19.dicon');
+        $container = S2ContainerFactory::create(
+                                $this->diconDir . '/testRequest.dicon');
         $l = $container->getComponent("l");
-        $this->assertIsA($l->getComp(),'D');
+        $this->assertType('D_S2Container_XmlS2ContainerBuilder',$l->getComp());
 
         $ll = $container->getComponent('l');
-        $this->assertReference($l,$ll);
+        $this->assertTrue($l === $ll);
 
         $_REQUEST['l'] = "test string";
           
         $l = $container->getComponent('l');
-        $this->assertIsA($l,'L');
+        $this->assertType('L_S2Container_XmlS2ContainerBuilder',$l);
     }
 
     function testSession() {
-       
-        print __METHOD__ . "\n";
-       
-        $container = S2ContainerFactory::create(TEST_DIR . '/s2container.php5/org/seasar/framework/container/factory/xml/test19.dicon');
+        $container = S2ContainerFactory::create(
+                                $this->diconDir . '/testSession.dicon');
         $ll = $container->getComponent("ll");
-        $this->assertIsA($ll->getComp(),'D');
+        $this->assertType('D_S2Container_XmlS2ContainerBuilder',$ll->getComp());
 
         $llll = $container->getComponent('ll');
-        $this->assertReference($ll,$llll);
+        $this->assertTrue($ll === $llll);
 
         $_SESSION['ll'] = "test string";
           
         $ll = $container->getComponent('ll');
-        $this->assertIsA($ll,'L');
+        $this->assertType('L_S2Container_XmlS2ContainerBuilder',$ll);
     }
 
     function testUuSet() {
-       
-        print __METHOD__ . "\n";
-       
-        $container = S2ContainerFactory::create(TEST_DIR . '/s2container.php5/org/seasar/framework/container/factory/xml/test20.dicon');
+        $container = S2ContainerFactory::create(
+                                $this->diconDir . '/testUuSet.dicon');
         $m = $container->getComponent("m");
-        $this->assertEqual($m->getName(),"test");
-
+        $this->assertEquals($m->getName(),"test");
     }
 
     function testMockInterceptor() {
-       
-        print __METHOD__ . "\n";
-       
-        $container = S2ContainerFactory::create(TEST_DIR . '/s2container.php5/org/seasar/framework/container/factory/xml/test21.dicon');
+        $container = S2ContainerFactory::create(
+                                $this->diconDir . '/testMockInterceptor.dicon');
         $a = $container->getComponent("d");
-        $this->assertEqual($a->ma(),-1);
-
-        print "\n";
+        $this->assertEquals($a->ma(),'-1');
     }
  
     function testSameName() {
-       
-        print __METHOD__ . "\n";
-       
-        $container = S2ContainerFactory::create(TEST_DIR . '/s2container.php5/org/seasar/framework/container/factory/xml/test22.dicon');
+        $container = S2ContainerFactory::create(
+                                $this->diconDir . '/testSameName.dicon');
         $this->assertNotNull($container);
        
         try{
-            $a = $container->getComponent('A');
-            $this->assertIsA($a,'A');
+            $a = $container->getComponent('A_S2Container_XmlS2ContainerBuilder');
+            $thid->assertTrue(false);
         }catch(Exception $e){
-            $this->assertIsA($e,'S2Container_TooManyRegistrationRuntimeException');
+            $this->assertType('S2Container_TooManyRegistrationRuntimeException',$e);
         }
-
-        print "\n";
     }
 
     function testContainerInject() {
-       
-        print __METHOD__ . "\n";
-       
-        $container = S2ContainerFactory::create(TEST_DIR . '/s2container.php5/org/seasar/framework/container/factory/xml/test23.dicon');
+        $container = S2ContainerFactory::create(
+                                $this->diconDir . '/testContainerInject.dicon');
         $this->assertNotNull($container);
        
-        $v = $container->getComponent('V');
+        $v = $container->getComponent('V_S2Container_XmlS2ContainerBuilder');
         $con = $v->getContainer();
-        $this->assertReference($container,$con);
-
-        print "\n";
+        $this->assertTrue($container === $con);
     }
     
     function testUuCallAopProxyFactory() {
-       
-        print __METHOD__ . "\n";
-       
-        $container = S2ContainerFactory::create(TEST_DIR . '/s2container.php5/org/seasar/framework/container/factory/xml/test24.dicon');
-        $a = $container->getComponent("AddActionImpl");
-        $this->assertEqual($a->add(5,3),5);
-
-        print "\n";
+        $container = S2ContainerFactory::create(
+                                $this->diconDir . '/testUuCallAopProxyFactory.dicon');
+        $a = $container->getComponent("AddActionImpl_S2Container_XmlS2ContainerBuilder");
+        $this->assertEquals($a->add(5,3),'5');
     }
 
     function testIncludeChild() {
-       
-        print __METHOD__ . "\n";
-       
-        $container = S2ContainerFactory::create(TEST_DIR . '/s2container.php5/org/seasar/framework/container/factory/xml/test25.dicon');
-        $a = $container->getComponent("AddActionImpl");
-        $this->assertEqual($a->add(5,3),5);
+        $container = S2ContainerFactory::create(
+                                $this->diconDir . '/testIncludeChild.dicon');
+        $a = $container->getComponent("AddActionImpl_S2Container_XmlS2ContainerBuilder");
+        $this->assertEquals($a->add(5,3),'5');
 
-        $b = $container->getComponent("test25-1.AddActionImpl");
-        $this->assertEqual($b->add(5,3),10);
+        $b = $container->getComponent("testIncludeChildB.AddActionImpl_S2Container_XmlS2ContainerBuilder");
+        $this->assertEquals($b->add(5,3),'10');
 
         if($a === $b){
             $this->assertTrue(false);
@@ -497,201 +397,446 @@ class S2Container_XmlS2ContainerBuilderTest
             $this->assertTrue(true);
         }
 
-        $c = $container->getComponent("test25-1-1.AddActionImpl");
-        $this->assertEqual($c->add(5,3),11);
+        $c = $container->getComponent("testIncludeChildD.AddActionImpl_S2Container_XmlS2ContainerBuilder");
+        $this->assertEquals($c->add(5,3),'11');
 
-        $c = $container->getComponent("test25-2.AddActionImpl");
-        $this->assertEqual($c->add(5,3),12);
-
-        print "\n";
+        $c = $container->getComponent("testIncludeChildC.AddActionImpl_S2Container_XmlS2ContainerBuilder");
+        $this->assertEquals($c->add(5,3),'12');
     }
     
     function testPintcutEreg() {
-       
-        print __METHOD__ . "\n";
-       
-        $container = S2ContainerFactory::create(TEST_DIR . '/s2container.php5/org/seasar/framework/container/factory/xml/test26.dicon');
+        $container = S2ContainerFactory::create(
+                                $this->diconDir . '/testPintcutEreg.dicon');
               
         $date = $container->getComponent('date');
-        $this->assertEqual($date->getTime(),'12:00:30');
+        $this->assertEquals($date->getTime(),'12:00:30');
 
         $day = $container->getComponent('day');
-        $this->assertEqual($day->getDay(),'25');
+        $this->assertEquals($day->getDay(),'25');
 
         $day = $container->getComponent('day2');
-        $this->assertEqual($day->getDay(),'25');
-        $this->assertEqual($day->getTime(),'12:00:30');
-
-        print "\n";
+        $this->assertEquals($day->getDay(),'25');
+        $this->assertEquals($day->getTime(),'12:00:30');
     }
     
     function testArgMeta() {
-       
-        print __METHOD__ . "\n";
-       
-        $container = S2ContainerFactory::create(TEST_DIR . '/s2container.php5/org/seasar/framework/container/factory/xml/test27.dicon');
-              
+        $container = S2ContainerFactory::create(
+                                $this->diconDir . '/testArgMeta.dicon');              
         $compDef = $container->getComponentDef("n");
         $argDef = $compDef->getArgDef(0);
         $this->assertNotNull($argDef);
 
         $m = $argDef->getMetaDef("m1");
-        $this->assertEqual($m->getValue(),'m1-val1');
+        $this->assertEquals($m->getValue(),'m1-val1');
 
         $m = $argDef->getMetaDef("m2");
-        $this->assertEqual($m->getValue(),2);
+        $this->assertEquals($m->getValue(),2);
 
         $m = $argDef->getMetaDef("m3");
-        $this->assertIsA($m->getValue(),'B');
-
+        $this->assertType('B_S2Container_XmlS2ContainerBuilder',$m->getValue());
         
-        $this->assertEqual($argDef->getValue(),'test value.');
-
-        print "\n";
+        $this->assertEquals($argDef->getValue(),'test value.');
     }
 
     function testPropertyMeta() {
-       
-        print __METHOD__ . "\n";
-       
-        $container = S2ContainerFactory::create(TEST_DIR . '/s2container.php5/org/seasar/framework/container/factory/xml/test28.dicon');
+        $container = S2ContainerFactory::create(
+                                $this->diconDir . '/testPropertyMeta.dicon');              
        
         $r = $container->getComponent('r');
-        $this->assertEqual($r->getVal1(),'val 1.');
+        $this->assertEquals($r->getVal1(),'val 1.');
 
         $compDef = $container->getComponentDef("r");
         $propDef = $compDef->getPropertyDef("val1");
 
         $m = $propDef->getMetaDef("m1");
-        $this->assertEqual($m->getValue(),'m1-val1');
+        $this->assertEquals($m->getValue(),'m1-val1');
 
         $m = $propDef->getMetaDef("m2");
-        $this->assertEqual($m->getValue(),2);
+        $this->assertEquals($m->getValue(),2);
 
         $m = $propDef->getMetaDef("m3");
-        $this->assertIsA($m->getValue(),'B');
-
-        print "\n";
+        $this->assertType('B_S2Container_XmlS2ContainerBuilder',$m->getValue());
     }
 
     function testCompExp() {
+        $container = S2ContainerFactory::create(
+                                $this->diconDir . '/testCompExp.dicon');              
        
-        print __METHOD__ . "\n";
-       
-        $container = S2ContainerFactory::create(TEST_DIR . '/s2container.php5/org/seasar/framework/container/factory/xml/test29.dicon');
-       
-        $b = $container->getComponent('B');
-        $this->assertIsA($b,'B');
+        $b = $container->getComponent('B_S2Container_XmlS2ContainerBuilder');
+        $this->assertType('B_S2Container_XmlS2ContainerBuilder',$b);
 
         $b = $container->getComponent('b1');
-        $this->assertIsA($b,'B');
+        $this->assertType('B_S2Container_XmlS2ContainerBuilder',$b);
 
         $b = $container->getComponent('b2');
-        $this->assertIsA($b,'B');
+        $this->assertType('B_S2Container_XmlS2ContainerBuilder',$b);
         
         $b = $container->getComponent('b3');
-        $this->assertIsA($b,'B');
+        $this->assertType('B_S2Container_XmlS2ContainerBuilder',$b);
         
         $b = $container->getComponent('b4');
-        $this->assertIsA($b,'B');
+        $this->assertType('B_S2Container_XmlS2ContainerBuilder',$b);
 
         try{
             $b = $container->getComponent('b5');
-            $this->assertIsA($b,'B');
+            $this->assertType('B_S2Container_XmlS2ContainerBuilder',$b);
         }catch(Exception $e){
-            $this->assertIsA($e,'S2Container_ClassUnmatchRuntimeException');
+            $this->assertType('S2Container_ClassUnmatchRuntimeException',$e);
             print $e->getMessage() . "\n";
         }
 
         $b = $container->getComponent('b6');
-        $this->assertIsA($b,'B');
-
-        print "\n";
+        $this->assertType('B_S2Container_XmlS2ContainerBuilder',$b);
     }
 
     function testInitMethodExp() {
-       
-        print __METHOD__ . "\n";
-
-        $container = S2ContainerFactory::create(TEST_DIR . '/s2container.php5/org/seasar/framework/container/factory/xml/test30.dicon');
+        $container = S2ContainerFactory::create(
+                                $this->diconDir . '/testInitMethodExp.dicon');              
        
         $i = $container->getComponent('i');
-        $this->assertEqual($i->getResult(),6);
+        $this->assertEquals($i->getResult(),6);
         
         $container->init();
         $container->destroy();
-    
-        print "\n";
     }
 
     function testChildComponent() {
-       
-        print __METHOD__ . "\n";
-
-        $container = S2ContainerFactory::create(TEST_DIR . '/s2container.php5/org/seasar/framework/container/factory/xml/test31.dicon');
+        $container = S2ContainerFactory::create(
+                                $this->diconDir . '/testChildComponent.dicon');              
        
         $n = $container->getComponent('n');
-        $this->assertIsA($n,'N');
+        $this->assertType('N_S2Container_XmlS2ContainerBuilder',$n);
 
         $d = $container->getComponent('d');
-        $this->assertIsA($d,'D');
+        $this->assertType('D_S2Container_XmlS2ContainerBuilder',$d);
 
         $n2 = $container->getComponent('n2');
-        $this->assertIsA($n2,'N');
+        $this->assertType('N_S2Container_XmlS2ContainerBuilder',$n2);
         
         $d2 = $n2->getVal1();
         
-        $this->assertIsA($d2,'D');
-        $this->assertReference($d,$d2);
-        
-        print "\n";
+        $this->assertType('D_S2Container_XmlS2ContainerBuilder',$d2);
+        $this->assertTrue($d === $d2);
     }
 
     function testSingletonS2ContainerDestroy() {
-       
-        print __METHOD__ . "\n";
-
         if(S2Container_SingletonS2ContainerFactory::hasContainer()){
             print "S2Container_SingletonS2ContainerFactory destroy.\n";
             S2Container_SingletonS2ContainerFactory::destroy();
         }
         $container = S2Container_SingletonS2ContainerFactory::getContainer(
-                       TEST_DIR . '/s2container.php5/org/seasar/framework/container/factory/xml/test4.xml');
+                       $this->diconDir . '/testSingletonS2ContainerDestroy.xml');
        
         $this->assertNotNull($container);
        
         $n = $container->getComponent('n');
-        $this->assertIsA($n->getVal1(),'D');
+        $this->assertType('D_S2Container_XmlS2ContainerBuilder',$n->getVal1());
 
         $m = $container->getComponent('m');
-        $this->assertIsA($m->getVal1(),'D');
+        $this->assertType('D_S2Container_XmlS2ContainerBuilder',$m->getVal1());
 
         $o = $container->getComponent('o');
-        $this->assertIsA($o->getVal1(),'D');
+        $this->assertType('D_S2Container_XmlS2ContainerBuilder',$o->getVal1());
         if(S2Container_SingletonS2ContainerFactory::hasContainer()){
             print "S2Container_SingletonS2ContainerFactory destroy.\n";
             S2Container_SingletonS2ContainerFactory::destroy();
         }
-        
-        print "\n";
     }
 
     function testCircularIncludeRuntimeException() {
-       
-        print __METHOD__ . "\n";
         try{ 
-            $container = S2ContainerFactory::create(TEST_DIR . '/s2container.php5/org/seasar/framework/container/factory/xml/test32.dicon');
+            $container = S2ContainerFactory::create(
+                             $this->diconDir . '/testCircularIncludeRuntimeExceptionA.dicon');
         }catch(Exception $e){
-            $this->assertIsA($e,'S2Container_CircularIncludeRuntimeException');
+            $this->assertType('S2Container_CircularIncludeRuntimeException',$e);
             print $e->getMessage() . "\n";
         }
-
-        print "\n";
     }
-*/
 }
 
 interface IA_S2Container_XmlS2ContainerBuilder{}
 class A_S2Container_XmlS2ContainerBuilder
-    implements IA_S2Container_XmlS2ContainerBuilder{} 
+    implements IA_S2Container_XmlS2ContainerBuilder{
+    public function __construct(){}
+} 
+
+interface IB_S2Container_XmlS2ContainerBuilder{}
+class B_S2Container_XmlS2ContainerBuilder
+    extends A_S2Container_XmlS2ContainerBuilder
+    implements IB_S2Container_XmlS2ContainerBuilder{
+    function __construct() {
+        parent::__construct();
+    }
+}
+
+class C_S2Container_XmlS2ContainerBuilder {
+    private $name;
+    function __construct($name) {
+        $this->name =$name;
+    }
+    
+    public function say(){
+        return $this->name;    
+    }
+}
+
+interface IG_S2Container_XmlS2ContainerBuilder{}
+class D_S2Container_XmlS2ContainerBuilder implements IG_S2Container_XmlS2ContainerBuilder{}
+
+class G_S2Container_XmlS2ContainerBuilder 
+    implements IG_S2Container_XmlS2ContainerBuilder {
+
+    function finish(){
+        print "destroy class G \n";
+    }
+
+    function finish2($msg){
+        print "$msg G \n";
+    }
+}
+
+class I_S2Container_XmlS2ContainerBuilder {
+
+    private $result = -1;
+    
+    function culc(){
+        $this->result = 1+1;
+    }
+
+    function culc2($a,$b){
+
+        $this->result = $a+$b;
+    }
+
+    function culc3(IG_S2Container_XmlS2ContainerBuilder $d){
+        if($d instanceof D){
+            $this->result = 4;
+        }else{return -1;}
+    }
+    
+    function getResult(){
+        return $this->result;
+    }
+}
+
+class L_S2Container_XmlS2ContainerBuilder {
+    private $comp;
+
+    function setComp(IG_S2Container_XmlS2ContainerBuilder $comp){
+        $this->comp = $comp;
+    }
+
+    function getComp(){
+        return $this->comp;
+    }
+}
+
+class M_S2Container_XmlS2ContainerBuilder {
+    private $name;
+    
+    function __set($name,$value){
+        print __METHOD__ . " called.\n";
+       $this->$name = $value;    
+    }
+
+    function getName(){
+        return $this->name;
+    }
+}
+
+class N_S2Container_XmlS2ContainerBuilder {
+
+   private $val1;
+   private $val2;
+
+   function __construct($val1) {
+       $this->val1 = $val1; 
+   }
+
+   function getVal1() {
+       return $this->val1; 
+   }
+
+   function setVal2($val2) {
+       $this->val2 = $val2; 
+   }
+
+   function getVal2() {
+       return $this->val2; 
+   }
+}
+
+interface IO_S2Container_XmlS2ContainerBuilder {
+    function om1();
+    function om2();
+}
+class O_S2Container_XmlS2ContainerBuilder
+    implements IO_S2Container_XmlS2ContainerBuilder {
+    function om1() {
+    }
+
+    function om2() {
+    }
+
+    function om3() {
+    }
+}
+
+class R_S2Container_XmlS2ContainerBuilder {
+ 
+    private $val1;
+    private $val2;
+    
+    function __construct($val1,$val2) {
+        $this->val1 = $val1;
+        $this->val2 = $val2;
+    }
+    
+    function setVal1($val1){
+        $this->val1 = $val1;
+    }
+
+    function setVal2($val2){
+        $this->val2 = $val2;
+    }
+
+    function getVal1(){
+        return $this->val1;
+    }
+
+    function getVal2(){
+        return $this->val2;
+    }
+
+    function finish($msg){
+        print "destroy method called. arg = $msg\n";
+    }
+}
+
+class S_S2Container_XmlS2ContainerBuilder {
+    private $val1;
+    private $val2;
+    private $refO;
+    private $refG;
+    
+    function __construct($val1="",IO_S2Container_XmlS2ContainerBuilder $o) {
+        $this->val1 = $val1;
+        $this->refO = $o;
+    }
+    
+    function getRefO(){
+        return $this->refO;
+    }    
+
+    function setRefG(IG_S2Container_XmlS2ContainerBuilder $g){
+        $this->refG = $g;
+    }    
+    function getRefG(){
+        return $this->refG;
+    }    
+
+    function getVal1(){
+        return $this->val1;
+    }    
+
+    function setVal2($val2=""){
+        $this->val2 = $val2;
+    }    
+    function getVal2(){
+        return $this->val2;
+    }    
+}
+
+class V_S2Container_XmlS2ContainerBuilder {
+
+    private $container;
+
+    function setContainer(S2Container $container){
+        $this->container = $container;
+    }
+    
+    function getContainer(){
+        return $this->container;
+    }
+}
+
+interface IDelegateA_S2Container_XmlS2ContainerBuilder {
+    function ma();
+    function mc();    
+}
+class DelegateA_S2Container_XmlS2ContainerBuilder
+    implements IDelegateA_S2Container_XmlS2ContainerBuilder {
+
+    function ma(){
+        return "ma called.";
+    }
+
+    function mc(){
+        return "mc called.";
+    }
+}
+
+class Date_S2Container_XmlS2ContainerBuilder {
+    function getTime(){
+        return '12:00:30';
+    }
+
+    function getDay(){
+        return '25';
+    }
+}
+
+interface ICalculator_S2Container_XmlS2ContainerBuilder {
+   public function add($a,$b);
+   public function sub($a,$b);
+   public function div($a,$b);
+}
+class CalculatorImpl_S2Container_XmlS2ContainerBuilder
+    implements ICalculator_S2Container_XmlS2ContainerBuilder {
+   public function add($a,$b) {
+       return $a+$b;
+   }
+   public function sub($a,$b) {
+       return $a-$b;
+   }
+
+   public function div($a,$b) {
+       return $a/$b;
+   }
+}
+
+interface IAddAction_S2Container_XmlS2ContainerBuilder {
+   public function add($a,$b);
+}
+class AddActionImpl_S2Container_XmlS2ContainerBuilder
+    implements IAddAction_S2Container_XmlS2ContainerBuilder {
+   
+   private $logic;
+   
+   public function __construct(ICalculator_S2Container_XmlS2ContainerBuilder $logic) {
+       $this->logic = $logic;
+   }
+   
+   public function add($a,$b) {
+       return $this->logic->add($a,$b);
+   }
+}
+
+interface ISubAction_S2Container_XmlS2ContainerBuilder {
+   public function sub($a,$b);
+}
+
+class SubActionImpl_S2Container_XmlS2ContainerBuilder
+    implements ISubAction_S2Container_XmlS2ContainerBuilder {
+   
+   private $logic;
+   
+   public function setLogic(ICalculator_S2Container_XmlS2ContainerBuilder $logic) {
+       $this->logic = $logic;
+   }
+   
+   public function sub($a,$b) {
+       return $this->logic->sub($a,$b);
+   }
+}
 ?>

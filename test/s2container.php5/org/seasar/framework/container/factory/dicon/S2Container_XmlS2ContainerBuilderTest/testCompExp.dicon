@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
+"components21.dtd">
+<components>
+
+    <component name="b1" class="IB_S2Container_XmlS2ContainerBuilder">
+        return new B_S2Container_XmlS2ContainerBuilder();
+    </component>
+
+    <component name="b2" class="A_S2Container_XmlS2ContainerBuilder">
+        return new B_S2Container_XmlS2ContainerBuilder()
+    </component>
+
+    <component name="b3" class="B_S2Container_XmlS2ContainerBuilder">
+        new B_S2Container_XmlS2ContainerBuilder()
+    </component>
+
+    <component name="b4">
+        new B_S2Container_XmlS2ContainerBuilder()
+    </component>
+
+    <component name="b5" class="C_S2Container_XmlS2ContainerBuilder">
+        new B_S2Container_XmlS2ContainerBuilder()
+    </component>
+
+    <component name="b6">
+        b2
+    </component>
+
+</components>
