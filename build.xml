@@ -114,7 +114,7 @@
 
     <target name="test" depends="init">
         <echo>test directory : test/s2container.php5/${td}</echo>
-        <echo>test target : ${tt}</echo>
+        <echo>test target    : ${tt}</echo>
     	<php expression="require_once('test/test.inc.php')"/>
     	<phpunit2 haltonfailure="false" haltonerror="false">
             <formatter type="plain" usefile="false"/>
