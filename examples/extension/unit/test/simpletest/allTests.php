@@ -11,9 +11,15 @@ require_once 'bar/BarAllTest.class.php';
 require_once 'foo/FooLogicTest.class.php';
 require_once 'foo/FooAllTest.class.php';
 
+require_once 'sample/SampleTest.class.php';
+
 $test = new GroupTest('All Test');
+
+$test->addTestCase(new SampleTest());
+
 $barAllTest = BarAllTest::group();
 $test->addTestCase($barAllTest);
+
 $fooAllTest = FooAllTest::group();
 $test->addTestCase($fooAllTest);
 

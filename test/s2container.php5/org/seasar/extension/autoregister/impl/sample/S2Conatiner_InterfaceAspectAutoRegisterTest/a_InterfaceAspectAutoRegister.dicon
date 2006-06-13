@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
+"components21.dtd">
+<components>
+    <component name="trace" class="S2Container_TraceInterceptor"/>
+
+    <component class="S2Container_InterfaceAspectAutoRegister">
+        <property name="interceptor">trace</property>
+        <property name="targetInterface">"IA_S2Container_InterfaceAspectAutoRegister"</property>
+        <initMethod name="registerAll"/>
+    </component>
+	<component name="a" class="A_S2Container_InterfaceAspectAutoRegister"/>
+	<component name="b" class="B_S2Container_InterfaceAspectAutoRegister"/>
+</components>

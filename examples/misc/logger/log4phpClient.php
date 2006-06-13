@@ -1,7 +1,7 @@
 <?php
-require_once('../../example.inc.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php'); 
 
-define('LOG4PHP_DIR', dirname(__FILE__) . '/log4php');
+define('LOG4PHP_DIR', dirname(__FILE__) . '/log4php-0.9/src/log4php');
 define('LOG4PHP_CONFIGURATION', dirname(__FILE__) . '/log4php.properties');
 require_once(LOG4PHP_DIR . '/LoggerManager.php');
 

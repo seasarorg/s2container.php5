@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
+"components21.dtd">
+<components>
+    <component name="trace" class="S2Container_TraceInterceptor"/>
+
+    <component class="S2Container_AspectAutoRegister">
+        <property name="interceptor">trace</property>
+        <property name="pointcut">"test"</property>
+        <initMethod name="addClassPattern">
+            <arg>"^A_,D_"</arg>
+        </initMethod>
+        <initMethod name="addIgnoreClassPattern">
+            <arg>"B_"</arg>
+        </initMethod>
+        <initMethod name="registerAll"/>
+    </component>
+	<component name="a" class="A_S2Container_AspectAutoRegister"/>
+	<component name="b" class="B_S2Container_AspectAutoRegister"/>
+	<component name="c" class="C_S2Container_A_spectAutoRegister"/>
+	<component name="d" class="D_S2Container_AspectAutoRegister"/>
+</components>

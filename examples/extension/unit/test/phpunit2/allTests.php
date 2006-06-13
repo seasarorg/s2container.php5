@@ -11,12 +11,18 @@ require_once 'bar/BarAllTest.class.php';
 require_once 'foo/FooLogicTest.class.php';
 require_once 'foo/FooAllTest.class.php';
 
+require_once 'sample/SampleTest.class.php';
 
 print "\n\n============================\n";
 $suite  = new PHPUnit2_Framework_TestSuite();
+
+$suite->addTestSuite('SampleTest');
+
 $barAllTest = BarAllTest::suite();
 $suite->addTest($barAllTest);
+
 $fooAllTest = FooAllTest::suite();
 $suite->addTest($fooAllTest);
+
 PHPUnit2_TextUI_TestRunner::run($suite);
 ?>

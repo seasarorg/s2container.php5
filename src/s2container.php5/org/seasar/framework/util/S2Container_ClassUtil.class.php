@@ -87,23 +87,6 @@ final class S2Container_ClassUtil
 
     /**
      * @param ReflectionClass
-     * @param string method name
-    public static function hasMethod(ReflectionClass $clazz,
-                                     $methodName)
-    {
-        //return $clazz->hasMethod(methodName); php ver 5.1
-
-        try {
-            $m = $clazz->getMethod($methodName);
-            return true;
-        } catch (ReflectionException $e) {
-            return false;
-        }
-    }
-     */
-
-    /**
-     * @param ReflectionClass
      */
     public static function getInterfaces(ReflectionClass $clazz)
     {
