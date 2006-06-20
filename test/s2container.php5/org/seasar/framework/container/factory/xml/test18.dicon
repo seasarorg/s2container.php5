@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="Shift_JIS"?>
-<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
-"components21.dtd">
-<components namespace="test18">
-    <!-- component name="o" class="O"/ -->
-
-    <component name="s1" class="S" autoBinding="auto"/>
-
-</components>

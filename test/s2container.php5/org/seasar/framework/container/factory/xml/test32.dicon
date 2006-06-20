@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="Shift_JIS"?>
-<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
-"components21.dtd">
-<components>
-    <include path="%TEST_DIR%/s2container.php5/org/seasar/framework/container/factory/xml/test33.dicon"/>
-    <component name="a" class="A"/>
-</components>
