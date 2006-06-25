@@ -59,6 +59,59 @@ class S2Container_MockInterceptorTest extends PHPUnit2_Framework_TestCase {
                       array($taspect,$aspect));
         $this->assertEquals($proxy->pm1(),'mock value.');
     }
+
+    function testNullReturnValue() {
+        $pointcut = new S2Container_PointcutImpl('IO_S2Container_MockInterceptor');
+        $mock = new S2Container_MockInterceptor();
+        $mock->setReturnValue(null,'null value.');
+        $aspect = new S2Container_AspectImpl($mock,$pointcut);
+        $proxy = S2Container_AopProxyFactory::create(null,
+                 'IO_S2Container_MockInterceptor',
+                 array($aspect));
+        $this->assertEquals($proxy->om1(),'null value.');
+    }
+
+    function testNullThrowable() {
+        $pointcut = new S2Container_PointcutImpl('IO_S2Container_MockInterceptor');
+        $mock = new S2Container_MockInterceptor();
+        $mock->setThrowable(null,new Exception('throw test'));
+        $aspect = new S2Container_AspectImpl($mock,$pointcut);
+        $proxy = S2Container_AopProxyFactory::create(null,
+                 'IO_S2Container_MockInterceptor',
+                 array($aspect));
+        try{
+            $proxy->om1();
+            $this->assertTrue(false);
+        } catch (Exception $e){
+            $this->assertEquals($e->getMessage(),'throw test');
+        }
+    }
+
+    function testThrowable() {
+        $pointcut = new S2Container_PointcutImpl('IO_S2Container_MockInterceptor');
+        $mock = new S2Container_MockInterceptor();
+        $mock->setThrowable('om1',new Exception('throw test'));
+        $aspect = new S2Container_AspectImpl($mock,$pointcut);
+        $proxy = S2Container_AopProxyFactory::create(null,
+                 'IO_S2Container_MockInterceptor',
+                 array($aspect));
+        try{
+            $proxy->om1();
+            $this->assertTrue(false);
+        } catch (Exception $e){
+            $this->assertEquals($e->getMessage(),'throw test');
+        }
+    }
+
+    function testDoNothing() {
+        $pointcut = new S2Container_PointcutImpl('IO_S2Container_MockInterceptor');
+        $mock = new S2Container_MockInterceptor();
+        $aspect = new S2Container_AspectImpl($mock,$pointcut);
+        $proxy = S2Container_AopProxyFactory::create(null,
+                 'IO_S2Container_MockInterceptor',
+                 array($aspect));
+        $this->assertEquals($proxy->om1(),null);
+    }
 }
 
 interface IO_S2Container_MockInterceptor {

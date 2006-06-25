@@ -59,7 +59,7 @@ class S2Container_MockInterceptor extends S2Container_AbstractInterceptor
      * @param string method name
      * @param Exception 
      */
-    public function setThrowable($methodName,$throwable)
+    public function setThrowable($methodName,Exception $throwable)
     {
         $this->throwableMap_[$methodName] = $throwable;
     }
@@ -100,7 +100,7 @@ class S2Container_MockInterceptor extends S2Container_AbstractInterceptor
             throw $this->throwableMap_[null];
         } else if (array_key_exists($methodName,$this->returnValueMap_)) {
             return $this->returnValueMap_[$methodName];
-        } else {
+        } else if (array_key_exists(null,$this->returnValueMap_)) {
             return $this->returnValueMap_[null];
         }
     }
