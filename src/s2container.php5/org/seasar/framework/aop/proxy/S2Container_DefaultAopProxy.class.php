@@ -84,7 +84,8 @@ class S2Container_DefaultAopProxy {
                 $methodRef = $this->targetClass_->getMethod('__call');
                 $args = array($name,$args);
             } else {
-                throw new Exception('method not found !!!');                
+                throw new S2Container_NoSuchMethodRuntimeException(
+                           $this->targetClass_,$name);               
             }
             
             return S2Container_MethodUtil::invoke($methodRef,

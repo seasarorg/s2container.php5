@@ -102,6 +102,21 @@ class S2Container_MiscInterceptorTest extends PHPUnit2_Framework_TestCase {
         $this->assertEquals($result[1][1],'seasar');
     }
 
+    function testUuCallMethod5(){    
+        $aspect = new S2Container_AspectImpl(new TestInterceptor_S2Container_MiscInterceptor(),
+                  new S2Container_PointcutImpl(array("foo")));
+        $proxy = S2Container_AopProxyFactory::create(new B_S2Container_MiscInterceptor(),
+                           'B_S2Container_MiscInterceptor',
+                           array($aspect));
+        try {
+            $result = $proxy->bar();
+            $this->assertTrue(false);
+        } catch (Exception $e) {
+            $this->assertTrue(true);
+            print "{$e->getMessage()} \n";
+        }
+    }
+
     function testNoMethodInterface() {
         $pointcut = new S2Container_PointcutImpl('IA_S2Container_MiscInterceptor');
         $aspect = new S2Container_AspectImpl(new S2Container_TraceInterceptor(), $pointcut);
@@ -186,5 +201,11 @@ class TestInterceptor_S2Container_MiscInterceptor
         print __METHOD__ . " called. \n";
         return $invocation->proceed();
     }
+}
+
+class B_S2Container_MiscInterceptor {
+    public function foo(){
+        return 'foo';   
+    }   
 }
 ?>

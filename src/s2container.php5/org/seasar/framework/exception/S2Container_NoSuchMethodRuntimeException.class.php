@@ -41,7 +41,8 @@ class S2Container_NoSuchMethodRuntimeException
                                 $cause = null)
     {
         parent::__construct("ESSR0057",
-            array($targetClass != null ? $targetClass->getName() : "null",
+            array($targetClass instanceof ReflectionClass ?
+                  $targetClass->getName() : "null",
                   $methodName),
                   $cause);
         $this->targetClass_ = $targetClass;
