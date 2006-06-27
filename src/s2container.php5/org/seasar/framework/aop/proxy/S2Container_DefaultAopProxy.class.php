@@ -77,7 +77,17 @@ class S2Container_DefaultAopProxy {
                 throw new S2Container_S2RuntimeException('ESSR1009',
                     array($name,$this->targetClass_->getName()));
             }
-            return S2Container_MethodUtil::invoke($this->targetClass_->getMethod($name),
+            
+            if ($this->targetClass_->hasMethod($name)) {
+                $methodRef = $this->targetClass_->getMethod($name);
+            } else if ($this->targetClass_->hasMethod('__call')) {
+                $methodRef = $this->targetClass_->getMethod('__call');
+                $args = array($name,$args);
+            } else {
+                throw new Exception('method not found !!!');                
+            }
+            
+            return S2Container_MethodUtil::invoke($methodRef,
                                                   $this->target_,
                                                   $args);
         }

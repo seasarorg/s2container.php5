@@ -39,12 +39,67 @@ class S2Container_MiscInterceptorTest extends PHPUnit2_Framework_TestCase {
         print "\n";
     }
 
-    function testUuCallMethod() {
-        $aspect = new S2Container_AspectImpl(new S2Container_TraceInterceptor(),new S2Container_PointcutImpl(array("getMessage")));
+    /**
+     * aspect enabled, even if target implements __call method.
+     */
+    function testUuCallMethod1() {
+        $aspect = new S2Container_AspectImpl(new S2Container_TraceInterceptor(),
+                  new S2Container_PointcutImpl(array("getMessage")));
         $proxy = S2Container_AopProxyFactory::create(new X_S2Container_MiscInterceptor(),
                            'X_S2Container_MiscInterceptor',
                            array($aspect));
         $this->assertEquals($proxy->getMessage(),'hello');
+        $this->assertEquals($proxy->__call('getMessage',array()),'hello');
+    }
+    
+    /**
+     * client       ->         proxy        ->     target
+     *   p->__call('hoge',..    __call() 
+     *                             t->hoge()         $this->__call()
+     */
+    function testUuCallMethod2(){
+        $aspect = new S2Container_AspectImpl(new S2Container_TraceInterceptor(),
+                  new S2Container_PointcutImpl(array("getMessage")));
+        $proxy = S2Container_AopProxyFactory::create(new X_S2Container_MiscInterceptor(),
+                           'X_S2Container_MiscInterceptor',
+                           array($aspect));
+        $result = $proxy->__call('hoge',array('2006','seasar'));
+        $this->assertEquals($result[0],'hoge');
+        $this->assertEquals($result[1][0],'2006');
+        $this->assertEquals($result[1][1],'seasar');
+    }
+    
+    /**
+     * client       ->   proxy     ->   target
+     *   p->hoge()         t->hoge()      $this->__call()
+     */
+    function testUuCallMethod3(){    
+        $aspect = new S2Container_AspectImpl(new S2Container_TraceInterceptor(),
+                  new S2Container_PointcutImpl(array("getMessage")));
+        $proxy = S2Container_AopProxyFactory::create(new X_S2Container_MiscInterceptor(),
+                           'X_S2Container_MiscInterceptor',
+                           array($aspect));
+        $result = $proxy->hoge('2006','seasar');
+        $this->assertEquals($result[0],'hoge');
+        $this->assertEquals($result[1][0],'2006');
+        $this->assertEquals($result[1][1],'seasar');
+    }
+    
+    /**
+     * client       ->         proxy        ->     target
+     *   p->__call('__call',..    __call() 
+     *                              t->__call()         $this->__call()
+     */
+    function testUuCallMethod4(){    
+        $aspect = new S2Container_AspectImpl(new TestInterceptor_S2Container_MiscInterceptor(),
+                  new S2Container_PointcutImpl(array("__call")));
+        $proxy = S2Container_AopProxyFactory::create(new X_S2Container_MiscInterceptor(),
+                           'X_S2Container_MiscInterceptor',
+                           array($aspect));
+        $result = $proxy->__call('__call',array('hoge',array('2006','seasar')));
+        $this->assertEquals($result[0],'hoge');
+        $this->assertEquals($result[1][0],'2006');
+        $this->assertEquals($result[1][1],'seasar');
     }
 
     function testNoMethodInterface() {
@@ -59,15 +114,10 @@ class S2Container_MiscInterceptorTest extends PHPUnit2_Framework_TestCase {
         $aspect = new S2Container_AspectImpl(new S2Container_TraceInterceptor(), $pointcut);
         try{
             $proxy = S2Container_AopProxyFactory::create(null,'Y_S2Container_MiscInterceptor', array($aspect));
+            $this->assertTrue(true);
         }catch(Exception $e){
-
             // no exception occure. final class permitted.
-            if($e instanceof S2Container_S2RuntimeException ){
-                $this->assertTrue(true);
-                print($e->getMessage()."\n");
-            }else{
-                $this->assertTrue(false);
-            }           
+            $this->assertTrue(false);
         }
     } 
 
@@ -98,7 +148,9 @@ class S2Container_MiscInterceptorTest extends PHPUnit2_Framework_TestCase {
 }
 
 class X_S2Container_MiscInterceptor {
-    function __call($name,$args){}
+    function __call($name,$args){
+        return array($name,$args); 
+    }
     
     function getMessage(){
         return "hello"; 
@@ -125,5 +177,14 @@ class Z_S2Container_MiscInterceptor
 interface IO_S2Container_MiscInterceptor {
     function om1();
     function om2();
+}
+
+class TestInterceptor_S2Container_MiscInterceptor 
+    extends S2Container_AbstractInterceptor
+{
+    public function invoke(S2Container_MethodInvocation $invocation){
+        print __METHOD__ . " called. \n";
+        return $invocation->proceed();
+    }
 }
 ?>

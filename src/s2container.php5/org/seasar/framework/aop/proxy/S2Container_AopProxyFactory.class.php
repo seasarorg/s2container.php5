@@ -42,8 +42,6 @@ final class S2Container_AopProxyFactory
                            $aspects,
                            $parameters = null)
     {
-        //$log = S2Container_S2Logger::getLogger('S2Container_AopProxyFactor');
-
         if (!$targetClass instanceof ReflectionClass) {
             if (is_string($targetClass)) {
                 $targetClass = new ReflectionClass($targetClass);
@@ -55,8 +53,9 @@ final class S2Container_AopProxyFactory
             }
         }
 
-        if (!$targetClass->isUserDefined() or
-             $targetClass->hasMethod('__call')) {
+        if (!$targetClass->isUserDefined()) {
+            S2Container_S2Logger::getLogger(__CLASS__)->
+                debug("not a user defined class <{$targetClass->getName()}> ignored.",__METHOD__);
             return $target;
         }
 
