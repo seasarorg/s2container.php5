@@ -38,9 +38,14 @@ class S2Container_TraceInterceptor
         $buf .= "#";
         $buf .= $invocation->getMethod()->getName();
         $buf .= "(";
-        $args = $invocation->getArguments(); 
-        if ($args != null && count($args) > 0) { 
-            $buf .= implode(',',$args);
+        $args = $invocation->getArguments();
+        if (is_array($args)) {
+           $argsTmp = array();
+            $c = count($args);
+            for ($i = 0; $i < $c; $i++) {
+                $argsTmp[] = $this->toString($args[$i]);
+            }
+            $buf .= implode(',',$argsTmp);
         }
         $buf .= ")";
         $ret = null;
@@ -49,7 +54,7 @@ class S2Container_TraceInterceptor
         try {
             $ret = $invocation->proceed();
             $buf .= " : ";
-            $buf .= $ret;
+            $buf .= $this->toString($ret);
         } catch (Exception $t) {
             $buf .= " Exception : " . get_class($t) . " : ";
             $buf .= $t->getMessage();
@@ -60,6 +65,18 @@ class S2Container_TraceInterceptor
             return $ret;
         } else {
             throw $cause;
+        }
+    }
+    
+    private function toString($val) {
+        if (is_array($val)) {
+            $c = count($val);
+            return "array($c)";
+        } else if (is_object($val)){
+            $name = get_class($val);
+            return "object<$name>";
+        } else {
+            return $val;   
         }
     }
 }

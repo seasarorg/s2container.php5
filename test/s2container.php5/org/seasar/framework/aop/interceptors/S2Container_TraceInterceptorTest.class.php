@@ -70,6 +70,66 @@ class S2Container_TraceInterceptorTest extends PHPUnit2_Framework_TestCase {
 
         $this->assertEquals($d->getTime(),'12:00:30');
     }
+
+    function testObject() {
+        $container = new S2ContainerImpl();
+        $container->register('A_S2Container_TraceInterceptor','a');
+        $cd = $container->getComponentDef('a');
+
+        $pointcut = new S2Container_PointcutImpl(array("testArgObj"));
+        $aspectDef = new S2Container_AspectDefImpl(
+                     new S2Container_TraceInterceptor(),
+                     $pointcut);
+        $cd->addAspectDef($aspectDef);
+        $a = $container->getComponent('a');
+        $b = new B_S2Container_TraceInterceptor();
+        $this->assertEquals($a->testArgObj($b),$b);
+    }
+
+    function testObjectArgs() {
+        $container = new S2ContainerImpl();
+        $container->register('A_S2Container_TraceInterceptor','a');
+        $cd = $container->getComponentDef('a');
+
+        $pointcut = new S2Container_PointcutImpl(array("testArgObj2"));
+        $aspectDef = new S2Container_AspectDefImpl(
+                     new S2Container_TraceInterceptor(),
+                     $pointcut);
+        $cd->addAspectDef($aspectDef);
+        $a = $container->getComponent('a');
+        $b = new B_S2Container_TraceInterceptor();
+        $this->assertEquals($a->testArgObj2($b,2006,'seasar'),$b);
+    }
+
+    function testArray() {
+        $container = new S2ContainerImpl();
+        $container->register('A_S2Container_TraceInterceptor','a');
+        $cd = $container->getComponentDef('a');
+
+        $pointcut = new S2Container_PointcutImpl(array("testArgArray"));
+        $aspectDef = new S2Container_AspectDefImpl(
+                     new S2Container_TraceInterceptor(),
+                     $pointcut);
+        $cd->addAspectDef($aspectDef);
+        $a = $container->getComponent('a');
+        $b = new B_S2Container_TraceInterceptor();
+        $this->assertTrue(is_array($a->testArgArray(array($b,2006,'seasar'))));
+    }
+
+    function testArrayArgs() {
+        $container = new S2ContainerImpl();
+        $container->register('A_S2Container_TraceInterceptor','a');
+        $cd = $container->getComponentDef('a');
+
+        $pointcut = new S2Container_PointcutImpl(array("testArgArray2"));
+        $aspectDef = new S2Container_AspectDefImpl(
+                     new S2Container_TraceInterceptor(),
+                     $pointcut);
+        $cd->addAspectDef($aspectDef);
+        $a = $container->getComponent('a');
+        $b = new B_S2Container_TraceInterceptor();
+        $this->assertTrue(is_array($a->testArgArray2(array($b,2006,'seasar'),2006,'seasar',$b)));
+    }
 }
 
 class Date_S2Container_TraceInterceptor {
@@ -108,4 +168,24 @@ class I_S2Container_TraceInterceptor {
         return $this->result;
     }
 }
+
+class A_S2Container_TraceInterceptor {
+    public function testArgObj($obj){
+        return $obj;        
+    }   
+
+    public function testArgObj2($obj,$val,$str){
+        return $obj;        
+    }   
+
+    public function testArgArray($arr){
+        return $arr;        
+    }   
+
+    public function testArgArray2($arr,$val,$str,$obj){
+        return $arr;        
+    }   
+}
+
+class B_S2Container_TraceInterceptor {}
 ?>
