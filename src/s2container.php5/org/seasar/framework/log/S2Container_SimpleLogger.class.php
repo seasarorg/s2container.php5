@@ -67,8 +67,14 @@ class S2Container_SimpleLogger
                 $logLevel = "FATAL";
                 break;    
         }
-        if (S2CONTAINER_PHP5_LOG_LEVEL <= $level) {
-            printf("[%-5s] %s - %s\n",$logLevel,$methodName,$msg);
+        if (S2CONTAINER_PHP5_LOG_LEVEL <= $level) {            
+            if (defined('S2CONTAINER_PHP5_SIMPLE_LOG_FILE')) {
+                file_put_contents(S2CONTAINER_PHP5_SIMPLE_LOG_FILE,
+                    sprintf("[%-5s] %s - %s\n",$logLevel,$methodName,$msg),
+                    FILE_APPEND | LOCK_EX);
+            } else {
+                printf("[%-5s] %s - %s\n",$logLevel,$methodName,$msg);
+            }
         }
     }
     

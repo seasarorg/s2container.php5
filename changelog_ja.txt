@@ -3,16 +3,20 @@ S2Container.PHP5 変更履歴
 1.1.1
 -------------------------------------------------------------------------------
 * org.seasar.framework.aop.proxy パッケージ
-  - S2Aop で、アスペクトターゲットが __callを実装していた場合も、アスペクトを許可しました。
+  - S2Aop で、アスペクトターゲットが __callを実装していた場合も、アスペクトを
+    許可しました。
 * org.seasar.framework.aop.interceptors パッケージ
-  - S2Container_TraceInterceptor で、配列とオブジェクトのトレース表示を修正しました。
-  - S2Container_MockInterceptor で、return value が設定されていないメソッド呼び出しについて
-    NOTICEが出力されていたので修正しました。
+  - S2Container_TraceInterceptor で、配列とオブジェクトのトレース表示を修正し
+    ました。
+  - S2Container_MockInterceptor で、return value が設定されていないメソッド呼
+    び出しについてNOTICEが出力されていたので修正しました。
 * org.seasar.framework.log パッケージ
   - S2Container_LogFactory で、log4phpを使用できるように対応しました。
+  - S2Container_SimpleLogger で、S2CONTAINER_PHP5_SIMPLE_LOG_FILE 定数に定義さ
+    れたファイルにログ出力を行うようにしました。
 * UnitTestを、simpletest から PHPUnit2 に移行しました。
-* S2CONTAINER_PHP5_DEBUG_EVAL 定数がtrueの場合に、evalで実行されるスクリプトをDEBUGログに
-  出力するようにしました。
+* S2CONTAINER_PHP5_DEBUG_EVAL 定数がtrueの場合に、evalで実行されるスクリプトを
+  DEBUGログに出力するようにしました。
 
 1.1.0
 -------------------------------------------------------------------------------

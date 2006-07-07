@@ -23,8 +23,8 @@ function __autoload($class = null)
 */
 }
 
-//define('S2CONTAINER_PHP5_DEBUG_EVAL',true);
 define('S2CONTAINER_PHP5_LOG_LEVEL',S2Container_SimpleLogger::DEBUG);
 //define('S2CONTAINER_PHP5_LOG_LEVEL',S2Container_SimpleLogger::INFO);
-
+//define('S2CONTAINER_PHP5_DEBUG_EVAL',true);
+//define('S2CONTAINER_PHP5_SIMPLE_LOG_FILE',dirname(__FILE__) . '/simple.log');
 ?>

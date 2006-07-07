@@ -25,6 +25,7 @@
 
 <ul>
 <li><a href="#diconInclude">diconファイルのincludeパス設定</a></li>
+<li><a href="#log">ログ設定</a></li>
 <li><a href="#uuset">__set()でのセッター・インジェクション</a></li>
 <li><a href="#dba">データベース接続</a></li>
     <ul>
@@ -82,6 +83,48 @@ define(DICON_DIR,'/path/to/dir');   //定義済みとする
 &lt;/components&gt;
 注) パスの先頭の%...%のみ展開されます。
 </pre>
+
+<br>
+<a name="log"><h3>ログ設定</h3></a>
+<h4>SimpleLogger</h4>
+<p>
+S2Logger クラスの getLogger メソッドは、デフォルトでは SimpleLogger のインスタンスを返します。SimpleLogger はデフォルトで標準出力にログを表示します。ログレベルは DEBUG、INFO、WARN、ERROR、FATAL の 5 つです。ログレベルの設定は S2CONTAINER_PHP5_LOG_LEVEL 定数で行います。
+</p>
+<pre>&lt;?php
+require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php');
+
+define('S2CONTAINER_PHP5_LOG_LEVEL',S2Container_SimpleLogger::DEBUG);
+$logger = S2Container_S2Logger::getLogger('simpleLogClient.php');
+$logger->debug('test debug');
+$logger->info ('test info ');
+$logger->warn ('test warn ');
+$logger->error('test error');
+$logger->fatal('test fatal');
+?&gt;
+</pre>
+S2CONTAINER_PHP5_SIMPLE_LOG_FILE 定数にログファイルを設定することで、ログをファイルに出力することができます。<br>
+このサンプルは examples/misc/logger/simpleLogClient.php にあります。
+
+
+<h4>log4phpを使用する</h4>
+<p><a href="http://logging.apache.org/log4php/">log4php</a> を使用する場合は、S2LogFactory の LOGGER 変数を設定します。ログレベルや、その設定は SimpleLogger での設定方法と同じです。</p>
+<pre>&lt;?php
+require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php'); 
+define('LOG4PHP_DIR', dirname(__FILE__) . '/log4php-***/src/log4php');
+define('LOG4PHP_CONFIGURATION', dirname(__FILE__) . '/log4php.properties');
+require_once(LOG4PHP_DIR . '/LoggerManager.php');
+
+S2Container_S2LogFactory::$LOGGER = S2Container_S2LogFactory::LOG4PHP;
+
+$logger = S2Container_S2Logger::getLogger('log4phpClient.php');
+$logger->debug('test debug');
+$logger->info ('test info ');
+$logger->warn ('test warn ');
+$logger->error('test error');
+$logger->fatal('test fatal');
+?&gt;
+</pre>
+このサンプルは examples/misc/logger/log4phpClient.php にあります。
 
 <br>
 <a name="uuset"><h3>__set()でのセッター・インジェクション</h3></a>

@@ -37,6 +37,10 @@
  *       [ string default not defined ] 
  *   - S2CONTAINER_PHP5_LOG_LEVEL : S2Container.PHP5 Log Level
  *       [ integer default S2Container_SimpleLogger::WARN ]
+ *   - S2CONTAINER_PHP5_DEBUG_EVAL : Logging eval script as debug log.
+ *       [ boolean default false ]
+ *   - S2CONTAINER_PHP5_SIMPLE_LOG_FILE : Logging simple log to a file defined.
+ *       [ string default not defined ]
  *   - S2CONTAINER_PHP5_ANNOTATION_HANDLER : constant or comment annotation available
  *       [ string default S2Container_ConstantAnnotationHandler
  *         available handler S2Container_CommentAnnotationHandler ]

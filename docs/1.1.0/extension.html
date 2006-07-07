@@ -1,0 +1,1223 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><head><!-- don't edit start --><title>Seasar - DI Container with AOP -</title><meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<link href="seasar_b.css" type="text/css" rel="stylesheet" media="screen"><link href="seasar_p.css" type="text/css" rel="stylesheet" media="print"><script src="seasar_b.js" type="text/JavaScript" language="JavaScript"></script></head>
+
+
+<body onload="preload('ja')"><table align="left" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr>
+<td align="left" valign="top" width="780"><table class="white" border="0" cellpadding="0" cellspacing="0" width="780">
+<tbody><tr><td colspan="7"><img src="images/top01_b.gif" alt="" height="5" width="780"></td></tr>
+<tr><td width="235"><img src="images/top02_b.gif" alt="Seasar" height="117" width="235"></td>
+<td colspan="3"><img src="images/top03.gif" alt="DI Container with AOP" height="117" width="289"></td>
+<td colspan="3"><img src="images/spacer.gif" alt="" height="117" width="256"></td>
+</tr><tr><td rowspan="2"><img src="images/top04.gif" alt="" height="49" width="235"></td>
+<td><a href="http://www.seasar.org/index.html"><img src="images/menu01_b_ja.gif" alt="" id="menu01" onmouseover="swap(1)" onmouseout="restore(1)" border="0" height="30" width="78"></a></td>
+<td><a href="http://www.seasar.org/projects.html"><img src="images/menu02_b_ja.gif" alt="" id="menu02" onmouseover="swap(2)" onmouseout="restore(2)" border="0" height="30" width="101"></a></td>
+<td><a href="http://www.seasar.org/products.html"><img src="images/menu03_b_ja.gif" alt="" id="menu03" onmouseover="swap(3)" onmouseout="restore(3)" border="0" height="30" width="110"></a></td>
+<td><a href="http://www.seasar.org/resources.html"><img src="images/menu04_b_ja.gif" alt="" id="menu04" onmouseover="swap(4)" onmouseout="restore(4)" border="0" height="30" width="113"></a></td>
+<td><img src="images/menu05_b_ja.gif" alt="" id="menu05" onmouseover="swap(5)" onmouseout="restore(5)" border="0" height="30" width="109"></td>
+<td width="34"><img src="images/menu06.gif" alt="" height="30" width="34"></td></tr><tr>
+<td colspan="6"><img src="images/spacer.gif" alt="" height="19" width="545"></td></tr></tbody></table>
+<table class="white" border="0" cellpadding="0" cellspacing="0" width="780">
+<tbody><tr align="left" valign="top"><td width="18"><img src="images/spacer.gif" alt="" height="14" width="18"></td><td class="main" width="744">
+<!-- don't edit end -->
+<!-- document start -->
+
+<ul>
+<li><a href="#diconInclude">diconファイルのincludeパス設定</a></li>
+<li><a href="#uuset">__set()でのセッター・インジェクション</a></li>
+<li><a href="#dba">データベース接続</a></li>
+    <ul>
+    <li><a href="#dba-ds">DataSourceについて</a></li>
+        <ul>
+        <li type="circle"><a href="#dba-ds-peardb">pdo.dicon テンプレート</a></li>
+        <li type="circle"><a href="#dba-ds-use">使用方法</a></li>
+        </ul>
+    </ul>
+
+<li><a href="#unit">S2Unit</a>
+    <ul>
+    <li><a href="#unit-example">Example</a></li>
+    </ul>
+</li>
+
+<li><a href="#loader">S2ContainerClassLoader</a>
+    <ul>
+    <li><a href="#loader-file">クラス定義ファイルを指定する</a></li>
+    <li><a href="#loader-dir">ディレクトリを指定する</a></li>
+    <li><a href="#loader-array">クラス定義の配列を使用する</a></li>
+    </ul>
+</li>
+
+<li><a href="#cache">Cache</a>
+    <ul>
+    <li><a href="#cache-file">S2ContainerFileCacheFactory</a></li>
+    </ul>
+</li>
+
+<li><a href="#autoRegister">自動登録</a>
+    <ul>
+    <li><a href="#autoRegister-file">FileSystemComponentAutoRegister</a></li>
+    <li><a href="#autoRegister-aspect">AspectAutoRegister</a></li>
+    <li><a href="#autoRegister-interface">InterfaceAspectAutoRegister</a></li>
+    </ul>
+</li>
+
+<li><a href="#commentAnnotation">コメントアノテーション</a></li>
+
+
+</ul>
+
+<br>
+<b><h2>Extension</h2></b>
+<a name="diconInclude"><h3>diconファイルのincludeパス設定</h3></a>
+
+<p>diconファイルのincludeタグのpath属性では、先頭に%...%で囲むことで定数を埋め込むことができます。<br>
+</p>
+<pre>
+define(DICON_DIR,'/path/to/dir');   //定義済みとする
+
+&lt;components&gt;
+    &lt;include path="%DICON_DIR%/bar.dicon"/&gt;
+&lt;/components&gt;
+注) パスの先頭の%...%のみ展開されます。
+</pre>
+
+<br>
+<a name="uuset"><h3>__set()でのセッター・インジェクション</h3></a>
+<p>PHP5から追加された__set()を使用して、セッター・インジェクションを行うことができます。</p>
+<ul>
+<li>プロパティが明示的に指定されている (diconファイルで propertyタグが記述されている)</li>
+<li>インジェクション対象クラスがセッターメソッドを実装していない</li>
+<li>インジェクション対象クラスが__set()を実装している</li>
+</ul>
+上記条件に一致する場合に、__set()によりセッター・インジェクションが実行されます。<br>
+
+<br>
+<b>実装クラスの作成</b>
+<ul>
+<li type="circle">セッター・メソッド(setMessageA)を定義します。</li>
+<li type="circle">__set()を実装します。</li>
+<li type="circle">showMessage()を実装します。</li>
+</ul>
+<p>$messageBプロパティのセッターメソッドは定義していません。</p>
+<pre>&lt;?php
+class HelloImpl {
+
+    private $messageA = "";
+    private $messageB = "";
+
+    function HelloImpl() {}
+    
+    function setMessageA($messageA){
+        $this->messageA = $messageA;    
+    }
+
+    function __set($name,$val){
+        $this->$name = $val;    
+    }
+    
+    function showMessage(){
+        print "{$this->messageA} {$this->messageB} \n";
+    }
+}
+?&gt;
+</pre>
+
+<br>
+<b>diconファイルの作成</b>
+<ul>
+<li type="circle">componentタグでコンポーネントを定義します。</li>
+<li type="circle">componentタグの子タグのpropertyタグでコンポーネントのプロパティ値を定義します。</li>
+</ul>
+<p>s2container.php5/examples/extension/uuset/uuset.dicon</p>
+<pre>&lt;components&gt;
+    &lt;component class="HelloImpl"&gt;
+        &lt;property name="messageA"&gt;"Hello"&lt;/property&gt;
+        &lt;property name="messageB"&gt;"World"&lt;/property&gt;
+    &lt;/component&gt;
+&lt;/components&gt;
+</pre>
+
+<br>
+<b>実行スクリプトの作成</b>
+
+<ul>
+<li type="circle">S2ContainerFactory#create($path)を呼び出してS2Containerを作成します。</li>
+<li type="circle">getComponent()を使用して、S2Containerからコンポーネントを取り出します。</li>
+<li type="circle">取得したコンポーネントのメソッドを呼び出します。</li>
+</ul>
+
+<p>s2container.php5/examples/extension/uuset/uusetClient.php</p>
+<pre>&lt;?php
+require_once(dirname(__FILE__) . '/uuset.inc.php');
+$PATH = EXAMPLE_DIR . "/extension/uuset/uuset.dicon";
+$container = S2ContainerFactory::create($PATH);
+$hello = $container->getComponent('HelloImpl');
+$hello->showMessage();
+?&gt;
+</pre>
+<br>
+<b>実行結果</b>
+<p>propertyタグで指定した文字列が正しく表示されていることが確認できます。</p>
+
+<pre>
+% php uusetClient.php
+Hello World
+%
+</pre>
+
+このexampleは、s2container.php5/examples/extension/uuset/以下に用意されています。<br>
+
+
+<br>
+<a name="dba"><h3>データベース接続</h3></a>
+<p>データベースへの接続フレームワークをextennsionとして含めています。
+</p>
+<p>以降の説明では、以下のサンプルテーブルを用います。
+サンプルテーブルを作成する demo.sql は s2container.php5/src/s2container.php5/org/seasar/extension/db/sql/ 
+にあります。
+</p>
+
+        テーブル：EMP
+        <table border="1" class="main">
+            <tr bgcolor="#d1f3f4" align="center">
+              <th>カラム名</th>
+              <th>論理名</th>
+              <th>型</th>
+              <th>NotNull</th>
+
+              <th>主キー</th>
+            </tr>
+            <tr>
+              <td>EMPNO</td>
+              <td>従業員番号</td>
+              <td>NUMBER</td>
+              <td align="center">〇</td>
+
+              <td align="center">〇</td>
+            </tr>
+            <tr>
+              <td>ENAME</td>
+              <td>従業員名</td>
+              <td>VARCHAR</td>
+              <td><br /></td>
+
+              <td><br /></td>
+            </tr>
+            <tr>
+              <td>JOB</td>
+              <td>仕事</td>
+              <td>VARCHAR</td>
+              <td><br /></td>
+
+              <td><br /></td>
+            </tr>
+            <tr>
+              <td>MGR</td>
+              <td>上司</td>
+              <td>NUMBER</td>
+              <td><br /></td>
+
+              <td><br /></td>
+            </tr>
+            <tr>
+              <td>HIREDATE</td>
+              <td>雇用日</td>
+              <td>DATE</td>
+              <td><br /></td>
+
+              <td><br /></td>
+            </tr>
+            <tr>
+              <td>SAL</td>
+              <td>給料</td>
+              <td>NUMBER</td>
+              <td><br /></td>
+
+              <td><br /></td>
+            </tr>
+            <tr>
+              <td>COMM</td>
+              <td>手数料</td>
+              <td>NUMBER</td>
+              <td><br /></td>
+
+              <td><br /></td>
+            </tr>
+            <tr>
+              <td>DEPTNO</td>
+              <td>部署番号</td>
+              <td>NUMBER</td>
+              <td><br /></td>
+
+              <td><br /></td>
+            </tr>
+            <tr>
+              <td>TSTAMP</td>
+              <td>タイムスタンプ</td>
+              <td>TIMESTAMP</td>
+              <td><br /></td>
+
+              <td><br /></td>
+            </tr>
+        </table>
+        <br />テーブル：DEPT
+        <table border="1" class="main">
+            <tr bgcolor="#d1f3f4" align="center">
+              <th>カラム名</th>
+               <th>論理名</th>
+
+              <th>型</th>
+              <th>NotNull</th>
+              <th>主キー</th>
+            </tr>
+            <tr>
+              <td>DEPTNO</td>
+              <td>部署番号</td>
+
+              <td>NUMBER</td>
+              <td align="center">〇</td>
+              <td align="center">〇</td>
+            </tr>
+            <tr>
+              <td>DNAME</td>
+              <td>部署名</td>
+
+              <td>VARCHAR</td>
+              <td><br /></td>
+              <td><br /></td>
+            </tr>
+            <tr>
+              <td>LOC</td>
+              <td>ロケーション</td>
+
+              <td>VARCHAR</td>
+              <td><br /></td>
+              <td><br /></td>
+            </tr>
+            <tr>
+              <td>VERSIONNO</td>
+              <td>バージョン番号</td>
+
+              <td>NUMBER</td>
+              <td><br /></td>
+              <td><br /></td>
+            </tr>
+        </table>
+
+<br>
+<a name="dba-ds"><h3>DataSourceについて</h3></a>
+<a name="dba-ds-peardb"><h3>pdo.dicon テンプレート</h3></a>
+<p>pdo.diconのテンプレートを以下に示します。
+dataSourceコンポーネントのdsnプロパティを、ご使用のデータベースに接続できる値に設定して下さい。</p>
+
+<pre>
+&lt;?xml version="1.0" encoding="Shift_JIS"?&gt;
+&lt;!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd"&gt;
+&lt;components namespace="pdo"&gt;
+    &lt;component name="dataSource" class="S2Container_PDODataSource"&gt;
+        &lt;property name="dsn"&gt;"mysql:host=localhost; port=3306; dbname=s2container"&lt;/property&gt;
+        &lt;property name="user"&gt;"root"&lt;/property&gt;
+        &lt;property name="password"&gt;"test"&lt;/property&gt;
+        &lt;property name="option"&gt;array('foo'=&gt;'bar')&lt;/property&gt;
+    &lt;/component&gt;
+&lt;/components&gt;
+</pre>
+
+<br>
+
+<a name="dba-ds-use"><h3>使用方法</h3></a>
+<p>サンプルとして、引数で受け取ったDEPTNO値でDEPTテーブルを検索し、その結果を返すDAOを実装してみます。<br>
+この演習は、s2container.php5/examples/extension/db/以下に用意されています。</p>
+<p><b>インタフェースの定義</b></p>
+<ul>
+<li type="circle">DeptDaoインタフェースを定義します。</li>
+<li type="circle">DEPTNO値で検索を行う findDeptByDeptnoメソッドを定義します。</li>
+</ul>
+
+<pre>
+&lt;?php
+interface DeptDao {
+    function findDeptByDeptno($deptno);
+}
+?&gt;
+</pre>
+
+<p><b>実装クラスの作成</b></p>
+<ul>
+<li type="circle">DeptDaoインタフェースを implements する DeptDaoImplクラスを作成します。</li>
+<li type="circle">コンストラクタ引数で S2Container_DataSource を受け取るようにします。</li>
+<li type="circle">findDeptByDeptno メソッドを実装します。データベースへのコネクションは、DataSourceより取得します。</li>
+</ul>
+
+<pre>
+&lt;?php
+class DeptDaoImpl implements DeptDao {
+
+    private $dataSource;
+
+    function DeptDaoImpl(S2Container_DataSource $dataSource) {
+        $this->dataSource = $dataSource;
+    }
+    
+    function findDeptByDeptno($deptno){
+        $db = $this->dataSource->getConnection();
+        $result = $db->query("select * from dept where deptno = '{$deptno}';"); 
+        $row = $result->fetchRow();
+        $this->dataSource->disconnect($db);
+        return $row;
+    }
+}
+?&gt;
+</pre>
+<br>
+
+<p><b>diconファイルの作成</b></p>
+
+<p>deptDao.dicon を作成し、pdo.dicon を include します。</p>
+<pre>
+&lt;components&gt;
+    &lt;include path="%S2CONTAINER_PHP5%/org/seasar/extension/db/pdo.dicon"/&gt;
+    &lt;component name="deptDao" class="DeptDaoImpl"/&gt;
+&lt;/components&gt;
+</pre>
+
+<br>
+<p><b>実行スクリプトの作成</b></p>
+<ul>
+<li type="circle">deptDao.diconを指定してコンテナを作成します。</li>
+<li type="circle">コンテナより、deptDaoコンポーネントを取得します。</li>
+<li type="circle">DEPTNO(10) で findDeptByDeptno メソッドを呼び出します。</li>
+</ul>
+
+<p>dataSourceClient.php</p>
+<pre>
+&lt;?php
+require_once(dirname(__FILE__) . '/db.inc.php');
+$PATH = EXAMPLE_DIR . "/extension/db/deptDao.dicon";
+
+$container = S2ContainerFactory::create($PATH);
+$dao = $container->getComponent('deptDao');
+$result = $dao->findDeptByDeptno(10);
+
+print_r($result);
+?&gt;
+</pre>
+
+<p><b>実行結果</b></p>
+<pre>
+% php dataSourceClient.php
+Array
+(
+    [0] => 10
+    [1] => ACCOUNTING
+    [2] => NEW YORK
+    [3] => 0
+)
+%
+</pre>
+
+
+<br>
+<a name="unit"><h3>S2Unit</h3></a>
+<p>S2では、コンテナを使った開発のテストを楽しくおこなえるようにテスティングフレームワークが組み込まれています。<a href="http://pear.php.net/package/PHPUnit2">PHPUnit2</a>、<a href="http://www.lastcraft.com/simple_test.php">SimpleTest</a>を拡張しています。主な機能は以下のとおりです。</p>
+<ul>
+<li>テストメソッド(testXxx)ごとに自動的にS2Containerを作成します。</li>
+
+<li>S2Containerに対するregister()、getComponent()、include() が用意されています。</li>
+<li>TestCaseに public なフィールドがあると、フィールド名と同じ名前のコンポーネントがコンテナに存在すれば自動的にセットされます。</li>
+<li>テストメソッドが終わると自動セットされた値は自動的にクリア( null をセット)されます。</li>
+<li>テストメソッド( testXxx )に対応する setUpXxx()、tearDownXxx() を定義しておくと、setUp()の後、tearDown()の前に自動的に呼び出されます。個別のテストメソッドごとの初期化・終了処理を簡単に行えるようになります。</li>
+</ul>
+<h3><a name="unit-example">Example</a></h3>
+<p>Pear PHPUnit2 を拡張した S2Container_S2PHPUnit2TestCase を用います。<br>
+このサンプルは、s2container.php5/examples/extension/unit/以下にあります。</p>
+
+<p><b>テスト対象</b></p>
+<p>s2container.php5/examples/extension/unit/src/foo/FooLogic.class.php</p>
+<pre>
+&lt;?php
+class FooLogic {
+
+    function FooLogic() {
+    }
+    
+    function showYear(){
+        return 2005;
+    }
+}
+?&gt;
+</pre>
+
+<p><b>diconファイル</b></p>
+
+<p>s2container.php5/examples/extension/unit/src/foo/foo.dicon</p>
+<pre>&lt;?xml version="1.0" encoding="Shift_JIS"?&gt;
+&lt;!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd"&gt;
+&lt;components&gt;
+    &lt;component name="logic" class="FooLogic"/&gt;
+&lt;/components&gt;
+</pre>
+
+<p><b>テストクラス</b></p>
+
+<p>s2container.php5/examples/extension/unit/test/phpunit2/foo/FooLogicTest.class.php</p>
+<pre>
+&lt;?php
+class FooLogicTest extends S2Container_S2PHPUnit2TestCase {
+
+    public $logic;   //--- dicon ファイルに logic という名前のコンポーネントが存在すれば設定されます
+    
+    function __construct($name) {
+        parent::__construct($name);
+    }
+
+    function setUp(){
+        $this->includeDicon(UNIT_EXAMPLE . "/src/foo/foo.dicon");   //--- dicon ファイルを include します
+    }
+
+    function testShowYear(){
+        $year = $this->logic->showYear();
+        $this->assertEquals($year , 2005);    
+    }
+}
+?&gt;
+</pre>
+
+<p>s2container.php5/examples/extension/unit/test/phpunit2/foo/FooAllTest.class.php</p>
+<pre>
+&lt;?php
+class FooAllTest {
+
+    public static function main() {
+        PHPUnit2_TextUI_TestRunner::run(self::suite());
+    }
+    
+    public static function suite() {
+        $suite = new PHPUnit2_Framework_TestSuite();
+        $suite->addTestSuite('FooLogicTest');
+        return $suite;  
+    }
+}
+?&gt;
+</pre>
+
+<p><b>実行スクリプト</b></p>
+<p>s2container.php5/examples/extension/unit/test/phpunit2/foo/fooTests.php</p>
+<pre>
+&lt;?php
+define('PHPUnit2_MAIN_METHOD', 'FooAllTest::main()');
+require_once 'PHPUnit2/Framework/TestSuite.php';
+require_once 'PHPUnit2/TextUI/TestRunner.php';
+
+FooAllTest::main();
+?&gt;
+</pre>
+
+
+<p><b>実行結果</b></p>
+<pre>
+% php allTests.php
+
+TEST : FooLogicTest::testShowYear
+------------------------------------
+
+.
+
+Time: 0.368033
+
+OK (1 test)
+%
+</pre>
+
+<p>SimpleTest を用いた同様のサンプルが s2container.php5/examples/extension/unit/test/以下にあります。</p>
+
+<br>
+<a name="loader"><h3>S2ContainerClassLoader</h3></a>
+<p>
+S2Container.PHP5では、クラス定義の読み込みを S2ContainerClassLoader が管理します。
+S2ContainerClassLoader には importメソッドが定義されており、任意のクラスを登録できます。登録されたクラスは、__autoload関数内で読み込まれます。
+</p>
+
+<h3><a name="loader-file">クラス定義ファイルを指定する</a></h3>
+
+<pre>
+&lt;?php
+S2ContainerClassLoader::import('/path/to/Hoge.class.php');
+S2ContainerClassLoader::import('/path/to/Foo.php');
+?&gt;
+</pre>
+
+クラス名は指定されたファイル名の先頭から「.」までになります。Hoge.class.phpの場合は「Hoge」となります。
+<br>
+<br>
+<p><b>クラス名を指定する</b></p>
+<pre>
+&lt;?php
+S2ContainerClassLoader::import('/path/to/Hoge.class.php','Hoge');
+S2ContainerClassLoader::import('/path/to/classes.php','Foo');
+S2ContainerClassLoader::import('/path/to/classes.php','Bar');
+?&gt;
+</pre>
+importメソッドの第二引数でクラス名を指定できます。
+
+<br>
+<h3><a name="loader-dir">ディレクトリを指定する</a></h3>
+<pre>
+&lt;?php
+S2ContainerClassLoader::import('/path/to/dir');
+?&gt;
+</pre>
+
+指定されたディレクトリにあるクラス定義ファイルをimportします。
+
+<h3><a name="loader-array">クラス定義の配列を使用する</a></h3>
+
+<pre>
+&lt;?php
+$classes = array('Hoge'=>'/path/to/Hoge.class.php',
+                 'Foo'=>'/path/to/classes.php');
+S2ContainerClassLoader::import($classes);
+?&gt;
+</pre>
+
+クラス名をキーとしてクラス定義ファイルが指定された連想配列をimportします。
+
+<br>
+<a name="cache"><h3>Cache</h3></a>
+<h3><a name="cache-file">S2ContainerFileCacheFactory</a></h3>
+
+<center>
+<table border="1" width="50%">
+<tr><td align="center">警告</td></tr>
+<tr><td>
+この拡張モジュールは<i> 実験的 </i>なものです。この拡張モジュールの動作・関数名・その他ドキュメントに書かれている事項は、将来変更される可能性があります。
+</td></tr>
+</table>
+</center>
+
+<p>
+S2ContainerFileCacheFactoryはS2Containerインスタンスをserializeし、キャッシュファイルに保存します。
+キャッシュファイルはS2CONTAINER_PHP5_CACHE_DIR定数で指定されたディレクトリに保存されます。
+ファイル名はcreateメソッドの第2引数で指定できます。第2引数が省略された場合は、diconファイルへのパス文字列を
+引数として<a href="http://jp2.php.net/manual/ja/function.sha1.php">sha1関数</a>で作成された文字列が使用されます。
+S2ContainerFileCacheFactoryはdiconファイルが更新されるとキャッシュを更新します。
+</p>
+
+s2container.php5/examples/extension/cache/cacheClient.php
+<pre>
+&lt;?php
+...
+define('S2CONTAINER_PHP5_CACHE_DIR',EXAMPLE_DIR . "/extension/cache/var");
+$PATH_B = EXAMPLE_DIR . "/extension/cache/testB.dicon";
+$container = S2ContainerFileCacheFactory::create($PATH_B);
+
+$PATH_C = EXAMPLE_DIR . "/extension/cache/testC.dicon";
+$container = S2ContainerFileCacheFactory::create($PATH_C,'testC.dicon');
+...
+?&gt;
+</pre>
+
+<pre>
+> cd s2container.php5/examples/extension/cache
+> php ./cacheClient.php
+...
+...
+...
+> ls var
+06fb37bcebbfe225537873c3a16dced48b6b2b4e.dicon     testC.dicon
+>
+</pre>
+
+
+<br>
+<a name="autoRegister"><h3>自動登録</h3></a>
+<h3><a name="autoRegister-file">FileSystemComponentAutoRegister</a></h3>
+
+<p><a href="DIContainer.html#AutoBindingMode">自動バインディング</a>により、DIの設定はほぼ自動化できます。
+さらに、コンポーネントの登録も自動化してしまおうというのが、コンポーネントの自動登録機能です。
+定数アノテーションまたは<a href="#commentAnnotation">コメントアノテーション</a>を使って細かく制御することも可能です。</p>
+
+<table border="1">
+<tr bgcolor="#d1f3f4" align="center">
+<th>プロパティ</th>
+
+<th>説明</th>
+</tr>
+<tr>
+<td><a href="DIContainer.html#InstanceMode">instanceMode</a></td>
+<td>自動登録されるコンポーネントに適用するInstanceModeを指定します。</td>
+</tr>
+<tr>
+<td><code>autoNaming</code></td>
+<td>クラス名からコンポーネント名を自動的に決定するコンポーネント。<br>S2Container_AutoNamingインターフェースを実装している必要があります。<br>デフォルトは､S2Container_DefaultAutoNamingクラスのインスタンスになります。</td>
+
+</tr>
+</table>
+<br />
+<table border="1">
+<tr bgcolor="#d1f3f4" align="center">
+<th>メソッド</th>
+<th>説明</th>
+</tr>
+<tr>
+<td><code>addClassPattern</code></td>
+<td>自動登録したいクラスパターンを登録します。引数を2つ持ちます。最初の引数は､コンポーネントのクラス定義ファイルを検索するディレクトリパスです。サブディレクトリも再帰的に検索します。クラスファイルのSUFFIXは「.class.php」です。クラス名とファイル名は一致しなければいけません。2番目の引数はクラス名です。正規表現が使えます。「,」区切りで複数記述することもできます。</td>
+</tr>
+<tr>
+
+<td><code>addIgnoreClassPattern</code></td>
+<td>自動登録したくないクラスパターンを登録します。引数を1つ持ちます。引数はクラス名です。正規表現が使えます。カンマ「,」区切りで複数記述することもできます。</td>
+</tr>
+</table>
+
+<h4>AutoNaming</h4>
+<p>コンポーネントの名前はAutoNamingにより制御します。</p>
+
+<h5><a name="DefaultAutoNaming">DefaultAutoNaming</a></h5>
+<p>クラス名の最後が Impl または Bean で終わっていたら削除し、先頭を小文字にした名前をコンポーネントの名前に設定します。<br>
+例えば､HogeImplクラスの場合､コンポーネント名は hoge になります。</p>
+
+<table border="1">
+
+<tr bgcolor="#d1f3f4" align="center">
+<th>プロパティ</th>
+<th>説明</th>
+</tr>
+<tr>
+<td><code>decapitalize</code></td>
+<td>コンポーネント名の先頭を小文字にする場合はtrueを指定します。デフォルトはtrueです。</td>
+</tr>
+
+</table>
+<br>
+<table border="1">
+<tr bgcolor="#d1f3f4" align="center">
+
+<th>メソッド</th>
+<th>説明</th>
+</tr>
+<tr>
+<td><code>setCustomizedName</code></td>
+<td>デフォルトのルールに従わないクラスを登録します。最初の引数は､クラス名です。
+2番目の引数は､コンポーネント名です。</td>
+</tr>
+<tr>
+<td><code>addIgnoreClassSuffix</code></td>
+<td>クラス名の末尾から削除する部分を指定します。デフォルトで Impl および Bean が登録されています。</td>
+</tr>
+
+<tr>
+<td><code>addReplaceRule</code></td>
+<td>正規表現による置換ルールを追加します。最初の引数は正規表現です。2番目の引数は置換文字列です。</td>
+</tr>
+<tr>
+<td><code>clearReplaceRule</code></td>
+<td>setCustomizedName、addIgnoreClassSuffix、addReplaceRuleで登録した変換規則をクリアします。デフォルトで登録されている Impl および Bean もクリアされます。</td>
+</tr>
+</table>
+
+<br>
+s2container.php5/examples/extension/autoregister/autoFile.dicon
+<pre>
+&lt;components&gt;
+    &lt;component class="S2Container_FileSystemComponentAutoRegister"&gt;
+        &lt;property name="instanceMode"&gt;"singleton"&lt;/property&gt;
+        &lt;property name="autoNaming"&gt;
+            &lt;component class="S2Container_DefaultAutoNaming"&gt;
+                &lt;initMethod name="setCustomizedName"&gt;
+                    &lt;arg&gt;"HogeService"&lt;/arg&gt;
+                    &lt;arg&gt;"service"&lt;/arg&gt;
+                &lt;/initMethod&gt;
+            &lt;/component&gt;
+        &lt;/property&gt;
+        &lt;initMethod name="addClassPattern"&gt;
+            &lt;arg&gt;"%EXAMPLE_DIR%/extension/autoregister/autoFile"&lt;/arg&gt;
+            &lt;arg&gt;".+Bean,.+Service"&lt;/arg&gt;
+        &lt;/initMethod&gt;
+        &lt;initMethod name="registerAll"/&gt;
+    &lt;/component&gt;
+&lt;/components&gt;
+</pre>
+*** S2Container_FileSystemComponentAutoRegister::registerAllメソッドをinitMthodとして設定して下さい。
+
+<h4>アノテーション</h4>
+<p>
+定数アノテーションまたは<a href="#commentAnnotation">コメントアノテーション</a>を用いて自動登録するコンポーネントを細かく設定することができます。定数アノテーションとコメントアノテーションの選択は、S2CONTAINER_PHP5_ANNOTATION_HANDLER定数で設定します。S2CONTAINER_PHP5_ANNOTATION_HANDLER定数に「S2Container_ConstantAnnotationHandler」または「S2Container_CommentAnnotationHandler」を定義して下さい。デフォルトは定数アノテーションです。
+</p>
+<h5>Componentアノテーション</h5>
+<p>
+<a href="DIContainer.html#componentsTag">componentタグ</a>のかわりに使えるのが、Componentアノテーションです。
+</p>
+定数アノテーションは以下のようになります。
+<pre>
+&lt;?php
+class HogeImpl {
+    const COMPONENT = "name = hogeComp,
+                       instance = prototype,
+                       autoBinding = auto";
+    .....
+}
+?&gt;
+</pre>
+
+コメントアノテーションは以下のようになります。
+<pre>
+&lt;?php
+/**
+ * @S2Container_ComponentAnnotation(name = hogeComp,
+ *                                  instance = prototype,
+ *                                  autoBinding = auto)
+ */
+class HogeImpl {
+    .....
+}
+?&gt;
+</pre>
+s2container.php5/examples/extension/autoregister/compAnnoClient.php を参照下さい。
+
+<h5>Bindingアノテーション</h5>
+
+<p>
+<a href="DIContainer.html#propertyTag">propertyタグ</a>のかわりに使えるのが、Bindingアノテーションです。Bindingアノテーションで設定される値はコンポーネント名またはexpression(PHP式)として扱われます。<br>
+プロパティ名 + _BINDING 定数名<br>
+</p>
+
+定数アノテーションは以下のようになります。プロパティ名 + _BINDING という名前の定数を定義します。
+<pre>
+&lt;?php
+class HogeImpl {
+    .....
+
+    private $value;
+    const value_BINDING = '" string value must be quoted "';
+
+    public function setValue($value){
+        $this->value = $value;
+    }
+
+    public function getValue(){
+        return $this->value;
+    }
+
+    .....
+}
+?&gt;
+</pre>
+
+コメントアノテーションは以下のようになります。
+<pre>
+&lt;?php
+class HogeImpl {
+    .....
+
+    private $value = null;
+
+    /**
+     * @S2Container_BindingAnnotation('" string value must be quoted "')
+     */
+    public function setValue($value){
+        $this->value = $value;
+    }
+
+    public function getValue(){
+        return $this->value;
+    }
+
+    .....
+}
+?&gt;
+</pre>
+s2container.php5/examples/extension/autoregister/bindAnnoClient.php を参照下さい。
+
+<h5>Aspectアノテーション</h5>
+<p>
+<a href="DIContainer.html#aspectTag">aspectタグ</a>のかわりに使えるのが、Aspectアノテーションです。aspectタグと異なり､複数定義することはできないので､複数のインターセプタを適用したい場合は､<a href="aop.html#InterceptorChain">InterceptorChain</a>を使ってください。pointcutを指定しないときは、そのクラスが実装しているすべてのインターフェースのメソッドが対象になります。複数のpointcutを指定する場合はスペース区切りとして下さい。
+</p>
+
+定数アノテーションは以下のようになります。
+<pre>
+&lt;?php
+class HogeImpl {
+    .....
+
+    const ASPECT = "interceptor = new S2Container_TraceInterceptor() ,
+                    pointcut = m1 m2 ";
+
+    public function m1($a,$b){
+        return $a + $b;
+    }
+
+    public function m2($a,$b){
+        return $a * $b;
+    }
+    .....
+}
+?&gt;
+</pre>
+
+コメントアノテーションは以下のようになります。
+<pre>
+&lt;?php
+/**
+ * @S2Container_AspectAnnotation (interceptor = new S2Container_TraceInterceptor() ,
+ *                                pointcut = m1)
+ */
+class HogeImpl {
+    .....
+
+    public function m1($a,$b){
+        return $a + $b;
+    }
+
+    /**
+     * @S2Container_AspectAnnotation(interceptor = 
+     *                               new S2Container_TraceInterceptor());
+     */
+    public function m2($a,$b){
+        return $a * $b;
+    }
+
+    .....
+}
+?&gt;
+</pre>
+s2container.php5/examples/extension/autoregister/aspectAnnoClient.php を参照下さい。
+
+
+<h5>InitMethodアノテーション</h5>
+<p>
+<a href="DIContainer.html#initMethodTag">initMethodタグ</a>のかわりに使えるのが、InitMethodアノテーションです。 initMethodタグと異なり､PHP式を書いたり、引数を設定することはできません。初期化メソッドを複数指定したい場合は､カンマ(,)で区切ってください。
+</p>
+
+定数アノテーションは以下のようになります。
+<pre>
+&lt;?php
+class HogeImpl {
+    .....
+
+    const INIT_METHOD = 'initA,initB';
+
+    public function initA(){
+        print __METHOD__ . " called.\n";
+    }
+
+    public function initB(){
+        print __METHOD__ . " called.\n";
+    }
+    .....
+}
+?&gt;
+</pre>
+
+コメントアノテーションは以下のようになります。
+<pre>
+&lt;?php
+class HogeImpl {
+    .....
+
+    /**
+     * @S2Container_InitMethodAnnotation
+     */
+    public function initA(){
+        print __METHOD__ . " called.\n";
+    }
+
+    /**
+     * @S2Container_InitMethodAnnotation
+     */
+    public function initB(){
+        print __METHOD__ . " called.\n";
+    }
+
+    .....
+}
+?&gt;
+</pre>
+s2container.php5/examples/extension/autoregister/methodAnnoClient.php を参照下さい。
+
+<h3><a name="autoRegister-aspect">AspectAutoRegister</a></h3>
+<p><a href="#autoRegister-file">コンポーネントの自動登録</a>により、コンポーネントの登録は自動化できます。
+さらに、アスペクトの登録も自動化してしまおうというのが、アスペクトの自動登録機能です。
+コンポーネントの自動登録と組み合わせる場合は､
+コンポーネントの自動登録の設定よりも後に、アスペクトの自動登録の設定を記述する必要があります。</p>
+
+<table border="1">
+<tr bgcolor="#d1f3f4" align="center">
+<th>プロパティ</th>
+<th>説明</th>
+</tr>
+<tr>
+<td><code>interceptor</code></td>
+<td>インターセプタを指定します。複数のインターセプタを指定したい場合は､<a href="aop.html#InterceptorChain">InterceptorChain</a>を使ってください。</td>
+</tr>
+
+<tr>
+<td><code>pointcut</code></td>
+<td> インターセプタを適用するメソッドをカンマ区切りで指定します。pointcutを指定しない場合は、コンポーネントが実装しているインターフェースのすべてのメソッドが対象になります。メソッド名には正規表現も使えます。 </td>
+</tr>
+</table>
+<br />
+<table border="1">
+<tr bgcolor="#d1f3f4" align="center">
+<th>メソッド</th>
+<th>説明</th>
+</tr>
+<tr>
+
+<td><code>addClassPattern</code></td>
+<td>自動登録したいクラスパターンを登録します。引数はクラス名です。正規表現が使えます。「,」区切りで複数記述することもできます。</td>
+</tr>
+<tr>
+<td><code>addIgnoreClassPattern</code></td>
+<td>自動登録したくないクラスパターンを登録します。引数はクラス名です。正規表現が使えます。「,」区切りで複数記述することもできます。</td>
+</tr>
+</table>
+<br>
+s2container.php5/examples/extension/autoregister/autoAspect.dicon
+<pre>
+&lt;components&gt;
+    &lt;component class="S2Container_AspectAutoRegister"&gt;
+        &lt;property name="interceptor"&gt;new S2Container_TraceInterceptor()&lt;/property&gt;
+        &lt;property name="pointcut"&gt;"m1,m2"&lt;/property&gt;
+        &lt;initMethod name="addClassPattern"&gt;
+            &lt;arg&gt;".+Service"&lt;/arg&gt;
+        &lt;/initMethod&gt;
+        &lt;initMethod name="registerAll"/&gt;
+    &lt;/component&gt;
+    &lt;component class="HogeService"/&gt;
+    &lt;component class="HogeBean"/&gt;
+&lt;/components&gt;
+</pre>
+*** S2Container_AspectAutoRegister::registerAllメソッドをinitMthodとして設定して下さい。<br>
+*** 他のコンポーネント定義より先に定義する必要があります。<br>
+*** S2Container_FileSystemComponentAutoRegisterと併用する場合は、S2Container_FileSystemComponentAutoRegisterの定義が先になります。<br>
+
+<h3><a name="autoRegister-interface">InterfaceAspectAutoRegister</a></h3>
+<table border="1">
+<tr bgcolor="#d1f3f4" align="center">
+<th>プロパティ</th>
+<th>説明</th>
+</tr>
+<tr>
+<td><code>interceptor</code></td>
+<td>インターセプタを指定します。複数のインターセプタを指定したい場合は､<a href="aop.html#InterceptorChain">InterceptorChain</a>を使ってください。</td>
+
+</tr>
+<tr>
+<td><code>targetInterface</code></td>
+<td> 指定したインターフェースを実装しているコンポーネントに対して､アスペクトを適用します。 </td>
+</tr>
+</table>
+
+<br>
+s2container.php5/examples/extension/autoregister/autoInterface.dicon
+<pre>
+&lt;components&gt;
+    &lt;component class="S2Container_InterfaceAspectAutoRegister"&gt;
+        &lt;property name="interceptor"&gt;new S2Container_TraceInterceptor()&lt;/property&gt;
+        &lt;property name="targetInterface"&gt;"HogeService"&lt;/property&gt;
+        &lt;initMethod name="registerAll"/&gt;
+    &lt;/component&gt;
+    &lt;component class="HogeServiceImpl"/&gt;
+    &lt;component class="HogeBeanImpl"/&gt;
+&lt;/components&gt;
+</pre>
+*** S2Container_InterfaceAspectAutoRegister::registerAllメソッドをinitMthodとして設定して下さい。<br>
+*** 他のコンポーネント定義より先に定義する必要があります。<br>
+*** S2Container_FileSystemComponentAutoRegisterと併用する場合は、S2Container_FileSystemComponentAutoRegisterの定義が先になります。<br>
+
+
+
+
+<br>
+<a name="commentAnnotation"><h3>コメントアノテーション</h3></a>
+
+<p>
+コメントアノテーションは、PhpDocに記述されたアノテーション情報を読み込むフレームワークです。<br>
+<a href="#autoRegister-file">コンポーネントの自動登録</a>で使用できます。
+</p>
+
+<h4>S2Container_Annotations</h4>
+<p>S2Container_Annotationsクラスは3つのStaticメソッドを実装しています。</p>
+<table border="1">
+<tr bgcolor="#d1f3f4" align="center">
+<th>メソッド</th>
+<th>説明</th>
+</tr>
+
+<tr>
+<td><code>getAnnotations</code></td>
+<td>
+クラスまたはメソッドのすべてのアノテーションを取得します。第1引数はクラス名です。メソッドのアノテーションを取得する場合は第2引数でメソッド名を指定します。
+</td>
+</tr>
+
+<tr>
+<td><code>getAnnotation</code></td>
+<td>
+クラスまたはメソッドの指定したアノテーションを取得します。第1引数でアノテーションタイプを指定します。第2引数でクラス名、第3引数でメソッド名を指定します。
+</td>
+</tr>
+
+<td><code>isAnnotationPresents</code></td>
+<td>
+クラスまたはメソッドに指定したアノテーションが存在するかどうかを調べます。第1引数でアノテーションタイプを指定します。第2引数でクラス名、第3引数でメソッド名を指定します。
+</td>
+</tr>
+</table>
+
+<h4>アノテーションの記述</h4>
+PhpDocに記述されるコメントアノテーションは以下のフォーマットになります。
+<pre>
+/**
+ * @Seasar
+ * @Foo ( 2006 )
+ * @Bar ( abc, 2006 )
+ * @Hoge ( name = abc, year = 2006 )
+ */
+class Hello {
+
+    /**
+     * @Bar ( xyz, 2000 )
+     * @Hoge ( name = xyz, year = 2000 )
+     */
+    public function greeting(){
+        print "Hello ! \n";
+    }
+}
+</pre>
+
+アノテーションタイプは予めクラス定義が読み込まれている必要があります。<br>
+上記の場合、アノテーションタイプは、Seasar、Foo、Bar、Hogeクラスになります。
+
+<pre>
+&lt;?php
+class Seasar{}
+
+class Foo{
+    public $value = "default value";
+}
+
+class Bar{
+    public $value;
+}
+
+class Hoge {
+    public $name = "default name";
+    public $year = 2000;
+}
+?&gt;
+</pre>
+
+<p>
+アノテーションの引数はアノテーションタイプのプロパティに設定されます。イコール(=)とカンマ(,)は区切り文字として使用されます。上記の例では、@Seasarアノテーションは引数をとりません。@Fooと@Barアノテーションは値引数を持ちます。値引数が1つの場合は(@Fooの場合)、valueプロパティにそのまま代入されます。値引数が複数の場合(@Barの場合)、valueプロパティに値の配列として代入されます。最後の@Hogeは引数としてキーと値のペアーをとります。キーがプロパティ名となり、値が代入されます。
+</p>
+
+<h4>アノテーションの取得</h4>
+<h5>S2Container_Annotations::getAnnotations()</h5>
+s2container.php5/examples/extension/annotation/annoClient.php
+<pre>
+...
+$annos = S2Container_Annotations::getAnnotations('Hello','greeting');
+print_r($annos);
+...
+</pre>
+
+Helloクラスのgreetingメソッドに付いているアノテーションをすべて取得します。
+
+<pre>
+> php annoClient.php
+Array
+(
+    [Bar] => Bar Object
+        (
+            [value] => Array
+                (
+                    [0] => xyz
+                    [1] => 2000
+                )
+        )
+    [Hoge] => Hoge Object
+        (
+            [name] => xyz
+            [year] => 2000
+        )
+)
+>
+</pre>
+
+<h5>S2Container_Annotations::getAnnotation()</h5>
+s2container.php5/examples/extension/annotation/annoClient.php
+<pre>
+...
+$anno = S2Container_Annotations::getAnnotation('Foo','Hello');
+print_r($anno);
+
+$anno = S2Container_Annotations::getAnnotation('Bar','Hello');
+print_r($anno);
+...
+</pre>
+
+Helloクラスに付いているFooとBarアノテーションを取得します。
+
+<pre>
+> php annoClient.php
+Foo Object
+(
+    [value] => 2006
+)
+Bar Object
+(
+    [value] => Array
+        (
+            [0] => abc
+            [1] => 2006
+        )
+)
+>
+</pre>
+
+<h5>S2Container_Annotations::isAnnotationPresent()</h5>
+s2container.php5/examples/extension/annotation/annoClient.php
+<pre>
+...
+if(S2Container_Annotations::isAnnotationPresent('Seasar','Hello')){
+    print "Seasar annotation exists at hello class.\n";
+}
+
+if(!S2Container_Annotations::isAnnotationPresent('Seasar','Hello','greeting')){
+    print "Seasar annotation not exists at greeting method.\n";
+}
+...
+</pre>
+
+HelloクラスとgreetingメソッドにSeasarアノテーションが付いているかどうかを調べます。
+
+<pre>
+> php annoClient.php
+Seasar annotation exists on hello class.
+Seasar annotation not exists on greeting method.
+>
+</pre>
+
+
+<!-- document end -->
+<!-- don't edit start -->
+</td>
+<td width="14"><img src="images/spacer.gif" alt="" height="14" width="14"></td>
+</tr><tr>
+<td width="14"><img src="images/spacer.gif" alt="" height="30" width="14"></td>
+<td width="766"><img src="images/spacer.gif" alt="" height="30" width="592"></td>
+</tr><tr>
+<td width="14"><img src="images/spacer.gif" alt="" height="14" width="14"></td>
+<td class="copyright" width="766">&#169; Copyright The Seasar Project and the others 2005-2006, all rights reserved.</td>
+</tr></tbody></table>
+</td><td class="backright" align="left" valign="top">&nbsp;</td></tr><tr>
+<td class="backunder" align="left" height="16" valign="top" width="780">&nbsp;</td>
+<td class="backcorner" align="left" height="16" valign="top">&nbsp;</td>
+</tr></tbody></table><!-- don't edit end -->
+</body></html>
