@@ -54,7 +54,7 @@ class S2Conatiner_PDODataSourceTest
         print($ds);
         print "\n";
         $db = $ds->getConnection();
-        $result = $db->query('select * from dept where deptno = 10;'); 
+        $result = $db->query('select * from DEPT where deptno = 10;'); 
         $rows = $result->fetch(PDO::FETCH_NUM);
         $this->assertEquals($rows,array('10','ACCOUNTING','NEW YORK','0'));
         $db = null;
