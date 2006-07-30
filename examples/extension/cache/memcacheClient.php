@@ -47,7 +47,7 @@ print_r($a);
 
 $PATH_C = EXAMPLE_DIR . "/extension/cache/testC.dicon";
 $time_start = microtime_float();
-$container = S2ContainerMemcacheFactory::create($memcacheOpt, $PATH_C, 'testC.dat');
+$container = S2ContainerMemcacheFactory::create($memcacheOpt, $PATH_C, 'testC_Key');
 $time_end = microtime_float();
 $time = $time_end - $time_start;
 print "time : $time \n";

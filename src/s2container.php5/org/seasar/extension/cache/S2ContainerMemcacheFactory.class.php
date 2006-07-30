@@ -65,7 +65,7 @@ final class S2ContainerMemcacheFactory {
     public static $INITIALIZE_BEFORE_CACHE = false;
     
     /**
-     * 
+     * S2ContainerMemcacheFactory instance 
      */
     public static $INSTANCE = null;
     // }}}
@@ -132,8 +132,8 @@ final class S2ContainerMemcacheFactory {
     private static function getInstance(array $options){
         if(null === self::$INSTANCE){
             self::$INSTANCE = new self();
-            self::$INSTANCE->initialize($options);
         }
+        self::$INSTANCE->initialize($options);
         return self::$INSTANCE;
     }
 
