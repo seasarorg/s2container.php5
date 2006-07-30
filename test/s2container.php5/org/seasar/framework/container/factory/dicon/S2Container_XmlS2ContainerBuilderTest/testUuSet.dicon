@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
+"components21.dtd">
+<components namespace="testUuSet">
+    <!-- component name="m" class="M_S2Container_XmlS2ContainerBuilder" autoBinding="constructor" -->
+    <component name="m" class="M_S2Container_XmlS2ContainerBuilder">
+        <property name="name">"test"</property>
+    </component>
+</components>

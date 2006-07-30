@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
+"components21.dtd">
+<components namespace="testIncludeChildD">
+    <component class="AddActionImpl_S2Container_XmlS2ContainerBuilder"/>
+    <component class="ICalculator_S2Container_XmlS2ContainerBuilder">
+        <aspect>testIncludeChildD.mock</aspect>
+    </component>
+
+    <component name="mock" class="S2Container_MockInterceptor">
+        <initMethod name="setReturnValue">
+            <arg>"add"</arg>
+            <arg>"11"</arg>
+        </initMethod>
+    </component>
+    
+</components>
