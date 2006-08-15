@@ -1,8 +1,10 @@
 components:
-    component:
-        - class: HelloMethodInjection
+    - component: .
+        - class: "HelloMethodInjection"
             - initMethod: .
-                name: addMessage
+                name: "addMessage"
                 - arg: Hello
             - initMethod: .
-                - ($component->addMessage("World!"))
+                - arg:
+                    php:>
+                      $component->addMessage("World!")

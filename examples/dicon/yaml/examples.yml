@@ -1,6 +1,6 @@
 components:
-# ------ name syntax ------
-    name: name_of_components
+# ------ namespace syntax ------
+    namespace: namespace_of_components
     
 # ------ include syntax ------
     include:
@@ -8,11 +8,7 @@ components:
         - two.class.php
         - three.class.php
     # include syntax or
-    include:[
-        one.class.php,
-        two.class.php,
-        three.class.php
-        ]
+    include:[one.class.php,two.class.php,three.class.php]
 
 # ------ meta syntax ------
     meta:
@@ -21,31 +17,45 @@ components:
             - argument 2
 
 # ------ component syntax ------
-    component:
-        - class: class_a
-            name: name_of_a_class
-            autoBinding: auto
-            instance: singleton
-            
+    - component: .
+        name: "name_of_a_class"
+        autoBinding: "auto"
+        instance: "singleton"
+        - class: "class_a"            
+
             - property: .
                 name:
                 - arg: arg1
-                - arg: arg2
-                    
+                - arg: arg2            
+
             - initMethod: .
                 name:
                 - arg: arg1
                 - arg: arg2
-                    
+
             - destoryMethod: .
                 name:
                 - arg: arg1
                 - arg: arg2
-                    
+
             - aspect: argument1
-            - aspect: argument2
+            - aspect: [argument1, argument2]
+            - aspect: .
+                - component: .
+                    - class: php_class
 
             - arg: argument1
-            - arg:
-                component:
+            - arg: [arg1, arg2, arg3]
+            - arg: .
+                - component: .
                     - class: php_class
+            - arg: .
+                php:>
+                    php expression
+            - arg: .
+                php:>
+                        p
+                        h
+                        p
+                        expression
+                        multiline

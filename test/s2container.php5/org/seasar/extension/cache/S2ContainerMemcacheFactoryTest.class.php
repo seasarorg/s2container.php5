@@ -30,6 +30,7 @@ class S2ContainerMemcacheFactoryTest extends PHPUnit2_Framework_TestCase {
     private $path_a;
     private $path_b;
     private $path_c;
+    private $host;
     
     public function __construct($name) {
         parent::__construct($name);
@@ -40,6 +41,8 @@ class S2ContainerMemcacheFactoryTest extends PHPUnit2_Framework_TestCase {
         $this->path_a = dirname(__FILE__) . "/testA.dicon";
         $this->path_b = dirname(__FILE__) . "/testB.dicon";
         $this->path_c = dirname(__FILE__) . "/testC.dicon";
+        // memcached host
+        $this->host = 'localhost';
     }
 
     public function tearDown() {
@@ -47,10 +50,11 @@ class S2ContainerMemcacheFactoryTest extends PHPUnit2_Framework_TestCase {
         $this->path_a = null;
         $this->path_b = null;
         $this->path_c = null;
+        $this->host = null;
     }
     
     public function testContainerCreate(){
-        $option = array('host' => 'localhost');
+        $option = array('host' => $this->host);
         $container1 = S2ContainerMemcacheFactory::create($option, $this->path_a);
         $container2 = S2ContainerFactory::create($this->path_a);
         
@@ -61,7 +65,7 @@ class S2ContainerMemcacheFactoryTest extends PHPUnit2_Framework_TestCase {
     }
     
     public function testCachedContainerCreate(){
-        $option = array('host' => 'localhost');
+        $option = array('host' => $this->host);
         $container1 = S2ContainerMemcacheFactory::create($option, $this->path_b);
         $container2 = S2ContainerMemcacheFactory::create($option, $this->path_b);
         $container3 = S2ContainerMemcacheFactory::create($option, $this->path_b, "b_key");
@@ -73,7 +77,7 @@ class S2ContainerMemcacheFactoryTest extends PHPUnit2_Framework_TestCase {
     }
     
     public function testAnotherDiconCacheContainerCreate(){
-        $option = array('host' => 'localhost');
+        $option = array('host' => $this->host);
         $container1 = S2ContainerMemcacheFactory::create($option, $this->path_b);
         $container2 = S2ContainerMemcacheFactory::create($option, $this->path_c);
         $container3 = S2ContainerMemcacheFactory::create($option, $this->path_c, "c_key");
@@ -86,35 +90,27 @@ class S2ContainerMemcacheFactoryTest extends PHPUnit2_Framework_TestCase {
     }
 
     public function testAnotherDiconCacheContainerSame(){
-        $option = array('host' => 'localhost');
+        $option = array('host' => $this->host);
         $container1 = S2ContainerMemcacheFactory::create($option, $this->path_a, "d_key");
         $container2 = S2ContainerMemcacheFactory::create($option, $this->path_c, "d_key");
 
         $this->assertEquals($container1, $container2);
     }
 
-    
     public function testMemcacheOption1(){
-        $option = array('host' => 'localhost', 'timeout' => 0.001);
-        $a = S2ContainerMemcacheFactory::create($option, $this->path_a);
-        
-        $this->assertNotNull($a);
-    }
-
-    public function testMemcacheOption2(){
-        $option1 = array('host' => 'localhost', 'cache_compress' => false);
+        $option1 = array('host' => $this->host, 'cache_compress' => false);
         $a = S2ContainerMemcacheFactory::create($option1, $this->path_a);
-        $option2 = array('host' => 'localhost', 'cache_compress' => true);
+        $option2 = array('host' => $this->host, 'cache_compress' => true);
         $b = S2ContainerMemcacheFactory::create($option1, $this->path_a);
-        $option3 = array('host' => 'localhost');
+        $option3 = array('host' => $this->host);
         $c = S2ContainerMemcacheFactory::create($option1, $this->path_a);
         
         $this->assertEquals($a, $b);
         $this->assertEquals($a, $c);
     }
     
-    public function testMemcacheOption3(){
-        $option = array('host' => 'localhost', 'cache_expire' => 1);
+    public function testMemcacheOption2(){
+        $option = array('host' => $this->host, 'cache_expire' => 1);
         $a = S2ContainerMemcacheFactory::create($option, $this->path_a, 'aaaa');
         S2ContainerMemcacheFactory::create($option, $this->path_b, 'a');
         S2ContainerMemcacheFactory::create($option, $this->path_b, 'aa');
@@ -130,10 +126,10 @@ class S2ContainerMemcacheFactoryTest extends PHPUnit2_Framework_TestCase {
         $this->assertEquals($a, $b);
     }
     
-    public function testMemcacheOption4(){
-        $option1 = array('host' => 'localhost', 'port' => 11211);
+    public function testMemcacheOption3(){
+        $option1 = array('host' => $this->host, 'port' => 11211);
         $a = S2ContainerMemcacheFactory::create($option1, $this->path_a, 'aaaa');
-        $option2 = array('host' => 'localhost', 'port' => "11211");
+        $option2 = array('host' => $this->host, 'port' => "11211");
         $b = S2ContainerMemcacheFactory::create($option2, $this->path_a, 'aaaa');
         
         $this->assertNotNull($a);
