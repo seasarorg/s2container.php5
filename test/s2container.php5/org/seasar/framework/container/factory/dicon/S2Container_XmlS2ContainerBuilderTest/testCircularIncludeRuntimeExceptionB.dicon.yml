@@ -1,3 +1,0 @@
-components:
-    include: 
-        - %DICON_DIR_S2Container_YamlS2ContainerBuilderTest%/testCircularIncludeRuntimeExceptionA.dicon.yml

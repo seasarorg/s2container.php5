@@ -1,8 +1,0 @@
-components:
-    namespace: testComp
-    - component: .
-        name: a
-        - class: "A_S2Container_YamlS2ContainerBuilder"
-    - component: .
-        - class: "A_S2Container_YamlS2ContainerBuilder"
-        name: "b"
