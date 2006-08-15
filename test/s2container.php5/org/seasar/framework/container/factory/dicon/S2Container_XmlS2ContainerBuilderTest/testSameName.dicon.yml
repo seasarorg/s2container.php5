@@ -1,0 +1,6 @@
+components:
+    namespace: "testSameName"
+    
+    - component: .
+        name: "A_S2Container_YamlS2ContainerBuilder"
+        - class: "A_S2Container_YamlS2ContainerBuilder"

@@ -1,0 +1,4 @@
+components:
+    namespace: "testContainerInject"
+    - component: .
+        - class: "V_S2Container_YamlS2ContainerBuilder"

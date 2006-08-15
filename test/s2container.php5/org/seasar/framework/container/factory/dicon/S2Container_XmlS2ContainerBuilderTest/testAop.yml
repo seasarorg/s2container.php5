@@ -1,0 +1,15 @@
+components:
+    namespace: testAop
+    
+    - component: .
+            - class: AddActionImpl_S2Container_YamlS2ContainerBuilder
+        # - aspect: new S2Container_TraceInterceptor()
+        - aspect: .
+            - component: .
+                - class: S2Container_TraceInterceptor
+                
+    - component: .
+        - class: CalculatorImpl_S2Container_YamlS2ContainerBuilder
+
+    - component: .
+        - class: SubActionImpl_S2Container_YamlS2ContainerBuilder

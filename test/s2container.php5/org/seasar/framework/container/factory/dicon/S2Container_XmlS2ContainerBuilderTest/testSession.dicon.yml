@@ -1,0 +1,15 @@
+components:
+    namespace: "testSession"
+
+    - component: .
+        - class: "D_S2Container_YamlS2ContainerBuilder"
+
+    - component: .
+        name: "l"
+        instance: "request"
+        - class: "L_S2Container_YamlS2ContainerBuilder"
+
+    - component: .
+        name: "ll"
+        instance: "session"
+        - class: "L_S2Container_YamlS2ContainerBuilder"

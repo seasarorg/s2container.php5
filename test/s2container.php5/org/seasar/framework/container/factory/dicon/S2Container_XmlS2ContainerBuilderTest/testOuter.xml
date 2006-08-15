@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
-"components21.dtd">
-<components namespace="testOuter">
-    <component class="SubActionImpl_S2Container_XmlS2ContainerBuilder" instance="outer"/>
-    <component class="CalculatorImpl_S2Container_XmlS2ContainerBuilder"/>
-</components>
