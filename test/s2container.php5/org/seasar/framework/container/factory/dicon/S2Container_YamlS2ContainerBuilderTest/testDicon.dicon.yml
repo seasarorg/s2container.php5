@@ -1,0 +1,8 @@
+components:
+    namespace: "testDicon"
+    - component: .
+        name: "a"
+        - class: "A_S2Container_YamlS2ContainerBuilder"
+    - component: .
+        name: "b"
+        - class: "A_S2Container_YamlS2ContainerBuilder"

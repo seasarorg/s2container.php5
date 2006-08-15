@@ -1,0 +1,20 @@
+components:
+    namespace: "testUuCallAopProxyFactory"
+
+    - component: .
+        - class: "AddActionImpl_S2Container_YamlS2ContainerBuilder"
+    - component: .
+        - class: "ICalculator_S2Container_YamlS2ContainerBuilder"
+            - aspect: mock
+
+    - component: .
+        name: "mock"
+        - class: "S2Container_MockInterceptor"
+            - initMethod: .
+                name: "setReturnValue"
+                - arg: .
+                    php:>
+                        "add"
+                - arg: .
+                    php:>
+                        5
