@@ -6,14 +6,10 @@ components:
         - class: "R_S2Container_YamlS2ContainerBuilder"
             - initMethod: .
                 name: setVal1
-                - arg: .
-                    php:>
-                        "val 1."
+                - arg: "val 1."
                     - meta: .
                         name: "m1"
-                        - arg: .
-                            php:>
-                                "m1-val1"
+                        - arg: "m1-val1"
                     - meta: .
                         name: "m2"
                         - arg: .

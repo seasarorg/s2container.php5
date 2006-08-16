@@ -128,18 +128,18 @@ class S2Container_YamlS2ContainerBuilderTest
         $this->assertType('D_S2Container_YamlS2ContainerBuilder',$r->getVal2());
     }
 
-//    function testProperty() {
-//        $container = S2ContainerFactory::create(
-//                                $this->diconDir . '/testProperty.yml');
-//        $this->assertNotNull($container);
-//       
-//        $r = $container->getComponent('s');
-//        $this->assertEquals($r->getVal1(),'val 1.');
-//        $this->assertType('D_S2Container_YamlS2ContainerBuilder',$r->getVal2());
-//
-//        $t = $container->getComponent('t');
-//        $this->assertEquals(2,$t->getVal1());
-//    }
+    function testProperty() {
+        $container = S2ContainerFactory::create(
+                                $this->diconDir . '/testProperty.yml');
+        $this->assertNotNull($container);
+       
+        $r = $container->getComponent('s');
+        $this->assertEquals($r->getVal1(),'val 1.');
+        $this->assertType('D_S2Container_YamlS2ContainerBuilder',$r->getVal2());
+
+        $t = $container->getComponent('t');
+        $this->assertEquals(2,$t->getVal1());
+    }
 
     function testInitMethod() {
         $container = S2ContainerFactory::create(
@@ -346,12 +346,12 @@ class S2Container_YamlS2ContainerBuilderTest
         $this->assertEquals($m->getName(),"test");
     }
 
-//    function testMockInterceptor() {
-//        $container = S2ContainerFactory::create(
-//                                $this->diconDir . '/testMockInterceptor.dicon.yml');
-//        $a = $container->getComponent("d");
-//        $this->assertEquals($a->ma(),'-1');
-//    }
+    function testMockInterceptor() {
+        $container = S2ContainerFactory::create(
+                                $this->diconDir . '/testMockInterceptor.dicon.yml');
+        $a = $container->getComponent("d");
+        $this->assertEquals($a->ma(),'-1');
+    }
  
     function testSameName() {
         $container = S2ContainerFactory::create(
@@ -376,34 +376,34 @@ class S2Container_YamlS2ContainerBuilderTest
         $this->assertTrue($container === $con);
     }
     
-//    function testUuCallAopProxyFactory() {
-//        $container = S2ContainerFactory::create(
-//                                $this->diconDir . '/testUuCallAopProxyFactory.dicon.yml');
-//        $a = $container->getComponent("AddActionImpl_S2Container_YamlS2ContainerBuilder");
-//        $this->assertEquals($a->add(5,3),'5');
-//    }
+    function testUuCallAopProxyFactory() {
+        $container = S2ContainerFactory::create(
+                                $this->diconDir . '/testUuCallAopProxyFactory.dicon.yml');
+        $a = $container->getComponent("AddActionImpl_S2Container_YamlS2ContainerBuilder");
+        $this->assertEquals($a->add(5,3),'5');
+    }
 
-//    function testIncludeChild() {
-//        $container = S2ContainerFactory::create(
-//                                $this->diconDir . '/testIncludeChild.dicon.yml');
-//        $a = $container->getComponent("AddActionImpl_S2Container_YamlS2ContainerBuilder");
-//        $this->assertEquals($a->add(5,3),'5');
-//
-//        $b = $container->getComponent("testIncludeChildB.AddActionImpl_S2Container_YamlS2ContainerBuilder");
-//        $this->assertEquals($b->add(5,3),'10');
-//
-//        if($a === $b){
-//            $this->assertTrue(false);
-//        }else{
-//            $this->assertTrue(true);
-//        }
-//
-//        $c = $container->getComponent("testIncludeChildD.AddActionImpl_S2Container_YamlS2ContainerBuilder");
-//        $this->assertEquals($c->add(5,3),'11');
-//
-//        $c = $container->getComponent("testIncludeChildC.AddActionImpl_S2Container_YamlS2ContainerBuilder");
-//        $this->assertEquals($c->add(5,3),'12');
-//    }
+    function testIncludeChild() {
+        $container = S2ContainerFactory::create(
+                                $this->diconDir . '/testIncludeChild.dicon.yml');
+        $a = $container->getComponent("AddActionImpl_S2Container_YamlS2ContainerBuilder");
+        $this->assertEquals($a->add(5,3),'5');
+
+        $b = $container->getComponent("testIncludeChildB.AddActionImpl_S2Container_YamlS2ContainerBuilder");
+        $this->assertEquals($b->add(5,3),'10');
+
+        if($a === $b){
+            $this->assertTrue(false);
+        }else{
+            $this->assertTrue(true);
+        }
+
+        $c = $container->getComponent("testIncludeChildD.AddActionImpl_S2Container_YamlS2ContainerBuilder");
+        $this->assertEquals($c->add(5,3),'11');
+
+        $c = $container->getComponent("testIncludeChildC.AddActionImpl_S2Container_YamlS2ContainerBuilder");
+        $this->assertEquals($c->add(5,3),'12');
+    }
     
     function testPintcutEreg() {
         $container = S2ContainerFactory::create(
@@ -449,6 +449,7 @@ class S2Container_YamlS2ContainerBuilderTest
         $compDef = $container->getComponentDef("r");
         $propDef = $compDef->getPropertyDef("val1");
 
+
         $m = $propDef->getMetaDef("m1");
         $this->assertEquals($m->getValue(),'m1-val1');
 
@@ -489,7 +490,7 @@ class S2Container_YamlS2ContainerBuilderTest
 //        $b = $container->getComponent('b6');
 //        $this->assertType('B_S2Container_YamlS2ContainerBuilder',$b);
 //    }
-
+//
 //    function testInitMethodExp() {
 //        $container = S2ContainerFactory::create(
 //                                $this->diconDir . '/testInitMethodExp.dicon.yml');              
@@ -500,7 +501,7 @@ class S2Container_YamlS2ContainerBuilderTest
 //        $container->init();
 //        $container->destroy();
 //    }
-//
+
     function testChildComponent() {
         $container = S2ContainerFactory::create(
                                 $this->diconDir . '/testChildComponent.dicon.yml');              

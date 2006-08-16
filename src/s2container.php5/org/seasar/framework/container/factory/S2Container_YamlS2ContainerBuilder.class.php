@@ -25,7 +25,7 @@
 /**
  * @package org.seasar.framework.container.factory
  * @author nowel
- * @version beta
+ * @version test
  */
 final class S2Container_YamlS2ContainerBuilder
     implements S2ContainerBuilder
@@ -176,7 +176,7 @@ final class S2Container_YamlS2ContainerBuilder
             $arg = $component['arg'];
             if(is_array($arg) && !isset($arg['php'])){
                 foreach($arg as &$_arg){
-                    if(is_string($_arg)){
+                    if(!is_array($_arg)){
                         $_arg = array('arg' => $_arg);
                     }
                     $componentDef->addArgDef($this->_setupArgDef($_arg));
@@ -185,7 +185,7 @@ final class S2Container_YamlS2ContainerBuilder
                 $componentDef->addArgDef($this->_setupArgDef($component));
             }
         }
-        
+
         if(isset($component['property'])){
             $propertyDef = $this->_setupPropertyDef($component, $name);
             $componentDef->addPropertyDef($propertyDef);
@@ -193,11 +193,17 @@ final class S2Container_YamlS2ContainerBuilder
 
         if(isset($component['initMethod'])){
             $initMethodDef = $this->_setupInitMethodDef($component, $name);
+            if($component['initMethod'] != '.'){
+                $initMethodDef->setExpression($component['initMethod']);
+            }
             $componentDef->addInitMethodDef($initMethodDef);
         }
 
         if(isset($component['destroyMethod'])){
             $destroyMethodDef = $this->_setupDestroyMethodDef($component, $name);
+            if($component['destroyMethod'] != '.'){
+                $destroyMethodDef->setExpression($component['destroyMethod']);
+            }
             $componentDef->addDestroyMethodDef($destroyMethodDef);
         }
 
@@ -205,8 +211,6 @@ final class S2Container_YamlS2ContainerBuilder
             $componentDef->addAspectDef($this->_setupAspectDef($component, $className));
         }
 
-        $this->_setupMetaDef($component, $componentDef);
-        
         if(is_array($component)){
             foreach($component as &$comp){
                 if(!is_array($comp)){
@@ -215,6 +219,7 @@ final class S2Container_YamlS2ContainerBuilder
                 $this->_setupDefs($componentDef, $comp, $className);
             }
         }
+        $this->_setupMetaDef($component, $componentDef);
     }
     // }}}
 
@@ -262,7 +267,6 @@ final class S2Container_YamlS2ContainerBuilder
         if(isset($arg['php'])){
             $injectValue = $arg['php'];
             $argDef->setExpression($injectValue);
-            S2Container_ChildComponentDefBindingUtil::put($injectValue, $argDef);
             return;
         }
 
@@ -272,30 +276,26 @@ final class S2Container_YamlS2ContainerBuilder
             return;
         }
 
-        if(isset($arg[0]) && is_array($arg[0])){
-            return $this->_setupArgDefInternal($arg[0], $argDef);
+        if(isset($arg['arg'])){
+            $_arg = $arg['arg'];
+            if(is_array($_arg)){
+                if(isset($_arg['php'])){
+                    return $this->_setupArgDefInternal($_arg, $argDef);
+                }
+            } else {
+                if($_arg != '.'){
+                    $argDef->setValue($_arg);
+                    S2Container_ChildComponentDefBindingUtil::put($_arg, $argDef);
+                    return;
+                }
+            }
         }
 
-        if($this->__issetValue('arg', $arg)){
-            $_arg = $arg['arg'];
-            if(is_string($_arg)){
-                $argDef->setValue($_arg);
-                S2Container_ChildComponentDefBindingUtil::put($_arg, $argDef);
-                return;
+        foreach($arg as $_arg){
+            if(!is_array($_arg)){
+                continue;
             }
-            if(isset($_arg['php'])){
-                return $this->_setupArgDefInternal($_arg, $argDef);
-            }
-        } else {
-            if(!is_array($arg)){
-                return;
-            }
-            foreach($arg as $_arg){
-                if(!is_array($_arg)){
-                    continue;
-                }
-                $this->_setupArgDefInternal($_arg, $argDef);
-            }
+            return $this->_setupArgDefInternal($_arg, $argDef);
         }
     }
     // }}}
@@ -306,12 +306,8 @@ final class S2Container_YamlS2ContainerBuilder
      */
     private function _setupPropertyDef(array &$property, $name)
     {
-        $args = $property;
-        if(isset($property[0])){
-            $args = $property[0];
-        }
         $propertyDef = new S2Container_PropertyDefImpl($name);
-        $this->_setupArgDefInternal($args, $propertyDef);
+        $this->_setupArgDefInternal($property, $propertyDef);
         $this->_setupMetaDef($property, $propertyDef);
         return $propertyDef;
     }
@@ -347,22 +343,11 @@ final class S2Container_YamlS2ContainerBuilder
      */
     private function _setupMethodDefInternal(array $method, S2Container_MethodDef $methodDef)
     {
-        if($this->__issetArray(0, $method)){
-            $method0 = $method[0];
-            if(is_string($method0)) {
-                $methodDef->setExpression($method0);
+        foreach($method as $_method){
+            if(!is_array($_method)){
+                continue;
             }
-            if(isset($method0['arg'])){
-                $methodDef->addArgDef($this->_setupArgDef($method0));
-            }
-        } else if($this->__issetArray('arg', $method)){
-            $arg = $method['arg'];
-            if(is_string($arg) && $arg != '.'){
-                $methodDef->setExpression($arg);
-            }
-            if(is_array($arg)){
-                $methodDef->addArgDef($this->_setupArgDef($arg));
-            }
+            $methodDef->addArgDef($this->_setupArgDef($_method));
         }
     }
     // }}}
@@ -379,7 +364,7 @@ final class S2Container_YamlS2ContainerBuilder
         } else {
             $pointcut = new S2Container_PointcutImpl($targetClassName);
         }
-        
+
         if($this->__issetArray(0, $aspect)){
             return $this->_setupAspectDef($aspect[0], $targetClassName);
         }
@@ -463,7 +448,7 @@ final class S2Container_YamlS2ContainerBuilder
         return '';
     }
     // }}}
-    
+
     // {{{ __issetValue
     /**
      *
@@ -472,7 +457,7 @@ final class S2Container_YamlS2ContainerBuilder
         return isset($target[$key]) && $target[$key] != '.';
     }
     // }}}
-    
+
     // {{{ __issetArray
     /**
      *

@@ -3,17 +3,17 @@ components:
         name: "i"
         - class: "I_S2Container_YamlS2ContainerBuilder"
             - initMethod: .
-                - arg: .
-                    php:>
-                         $component->culc2(2,4);
+                - arg: $component->culc2(2, 4);
 
     - component: .
         name: "i2"
         - class: "I_S2Container_YamlS2ContainerBuilder"
             - destroyMethod: .
-                - arg: .
-                    php:>
-                        print 'destroy method expression test.';
+                - arg:>
+                 print 'destroy method expression test.';
+
+
+
                         
                         
                         

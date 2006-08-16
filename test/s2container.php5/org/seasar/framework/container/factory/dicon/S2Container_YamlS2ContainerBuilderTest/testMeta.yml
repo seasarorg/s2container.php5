@@ -2,7 +2,7 @@ components:
     namespace: "testMeta"
     - meta: .
         name: "m1"
-        - arg: .
+        - arg:
             php:>
                 "m1-val1"
     - meta: .
@@ -19,9 +19,7 @@ components:
         - class: "N_S2Container_YamlS2ContainerBuilder"
             - meta: .
                 name: "m4"
+                - arg: "m2-val2"
                 - arg: .
                     php:>
-                       "m2-val2"
-                - arg: .
-                    php:>
-                        "test value."
+                       "test value."

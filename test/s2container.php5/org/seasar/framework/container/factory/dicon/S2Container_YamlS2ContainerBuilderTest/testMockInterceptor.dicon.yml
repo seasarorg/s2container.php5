@@ -9,9 +9,5 @@ components:
         - class: "S2Container_MockInterceptor"
             - initMethod: .
                 name: "setReturnValue"
-                - arg: .
-                    php:>
-                        "ma"
-                - arg: .
-                    php:>
-                        -1
+                - arg: "ma"
+                - arg: "-1"

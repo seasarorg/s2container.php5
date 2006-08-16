@@ -14,10 +14,6 @@ components:
         - class: "S2Container_MockInterceptor"
             - initMethod: .
                 name: "setReturnValue"
-                - arg: .
-                    php:>
-                        "add"
-                - arg: .
-                    php:>
-                        5
+                - arg: "add"
+                - arg: "5"
     
