@@ -1,0 +1,10 @@
+components:
+    - component: .
+        - class: "HashMap"
+            - initMethod: .
+                name: "put"
+                - php: "'hello'"
+                - php: "'Hello World!'"
+    - component: .
+        autoBinding: "auto"
+        - class: "AutoHelloSetterInjection"

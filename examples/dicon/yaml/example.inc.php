@@ -3,6 +3,7 @@ error_reporting(E_ALL);
 define('__WORKDIR__', dirname(__FILE__));
 define('HOME_DIR', dirname(dirname(dirname(__WORKDIR__))));
 define('EXAMPLE_DIR', HOME_DIR . '/examples');
+define('YAML_DICON_DIR', EXAMPLE_DIR . '/dicon/yaml');
 
 require_once(HOME_DIR . '/s2container.inc.php');
 
@@ -12,9 +13,5 @@ function __autoload($class=null){
 }
 
 // please self install 'Spyc'
-require_once('Spyc.php');
-require_once('Hello.class.php');
-require_once('HelloConstructorInjection.class.php');
-require_once('HelloMethodInjection.class.php');
-require_once('HelloSetterInjection.class.php');
+require_once 'Spyc.php';
 ?>

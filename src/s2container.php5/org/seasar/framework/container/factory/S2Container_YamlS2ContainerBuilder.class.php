@@ -177,22 +177,28 @@ final class S2Container_YamlS2ContainerBuilder
         }
 
         if(isset($component['property'])){
+            $property = $component['property'];
             $propertyDef = $this->_setupPropertyDef($component, $name);
+            if($property != '.'){
+                $propertyDef->setExpression($property);
+            }
             $componentDef->addPropertyDef($propertyDef);
         }
 
         if(isset($component['initMethod'])){
+            $initMethod = $component['initMethod'];
             $initMethodDef = $this->_setupInitMethodDef($component, $name);
-            if($component['initMethod'] != '.'){
-                $initMethodDef->setExpression($component['initMethod']);
+            if($initMethod != '.'){
+                $initMethodDef->setExpression($initMethod);
             }
             $componentDef->addInitMethodDef($initMethodDef);
         }
 
         if(isset($component['destroyMethod'])){
+            $destroyMethod = $component['destroyMethod'];
             $destroyMethodDef = $this->_setupDestroyMethodDef($component, $name);
-            if($component['destroyMethod'] != '.'){
-                $destroyMethodDef->setExpression($component['destroyMethod']);
+            if($destroyMethod != '.'){
+                $destroyMethodDef->setExpression($destroyMethod);
             }
             $componentDef->addDestroyMethodDef($destroyMethodDef);
         }
@@ -299,7 +305,7 @@ final class S2Container_YamlS2ContainerBuilder
     }
     // }}}
 
-    // {{{
+    // {{{ _setupArgDefEach
     /**
      *
      */
@@ -475,5 +481,6 @@ final class S2Container_YamlS2ContainerBuilder
         return is_array($target) && isset($target[$key]);
     }
     // }}}
+    
 }
 ?>
