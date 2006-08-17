@@ -3,8 +3,8 @@ components:
         - class: "HashMap"
             - initMethod: .
                 name: "put"
-                - php: "'hello'"
-                - php: "'Hello World!'"
+                - arg: "hello"
+                - arg: "Hello World!"
     - component: .
         autoBinding: "auto"
         - class: "AutoHelloConstructorInjection2"
