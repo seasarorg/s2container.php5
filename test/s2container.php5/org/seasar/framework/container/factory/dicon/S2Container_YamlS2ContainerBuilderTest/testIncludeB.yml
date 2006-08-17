@@ -3,6 +3,4 @@ components:
     - component: .
         name: "n"
         - class: N_S2Container_YamlS2ContainerBuilder
-            - arg: .
-                php:>
-                    "test value."
+            - arg: "test value."

@@ -6,17 +6,14 @@ components:
         - class: "R_S2Container_YamlS2ContainerBuilder"
             - property: .
                 name: "val1"
-                - arg: .
-                    php:>
-                        "val 1."
+                - arg: "val 1."
+
     - component: .
         name: "s"
         - class: "R_S2Container_YamlS2ContainerBuilder"
             - property: .
                 name: "val1"
-                - arg: .
-                    php:>
-                      "val 1."
+                - arg: "val 1."
             - property: .
                 name: "val2"
                 - arg: .
@@ -29,6 +26,4 @@ components:
         - class: "R_S2Container_YamlS2ContainerBuilder"
             - property: .
                 name: "val1"
-                - arg:
-                    php:>
-                        1+1;
+                - php: 1+1;

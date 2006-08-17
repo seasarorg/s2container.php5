@@ -1,36 +1,22 @@
 components:
-    - component: .
+    - component: return new B_S2Container_YamlS2ContainerBuilder();
         name: "b1"
         - class: "IB_S2Container_YamlS2ContainerBuilder"
-        - arg: .
-            php :>
-                return new B_S2Container_YamlS2ContainerBuilder();
 
-    - component: .
+    - component: return new B_S2Container_YamlS2ContainerBuilder()
         name: "b2"
         - class: "A_S2Container_YamlS2ContainerBuilder"
-        - arg: .
-            php:>
-                return new B_S2Container_YamlS2ContainerBuilder()
 
-    - component: .
+    - component: new B_S2Container_YamlS2ContainerBuilder()
         name: "b3"
         - class: "B_S2Container_YamlS2ContainerBuilder"
-        - arg: .
-            php:>
-                new B_S2Container_YamlS2ContainerBuilder()
 
-    - component: .
+    - component: new B_S2Container_YamlS2ContainerBuilder()
         name: "b4"
-        - arg: new B_S2Container_YamlS2ContainerBuilder()
 
-    - component: .
+    - component: new B_S2Container_YamlS2ContainerBuilder()
         name: "b5"
         - class: "C_S2Container_YamlS2ContainerBuilder"
-        - arg: .
-            php:>
-                new B_S2Container_YamlS2ContainerBuilder()
-
-    - component: .
+        
+    - component: "b2"
         name: "b6"
-        - arg: b2

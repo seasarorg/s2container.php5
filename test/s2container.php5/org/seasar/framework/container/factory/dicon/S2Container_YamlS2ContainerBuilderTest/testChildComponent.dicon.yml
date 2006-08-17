@@ -9,4 +9,4 @@ components:
     - component: .
         name: "n2"
         - class: "N_S2Container_YamlS2ContainerBuilder"
-            - arg: d
+            - php: d

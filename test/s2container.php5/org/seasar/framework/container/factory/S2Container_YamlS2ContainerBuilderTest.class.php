@@ -260,13 +260,13 @@ class S2Container_YamlS2ContainerBuilderTest
         }
     }
 
-//    function testOuter() {
-//        $container = S2ContainerFactory::create(
-//                                $this->diconDir . '/testOuter.yml');
-//        $s = new SubActionImpl_S2Container_XmlS2ContainerBuilder();
-//        $container->injectDependency($s);
-//        $this->assertEquals($s->sub(3,2),1);
-//    }
+    function testOuter() {
+        $container = S2ContainerFactory::create(
+                                $this->diconDir . '/testOuter.yml');
+        $s = new SubActionImpl_S2Container_YamlS2ContainerBuilder();
+        $container->injectDependency($s);
+        $this->assertEquals($s->sub(3,2),1);
+    }
     
     function testAop() {
         $container = S2ContainerFactory::create(
@@ -460,47 +460,47 @@ class S2Container_YamlS2ContainerBuilderTest
         $this->assertType('B_S2Container_YamlS2ContainerBuilder',$m->getValue());
     }
 
-//    function testCompExp() {
-//        $container = S2ContainerFactory::create(
-//                                $this->diconDir . '/testCompExp.dicon.yml');              
-//       
-//        $b = $container->getComponent('B_S2Container_YamlS2ContainerBuilder');
-//        $this->assertType('B_S2Container_YamlS2ContainerBuilder',$b);
-//
-//        $b = $container->getComponent('b1');
-//        $this->assertType('B_S2Container_YamlS2ContainerBuilder',$b);
-//
-//        $b = $container->getComponent('b2');
-//        $this->assertType('B_S2Container_YamlS2ContainerBuilder',$b);
-//        
-//        $b = $container->getComponent('b3');
-//        $this->assertType('B_S2Container_YamlS2ContainerBuilder',$b);
-//        
-//        $b = $container->getComponent('b4');
-//        $this->assertType('B_S2Container_YamlS2ContainerBuilder',$b);
-//
-//        try{
-//            $b = $container->getComponent('b5');
-//            $this->assertType('B_S2Container_YamlS2ContainerBuilder',$b);
-//        }catch(Exception $e){
-//            $this->assertType('S2Container_ClassUnmatchRuntimeException',$e);
-//            print $e->getMessage() . "\n";
-//        }
-//
-//        $b = $container->getComponent('b6');
-//        $this->assertType('B_S2Container_YamlS2ContainerBuilder',$b);
-//    }
-//
-//    function testInitMethodExp() {
-//        $container = S2ContainerFactory::create(
-//                                $this->diconDir . '/testInitMethodExp.dicon.yml');              
-//       
-//        $i = $container->getComponent('i');
-//        $this->assertEquals($i->getResult(),6);
-//        
-//        $container->init();
-//        $container->destroy();
-//    }
+    function testCompExp() {
+        $container = S2ContainerFactory::create(
+                                $this->diconDir . '/testCompExp.dicon.yml');              
+       
+        $b = $container->getComponent('B_S2Container_YamlS2ContainerBuilder');
+        $this->assertType('B_S2Container_YamlS2ContainerBuilder',$b);
+
+        $b = $container->getComponent('b1');
+        $this->assertType('B_S2Container_YamlS2ContainerBuilder',$b);
+
+        $b = $container->getComponent('b2');
+        $this->assertType('B_S2Container_YamlS2ContainerBuilder',$b);
+        
+        $b = $container->getComponent('b3');
+        $this->assertType('B_S2Container_YamlS2ContainerBuilder',$b);
+        
+        $b = $container->getComponent('b4');
+        $this->assertType('B_S2Container_YamlS2ContainerBuilder',$b);
+
+        try{
+            $b = $container->getComponent('b5');
+            $this->assertType('B_S2Container_YamlS2ContainerBuilder',$b);
+        }catch(Exception $e){
+            $this->assertType('S2Container_ClassUnmatchRuntimeException',$e);
+            print $e->getMessage() . "\n";
+        }
+
+        $b = $container->getComponent('b6');
+        $this->assertType('B_S2Container_YamlS2ContainerBuilder',$b);
+    }
+
+    function testInitMethodExp() {
+        $container = S2ContainerFactory::create(
+                                $this->diconDir . '/testInitMethodExp.dicon.yml');              
+       
+        $i = $container->getComponent('i');
+        $this->assertEquals($i->getResult(),6);
+        
+        $container->init();
+        $container->destroy();
+    }
 
     function testChildComponent() {
         $container = S2ContainerFactory::create(

@@ -1,5 +1,5 @@
 components:
     - component: .
-        - class: "HelloConstructorInjection"
-            name: "hello"
-			- arg: Hello World!
+        name: hello
+        - class: HelloConstructorInjection
+            - arg: Hello World!

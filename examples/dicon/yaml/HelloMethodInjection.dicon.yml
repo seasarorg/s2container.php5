@@ -4,7 +4,4 @@ components:
             - initMethod: .
                 name: "addMessage"
                 - arg: Hello
-            - initMethod: .
-                - arg:
-                    php:>
-                      $component->addMessage("World!")
+            - initMethod: $component->addMessage("World!")

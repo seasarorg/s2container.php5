@@ -17,15 +17,11 @@ components:
         name: "s3"
         autoBinding: "property"
         - class: "S_S2Container_YamlS2ContainerBuilder"
-            - arg: .
-                php:>
-                    "val 1."
-            - arg: o
+            - arg: "val 1."
+            - php: o
     - component: .
         name: "s4"
         autoBinding: "none"
         - class: "S_S2Container_YamlS2ContainerBuilder"
-            - arg: .
-                php:>
-                    "val 1."
-            - arg: o
+            - arg: "val 1."
+            - php: o

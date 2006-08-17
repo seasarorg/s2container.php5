@@ -49,13 +49,10 @@ components:
             - arg: .
                 - component: .
                     - class: php_class
-            - arg: .
-                php:>
-                    php expression
-            - arg: .
-                php:>
-                        p
-                        h
-                        p
-                        expression
-                        multiline
+            - php: php expression
+            - php:>
+                    p
+                    h
+                    p
+                    expression
+                    multiline

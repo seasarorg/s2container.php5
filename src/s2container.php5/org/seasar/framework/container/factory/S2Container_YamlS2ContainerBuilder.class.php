@@ -172,18 +172,8 @@ final class S2Container_YamlS2ContainerBuilder
     private function _setupDefs($componentDef, array &$component, $className)
     {
         $name = $this->_getName($component);
-        if(isset($component['arg'])){
-            $arg = $component['arg'];
-            if(is_array($arg) && !isset($arg['php'])){
-                foreach($arg as &$_arg){
-                    if(!is_array($_arg)){
-                        $_arg = array('arg' => $_arg);
-                    }
-                    $componentDef->addArgDef($this->_setupArgDef($_arg));
-                }
-            } else {
-                $componentDef->addArgDef($this->_setupArgDef($component));
-            }
+        if(isset($component['arg']) || isset($component['php'])){
+            $componentDef->addArgDef($this->_setupArgDef($component));
         }
 
         if(isset($component['property'])){
@@ -211,6 +201,8 @@ final class S2Container_YamlS2ContainerBuilder
             $componentDef->addAspectDef($this->_setupAspectDef($component, $className));
         }
 
+        $this->_setupMetaDef($component, $componentDef);
+
         if(is_array($component)){
             foreach($component as &$comp){
                 if(!is_array($comp)){
@@ -219,7 +211,6 @@ final class S2Container_YamlS2ContainerBuilder
                 $this->_setupDefs($componentDef, $comp, $className);
             }
         }
-        $this->_setupMetaDef($component, $componentDef);
     }
     // }}}
 
@@ -229,9 +220,13 @@ final class S2Container_YamlS2ContainerBuilder
      */
     private function _createComponentDef(array &$component, $className)
     {
+        $exp = '';
         $name = $this->_getName($component);
         $componentDef = new S2Container_ComponentDefImpl($className, $name);
-        $componentDef->setExpression('');
+        if($component['component'] != '.'){
+            $exp = $component['component'];
+        }
+        $componentDef->setExpression($exp);
 
         if (isset($component['instance'])) {
             $componentDef->setInstanceMode($component['instance']);
@@ -264,9 +259,28 @@ final class S2Container_YamlS2ContainerBuilder
      */
     private function _setupArgDefInternal(array &$arg, S2Container_ArgDef $argDef)
     {
+        if(isset($arg['arg'], $arg['php'])){
+            $_arg = $arg['arg'];
+            $_php = $arg['php'];
+            if(!is_array($_arg) && $_arg == '.'){
+                $_array = array('php' => $_php);
+                return $this->_setupArgDefInternal($_array, $argDef);
+            }
+        }
         if(isset($arg['php'])){
-            $injectValue = $arg['php'];
-            $argDef->setExpression($injectValue);
+            $php = $arg['php'];
+            if(is_array($php)){
+                return $this->_setupArgDefEach('php', $php, $argDef);
+            }
+            $argDef->setExpression($php);
+            S2Container_ChildComponentDefBindingUtil::put($php, $argDef);
+            return;
+        } else if($this->__issetValue('arg', $arg)){
+            $args = $arg['arg'];
+            if(is_array($args)){
+                return $this->_setupArgDefEach('arg', $args, $argDef);
+            }
+            $argDef->setValue($args);
             return;
         }
 
@@ -276,24 +290,24 @@ final class S2Container_YamlS2ContainerBuilder
             return;
         }
 
-        if(isset($arg['arg'])){
-            $_arg = $arg['arg'];
-            if(is_array($_arg)){
-                if(isset($_arg['php'])){
-                    return $this->_setupArgDefInternal($_arg, $argDef);
-                }
-            } else {
-                if($_arg != '.'){
-                    $argDef->setValue($_arg);
-                    S2Container_ChildComponentDefBindingUtil::put($_arg, $argDef);
-                    return;
-                }
-            }
-        }
-
         foreach($arg as $_arg){
             if(!is_array($_arg)){
                 continue;
+            }
+            return $this->_setupArgDefInternal($_arg, $argDef);
+        }
+    }
+    // }}}
+
+    // {{{
+    /**
+     *
+     */
+    private function _setupArgDefEach($key, array &$arg, S2Container_ArgDef $argDef)
+    {
+        foreach($arg as &$_arg){
+            if(!is_array($_arg)){
+                $_arg = array($key => $_arg);
             }
             return $this->_setupArgDefInternal($_arg, $argDef);
         }
@@ -359,24 +373,13 @@ final class S2Container_YamlS2ContainerBuilder
     private function _setupAspectDef(array $aspect, $targetClassName)
     {
         if (isset($aspect['pointcut'])) {
-            $pointcuts = split(',', $aspect['pointcut']);
+            $pointcuts = explode(',', $aspect['pointcut']);
             $pointcut = new S2Container_PointcutImpl($pointcuts);
         } else {
             $pointcut = new S2Container_PointcutImpl($targetClassName);
         }
 
-        if($this->__issetArray(0, $aspect)){
-            return $this->_setupAspectDef($aspect[0], $targetClassName);
-        }
-
         $aspectDef = new S2Container_AspectDefImpl($pointcut);
-        if(isset($aspect['php'])){
-            $injectValue = $aspect['php'];
-            $aspectDef->setExpression($injectValue);
-            S2Container_ChildComponentDefBindingUtil::put($injectValue, $aspectDef);
-            return $aspectDef;
-        }
-
         if(isset($aspect['component'])){
             $childComponent = $this->_setupComponentDef($aspect);
             $aspectDef->setChildComponentDef($childComponent);
@@ -384,14 +387,20 @@ final class S2Container_YamlS2ContainerBuilder
         }
 
         $aspectValue = null;
-        if($this->__issetValue('aspect', $aspect)){
-            $aspectValue = $aspect['aspect'];
+        if($this->__issetArray('aspect', $aspect)){
+            if($this->__issetValue('aspect', $aspect)){
+                $aspectValue = $aspect['aspect'];
+            } else {
+                $aspectValue = $aspect;
+            }
         }
-        if($this->__issetValue('arg', $aspect)){
-            $aspectValue = $aspect['arg'];
-        }
-        if($this->__issetArray('php', $aspectValue)){
-            $aspectValue = $aspectValue['php'];
+        if(is_array($aspectValue)){
+            if($this->__issetValue('arg', $aspectValue)){
+                $aspectValue = $aspectValue['arg'];
+            }
+            if($this->__issetValue('php', $aspectValue)){
+                $aspectValue = $aspectValue['php'];
+            }
         }
         if($aspectValue !== null){
             $aspectDef->setExpression($aspectValue);

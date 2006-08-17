@@ -5,19 +5,17 @@ components:
         name: "r"
         - class: "R_S2Container_YamlS2ContainerBuilder"
             - initMethod: .
-                name: setVal1
+                name: "setVal1"
                 - arg: "val 1."
                     - meta: .
                         name: "m1"
                         - arg: "m1-val1"
                     - meta: .
                         name: "m2"
-                        - arg: .
-                            php:>
-                             1+1
+                        - php: 1+1
                     - meta: .
                         name: "m3"
-                        - arg: b
+                        - php: "b"
     - component: .
         name: "b"
         - class: "B_S2Container_YamlS2ContainerBuilder"

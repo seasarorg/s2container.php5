@@ -4,11 +4,11 @@ components:
     - component: .
         name: "n"
         - class: N_S2Container_YamlS2ContainerBuilder
-            - arg: d
+            - php: d
     - component: .
         name: "m"
         - class: N_S2Container_YamlS2ContainerBuilder
-            - arg: d
+            - php: d
     - component: .
         name: "d" 
         - class: D_S2Container_YamlS2ContainerBuilder
@@ -16,7 +16,7 @@ components:
     - component: .
         name: "o"
         - class: N_S2Container_YamlS2ContainerBuilder
-            - arg:
+            - arg: .
                 - component: .
                     name: "e"
                     - class: D_S2Container_YamlS2ContainerBuilder

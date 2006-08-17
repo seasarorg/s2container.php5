@@ -3,26 +3,19 @@ components:
     - component: .
         name: "date"
         - class: "Date_S2Container_YamlS2ContainerBuilder"
-            - aspect: .
-                - pointcut: "getT"
-                    - arg: .
-                        php:>
-                           new S2Container_TraceInterceptor()
+            - aspect: new S2Container_TraceInterceptor()
+                pointcut: "getT"
 
     - component: .
         name: "day"
         - class: "Date_S2Container_YamlS2ContainerBuilder"
             - aspect: .
-                - pointcut: "g.+D"
-                    - arg: .
-                        php:>
-                           new S2Container_TraceInterceptor()
+                pointcut: "g.+D"
+                php: new S2Container_TraceInterceptor()
 
     - component: .
         name: "day2"
         - class: "Date_S2Container_YamlS2ContainerBuilder"
             - aspect: .
-                - pointcut: "!getT"
-                    - arg: .
-                        php:>
-                          new S2Container_TraceInterceptor()
+                pointcut: "!getT"
+                php: new S2Container_TraceInterceptor()

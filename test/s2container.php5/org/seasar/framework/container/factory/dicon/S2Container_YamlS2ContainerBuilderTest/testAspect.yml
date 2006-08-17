@@ -4,14 +4,10 @@ components:
     - component: .
         name: date
         - class: Date_S2Container_YamlS2ContainerBuilder
-            - aspect: .
-                pointcut: getTime
-                - arg:
-                    php: new S2Container_TraceInterceptor
+            - aspect: new S2Container_TraceInterceptor()
+                pointcut: "getTime"
 
     - component: .
         name: e
         - class: DelegateA_S2Container_YamlS2ContainerBuilder
-            - aspect: .
-                - arg:
-                    php: new S2Container_TraceInterceptor
+            - aspect: new S2Container_TraceInterceptor
