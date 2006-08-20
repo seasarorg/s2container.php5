@@ -96,9 +96,12 @@ final class S2ContainerMemcacheFactory {
      *          'cache_compress' => 'cached compress: boolean',
      *          'cache_expire' => 'expiration time(second time) of the item',
      *        );
-     * @param $options
+     * @param $options set options to this
      */
-    private function initialize(array $options){
+    public function initialize(array $options = null){
+        if($options === null){
+            return;
+        }
         $this->host = $options['host'];
         
         if(isset($options['port'])){
@@ -113,7 +116,13 @@ final class S2ContainerMemcacheFactory {
         if(isset($options['cache_expire'])){
             $this->cache_expire = $options['cache_expire'];
         }
-
+    }
+    
+    /**
+     * Connection
+     * Memcache Connection
+     */
+    private function connect(){
         if(isset($this->timeout)){
             $conn = $this->memcache->connect($this->host, $this->port, $this->timeout);
         } else {
@@ -125,11 +134,11 @@ final class S2ContainerMemcacheFactory {
     }
 
     /**
-     * Memcache Connection (Singletion)
-     * @param $options memcache options; see the self::setOption
+     * Create S2ContainerMemcacheFactory instance(Singletion)
+     * @param $options stored items option of memcached; see the self::setOption
      * @return S2ContainerMemcacheFactory
      */
-    private static function getInstance(array $options){
+    public static function getInstance(array $options = null){
         if(null === self::$INSTANCE){
             self::$INSTANCE = new self();
         }
@@ -144,14 +153,14 @@ final class S2ContainerMemcacheFactory {
      * if not exists 
      *  when S2Container object is generated, and it stored item in memcached
      * memcached key name of dicon path or optional cacneName
-     * @param $options connection and stored items option of memcached
      * @param $diconPath dicon file path
      * @param $cacheName (option)cache key name
      * @return S2Container object
      */
-    public static function create(array $options, $diconPath, $cacheName = null){
+    public static function create($diconPath, $cacheName = null){
         $logger = S2Container_S2Logger::getLogger(__CLASS__);
-        $memcache = self::getInstance($options);
+        $memcache = self::getInstance();
+        $memcache->connect();
         if($cacheName == null){
             $cacheName = self::createCacheKeyName($diconPath);
         }

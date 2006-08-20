@@ -24,28 +24,47 @@
 // $Id$
 /**
  */
-class S2ContainerClassLoader {
+interface S2Loader {
+    public static function __load($class);
+}
+ 
+class S2ContainerClassLoader implements S2Loader {
     static $CLASSES = array();
+    
+    /**
+     * ClassLoaderを追加します。
+     * 登録できるClassLoaderクラスはS2Loaderを実装する必要があります。
+     * @param $loader S2Loaderを実装しているLoaderクラスを登録します。
+     */
+    public static function addLoader(S2Loader $loader){
+        return spl_autoload_register(array($loader, '__load'));
+    }
+    
+    /**
+     * ClassLoaderを追加します。
+     * 登録できるClassLoader関数をautoloaderとして登録します。
+     * @param $loader ClassLoaderに登録する関数
+     */
+    public static function addLoaderFunction($loader){
+        return spl_autoload_register($loader);
+    }
 
-    public static function load($className){
+    public static function __load($className){
         if(array_key_exists($className,self::$CLASSES)){
             require_once(S2CONTAINER_PHP5 . self::$CLASSES[$className]);
             return true;
-        }
-        else if(isset(self::$USER_CLASSES[$className])){
+        } else if(isset(self::$USER_CLASSES[$className])){
             require_once(self::$USER_CLASSES[$className]);
             return true;
         }
-        else{
-            return false;
-       }
+        return false;
     }
 
     static $USER_CLASSES = array();
     public static function import($path,$key=null){
         if(is_array($path) && $key == null){
             self::$USER_CLASSES = array_merge(self::$USER_CLASSES, $path);
-        }else if(is_dir($path) and is_readable($path)){
+        } else if(is_dir($path) && is_readable($path)) {
             $d = dir($path);
             while (false !== ($entry = $d->read())) {
                 if(preg_match("/([^\.]+).+php$/",$entry,$matches)){
@@ -53,18 +72,20 @@ class S2ContainerClassLoader {
                 }
             }
             $d->close();
-        }else if(is_file($path) and is_readable($path)){
+        } else if(is_file($path) && is_readable($path)) {
             if($key == null){
                 $file = basename($path);
                 if(preg_match("/([^\.]+).+php$/",$file,$matches)){
                     S2ContainerClassLoader::$USER_CLASSES[$matches[1]] = $path;
                 }
-            }else{
+            } else {
                 S2ContainerClassLoader::$USER_CLASSES[$key] = $path;
             }
-        }else{
+        } else {
             trigger_error("invalid args. path : $path, key : $key",E_USER_WARNING);
         }
     }
 }
+
+S2ContainerClassLoader::addLoader('S2ContainerClassLoader');
 ?>
