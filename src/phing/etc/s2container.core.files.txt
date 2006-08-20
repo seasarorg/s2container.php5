@@ -69,3 +69,5 @@ S2Container_MethodInvocation
 S2Container_S2MethodInvocation
 S2Container_S2MethodInvocationImpl
 S2ContainerClassLoader
+S2ContainerFactory
+S2ContainerMessageUtil

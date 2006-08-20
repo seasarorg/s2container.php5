@@ -52,5 +52,29 @@ final class S2Container_StringUtil
         
         return $path;
     } 
+
+    /**
+     * @param mixed
+     * @return string 
+     */
+    public static function mixToString($val) {
+        if (is_array($val)) {
+            $c = count($val);
+            return "array($c)";
+        } else if (is_object($val)){
+            $name = get_class($val);
+            return "object<$name>";
+        } else if (is_bool($val)){
+            if ($val) {
+                return 'true';
+            } else {
+                return 'false';
+            }
+        } else if (is_null($val)){
+            return 'null';
+        } else {
+            return $val;   
+        }
+    }
 }
 ?>

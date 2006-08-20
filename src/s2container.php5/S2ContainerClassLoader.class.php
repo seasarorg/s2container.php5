@@ -25,14 +25,18 @@
 /**
  */
 class S2ContainerClassLoader {
-    static $CLASSES = array();
+    //static $CLASSES = array();
 
     public static function load($className){
+        /*
         if(array_key_exists($className,self::$CLASSES)){
             require_once(S2CONTAINER_PHP5 . self::$CLASSES[$className]);
             return true;
         }
-        else if(isset(self::$USER_CLASSES[$className])){
+        else 
+        */
+
+        if(isset(self::$USER_CLASSES[$className])){
             require_once(self::$USER_CLASSES[$className]);
             return true;
         }
@@ -49,7 +53,9 @@ class S2ContainerClassLoader {
             $d = dir($path);
             while (false !== ($entry = $d->read())) {
                 if(preg_match("/([^\.]+).+php$/",$entry,$matches)){
-                    S2ContainerClassLoader::$USER_CLASSES[$matches[1]] = "$path/$entry";
+                    S2ContainerClassLoader::$USER_CLASSES[$matches[1]] = $path 
+                                                                       . DIRECTORY_SEPARATOR
+                                                                       . $entry;
                 }
             }
             $d->close();

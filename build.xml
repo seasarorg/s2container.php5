@@ -3,6 +3,7 @@
 
     <taskdef name="copy2" classname="src.phing.task.CopyFilesToOneDirTask" />
     <taskdef name="gcore" classname="src.phing.task.GenerateCoreFileTask" />
+    <taskdef name="pearpkg2" classname="src.phing.task.PearPkg2SupportTask" />
 
     <target name="init">
         <property name="project.name" value="${phing.project.name}" />
@@ -11,8 +12,9 @@
         <property name="project.state" value="stable" />
         <property name="project.build.dir" value="${project.basedir}/build" />
         <property name="project.src.dir" value="${project.basedir}/src" />
+        <property name="project.pear.uri" value="http://s2container.php5.seasar.org/download/S2Container-${project.version}" />
         <property name="license.file" value="Apache_Software_License_2.0.txt" />
-        <property name="release.notes" value="Release 1.1.1" />
+        <property name="release.notes" value="Release ${project.version}" />
         <property name="td" value="" />
         <property name="tt" value="**/*Test.class.php" />
     </target>
@@ -50,7 +52,7 @@
     <target name="pear-pkg-xml" depends="build">
         <pearpkg name="${package.name}" 
                  dir="${project.build.dir}/${project.name}" 
-                 destFile="${project.build.dir}/${project.name}/package-dist.xml">
+                 destFile="${project.build.dir}/${project.name}/package.xml">
             <fileset dir="${project.build.dir}/${project.name}">
                 <include name="**/*"/>
             </fileset>
@@ -90,6 +92,9 @@
             </mapping>
         </pearpkg>
 
+        <pearpkg2 uri="${project.pear.uri}"
+                  pkgFile="${project.build.dir}/${project.name}/package.xml"/>
+<!--
         <copy file="${project.build.dir}/${project.name}/package-dist.xml"
               tofile="${project.build.dir}/${project.name}/package.xml">
             <filterchain>
@@ -98,10 +103,11 @@
                 </replaceregexp>
             </filterchain>
         </copy>
+-->
     </target>
  
     <target name="pear-pkg" depends="pear-pkg-xml">
-        <exec command="pear package " 
+        <exec command="pear package package2.xml" 
               dir="${project.build.dir}/${project.name}" />
 
         <move toDir="${project.build.dir}/pear" overwrite="true">
@@ -112,7 +118,7 @@
         </move>
     </target>
 
-    <target name="test" depends="init">
+    <target name="test" depends="build">
         <echo>test directory : test/s2container.php5/${td}</echo>
         <echo>test target    : ${tt}</echo>
     	<php expression="require_once('test/test.inc.php')"/>

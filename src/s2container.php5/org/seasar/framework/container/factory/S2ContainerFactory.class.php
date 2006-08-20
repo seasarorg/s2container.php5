@@ -27,65 +27,27 @@
  */
 final class S2ContainerFactory
 {
-    public static $BUILDER_CONFIG_PATH = null;
+    public static $BUILDERS = array();
 
     private static $instance = null;
-
-    private $builderProps_;
-    private $builders_ = array();
-    private $defaultBuilder_;
-    private $processingPaths_ = array();
-        
-    /**
-     * 
-     */
-    private function __construct()
-    {
-        $this->defaultBuilder_ = 
-                    new S2Container_XmlS2ContainerBuilder();
-        $this->builders_['xml'] = $this->defaultBuilder_;
-        $this->builders_['dicon'] = $this->defaultBuilder_;
-
-        $this->_setupBuilderProps();
-    }
-
-
-    /**
-     * 
-     */
-    public static function getInstance()
-    {
-        if(self::$instance == null ){
-            self::$instance = new S2ContainerFactory();
-        }
-        return self::$instance;   
-    }
+    private static $builders_ = array();
+    private static $processingPaths_ = array();
 
     /**
      * @param string dicon path 
      */
     public static function create($path) 
     {
-        return self::getInstance()->_createInternal($path);
-    }
-    
-    /**
-     * 
-     */
-    public static function includeChild(S2Container $parent, $path)
-    {
-        return self::getInstance()->_includeChildInternal($parent, $path);
-    }
-    
-    /**
-     * 
-     */
-    private function _createInternal($path) 
-    {
-        $this->_enter($path);
-        $ext = $this->_getExtension($path);
-        $container = $this->_getBuilder($ext)->build($path);
-        $this->_leave($path);
+        self::_enter($path);
+        $ext = pathinfo($path,PATHINFO_EXTENSION);
+        $container = null;
+        try {
+            $container = self::_getBuilder($ext)->build($path);
+            self::_leave($path);
+        } catch (Exception $e) {
+            self::_leave($path);
+            throw $e;
+        }
 
         return $container;
     }
@@ -93,70 +55,57 @@ final class S2ContainerFactory
     /**
      * 
      */
-    private function _includeChildInternal(S2Container $parent, $path)
+    public static function includeChild(S2Container $parent, $path)
     {
-        $this->_enter($path);
+        self::_enter($path);
         $root = $parent->getRoot();
         $child = null;
-        if ($root->hasDescendant($path)) {
-            $child = $root->getDescendant($path);
-            $parent->includeChild($child);
-        } else {
-            $ext = $this->_getExtension($path);
-            $builder = $this->_getBuilder($ext);
-            $child = $builder->includeChild($parent,$path);
-            $root->registerDescendant($child);
+        try {
+            if ($root->hasDescendant($path)) {
+                $child = $root->getDescendant($path);
+                $parent->includeChild($child);
+            } else {
+                $ext = pathinfo($path,PATHINFO_EXTENSION);
+                $builder = self::_getBuilder($ext);
+                $child = $builder->includeChild($parent,$path);
+                $root->registerDescendant($child);
+            }
+            self::_leave($path);
+
+        } catch (Exception $e) {
+            self::_leave($path);
+            throw $e;
         }
-        $this->_leave($path);
+
         return $child;
     }
 
     /**
      * 
      */
-    private function _setupBuilderProps(){
-
-        if(self::$BUILDER_CONFIG_PATH == null){
-            self::$BUILDER_CONFIG_PATH = 
-                S2CONTAINER_PHP5 . "/S2CntainerBuilder.properties";
-        }
-        
-        if (is_readable(self::$BUILDER_CONFIG_PATH)) {
-               $this->builderProps_ = 
-                   parse_ini_file(self::$BUILDER_CONFIG_PATH);
-        }
-    }
-    
-    /**
-     * 
-     */
-    private function _getExtension($path)
-    {
-        $filename = basename($path);
-        preg_match('/\.([a-zA-Z0-9]+?)$/',$filename,$regs);
-        return $regs[1];
-    }
-    
-    /**
-     * 
-     */
-    private function _getBuilder($ext)
+    private static function _getBuilder($ext)
     {
         $builder = null;
 
-        if (array_key_exists($ext,$this->builders_)) {
-            $builder = $this->builders_[$ext];
-            if ($builder != null) {
-                return $builder;
-            }
+        if (array_key_exists($ext,self::$builders_)) {
+            return self::$builders_[$ext];
         }
-        
-        $className = $this->builderProps_[$ext];
+
+        $className = array_key_exists($ext,self::$BUILDERS) 
+                     ? self::$BUILDERS[$ext]
+                     : null;
         if ($className != null) {
             $builder = new $className();
-            $this->builders_[$ext] = $builder;
+            if (!$builder instanceof S2ContainerBuilder) {
+                throw new S2Container_S2RuntimeException('ESSR1011',
+                    array($ext,$className),
+                    null);
+            }
+            self::$builders_[$ext] = $builder;
         } else {
-            $builder = $this->defaultBuilder_;
+            throw new S2Container_S2RuntimeException('ESSR1012',
+                array($ext),
+                null);
         }
         return $builder;
     }
@@ -164,21 +113,21 @@ final class S2ContainerFactory
     /**
      * 
      */
-    private function _enter($path)
+    private static function _enter($path)
     {
-        if (in_array($path,$this->processingPaths_)) {
+        if (in_array($path,self::$processingPaths_)) {
             throw new S2Container_CircularIncludeRuntimeException($path,
-                                  $this->processingPaths_);
+                                  self::$processingPaths_);
         }
-        $this->processingPaths_[] = $path;
+        array_push(self::$processingPaths_,$path);
     }
 
     /**
      * 
      */
-    private function _leave($path)
+    private static function _leave($path)
     {
-        array_pop($this->processingPaths_);
+        array_pop(self::$processingPaths_);
     }
 }
 ?>

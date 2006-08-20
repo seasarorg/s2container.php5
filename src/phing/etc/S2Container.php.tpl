@@ -85,15 +85,22 @@ ini_set('include_path',
 /**
  * S2Container.PHP5 Core Classes
  */
-//require_once('S2ContainerClassLoader.class.php');
 require_once('s2container.core.classes.php');
 
 /**
  * Messages Resouce File
  */
-require_once(S2CONTAINER_PHP5 .'/S2ContainerMessageUtil.class.php');
-if( class_exists("S2ContainerMessageUtil") ){
-    S2ContainerMessageUtil::addMessageResource(
+S2ContainerMessageUtil::addMessageResource(
                        S2CONTAINER_PHP5 . '/SSRMessages.properties');
-}
+//require_once(S2CONTAINER_PHP5 .'/S2ContainerMessageUtil.class.php');
+//if( class_exists("S2ContainerMessageUtil") ){
+//    S2ContainerMessageUtil::addMessageResource(
+//                       S2CONTAINER_PHP5 . '/SSRMessages.properties');
+//}
+
+/**
+ *
+ */
+S2ContainerFactory::$BUILDERS['dicon'] = 'S2Container_XmlS2ContainerBuilder';
+S2ContainerFactory::$BUILDERS['xml']   = 'S2Container_XmlS2ContainerBuilder';
 ?>

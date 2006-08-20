@@ -96,7 +96,7 @@ abstract class S2Container_AbstractAssembler
                     }
                 }
             } catch (S2Container_ComponentNotFoundRuntimeException $ex) {
-                $this->log_->warn($ex->getMessage(),__METHOD__);
+                $this->log_->info($ex->getMessage(),__METHOD__);
                 $args[$i] = null;
             }
         }

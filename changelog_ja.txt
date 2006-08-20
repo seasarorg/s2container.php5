@@ -1,5 +1,18 @@
 S2Container.PHP5 変更履歴
 
+1.1.2
+-------------------------------------------------------------------------------
+* org.seasar.framework.util
+  S2Container_StringUtil::mixToString() の追加
+* org.seasar.framework.aop.interceptors
+  S2Container_TraceInterceptorで、引数、戻り値表示で、
+  S2Container_StringUtil::mixToString() を使用するようにしました。
+* org.seasar.framework.container.assembler
+  S2Container_AbstractAssembler::getArgs() にて、自動バインディング対象
+  コンポーネントがS2Containerに存在しない場合のログレベルをwarnからinfoに変更
+* S2ContainerClassLoaderを使用する形のautoload.phpを用意
+
+
 1.1.1
 -------------------------------------------------------------------------------
 * org.seasar.framework.aop.proxy パッケージ
@@ -17,6 +30,7 @@ S2Container.PHP5 変更履歴
 * UnitTestを、simpletest から PHPUnit2 に移行しました。
 * S2CONTAINER_PHP5_DEBUG_EVAL 定数がtrueの場合に、eval関数で実行されるスクリ
   プトをDEBUGログに出力するようにしました。
+
 
 1.1.0
 -------------------------------------------------------------------------------

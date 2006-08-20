@@ -43,7 +43,7 @@ class S2Container_TraceInterceptor
            $argsTmp = array();
             $c = count($args);
             for ($i = 0; $i < $c; $i++) {
-                $argsTmp[] = $this->toString($args[$i]);
+                $argsTmp[] = S2Container_StringUtil::mixToString($args[$i]);
             }
             $buf .= implode(',',$argsTmp);
         }
@@ -54,7 +54,7 @@ class S2Container_TraceInterceptor
         try {
             $ret = $invocation->proceed();
             $buf .= " : ";
-            $buf .= $this->toString($ret);
+            $buf .= S2Container_StringUtil::mixToString($ret);
         } catch (Exception $t) {
             $buf .= " Exception : " . get_class($t) . " : ";
             $buf .= $t->getMessage();
@@ -65,18 +65,6 @@ class S2Container_TraceInterceptor
             return $ret;
         } else {
             throw $cause;
-        }
-    }
-    
-    private function toString($val) {
-        if (is_array($val)) {
-            $c = count($val);
-            return "array($c)";
-        } else if (is_object($val)){
-            $name = get_class($val);
-            return "object<$name>";
-        } else {
-            return $val;   
         }
     }
 }
