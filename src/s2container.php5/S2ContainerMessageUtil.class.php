@@ -31,7 +31,7 @@ class S2ContainerMessageUtil {
 
     private static $msgMap_ = array();
     
-    private function construct() {
+    private function __construct() {
     }
     
     /**
@@ -65,11 +65,11 @@ class S2ContainerMessageUtil {
     
     public static function addMessageResource($resource){
         if(is_readable($resource)){
-            //self::$msgMap += parse_ini_file($resource);
             $msg = parse_ini_file($resource);
             self::$msgMap_ = array_merge(self::$msgMap_, $msg);
         } else {
-            echo "[ERROR] ${resource} file not found.\n";
+            S2Container_S2Logger::getLogger(__CLASS__)->
+                warn("$resource file not found.",__METHOD__);
         }
     }
 }

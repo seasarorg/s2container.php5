@@ -33,6 +33,10 @@ final class S2ContainerFactory
     private static $builders_ = array();
     private static $processingPaths_ = array();
 
+    private function __construct()
+    {
+    }
+    
     /**
      * @param string dicon path 
      */
