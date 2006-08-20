@@ -92,14 +92,9 @@ require_once('s2container.core.classes.php');
  */
 S2ContainerMessageUtil::addMessageResource(
                        S2CONTAINER_PHP5 . '/SSRMessages.properties');
-//require_once(S2CONTAINER_PHP5 .'/S2ContainerMessageUtil.class.php');
-//if( class_exists("S2ContainerMessageUtil") ){
-//    S2ContainerMessageUtil::addMessageResource(
-//                       S2CONTAINER_PHP5 . '/SSRMessages.properties');
-//}
 
 /**
- *
+ * S2ContainerBuilder default setup
  */
 S2ContainerFactory::$BUILDERS['dicon'] = 'S2Container_XmlS2ContainerBuilder';
 S2ContainerFactory::$BUILDERS['xml']   = 'S2Container_XmlS2ContainerBuilder';
