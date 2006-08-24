@@ -80,7 +80,7 @@ class S2Container_ArgDefImpl
     /**
      * @see S2Container_ArgDef::setContaine()
      */
-    public final function setContainer($container)
+    public final function setContainer(S2Container $container)
     {
         $this->container_ = $container;
         if ($this->childComponentDef_ != null) {

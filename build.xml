@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="s2container.php5" default="build" basedir=".">
+<project name="s2container.php5" default="info" basedir=".">
 
     <taskdef name="copy2" classname="src.phing.task.CopyFilesToOneDirTask" />
     <taskdef name="gcore" classname="src.phing.task.GenerateCoreFileTask" />
@@ -17,6 +17,7 @@
         <property name="release.notes" value="Release ${project.version}" />
         <property name="td" value="" />
         <property name="tt" value="**/*Test.class.php" />
+        <property name="dd" value="${project.src.dir}/${project.name}" />
     </target>
 
     <target name="clean" depends="init">
@@ -121,8 +122,8 @@
     <target name="test" depends="build">
         <echo>test directory : test/s2container.php5/${td}</echo>
         <echo>test target    : ${tt}</echo>
-    	<php expression="require_once('test/test.inc.php')"/>
-    	<phpunit2 haltonfailure="false" haltonerror="false">
+        <php expression="require_once('test/test.inc.php')"/>
+        <phpunit2 haltonfailure="false" haltonerror="false">
             <formatter type="plain" usefile="false"/>
             <batchtest>
                 <fileset dir="test/s2container.php5/${td}">
@@ -130,5 +131,30 @@
                 </fileset>
             </batchtest>
         </phpunit2>
+    </target>
+    
+    <target name="doc" depends="build">
+        <echo>src directory : src/s2container.php5/${dd}</echo>
+        <phpdoc title="${project.name} Documentation"
+            destdir="${project.build.dir}/apidocs"
+            sourcepath="src/s2container.php5/${dd}"
+            output="HTML:Smarty:PHP"
+            parseprivate="true"
+            linksource="false"/>
+    </target>
+
+    <target name="info">
+        <echo message="" />
+        <echo message="S2Container.PHP5 build script" />
+        <echo message="----------------------------" />
+        <echo message="available targets:"/>
+        <echo message="" />
+        <echo message="build    ---> build all; don't create pear-package" />
+        <echo message="pear-pkg ---> create pear-package" />
+        <echo message="test     ---> run unit test suite from test/s2container.php5/" />
+        <echo message="doc      ---> run phpdoc from src/s2container.php5/" />
+        <echo message="clean    ---> remove build directory" />
+        <echo message="----------------------------" />
+        <echo message="" />
     </target>
 </project>

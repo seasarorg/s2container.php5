@@ -22,41 +22,70 @@
 //
 // $Id$
 /**
- * @package org.seasar.framework.container
- * @author klove
+ * コンポーネントのコンストラクタおよびメソッドに与えられる引数定義のためのインターフェースです。
+ * 
+ * @copyright  2005-2006 the Seasar Foundation and the Others.
+ * @license    http://www.apache.org/licenses/LICENSE-2.0
+ * @version    Release: 1.1.2
+ * @link       http://s2container.php5.seasar.org/
+ * @since      Class available since Release 1.0.0
+ * @package    org.seasar.framework.container
  */
 interface S2Container_ArgDef extends S2Container_MetaDefAware
 {
     /**
-     *
+     * 引数定義の値を返します。
+     * <P>
+     * 引数定義の値とは、diconファイルに記述した<b><arg></b>要素の内容です。
+     * インジェクションする際に、コンストラクタや初期化メソッド等の引数値になります。
+     * </P>
+     * 
+     * @return mixed 引数定義の値
      */
     public function getValue();
     
     /**
-     * @return S2Container
+     * 引数定義の値を設定します。
+     * 
+     * @param mixed $value 引数定義の値
+     */
+    public function setValue($value);
+
+    /**
+     * 引数を評価するコンテキストとなるS2コンテナを返します。
+     * 
+     * @return S2Container 引数を評価するコンテキストとなるS2コンテナ
      */
     public function getContainer();
     
     /**
-     * @param S2Container
+     * 引数を評価するコンテキストとなるS2コンテナを設定します。
+     * 
+     * @param S2Container $container 引数を評価するコンテキストとなるS2コンテナ
      */
-    public function setContainer($container);
+    public function setContainer(S2Container $container);
     
     /**
-     * @return string
+     * 引数定義の値となる式を返します。
+     * 
+     * @return string 引数定義の値となる式
      */
     public function getExpression();
 
     /**
-     * @param string
+     * 引数定義の値となる式を設定します。
+     * 
+     * @param string $expression 引数定義の値となる式
      */
-    public function setExpression($str);
+    public function setExpression($expression);
     
     /**
-     * @param S2Container_ComponentDef
+     * 引数定義の値となるコンポーネント定義を設定します。
+     * 
+     * @param S2Container_ComponentDef $componentDef 
+     *        引数定義の値となるコンポーネント定義
      */
-    public function setChildComponentDef(S2Container_ComponentDef 
-                                                    $componentDef);
+    public function setChildComponentDef(S2Container_ComponentDef $componentDef);
 
 }
 ?>
