@@ -26,19 +26,6 @@
  * @author nowel
  * @version test
  */
-
-interface S2Container_PropertyAnnotationHandler {
-    public function getPropertyType(Reflector $reflector, $defaultValue);
-}
-
-class S2Container_DefaultPropertyAnnotationHandler
-    implements S2Container_PropertyAnnotationHandler {
-    
-    public function getPropertyType(Reflector $reflector, $defaultValue){
-        return $defaultValue;
-    }
-}
-
 class S2Container_PropertyInterType extends S2Container_AbstractInterType {
     
     const SETTER_PREFIX = "set";
@@ -51,8 +38,6 @@ class S2Container_PropertyInterType extends S2Container_AbstractInterType {
     const STR_READ = "read";
     const STR_WRITE = "write";
     const STR_READWRITE = "readwrite";
-    //const TIGER_ANNOTATION_HANDLER = "org.seasar.framework.aop.intertype.TigerPropertyAnnotationHandler";
-    //const BACKPORT175_ANNOTATION_HANDLER = "org.seasar.framework.aop.intertype.Backport175PropertyAnnotationHandler";
 
     private static $logger = null;
     private static $annotationHandler = null;

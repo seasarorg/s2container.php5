@@ -25,9 +25,6 @@
  * @package org.seasar.framework.container.impl
  * @author nowel
  */
-interface S2Container_InterTypeDef {
-}
-
 class S2Container_InterTypeDefImpl 
     extends S2Container_ArgDefImpl
     implements S2Container_InterTypeDef
