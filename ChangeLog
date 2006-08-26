@@ -1,4 +1,6 @@
 
+================ S2Container.PHP5-1.1.2 更新履歴 ===================
+
 2006-08-26 S2Container.PHP5-1.1.2
     * add: package org.seasar.framework.exception
       S2Container_IndexOutOfBoundsException を追加しました。
@@ -18,6 +20,7 @@
     * add: S2ContainerClassLoaderを使用する形のautoload.phpを用意
     * modify: pacakge org.seasar.framework.container
       S2Container_ArgDef::setContainer() の引数にType Hinting を追加しました。
+
 
 2006-07-09 S2Container.PHP5-1.1.1
 
