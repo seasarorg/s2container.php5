@@ -30,6 +30,7 @@
  * @link       http://s2container.php5.seasar.org/
  * @since      Class available since Release 1.0.0
  * @package    org.seasar.framework.container
+ * @author     klove
  */
 interface S2Container_ArgDef extends S2Container_MetaDefAware
 {

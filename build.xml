@@ -4,6 +4,7 @@
     <taskdef name="copy2" classname="src.phing.task.CopyFilesToOneDirTask" />
     <taskdef name="gcore" classname="src.phing.task.GenerateCoreFileTask" />
     <taskdef name="pearpkg2" classname="src.phing.task.PearPkg2SupportTask" />
+    <taskdef name="alltest" classname="src.phing.task.PHPUnit2AllTestTask" />
 
     <target name="init">
         <property name="project.name" value="${phing.project.name}" />
@@ -17,7 +18,7 @@
         <property name="release.notes" value="Release ${project.version}" />
         <property name="td" value="" />
         <property name="tt" value="**/*Test.class.php" />
-        <property name="dd" value="${project.src.dir}/${project.name}" />
+        <property name="dd" value="" />
     </target>
 
     <target name="clean" depends="init">
@@ -133,6 +134,17 @@
         </phpunit2>
     </target>
     
+    <target name="all-test" depends="build">
+        <echo>test directory : test/s2container.php5/${td}</echo>
+        <php expression="require_once('test/test.inc.php')"/>
+        <alltest name="${project.name} All Test">
+            <fileset dir="test/s2container.php5/${td}">
+                <include name="${tt}"/>
+                <exclude name="**/*PDO*/**"/>
+            </fileset>
+        </alltest>
+    </target>
+
     <target name="doc" depends="build">
         <echo>src directory : src/s2container.php5/${dd}</echo>
         <phpdoc title="${project.name} Documentation"

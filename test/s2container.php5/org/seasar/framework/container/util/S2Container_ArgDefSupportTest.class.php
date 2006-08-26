@@ -20,69 +20,42 @@
 // | Authors: klove                                                       |
 // +----------------------------------------------------------------------+
 //
-// $Id$
+// $Id:$
 /**
  * @copyright  2005-2006 the Seasar Foundation and the Others.
  * @license    http://www.apache.org/licenses/LICENSE-2.0
  * @version    Release: 1.1.2
  * @link       http://s2container.php5.seasar.org/
- * @since      Class available since Release 1.0.0
+ * @since      Class available since Release 1.1.2
  * @package    org.seasar.framework.container.util
  * @author     klove
  */
-final class S2Container_ArgDefSupport
-{
-    private $argDefs_ = array();
-    private $container_;
-    
-    /**
-     * 
-     */
-    public function __construct()
-    {
+class S2Container_ArgDefSupportTest
+    extends PHPUnit2_Framework_TestCase {
+
+    public function __construct($name) {
+        parent::__construct($name);
     }
 
-    /**
-     * @param S2Container_ArgDef
-     */
-    public function addArgDef(S2Container_ArgDef $argDef)
-    {
-        if ($this->container_ != null) {
-            $argDef->setContainer($this->container_);
-        }
-        $this->argDefs_[] = $argDef;
+    public function setUp(){
+        print __CLASS__ . "::{$this->getName()}\n";
     }
-    
-    /**
-     * @return int
-     */
-    public function getArgDefSize()
-    {
-        return count($this->argDefs_);
+
+    public function tearDown() {
+        print "\n";
     }
-    
-    /**
-     * @param int
-     * @return S2Container_ArgDef
-     */
-    public function getArgDef($index)
-    {
-        if (!isset($this->argDefs_[$index])) {
-        	throw new S2Container_IndexOutOfBoundsException($index);
+
+    function testGetArgDefException() {
+        $support = new S2Container_ArgdefSupport();
+        try {
+        	$support->getArgDef(99);
+            $this->fail('suppose not to reach here.');
+        } catch (Exception $e) {
+        	print "{$e->getMessage()} \n";
+            $this->assertType('S2Container_IndexOutOfBoundsException',$e);
         }
-        return $this->argDefs_[$index];
-    }
-  
-    /**
-     * @param S2Container
-     */  
-    public function setContainer(S2Container $container)
-    {
-        $this->container_ = $container;
-        $o = $this->getArgDefSize();
-        for ($i = 0; $i < $o; $i++) {
-            $this->getArgDef($i)->setContainer($container);
-        }
+
     }
 }
+
 ?>

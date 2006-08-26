@@ -20,49 +20,27 @@
 // | Authors: klove                                                       |
 // +----------------------------------------------------------------------+
 //
-// $Id$
+// $Id:$
 /**
- * このインターフェースは、 {@link ArgDef 引数定義}を登録および取得することができるオブジェクトを表します。
- * <p>
- * 引数定義は複数登録することが出来ます。 引数定義の取得はインデックス番号を指定して行います。
- * </p>
+ * 配列のkeyに存在しないインデックス番号が指定された場合に<b>throw</b>される例外クラスです。
  * 
  * @copyright  2005-2006 the Seasar Foundation and the Others.
  * @license    http://www.apache.org/licenses/LICENSE-2.0
  * @version    Release: 1.1.2
  * @link       http://s2container.php5.seasar.org/
- * @since      Class available since Release 1.0.0
- * @package    org.seasar.framework.container
+ * @since      Class available since Release 1.1.2
+ * @package    org.seasar.framework.exception
  * @author     klove
  */
-interface S2Container_ArgDefAware
+final class S2Container_IndexOutOfBoundsException extends Exception
 {
     /**
-     * 引数定義を登録(追加)します。
-     * 
-     * @param S2Container_ArgDef $argDef 引数定義
+     * @param integer $outOfIndex 配列のkeyに存在しないインデックス番号
      */
-    public function addArgDef(S2Container_ArgDef $argDef);
-    
-    /**
-     * 登録されている{@link ArgDef 引数定義}の数を返します。
-     * 
-     * @return integer 登録されている引数定義の数
-     */
-    public function getArgDefSize();
-    
-    /**
-     * 指定されたインデックス番号<b>index</b>の引数定義を返します。
-     * <p>
-     * インデックス番号は、 登録した順番に 0,1,2,… となります。
-     * </p>
-     * 
-     * @param integer $index
-     *            引数定義を指定するインデックス番号
-     * @return S2Container_ArgDef 引数定義
-     * @throws S2Container_IndexOutOfBoundsException
-     *             インデックス番号が範囲外の場合 (index < 0 || index >= getArgDefSize())
-     */
-    public function getArgDef($index);
+    public function __construct($outOfIndex)
+    {
+        parent::__construct(__CLASS__ . " : Out of index <$outOfIndex>");
+    }
+  
 }
 ?>
