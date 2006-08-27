@@ -51,6 +51,9 @@ class S2Container_ComponentDefImpl
     private $aspectDefSupport_;
     
     private $metaDefSupport_;
+    
+    // @author nowel
+    private $interTypeDefSupport_;
 
     private $instanceMode_ = S2Container_ContainerConstants::INSTANCE_SINGLETON;
 
@@ -63,7 +66,7 @@ class S2Container_ComponentDefImpl
      * @param string component name  
      */
     public function __construct($componentClass = "",
-                                                 $componentName = "")
+                                $componentName = "")
     {
         if ($componentClass instanceof ReflectionClass) {
             $this->componentClass_ = $componentClass;
@@ -82,6 +85,8 @@ class S2Container_ComponentDefImpl
         $this->destroyMethodDefSupport_ = new S2Container_DestroyMethodDefSupport();
         $this->aspectDefSupport_ = new S2Container_AspectDefSupport();
         $this->metaDefSupport_ = new S2Container_MetaDefSupport();
+        // @author nowel
+        $this->interTypeDefSupport_ = new S2Container_InterTypeDefSupport();
     }
 
     /**
@@ -160,6 +165,8 @@ class S2Container_ComponentDefImpl
         $this->initMethodDefSupport_->setContainer($container);
         $this->destroyMethodDefSupport_->setContainer($container);
         $this->aspectDefSupport_->setContainer($container);
+        // @author nowel
+        $this->interTypeDefSupport_->setContainer($container);
     }
 
     /**
@@ -287,7 +294,7 @@ class S2Container_ComponentDefImpl
 
             $this->autoBindingMode_ = $autoBindingMode;
         } else {
-            throw new S2Container_IllegalArgumentException(autoBindingMode);
+            throw new S2Container_IllegalArgumentException($autoBindingMode);
         }
     }
 
@@ -423,6 +430,31 @@ class S2Container_ComponentDefImpl
     public function getMetaDefSize()
     {
         return $this->metaDefSupport_->getMetaDefSize();
+    }
+    
+    /**
+     * @author nowel
+     * @see org.seasar.framework.container.ComponentDef#addInterTypeDef(org.seasar.framework.container.InterTypeDef)
+     */
+    public function addInterTypeDef(S2Container_InterTypeDef $interTypeDef){
+        $this->interTypeDefSupport_->addInterTypeDef($interTypeDef);
+        $this->componentClass_ = null;
+    }
+    
+    /**
+     * @author nowel
+     * @see org.seasar.framework.container.InterTypeDefAware#getInterTypeDef(int)
+     */
+    public function getInterTypeDef($index) {
+        return $this->interTypeDefSupport_->getInterTypeDef($index);
+    }
+    
+    /**
+     * @author nowel
+     * @see org.seasar.framework.container.InterTypeDefAware#getInterTypeDefSize()
+     */
+    public function getInterTypeDefSize() {
+        return $this->interTypeDefSupport_->getInterTypeDefSize();
     }
 
     /**

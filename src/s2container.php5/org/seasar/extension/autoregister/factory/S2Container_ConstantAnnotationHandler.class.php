@@ -152,5 +152,14 @@ class S2Container_ConstantAnnotationHandler
             $this->appendInitMethodInternal($componentDef, $methodName);
         }
     }
+    
+    /**
+     * @author nowel
+     */
+    public function appendInterType(S2Container_ComponentDef $componentDef)
+    {
+        // TODO
+        throw new Exception("TODO");
+    }
 }
 ?>

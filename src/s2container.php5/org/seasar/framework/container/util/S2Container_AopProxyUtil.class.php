@@ -35,11 +35,16 @@ class S2Container_AopProxyUtil
     }
 
     /**
-     * 
+     * @author nowel 
      */
     public static function getProxyObject(S2Container_ComponentDef $componentDef,
                                                                    $args)
     {
+        if($componentDef->getAspectDefSize() == 0
+                && $componentDef->getInterTypeDefSize() == 0) {
+            return $componentDef->getComponentClass();
+        }
+        
         $parameters = array();
         $parameters[S2Container_ContainerConstants::COMPONENT_DEF_NAME] = 
                                                                   $componentDef;
@@ -57,16 +62,6 @@ class S2Container_AopProxyUtil
                    $parameters);
 
         return $proxy;
-
-/*
-        $parameters = array();
-        $parameters[S2Container_ContainerConstants::COMPONENT_DEF_NAME] = 
-                                                              $componentDef;
-        $proxy = new S2Container_AopProxy($componentDef->getComponentClass(),
-                         S2Container_AopProxyUtil::getAspects($componentDef),
-                            $parameters);
-        return $proxy->create("",$args);
-*/
     }
 
     /**
@@ -80,6 +75,19 @@ class S2Container_AopProxyUtil
             $aspects[] = $componentDef->getAspectDef($i)->getAspect();
         }
         return $aspects;
+    }
+    
+    /**
+     * 
+     * @author nowel
+     */
+    protected static function getInterTypes(S2Container_ComponentDef $componentDef) {
+        $size = $componentDef->getInterTypeDefSize();
+        $interTypes = array();
+        for ($i = 0; $i < $size; ++$i) {
+            $interTypes[] = $componentDef->getInterTypeDef($i)->getInterType();
+        }
+        return $interTypes;
     }
 }
 ?>

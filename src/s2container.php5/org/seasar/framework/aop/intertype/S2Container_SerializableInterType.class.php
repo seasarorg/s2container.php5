@@ -28,61 +28,20 @@
  */
 class S2Container_SerializableInterType extends S2Container_AbstractInterType {
     
-    const NONE = 0;
-    const READ = 1;
-    const WRITE = 2;
-    const READWRITE = 3;
-    const STR_NONE = "none";
-    const STR_READ = "read";
-    const STR_WRITE = "write";
-    const STR_READWRITE = "readwrite";
-
     private static $logger = null;
-    private static $annotationHandler = null;
-    private $trace;
-    private $defaultPropertyType = self::READWRITE;
-    private $methodNames = array();
-
-    public static function staticConst(){
-        self::$logger = S2Container_S2Logger::getLogger(__CLASS__);
-        self::$annotationHandler = new S2Container_DefaultPropertyAnnotationHandler();
-        self::setupAnnotationHandler();
-    }
-
-    protected static function valueOf($type) {
-        $propertyType = self::NONE;
-        if (self::STR_READ === $type) {
-            $propertyType = self::READ;
-        } else if (self::STR_WRITE === $type) {
-            $propertyType = self::WRITE;
-        } else if (self::STR_READWRITE === $type) {
-            $propertyType = self::READWRITE;
-        }
-        return $propertyType;
-    }
-
-    private static function setupAnnotationHandler() {
-    }
-
-    public function setTrace($trace) {
-        $this->trace = $trace;
-    }
-
-    public function setDefaultPropertyType($defaultPropertyType) {
-        $this->defaultPropertyType = self::valueOf($defaultPropertyType);
-    }
 
     public function introduce($arg1, $arg2) {
         parent::introduce($arg1, $arg2);
+        self::$logger = S2Container_S2Logger::getLogger(__CLASS__);
 
         if(S2CONTAINER_PHP5_LOG_LEVEL == 1){
-            self::$logger->debug("[PropertyInterType] Introducing... " .
+            self::$logger->debug('[SerializableInterType] Introducing... ' .
                                  $this->getTargetClass()->getName());
         }
-
-        $this->methodNames = array();
-        $this->methodNames = $this->getTargetMethodNames($this->targetClass);
-        $defaultValue = self::$annotationHandler->getPropertyType($this->targetClass, $this->defaultPropertyType);
+        
+        if(!$this->targetClass->implementsInterface('Serializable')){
+            return ;
+        }
 
         $this->createSerializeMethod($this->targetClass);
         $this->createUnserializeMethod($this->targetClass);
@@ -90,7 +49,8 @@ class S2Container_SerializableInterType extends S2Container_AbstractInterType {
 
     private function createSerializeMethod(ReflectionClass $targetClass) {
         if(S2CONTAINER_PHP5_LOG_LEVEL == 1){
-            self::$logger->debug("[SerializableInterType] Creating Serialize Method " . $targetClass->getName() . "::" . $methodName);
+            self::$logger->debug('[SerializableInterType] Creating Serialize Method ' .
+                                $targetClass->getName());
         }
 
         $src = "()";
@@ -110,7 +70,8 @@ class S2Container_SerializableInterType extends S2Container_AbstractInterType {
 
     private function createUnserializeMethod(ReflectionClass $targetClass) {
         if(S2CONTAINER_PHP5_LOG_LEVEL == 1){
-            self::$logger->debug("[SerializableInterType] Creating Serialize Method " . $targetClass->getName() . "::" . $methodName);
+            self::$logger->debug('[SerializableInterType] Creating Serialize Method ' .
+                                $targetClass->getName());
         }
 
         $src = "(\$serialized)";
@@ -136,5 +97,5 @@ class S2Container_SerializableInterType extends S2Container_AbstractInterType {
     }
 
 }
-S2Container_PropertyInterType::staticConst();
+
 ?>

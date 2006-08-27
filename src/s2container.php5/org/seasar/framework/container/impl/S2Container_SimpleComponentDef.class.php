@@ -317,6 +317,32 @@ class S2Container_SimpleComponentDef
     {
         throw new S2Container_UnsupportedOperationException("setAutoBindingMode");
     }
+    
+    /**
+     * @see org.seasar.framework.container.ComponentDef#addInterTypeDef(org.seasar.framework.container.InterTypeDef)
+     * @author nowel
+     */
+    public function addInterTypeDef(S2Container_InterTypeDef $interTypeDef)
+    {
+        throw new S2Container_UnsupportedOperationException("addInterTypeDef");
+    }
+    
+    /**
+     * @see org.seasar.framework.container.InterTypeDefAware#getInterTypeDefSize()
+     * @author nowel
+     */
+    public function getInterTypeDefSize()
+    {
+        throw new S2Container_UnsupportedOperationException("getInterTypeDefSize");
+    }
+    
+    /**
+     * @see org.seasar.framework.container.InterTypeDefAware#getInterTypeDef(int)
+     * @author nowel
+     */
+    public function getInterTypeDef($index) {
+        throw new S2Container_UnsupportedOperationException("getInterTypeDef");
+    }
 
     /**
      * @see S2Container_ComponentDef::init()
@@ -344,5 +370,6 @@ class S2Container_SimpleComponentDef
         $this->componentClass_ = new ReflectionClass($this->componentClassName_);
         return true;
     }
+    
 }
 ?>

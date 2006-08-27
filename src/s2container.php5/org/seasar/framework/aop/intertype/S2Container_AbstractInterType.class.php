@@ -28,7 +28,7 @@
  */
 abstract class S2Container_AbstractInterType implements S2Container_InterType {
     
-    const COMPONENT = "instance = prototype";
+    const COMPONENT = 'instance = prototype';
     protected $targetClass;
     protected $enhancedClass;
     protected $enhancedClassName;

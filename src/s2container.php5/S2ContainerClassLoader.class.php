@@ -23,36 +23,39 @@
 //
 // $Id$
 /**
+ * Usage:
+ * <code>S2ContainerClassLoader::addClassLoader(new S2ContainerClassLoader); </code>
  * @author klove, nowel
  */
-class S2ContainerClassLoader implements S2Loader {
+class S2ContainerClassLoader implements S2ClassLoader {
     
-    /** */
+    /** phpファイルであることを判別する正規表現 */
     const reg_is_phpfile = '/([^\.]+).+php$/';
-    /** */
+    /** ディレクトリパスを示す定数 */
     const directory = DIRECTORY_SEPARATOR;
     
     /**
-     * 
+     * 自分自身のインスタンスを保持します。
      */
     private static $INSTANCE = null;
     /**
-     * 
+     * 登録しているLoader
      */
     private $loaders = array();
     /**
-     * 
+     * 保持しているLoad対象になるphpクラス
      */
     private $classes = array();
     
     /**
-     * 
+     * コンストラクタです。
      */
     private function __construct(){
     }
     
     /**
-     * 
+     * 自分自身のインスタンスを返します。
+     * @return S2ContainerClassLoader singelonのS2ContainerClassLoader
      */
     public static function getInstance(){
         if(self::$INSTANCE === null){
@@ -62,27 +65,34 @@ class S2ContainerClassLoader implements S2Loader {
     }
 
     /**
-     * ClassLoaderを追加します。
-     * 登録できるClassLoaderクラスはS2Loaderを実装する必要があります。
-     * @param $loader S2Loaderを実装しているLoaderクラスを登録します。
-     * @param $direct 直接spl_autoloadに登録するかを設定島s。
+     * Loaderを追加します。
+     * 登録できるLoaderはS2Loaderを実装する必要があります。
+     * @param $loader S2Loaderを実装しているLoaderクラスを追加します。
      */
-    public static function addLoader(S2Loader $loader, $direct = false){
-        if(!$direct){
-            return spl_autoload_register(array($loader, '__load'));
-        }
+    public static function addLoader(S2Loader $loader){
         self::getInstance()->__addLoader($loader);
     }
     
     /**
-     * 
+     * ClassLoaderを追加します。
+     * 登録できるClassLoaderはS2ClassLoaderを実装している必要があります。
+     * @param $loader S2ClassLoaderを実装しているClassLoaderを追加します。
+     */
+    public static function addClassLoader(S2ClassLoader $loader){
+        return spl_autoload_register(array($loader, '__load'));
+    }
+    
+    /**
+     * Loaderを追加します。
+     * @param S2Loader Loaderオブジェクト
      */
     private function __addLoader(S2Loader $loader){
         $this->loaders[] = $loader;
     }
     
     /**
-     * 
+     * 保持しているLoaderを返します。
+     * @return array 保持しているLoaderオブジェクトの配列
      */
     private function __getLoaders(){
         return $this->loaders;
@@ -101,11 +111,15 @@ class S2ContainerClassLoader implements S2Loader {
     }
     
     /**
-     * 
+     * クラスが呼ばれた際に登録されているLoaderを呼び出します。
+     * 最初はS2ContainerClassLoaderに登録されているクラスを探します。
+     * その後登録されているLoaderを順次呼び出します。
+     * @param $class 呼び出されたClass
+     * @return loadに成功した場合true, loaderにクラスが無い場合false
      */
-    public static function __autoload($class){
+    public static function __load($class){
         $instance = self::getInstance();
-        if(!$instance->__load($class)){
+        if(!$instance->load($class)){
             $loaders = $instance->__getLoaders();
             $c = count($loaders);
             for($i = 0; $i < $c; $i++){
@@ -118,9 +132,13 @@ class S2ContainerClassLoader implements S2Loader {
     }
     
     /**
-     * 
+     * 登録されているphpクラスを<code>require_once</code>します。
+     * もしphpクラスが登録されていない場合はfalseを返します。
+     * @param $class <code>require_once</code>
+     * @return boolean <code>require_once</code>に成功した場合true;
+     *                  phpクラスが登録されていない場合false
      */
-    public function __load($class){
+    public function load($class){
         if(isset($this->classes[$class])){
             $callClass = $this->classes[$class];
             if(file_exists(S2CONTAINER_PHP5 . $callClass)){
@@ -184,6 +202,4 @@ class S2ContainerClassLoader implements S2Loader {
     
 }
 
-//spl_autoload_register(array('S2ContainerClassLoader', '__autoload'));
- 
 ?>

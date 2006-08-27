@@ -49,6 +49,11 @@ abstract class S2Container_AbstractAnnotationHandler
     const INTERCEPTOR = "interceptor";
     
     const POINTCUT = "pointcut";
+    
+    /**
+     * @author nowel
+     */
+    const INTERTYPE = "intertype";
 
     /**
      * 

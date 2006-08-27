@@ -55,5 +55,10 @@ interface S2Container_AnnotationHandler
      */
     public function createPropertyDef(S2Container_BeanDesc $beanDesc,
                                       S2Container_PropertyDesc $propertyDesc);
+
+    /**
+     * @author nowel
+     */
+    public function appendInterType(S2Container_ComponentDef $componentDef);
 }
 ?>

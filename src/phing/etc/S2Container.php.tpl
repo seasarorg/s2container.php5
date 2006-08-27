@@ -83,12 +83,13 @@ ini_set('include_path',
  */
 //require_once('S2ContainerClassLoader.class.php');
 require_once('s2container.core.classes.php');
+spl_autoload_register(array('S2ContainerClassLoader', '__load'));
 
 /**
  * Messages Resouce File
  */
 require_once(S2CONTAINER_PHP5 .'/S2ContainerMessageUtil.class.php');
-if( class_exists("S2ContainerMessageUtil") ){
+if(class_exists("S2ContainerMessageUtil")){
     S2ContainerMessageUtil::addMessageResource(
                        S2CONTAINER_PHP5 . '/SSRMessages.properties');
 }

@@ -160,8 +160,7 @@ final class S2Container_BeanDescImpl implements S2Container_BeanDesc
      */
     public function newInstance($args,$componentDef = null)
     {
-        if ($componentDef != null and 
-           $componentDef->getAspectDefSize() > 0) {
+        if ($componentDef != null and $componentDef->getAspectDefSize() > 0) {
             return S2Container_AopProxyUtil::getProxyObject($componentDef,$args); 
         }
         return S2Container_ConstructorUtil::newInstance($this->beanClass_, $args);

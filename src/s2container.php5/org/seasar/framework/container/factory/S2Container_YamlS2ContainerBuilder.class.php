@@ -21,7 +21,6 @@
 // +----------------------------------------------------------------------+
 //
 // $Id: S2Container_YamlS2ContainerBuilder.class.php 222 2006-03-07 09:58:42Z klove $
-
 /**
  * @package org.seasar.framework.container.factory
  * @author nowel
@@ -175,7 +174,7 @@ final class S2Container_YamlS2ContainerBuilder
         if(isset($component['arg']) || isset($component['php'])){
             $componentDef->addArgDef($this->_setupArgDef($component));
         }
-
+        
         if(isset($component['property'])){
             $property = $component['property'];
             $propertyDef = $this->_setupPropertyDef($component, $name);
@@ -184,7 +183,7 @@ final class S2Container_YamlS2ContainerBuilder
             }
             $componentDef->addPropertyDef($propertyDef);
         }
-
+        
         if(isset($component['initMethod'])){
             $initMethod = $component['initMethod'];
             $initMethodDef = $this->_setupInitMethodDef($component, $name);
@@ -205,6 +204,10 @@ final class S2Container_YamlS2ContainerBuilder
 
         if(isset($component['aspect'])){
             $componentDef->addAspectDef($this->_setupAspectDef($component, $className));
+        }
+        
+        if(isset($component['intertype'])){
+            $componentDef->addInterTypeDef($this->_setupInterTypeDef($component, $className));
         }
 
         $this->_setupMetaDef($component, $componentDef);
@@ -304,7 +307,7 @@ final class S2Container_YamlS2ContainerBuilder
         }
     }
     // }}}
-
+    
     // {{{ _setupArgDefEach
     /**
      *
@@ -319,7 +322,7 @@ final class S2Container_YamlS2ContainerBuilder
         }
     }
     // }}}
-
+    
     // {{{ _setupPropertyDef
     /**
      *
@@ -414,6 +417,19 @@ final class S2Container_YamlS2ContainerBuilder
         }
 
         return $aspectDef;
+    }
+    // }}}
+    
+    // {{{ _setupInterTypeDef
+    /**
+     * 
+     */
+    private function _setupInterTypeDef(array $interType, $targetClassName){
+        $interTypeValue = $interType['intertype'];
+        $interTypeDef = new S2Container_InterTypeDefImpl($targetClassName);
+        $interTypeDef->setValue($interTypeValue);
+        S2Container_ChildComponentDefBindingUtil::put($interTypeValue, $interTypeDef);
+        return $interTypeDef;
     }
     // }}}
 

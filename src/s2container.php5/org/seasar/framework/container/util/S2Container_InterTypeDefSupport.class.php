@@ -3,7 +3,7 @@
 // +----------------------------------------------------------------------+
 // | PHP version 5                                                        |
 // +----------------------------------------------------------------------+
-// | Copyright 2004-2005 the Seasar Foundation and the Others.            |
+// | Copyright 2005-2006 the Seasar Foundation and the Others.            |
 // +----------------------------------------------------------------------+
 // | Licensed under the Apache License, Version 2.0 (the "License");      |
 // | you may not use this file except in compliance with the License.     |
@@ -20,27 +20,41 @@
 // | Authors: nowel                                                       |
 // +----------------------------------------------------------------------+
 //
-// $Id$
+// $Id: S2Container_AutoBindingUtil.class.php 225 2006-03-07 13:34:12Z klove $
 /**
- * @package org.seasar.framework.container.impl
+ * @package org.seasar.framework.container.util
  * @author nowel
  */
-class S2Container_InterTypeDefImpl 
-    extends S2Container_ArgDefImpl
-    implements S2Container_InterTypeDef
-{
-    /**
-     * 
-     */
-    public function __construct($intertype)
-    {
-        parent::__construct();
-        $this->setValue(new ReflectionClass($intertype));
+class S2Container_InterTypeDefSupport {
+
+    private $interTypeDefs = array();
+    private $container;
+
+    public function __construct() {
     }
 
-    public function getInterType()
-    {
-        return $this->getValue();
+    public function addInterTypeDef(S2Container_InterTypeDef $interTypeDef) {
+        if ($this->container !== null) {
+            $interTypeDef->setContainer($this->container);
+        }
+        $this->interTypeDefs[] = $interTypeDef;
+    }
+
+    public function getInterTypeDefSize() {
+        return count($this->interTypeDefs);
+    }
+
+    public function getInterTypeDef($index) {
+        return $this->interTypeDefs[$index];
+    }
+
+    public function setContainer(S2Container $container) {
+        $this->container = $container;
+        $c = $this->getInterTypeDefSize();
+        for ($i = 0; $i < $c; ++$i) {
+            $this->getInterTypeDef($i)->setContainer($container);
+        }
     }
 }
+
 ?>

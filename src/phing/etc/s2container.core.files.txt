@@ -9,6 +9,7 @@ S2Container_PropertyDefAware
 S2Container_InitMethodDefAware
 S2Container_DestroyMethodDefAware
 S2Container_AspectDefAware
+S2Container_InterTypeDefAware
 S2Container_ComponentDef
 S2Container_SimpleComponentDef
 S2Container_ContainerConstants
@@ -68,4 +69,6 @@ S2Container_Invocation
 S2Container_MethodInvocation
 S2Container_S2MethodInvocation
 S2Container_S2MethodInvocationImpl
+S2Loader
+S2ClassLoader
 S2ContainerClassLoader

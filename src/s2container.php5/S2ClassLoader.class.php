@@ -25,7 +25,7 @@
  * @author nowel
  * @version test
  */
-interface S2Loader {
-    public function __load($class);
+interface S2ClassLoader {
+    public static function __load($class);
 }
 ?>
