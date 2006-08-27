@@ -3,47 +3,58 @@
 
 2006-08-26 S2Container.PHP5-1.1.2
 
-    * add: package org.seasar.framework.exception
-      S2Container_IndexOutOfBoundsException を追加しました。
+	* add: package org.seasar.framework.exception
+	S2Container_IndexOutOfBoundsException を追加しました。
 
 	* modify: package org.seasar.framework.container.util
 	S2Container_ArgDefSupport::getArgDef($index) で、S2Container_IndexOutOfBoundsException を
 	throwするようにしました。
 
 2006-08-24 S2Container.PHP5-1.1.2
-    * modify: package org.seasar.framework.util
-      S2Container_StringUtil::mixToString() の追加
-    * modify: pacakge org.seasar.framework.aop.interceptors
-      S2Container_TraceInterceptorで、引数、戻り値表示で、
-      S2Container_StringUtil::mixToString() を使用するようにしました。
-    * modify: pacakge org.seasar.framework.container.assembler
-      S2Container_AbstractAssembler::getArgs() にて、自動バインディング対象
-      コンポーネントがS2Containerに存在しない場合のログレベルをwarnからinfoに変更
-    * add: S2ContainerClassLoaderを使用する形のautoload.phpを用意
-    * modify: pacakge org.seasar.framework.container
-      S2Container_ArgDef::setContainer() の引数にType Hinting を追加しました。
+
+	* modify: package org.seasar.framework.util
+	S2Container_StringUtil::mixToString() の追加
+
+	* modify: pacakge org.seasar.framework.aop.interceptors
+	S2Container_TraceInterceptorで、引数、戻り値表示で、
+	S2Container_StringUtil::mixToString() を使用するようにしました。
+
+	* modify: pacakge org.seasar.framework.container.assembler
+	S2Container_AbstractAssembler::getArgs() にて、自動バインディング対象
+	コンポーネントがS2Containerに存在しない場合のログレベルをwarnからinfoに変更
+
+	* add: S2ContainerClassLoaderを使用する形のautoload.phpを用意
+
+	* modify: pacakge org.seasar.framework.container
+	S2Container_ArgDef::setContainer() の引数にType Hinting を追加しました。
 
 
 2006-07-09 S2Container.PHP5-1.1.1
 
 ================ S2Container.PHP5-1.1.1 更新履歴 ===================
 
-    * modify: pacakge org.seasar.framework.aop.proxy
-        S2Aop で、アスペクトターゲットが __callメソッドを実装していた場合も、
-        アスペクトを許可しました。
-    * fix: pacakge org.seasar.framework.aop.interceptors
-        S2Container_TraceInterceptor で、配列とオブジェクトのトレース表示を修正しました。
-    * fix: pacakge org.seasar.framework.aop.interceptors
-        S2Container_MockInterceptor で、return value が設定されていないメソッド呼
-        び出しについてNOTICEが出力されていたので修正しました。
-    * modify: package org.seasar.framework.log
-        S2Container_LogFactory で、log4phpを使用できるように対応しました。
-    * modify: package org.seasar.framework.log
-        S2Container_SimpleLogger で、S2CONTAINER_PHP5_SIMPLE_LOG_FILE 定数に定義
-        されたファイルにログ出力を行うようにしました。
-    * info: UnitTestを、simpletest から PHPUnit2 に移行しました。
-    * modify: S2CONTAINER_PHP5_DEBUG_EVAL 定数がtrueの場合に、eval関数で実行さ
-        れるスクリプトをDEBUGログに出力するようにしました。
+	* modify: pacakge org.seasar.framework.aop.proxy
+	S2Aop で、アスペクトターゲットが __callメソッドを実装していた場合も、
+	アスペクトを許可しました。
+
+	* fix: pacakge org.seasar.framework.aop.interceptors
+	S2Container_TraceInterceptor で、配列とオブジェクトのトレース表示を修正しました。
+
+	* fix: pacakge org.seasar.framework.aop.interceptors
+	S2Container_MockInterceptor で、return value が設定されていないメソッド呼
+	び出しについてNOTICEが出力されていたので修正しました。
+
+	* modify: package org.seasar.framework.log
+	S2Container_LogFactory で、log4phpを使用できるように対応しました。
+
+	* modify: package org.seasar.framework.log
+	S2Container_SimpleLogger で、S2CONTAINER_PHP5_SIMPLE_LOG_FILE 定数に定義
+	されたファイルにログ出力を行うようにしました。
+
+	* info: UnitTestを、simpletest から PHPUnit2 に移行しました。
+
+	* modify: S2CONTAINER_PHP5_DEBUG_EVAL 定数がtrueの場合に、eval関数で実行さ
+	れるスクリプトをDEBUGログに出力するようにしました。
 
 
 2006-04-29 S2Container.PHP5-1.1.0
