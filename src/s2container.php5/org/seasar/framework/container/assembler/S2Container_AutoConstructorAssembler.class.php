@@ -47,8 +47,8 @@ class S2Container_AutoConstructorAssembler
             $args = $this->getArgs($this->getComponentDef()->
                        getConcreteClass()->getConstructor()->getParameters());
         }
-        if ($this->getComponentDef() != null and 
-            $this->getComponentDef()->getAspectDefSize() > 0) {
+        // @author nowel
+        if ($this->getComponentDef() != null) {
             return S2Container_AopProxyUtil::getProxyObject($this->
                                                  getComponentDef(),$args); 
         }                

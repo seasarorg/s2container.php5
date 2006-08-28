@@ -48,7 +48,7 @@ abstract class S2Container_AbstractConstructorAssembler
             $this->getComponentDef()->getAspectDefSize() > 0) {
             return S2Container_AopProxyUtil::getProxyObject($this->
                                                getComponentDef(),$args); 
-        }        
+        }
         return S2Container_ConstructorUtil::newInstance($clazz, null);
     }
 }

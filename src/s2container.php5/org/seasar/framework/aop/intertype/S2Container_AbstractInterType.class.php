@@ -37,7 +37,7 @@ abstract class S2Container_AbstractInterType implements S2Container_InterType {
         $this->enhancedClass = $enhancedClass;
     }
 
-    public function introduce($targetClass, $enhancedClassName) {
+    public function introduce(ReflectionClass $targetClass, $enhancedClassName) {
         $this->targetClass = $targetClass;
         $this->enhancedClassName = $enhancedClassName;
     }
@@ -49,44 +49,32 @@ abstract class S2Container_AbstractInterType implements S2Container_InterType {
     protected function getEnhancedClass() {
         return $this->enhancedClass;
     }
-
-    protected function getClassPool() {
-        return $this->classPool;
+    
+    protected function getEnhancedClassName(){
+        return $this->enhancedClassName;
     }
 
-    protected function addInterface($clazz) {
-        $this->enhancedClass->addInterface($this->toCtClass($clazz));
+    protected function addInterface($className) {
+        $this->enhancedClass->addInterface($className);
     }
 
-    protected function addConstant($type, $name, $init) {
-        $this->addStaticPropery(self::CONST_, $type, $name, $init);
+    protected function addConstant($name, $value) {
+        $this->enhancedClass->addConstant($name, $value);
     }
 
-    protected function addStaticProperty() {
-        $modify = func_get_arg(0);
-        $access = func_get_arg(1);
-        $name = func_get_arg(2);
-        $this->addProperty(self::STATIC_ | $modify, $name);
+    protected function addStaticProperty($name) {
+        $this->addProperty(self::STATIC_, $name);
     }
 
-    protected function addProperty() {
-        $modify = func_get_arg(0);
-        $name = func_get_args(1);
+    protected function addProperty($modify, $name) {
         $this->enhancedClass->addProperty($modify, $name);
     }
 
-    protected function addStaticMethod() {
-        $returnref = false;
-        $name = func_get_arg(0);
-        $paramTypes = func_get_arg(1);
-        $src = func_get_arg(2);
-        $this->addMethod(self::PUBLIC_ | self::STATIC_, $returnref, $name, $paramTypes, $src);
+    protected function addStaticMethod($name, $src) {
+        $this->addMethod(self::STATIC_, $name, $src);
     }
 
-    protected function addMethod() {
-        $modify = func_get_arg(0);
-        $name = func_get_arg(1);
-        $src = func_get_arg(2);
+    protected function addMethod($modify, $name, $src) {
         $this->enhancedClass->addMethod($modify, $name, $src);
     }
 

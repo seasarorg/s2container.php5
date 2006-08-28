@@ -58,7 +58,8 @@ class S2Container_AopProxyUtil
 
         $proxy = S2Container_AopProxyFactory::create($target,
                    $componentDef->getComponentClass(),
-                   S2Container_AopProxyUtil::getAspects($componentDef),
+                   self::getAspects($componentDef),
+                   self::getInterTypes($componentDef),
                    $parameters);
 
         return $proxy;

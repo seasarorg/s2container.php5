@@ -25,7 +25,6 @@
  * @package org.seasar.framework.aop.proxy
  * @author klove
  */
- 
 class S2Container_DefaultAopProxy {
 
     private $methodInterceptorsMap_;
@@ -48,7 +47,7 @@ class S2Container_DefaultAopProxy {
      * @param array interceptor map
      * @param array parameters
      */
-    function __construct($target,$targetClass,$methodInterceptorsMap,$parameters = array())
+    public function __construct($target,$targetClass,$methodInterceptorsMap,$parameters = array())
     {
         $this->target_ = $target;
         $this->targetClass_ = $targetClass;
@@ -61,7 +60,7 @@ class S2Container_DefaultAopProxy {
      * @param string Method name
      * @param array Args 
      */
-    function __call($name,$args)
+    public function __call($name,$args)
     {
         if (array_key_exists($name,$this->methodInterceptorsMap_)) {
             $methodInvocation = 

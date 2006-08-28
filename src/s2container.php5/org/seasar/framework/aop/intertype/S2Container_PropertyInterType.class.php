@@ -74,8 +74,8 @@ class S2Container_PropertyInterType extends S2Container_AbstractInterType {
         $this->defaultPropertyType = self::valueOf($defaultPropertyType);
     }
 
-    public function introduce($arg1, $arg2) {
-        parent::introduce($arg1, $arg2);
+    public function introduce(ReflectionClass $targetClass, $enhancedClass) {
+        parent::introduce($targetClass, $enhancedClass);
 
         if(S2CONTAINER_PHP5_LOG_LEVEL == 1){
             self::$logger->debug("[PropertyInterType] Introducing... " .
@@ -178,9 +178,7 @@ class S2Container_PropertyInterType extends S2Container_AbstractInterType {
         $c = count($nominationProperties);
         for ($i = 0; $i < $c; ++$i) {
             $prop = $nominationProperties[$i];
-            if (!$prop->isPrivate()) {
-                $targetProperties->append($prop);
-            }
+            $targetProperties->append($prop);
         }
 
         return $targetProperties;
@@ -223,5 +221,7 @@ class S2Container_PropertyInterType extends S2Container_AbstractInterType {
     }
 
 }
+
 S2Container_PropertyInterType::staticConst();
+
 ?>

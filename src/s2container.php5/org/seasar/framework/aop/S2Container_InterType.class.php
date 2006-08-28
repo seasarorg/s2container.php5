@@ -34,7 +34,7 @@ interface S2Container_InterType {
     const STATIC_ = 3;
     const CONST_ = 5;
     
-    public function introduce($targetClass, $enhancedClass);
+    public function introduce(ReflectionClass $targetClass, $enhancedClass);
 }
 
 ?>

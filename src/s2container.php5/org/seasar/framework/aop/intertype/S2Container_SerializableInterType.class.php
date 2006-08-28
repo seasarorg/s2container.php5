@@ -30,8 +30,8 @@ class S2Container_SerializableInterType extends S2Container_AbstractInterType {
     
     private static $logger = null;
 
-    public function introduce($arg1, $arg2) {
-        parent::introduce($arg1, $arg2);
+    public function introduce(ReflectionClass $targetClass, $enhancedClass) {
+        parent::introduce($targetClass, $enhancedClass);
         self::$logger = S2Container_S2Logger::getLogger(__CLASS__);
 
         if(S2CONTAINER_PHP5_LOG_LEVEL == 1){

@@ -5,8 +5,10 @@ define('EXAMPLE_DIR',HOME_DIR . '/examples');
 
 require_once(HOME_DIR . '/S2Container.php'); 
 
-S2ContainerClassLoader::import(S2CONTAINER_PHP5);
-function __autoload($class=null){
-    if(S2ContainerClassLoader::load($class)){return;}
+if(class_exists("S2ContainerClassLoader")){
+    S2ContainerClassLoader::import(S2CONTAINER_PHP5);
+    function __autoload($class=null){
+        if(S2ContainerClassLoader::load($class)){return;}
+    }
 }
 ?>

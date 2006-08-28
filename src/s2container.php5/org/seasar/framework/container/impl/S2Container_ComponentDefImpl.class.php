@@ -438,7 +438,7 @@ class S2Container_ComponentDefImpl
      */
     public function addInterTypeDef(S2Container_InterTypeDef $interTypeDef){
         $this->interTypeDefSupport_->addInterTypeDef($interTypeDef);
-        $this->componentClass_ = null;
+        //$this->componentClass_ = null;
     }
     
     /**
