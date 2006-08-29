@@ -31,6 +31,8 @@ class S2Container_EnhancedClassGenerator
     const CLASS_NAME_PREFIX = '';
     /** */
     const CLASS_NAME_POSTFIX = 'EnhancedByS2AOP';
+    /** */
+    const INVOKE_SUPER_METHOD_SUFFIX = 'invokeSuperMethod';
     
     /** */
     const DEF_CLASS_NAME = 0;
@@ -40,6 +42,7 @@ class S2Container_EnhancedClassGenerator
     const DEF_CONST = 4;
     /** */
     const DEF_PROPERTY = 5;
+    /** */
     const DEF_METHOD = 6;
     
     /** */
@@ -51,9 +54,7 @@ class S2Container_EnhancedClassGenerator
     /** */
     protected $enhancedClassName = '';
     /** */
-    protected $enhancedClassGenerator = null;
-    /** */
-    protected $parameter = null;
+    protected $parameters = array();
     /** Target Class Sources */
     protected $source = array();
     /** Evaluate Sources */
@@ -94,6 +95,7 @@ class S2Container_EnhancedClassGenerator
     protected function setupClass()
     {
         $this->enhancedClassName = $this->getConcreteClassName();
+        $this->source[0] = str_ireplace('abstract', '', $this->source[0]);
         $className = str_replace($this->targetClassName,
                                  $this->enhancedClassName,
                                  $this->source[0]);
@@ -142,7 +144,7 @@ class S2Container_EnhancedClassGenerator
      */
     public function addProperty($modify, $name, $defaultValue = null)
     {
-        $property = $modify . ' ' . $name;
+        $property = $modify . ' $' . $name;
         if($defaultValue !== null){
             $property .= ' = ' . $defaultValue;
         }
@@ -292,21 +294,112 @@ class S2Container_EnhancedClassGenerator
     /**
      * 
      */
-    public function setInterceptors(ReflectionMethod $method, array $interceptors)
+    public function setInterceptors(array $interceptors = null)
     {
+        $this->createInvocationSetter();
+        if (null === $interceptors || 0 == count($interceptors)) {
+            return;
+        }
+        
+        foreach($interceptors as $methodName => $interceptorList){
+            if($this->targetClass->hasMethod($methodName)){
+                continue;
+            }
+            $this->addMethod(S2Container_InterType::PUBLIC_,
+                             $methodName,
+                             $this->createInvokeMethodInterceptor($methodName));
+        }
     }
     
     /**
      * 
      */
-    public function getMethodInvocationClassName(ReflectionMethod $method)
+    private function createInvocationSetter()
     {
+        $propModify = S2Container_InterType::PRIVATE_;
+        $properties = array();
+        $_target = $this->createInvocationTargetPropery();
+        $_targetClass = $this->createInvocationTargetClassProperty();
+        $_map = $this->createInvocationMapProperty();
+        $_param = $this->createInvocationParamProperty();
+        
+        $this->addProperty($propModify, $_target);
+        $this->addProperty($propModify, $_targetClass);
+        $this->addProperty($propModify, $_map);
+        $this->addProperty($propModify, $_param);
+        
+        $srcMethod = array();
+        $srcMethod[] = '($target, $targetClass, $map, $property){';
+        $srcMethod[] = '    $this->' . $_target . ' = $target;';
+        $srcMethod[] = '    $this->' . $_targetClass . ' = $targetClass;';
+        $srcMethod[] = '    $this->' . $_map . ' = $map;';
+        $srcMethod[] = '    $this->' . $_param . ' = $property;';
+        $srcMethod[] = '    $this->' . $_param .
+                       '[S2Container_ContainerConstants::S2AOP_PROXY_NAME] = $this;';
+        $srcMethod[] = '}';
+        
+        $methodModify = S2Container_InterType::PUBLIC_;
+        $methodName = self::INVOKE_SUPER_METHOD_SUFFIX;
+        $this->addMethod($methodModify, $methodName, implode(PHP_EOL, $srcMethod));
     }
-
+    
     /**
      * 
      */
-    public function createInvokeSuperMethod(ReflectionMethod $method)
+    private function createInvocationTargetPropery()
+    {
+        return self::INVOKE_SUPER_METHOD_SUFFIX . 'target';
+    }
+    
+    /**
+     * 
+     */
+    private function createInvocationTargetClassProperty()
+    {
+        return self::INVOKE_SUPER_METHOD_SUFFIX . 'targetClass';
+    }
+    
+    /**
+     * 
+     */
+    private function createInvocationMapProperty()
+    {
+        return self::INVOKE_SUPER_METHOD_SUFFIX . 'Map';
+    }
+    
+    /**
+     * 
+     */
+    private function createInvocationParamProperty()
+    {
+        return self::INVOKE_SUPER_METHOD_SUFFIX . 'Param';
+    }
+    
+    /**
+     * 
+     */
+    public function createInvokeMethodInterceptor($methodName)
+    {
+        $src = array();
+        $src[] = '(){';
+        $src[] = '    $args = func_get_args();';
+        $src[] = '    $name = "' . $methodName . '";';
+        $src[] = '    $methodInvocation = ';
+        $src[] = '    new S2Container_S2MethodInvocationImpl(';
+        $src[] = '        $this->' . $this->createInvocationTargetPropery() . ',';
+        $src[] = '        $this->' . $this->createInvocationTargetClassProperty() . ',';
+        $src[] = '        $this->targetClass_->getMethod($name),';
+        $src[] = '        $args,';
+        $src[] = '        $this->' . $this->createInvocationMapProperty() . '[$name],';
+        $src[] = '        $this->' . $this->createInvocationParamProperty() . ');';
+        $src[] = '    return $methodInvocation->proceed();';
+        return implode(PHP_EOL, $src);
+    }
+    
+    /**
+     * 
+     */
+    public function createInvokeSuperMethod($methodName)
     {
     }
 
