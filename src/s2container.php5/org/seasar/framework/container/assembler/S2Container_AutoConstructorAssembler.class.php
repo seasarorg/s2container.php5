@@ -17,13 +17,13 @@
 // | either express or implied. See the License for the specific language |
 // | governing permissions and limitations under the License.             |
 // +----------------------------------------------------------------------+
-// | Authors: klove                                                       |
+// | Authors: klove, nowel                                                |
 // +----------------------------------------------------------------------+
 //
 // $Id$
 /**
  * @package org.seasar.framework.container.assembler
- * @author klove
+ * @author klove, nowel
  */
 class S2Container_AutoConstructorAssembler
     extends S2Container_AbstractConstructorAssembler
@@ -47,7 +47,6 @@ class S2Container_AutoConstructorAssembler
             $args = $this->getArgs($this->getComponentDef()->
                        getConcreteClass()->getConstructor()->getParameters());
         }
-        // @author nowel
         if ($this->getComponentDef() != null) {
             return S2Container_AopProxyUtil::getProxyObject($this->
                                                  getComponentDef(),$args); 

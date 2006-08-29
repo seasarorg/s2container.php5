@@ -38,6 +38,9 @@ class S2Container_InterTypeDefImpl
         $this->setValue(new ReflectionClass($intertype));
     }
 
+    /**
+     * 
+     */
     public function getInterType()
     {
         return $this->getValue();

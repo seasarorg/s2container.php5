@@ -24,177 +24,152 @@
 /**
  * @package org.seasar.framework.aop.intertype
  * @author nowel
- * @version test
  */
 class S2Container_PropertyInterType extends S2Container_AbstractInterType {
     
-    const SETTER_PREFIX = "set";
-    const GETTER_PREFIX = "get";
-    const NONE = 0;
-    const READ = 1;
-    const WRITE = 2;
-    const READWRITE = 3;
-    const STR_NONE = "none";
-    const STR_READ = "read";
-    const STR_WRITE = "write";
-    const STR_READWRITE = "readwrite";
+    /** */
+    const SETTER_PREFIX = 'set';
+    /** */
+    const GETTER_PREFIX = 'get';
+    /** */
+    const READ = 'read';
+    /** */
+    const WRITE = 'write';
+    /** */
+    const READWRITE = 'readwrite';
 
+    /** */
     private static $logger = null;
+    /** */
     private static $annotationHandler = null;
-    private $trace;
+    /** */
+    private $trace = false;
+    /** */
     private $defaultPropertyType = self::READWRITE;
-    private $methodNames = array();
 
-    public static function staticConst(){
+    /**
+     * 
+     */
+    protected static function initialize(){
         self::$logger = S2Container_S2Logger::getLogger(__CLASS__);
         self::$annotationHandler = new S2Container_DefaultPropertyAnnotationHandler();
         self::setupAnnotationHandler();
     }
 
-    protected static function valueOf($type) {
-        $propertyType = self::NONE;
-        if (self::STR_READ === $type) {
-            $propertyType = self::READ;
-        } else if (self::STR_WRITE === $type) {
-            $propertyType = self::WRITE;
-        } else if (self::STR_READWRITE === $type) {
-            $propertyType = self::READWRITE;
-        }
-        return $propertyType;
+    /**
+     * 
+     */
+    protected static function setupAnnotationHandler() {
     }
 
-    private static function setupAnnotationHandler() {
-    }
-
+    /**
+     * 
+     */
     public function setTrace($trace) {
         $this->trace = $trace;
     }
 
+    /**
+     * 
+     */
     public function setDefaultPropertyType($defaultPropertyType) {
-        $this->defaultPropertyType = self::valueOf($defaultPropertyType);
+        $this->defaultPropertyType = $defaultPropertyType;
     }
 
+    /**
+     * 
+     */
     public function introduce(ReflectionClass $targetClass, $enhancedClass) {
         parent::introduce($targetClass, $enhancedClass);
+        self::initialize();
 
         if(S2CONTAINER_PHP5_LOG_LEVEL == 1){
-            self::$logger->debug("[PropertyInterType] Introducing... " .
+            self::$logger->debug('[PropertyInterType] Introducing... ' .
                                  $this->getTargetClass()->getName());
         }
 
-        $this->methodNames = array();
-        $this->methodNames = $this->getTargetMethodNames($this->targetClass);
-        $defaultValue = self::$annotationHandler->getPropertyType($this->targetClass, $this->defaultPropertyType);
+        //$defaultValue = self::$annotationHandler->getPropertyType($this->targetClass, $this->defaultPropertyType);
         $targetProperties = $this->getTargetProperties($this->targetClass);
 
-        for ($iter = $targetProperties->getIterator(); $iter->valid(); $iter->next() ) {
-            $prop = $iter->current();
-            $property = self::$annotationHandler->getPropertyType($prop, $defaultValue);
-            switch ($property) {
-            case self::READ:
-                $this->createGetter($this->targetClass, $prop);
-                break;
-            case self::WRITE:
-                $this->createSetter($this->targetClass, $prop);
-                break;
-            case self::READWRITE:
-                $this->createGetter($this->targetClass, $prop);
-                $this->createSetter($this->targetClass, $prop);
-                break;
-            default:
-                break;
-            }
+        foreach($targetProperties as $property){
+            $this->createGetter($this->targetClass, $property);
+            $this->createSetter($this->targetClass, $property);
         }
     }
 
+    /**
+     * 
+     */
     private function createGetter(ReflectionClass $targetClass, ReflectionProperty $targetProperty) {
         $targetPropertyName = $targetProperty->getName();
         $methodName = self::GETTER_PREFIX . $this->createMethodName($targetPropertyName);
-        if ($this->hasMethod($methodName)) {
+        if ($targetClass->hasMethod($methodName)) {
             return;
         }
 
         if(S2CONTAINER_PHP5_LOG_LEVEL == 1){
-            self::$logger->debug("[PropertyInterType] Creating getter "
-                    . $targetClass->getName() . "::" . $methodName);
+            self::$logger->debug('[PropertyInterType] Creating getter ' .
+                                 $targetClass->getName() . '::' . $methodName);
         }
 
-        $src = "()";
-        $src .= "{";
+        $src = array();
+        $src[] = '(){';
         if ($this->trace) {
-            $src .= "org.seasar.framework.log.Logger logger =";
-            $src .= "org.seasar.framework.log.Logger.getLogger(" . $this->class .");";
-            $src .= "if(logger.isDebugEnabled()){";
-            $src .= "logger.debug(\"CALL \" . get_class(\$this) . \"#";
-            $src .= $methodName;
-            $src .= "() : \" + \$this->";
-            $src .= $targetPropertyName;
-            $src .= ");}";
+            $buf = '';
+            $buf .= '$logger = S2Container_S2Logger::getLogger(__CLASS__);';
+            $buf .= '$logger->debug("CALL " . __CLASS__ . "::" . ';
+            $buf .= $targetPropertyName . ',  __METHOD__);';
+            $src[] = $buf;
         }
-        $src .= "return \$this->";
-        $src .= $targetPropertyName;
-        $src .= ";}";
+        $src[] = 'return $this->' . $targetPropertyName . ';}';
 
-        //$type = gettype($targetProperty->getValue($targetClass->newInstance()));
-        $type = null;
-        $this->addMethod($type, $methodName, $src);
+        $type = array(self::PUBLIC_);
+        $this->addMethod($type, $methodName, implode(PHP_EOL, $src));
     }
 
+    /**
+     * 
+     */
     private function createSetter(ReflectionClass $targetClass, ReflectionProperty $targetProperty) {
         $targetPropertyName = $targetProperty->getName();
         $methodName = self::SETTER_PREFIX . $this->createMethodName($targetPropertyName);
-        if ($this->hasMethod($methodName)) {
+        if ($targetClass->hasMethod($methodName)) {
             return;
         }
 
         if(S2CONTAINER_PHP5_LOG_LEVEL == 1){
-            self::$logger->debug("[PropertyInterType] Creating setter "
-                    . $targetClass->getName() . "::" . $methodName);
+            self::$logger->debug('[PropertyInterType] Creating setter ' . 
+                                 $targetClass->getName() . '::' . $methodName);
         }
 
-        $src = "()";
-        $src .= "{";
+        $src = array();
+        $src[] = '($value){';
         if ($this->trace) {
-            $src .= "org.seasar.framework.log.Logger logger =";
-            $src .= "org.seasar.framework.log.Logger.getLogger(get_class(\$this);";
-            $src .= "if(logger.isDebugEnabled()){";
-            $src .= "logger.debug(\"CALL \" . get_class(\$this) . \"#";
-            $src .= $methodName;
-            $src .= "(\" . func_get_arg(0) . \")\");}";
+            $buf = '';
+            $buf .= '$logger = S2Container_S2Logger::getLogger(__CLASS__);';
+            $buf .= '$logger->debug("CALL " . __CLASS__ . "::" . ';
+            $buf .= '__METHOD__ . "(" . $value . ")");';
+            $src[] = $buf;
         }
-        $src .= "\$this->";
-        $src .= $targetPropertyName;
-        $src .= " = func_get_arg(0);}";
+        $src[] = '$this->' . $targetPropertyName . ' = $value;}';
 
-        //$type = gettype($targetProperty->getValue($this->targetClass->newInstance()));
-        $type = null;
-        $this->addMethod($type, $methodName, $src);
+        $type = array(self::PUBLIC_);
+        $this->addMethod($type, $methodName, implode(PHP_EOL, $src));
     }
 
+    /**
+     * 
+     */
     private function getTargetProperties(ReflectionClass $targetClass) {
-        $targetProperties = new ArrayObject();
-
-        $nominationProperties = $this->getProperties($targetClass);
-        $c = count($nominationProperties);
-        for ($i = 0; $i < $c; ++$i) {
-            $prop = $nominationProperties[$i];
-            $targetProperties->append($prop);
-        }
-
-        return $targetProperties;
+        return $this->getProperties($targetClass);
     }
 
-    private function getTargetMethodNames(ReflectionClass $targetClass){
-        $meth = array();
-        $methods = $targetClass->getMethods();
-        foreach($methods as $method){
-            $meth[] = $method->getName();
-        }
-        return $meth;
-    }
-
+    /**
+     * 
+     */
     private function getProperties(ReflectionClass $targetClass) {
         $parentClass = $targetClass->getParentClass();
+        
         $parentProperties = array();
         if ($parentClass !== false) {
             $parentProperties = $this->getProperties($parentClass);
@@ -207,21 +182,17 @@ class S2Container_PropertyInterType extends S2Container_AbstractInterType {
         return $properties;
     }
 
+    /**
+     * 
+     */
     private function createMethodName($propName) {
         $methodName = ucfirst($propName);
-        if (preg_match("/_$/", $methodName)) {
-            $methodName = preg_replace("/(.+)(_$)/", "\\1", $methodName);
+        if (preg_match('/_$/', $methodName)) {
+            $methodName = preg_replace('/(.+)(_$)/', "\\1", $methodName);
         }
-
         return $methodName;
     }
 
-    private function hasMethod($methodName) {
-        return in_array($methodName, $this->methodNames);
-    }
-
 }
-
-S2Container_PropertyInterType::staticConst();
 
 ?>

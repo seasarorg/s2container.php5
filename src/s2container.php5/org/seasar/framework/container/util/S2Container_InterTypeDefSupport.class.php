@@ -27,12 +27,20 @@
  */
 class S2Container_InterTypeDefSupport {
 
+    /** */
     private $interTypeDefs = array();
+    /** */
     private $container;
 
+    /**
+     * 
+     */
     public function __construct() {
     }
 
+    /**
+     * 
+     */
     public function addInterTypeDef(S2Container_InterTypeDef $interTypeDef) {
         if ($this->container !== null) {
             $interTypeDef->setContainer($this->container);
@@ -40,14 +48,23 @@ class S2Container_InterTypeDefSupport {
         $this->interTypeDefs[] = $interTypeDef;
     }
 
+    /**
+     * 
+     */
     public function getInterTypeDefSize() {
         return count($this->interTypeDefs);
     }
 
+    /**
+     * 
+     */
     public function getInterTypeDef($index) {
         return $this->interTypeDefs[$index];
     }
 
+    /**
+     * 
+     */
     public function setContainer(S2Container $container) {
         $this->container = $container;
         $c = $this->getInterTypeDefSize();

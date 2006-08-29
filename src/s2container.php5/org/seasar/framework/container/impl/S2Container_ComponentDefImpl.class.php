@@ -17,13 +17,14 @@
 // | either express or implied. See the License for the specific language |
 // | governing permissions and limitations under the License.             |
 // +----------------------------------------------------------------------+
-// | Authors: klove                                                       |
+// | Authors: klove, nowel                                                |
 // +----------------------------------------------------------------------+
 //
 // $Id$
 /**
  * @package org.seasar.framework.container.impl
  * @author klove
+ * @author nowel
  */
 class S2Container_ComponentDefImpl 
     implements S2Container_ComponentDef
@@ -52,7 +53,6 @@ class S2Container_ComponentDefImpl
     
     private $metaDefSupport_;
     
-    // @author nowel
     private $interTypeDefSupport_;
 
     private $instanceMode_ = S2Container_ContainerConstants::INSTANCE_SINGLETON;
@@ -85,7 +85,6 @@ class S2Container_ComponentDefImpl
         $this->destroyMethodDefSupport_ = new S2Container_DestroyMethodDefSupport();
         $this->aspectDefSupport_ = new S2Container_AspectDefSupport();
         $this->metaDefSupport_ = new S2Container_MetaDefSupport();
-        // @author nowel
         $this->interTypeDefSupport_ = new S2Container_InterTypeDefSupport();
     }
 
@@ -165,7 +164,6 @@ class S2Container_ComponentDefImpl
         $this->initMethodDefSupport_->setContainer($container);
         $this->destroyMethodDefSupport_->setContainer($container);
         $this->aspectDefSupport_->setContainer($container);
-        // @author nowel
         $this->interTypeDefSupport_->setContainer($container);
     }
 
@@ -433,7 +431,6 @@ class S2Container_ComponentDefImpl
     }
     
     /**
-     * @author nowel
      * @see org.seasar.framework.container.ComponentDef#addInterTypeDef(org.seasar.framework.container.InterTypeDef)
      */
     public function addInterTypeDef(S2Container_InterTypeDef $interTypeDef){
@@ -442,7 +439,6 @@ class S2Container_ComponentDefImpl
     }
     
     /**
-     * @author nowel
      * @see org.seasar.framework.container.InterTypeDefAware#getInterTypeDef(int)
      */
     public function getInterTypeDef($index) {
@@ -450,7 +446,6 @@ class S2Container_ComponentDefImpl
     }
     
     /**
-     * @author nowel
      * @see org.seasar.framework.container.InterTypeDefAware#getInterTypeDefSize()
      */
     public function getInterTypeDefSize() {

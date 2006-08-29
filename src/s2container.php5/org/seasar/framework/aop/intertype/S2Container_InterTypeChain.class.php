@@ -24,20 +24,29 @@
 /**
  * @package org.seasar.framework.aop.intertype
  * @author nowel
- * @version test
  */
 class S2Container_InterTypeChain implements S2Container_InterType {
     
+    /** */
     protected $interTypes = array();
 
+    /**
+     * 
+     */
     public function __construct() {
     }
 
+    /**
+     * 
+     */
     public function add(S2Container_InterType $interType) {
-        $this->interTypes = array_merge($this->interTypes, $interType);
+        $this->interTypes[] = $interType;
     }
 
-    public function introduce($targetClass, $enhancedClass) {
+    /**
+     * 
+     */
+    public function introduce(ReflectionClass $targetClass, $enhancedClass) {
         $c = count($this->interTypes);
         for ($i = 0; $i < $c; ++$i) {
             $this->interTypes[$i]->introduce($targetClass, $enhancedClass);

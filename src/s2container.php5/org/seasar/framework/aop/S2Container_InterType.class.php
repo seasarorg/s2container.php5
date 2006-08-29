@@ -24,15 +24,14 @@
 /**
  * @package org.seasar.framework.aop
  * @author nowel
- * @version test
  */
 interface S2Container_InterType {
     
-    const PUBLIC_ = 0;
-    const PROTECTED_ = 1;
-    const PRIVATE_ = 2;
-    const STATIC_ = 3;
-    const CONST_ = 5;
+    const PUBLIC_ = 'public ';
+    const PROTECTED_ = 'protected ';
+    const PRIVATE_ = 'private ';
+    const STATIC_ = 'static ';
+    const CONST_ = 'const ';
     
     public function introduce(ReflectionClass $targetClass, $enhancedClass);
 }

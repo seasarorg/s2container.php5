@@ -17,13 +17,14 @@
 // | either express or implied. See the License for the specific language |
 // | governing permissions and limitations under the License.             |
 // +----------------------------------------------------------------------+
-// | Authors: klove                                                       |
+// | Authors: klove, nowel                                                |
 // +----------------------------------------------------------------------+
 //
 // $Id$
 /**
  * @package org.seasar.framework.container.util
  * @author klove
+ * @author nowel
  */
 class S2Container_AopProxyUtil
 {
@@ -35,7 +36,7 @@ class S2Container_AopProxyUtil
     }
 
     /**
-     * @author nowel 
+     * 
      */
     public static function getProxyObject(S2Container_ComponentDef $componentDef,
                                                                    $args)
@@ -80,7 +81,6 @@ class S2Container_AopProxyUtil
     
     /**
      * 
-     * @author nowel
      */
     protected static function getInterTypes(S2Container_ComponentDef $componentDef) {
         $size = $componentDef->getInterTypeDefSize();

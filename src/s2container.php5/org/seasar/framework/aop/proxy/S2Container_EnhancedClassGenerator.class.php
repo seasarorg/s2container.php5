@@ -17,58 +17,47 @@
 // | either express or implied. See the License for the specific language |
 // | governing permissions and limitations under the License.             |
 // +----------------------------------------------------------------------+
-// | Authors: klove                                                       |
+// | Authors: nowel                                                       |
 // +----------------------------------------------------------------------+
 //
-// $Id: S2Container_AopProxyGenerator.class.php 255 2006-05-23 14:51:12Z klove $
+// $Id$
 /**
  * @package org.seasar.framework.aop.proxy
- * @author klove
  * @author nowel
  */
 class S2Container_EnhancedClassGenerator
 {
+    /** */
     const CLASS_NAME_PREFIX = '';
+    /** */
     const CLASS_NAME_POSTFIX = 'EnhancedByS2AOP';
     
+    /** */
     const DEF_CLASS_NAME = 0;
+    /** */
     const DEF_INTERFACE = 1;
+    /** */
     const DEF_CONST = 4;
+    /** */
     const DEF_PROPERTY = 5;
     const DEF_METHOD = 6;
     
-    /**
-     * 
-     */
+    /** */
     private $target = null;
-    /**
-     * 
-     */
+    /** */
     private $targetClass = null;
-    /**
-     * 
-     */
+    /** */
     private $targetClassName = '';
-    /**
-     * 
-     */    
+    /** */
     protected $enhancedClassName = '';
-    /**
-     * 
-     */
+    /** */
     protected $enhancedClassGenerator = null;
-    /**
-     * 
-     */
+    /** */
     protected $parameter = null;
-    /**
-     * Class Sources
-     */
+    /** Target Class Sources */
     protected $source = array();
-    /**
-     * 
-     */
-    protected $evalute = array();
+    /** Evaluate Sources */
+    protected $evaluate = array();
 
     /**
      * 
@@ -83,12 +72,16 @@ class S2Container_EnhancedClassGenerator
         $this->initialize();
     }
     
-    public function initialize(){
-        $this->evalute[self::DEF_CLASS_NAME] = '';
-        $this->evalute[self::DEF_INTERFACE] = array();
-        $this->evalute[self::DEF_CONST] = array();
-        $this->evalute[self::DEF_PROPERTY] = array();
-        $this->evalute[self::DEF_METHOD] = array();
+    /**
+     * 
+     */
+    public function initialize()
+    {
+        $this->evaluate[self::DEF_CLASS_NAME] = '';
+        $this->evaluate[self::DEF_INTERFACE] = array();
+        $this->evaluate[self::DEF_CONST] = array();
+        $this->evaluate[self::DEF_PROPERTY] = array();
+        $this->evaluate[self::DEF_METHOD] = array();
         
         $this->setupClass();
         $this->setupInterface();
@@ -98,126 +91,147 @@ class S2Container_EnhancedClassGenerator
     /**
      * 
      */
-    protected function setupClass(){
+    protected function setupClass()
+    {
         $this->enhancedClassName = $this->getConcreteClassName();
         $className = str_replace($this->targetClassName,
                                  $this->enhancedClassName,
                                  $this->source[0]);
         $className = str_replace('{', '', $className);
-        $this->evalute[self::DEF_CLASS_NAME] = $className;
+        $this->evaluate[self::DEF_CLASS_NAME] = $className;
     }
     
     /**
      * 
      */
-    protected function setupInterface(){
+    protected function setupInterface()
+    {
         $interfaces = S2Container_ClassUtil::getInterfaces($this->targetClass); 
         foreach ($interfaces as $interface) {
             $this->addInterface($interface->getName());
         }
     }
     
-    protected function setupConstructor(){
+    /**
+     * 
+     */
+    protected function setupConstructor()
+    {
     }
     
     /**
      * 
      */
-    public function addInterface($interfaceName){
-        $this->evalute[self::DEF_INTERFACE][] = $interfaceName;
+    public function addInterface($interfaceName)
+    {
+        $this->evaluate[self::DEF_INTERFACE][] = $interfaceName;
     }
     
     /**
      * 
      */
-    public function addConstant($name, $value){
-        $this->evalute[self::DEF_CONST] = array();
+    public function addConstant($name, $value)
+    {
+        $const = S2Container_InterType::CONST_ . $name;
+        $const .= ' = ' . $value;
+        $this->evaluate[self::DEF_CONST][] = $const;
     }
 
     /**
      * 
      */
-    public function addProperty($modify, $name){
-        $property = 'public ';
-        $this->evalute[self::DEF_PROPERTY] = array(); 
-    }
-
-    /**
-     * 
-     */
-    public function addMethod($modify, $name, $src){
-        $method = 'public ';
-        if($modify == S2Container_InterType::STATIC_){
-            $method .= 'static ';
+    public function addProperty($modify, $name, $defaultValue = null)
+    {
+        $property = $modify . ' ' . $name;
+        if($defaultValue !== null){
+            $property .= ' = ' . $defaultValue;
         }
-        $method .= 'function ' . $name . $src;
-        $this->evalute[self::DEF_METHOD][] = $method;
+        $property .= ';';
+        $this->evaluate[self::DEF_PROPERTY][] = $property; 
+    }
+
+    /**
+     * 
+     */
+    public function addMethod($modify, $name, $src)
+    {
+        $method = $modify . ' function ' . $name . $src;
+        $this->evaluate[self::DEF_METHOD][] = $method;
     }
     
     /**
      * 
      */
-    private function getClassName(){
-        return $this->evalute[self::DEF_CLASS_NAME] . PHP_EOL;
+    private function getClassName()
+    {
+        return $this->evaluate[self::DEF_CLASS_NAME];
     }
     
     /**
      * 
      */
-    private function getInterface(){
-        $interfaces = $this->evalute[self::DEF_INTERFACE];
+    private function getInterface()
+    {
+        $interfaces = $this->evaluate[self::DEF_INTERFACE];
         $implLine = '';
         if (count($interfaces) > 0) {
             $implLine = ' implements ' . implode(',', $interfaces);
         }
-        return $implLine . '{' . PHP_EOL;
+        return $implLine . ' {';
     }
     
     /**
      * 
      */
-    private function getProperty(){
-        return implode(PHP_EOL, $this->evalute[self::DEF_PROPERTY]);
+    private function getProperty()
+    {
+        return implode(PHP_EOL, $this->evaluate[self::DEF_PROPERTY]);
     }
     
     /**
      * 
      */
-    private function getConstant(){
-        return implode(PHP_EOL, $this->evalute[self::DEF_CONST]);
+    private function getConstant()
+    {
+        return implode(PHP_EOL, $this->evaluate[self::DEF_CONST]);
     }
     
     /**
      * 
      */
-    private function getMethod(){
-        return implode(PHP_EOL, $this->evalute[self::DEF_METHOD]);
+    private function getMethod()
+    {
+        return implode(PHP_EOL, $this->evaluate[self::DEF_METHOD]);
     }
     
     /**
      * 
      */
-    protected function getEvaluteSource(){
-        $srcLine = $this->getClassName();
-        $srcLine .= $this->getInterface();
-        $srcLine .= $this->getConstant();
-        $srcLine .= $this->getProperty();
-        $srcLine .= $this->getMethod();
+    protected function getevaluateSource()
+    {
+        $srcLine = array();
+        $srcLine[] = $this->getClassName();
+        $srcLine[] = $this->getInterface();
+        $srcLine[] = $this->getConstant();
+        $srcLine[] = $this->getProperty();
+        $srcLine[] = $this->getMethod();
         
+        $src = implode(PHP_EOL, $srcLine);
         $o = count($this->source) - 1;
         for ($i = 1; $i < $o; $i++) {
-            $srcLine .= str_replace($this->targetClassName,
+            $src .= str_replace($this->targetClassName,
                         $this->enhancedClassName,
                         $this->source[$i]);
         }
         
-        return $srcLine . '}' . PHP_EOL;
+        return $src . '}' . PHP_EOL;
     }
 
     /**
      * 
      */
-    public function applyInterType(S2Container_InterType $interType) {
+    public function applyInterType(S2Container_InterType $interType)
+    {
         $interType->introduce($this->targetClass, $this->enhancedClassName);
     }
     
@@ -237,16 +251,16 @@ class S2Container_EnhancedClassGenerator
             }
         }
         
-        $srcLine = $this->getEvaluteSource();
+        $source = $this->getevaluateSource();
         
         if (S2Container_FileCacheUtil::isAopCache()) {
-            S2Container_FileCacheUtil::saveAopCache($this->enhancedClassName, $srcLine);
+            S2Container_FileCacheUtil::saveAopCache($this->enhancedClassName, $source);
         }
 
         if(defined('S2CONTAINER_PHP5_DEBUG_EVAL') && S2CONTAINER_PHP5_DEBUG_EVAL){
             S2Container_S2Logger::getLogger(__CLASS__)->debug("[ $srcLine ]",__METHOD__);
         }
-        eval($srcLine);
+        eval($source);
         return $this->enhancedClassName;
     }
 
@@ -262,8 +276,9 @@ class S2Container_EnhancedClassGenerator
     /**
      * 
      */
-    public function setInterTypes(array $interTypes = null) {
-        if ($interTypes === null || count($interTypes) == 0) {
+    public function setInterTypes(array $interTypes = null)
+    {
+        if (null === $interTypes || 0 == count($interTypes)) {
             return;
         }
 
@@ -277,25 +292,23 @@ class S2Container_EnhancedClassGenerator
     /**
      * 
      */
-    public function setInterceptors(ReflectionMethod $method, array $interceptors) {
+    public function setInterceptors(ReflectionMethod $method, array $interceptors)
+    {
     }
     
     /**
      * 
      */
-    public function getMethodInvocationClassName(ReflectionMethod $method) {
+    public function getMethodInvocationClassName(ReflectionMethod $method)
+    {
     }
 
     /**
      * 
      */
-    public function createInvokeSuperMethod(ReflectionMethod $method) {
+    public function createInvokeSuperMethod(ReflectionMethod $method)
+    {
     }
 
-    /**
-     * 
-     */
-    public function setStaticField(ReflectionClass $clazz, $name, $value) {
-    }
 }
 ?>

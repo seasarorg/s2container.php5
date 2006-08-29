@@ -17,13 +17,14 @@
 // | either express or implied. See the License for the specific language |
 // | governing permissions and limitations under the License.             |
 // +----------------------------------------------------------------------+
-// | Authors: klove                                                       |
+// | Authors: klove, nowel                                                |
 // +----------------------------------------------------------------------+
 //
 // $Id$
 /**
  * @package org.seasar.framework.container.impl
  * @author klove
+ * @author nowel
  */
 class S2Container_SimpleComponentDef 
     implements S2Container_ComponentDef
@@ -320,7 +321,6 @@ class S2Container_SimpleComponentDef
     
     /**
      * @see org.seasar.framework.container.ComponentDef#addInterTypeDef(org.seasar.framework.container.InterTypeDef)
-     * @author nowel
      */
     public function addInterTypeDef(S2Container_InterTypeDef $interTypeDef)
     {
@@ -329,7 +329,6 @@ class S2Container_SimpleComponentDef
     
     /**
      * @see org.seasar.framework.container.InterTypeDefAware#getInterTypeDefSize()
-     * @author nowel
      */
     public function getInterTypeDefSize()
     {
@@ -338,7 +337,6 @@ class S2Container_SimpleComponentDef
     
     /**
      * @see org.seasar.framework.container.InterTypeDefAware#getInterTypeDef(int)
-     * @author nowel
      */
     public function getInterTypeDef($index) {
         throw new S2Container_UnsupportedOperationException("getInterTypeDef");

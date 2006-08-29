@@ -17,13 +17,14 @@
 // | either express or implied. See the License for the specific language |
 // | governing permissions and limitations under the License.             |
 // +----------------------------------------------------------------------+
-// | Authors: klove                                                       |
+// | Authors: klove, nowel                                                |
 // +----------------------------------------------------------------------+
 //
 // $Id$
 /**
  * @package org.seasar.framework.aop.proxy
  * @author klove
+ * @author nowel
  */
 final class S2Container_AopProxyFactory
 {
@@ -43,8 +44,6 @@ final class S2Container_AopProxyFactory
                            $interTypes,
                            $parameters = null)
     {
-        //$log = S2Container_S2Logger::getLogger('S2Container_AopProxyFactor');
-
         if (!$targetClass instanceof ReflectionClass) {
             if (is_string($targetClass)) {
                 $targetClass = new ReflectionClass($targetClass);

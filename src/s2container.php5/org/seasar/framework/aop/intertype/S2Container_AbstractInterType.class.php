@@ -24,58 +24,94 @@
 /**
  * @package org.seasar.framework.aop.intertype
  * @author nowel
- * @version test
  */
 abstract class S2Container_AbstractInterType implements S2Container_InterType {
     
-    const COMPONENT = 'instance = prototype';
+    /** */
     protected $targetClass;
+    /** */
     protected $enhancedClass;
+    /** */
     protected $enhancedClassName;
 
+    /**
+     * 
+     */
     public function __construct($enhancedClass){
         $this->enhancedClass = $enhancedClass;
     }
 
+    /**
+     * 
+     */
     public function introduce(ReflectionClass $targetClass, $enhancedClassName) {
         $this->targetClass = $targetClass;
         $this->enhancedClassName = $enhancedClassName;
     }
 
+    /**
+     * 
+     */
     protected function getTargetClass() {
         return $this->targetClass;
     }
 
+    /**
+     * 
+     */
     protected function getEnhancedClass() {
         return $this->enhancedClass;
     }
     
+    /**
+     * 
+     */
     protected function getEnhancedClassName(){
         return $this->enhancedClassName;
     }
 
+    /**
+     * 
+     */
     protected function addInterface($className) {
         $this->enhancedClass->addInterface($className);
     }
 
+    /**
+     * 
+     */
     protected function addConstant($name, $value) {
         $this->enhancedClass->addConstant($name, $value);
     }
 
-    protected function addStaticProperty($name) {
-        $this->addProperty(self::STATIC_, $name);
+    /**
+     * 
+     */
+    protected function addStaticProperty(array $modify, $name, $value = null) {
+        $modify[] = self::STATIC_;
+        $this->addProperty($modify, $name, $value);
     }
 
-    protected function addProperty($modify, $name) {
-        $this->enhancedClass->addProperty($modify, $name);
+    /**
+     * 
+     */
+    protected function addProperty(array $modify, $name, $value = null) {
+        $this->enhancedClass->addProperty(implode('', $modify), $name, $value);
     }
 
-    protected function addStaticMethod($name, $src) {
-        $this->addMethod(self::STATIC_, $name, $src);
+    /**
+     * 
+     */
+    protected function addStaticMethod(array $modify, $name, $src) {
+        $modify[] = self::STATIC_;
+        $this->addMethod($modify, $name, $src);
     }
 
-    protected function addMethod($modify, $name, $src) {
-        $this->enhancedClass->addMethod($modify, $name, $src);
+    /**
+     * 
+     */
+    protected function addMethod(array $modify, $name, $src) {
+        $this->enhancedClass->addMethod(implode('', $modify), $name, $src);
     }
 
 }

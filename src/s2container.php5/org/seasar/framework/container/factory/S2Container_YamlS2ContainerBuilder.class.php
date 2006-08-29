@@ -24,7 +24,6 @@
 /**
  * @package org.seasar.framework.container.factory
  * @author nowel
- * @version test
  */
 final class S2Container_YamlS2ContainerBuilder
     implements S2ContainerBuilder

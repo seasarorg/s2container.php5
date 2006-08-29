@@ -40,60 +40,56 @@ class S2Container_SerializableInterType extends S2Container_AbstractInterType {
         }
         
         if(!$this->targetClass->implementsInterface('Serializable')){
-            return ;
+            $this->addInterface('Serializable');
         }
 
-        $this->createSerializeMethod($this->targetClass);
-        $this->createUnserializeMethod($this->targetClass);
+        $this->createSerializeMethod();
+        $this->createUnserializeMethod();
     }
 
-    private function createSerializeMethod(ReflectionClass $targetClass) {
+    private function createSerializeMethod() {
+        $methodName = 'serialize';
+        if($targetClass->hasMethod($methodName)){
+            return;
+        }
         if(S2CONTAINER_PHP5_LOG_LEVEL == 1){
             self::$logger->debug('[SerializableInterType] Creating Serialize Method ' .
-                                $targetClass->getName());
+                                $this->targetClass->getName());
         }
 
-        $src = "()";
-        $src .= "{";
-        $src .= "\$serial = array();";
-        $src .= "foreach(\$this as \$property){";
-        $src .= "   \$serial[\$property] = \$this->\$property;";
-        $src .= "}";
-        $src .= "return serialize(\$serial);";
-        $src .= "}";
+        $src = array();
+        $src[] = '(){';
+        $src[] = '    \$serial = array();';
+        $src[] = '    foreach($this as $property => $value){';
+        $src[] = '        $serial[$property] = $value;';
+        $src[] = '    }';
+        $src[] = '    return serialize($serial);';
+        $src[] = '}';
 
-        $methodName = "serialize";
-        //$type = gettype($targetProperty->getValue($targetClass->newInstance()));
-        $type = null;
-        $this->addMethod($type, $methodName, $src);
+        $type = array(self::PUBLIC_);
+        $this->addMethod($type, $methodName, implode(PHP_EOL, $src));
     }
 
     private function createUnserializeMethod(ReflectionClass $targetClass) {
+        $methodName = 'unserialize';
+        if($targetClass->hasMethod($methodName)){
+            return;
+        }
         if(S2CONTAINER_PHP5_LOG_LEVEL == 1){
-            self::$logger->debug('[SerializableInterType] Creating Serialize Method ' .
-                                $targetClass->getName());
+            self::$logger->debug('[SerializableInterType] Creating Unserialize Method ' .
+                                $this->targetClass->getName());
         }
 
-        $src = "(\$serialized)";
-        $src .= "{";
-        $src .= "\$unserialize = unserialize(\$serialized);";
-        $src .= "foreach(\$unserialize as \$property => $value){";
-        $src .= "   \$this->\$property = \$value;";
-        $src .= "}";
+        $src = array();
+        $src[] = '(\$serialized){';
+        $src[] = '    $unserialize = unserialize($serialized);';
+        $src[] = '    foreach($unserialize as $property => $value){';
+        $src[] = '        $this->$property = $value;';
+        $src[] = '    }';
+        $src[] = '}';
 
-        $methodName = "unserialize";
-        //$type = gettype($targetProperty->getValue($targetClass->newInstance()));
-        $type = null;
-        $this->addMethod($type, $methodName, $src);
-    }
-
-    private function getTargetMethodNames(ReflectionClass $targetClass){
-        $meth = array();
-        $methods = $targetClass->getMethods();
-        foreach($methods as $method){
-            $meth[] = $method->getName();
-        }
-        return $meth;
+        $type = array(self::PUBLIC_);
+        $this->addMethod($type, $methodName, implode(PHP_EOL, $src));
     }
 
 }
