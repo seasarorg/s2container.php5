@@ -178,7 +178,7 @@ class S2Container_EnhancedClassGenerator
     public function addConstant($name, $value)
     {
         $const = S2Container_InterType::CONST_ . $name;
-        $const .= ' = ' . $value;
+        $const .= ' = ' . $value . ';';
         $this->evaluate[self::DEF_CONST][] = $const;
     }
 
