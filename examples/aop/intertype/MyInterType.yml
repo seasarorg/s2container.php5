@@ -1,0 +1,4 @@
+components:
+    - component: .
+        - class: "MyClass"
+        - intertype: "MyInterType"
