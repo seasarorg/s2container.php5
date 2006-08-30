@@ -49,7 +49,7 @@ class S2Container_SerializableInterType extends S2Container_AbstractInterType {
 
     private function createSerializeMethod() {
         $methodName = 'serialize';
-        if($targetClass->hasMethod($methodName)){
+        if($this->targetClass->hasMethod($methodName)){
             return;
         }
         if(S2CONTAINER_PHP5_LOG_LEVEL == 1){
@@ -59,10 +59,14 @@ class S2Container_SerializableInterType extends S2Container_AbstractInterType {
 
         $src = array();
         $src[] = '(){';
-        $src[] = '    \$serial = array();';
+        $src[] = '    $serial = array();';
         $src[] = '    foreach($this as $property => $value){';
         $src[] = '        $serial[$property] = $value;';
         $src[] = '    }';
+        $src[] = '    unset($serial["target_"]);';
+        $src[] = '    unset($serial["targetClass_"]);';
+        $src[] = '    unset($serial["methodInterceptorsMap_"]);';
+        $src[] = '    unset($serial["parameters_"]);';
         $src[] = '    return serialize($serial);';
         $src[] = '}';
 
@@ -70,9 +74,9 @@ class S2Container_SerializableInterType extends S2Container_AbstractInterType {
         $this->addMethod($type, $methodName, implode(PHP_EOL, $src));
     }
 
-    private function createUnserializeMethod(ReflectionClass $targetClass) {
+    private function createUnserializeMethod() {
         $methodName = 'unserialize';
-        if($targetClass->hasMethod($methodName)){
+        if($this->targetClass->hasMethod($methodName)){
             return;
         }
         if(S2CONTAINER_PHP5_LOG_LEVEL == 1){
@@ -81,7 +85,7 @@ class S2Container_SerializableInterType extends S2Container_AbstractInterType {
         }
 
         $src = array();
-        $src[] = '(\$serialized){';
+        $src[] = '($serialized){';
         $src[] = '    $unserialize = unserialize($serialized);';
         $src[] = '    foreach($unserialize as $property => $value){';
         $src[] = '        $this->$property = $value;';

@@ -115,10 +115,11 @@ class S2Container_PropertyInterType extends S2Container_AbstractInterType {
         $src = array();
         $src[] = '(){';
         if ($this->trace) {
+            $className = $targetClass->getName();
             $buf = '';
-            $buf .= '$logger = S2Container_S2Logger::getLogger(__CLASS__);';
-            $buf .= '$logger->debug("CALL " . __CLASS__ . "::" . ';
-            $buf .= $targetPropertyName . ',  __METHOD__);';
+            $buf .= 'S2Container_S2Logger::getLogger("' . $className . '")->';
+            $buf .= 'debug("CALL " . "' . $className . '" . "::" . ';
+            $buf .= '"' . $methodName . '()");';
             $src[] = $buf;
         }
         $src[] = 'return $this->' . $targetPropertyName . ';}';
@@ -145,10 +146,11 @@ class S2Container_PropertyInterType extends S2Container_AbstractInterType {
         $src = array();
         $src[] = '($value){';
         if ($this->trace) {
+            $className = $targetClass->getName();
             $buf = '';
-            $buf .= '$logger = S2Container_S2Logger::getLogger(__CLASS__);';
-            $buf .= '$logger->debug("CALL " . __CLASS__ . "::" . ';
-            $buf .= '__METHOD__ . "(" . $value . ")");';
+            $buf .= 'S2Container_S2Logger::getLogger("' . $className . '")->';
+            $buf .= 'debug("CALL " . "' . $className . '" . "::" . ';
+            $buf .= '"' . $methodName . '(" . $value . ")");';
             $src[] = $buf;
         }
         $src[] = '$this->' . $targetPropertyName . ' = $value;}';

@@ -69,14 +69,11 @@ class S2Container_AopProxyGenerator
             $unApplicable = false;
             foreach ($methods as $method) {
                 if ($method->getDeclaringClass()->getName() == $interface->getName()) {
-                    if (S2Container_AopProxyFactory::isApplicableAspect($method)) {
-                        $addMethodSrc[] =
-                             S2Container_AopProxyGenerator::getMethodDefinition($method,
-                             $interfaceSrc);
-                    } else {
+                    if (!S2Container_AopProxyFactory::isApplicableAspect($method)) {
                         $unApplicable = true;
                         break;
                     }
+                    $addMethodSrc[] = self::getMethodDefinition($method, $interfaceSrc);
                 }
             }
             if (!$unApplicable) {

@@ -72,14 +72,10 @@ final class S2Container_AopProxyFactory
             $generator->setInterTypes($interTypes);
             $generator->setInterceptors($methodInterceptorsMap);
             $concreteClassName = $generator->generate();
-            $setterName = S2Container_EnhancedClassGenerator::INVOKE_SUPER_METHOD_SUFFIX;
-            
-            $concreteClass = new $concreteClassName();
-            $concreteClass->$setterName($target,
+            return new $concreteClassName($target,
                                       $targetClass,
                                       $methodInterceptorsMap,
                                       $parameters);
-            return $concreteClass;
         }
         
         $interfaces = S2Container_ClassUtil::getInterfaces($targetClass); 
