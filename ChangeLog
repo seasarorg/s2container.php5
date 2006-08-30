@@ -1,7 +1,17 @@
 ﻿
-2006-08-26 S2Container.PHP5-1.1.2
+2006-08-30 S2Container.PHP5-1.1.2
 
 ================ S2Container.PHP5-1.1.2 更新履歴 ===================
+
+	* add: package org.seasar.framework.container
+	S2Container_AspectDef::setPointcut() を追加しました。
+	S2Container_AspectDef::getPointcut() を追加しました。
+
+	* add: package org.seasar.framework.container.impl
+	S2Container_AspectDefImpl::setPointcut() を追加しました。
+	S2Container_AspectDefImpl::getPointcut() を追加しました。
+
+2006-08-26 S2Container.PHP5-1.1.2
 
 	* add: package org.seasar.framework.exception
 	S2Container_IndexOutOfBoundsException を追加しました。

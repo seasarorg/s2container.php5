@@ -146,10 +146,10 @@
     </target>
 
     <target name="doc" depends="build">
-        <echo>src directory : src/s2container.php5/${dd}</echo>
+        <echo>src directory : ${project.src.dir}/${project.name}/${dd}</echo>
         <phpdoc title="${project.name} Documentation"
             destdir="${project.build.dir}/apidocs"
-            sourcepath="src/s2container.php5/${dd}"
+            sourcepath="${project.src.dir}/${project.name}/${dd}"
             output="HTML:Smarty:PHP"
             parseprivate="true"
             linksource="false"/>
