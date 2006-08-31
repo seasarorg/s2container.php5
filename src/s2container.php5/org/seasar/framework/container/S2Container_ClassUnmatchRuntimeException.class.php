@@ -22,18 +22,47 @@
 //
 // $Id$
 /**
- * @package org.seasar.framework.container
- * @author klove
+ * コンポーネントのインスタンスを、 {@link S2Container_ComponentDef コンポーネント定義}に指定されたクラスにキャスト出来ない場合にスローされます。
+ * <p>
+ * {@link  S2Container_ComponentDef::setExpression()}でインスタンスの生成を定義している場合は、
+ * そのインスタンスをコンポーネント定義に指定されたクラスにキャスト出来ないことを表します。
+ * </p>
+ * <p>
+ * 外部コンポーネントを{@link S2Container::injectDependency()}などでインジェクションする場合は、
+ * そのコンポーネントを、 コンポーネント定義に指定されたクラスにキャストできないことを表します。
+ * </p>
+ * 
+ * @see S2Container_ConstructorAssembler::assemble()
+ * @see S2Container::injectDependency()
+ * 
+ * @copyright  2005-2006 the Seasar Foundation and the Others.
+ * @license    http://www.apache.org/licenses/LICENSE-2.0
+ * @version    Release: 1.1.2
+ * @link       http://s2container.php5.seasar.org/
+ * @since      Class available since Release 1.0.0
+ * @package    org.seasar.framework.container
+ * @author     klove
  */
 class S2Container_ClassUnmatchRuntimeException
     extends S2Container_S2RuntimeException
 {
+    /**
+     * @var ReflectionClass
+     */
     private $componentClass_;
+
+    /**
+     * @var ReflectionClass
+     */
     private $realComponentClass_;
     
     /**
-     * @param ReflectionClass
-     * @param ReflectionClass
+     * <b>ClassUnmatchRuntimeException</b>を構築します。
+     * 
+     * @param ReflectionClass $componentClass
+     *            コンポーネント定義に指定されたクラス
+     * @param ReflectionClass $realComponentClass
+     *            コンポーネントの実際の型
      */
     public function __construct($componentClass,
                                 $realComponentClass)
@@ -49,7 +78,9 @@ class S2Container_ClassUnmatchRuntimeException
     }
     
     /**
-     * @return ReflectionClass
+     * コンポーネント定義に指定されたクラスを返します。
+     * 
+     * @return ReflectionClass コンポーネント定義に指定されたクラス
      */
     public function getComponentClass()
     {
@@ -57,7 +88,9 @@ class S2Container_ClassUnmatchRuntimeException
     }
     
     /**
-     * @return ReflectionClass
+     * コンポーネントの実際の型を返します。
+     * 
+     * @return ReflectionClass コンポーネントの実際の型
      */
     public function getRealComponentClass()
     {
