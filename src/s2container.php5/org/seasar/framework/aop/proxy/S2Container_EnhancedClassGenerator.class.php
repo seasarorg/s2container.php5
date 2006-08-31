@@ -145,10 +145,12 @@ class S2Container_EnhancedClassGenerator
     {
         $properties = $this->targetClass->getProperties();
         foreach($properties as $property){
-            $modify = array();
             if($property->isPublic()){
-                $modify[] = S2Container_InterType::PUBLIC_;
-            } else if($property->isProtected()){
+                continue;
+            }
+            
+            $modify = array();
+            if($property->isProtected()){
                 $modify[] = S2Container_InterType::PROTECTED_;
             } else {
                 $modify[] = S2Container_InterType::PRIVATE_;
