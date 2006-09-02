@@ -72,8 +72,7 @@ class S2Container_ComponentDefImpl
             $this->componentClass_ = $componentClass;
             $this->componentClassName_ = $componentClass->getName();
         } else {
-            if (class_exists($componentClass) or
-               interface_exists($componentClass)) {
+            if (class_exists($componentClass) || interface_exists($componentClass)) {
                $this->componentClass_ = new ReflectionClass($componentClass);
             }
             $this->componentClassName_ = $componentClass;
@@ -161,10 +160,10 @@ class S2Container_ComponentDefImpl
         $this->argDefSupport_->setContainer($container);
         $this->metaDefSupport_->setContainer($container);
         $this->propertyDefSupport_->setContainer($container);
+        $this->interTypeDefSupport_->setContainer($container);
         $this->initMethodDefSupport_->setContainer($container);
         $this->destroyMethodDefSupport_->setContainer($container);
         $this->aspectDefSupport_->setContainer($container);
-        $this->interTypeDefSupport_->setContainer($container);
     }
 
     /**
@@ -435,7 +434,6 @@ class S2Container_ComponentDefImpl
      */
     public function addInterTypeDef(S2Container_InterTypeDef $interTypeDef){
         $this->interTypeDefSupport_->addInterTypeDef($interTypeDef);
-        //$this->componentClass_ = null;
     }
     
     /**
@@ -458,7 +456,7 @@ class S2Container_ComponentDefImpl
     private function _getComponentDeployer()
     {
         if ($this->componentDeployer_ == null) {
-            if ($this->expression_ == null and 
+            if ($this->expression_ == null && 
                $this->componentClass_ == null) {
                 throw new S2Container_S2RuntimeException('ESSR1008',
                            array($this->componentName_,

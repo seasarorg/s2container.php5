@@ -166,7 +166,7 @@ final class S2ContainerMemcacheFactory {
         }
         
         $cache = $memcache->get($cacheName);
-        if($cache !== false){
+        if($cache !== false && !is_object($cache)){
             $container = unserialize($cache);
             $logger->info('cached container available.', __METHOD__);
             if (is_object($container) && $container instanceof S2Container){
@@ -253,11 +253,9 @@ final class S2ContainerMemcacheFactory {
      */
     private static function createCacheKeyName($item){
         if(is_object($item)){
-            $name = md5((string)$item);
-        } else {
-            $name = md5($item);
+            return md5((string)$item);
         }
-        return $name;
+        return md5($item);
     }
     // }}}
 

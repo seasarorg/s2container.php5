@@ -103,7 +103,7 @@ class S2Container_ArgDefImpl
     public final function setExpression($expression)
     {
         $this->expression_ = trim($expression);
-        if ($this->expression_ == "") {
+        if ($this->expression_ == null) {
             $this->exp_ = null;
         } else {
             $this->exp_ = S2Container_EvalUtil::getExpression($this->expression_);

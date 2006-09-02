@@ -44,7 +44,7 @@ class S2Container_SingletonComponentDeployer
      */
     public function deploy()
     {
-        if ($this->component_ == null) {
+        if ($this->component_ === null) {
             $this->_assemble();
         }
         return $this->component_;

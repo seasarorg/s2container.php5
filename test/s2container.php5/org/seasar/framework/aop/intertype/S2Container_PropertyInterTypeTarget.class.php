@@ -17,40 +17,17 @@
 // | either express or implied. See the License for the specific language |
 // | governing permissions and limitations under the License.             |
 // +----------------------------------------------------------------------+
-// | Authors: klove                                                       |
+// | Authors: nowel                                                       |
 // +----------------------------------------------------------------------+
 //
-// $Id$
+// $Id:$
 /**
- * @package org.seasar.framework.container.assembler
- * @author klove
+ * @package org.seasar.framework.aop.intertype
+ * @author nowel
  */
-abstract class S2Container_AbstractConstructorAssembler
-    extends S2Container_AbstractAssembler
-    implements S2Container_ConstructorAssembler
-{
-    /**
-     * @param S2Container_ComponentDef
-     */
-    public function __construct(S2Container_ComponentDef $componentDef)
-    {
-        parent::__construct($componentDef);
-    }
+interface S2Container_PropertyInterTypeTarget {
+    public abstract function getIntWriteField();
 
-    /**
-     * 
-     */
-    protected function assembleDefault()
-    {
-        $clazz = $this->getComponentDef()->getConcreteClass();
-        
-        if ($this->getComponentDef() != null and 
-            $this->getComponentDef()->getAspectDefSize() > 0) {
-            return S2Container_AopProxyUtil::getProxyObject($this->
-                                               getComponentDef(),
-                                               array()); 
-        }
-        return S2Container_ConstructorUtil::newInstance($clazz, null);
-    }
 }
+
 ?>

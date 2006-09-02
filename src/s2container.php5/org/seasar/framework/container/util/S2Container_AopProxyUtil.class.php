@@ -43,7 +43,10 @@ class S2Container_AopProxyUtil
     {
         if($componentDef->getAspectDefSize() == 0
                 && $componentDef->getInterTypeDefSize() == 0) {
-            return $componentDef->getComponentClass();
+            // ComponentClas <= ReflectionClassなのでTestが通らないかも。::assertTypeされてるかも。
+            // TODO:: testの不備を直す。かそれ以外(ReflectionClass)の対応をする||それともこれでいく
+            //return $componentDef->getComponentClass();
+            return S2Container_ConstructorUtil::newInstance($componentDef->getComponentClass(),$args);
         }
         
         $parameters = array();
@@ -57,13 +60,11 @@ class S2Container_AopProxyUtil
                                                       getComponentClass(),$args);
         }
 
-        $proxy = S2Container_AopProxyFactory::create($target,
+        return S2Container_AopProxyFactory::create($target,
                    $componentDef->getComponentClass(),
                    self::getAspects($componentDef),
                    self::getInterTypes($componentDef),
                    $parameters);
-
-        return $proxy;
     }
 
     /**

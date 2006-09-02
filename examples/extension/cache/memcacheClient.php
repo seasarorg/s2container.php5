@@ -14,7 +14,7 @@ define('S2CONTAINER_PHP5_LOG_LEVEL', S2Container_SimpleLogger::INFO);
 
 /** memcache options */
 $memcacheOpt = array('host' => 'localhost', 'port' => 11211);
-S2ContainerMemcacheFactory::initialize($memcacheOpt);
+S2ContainerMemcacheFactory::getInstance($memcacheOpt);
 
 
 

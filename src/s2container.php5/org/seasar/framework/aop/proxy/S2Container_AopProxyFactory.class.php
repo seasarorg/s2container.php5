@@ -41,7 +41,7 @@ final class S2Container_AopProxyFactory
     public static function create($target = null,
                            $targetClass,
                            $aspects,
-                           $interTypes,
+                           $interTypes = null,
                            $parameters = null)
     {
         if (!$targetClass instanceof ReflectionClass) {
@@ -64,8 +64,7 @@ final class S2Container_AopProxyFactory
                                                                   $aspects,
                                                                   $interTypes);
 
-        $generator = null;
-        if(0 < count($interTypes)){
+        if(null !== $interTypes && 0 < count($interTypes)){
             $generator = new S2Container_EnhancedClassGenerator($target,
                                                           $targetClass,
                                                           $parameters);
@@ -100,7 +99,9 @@ final class S2Container_AopProxyFactory
      * @param array Aspect array
      * @param array InterType array
      */
-    private static function _creatMethodInterceptorsMap($targetClass, $aspects, $interTypes)
+    private static function _creatMethodInterceptorsMap($targetClass,
+                                                        $aspects = null,
+                                                        $interTypes = null)
     {
         if (($aspects == null || count($aspects) == 0)
             && ($interTypes == null || count($interTypes) == 0)) {
@@ -119,7 +120,7 @@ final class S2Container_AopProxyFactory
         $methodInterceptorsMap = array();
         $o = count($methods);
         for ($i = 0; $i < $o; ++$i) {
-            if (!S2Container_AopProxyFactory::isApplicableAspect($methods[$i])) {
+            if (!self::isApplicableAspect($methods[$i])) {
                 continue;
             }
         

@@ -46,6 +46,7 @@ class S2Container_AopProxyFactoryTest extends PHPUnit2_Framework_TestCase {
         $c = S2Container_AopProxyFactory::create(new WextendAW_S2Container_AopProxyFactory(),
                                                  new ReflectionClass('WextendAW_S2Container_AopProxyFactory'),
                                                  array($ad->getAspect()),
+                                                 array(),
                                                  array());
         if($c instanceof IW_S2Container_AopProxyFactory){
             $this->assertTrue(true);
@@ -57,6 +58,7 @@ class S2Container_AopProxyFactoryTest extends PHPUnit2_Framework_TestCase {
         $c = S2Container_AopProxyFactory::create(null,
                                                  new ReflectionClass('IW_S2Container_AopProxyFactory'),
                                                  array($ad->getAspect()),
+                                                 array(),
                                                  array());
         if($c instanceof IW_S2Container_AopProxyFactory){
             $this->assertTrue(true);
@@ -67,6 +69,7 @@ class S2Container_AopProxyFactoryTest extends PHPUnit2_Framework_TestCase {
         $c = S2Container_AopProxyFactory::create(new WextendAW_S2Container_AopProxyFactory(),
                                                  null,
                                                  array($ad->getAspect()),
+                                                 array(),
                                                  array());
         if($c instanceof IW_S2Container_AopProxyFactory){
             $this->assertTrue(true);
@@ -83,6 +86,7 @@ class S2Container_AopProxyFactoryTest extends PHPUnit2_Framework_TestCase {
             $c = S2Container_AopProxyFactory::create(null,
                                                      null,
                                                      array($ad->getAspect()),
+                                                     array(),
                                                      array());
         }catch(Exception $e){
             $this->assertType('S2Container_S2RuntimeException',$e);
@@ -94,6 +98,7 @@ class S2Container_AopProxyFactoryTest extends PHPUnit2_Framework_TestCase {
         try{
             $c = S2Container_AopProxyFactory::create(new WextendAW_S2Container_AopProxyFactory(),
                                                      null,
+                                                     array(),
                                                      array(),
                                                      array());
         }catch(Exception $e){
