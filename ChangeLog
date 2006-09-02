@@ -1,133 +1,140 @@
 ﻿
+2006-09-02 S2Container.PHP5-1.1.2
+
+================ S2Container.PHP5-1.1.2 ｹｹｿｷﾍ昀・===================
+
+	* modify: package org.seasar.framework.container
+	- S2Container_ContainerConstants::REQUEST_NAME
+	- S2Container_ContainerConstants::RESPONSE_NAME
+	- S2Container_ContainerConstants::SESSION_NAME
+	- S2Container_ContainerConstants::SERVLET_CONTEXT_NAME
+	ﾄ・・・ｷ､ﾞ､ｷ､ｿ｡｣
+
 2006-08-30 S2Container.PHP5-1.1.2
 
-================ S2Container.PHP5-1.1.2 更新履歴 ===================
-
 	* add: package org.seasar.framework.container
-	S2Container_AspectDef::setPointcut() を追加しました。
-	S2Container_AspectDef::getPointcut() を追加しました。
+	S2Container_AspectDef::setPointcut() ､ﾉｲﾃ､ｷ､ﾞ､ｷ､ｿ｡｣
+	S2Container_AspectDef::getPointcut() ､ﾉｲﾃ､ｷ､ﾞ､ｷ､ｿ｡｣
 
 	* add: package org.seasar.framework.container.impl
-	S2Container_AspectDefImpl::setPointcut() を追加しました。
-	S2Container_AspectDefImpl::getPointcut() を追加しました。
+	S2Container_AspectDefImpl::setPointcut() ､ﾉｲﾃ､ｷ､ﾞ､ｷ､ｿ｡｣
+	S2Container_AspectDefImpl::getPointcut() ､ﾉｲﾃ､ｷ､ﾞ､ｷ､ｿ｡｣
 
 2006-08-26 S2Container.PHP5-1.1.2
 
 	* add: package org.seasar.framework.exception
-	S2Container_IndexOutOfBoundsException を追加しました。
+	S2Container_IndexOutOfBoundsException ､ﾉｲﾃ､ｷ､ﾞ､ｷ､ｿ｡｣
 
 	* modify: package org.seasar.framework.container.util
-	S2Container_ArgDefSupport::getArgDef($index) で、S2Container_IndexOutOfBoundsException を 
-	throw するようにしました。
+	S2Container_ArgDefSupport::getArgDef($index) ､ﾇ｡｢S2Container_IndexOutOfBoundsException ､・
+	throw ､ｹ､・隍ｦ､ﾋ､ｷ､ﾞ､ｷ､ｿ｡｣
 
 2006-08-24 S2Container.PHP5-1.1.2
 
 	* modify: package org.seasar.framework.util
-	S2Container_StringUtil::mixToString() の追加
+	S2Container_StringUtil::mixToString() ､ﾎﾄﾉｲﾃ
 
 	* modify: pacakge org.seasar.framework.aop.interceptors
-	S2Container_TraceInterceptorで、引数、戻り値表示で、
-	S2Container_StringUtil::mixToString() を使用するようにしました。
+	S2Container_TraceInterceptor､ﾇ｡｢ｰ惞｢ﾌ皃・ﾍﾉｽｼｨ､ﾇ｡｢
+	S2Container_StringUtil::mixToString() ､ﾈﾍﾑ､ｹ､・隍ｦ､ﾋ､ｷ､ﾞ､ｷ､ｿ｡｣
 
 	* modify: pacakge org.seasar.framework.container.assembler
-	S2Container_AbstractAssembler::getArgs() にて、自動バインディング対象
-	コンポーネントがS2Containerに存在しない場合のログレベルをwarnからinfoに変更
+	S2Container_AbstractAssembler::getArgs() ､ﾋ､ﾆ｡｢ｼｫﾆｰ･ﾐ･､･ﾇ･｣･ｰﾂﾐｾﾝ
+	･ｳ･ﾝ｡ｼ･ﾍ･ﾈ､ｬS2Container､ﾋﾂｸｺﾟ､ｷ､ﾊ､､ｾ・遉ﾎ･愠ｰ･・ﾙ･・arn､ｫ､駟nfo､ﾋﾊﾑｹｹ
 
-	* add: S2ContainerClassLoaderを使用する形のautoload.phpを用意
+	* add: S2ContainerClassLoader､ﾈﾍﾑ､ｹ､・ﾁ､ﾎautoload.php､ﾑｰﾕ
 
 	* modify: pacakge org.seasar.framework.container
-	S2Container_ArgDef::setContainer() の引数にType Hinting を追加しました。
+	S2Container_ArgDef::setContainer() ､ﾎｰ惞ﾋType Hinting ､ﾉｲﾃ､ｷ､ﾞ､ｷ､ｿ｡｣
 
 
 2006-07-09 S2Container.PHP5-1.1.1
 
-================ S2Container.PHP5-1.1.1 更新履歴 ===================
+================ S2Container.PHP5-1.1.1 ｹｹｿｷﾍ昀・===================
 
 	* modify: pacakge org.seasar.framework.aop.proxy
-	S2Aop で、アスペクトターゲットが __callメソッドを実装していた場合も、
-	アスペクトを許可しました。
+	S2Aop ､ﾇ｡｢･｢･ｹ･ﾚ･ｯ･ﾈ･ｿ｡ｼ･ｲ･ﾃ･ﾈ､ｬ __call･皈ｽ･ﾃ･ﾉ､ﾂﾁｷ､ﾆ､､､ｿｾ・遉筍｢
+	･｢･ｹ･ﾚ･ｯ･ﾈ､ﾄ､ｷ､ﾞ､ｷ､ｿ｡｣
 
 	* fix: pacakge org.seasar.framework.aop.interceptors
-	S2Container_TraceInterceptor で、配列とオブジェクトのトレース表示を修正しました。
+	S2Container_TraceInterceptor ､ﾇ｡｢ﾇﾛﾎﾈ･ｪ･ﾖ･ｸ･ｧ･ｯ･ﾈ､ﾎ･ﾈ･・ｼ･ｹﾉｽｼｨ､､ﾀｵ､ｷ､ﾞ､ｷ､ｿ｡｣
 
 	* fix: pacakge org.seasar.framework.aop.interceptors
-	S2Container_MockInterceptor で、return value が設定されていないメソッド呼
-	び出しについてNOTICEが出力されていたので修正しました。
+	S2Container_MockInterceptor ､ﾇ｡｢return value ､ｬﾀﾟﾄ熙ｵ､・ﾆ､､､ﾊ､､･皈ｽ･ﾃ･ﾉｸﾆ
+	､ﾓｽﾐ､ｷ､ﾋ､ﾄ､､､ﾆNOTICE､ｬｽﾐﾎﾏ､ｵ､・ﾆ､､､ｿ､ﾎ､ﾇｽ､ﾀｵ､ｷ､ﾞ､ｷ､ｿ｡｣
 
 	* modify: package org.seasar.framework.log
-	S2Container_LogFactory で、log4phpを使用できるように対応しました。
+	S2Container_LogFactory ､ﾇ｡｢log4php､ﾈﾍﾑ､ﾇ､ｭ､・隍ｦ､ﾋﾂﾐｱ､ｷ､ﾞ､ｷ､ｿ｡｣
 
 	* modify: package org.seasar.framework.log
-	S2Container_SimpleLogger で、S2CONTAINER_PHP5_SIMPLE_LOG_FILE 定数に定義
-	されたファイルにログ出力を行うようにしました。
+	S2Container_SimpleLogger ､ﾇ｡｢S2CONTAINER_PHP5_SIMPLE_LOG_FILE ﾄ・ﾋﾄ・ﾁ
+	､ｵ､・ｿ･ﾕ･｡･､･・ﾋ･愠ｰｽﾐﾎﾏ､ﾔ､ｦ､隍ｦ､ﾋ､ｷ､ﾞ､ｷ､ｿ｡｣
 
-	* info: UnitTestを、simpletest から PHPUnit2 に移行しました。
+	* info: UnitTest､｢simpletest ､ｫ､・PHPUnit2 ､ﾋｰﾜｹﾔ､ｷ､ﾞ､ｷ､ｿ｡｣
 
-	* modify: S2CONTAINER_PHP5_DEBUG_EVAL 定数がtrueの場合に、eval関数で実行さ
-	れるスクリプトをDEBUGログに出力するようにしました。
+	* modify: S2CONTAINER_PHP5_DEBUG_EVAL ﾄ・ｬtrue､ﾎｾ・遉ﾋ｡｢evalｴﾘｿﾇｼﾂｹﾔ､ｵ
+	､・・ｹ･ｯ･・ﾗ･ﾈ､EBUG･愠ｰ､ﾋｽﾐﾎﾏ､ｹ､・隍ｦ､ﾋ､ｷ､ﾞ､ｷ､ｿ｡｣
 
 
 2006-04-29 S2Container.PHP5-1.1.0
 
-================ S2Container.PHP5-1.1.0 更新履歴 ===================
+================ S2Container.PHP5-1.1.0 ｹｹｿｷﾍ昀・===================
 
-	* fix: E_STRICT error_reporting レベルで出力されていたメッセージについて
-	対応しました。(static宣言、is_a関数関連)
+	* fix: E_STRICT error_reporting ･・ﾙ･・ﾇｽﾐﾎﾏ､ｵ､・ﾆ､､､ｿ･皈ﾃ･ｻ｡ｼ･ｸ､ﾋ､ﾄ､､､ﾆ
+	ﾂﾐｱ､ｷ､ﾞ､ｷ､ｿ｡｣(staticﾀ・ﾀ｡｢is_aｴﾘｿﾘﾏ｢)
 
 
 2006-04-16 S2Container.PHP5-1.1.0-rc2
 
-================ S2Container.PHP5-1.1.0-rc2 更新履歴 ===================
+================ S2Container.PHP5-1.1.0-rc2 ｹｹｿｷﾍ昀・===================
 
-	* fix: S2AOPでインタフェースに定義されているメソッド定義取得の不具合修正
+	* fix: S2AOP､ﾇ･､･ｿ･ﾕ･ｧ｡ｼ･ｹ､ﾋﾄ・ﾁ､ｵ､・ﾆ､､､・皈ｽ･ﾃ･ﾉﾄ・ﾁｼ霹ﾀ､ﾎﾉﾔｶ鄂､ﾀｵ
 
-	* modify: S2Container_PDODataSourceにてPDOインスタンスを保持するように改修
+	* modify: S2Container_PDODataSource､ﾋ､ﾆPDO･､･ｹ･ｿ･ｹ､ﾝｻ､ｹ､・隍ｦ､ﾋｲｽ､
 
 
 2006-03-19 S2Container.PHP5-1.1.0-rc1
 
-================ S2Container.PHP5-1.1.0-rc1 更新履歴 ===================
+================ S2Container.PHP5-1.1.0-rc1 ｹｹｿｷﾍ昀・===================
 
-	* info: PHP-5.1.2で動作確認おこないました。ReflectionClass#getInterfaces()の戻り値
-	変更に対応しました。
+	* info: PHP-5.1.2､ﾇﾆｰｺ鋧ﾎﾇｧ､ｪ､ｳ､ﾊ､､､ﾞ､ｷ､ｿ｡｣ReflectionClass#getInterfaces()､ﾎﾌ皃・ﾍ
+	ﾊﾑｹｹ､ﾋﾂﾐｱ､ｷ､ﾞ､ｷ､ｿ｡｣
 
-	* info: phingを用いたビルドシステムに移行しました。
+	* info: phing､ﾑ､､､ｿ･ﾓ･・ﾉ･ｷ･ｹ･ﾆ･爨ﾋｰﾜｹﾔ､ｷ､ﾞ､ｷ､ｿ｡｣
 
-	* info: phingを用いてPEARパッケージを作成しました。
+	* info: phing､ﾑ､､､ﾆPEAR･ﾑ･ﾃ･ｱ｡ｼ･ｸ､鋿ｮ､ｷ､ﾞ､ｷ､ｿ｡｣
 
-	* add: AutoRegister関連をextension/autoregisterに移植しました。
+	* add: AutoRegisterｴﾘﾏ｢､xtension/autoregister､ﾋｰﾜｿ｢､ｷ､ﾞ､ｷ､ｿ｡｣
 
-	* add: コメントアノテーションをextension/annotationに追加しました。
+	* add: ･ｳ･皈ﾈ･｢･ﾎ･ﾆ｡ｼ･ｷ･逾xtension/annotation､ﾋﾄﾉｲﾃ､ｷ､ﾞ､ｷ､ｿ｡｣
 
-	* add: コンテナのファイルキャッシュを行うS2ContainerFileCacheFactoryを
-	extension/cacheに追加しました。
+	* add: ･ｳ･ﾆ･ﾊ､ﾎ･ﾕ･｡･､･・ｭ･罕ﾃ･ｷ･螟ﾔ､ｦS2ContainerFileCacheFactory､・	extension/cache､ﾋﾄﾉｲﾃ､ｷ､ﾞ､ｷ､ｿ｡｣
 
-	* info: ドキュメントの更新を行いました。
+	* info: ･ﾉ･ｭ･螂皈ﾈ､ﾎｹｹｿｷ､ﾔ､､､ﾞ､ｷ､ｿ｡｣
 
 
 2006-02-16 S2Container.PHP5-1.1.0-beta2
 
-================ S2Container.PHP5-1.1.0-beta2 更新履歴 ===================
+================ S2Container.PHP5-1.1.0-beta2 ｹｹｿｷﾍ昀・===================
 
-	* info: examplesディレクトリをトップディレクトリに移動しました。
+	* info: examples･ﾇ･｣･・ｯ･ﾈ･熙ﾈ･ﾃ･ﾗ･ﾇ･｣･・ｯ･ﾈ･熙ﾋｰﾜﾆｰ､ｷ､ﾞ､ｷ､ｿ｡｣
 
-	* modify: s2container.inc.php defined確認を追加しました。
+	* modify: s2container.inc.php definedｳﾎﾇｧ､ﾉｲﾃ､ｷ､ﾞ､ｷ､ｿ｡｣
 
-	* modify: S2Container_MethodUtil::invokeメソッドでメソッド実行をevalで行う
-	ように改修しました。
+	* modify: S2Container_MethodUtil::invoke･皈ｽ･ﾃ･ﾉ､ﾇ･皈ｽ･ﾃ･ﾉｼﾂｹﾔ､val､ﾇｹﾔ､ｦ
+	､隍ｦ､ﾋｲｽ､､ｷ､ﾞ､ｷ､ｿ｡｣
 
-	* modify:  PropertyDesc::setWriteMethodメソッドでpropertyTypeを取得する
-	ように改修しました。
+	* modify:  PropertyDesc::setWriteMethod･皈ｽ･ﾃ･ﾉ､ﾇpropertyType､霹ﾀ､ｹ､・	､隍ｦ､ﾋｲｽ､､ｷ､ﾞ､ｷ､ｿ｡｣
 
-	* modify: S2Container_SingletonS2ContainerFactoryにstaticなINITIALIZE
-	プロパティを追加しました。
+	* modify: S2Container_SingletonS2ContainerFactory､ﾋstatic､ﾊINITIALIZE
+	･ﾗ･愠ﾑ･ﾆ･｣､ﾉｲﾃ､ｷ､ﾞ､ｷ､ｿ｡｣
 
-	* modify: S2Container_ClassUtil::hasMethodをReflectionClass::hasMethodに
-	置き換えました。
+	* modify: S2Container_ClassUtil::hasMethod､eflectionClass::hasMethod､ﾋ
+	ﾃﾖ､ｭｴｹ､ｨ､ﾞ､ｷ､ｿ｡｣
 
-	* modify: S2ContainerImpl::initメソッドのfor文を修正しました。
+	* modify: S2ContainerImpl::init･皈ｽ･ﾃ･ﾉ､ﾎforﾊｸ､､ﾀｵ､ｷ､ﾞ､ｷ､ｿ｡｣
 
-	* modify: SSRMessages.properties の未使用のメッセージを削除しました。
+	* modify: SSRMessages.properties ､ﾎﾌ､ｻﾈﾍﾑ､ﾎ･皈ﾃ･ｻ｡ｼ･ｸ､・・ｷ､ﾞ､ｷ､ｿ｡｣
 
 	* info: S2ContainerFactory refactoring
 
@@ -138,98 +145,96 @@
 
 2005-12-07 S2Container.PHP5-1.1.0-beta1
 
-================ S2Container.PHP5-1.1.0-beta1 更新履歴 ===================
+================ S2Container.PHP5-1.1.0-beta1 ｹｹｿｷﾍ昀・===================
 
-	* info: PHP-5.0での開発を終了しました。
+	* info: PHP-5.0､ﾇ､ﾎｳｫﾈｯ､ｪﾎｻ､ｷ､ﾞ､ｷ､ｿ｡｣
 
-	* info: PHP-5.1での開発を開始しました。PHP-5.1.1で動作確認しました。
+	* info: PHP-5.1､ﾇ､ﾎｳｫﾈｯ､ｫｻﾏ､ｷ､ﾞ､ｷ､ｿ｡｣PHP-5.1.1､ﾇﾆｰｺ鋧ﾎﾇｧ､ｷ､ﾞ､ｷ､ｿ｡｣
 
-	* info: INI形式ダイコンファイルのサポートを中止しました。
+	* info: INIｷﾁｼｰ･ﾀ･､･ｳ･ﾕ･｡･､･・ﾎ･ｵ･ﾝ｡ｼ･ﾈ､貊ﾟ､ｷ､ﾞ､ｷ､ｿ｡｣
 
-	* info: extension/dbで、PDOのみサポートしました。
+	* info: extension/db､ﾇ｡｢PDO､ﾎ､ﾟ･ｵ･ﾝ｡ｼ･ﾈ､ｷ､ﾞ､ｷ､ｿ｡｣
 
-	* info: extension/unitで、PHPUnit2、SimpleTestをサポートしました。
+	* info: extension/unit､ﾇ｡｢PHPUnit2｡｢SimpleTest､ｵ･ﾝ｡ｼ･ﾈ､ｷ､ﾞ､ｷ､ｿ｡｣
 
 
 2005-11-23 S2Container.PHP5-1.0.0-beta3
 
-================ S2Container.PHP5-1.0.0-beta3 更新履歴 ===================
+================ S2Container.PHP5-1.0.0-beta3 ｹｹｿｷﾍ昀・===================
 
-	* info: ライセンスを「The Seasar Software License, Version 1.1」から
-	「The Apache License, Version 2.0」に切り替えました。
+	* info: ･鬣､･ｻ･ｹ､ﾖThe Seasar Software License, Version 1.1｡ﾗ､ｫ､・	｡ﾖThe Apache License, Version 2.0｡ﾗ､ﾋﾀﾚ､・ﾘ､ｨ､ﾞ､ｷ､ｿ｡｣
 
-	* info: クラス名が「S2Container」で始まっていないクラスについて、「S2Container_」
-	プレフィックスを付加しました。
+	* info: ･ｯ･鬣ｹﾌｾ､ｬ｡ﾖS2Container｡ﾗ､ﾇｻﾏ､ﾞ､ﾃ､ﾆ､､､ﾊ､､･ｯ･鬣ｹ､ﾋ､ﾄ､､､ﾆ｡｢｡ﾖS2Container_｡ﾗ
+	･ﾗ･・ﾕ･｣･ﾃ･ｯ･ｹ､ﾕｲﾃ､ｷ､ﾞ､ｷ､ｿ｡｣
 
-	* info: デフォルトで__autoload関数を未定義としました。(コメントアウトしています。)
+	* info: ･ﾇ･ﾕ･ｩ･・ﾈ､ﾇ__autoloadｴﾘｿ､ﾄ・ﾁ､ﾈ､ｷ､ﾞ､ｷ､ｿ｡｣(･ｳ･皈ﾈ･｢･ｦ･ﾈ､ｷ､ﾆ､､､ﾞ､ｹ｡｣)
 
-	* modify: S2ContainerClassLoaderにimportメソッドを追加しました。
+	* modify: S2ContainerClassLoader､ﾋimport･皈ｽ･ﾃ･ﾉ､ﾉｲﾃ､ｷ､ﾞ､ｷ､ｿ｡｣
 
-	* add: extensionドキュメントにS2ContainerClassLoaderについて追加しました。
+	* add: extension･ﾉ･ｭ･螂皈ﾈ､ﾋS2ContainerClassLoader､ﾋ､ﾄ､､､ﾆﾄﾉｲﾃ､ｷ､ﾞ､ｷ､ｿ｡｣
 
-	* fix: セッターインジェクションにてexpressionで作成した配列がインジェクション
-	できない点を修正しました。
+	* fix: ･ｻ･ﾃ･ｿ｡ｼ･､･ｸ･ｧ･ｯ･ｷ･逾ﾋ､ﾆexpression､ﾇｺ鋿ｮ､ｷ､ｿﾇﾛﾎｬ･､･ｸ･ｧ･ｯ･ｷ･逾・	､ﾇ､ｭ､ﾊ､､ﾅﾀ､､ﾀｵ､ｷ､ﾞ､ｷ､ｿ｡｣
 
-	* modify: S2Container_ComponentDefImplで、コンポーネントのクラス定義が読み込まれて
-	いなくてもインスタンスを作成できるようにしました。
+	* modify: S2Container_ComponentDefImpl､ﾇ｡｢･ｳ･ﾝ｡ｼ･ﾍ･ﾈ､ﾎ･ｯ･鬣ｹﾄ・ﾁ､ｬﾆﾉ､ﾟｹ､ﾞ､・ﾆ
+	､､､ﾊ､ｯ､ﾆ､筵､･ｹ･ｿ･ｹ､鋿ｮ､ﾇ､ｭ､・隍ｦ､ﾋ､ｷ､ﾞ､ｷ､ｿ｡｣
 
-	* modify: S2Container_MessageUtilをリソースファイルを追加できるように改修しました。
+	* modify: S2Container_MessageUtil､・ｽ｡ｼ･ｹ･ﾕ･｡･､･・ﾉｲﾃ､ﾇ､ｭ､・隍ｦ､ﾋｲｽ､､ｷ､ﾞ､ｷ､ｿ｡｣
 
-	* modify: S2AOPで、EnhanceしたProxyクラスをファイルに出力できるようにしました。
+	* modify: S2AOP､ﾇ｡｢Enhance､ｷ､ｿProxy･ｯ･鬣ｹ､ﾕ･｡･､･・ﾋｽﾐﾎﾏ､ﾇ､ｭ､・隍ｦ､ﾋ､ｷ､ﾞ､ｷ､ｿ｡｣
 
 	* info: pacakge org.seasar.framework.aop.proxy
-	S2Container_AopProxyをS2Container_AopProxyFactoryに変更
+	S2Container_AopProxy､2Container_AopProxyFactory､ﾋﾊﾑｹｹ
 
 	* info: pacakge org.seasar.framework.aop.proxy
-	S2Container_UuCallAopProxyFactoryをS2Container_AopProxyGeneratorに変更
+	S2Container_UuCallAopProxyFactory､2Container_AopProxyGenerator､ﾋﾊﾑｹｹ
 
 	* info: pacakge org.seasar.framework.aop.proxy
-	S2Container_UuCallAopProxyをS2Container_DefaultAopProxyに変更
+	S2Container_UuCallAopProxy､2Container_DefaultAopProxy､ﾋﾊﾑｹｹ
 
 	* add: package org.seasar.framework.util
-	S2Container_FileCacheUtilを追加
+	S2Container_FileCacheUtil､ﾉｲﾃ
 
 	* modify: org.seasar.framework.container.util
-	S2Container_AopProxyUtilをS2Container_AopProxyFactoryを使用するように変更
+	S2Container_AopProxyUtil､2Container_AopProxyFactory､ﾈﾍﾑ､ｹ､・隍ｦ､ﾋﾊﾑｹｹ
 
 
 2005-10-05 S2Container.PHP5-1.0.0-beta2
 
-================ S2Container.PHP5-1.0.0-beta2 更新履歴 ===================
+================ S2Container.PHP5-1.0.0-beta2 ｹｹｿｷﾍ昀・===================
 
-	* info: PHP-5.0.5 で動作確認しました。
+	* info: PHP-5.0.5 ､ﾇﾆｰｺ鋧ﾎﾇｧ､ｷ､ﾞ､ｷ､ｿ｡｣
 
-	* info: s2container.php5.ini を s2container.inc.php にリネームしました。
+	* info: s2container.php5.ini ､・s2container.inc.php ､ﾋ･・ﾍ｡ｼ･爨ｷ､ﾞ､ｷ､ｿ｡｣
 
-	* info: S2ClassLoader を S2ContainerClassLoader にリネームしました。
+	* info: S2ClassLoader ､・S2ContainerClassLoader ､ﾋ･・ﾍ｡ｼ･爨ｷ､ﾞ､ｷ､ｿ｡｣
 
 	* modify: pacakge org.seasar.framework.aop.impl
-	S2MethodInvocationImplのgetThis()がターゲットオブジェクトを返すように
-	修正しました。
+	S2MethodInvocationImpl､ﾎgetThis()､ｬ･ｿ｡ｼ･ｲ･ﾃ･ﾈ･ｪ･ﾖ･ｸ･ｧ･ｯ･ﾈ､ﾖ､ｹ､隍ｦ､ﾋ
+	ｽ､ﾀｵ､ｷ､ﾞ､ｷ､ｿ｡｣
 
 	* modify: pacakge org.seasar.framework.container
-	S2Container インタフェースに findComponents(),findComponentDefs()
-	メソッドを追加しました。
+	S2Container ･､･ｿ･ﾕ･ｧ｡ｼ･ｹ､ﾋ findComponents(),findComponentDefs()
+	･皈ｽ･ﾃ･ﾉ､ﾉｲﾃ､ｷ､ﾞ､ｷ､ｿ｡｣
 
 	* add: pacakge org.seasar.framework.container
-	TooManyComponentRegistrationDef インタフェースを追加しました。
+	TooManyComponentRegistrationDef ･､･ｿ･ﾕ･ｧ｡ｼ･ｹ､ﾉｲﾃ､ｷ､ﾞ､ｷ､ｿ｡｣
 
 	*modify: pacakge org.seasar.framework.container.assembler
 	AutoConstructorAssembler, DefaultConstructorAssembler,
-	ExpressionConstructorAssembler, ManualConstructorAssembler クラスの 
-	final 修飾子を削除しました。
+	ExpressionConstructorAssembler, ManualConstructorAssembler ･ｯ･鬣ｹ､ﾎ 
+	final ｽ､ｾｻﾒ､・・ｷ､ﾞ､ｷ､ｿ｡｣
 
 	* add: pacakge org.seasar.framework.container.factory
-	CircularIncludeRuntimeException 例外を追加しました。
+	CircularIncludeRuntimeException ﾎ羌ｰ､ﾉｲﾃ､ｷ､ﾞ､ｷ､ｿ｡｣
 
 	* info: package org.seasar.framework.container.impl
-	TooManyRegistrationComponentDefクラスをTooManyRegistrationComponentDefImpl
-	にリネームしました。
+	TooManyRegistrationComponentDef･ｯ･鬣ｹ､ooManyRegistrationComponentDefImpl
+	､ﾋ･・ﾍ｡ｼ･爨ｷ､ﾞ､ｷ､ｿ｡｣
 
 
 2005-09-04 S2Container.PHP5-1.0.0-beta1
 
-================ S2Container.PHP5-1.0.0-beta1 更新履歴 ===================
+================ S2Container.PHP5-1.0.0-beta1 ｹｹｿｷﾍ昀・===================
 
-	* info: S2Container.PHP5 初リリース
+	* info: S2Container.PHP5 ｽ鬣・遙ｼ･ｹ
 

@@ -22,29 +22,45 @@
 //
 // $Id$
 /**
- * @package org.seasar.framework.container
- * @author klove
+ * 取得しようとしたコンポーネントがS2コンテナ上に見つからなかった場合にスローされます。
+ * <p>
+ * コンポーネントの検索には、 コンポーネントキー(キーオブジェクト)として、 クラス(インターフェース)またはコンポーネント名が使用できますが、
+ * どちらの場合でもコンポーネントが見つからなかった場合には、 この例外がスローされます。
+ * </p>
+ * 
+ * @copyright  2005-2006 the Seasar Foundation and the Others.
+ * @license    http://www.apache.org/licenses/LICENSE-2.0
+ * @version    Release: 1.1.2
+ * @link       http://s2container.php5.seasar.org/
+ * @since      Class available since Release 1.0.0
+ * @package    org.seasar.framework.container
+ * @author     klove
  */
 class S2Container_ComponentNotFoundRuntimeException
     extends S2Container_S2RuntimeException
 {
-    private $componentKey_;
+    private $componentKey;
     
     /**
+     * コンポーネントの検索に用いたコンポーネントキーを指定して、
+     * <b>ComponentNotFoundRuntimeException</b>を構築します。
      * 
+     * @param string $componentKey コンポーネントキー
      */
     public function __construct($componentKey)
     {
         parent::__construct("ESSR0046", array($componentKey));
-        $this->componentKey_ = $componentKey;
+        $this->componentKey = $componentKey;
     }
     
     /**
+     * コンポーネントの検索に用いたコンポーネントキーを返します。
      * 
+     * @return string コンポーネントキー
      */
     public function getComponentKey()
     {
-        return $this->componentKey_;
+        return $this->componentKey;
     }
 }
 ?>

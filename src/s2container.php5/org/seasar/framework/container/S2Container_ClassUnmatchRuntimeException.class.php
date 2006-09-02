@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 // +----------------------------------------------------------------------+
 // | PHP version 5                                                        |
@@ -49,12 +49,12 @@ class S2Container_ClassUnmatchRuntimeException
     /**
      * @var ReflectionClass
      */
-    private $componentClass_;
+    private $componentClass;
 
     /**
      * @var ReflectionClass
      */
-    private $realComponentClass_;
+    private $realComponentClass;
     
     /**
      * <b>ClassUnmatchRuntimeException</b>を構築します。
@@ -64,17 +64,14 @@ class S2Container_ClassUnmatchRuntimeException
      * @param ReflectionClass $realComponentClass
      *            コンポーネントの実際の型
      */
-    public function __construct($componentClass,
-                                $realComponentClass)
+    public function __construct(ReflectionClass $componentClass = null,
+                                ReflectionClass $realComponentClass = null)
     {
         parent::__construct("ESSR0069", 
-            array($componentClass != null ? 
-                      $componentClass->getName() : "null",
-                  $realComponentClass != null ? 
-                      $realComponentClass->getName() : "null"));
-            
-        $this->componentClass_ = $componentClass;
-        $this->realComponentClass_ = $realComponentClass;
+            array($componentClass != null ? $componentClass->getName() : "null",
+                  $realComponentClass != null ? $realComponentClass->getName() : "null"));
+        $this->componentClass = $componentClass;
+        $this->realComponentClass = $realComponentClass;
     }
     
     /**
@@ -84,7 +81,7 @@ class S2Container_ClassUnmatchRuntimeException
      */
     public function getComponentClass()
     {
-        return $ths->componentClass_;
+        return $ths->componentClass;
     }
     
     /**
@@ -94,7 +91,7 @@ class S2Container_ClassUnmatchRuntimeException
      */
     public function getRealComponentClass()
     {
-        return $this->realComponentClass_;
+        return $this->realComponentClass;
     }
 }
 ?>
