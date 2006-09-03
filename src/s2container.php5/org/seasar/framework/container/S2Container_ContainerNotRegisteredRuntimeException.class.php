@@ -22,29 +22,41 @@
 //
 // $Id$
 /**
- * @package org.seasar.framework.container
- * @author klove
+ * diconファイルなどの設定情報に対応するS2コンテナが、 コンテナツリーに登録されていなかった場合にスローされます。
+ * 
+ * @copyright  2005-2006 the Seasar Foundation and the Others.
+ * @license    http://www.apache.org/licenses/LICENSE-2.0
+ * @version    Release: 1.1.2
+ * @link       http://s2container.php5.seasar.org/
+ * @since      Class available since Release 1.0.0
+ * @package    org.seasar.framework.container
+ * @author     klove
  */
 class S2Container_ContainerNotRegisteredRuntimeException
     extends S2Container_S2RuntimeException
 {
-    private $path_;
+    private $path;
     
     /**
-     * @param string
+     * 登録されていなかった設定情報のパスを指定して、
+     * <d>S2Container_ContainerNotRegisteredRuntimeException</d>を構築します。
+     * 
+     * @param string $path 登録されていなかった設定情報のパス
      */
     public function __construct($path)
     {
         parent::__construct("ESSR0075", array($path));
-        $this->path_ = $path;
+        $this->path = $path;
     }
     
     /**
-     * @return string
+     * コンテナツリーに登録されていなかった設定情報のパスを返します。
+     * 
+     * @return string 登録されていなかった設定情報のパス
      */
     public function getPath()
     {
-        return $this->path_;
+        return $this->path;
     }
 }
 ?>

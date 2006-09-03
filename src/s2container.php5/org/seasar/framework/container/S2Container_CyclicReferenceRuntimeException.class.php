@@ -22,30 +22,46 @@
 //
 // $Id$
 /**
- * @package org.seasar.framework.container
- * @author klove
+ * コンポーネントの循環参照が発生した場合にスローされます。
+ * 
+ * <p>
+ * コンポーネントのコンストラクタ引数に、 同じコンポーネントを指定した場合などに発生します。
+ * </p>
+ * 
+ * @copyright  2005-2006 the Seasar Foundation and the Others.
+ * @license    http://www.apache.org/licenses/LICENSE-2.0
+ * @version    Release: 1.1.2
+ * @link       http://s2container.php5.seasar.org/
+ * @since      Class available since Release 1.0.0
+ * @package    org.seasar.framework.container
+ * @author     klove
  */
 class S2Container_CyclicReferenceRuntimeException
     extends S2Container_S2RuntimeException
 {
-    private $componentClass_;
+    private $componentClass;
     
     /**
-     * @param ReflectionClass
+     * 循環参照を引き起こしたコンポーネントのクラスを指定して、 <d>S2Container_CyclicReferenceRuntimeException</d>を構築します。
+     * 
+     * @param ReflectionClass $componentClasses
+     *            循環参照を引き起こしたコンポーネントのクラス
      */
     public function __construct($componentClass)
     {
         parent::__construct("ESSR0047",array($componentClass->getName()));
             
-        $this->componentClass_ = $componentClass;
+        $this->componentClass = $componentClass;
     }
     
     /**
-     * @return ReflectionClass
+     * 循環参照を引き起こしたコンポーネントのクラスを返します。
+     * 
+     * @return ReflectionClass 循環参照を引き起こしたコンポーネントのクラス
      */
     public function getComponentClass()
     {
-        return $this->componentClass_;
+        return $this->componentClass;
     }
 }
 ?>
