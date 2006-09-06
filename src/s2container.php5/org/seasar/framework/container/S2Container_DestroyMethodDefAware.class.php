@@ -22,25 +22,45 @@
 //
 // $Id$
 /**
- * @package org.seasar.framework.container
- * @author klove
+ * このインターフェースは、 destroyメソッド定義を登録および取得することができるオブジェクトを表します。
+ * <p>
+ * destroyメソッド定義は複数登録することが出来ます。 destroyメソッド定義の取得はインデックス番号を指定して行います。
+ * </p>
+ *
+ * @see S2Container_DestroyMethodDef
+ * 
+ * @copyright  2005-2006 the Seasar Foundation and the Others.
+ * @license    http://www.apache.org/licenses/LICENSE-2.0
+ * @version    Release: 1.1.2
+ * @link       http://s2container.php5.seasar.org/
+ * @since      Class available since Release 1.0.0
+ * @package    org.seasar.framework.container
+ * @author     klove
  */
 interface S2Container_DestroyMethodDefAware
 {
     /**
-     * @param S2Container_DestroyMethodDef
+     * destroyメソッド定義を登録(追加)します。
+     * 
+     * @param S2Container_DestroyMethodDef $methodDef destroyメソッド定義
      */
-    public function addDestroyMethodDef(S2Container_DestroyMethodDef 
-                                        $methodDef);
+    public function addDestroyMethodDef(S2Container_DestroyMethodDef $methodDef);
     
     /**
-     * @return int
+     * 登録されている{@link S2Container_DestroyMethodDef destroyメソッド定義}の数を返します。
+     * 
+     * @return integer 登録されているdestroyメソッド定義の数
      */
     public function getDestroyMethodDefSize();
     
     /**
-     * @param int
-     * @return S2Container_DestroyMethodDef
+     * 指定されたインデックス番号<code>index</code>のdestroyメソッド定義を返します。
+     * <p>
+     * インデックス番号は、 登録した順番に 0,1,2,… となります。
+     * </p>
+     * 
+     * @param integer $index destroyメソッド定義を指定するインデックス番号
+     * @return S2Container_DestroyMethodDef destroyメソッド定義
      */
     public function getDestroyMethodDef($index);
 }

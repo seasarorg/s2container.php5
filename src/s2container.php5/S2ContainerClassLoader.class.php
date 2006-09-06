@@ -25,51 +25,45 @@
 /**
  */
 class S2ContainerClassLoader {
-    //static $CLASSES = array();
 
-    public static function load($className){
-        /*
-        if(array_key_exists($className,self::$CLASSES)){
-            require_once(S2CONTAINER_PHP5 . self::$CLASSES[$className]);
-            return true;
-        }
-        else 
-        */
+    public static $USER_CLASSES = array();
 
-        if(isset(self::$USER_CLASSES[$className])){
+    public static function load($className) {
+        if (isset(self::$USER_CLASSES[$className])) {
             require_once(self::$USER_CLASSES[$className]);
             return true;
-        }
-        else{
+        } else {
             return false;
        }
     }
 
-    static $USER_CLASSES = array();
-    public static function import($path,$key=null){
-        if(is_array($path) && $key == null){
+    public static function import($path,$key=null) {
+        if (is_array($path) && $key == null) {
             self::$USER_CLASSES = array_merge(self::$USER_CLASSES, $path);
-        }else if(is_dir($path) and is_readable($path)){
-            $d = dir($path);
-            while (false !== ($entry = $d->read())) {
-                if(preg_match("/([^\.]+).+php$/",$entry,$matches)){
-                    S2ContainerClassLoader::$USER_CLASSES[$matches[1]] = $path 
-                                                                       . DIRECTORY_SEPARATOR
-                                                                       . $entry;
+        } else if(is_dir($path) and is_readable($path)) {
+            $entries = scandir($path);
+            if (!$entries) {
+                trigger_error("scandir failed. path : $path", E_USER_WARNING);
+            } else {           
+                foreach ($entries as $entry) {
+                    if (preg_match("/([^\.]+).+php$/",$entry,$matches)) {
+                        S2ContainerClassLoader::$USER_CLASSES[$matches[1]] = $path 
+                                                             . DIRECTORY_SEPARATOR
+                                                             . $entry;
+                    }
                 }
             }
-            $d->close();
-        }else if(is_file($path) and is_readable($path)){
-            if($key == null){
+        } else if (is_file($path) and is_readable($path)) {
+            if ($key == null) {
                 $file = basename($path);
-                if(preg_match("/([^\.]+).+php$/",$file,$matches)){
+                if (preg_match("/([^\.]+).+php$/",$file,$matches)) {
                     S2ContainerClassLoader::$USER_CLASSES[$matches[1]] = $path;
                 }
-            }else{
+            } else {
                 S2ContainerClassLoader::$USER_CLASSES[$key] = $path;
             }
-        }else{
-            trigger_error("invalid args. path : $path, key : $key",E_USER_WARNING);
+        } else {
+            trigger_error("invalid args. path : $path, key : $key", E_USER_WARNING);
         }
     }
 }
