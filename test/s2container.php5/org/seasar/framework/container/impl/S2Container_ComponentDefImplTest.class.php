@@ -169,6 +169,14 @@ class S2Container_ComponentDefImplTest
         $a = $cd->getComponent();
         $this->assertType('NotRequiredClass_S2Container_ComponentDefImpl',$a);
     }
+
+    function testArrayObject() {
+        $cd = new S2Container_ComponentDefImpl('ArrayObject','a');
+        $ad = new S2Container_ArgDefImpl(array());
+        $cd->addArgDef($ad);        
+        
+        $this->assertType('ArrayObject',$cd->getComponent());
+    } 
 }
 
 interface IA_S2Container_ComponentDefImpl {}

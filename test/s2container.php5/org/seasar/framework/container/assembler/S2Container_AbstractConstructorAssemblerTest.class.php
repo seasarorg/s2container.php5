@@ -47,6 +47,19 @@ class S2Container_AbstractConstructorAssemblerTest extends PHPUnit2_Framework_Te
         $a = $asm->assembleDefaultTest();
         $this->assertTrue($a instanceof A_S2Container_AbstractConstructorAssembler);
     }
+
+    function testAssembleDefaultWithAspect() {
+        $cd = new S2Container_ComponentDefImpl('A_S2Container_AbstractConstructorAssembler');
+        $ad = new S2Container_AspectDefImpl(
+                  new S2Container_PointcutImpl('A_S2Container_AbstractConstructorAssembler'),
+                  new S2Container_TraceInterceptor());
+        $cd->addAspectDef($ad);
+        $asm = new Test_S2Container_AbstractConstructorAssembler($cd);
+
+        $a = $asm->assembleDefaultTest();
+        $this->assertTrue($a instanceof A_S2Container_AbstractConstructorAssemblerEnhancedByS2AOP);
+    }
+
 }
 
 class Test_S2Container_AbstractConstructorAssembler extends S2Container_AbstractConstructorAssembler{

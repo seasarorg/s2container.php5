@@ -41,7 +41,7 @@ class S2Container_ArgDefImpl
     public function __construct($value = null)
     {
         $this->metaDefSupport_ = new S2Container_MetaDefSupport();
-        if ($value != null) {
+        if ($value !== null) {
             $this->setValue($value);
         }
     }

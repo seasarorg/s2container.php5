@@ -44,8 +44,7 @@ class S2Container_AutoConstructorAssembler
         $args = array();
         $refMethod = $this->getComponentDef()->getConcreteClass()->getConstructor();
         if ($refMethod != null) {
-            $args = $this->getArgs($this->getComponentDef()->
-                       getConcreteClass()->getConstructor()->getParameters());
+            $args = $this->getArgs($refMethod->getParameters());
         }
         if ($this->getComponentDef() != null and 
             $this->getComponentDef()->getAspectDefSize() > 0) {

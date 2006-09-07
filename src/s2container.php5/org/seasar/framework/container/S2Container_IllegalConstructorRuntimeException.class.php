@@ -22,32 +22,47 @@
 //
 // $Id$
 /**
- * @package org.seasar.framework.container
- * @author klove
+ * コンポーネントの構築に失敗した場合にスローされます。
+ * <p>
+ * コンポーネントの構築は、 コンポーネント定義でコンストラクタの引数として指定されたコンポーネントの取得に失敗した場合などに発生します。
+ * </p>
+ * 
+ * @copyright  2005-2006 the Seasar Foundation and the Others.
+ * @license    http://www.apache.org/licenses/LICENSE-2.0
+ * @version    Release: 1.1.2
+ * @link       http://s2container.php5.seasar.org/
+ * @since      Class available since Release 1.0.0
+ * @package    org.seasar.framework.container
+ * @author     klove
  */
 class S2Container_IllegalConstructorRuntimeException
     extends S2Container_S2RuntimeException
 {
-    private $componentClass_;
+    private $componentClass;
 
     /**
-     *
+     * <b>S2Container_IllegalConstructorRuntimeException</b>を構築します。
+     * 
+     * @param ReflectionClass $componentClass 構築に失敗したコンポーネントのクラス
+     * @param Exception       $cause コンポーネントの構築に失敗した原因を表すエラーまたは例外
      */
-    public function __construct($componentClass,$cause)
+    public function __construct(ReflectionClass $componentClass,Exception $cause = null)
     {
         parent::__construct("ESSR0058",
                             array($componentClass->getName(),
                                   $cause),
                             $cause);
-        $this->componentClass_ = $componentClass;
+        $this->componentClass = $componentClass;
     }
 
     /**
-     * @return ReflectionClass
+     * 構築に失敗したコンポーネントのクラスを返します。
+     * 
+     * @return ReflectionClass 構築に失敗したコンポーネントのクラス
      */
     public function getComponentClass()
     {
-        return $this->componentClass_;
+        return $this->componentClass;
     }
 }
 ?>
