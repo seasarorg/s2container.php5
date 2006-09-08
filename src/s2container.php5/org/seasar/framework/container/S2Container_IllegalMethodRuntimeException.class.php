@@ -22,45 +22,70 @@
 //
 // $Id$
 /**
- * @package org.seasar.framework.container
- * @author klove
+ * 不正なメソッド・インジェクション定義が指定されていた場合にスローされます。
+ * <p>
+ * メソッド・インジェクションを実行した際に、 メソッドの引数として指定されたコンポーネントが見つからない場合や、
+ * 引数を適切な型にパース出来ない場合などに発生します。
+ * </p>
+ * 
+ * @see S2Container_MethodDef
+ * @see S2Container_InitMethodDef
+ * @see S2Container_DestroyMethodDef
+ * @see S2Container_MethodAssembler
+ * @see S2Container_AbstractMethodAssembler
+ * 
+ * @copyright  2005-2006 the Seasar Foundation and the Others.
+ * @license    http://www.apache.org/licenses/LICENSE-2.0
+ * @version    Release: 1.1.2
+ * @link       http://s2container.php5.seasar.org/
+ * @since      Class available since Release 1.0.0
+ * @package    org.seasar.framework.container
+ * @author     klove
  */
 class S2Container_IllegalMethodRuntimeException
     extends S2Container_S2RuntimeException
 {
-    private $componentClass_;
-    private $methodName_;
+    private $componentClass;
+    private $methodName;
 
     /**
-     *
+     * <code>IllegalMethodRuntimeException</code>を構築します。
+     * 
+     * @param ReflectionClass $componentClass 不正なメソッド・インジェクション定義を含むコンポーネントのクラス
+     * @param string $methodName 不正なメソッド・インジェクション定義のメソッド名
+     * @param Exception $cause 原因となった例外
      */
-    public function __construct($componentClass,
-        $methodName,
-        $cause)
+    public function __construct(ReflectionClass $componentClass,
+                                $methodName,
+                                Exception $cause = null)
     {
         parent::__construct("ESSR0060",
                             array($componentClass->getName(),
                                   $methodName,
                                   $cause),
                             $cause);
-        $this->componentClass_ = $componentClass;
-        $this->methodName_ = $methodName;
+        $this->componentClass = $componentClass;
+        $this->methodName = $methodName;
     }
 
     /**
-     * @return ReflectionClass
+     * 不正なメソッド・インジェクション定義を含むコンポーネントのクラスを返します。
+     * 
+     * @return ReflectionClass コンポーネントのクラス
      */
     public function getComponentClass()
     {
-        return $this->componentClass_;
+        return $this->componentClass;
     }
     
     /**
-     * @return string
+     * 不正なメソッド・インジェクション定義のメソッド名を返します。
+     * 
+     * @return string メソッド名
      */
     public function getMethodName()
     {
-        return $this->methodName_;
+        return $this->methodName;
     }
 }
 ?>
