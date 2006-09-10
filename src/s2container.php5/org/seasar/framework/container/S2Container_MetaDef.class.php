@@ -22,13 +22,25 @@
 //
 // $Id$
 /**
- * @package org.seasar.framework.container
- * @author klove
+ * コンポーネントの付加情報を定義するためのインターフェースです。
+ * 
+ * <d><components></d>、<d><component></d>、<d><arg></d>、<d><property></d>タグで
+ * 定義したコンポーネントやプロパティに対し、<d><meta></d>タグで定義したメタデータ定義を保持します。
+ * 
+ * @copyright  2005-2006 the Seasar Foundation and the Others.
+ * @license    http://www.apache.org/licenses/LICENSE-2.0
+ * @version    Release: 1.1.2
+ * @link       http://s2container.php5.seasar.org/
+ * @since      Class available since Release 1.0.0
+ * @package    org.seasar.framework.container
+ * @author     klove
  */
 interface S2Container_MetaDef extends S2Container_ArgDef
 {
     /**
-     * @return string
+     * メタデータ定義の名前を返します。
+     * 
+     * @return string メタデータ定義名
      */
     public function getName();
 }

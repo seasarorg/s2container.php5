@@ -22,19 +22,46 @@
 //
 // $Id$
 /**
- * @package org.seasar.framework.container
- * @author klove
+ * S2コンテナ内に1つのキーで複数登録されたコンポーネントの定義を表すインタフェースです。
+ * <p>
+ * S2コンテナにコンポーネントが登録される際に、 そのキー(コンポーネントのクラス、
+ * インターフェース、あるいは名前)に対応するコンポーネントがすでに登録されていると、 コンポーネント定義が<d>S2Container_TooManyRegistrationComponentDef</d>になります。
+ * </p>
+ * <p>
+ * <d>S2Container_TooManyRegistrationComponentDef</d>で定義されているコンポーネントを取得しようとすると、
+ * {@link S2Container_TooManyRegistrationRuntimeException}がスローされます。
+ * </p>
+ * 
+ * @copyright  2005-2006 the Seasar Foundation and the Others.
+ * @license    http://www.apache.org/licenses/LICENSE-2.0
+ * @version    Release: 1.1.2
+ * @link       http://s2container.php5.seasar.org/
+ * @since      Class available since Release 1.0.0
+ * @package    org.seasar.framework.container
+ * @author     klove
  */
 interface S2Container_TooManyRegistrationComponentDef
 {
     /**
-     * @param S2Container_ComponentDef
+     * 同じキーで登録されたコンポーネント定義を追加します。
+     * 
+     * @param S2Container_ComponentDef $componentDef
+     *            同じキーで登録されたコンポーネント定義
      */
     public function addComponentDef($componentDef);
 
     /**
-     * @return array
+     * 複数登録されたコンポーネントの定義上のクラスの配列を返します。
+     * 
+     * @return array 複数登録されたコンポーネントの定義上のクラスの配列
      */
     public function getComponentClasses();
+
+    /**
+     * 複数登録されたコンポーネント定義の配列を返します。
+     * 
+     * @return array 複数登録されたコンポーネント定義の配列
+     */
+    public function getComponentDefs();
 }
 ?>

@@ -22,8 +22,21 @@
 //
 // $Id$
 /**
- * @package org.seasar.framework.container
- * @author klove
+ * 1つのキーに複数のコンポーネントが登録されていた場合にスローされます。
+ * <p>
+ * S2コンテナからコンポーネントを取得しようとした際に、 指定したキー(コンポーネントのクラス、 インターフェース、
+ * あるいは名前)に該当するコンポーネント定義が複数存在した場合、 この例外が発生します。
+ * </p>
+ * 
+ * @see S2Container_TooManyRegistrationComponentDefImpl::getComponent()
+ * 
+ * @copyright  2005-2006 the Seasar Foundation and the Others.
+ * @license    http://www.apache.org/licenses/LICENSE-2.0
+ * @version    Release: 1.1.2
+ * @link       http://s2container.php5.seasar.org/
+ * @since      Class available since Release 1.0.0
+ * @package    org.seasar.framework.container
+ * @author     klove
  */
 final class S2Container_TooManyRegistrationRuntimeException
     extends S2Container_S2RuntimeException
@@ -32,17 +45,14 @@ final class S2Container_TooManyRegistrationRuntimeException
     private $componentClasses_;
 
     /**
-     * @param string key
-     * @param array
+     * <d>S2Container_TooManyRegistrationRuntimeException</d>を構築します。
+     * 
+     * @param string $key コンポーネントを取得しようとした際に使用したキー
+     * @param array $componentClasses
+     *            1つのキーに登録された複数コンポーネントのクラスの配列
      */
     public function __construct($key,$componentClasses)
     {
-        /*
-        $args = array($key);
-        foreach ($componentClasses as $clazz) {
-            $args[] = $clazz->getName();
-        }
-        */
         $args[] = $key;
         $args[] = self::getClassNames($componentClasses);
         parent::__construct("ESSR0045",$args);
@@ -50,7 +60,9 @@ final class S2Container_TooManyRegistrationRuntimeException
     }
     
     /**
-     * @return string
+     * コンポーネントを取得しようとした際に使用したキーを返します。
+     * 
+     * @return string コンポーネントを取得するためのキー
      */
     public function getKey()
     {
@@ -58,7 +70,9 @@ final class S2Container_TooManyRegistrationRuntimeException
     }
     
     /**
-     * @return array
+     * 1つのキーに登録された複数コンポーネントのクラスの配列を返します。
+     * 
+     * @return array コンポーネントのクラスの配列
      */
     public function getComponentClasses()
     {
@@ -66,7 +80,7 @@ final class S2Container_TooManyRegistrationRuntimeException
     }
 
     /**
-     * @param array
+     * @param array $componentClasses
      * @return array
      */
     private static function getClassNames($componentClasses)

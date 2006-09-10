@@ -22,38 +22,70 @@
 //
 // $Id$
 /**
- * @package org.seasar.framework.container
- * @author klove
+ * メソッド・インジェクションを定義するためのインタフェースです。
+ * <p>
+ * メソッド・インジェクションとは、任意のメソッドや式の呼び出しによりコンポーネントをインジェクションすることです。
+ * </p>
+ * <p>
+ * 例として、<d>addFoo(Foo)</d> メソッドを通じて <d>Foo</d>をインジェクションする場合に利用することができます。
+ * 引数のないメソッドや任意の式を呼び出すこともできます。
+ * </p>
+ * <p>
+ * コンポーネントが初期化されるときに実行されるinitMethodインジェクションと、
+ * コンテナの終了時に実行されるdesoryMethodインジェクションがあります。 destroyMethodインジェクションが適用されるのは、
+ * コンポーネントのinstance要素が<d>singleton</d>の場合だけです。
+ * </p>
+ * 
+ * @copyright  2005-2006 the Seasar Foundation and the Others.
+ * @license    http://www.apache.org/licenses/LICENSE-2.0
+ * @version    Release: 1.1.2
+ * @link       http://s2container.php5.seasar.org/
+ * @since      Class available since Release 1.0.0
+ * @package    org.seasar.framework.container
+ * @author     klove
  */
 interface S2Container_MethodDef extends S2Container_ArgDefAware
 {
     /**
-     * @return string
+     * メソッド名を返します。
+     * 
+     * @return string メソッド名
      */    
     public function getMethodName();
     
     /**
-     * @return array
+     * メソッド引数を返します。
+     * 
+     * @return array メソッド引数
      */
     public function getArgs();
 
     /**
-     * @return S2Container
+     * 引数および式を評価するコンテキストとなるS2コンテナを返します。
+     * 
+     * @return S2Container 引数および式を評価するコンテキストとなるS2コンテナ
      */
     public function getContainer();
     
     /**
-     * @param S2Container
+     * 引数および式を評価するコンテキストとなるS2コンテナを設定します。
+     * 
+     * @param S2Container $container
+     *            引数および式を評価するコンテキストとなるS2コンテナ
      */
     public function setContainer(S2Container $container);
     
     /**
-     * @return string
+     * 実行される式を返します。
+     * 
+     * @return string 実行される式
      */
     public function getExpression();
     
     /**
-     * @param string
+     * 実行される式を設定します。
+     * 
+     * @param string expression 実行される式
      */
     public function setExpression($expression);
 }

@@ -22,30 +22,53 @@
 //
 // $Id$
 /**
- * @package org.seasar.framework.container
- * @author klove
+ * このインタフェースはプロパティ定義を登録および取得する方法を定義するオブジェクトを表します。
+ * <p>
+ * プロパティ定義は複数登録することが出来ます。 プロパティ定義の取得はインデックス番号を指定して行います。
+ * </p>
+ * 
+ * @see S2Container_PropertyDef
+ *  
+ * @copyright  2005-2006 the Seasar Foundation and the Others.
+ * @license    http://www.apache.org/licenses/LICENSE-2.0
+ * @version    Release: 1.1.2
+ * @link       http://s2container.php5.seasar.org/
+ * @since      Class available since Release 1.0.0
+ * @package    org.seasar.framework.container
+ * @author     klove
  */
 interface S2Container_PropertyDefAware
 {
     /**
-     * @param S2Container_PropertyDef
+     * {@link S2Container_PropertyDef プロパティ定義}を登録(追加)します。
+     * 
+     * @param S2Container_PropertyDef $propertyDef
+     *            プロパティ定義
      */    
     public function addPropertyDef(S2Container_PropertyDef $propertyDef);
     
     /**
-     * @return int
+     * 登録されている{@link S2Container_PropertyDef プロパティ定義}の数を返します。
+     * 
+     * @return integer 登録されているプロパティ定義の数
      */
     public function getPropertyDefSize();
     
     /**
-     * @param int
-     * @return S2Container_PropertyDef
+     * 指定されたインデックス番号<d>index</d>の{@link S2Container_PropertyDef プロパティ定義}を返します。
+     * または、指定したプロパティ名で登録されている{@link PropertyDef プロパティ定義}を返します。
+     *  
+     * @param integer|string $index
+     *            プロパティ定義を指定するインデックス番号、プロパティ名
+     * @return S2Container_PropertyDef プロパティ定義
      */
     public function getPropertyDef($index);
     
     /**
-     * @param string
-     * @return boolean
+     * 指定したプロパティ名にプロパティ定義があれば<d>true</d>を返します。
+     * 
+     * @param string propertyName プロパティ定義
+     * @return boolean プロパティ定義が存在していれば<d>true</d>、存在していなければ<d>false</d>
      */
     public function hasPropertyDef($propertyName);
 }

@@ -22,23 +22,44 @@
 //
 // $Id$
 /**
- * @package org.seasar.framework.container
- * @author klove
+ * このインターフェースは、 initメソッド定義を登録および取得することができるオブジェクトを表します。
+ * <p>
+ * initメソッド定義は複数登録することが出来ます。 initメソッド定義の取得はインデックス番号を指定して行います。
+ * </p>
+ * 
+ * @see S2Container_InitMethodDef
+ * 
+ * @copyright  2005-2006 the Seasar Foundation and the Others.
+ * @license    http://www.apache.org/licenses/LICENSE-2.0
+ * @version    Release: 1.1.2
+ * @link       http://s2container.php5.seasar.org/
+ * @since      Class available since Release 1.0.0
+ * @package    org.seasar.framework.container
+ * @author     klove
  */
 interface S2Container_InitMethodDefAware
 {
     /**
-     * @param S2Container_InitMethodDef
+     * initメソッド定義を登録(追加)します。
+     * 
+     * @param S2Container_InitMethodDef $methodDef initメソッド定義
      */
     public function addInitMethodDef(S2Container_InitMethodDef $methodDef);
     
     /**
-     * @return int
+     * 登録されている{@link S2Container_InitMethodDef initメソッド定義}の数を返します。
+     * 
+     * @return integer 登録されているinitメソッド定義の数
      */
     public function getInitMethodDefSize();
     
     /**
-     * @param int
+     * 指定されたインデックス番号<code>index</code>のinitメソッド定義を返します。
+     * <p>
+     * インデックス番号は、 登録した順番に 0,1,2,… となります。
+     * </p>
+     * 
+     * @param integer $index initメソッド定義を指定するインデックス番号
      * @return S2Container_InitMethodDef
      */
     public function getInitMethodDef($index);

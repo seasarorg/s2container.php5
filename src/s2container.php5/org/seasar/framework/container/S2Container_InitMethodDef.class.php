@@ -22,11 +22,22 @@
 //
 // $Id$
 /**
- * @package org.seasar.framework.container
- * @author klove
+ * コンポーネントに対してinitメソッド･インジェクションを定義するためのインターフェースです。
+ * <p>
+ * initメソッド･インジェクションとは、S2コンテナによってインスタンスが生成された直後に、
+ * 1個以上の任意のメソッド(初期化メソッド)を実行するという機能です。ただし、コンポーネントインスタンス定義が<d>outer</d>の場合には、
+ * {@link S2Container::injectDependency()}メソッドが呼び出されたタイミングで実行されます。
+ * </p>
+ * 
+ * @see S2Container
+ * 
+ * @copyright  2005-2006 the Seasar Foundation and the Others.
+ * @license    http://www.apache.org/licenses/LICENSE-2.0
+ * @version    Release: 1.1.2
+ * @link       http://s2container.php5.seasar.org/
+ * @since      Class available since Release 1.0.0
+ * @package    org.seasar.framework.container
+ * @author     klove
  */
-interface S2Container_InitMethodDef
-    extends S2Container_MethodDef
-{
-}
+interface S2Container_InitMethodDef extends S2Container_MethodDef {}
 ?>
