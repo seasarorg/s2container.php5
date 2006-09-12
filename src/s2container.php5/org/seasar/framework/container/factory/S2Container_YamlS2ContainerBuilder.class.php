@@ -205,7 +205,7 @@ final class S2Container_YamlS2ContainerBuilder
             $componentDef->addAspectDef($this->_setupAspectDef($component, $className));
         }
         
-        if(isset($component['intertype'])){
+        if(isset($component['interType'])){
             $componentDef->addInterTypeDef($this->_setupInterTypeDef($component, $className));
         }
 
@@ -424,7 +424,7 @@ final class S2Container_YamlS2ContainerBuilder
      * 
      */
     private function _setupInterTypeDef(array $interType, $targetClassName){
-        $interTypeValue = $interType['intertype'];
+        $interTypeValue = $interType['interType'];
         $interTypeDef = new S2Container_InterTypeDefImpl($targetClassName);
         $interTypeDef->setValue($interTypeValue);
         S2Container_ChildComponentDefBindingUtil::put($interTypeValue, $interTypeDef);

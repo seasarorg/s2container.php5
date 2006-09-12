@@ -11,12 +11,12 @@ components:
         - class: "S2Container_InterTypeChain"
             - initMethod: .
                 name: "add"
-                    - arg: "interType1"
+                - php: "interType1"
             - initMethod: .
                 name: "add"
-                    - arg: "interType2"
+                - php: "interType2"
 
     - component: .
         name: "test"
         - class: "S2Container_InterTypeChainTest_TestClass"
-        - interType: chain
+        - interType: "chain"

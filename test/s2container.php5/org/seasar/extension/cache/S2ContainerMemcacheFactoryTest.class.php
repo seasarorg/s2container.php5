@@ -42,7 +42,7 @@ class S2ContainerMemcacheFactoryTest extends PHPUnit2_Framework_TestCase {
         $this->path_b = dirname(__FILE__) . "/testB.dicon";
         $this->path_c = dirname(__FILE__) . "/testC.dicon";
         // memcached host
-        $this->host = 'localhost';
+        $this->host = 'zarohali';
     }
 
     public function tearDown() {

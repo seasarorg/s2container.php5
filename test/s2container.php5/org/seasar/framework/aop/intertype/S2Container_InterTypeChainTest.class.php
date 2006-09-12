@@ -25,47 +25,53 @@
  * @package org.seasar.framework.aop.intertype
  * @author nowel
  */
-class AbstractInterTypeTest extends PHPUnit2_Framework_TestCase {
-
+class S2Container_InterTypeChainTest extends PHPUnit2_Framework_TestCase {
+    
+    private $conteiner;
+    
     public function __construct($name) {
         parent::__construct($name);
     }
 
-    public void setUp() throws Exception {
-        include(ClassUtil.getShortClassName(AbstractInterTypeTest.class)
-                + ".dicon");
-    }
-
-    public void test() throws Exception {
-        Runnable o = (Runnable) getComponent(List.class);
-        o.run();
-        assertEquals("1", "Hoge1", o.toString());
-
-        Method m = o.getClass().getMethod("getFoo", null);
-        assertSame("2", getComponent(Foo.class), m.invoke(o, null));
-    }
-
-    public interface Foo {
-    }
-
-    public static class FooImpl implements Foo {
-    }
-
-    public static class TestInterType extends AbstractInterType {
-        protected void introduce() {
-            addInterface(Runnable.class);
-
-            addField(String.class, "hoge");
-            addMethod("setHoge", new Class[] { String.class }, "hoge = $1;");
-            addMethod(String.class, "getHoge", "return hoge;");
-
-            addMethod("public void run() {setHoge(\"Hoge\"); add(getHoge());}");
-            addMethod(String.class, "toString",
-                    "return getHoge() + Integer.toString(size());");
-
-            addField(Foo.class, "foo");
-            addMethod("setFoo", new Class[] { Foo.class }, "foo = $1;");
-            addMethod(Foo.class, "getFoo", "return foo;");
+    public function setUp() {
+        $this->diconDir = dirname(__FILE__) . '/dicon/' . __CLASS__;
+        if (!defined('DICON_DIR_S2Container_InterTypeChainTest')){
+            define('DICON_DIR_S2Container_InterTypeChainTest', $this->diconDir);
         }
+        require_once 'spyc.php';
+        $this->container = S2ContainerFactory::create($this->diconDir . '/InterTypeChainTest.yml');
+    }
+
+    public function test() {
+        $component = $this->container->getComponent("test");
+        $this->assertTrue($component instanceof S2Container_InterTypeChainTest_IXA);
+        $this->assertTrue($component instanceof S2Container_InterTypeChainTest_IXB);
+    }
+}
+
+interface S2Container_InterTypeChainTest_IXA {
+}
+
+interface S2Container_InterTypeChainTest_IXB {
+}
+
+class S2Container_InterTypeChainTest_InterType1
+    extends S2Container_AbstractInterType {
+    public function introduce(ReflectionClass $targetClass, $enhancedClassName) {
+        parent::introduce($targetClass, $enhancedClassName);
+        $this->addInterface("S2Container_InterTypeChainTest_IXA");
+    }
+}
+
+class S2Container_InterTypeChainTest_InterType2
+    extends S2Container_AbstractInterType {
+    public function introduce(ReflectionClass $targetClass, $enhancedClassName) {
+        parent::introduce($targetClass, $enhancedClassName);
+        $this->addInterface("S2Container_InterTypeChainTest_IXB");
+    }
+}
+
+class S2Container_InterTypeChainTest_TestClass {
+    public function run() {
     }
 }

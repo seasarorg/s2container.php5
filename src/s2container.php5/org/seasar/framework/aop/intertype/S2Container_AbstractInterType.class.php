@@ -52,22 +52,43 @@ abstract class S2Container_AbstractInterType implements S2Container_InterType {
     /**
      * 
      */
-    protected function getTargetClass() {
+    public function getTargetClass() {
         return $this->targetClass;
     }
-
+    
     /**
      * 
      */
-    protected function getEnhancedClass() {
+    public function setTargetClass(ReflectionClass $targetClass){
+        $this->targetClass = $targetClass;
+    }
+    
+    /**
+     * 
+     */
+    public function getEnhancedClass() {
         return $this->enhancedClass;
     }
     
     /**
      * 
      */
-    protected function getEnhancedClassName(){
+    public function setEnhancedClass($enhancedClass){
+        $this->enhancedClass = $enhancedClass;
+    }
+    
+    /**
+     * 
+     */
+    public function getEnhancedClassName(){
         return $this->enhancedClassName;
+    }
+    
+    /**
+     * 
+     */
+    public function setEnhancedClassName($enhancedClassName){
+        $this->enhancedClassName = $enhancedClassName;
     }
 
     /**

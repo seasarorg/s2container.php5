@@ -1,0 +1,5 @@
+components:
+    - component: .
+        name: "a"
+        - class: "S2Container_AbstractInterTypeTest_FooImpl"
+        - interType: "S2Container_AbstractInterTypeTestTestInterType"

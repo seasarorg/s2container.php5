@@ -277,14 +277,6 @@ class S2Container_EnhancedClassGenerator
     /**
      * 
      */
-    public function applyInterType(S2Container_InterType $interType)
-    {
-        $interType->introduce($this->targetClass, $this->enhancedClassName);
-    }
-    
-    /**
-     * 
-     */
     public function generate()
     {
         if (class_exists($this->enhancedClassName, false)) {
@@ -323,6 +315,14 @@ class S2Container_EnhancedClassGenerator
     /**
      * 
      */
+    public function applyInterType(S2Container_InterType $interType)
+    {
+        $interType->introduce($this->targetClass, $this->enhancedClassName);
+    }
+    
+    /**
+     * 
+     */
     public function setInterTypes(array $interTypes = null)
     {
         if (null === $interTypes || 0 == count($interTypes)) {
@@ -332,7 +332,12 @@ class S2Container_EnhancedClassGenerator
         $c = count($interTypes);
         for ($i = 0; $i < $c; ++$i) {
             $it = $interTypes[$i];
-            $this->applyInterType(new $it($this));
+            if($it instanceof S2Container_InterTypeChain){
+                $it->setEnhancedClass($this);
+                $this->applyInterType($it);
+            } else {
+                $this->applyInterType(new $it($this));
+            }
         }
     }
     

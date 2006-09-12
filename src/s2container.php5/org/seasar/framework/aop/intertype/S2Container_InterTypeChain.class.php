@@ -25,7 +25,7 @@
  * @package org.seasar.framework.aop.intertype
  * @author nowel
  */
-class S2Container_InterTypeChain implements S2Container_InterType {
+class S2Container_InterTypeChain extends S2Container_AbstractInterType {
     
     /** */
     protected $interTypes = array();
@@ -49,7 +49,9 @@ class S2Container_InterTypeChain implements S2Container_InterType {
     public function introduce(ReflectionClass $targetClass, $enhancedClass) {
         $c = count($this->interTypes);
         for ($i = 0; $i < $c; ++$i) {
-            $this->interTypes[$i]->introduce($targetClass, $enhancedClass);
+            $it = $this->interTypes[$i];
+            $intertype = new $it($this);
+            $intertype->introduce($targetClass, $enhancedClass);
         }
     }
 }
