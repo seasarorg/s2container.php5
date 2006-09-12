@@ -50,8 +50,13 @@ class S2Container_InterTypeChain extends S2Container_AbstractInterType {
         $c = count($this->interTypes);
         for ($i = 0; $i < $c; ++$i) {
             $it = $this->interTypes[$i];
-            $intertype = new $it($this);
-            $intertype->introduce($targetClass, $enhancedClass);
+            if($it instanceof S2Container_AbstractInterType){
+                $it->setEnhancedClass($this->enhancedClass);
+                $interType = $it;
+            } else {
+                $interType = new $it($this->enhancedClass);
+            }
+            $interType->introduce($targetClass, $enhancedClass);
         }
     }
 }
