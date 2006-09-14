@@ -1,0 +1,4 @@
+components:
+    - component: .
+        - class: "Hello"
+        - interType: S2Container_PropertyInterType

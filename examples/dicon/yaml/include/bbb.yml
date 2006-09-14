@@ -1,0 +1,9 @@
+components:
+    - component: .
+        - class: "HelloImpl"
+            - property: .
+                name: "message"
+                - arg: "Hello Bbb!"
+    - component: .
+        name: "bbb"
+        - class: "BbbHelloClient"
