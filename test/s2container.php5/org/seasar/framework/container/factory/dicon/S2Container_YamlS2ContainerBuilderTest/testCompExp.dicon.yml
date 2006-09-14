@@ -1,0 +1,22 @@
+components:
+    - component: return new B_S2Container_YamlS2ContainerBuilder();
+        name: "b1"
+        - class: "IB_S2Container_YamlS2ContainerBuilder"
+
+    - component: return new B_S2Container_YamlS2ContainerBuilder()
+        name: "b2"
+        - class: "A_S2Container_YamlS2ContainerBuilder"
+
+    - component: new B_S2Container_YamlS2ContainerBuilder()
+        name: "b3"
+        - class: "B_S2Container_YamlS2ContainerBuilder"
+
+    - component: new B_S2Container_YamlS2ContainerBuilder()
+        name: "b4"
+
+    - component: new B_S2Container_YamlS2ContainerBuilder()
+        name: "b5"
+        - class: "C_S2Container_YamlS2ContainerBuilder"
+        
+    - component: "b2"
+        name: "b6"

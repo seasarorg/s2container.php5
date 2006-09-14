@@ -1,0 +1,6 @@
+components:
+    namespace: testCalcAuto
+    - component: .
+        - class: AddActionImpl_S2Container_YamlS2ContainerBuilder
+    - component: .
+        - class: "CalculatorImpl_S2Container_YamlS2ContainerBuilder"

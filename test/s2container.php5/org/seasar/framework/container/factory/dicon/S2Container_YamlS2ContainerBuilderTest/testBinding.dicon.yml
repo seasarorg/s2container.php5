@@ -1,0 +1,27 @@
+components:
+    namespace: testBinding
+    - component: .
+        name: "o"
+        - class: "O_S2Container_YamlS2ContainerBuilder"
+    - component: .
+        - class: "G_S2Container_YamlS2ContainerBuilder"
+    - component: .
+        name: "s1"
+        - class: "S_S2Container_YamlS2ContainerBuilder"
+        autoBinding: "auto"
+    - component: .
+        autoBinding: constructor
+        name: "s2"
+        - class: "S_S2Container_YamlS2ContainerBuilder"
+    - component: .
+        name: "s3"
+        autoBinding: "property"
+        - class: "S_S2Container_YamlS2ContainerBuilder"
+            - arg: "val 1."
+            - php: o
+    - component: .
+        name: "s4"
+        autoBinding: "none"
+        - class: "S_S2Container_YamlS2ContainerBuilder"
+            - arg: "val 1."
+            - php: o

@@ -1,0 +1,28 @@
+components:
+    namespace: testArgs
+
+    - component: .
+        name: "r"
+        - class: R_S2Container_YamlS2ContainerBuilder
+            - arg: val 1
+            - arg: val 2
+
+    - component: .
+        name: "d"
+        - class: D_S2Container_YamlS2ContainerBuilder
+    - component: .
+        name: "e"
+        - class: D_S2Container_YamlS2ContainerBuilder
+
+    - component: .
+        name: "a"
+        - class: R_S2Container_YamlS2ContainerBuilder
+            - php: d
+            - arg: "val 2"
+
+    - component: .
+        name: "b"
+        - class: R_S2Container_YamlS2ContainerBuilder
+            - php: d
+            - php: e
+

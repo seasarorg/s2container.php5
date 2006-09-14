@@ -1,0 +1,26 @@
+components:
+    namespace: "testProperty"
+
+    - component: .
+        name: "r"
+        - class: "R_S2Container_YamlS2ContainerBuilder"
+            - property: "val 1."
+                name: "val1"
+    - component: .
+        name: "s"
+        - class: "R_S2Container_YamlS2ContainerBuilder"
+            - property: .
+                name: "val1"
+                - arg: "val 1."
+            - property: .
+                name: "val2"
+                - arg: .
+                    - component: .
+                        name: "d"
+                        - class: "D_S2Container_YamlS2ContainerBuilder"
+
+    - component: .
+        name: "t"
+        - class: "R_S2Container_YamlS2ContainerBuilder"
+            - property: 1+1
+                name: "val1"

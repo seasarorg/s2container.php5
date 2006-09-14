@@ -1,0 +1,19 @@
+components:
+    - component: .
+        name: "i"
+        - class: "I_S2Container_YamlS2ContainerBuilder"
+            - initMethod: $component->culc2(2, 4);
+
+    - component: .
+        name: "i2"
+        - class: "I_S2Container_YamlS2ContainerBuilder"
+            - destroyMethod: .
+                - php:>
+                 print 'destroy method expression test.';
+
+
+
+                        
+                        
+                        
+                        

@@ -1,0 +1,8 @@
+components:
+    namespace: "testUuSet"
+    - component: .
+        name: "m"
+        - class: "M_S2Container_YamlS2ContainerBuilder"
+            - property: .
+                name: "name"
+                - arg: "test"
