@@ -47,7 +47,7 @@ class S2ContainerClassLoader {
             } else {           
                 foreach ($entries as $entry) {
                     if (preg_match("/([^\.]+).+php$/",$entry,$matches)) {
-                        S2ContainerClassLoader::$USER_CLASSES[$matches[1]] = $path 
+                        self::$USER_CLASSES[$matches[1]] = $path 
                                                              . DIRECTORY_SEPARATOR
                                                              . $entry;
                     }
@@ -57,10 +57,10 @@ class S2ContainerClassLoader {
             if ($key == null) {
                 $file = basename($path);
                 if (preg_match("/([^\.]+).+php$/",$file,$matches)) {
-                    S2ContainerClassLoader::$USER_CLASSES[$matches[1]] = $path;
+                    self::$USER_CLASSES[$matches[1]] = $path;
                 }
             } else {
-                S2ContainerClassLoader::$USER_CLASSES[$key] = $path;
+                self::$USER_CLASSES[$key] = $path;
             }
         } else {
             trigger_error("invalid args. path : $path, key : $key", E_USER_WARNING);

@@ -17,13 +17,14 @@
 // | either express or implied. See the License for the specific language |
 // | governing permissions and limitations under the License.             |
 // +----------------------------------------------------------------------+
-// | Authors: klove                                                       |
+// | Authors: klove, nowel                                                |
 // +----------------------------------------------------------------------+
 //
 // $Id$
 /**
  * @package org.seasar.framework.container.impl
  * @author klove
+ * @author nowel
  */
 class S2Container_ComponentDefImpl 
     implements S2Container_ComponentDef
@@ -51,6 +52,8 @@ class S2Container_ComponentDefImpl
     private $aspectDefSupport_;
     
     private $metaDefSupport_;
+    
+    private $interTypeDefSupport_;
 
     private $instanceMode_ = S2Container_ContainerConstants::INSTANCE_SINGLETON;
 
@@ -63,13 +66,13 @@ class S2Container_ComponentDefImpl
      * @param string component name  
      */
     public function __construct($componentClass = "",
-                                                 $componentName = "")
+                                $componentName = "")
     {
         if ($componentClass instanceof ReflectionClass) {
             $this->componentClass_ = $componentClass;
             $this->componentClassName_ = $componentClass->getName();
         } else {
-            if (class_exists($componentClass) or
+            if (class_exists($componentClass) ||
                interface_exists($componentClass)) {
                $this->componentClass_ = new ReflectionClass($componentClass);
             }
@@ -82,6 +85,7 @@ class S2Container_ComponentDefImpl
         $this->destroyMethodDefSupport_ = new S2Container_DestroyMethodDefSupport();
         $this->aspectDefSupport_ = new S2Container_AspectDefSupport();
         $this->metaDefSupport_ = new S2Container_MetaDefSupport();
+        $this->interTypeDefSupport_ = new S2Container_InterTypeDefSupport();
     }
 
     /**
@@ -157,6 +161,7 @@ class S2Container_ComponentDefImpl
         $this->argDefSupport_->setContainer($container);
         $this->metaDefSupport_->setContainer($container);
         $this->propertyDefSupport_->setContainer($container);
+        $this->interTypeDefSupport_->setContainer($container);
         $this->initMethodDefSupport_->setContainer($container);
         $this->destroyMethodDefSupport_->setContainer($container);
         $this->aspectDefSupport_->setContainer($container);
@@ -287,7 +292,7 @@ class S2Container_ComponentDefImpl
 
             $this->autoBindingMode_ = $autoBindingMode;
         } else {
-            throw new S2Container_IllegalArgumentException(autoBindingMode);
+            throw new S2Container_IllegalArgumentException($autoBindingMode);
         }
     }
 
@@ -424,6 +429,27 @@ class S2Container_ComponentDefImpl
     {
         return $this->metaDefSupport_->getMetaDefSize();
     }
+    
+    /**
+     * @see org.seasar.framework.container.ComponentDef#addInterTypeDef(org.seasar.framework.container.InterTypeDef)
+     */
+    public function addInterTypeDef(S2Container_InterTypeDef $interTypeDef){
+        $this->interTypeDefSupport_->addInterTypeDef($interTypeDef);
+    }
+    
+    /**
+     * @see org.seasar.framework.container.InterTypeDefAware#getInterTypeDef(int)
+     */
+    public function getInterTypeDef($index) {
+        return $this->interTypeDefSupport_->getInterTypeDef($index);
+    }
+    
+    /**
+     * @see org.seasar.framework.container.InterTypeDefAware#getInterTypeDefSize()
+     */
+    public function getInterTypeDefSize() {
+        return $this->interTypeDefSupport_->getInterTypeDefSize();
+    }
 
     /**
      * 
@@ -431,7 +457,7 @@ class S2Container_ComponentDefImpl
     private function _getComponentDeployer()
     {
         if ($this->componentDeployer_ == null) {
-            if ($this->expression_ == null and 
+            if ($this->expression_ == null && 
                $this->componentClass_ == null) {
                 throw new S2Container_S2RuntimeException('ESSR1008',
                            array($this->componentName_,

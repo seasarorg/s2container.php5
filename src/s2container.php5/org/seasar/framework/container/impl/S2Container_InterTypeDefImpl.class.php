@@ -3,7 +3,7 @@
 // +----------------------------------------------------------------------+
 // | PHP version 5                                                        |
 // +----------------------------------------------------------------------+
-// | Copyright 2005-2006 the Seasar Foundation and the Others.            |
+// | Copyright 2004-2005 the Seasar Foundation and the Others.            |
 // +----------------------------------------------------------------------+
 // | Licensed under the Apache License, Version 2.0 (the "License");      |
 // | you may not use this file except in compliance with the License.     |
@@ -17,40 +17,33 @@
 // | either express or implied. See the License for the specific language |
 // | governing permissions and limitations under the License.             |
 // +----------------------------------------------------------------------+
-// | Authors: klove                                                       |
+// | Authors: nowel                                                       |
 // +----------------------------------------------------------------------+
 //
 // $Id$
 /**
- * @package org.seasar.framework.container.assembler
- * @author klove
+ * @package org.seasar.framework.container.impl
+ * @author nowel
  */
-abstract class S2Container_AbstractConstructorAssembler
-    extends S2Container_AbstractAssembler
-    implements S2Container_ConstructorAssembler
+class S2Container_InterTypeDefImpl 
+    extends S2Container_ArgDefImpl
+    implements S2Container_InterTypeDef
 {
     /**
-     * @param S2Container_ComponentDef
+     * 
      */
-    public function __construct(S2Container_ComponentDef $componentDef)
+    public function __construct($intertype)
     {
-        parent::__construct($componentDef);
+        parent::__construct();
+        $this->setValue(new ReflectionClass($intertype));
     }
 
     /**
      * 
      */
-    protected function assembleDefault()
+    public function getInterType()
     {
-        $clazz = $this->getComponentDef()->getConcreteClass();
-        
-        if ($this->getComponentDef() != null and 
-            $this->getComponentDef()->getAspectDefSize() > 0) {
-            return S2Container_AopProxyUtil::getProxyObject($this->
-                                               getComponentDef(),
-                                               array()); 
-        }        
-        return S2Container_ConstructorUtil::newInstance($clazz, null);
+        return $this->getValue();
     }
 }
 ?>

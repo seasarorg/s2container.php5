@@ -17,13 +17,14 @@
 // | either express or implied. See the License for the specific language |
 // | governing permissions and limitations under the License.             |
 // +----------------------------------------------------------------------+
-// | Authors: klove                                                       |
+// | Authors: klove, nowel                                                |
 // +----------------------------------------------------------------------+
 //
 // $Id$
 /**
  * @package org.seasar.framework.container.util
  * @author klove
+ * @author nowel
  */
 class S2Container_AopProxyUtil
 {
@@ -40,6 +41,14 @@ class S2Container_AopProxyUtil
     public static function getProxyObject(S2Container_ComponentDef $componentDef,
                                                                    $args)
     {
+        if($componentDef->getAspectDefSize() == 0
+                && $componentDef->getInterTypeDefSize() == 0) {
+            // ComponentClas <= ReflectionClassなのでTestが通らないかも。::assertTypeされてるかも。
+            // TODO:: testの不備を直す。かそれ以外(ReflectionClass)の対応をする||それともこれでいく
+            //return $componentDef->getComponentClass();
+            return S2Container_ConstructorUtil::newInstance($componentDef->getComponentClass(),$args);
+        }
+        
         $parameters = array();
         $parameters[S2Container_ContainerConstants::COMPONENT_DEF_NAME] = 
                                                                   $componentDef;
@@ -51,22 +60,11 @@ class S2Container_AopProxyUtil
                                                       getComponentClass(),$args);
         }
 
-        $proxy = S2Container_AopProxyFactory::create($target,
+        return S2Container_AopProxyFactory::create($target,
                    $componentDef->getComponentClass(),
-                   S2Container_AopProxyUtil::getAspects($componentDef),
+                   self::getAspects($componentDef),
+                   self::getInterTypes($componentDef),
                    $parameters);
-
-        return $proxy;
-
-/*
-        $parameters = array();
-        $parameters[S2Container_ContainerConstants::COMPONENT_DEF_NAME] = 
-                                                              $componentDef;
-        $proxy = new S2Container_AopProxy($componentDef->getComponentClass(),
-                         S2Container_AopProxyUtil::getAspects($componentDef),
-                            $parameters);
-        return $proxy->create("",$args);
-*/
     }
 
     /**
@@ -80,6 +78,18 @@ class S2Container_AopProxyUtil
             $aspects[] = $componentDef->getAspectDef($i)->getAspect();
         }
         return $aspects;
+    }
+    
+    /**
+     * 
+     */
+    protected static function getInterTypes(S2Container_ComponentDef $componentDef) {
+        $size = $componentDef->getInterTypeDefSize();
+        $interTypes = array();
+        for ($i = 0; $i < $size; ++$i) {
+            $interTypes[] = $componentDef->getInterTypeDef($i)->getInterType();
+        }
+        return $interTypes;
     }
 }
 ?>

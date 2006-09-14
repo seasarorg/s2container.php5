@@ -17,40 +17,61 @@
 // | either express or implied. See the License for the specific language |
 // | governing permissions and limitations under the License.             |
 // +----------------------------------------------------------------------+
-// | Authors: klove                                                       |
+// | Authors: nowel                                                       |
 // +----------------------------------------------------------------------+
 //
-// $Id$
+// $Id: S2Container_AutoBindingUtil.class.php 225 2006-03-07 13:34:12Z klove $
 /**
- * @package org.seasar.framework.container.assembler
- * @author klove
+ * @package org.seasar.framework.container.util
+ * @author nowel
  */
-abstract class S2Container_AbstractConstructorAssembler
-    extends S2Container_AbstractAssembler
-    implements S2Container_ConstructorAssembler
-{
+class S2Container_InterTypeDefSupport {
+
+    /** */
+    private $interTypeDefs = array();
+    /** */
+    private $container;
+
     /**
-     * @param S2Container_ComponentDef
+     * 
      */
-    public function __construct(S2Container_ComponentDef $componentDef)
-    {
-        parent::__construct($componentDef);
+    public function __construct() {
     }
 
     /**
      * 
      */
-    protected function assembleDefault()
-    {
-        $clazz = $this->getComponentDef()->getConcreteClass();
-        
-        if ($this->getComponentDef() != null and 
-            $this->getComponentDef()->getAspectDefSize() > 0) {
-            return S2Container_AopProxyUtil::getProxyObject($this->
-                                               getComponentDef(),
-                                               array()); 
-        }        
-        return S2Container_ConstructorUtil::newInstance($clazz, null);
+    public function addInterTypeDef(S2Container_InterTypeDef $interTypeDef) {
+        if ($this->container !== null) {
+            $interTypeDef->setContainer($this->container);
+        }
+        $this->interTypeDefs[] = $interTypeDef;
+    }
+
+    /**
+     * 
+     */
+    public function getInterTypeDefSize() {
+        return count($this->interTypeDefs);
+    }
+
+    /**
+     * 
+     */
+    public function getInterTypeDef($index) {
+        return $this->interTypeDefs[$index];
+    }
+
+    /**
+     * 
+     */
+    public function setContainer(S2Container $container) {
+        $this->container = $container;
+        $c = $this->getInterTypeDefSize();
+        for ($i = 0; $i < $c; ++$i) {
+            $this->getInterTypeDef($i)->setContainer($container);
+        }
     }
 }
+
 ?>

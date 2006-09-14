@@ -17,13 +17,14 @@
 // | either express or implied. See the License for the specific language |
 // | governing permissions and limitations under the License.             |
 // +----------------------------------------------------------------------+
-// | Authors: klove                                                       |
+// | Authors: klove, nowel                                                |
 // +----------------------------------------------------------------------+
 //
 // $Id$
 /**
  * @package org.seasar.framework.aop.proxy
  * @author klove
+ * @author nowel
  */
 final class S2Container_AopProxyFactory
 {
@@ -40,6 +41,7 @@ final class S2Container_AopProxyFactory
     public static function create($target = null,
                            $targetClass,
                            $aspects,
+                           $interTypes = null,
                            $parameters = null)
     {
         if (!$targetClass instanceof ReflectionClass) {
@@ -53,16 +55,28 @@ final class S2Container_AopProxyFactory
             }
         }
 
-        if (!$targetClass->isUserDefined()) {
-            S2Container_S2Logger::getLogger(__CLASS__)->
-                debug("not a user defined class <{$targetClass->getName()}> ignored.",__METHOD__);
+        if (!$targetClass->isUserDefined() or
+             $targetClass->hasMethod('__call')) {
             return $target;
         }
 
-        $methodInterceptorsMap = 
-            self::_creatMethodInterceptorsMap($targetClass,
-                                              $aspects);
+        $methodInterceptorsMap = self::_creatMethodInterceptorsMap($targetClass,
+                                                                  $aspects,
+                                                                  $interTypes);
 
+        if(null !== $interTypes && 0 < count($interTypes)){
+            $generator = new S2Container_EnhancedClassGenerator($target,
+                                                          $targetClass,
+                                                          $parameters);
+            $generator->setInterTypes($interTypes);
+            $generator->setInterceptors($methodInterceptorsMap);
+            $concreteClassName = $generator->generate();
+            return new $concreteClassName($target,
+                                      $targetClass,
+                                      $methodInterceptorsMap,
+                                      $parameters);
+        }
+        
         $interfaces = S2Container_ClassUtil::getInterfaces($targetClass); 
         if (count($interfaces) == 0) {
             return new S2Container_DefaultAopProxy($target,
@@ -83,11 +97,15 @@ final class S2Container_AopProxyFactory
     /**
      * @param ReflectionClass
      * @param array Aspect array
+     * @param array InterType array
      */
-    private static function _creatMethodInterceptorsMap($targetClass,$aspects)
+    private static function _creatMethodInterceptorsMap($targetClass,
+                                                        $aspects = null,
+                                                        $interTypes = null)
     {
-        if ($aspects == null || count($aspects) == 0) {
-            throw new S2Container_EmptyRuntimeException("aspects");
+        if (($aspects == null || count($aspects) == 0)
+            && ($interTypes == null || count($interTypes) == 0)) {
+            throw new S2Container_EmptyRuntimeException("aspects and interTypes");
         }
 
         $defaultPointcut = new S2Container_PointcutImpl($targetClass);
@@ -102,14 +120,7 @@ final class S2Container_AopProxyFactory
         $methodInterceptorsMap = array();
         $o = count($methods);
         for ($i = 0; $i < $o; ++$i) {
-            if (!S2Container_AopProxyFactory::isApplicableAspect($methods[$i])) {
-/*
-                S2Container_S2Logger::getLogger(__CLASS__)->
-                    info($targetClass->getName()."::".
-                           $methods[$i]->getName() .
-                           "() is a constructor or a static method. ignored.",
-                           __METHOD__);
-*/
+            if (!self::isApplicableAspect($methods[$i])) {
                 continue;
             }
         
@@ -120,14 +131,6 @@ final class S2Container_AopProxyFactory
                 if ($aspects[$j]->getPointcut()->isApplied($methods[$i]->getName())) {
                     $interceptorList[] = $aspects[$j]->getMethodInterceptor();
                 }
-/*
-                else{
-                    S2Container_S2Logger::getLogger(__CLASS__)->
-                    info("no pointcut defined for " . 
-                        $targetClass->getName() . "::" .
-                        $methods[$i]->getName() . "()",__METHOD__);
-                }
-*/                
             }
             
             if (count($interceptorList) > 0) {

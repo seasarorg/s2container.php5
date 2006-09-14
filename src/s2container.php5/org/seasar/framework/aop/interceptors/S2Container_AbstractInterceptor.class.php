@@ -36,11 +36,11 @@ abstract class S2Container_AbstractInterceptor
     {
         $aspect = new S2Container_AspectImpl($this, 
                               new S2Container_PointcutImpl(array(".*")));
-        $proxy = S2Container_AopProxyFactory::create(null,
-                                                     $targetClass,
-                                                     array($aspect),
-                                                     array());
-        return $proxy;
+        return S2Container_AopProxyFactory::create(null,
+                                                   $targetClass,
+                                                   array($aspect),
+                                                   array(),
+                                                   array());
     }
 
     /**
@@ -86,3 +86,4 @@ abstract class S2Container_AbstractInterceptor
     }    
 }
 ?>
+

@@ -61,7 +61,8 @@ interface S2Container_ComponentDef
         S2Container_InitMethodDefAware,
         S2Container_DestroyMethodDefAware,
         S2Container_AspectDefAware,
-        S2Container_MetaDefAware
+        S2Container_MetaDefAware,
+        S2Container_InterTypeDefAware
 {
 
     /**
