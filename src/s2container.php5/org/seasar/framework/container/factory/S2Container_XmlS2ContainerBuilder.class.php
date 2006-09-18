@@ -17,13 +17,14 @@
 // | either express or implied. See the License for the specific language |
 // | governing permissions and limitations under the License.             |
 // +----------------------------------------------------------------------+
-// | Authors: klove                                                       |
+// | Authors: klove, nowel                                                |
 // +----------------------------------------------------------------------+
 //
 // $Id$
 /**
  * @package org.seasar.framework.container.factory
  * @author klove
+ * @author nowel
  */
 final class S2Container_XmlS2ContainerBuilder
     implements S2ContainerBuilder
@@ -74,9 +75,8 @@ final class S2Container_XmlS2ContainerBuilder
     private function _isDomValidateOn(){
         if(defined('S2CONTAINER_PHP5_DOM_VALIDATE')){
             return S2CONTAINER_PHP5_DOM_VALIDATE;
-        }else{
-            return true;
         }
+        return true;
     }
     
     /**
@@ -175,6 +175,11 @@ final class S2Container_XmlS2ContainerBuilder
         foreach ($component->aspect as $index => $val) {
             $componentDef->addAspectDef($this->_setupAspectDef($val,
                                                               $className));               
+        }
+        
+        foreach ($component->intertype as $index => $val) {
+            $componentDef->addInterTypeDef($this->_setupInterTypeDef($val,
+                                                              $className));
         }
            
         $this->_setupMetaDef($component,$componentDef);
@@ -296,6 +301,28 @@ final class S2Container_XmlS2ContainerBuilder
         }
         
         return $aspectDef;
+    }
+    
+    /**
+     * 
+     */
+    private function _setupInterTypeDef($interType, $className)
+    {
+        $interTypeDef = new S2Container_InterTypeDefImpl($className);
+        if (isset($interType->component[0])) {
+            $childComponent = $this->_setupComponentDef($interType->component[0]);
+            $interTypeDef->setChildComponentDef($childComponent);
+            return;
+        }
+        $interTypeValue = trim((string)$interType);
+        $injectValue = $this->_getInjectionValue($interTypeValue);
+        if ($injectValue != null){
+            $interTypeDef->setValue($injectValue);
+        } else {
+            $interTypeDef->setExpression($interTypeValue);
+            S2Container_ChildComponentDefBindingUtil::put($interTypeValue,
+                                                          $interTypeDef);
+        }
     }
     
     /**
