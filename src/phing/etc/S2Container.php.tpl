@@ -98,4 +98,5 @@ S2ContainerMessageUtil::addMessageResource(
  */
 S2ContainerFactory::$BUILDERS['dicon'] = 'S2Container_XmlS2ContainerBuilder';
 S2ContainerFactory::$BUILDERS['xml']   = 'S2Container_XmlS2ContainerBuilder';
+S2ContainerFactory::$BUILDERS['yml']   = 'S2Container_YamlS2ContainerBuilder';
 ?>

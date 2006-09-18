@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 /**
  * require default
  */
-require_once(dirname(dirname(__FILE__)) . '/S2Container.php'); 
+require_once dirname(dirname(__FILE__)) . '/S2Container.php'; 
 
 /**
  * require pear package

@@ -59,7 +59,7 @@
         $interceptor = new TestInterceptor_S2Container_AbstractInterceptor();
         $aspect = new S2Container_AspectImpl($interceptor, $pointcut);
         $params[S2Container_ContainerConstants::COMPONENT_DEF_NAME] = new S2Container_ComponentDefImpl('Date_S2Container_AbstractInterceptor','date');
-        $proxy = S2Container_AopProxyFactory::create(null,'Date_S2Container_AbstractInterceptor', array($aspect),$params);
+        $proxy = S2Container_AopProxyFactory::create(null,'Date_S2Container_AbstractInterceptor', array($aspect), array(), $params);
         $proxy->target_ = new Date_S2Container_AbstractInterceptor();
         $proxy->getTime();
         $cd = $interceptor->getCd();

@@ -42,17 +42,19 @@ class S2Container_AutoConstructorAssembler
     public function assemble()
     {
         $args = array();
-        $refMethod = $this->getComponentDef()->getConcreteClass()->getConstructor();
+        $componentDef = $this->getComponentDef();
+        $refMethod = $componentDef->getConcreteClass()->getConstructor();
         if ($refMethod != null) {
             $args = $this->getArgs($refMethod->getParameters());
         }
-        if ($this->getComponentDef() != null and 
-            $this->getComponentDef()->getAspectDefSize() > 0) {
-            return S2Container_AopProxyUtil::getProxyObject($this->
-                                                 getComponentDef(),$args); 
+        if ($componentDef != null &&
+            ($componentDef->getAspectDefSize() > 0 ||
+            $componentDef->getInterTypeDefSize() > 0)) {
+            return S2Container_AopProxyUtil::getProxyObject(
+                                        $componentDef,$args); 
         }                
-        return S2Container_ConstructorUtil::newInstance($this->
-               getComponentDef()->getConcreteClass(), $args);
+        return S2Container_ConstructorUtil::newInstance(
+                         $componentDef->getConcreteClass(), $args);
     }
 }
 ?>
