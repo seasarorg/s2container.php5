@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
+"components24.dtd">
+<components>
+    <component name="interType1" class="S2Container_InterTypeChainTest_InterType1" />
+	<component name="interType2" class="S2Container_InterTypeChainTest_InterType2" />
+
+    <component name="chain" class="S2Container_InterTypeChain">
+        <initMethod name="add"><arg>interType1</arg></initMethod>
+        <initMethod name="add"><arg>interType2</arg></initMethod>
+    </component>
+
+    <component name="test" class="S2Container_InterTypeChainTest_TestClass">
+        <interType>chain</interType>
+    </component>
+</components>

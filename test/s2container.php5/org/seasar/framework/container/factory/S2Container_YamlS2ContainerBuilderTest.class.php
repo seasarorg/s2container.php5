@@ -584,6 +584,12 @@ class S2Container_YamlS2ContainerBuilderTest
         $this->assertEquals($a->getPub_value(), "098");
         $this->assertEquals($a->getPro_value(), "765");
         $this->assertEquals($a->getPri_value(), "4321");
+        
+        $b = $container->getComponent("b");
+        $this->assertNotNull($b);
+        $refB = new ReflectionClass(get_class($b));
+        $this->assertTrue($refB->hasMethod("serialize"));
+        $this->assertTrue($refB->hasMethod("unserialize"));
     }
 }
 
@@ -880,5 +886,11 @@ class A_InterType_S2Container_YamlS2ContainerBuilder {
     public $pub_value = 123;
     protected $pro_value = 456;
     private $pri_value = 789;
+}
+
+class B_InterType_S2Container_YamlS2ContainerBuilder {
+    public $aaa;
+    protected $bbb;
+    private $ccc;
 }
 ?>

@@ -7,4 +7,9 @@
             <component class="S2Container_PropertyInterType" />
         </interType>
     </component>
+	
+    <component name="b" class="B_InterType_S2Container_XmlS2ContainerBuilder">
+    	    <interType><component class="S2Container_SerializableInterType" /></interType>
+		<interType><component class="S2Container_PropertyInterType" /></interType>
+    </component>
 </components>

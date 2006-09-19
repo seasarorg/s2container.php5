@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
+"components24.dtd">
+<components>
+    <component name="a" class="S2Container_AbstractInterTypeTest_FooImpl">
+	    <interType>
+		    <component class="S2Container_AbstractInterTypeTestTestInterType" />
+		</interType>
+    </component>
+</components>
