@@ -24,12 +24,15 @@
 /**
  * @package org.seasar.framework.aop.intertype
  * @author nowel
- * @version test
  */
 class S2Container_SerializableInterType extends S2Container_AbstractInterType {
     
+    /** */
     private static $logger = null;
 
+    /**
+     * 
+     */
     public function introduce(ReflectionClass $targetClass, $enhancedClass) {
         parent::introduce($targetClass, $enhancedClass);
         self::$logger = S2Container_S2Logger::getLogger(__CLASS__);
@@ -47,13 +50,16 @@ class S2Container_SerializableInterType extends S2Container_AbstractInterType {
         $this->createUnserializeMethod();
     }
 
+    /**
+     * 
+     */
     private function createSerializeMethod() {
         $methodName = 'serialize';
         if($this->targetClass->hasMethod($methodName)){
             return;
         }
         if(S2CONTAINER_PHP5_LOG_LEVEL == 1){
-            self::$logger->debug('[SerializableInterType] Creating Serialize Method ' .
+            self::$logger->debug('[SerializableInterType] Creating serialize Method ' .
                                 $this->targetClass->getName());
         }
 
@@ -74,13 +80,16 @@ class S2Container_SerializableInterType extends S2Container_AbstractInterType {
         $this->addMethod($type, $methodName, implode(PHP_EOL, $src));
     }
 
+    /**
+     * 
+     */
     private function createUnserializeMethod() {
         $methodName = 'unserialize';
         if($this->targetClass->hasMethod($methodName)){
             return;
         }
         if(S2CONTAINER_PHP5_LOG_LEVEL == 1){
-            self::$logger->debug('[SerializableInterType] Creating Unserialize Method ' .
+            self::$logger->debug('[SerializableInterType] Creating unserialize Method ' .
                                 $this->targetClass->getName());
         }
 
