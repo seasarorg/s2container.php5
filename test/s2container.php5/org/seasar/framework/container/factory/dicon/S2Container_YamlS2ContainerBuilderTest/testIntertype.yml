@@ -1,0 +1,7 @@
+components:
+    namespace: "testIntertype"
+    
+    - component: .
+        name: "a"
+        - class: "A_InterType_S2Container_YamlS2ContainerBuilder"
+            - interType: S2Container_PropertyInterType

@@ -552,6 +552,37 @@ class S2Container_XmlS2ContainerBuilderTest
             print $e->getMessage() . "\n";
         }
     }
+    
+    function testIntertype(){
+        // property intertype
+        $container = S2ContainerFactory::create($this->diconDir . '/testIntertype.xml');
+        $this->assertNotNull($container);
+        
+        $a = $container->getComponent("a");
+        $this->assertNotNull($a);
+        
+        // setter has
+        $a->setAaa("aaa");
+        $a->setBbb("bbb");
+        $a->setCcc("ccc");
+        
+        // getter has eq value
+        $this->assertEquals($a->getAaa(), "aaa");
+        $this->assertEquals($a->getBbb(), "bbb");
+        $this->assertEquals($a->getCcc(), "ccc");
+        
+        $this->assertEquals($a->getPub_value(), 123);
+        $this->assertNull($a->getPro_value());
+        $this->assertNull($a->getPri_value());
+        
+        $a->setPub_value("098");
+        $a->setPro_value("765");
+        $a->setPri_value("4321");
+        
+        $this->assertEquals($a->getPub_value(), "098");
+        $this->assertEquals($a->getPro_value(), "765");
+        $this->assertEquals($a->getPri_value(), "4321");
+    }
 }
 
 interface IA_S2Container_XmlS2ContainerBuilder{}
@@ -838,5 +869,14 @@ class SubActionImpl_S2Container_XmlS2ContainerBuilder
    public function sub($a,$b) {
        return $this->logic->sub($a,$b);
    }
+}
+
+class A_InterType_S2Container_XmlS2ContainerBuilder {
+    public $aaa;
+    protected $bbb;
+    private $ccc;
+    public $pub_value = 123;
+    protected $pro_value = 456;
+    private $pri_value = 789;
 }
 ?>

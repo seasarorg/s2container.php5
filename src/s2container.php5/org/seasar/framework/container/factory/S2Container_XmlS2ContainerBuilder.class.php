@@ -177,7 +177,7 @@ final class S2Container_XmlS2ContainerBuilder
                                                               $className));               
         }
         
-        foreach ($component->intertype as $index => $val) {
+        foreach ($component->interType as $index => $val) {
             $componentDef->addInterTypeDef($this->_setupInterTypeDef($val,
                                                               $className));
         }
@@ -306,23 +306,25 @@ final class S2Container_XmlS2ContainerBuilder
     /**
      * 
      */
-    private function _setupInterTypeDef($interType, $className)
+    private function _setupInterTypeDef(SimpleXMLElement $interType, $className)
     {
         $interTypeDef = new S2Container_InterTypeDefImpl($className);
         if (isset($interType->component[0])) {
             $childComponent = $this->_setupComponentDef($interType->component[0]);
             $interTypeDef->setChildComponentDef($childComponent);
-            return;
-        }
-        $interTypeValue = trim((string)$interType);
-        $injectValue = $this->_getInjectionValue($interTypeValue);
-        if ($injectValue != null){
-            $interTypeDef->setValue($injectValue);
         } else {
-            $interTypeDef->setExpression($interTypeValue);
-            S2Container_ChildComponentDefBindingUtil::put($interTypeValue,
-                                                          $interTypeDef);
+            $interTypeValue = trim((string)$interType);
+            $injectValue = $this->_getInjectionValue($interTypeValue);
+            if ($injectValue != null){
+                $interTypeDef->setValue($injectValue);
+            } else {
+                $interTypeDef->setExpression($interTypeValue);
+                S2Container_ChildComponentDefBindingUtil::put($interTypeValue,
+                                                              $interTypeDef);
+            }
         }
+        
+        return $interTypeDef;
     }
     
     /**
