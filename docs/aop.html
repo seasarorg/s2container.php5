@@ -35,11 +35,19 @@
                 <li><a href="#ThrowsInterceptor">ThrowsInterceptor</a></li>
                 <li><a href="#MockInterceptor">MockInterceptor</a></li>
                 <li><a href="#DelegateInterceptor">DelegateInterceptor</a></li>
-<li><a href="#PrototypeDelegateInterceptor">PrototypeDelegateInterceptor</a></li>
+                <li><a href="#PrototypeDelegateInterceptor">PrototypeDelegateInterceptor</a></li>
                 <li><a href="#InterceptorChain">InterceptorChain</a></li>
                 <li><a href="#OriginalInterceptor">“Æ©À‘•‚É‚æ‚éInterceptor</a></li>
                 </ul>
-                        </li>
+            </li>
+            <li><a href="#AOPInterType">S2AOP‚Å—pˆÓ‚³‚ê‚Ä‚¢‚éInterType</a>
+                <ul>
+                <li><a href="#PropertyInterType">PropertyInterType</a></li>
+                <li><a href="#SerializableInterType">SerializableInterType</a></li>
+                <li><a href="#InterTypeChain">InterTypeChain</a></li>
+                <li><a href="#OriginalInterType">“Æ©À‘•‚É‚æ‚éInterType</a></li>
+                </ul>
+            </li>
             <li><a href="#nodicon">diconƒtƒ@ƒCƒ‹‚ğg—p‚µ‚È‚¢‚ÅƒAƒXƒyƒNƒg‚ğ‘g‚İ‚Ş•û–@</a></li>
         </ul></li>
         <li><a href="#Example">Example</a>
@@ -83,7 +91,7 @@ Concernv‚Æ“¯‚¶êŠ‚É”z’u‚·‚é‚©Aİ’è‚ğs‚¤ƒRƒ“ƒ|[ƒlƒ“ƒg‚Æ“¯‚¶êŠ‚É”z’u‚µ‚Ü‚·
 <pre>&lt;?php
 class Date {
     function Date() {}
-    
+
     function getTime(){
         return '12:00:30';
     }
@@ -149,7 +157,7 @@ S2Container_MethodInvocation)‚ğÀ‘•‚·‚é‚¾‚¯‚Å‚·BÚ‚µ‚¢g—p•û–@‚Í<a href="#Throw
     <p>ƒƒ\ƒbƒhŒÄ‚Ño‚µ‚ğ•Ê‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ÉˆÏ÷‚·‚é‚½‚ß‚ÌInterceptor‚Å‚·Bg—p•û–@‚ÍDelegateInterceptor‚Ìtargetƒvƒ
 ƒpƒeƒB‚ÉˆÏ÷‚µ‚½‚¢‘Šè‚ğw’è‚µ‚Ü‚·BˆÏ÷‚·‚é‚Æ‚«‚Ìƒƒ\ƒbƒh–¼‚ªˆÙ‚È‚éê‡‚É‚ÍA
 DeleateInterceptor#addMethodNameMap(
-$methodName, 
+$methodName,
 $targetMethodName)‚Åw’è‚µ‚Ü‚·B—á‚¦‚ÎAbar()‚Æ‚¢‚¤ƒƒ\ƒbƒh‚ğfoo->bar2()‚ÉˆÏ÷‚·‚éê‡A
 DeleateInterceptor#setTarget(foo)CDeleateInterceptor#addMethodNameMap
 ("bar",
@@ -233,6 +241,125 @@ class SampleInterceptor implements S2Container_MethodInterceptor {
         <li>Aspect‚Ì“o˜^‚Ì‹t‡‚ÉMethodInterceptor‚Ìafter•”•ª‚ªÀs‚³‚ê‚Ü‚·B</li>
        </ol>
     <p>Ú‚µ‚¢g—p•û–@‚Í<a href="#OriginalInterceptorSample">“Æ©À‘•‚É‚æ‚éInterceptor</a>‚ğQÆ‚µ‚Ä‚­‚¾‚³‚¢B</p>
+
+    <!---
+    InterType Document
+    --->
+    <h3><a name="AOPInterType">S2AOP‚Å—pˆÓ‚³‚ê‚Ä‚¢‚éInterType</a></h3>
+    <p>S2AOP‚Å‚ÍAˆÈ‰º‚ÌInterType‚ğ—pˆÓ‚µ‚Ä‚¢‚Ü‚·B‚Ü‚½“Æ©‚ÌInterType‚ğì¬‚Å‚«‚é‚æ‚¤‚É‚È‚Á‚Ä‚¢‚Ü‚·B</p>
+
+    <h4><a name="PropertyInterType">(1) PropertyTraceInterType</a></h4>
+    <h5>ƒNƒ‰ƒX–¼</h5>
+    <p>S2Container_PropertyInterType</p>
+    <h5>à–¾</h5>
+    <p>ƒtƒB[ƒ‹ƒh‚É‘Î‚·‚ésetter / getterƒƒ\ƒbƒh‚ğ’Ç‰Á‚·‚éInterType‚Å‚·B</p>
+    <h5>’ˆÓ“_</h5>
+    <p>private‚âprotected‚ÌƒtƒB[ƒ‹ƒh‚É‘Î‚·‚égetter / setter‚ÍƒtƒB[ƒ‹ƒh‚ÌƒfƒtƒHƒ‹ƒg’l‚ğQÆ‚Å‚«‚Ü‚¹‚ñB<br />
+    QÆ‚ğ”º‚¤ƒtƒB[ƒ‹ƒh‚É‚Ípublic‚É‚µ‚Ä‚­‚¾‚³‚¢B</p>
+
+    <pre>&lt;component class="Hoge"&gt;
+    &lt;interType&gt;
+        &lt;component class="S2Container_PropertyInterType"/&gt;
+    &lt;/interType&gt;
+&lt;/component&gt;</pre>
+
+    <p>ˆÈ‰º‚ÌƒNƒ‰ƒX‚É‚ÍAƒtƒB[ƒ‹ƒhhoge‚É‘Î‚µ‚ÄsetHoge/getHogeAƒtƒB[ƒ‹ƒhfoo‚É‘Î‚µ‚ÄsetFoo/getFoo‚ª¶¬‚³‚ê‚Ü‚·B</p>
+<pre>&lt;?php
+class Hoge {
+    public $hoge;
+    private $foo;
+}
+?&gt;</pre>
+
+    <h4><a name="SerializableInterType">(2) SerializableInterType</a></h4>
+    <h5>ƒNƒ‰ƒX–¼</h5>
+    <p>S2Container_SerializableInterType</p>
+    <h5>à–¾</h5>
+    <p>serialize/unserializeƒƒ\ƒbƒh‚ğ¶¬‚µ‚Ü‚·B<br />
+        SPL‚Ì<a href="http://www.php.net/~helly/php/ext/spl/interfaceSerializable.html">Serializable</a>ƒCƒ“ƒ^ƒtƒF[ƒX‚ğ
+        À‘•‚µ‚Ä‚¢‚È‚¢ê‡‚Í©“®“I‚ÉÀ‘•‚µ‚Ü‚·B</p>
+
+    <pre>&lt;component class="Hoge"&gt;
+    &lt;interType&gt;
+        &lt;component class="S2Container_SerializableInterType"/&gt;
+    &lt;/interType&gt;
+&lt;/component&gt;</pre>
+
+    <h4><a name="InterTypeChain">(3) InterTypeChain</a></h4>
+    <h5>ƒNƒ‰ƒX–¼</h5>
+    <p>S2Container_InterTypeChain</p>
+    <h5>à–¾</h5>
+    <p>•¡”‚ÌInterType‚ğƒOƒ‹[ƒsƒ“ƒO‰»‚µAÄ—˜—p‚µ‚â‚·‚­‚µ‚Ü‚·B
+    •¡”‚ÌInterType‚Ì‘g‚İ‡‚í‚¹‚ğ•¡”ƒRƒ“ƒ|[ƒlƒ“ƒg‚É“K—p‚·‚éê‡‚ÍA
+    InterTypeChain‚Å•¡”‚ÌInterType‚ğ1‚Â‚É‚Ü‚Æ‚ß‚ÄAŠeƒRƒ“ƒ|[ƒlƒ“ƒg‚É‚ÍInterTypeChain‚ğw’è‚·‚é‚æ‚¤‚É‚·‚é‚Æ‚¢‚¢‚Å‚µ‚å‚¤B</p>
+
+    <pre>&lt;component name="interType1" .../&gt;
+&lt;component name="interType2" .../&gt;
+&lt;component name="interType3" .../&gt;
+&lt;component name="chain" class="S2Container_InterTypeChain"&gt;
+    &lt;initMethod name="add"&gt;&lt;arg&gt;interType1&lt;/arg&gt;&lt;/initMethod&gt;
+    &lt;initMethod name="add"&gt;&lt;arg&gt;interType2&lt;/arg&gt;&lt;/initMethod&gt;
+    &lt;initMethod name="add"&gt;&lt;arg&gt;interType3&lt;/arg&gt;&lt;/initMethod&gt;
+&lt;/component&gt;
+
+&lt;component ...&gt;
+    &lt;interType&gt;chain&lt;/interType&gt;
+&lt;/component&gt;
+&lt;component ...&gt;
+    &lt;interType&gt;chain&lt;/interType&gt;
+&lt;/component&gt;</pre>
+
+    <h4><a name="OriginalInterType">“Æ©À‘•‚É‚æ‚éInterType</a></h4>
+    <h5>à–¾</h5>
+    <p>“Æ©‚ÉInterType‚ğì¬‚·‚éê‡‚ÍAŸ‚ÌƒCƒ“ƒ^[ƒtƒF[ƒX‚Ü‚½‚ÍA’ŠÛƒNƒ‰ƒX‚ğÀ‘•‚µ‚Ü‚·B</p>
+    <dl>
+        <dt style="text-indent: 1em;">S2Container_InterType</dt>
+        <dt style="text-indent: 1em;">S2Container_AbstractInterType</dt>
+    </dl>
+
+    <p>S2Container_InterType‚ğÀ‘•‚·‚éƒNƒ‰ƒX‚ÍAˆÈ‰º‚Ìƒƒ\ƒbƒh‚ğÀ‘•‚µ‚Ü‚·B</p>
+    <dl>
+        <dt style="text-indent: 1em;">public function introduce(ReflectionClass $targetClass, $enhancedClass)</dt>
+    </dl>
+    <p>targetClass‚ÍInterType‚ª“K—p‚³‚ê‚éƒNƒ‰ƒX‚Å‚·BenhancedClass‚ÍInterType‚ğ‘g‚İ‚ŞƒNƒ‰ƒX‚ÅAæ‚É“o˜^‚³‚ê‚Ä‚¢‚éInterceptor‚âInterType‚ª“K—pÏ‚İ‚Ìê‡‚à‚ ‚è‚Ü‚·B</p>
+
+    <p>S2Container_InterType‚ÍˆÈ‰º‚Ì’è”‚ğ’ñ‹Ÿ‚µ‚Ü‚·B</p>
+    <dl>
+        <dt style="text-indent: 1em;">const PUBLIC_ = "public"</dt>
+        <dt style="text-indent: 1em;">const PROTECTED_ = "protected"</dt>
+        <dt style="text-indent: 1em;">const PRIVATE_ = "private"</dt>
+        <dt style="text-indent: 1em;">const STATIC_ = "static"</dt>
+        <dt style="text-indent: 1em;">const CONST_ = "const"</dt>
+    </dl>
+    <p>‚±‚ê‚ç‚Ì’è”‚ÍˆÈ‰º‚Éà–¾‚·‚éS2Container_AbstractInterType‚ğg—p‚·‚éê‡‚ÉƒAƒNƒZƒXCüq‚Åg—p‚µ‚Ü‚·B</p>
+
+    <p>S2Container_AbstractInterType‚ÍAS2Container_InterType‚ğimplements‚µ‚½’ŠÛƒNƒ‰ƒX‚Å‚·BS2Container_AbstractInterTye‚ÌƒTƒuƒNƒ‰ƒX‚ÍŸ‚Ìƒƒ\ƒbƒh‚ğÀ‘•‚µ‚Ü‚·B</p>
+    <dl>
+        <dt style="text-indent: 1em;">public function introduce(ReflectionClass $targetClass, $enhancedClassName)</dt>
+    </dl>
+    <p>S2Container_AbstractInterType‚ÌƒTƒuƒNƒ‰ƒX‚ÍAŸ‚Ìƒƒ\ƒbƒh‚Å•K—v‚ÈƒIƒuƒWƒFƒNƒg‚ğæ“¾‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B</p>
+    <dl>
+        <dt style="text-indent: 1em;">protected function getTargetClass()</dt>
+        <dt style="text-indent: 1em;">protected function getEnhancedClass()</dt>
+        <dt style="text-indent: 1em;">protected function getEnhancedClassName()</dt>
+    </dl>
+
+    <p>S2Container_AbstractInterType‚ÍAƒtƒB[ƒ‹ƒh‚âƒƒ\ƒbƒhCÀ‘•‚·‚éƒCƒ“ƒ^ƒtƒF[ƒX‚ğ’Ç‰Á‚·‚é‚½‚ß‚Ìƒ†[ƒeƒBƒŠƒeƒBƒƒ\ƒbƒh‚ğ’ñ‹Ÿ‚µ‚Ü‚·BˆÈ‰º‚Í‚»‚Ìˆê•”‚Å‚·B</p>
+    <dl>
+        <dt style="text-indent: 1em;">protected function addInterface($className)</dt>
+        <dt style="text-indent: 1em;">protected function addConstant($name, $value)</dt>
+        <dt style="text-indent: 1em;">protected function addStaticProperty(array $modify, $name, $value = null)</dt>
+        <dt style="text-indent: 1em;">protected function addProperty(array $modify, $name, $value = null)</dt>
+        <dt style="text-indent: 1em;">protected function addStaticMethod(array $modify, $name, $src)</dt>
+        <dt style="text-indent: 1em;">protected function addMethod(array $modify, $name, $src)</dt>
+    </dl>
+
+    <p>Ú‚µ‚¢g—p•û–@‚Í<a href="http://wiki.s2php5.jp/s2container.php5/intertype">wiki.s2php5.jp‚Ìintertype</a>‚ğQÆ‚µ‚Ä‚­‚¾‚³‚¢B</p>
+
+    <!---
+     /InterType Document
+    --->
+
     <h3><a name="nodicon">diconƒtƒ@ƒCƒ‹‚ğg—p‚µ‚È‚¢‚ÅƒAƒXƒyƒNƒg‚ğ‘g‚İ‚Ş•û–@</a></h3>
     <p>diconƒtƒ@ƒCƒ‹‚Ìİ’è‚ğs‚í‚¸ƒvƒƒOƒ‰ƒ€ã‚ÅƒAƒXƒyƒNƒg‚ğ‘g‚İ‚Ş‚±‚Æ‚à‚Å‚«‚Ü‚·Bì¬•û–@‚ÍŸ‚Ì‚æ‚¤‚É‚È‚è‚Ü‚·B</p>
     <ul>
@@ -348,7 +475,7 @@ class Checker {
     <p>HandleThrowableInterceptor.class.php</p>
 <pre>&lt;?php
 class HandleThrowableInterceptor extends S2Container_ThrowsInterceptor {
-    public function handleThrowable(Exception $t, 
+    public function handleThrowable(Exception $t,
                                     S2Container_MethodInvocation $invocation){
     }
 }
@@ -706,11 +833,11 @@ class MeasurementInterceptor extends S2Container_AbstractInterceptor {
             throw $t;
         }
     }
-    
+
     private function microtime_float() {
         list($usec, $sec) = explode(" ", microtime());
         return ((float)$usec + (float)$sec);
-    } 
+    }
 }
 ?&gt;
 </pre>
