@@ -14,19 +14,18 @@ define('S2CONTAINER_PHP5_LOG_LEVEL', S2Container_SimpleLogger::INFO);
 
 /** memcache options */
 $memcacheOpt = array('host' => 'localhost', 'port' => 11211);
-S2ContainerMemcacheFactory::getInstance($memcacheOpt);
-
+$factory = S2ContainerMemcacheFactory::getInstance($memcacheOpt);
 
 
 $PATH_A = EXAMPLE_DIR . "/extension/cache/testA.dicon";
 $time_start = microtime_float();
-$container = S2ContainerMemcacheFactory::create($PATH_A);
+$container = $factory->create($PATH_A);
 $time_end = microtime_float();
 $time = $time_end - $time_start;
 print "time : $time \n";
 
 $time_start = microtime_float();
-$container = S2ContainerMemcacheFactory::create($PATH_A);
+$container = $factory->create($PATH_A);
 $time_end = microtime_float();
 $time = $time_end - $time_start;
 print "time : $time \n";
@@ -36,7 +35,10 @@ print "time : $time \n";
 
 $PATH_B = EXAMPLE_DIR . "/extension/cache/testB.dicon";
 $time_start = microtime_float();
-$factory = S2ContainerMemcacheFactory::getInstance($memcacheOpt);
+
+$factory = S2ContainerMemcacheFactory::getInstance();
+$factory->initialize($memcacheOpt);
+
 $container = $factory->create($PATH_B);
 $time_end = microtime_float();
 $time = $time_end - $time_start;
@@ -49,7 +51,7 @@ print_r($a);
 
 $PATH_C = EXAMPLE_DIR . "/extension/cache/testC.dicon";
 $time_start = microtime_float();
-$container = S2ContainerMemcacheFactory::create($PATH_C, 'testC_Key');
+$container = $factory->create($PATH_C, 'testC_Key');
 $time_end = microtime_float();
 $time = $time_end - $time_start;
 print "time : $time \n";

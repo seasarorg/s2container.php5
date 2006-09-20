@@ -145,6 +145,17 @@ final class S2ContainerMemcacheFactory {
         self::$INSTANCE->initialize($options);
         return self::$INSTANCE;
     }
+    
+    /**
+     * Create S2ContainerMemcacheFactory instance(new instance)
+     * @param $options stored items option of memcached; see the self::setOption
+     * @return S2ContainerMemcacheFactory
+     */
+    public static function newInstance(array $options = null){
+        $instance = new self();
+        $instance->initialize($options);
+        return $instance;
+    }
 
     /**
      * Create S2Container and Cache
@@ -157,15 +168,14 @@ final class S2ContainerMemcacheFactory {
      * @param $cacheName (option)cache key name
      * @return S2Container object
      */
-    public static function create($diconPath, $cacheName = null){
+    public function create($diconPath, $cacheName = null){
         $logger = S2Container_S2Logger::getLogger(__CLASS__);
-        $memcache = self::getInstance();
-        $memcache->connect();
+        $this->connect();
         if($cacheName == null){
             $cacheName = self::createCacheKeyName($diconPath);
         }
         
-        $cache = $memcache->get($cacheName);
+        $cache = $this->get($cacheName);
         if($cache !== false && !is_object($cache)){
             $container = unserialize($cache);
             $logger->info('cached container available.', __METHOD__);
@@ -184,7 +194,7 @@ final class S2ContainerMemcacheFactory {
             $container->init();
         }
 
-        if(!$memcache->set($cacheName, serialize($container))){
+        if(!$this->set($cacheName, serialize($container))){
             throw new Exception('cache write fail.');
         }
 
@@ -253,9 +263,9 @@ final class S2ContainerMemcacheFactory {
      */
     private static function createCacheKeyName($item){
         if(is_object($item)){
-            return md5((string)$item);
+            return sha1((string)$item);
         }
-        return md5($item);
+        return sha1($item);
     }
     // }}}
 

@@ -53,6 +53,7 @@
 <li><a href="#cache">Cache</a>
     <ul>
     <li><a href="#cache-file">S2ContainerFileCacheFactory</a></li>
+    <li><a href="#cache-memcache">S2ContainerMemcacheFactory</a></li>
     </ul>
 </li>
 
@@ -109,7 +110,7 @@ S2CONTAINER_PHP5_SIMPLE_LOG_FILE ’è”‚ÉƒƒOƒtƒ@ƒCƒ‹‚ğİ’è‚·‚é‚±‚Æ‚ÅAƒƒO‚ğƒtƒ@ƒ
 <h4>log4php‚ğg—p‚·‚é</h4>
 <p><a href="http://logging.apache.org/log4php/">log4php</a> ‚ğg—p‚·‚éê‡‚ÍAS2LogFactory ‚Ì LOGGER •Ï”‚ğİ’è‚µ‚Ü‚·BƒƒOƒŒƒxƒ‹‚âA‚»‚Ìİ’è‚Í SimpleLogger ‚Å‚Ìİ’è•û–@‚Æ“¯‚¶‚Å‚·B</p>
 <pre>&lt;?php
-require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php'); 
+require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php');
 define('LOG4PHP_DIR', dirname(__FILE__) . '/log4php-***/src/log4php');
 define('LOG4PHP_CONFIGURATION', dirname(__FILE__) . '/log4php.properties');
 require_once(LOG4PHP_DIR . '/LoggerManager.php');
@@ -151,15 +152,15 @@ class HelloImpl {
     private $messageB = "";
 
     function HelloImpl() {}
-    
+
     function setMessageA($messageA){
-        $this->messageA = $messageA;    
+        $this->messageA = $messageA;
     }
 
     function __set($name,$val){
-        $this->$name = $val;    
+        $this->$name = $val;
     }
-    
+
     function showMessage(){
         print "{$this->messageA} {$this->messageB} \n";
     }
@@ -218,7 +219,7 @@ Hello World
 <p>ƒf[ƒ^ƒx[ƒX‚Ö‚ÌÚ‘±ƒtƒŒ[ƒ€ƒ[ƒN‚ğextennsion‚Æ‚µ‚ÄŠÜ‚ß‚Ä‚¢‚Ü‚·B
 </p>
 <p>ˆÈ~‚Ìà–¾‚Å‚ÍAˆÈ‰º‚ÌƒTƒ“ƒvƒ‹ƒe[ƒuƒ‹‚ğ—p‚¢‚Ü‚·B
-ƒTƒ“ƒvƒ‹ƒe[ƒuƒ‹‚ğì¬‚·‚é demo.sql ‚Í s2container.php5/src/s2container.php5/org/seasar/extension/db/sql/ 
+ƒTƒ“ƒvƒ‹ƒe[ƒuƒ‹‚ğì¬‚·‚é demo.sql ‚Í s2container.php5/src/s2container.php5/org/seasar/extension/db/sql/
 ‚É‚ ‚è‚Ü‚·B
 </p>
 
@@ -404,10 +405,10 @@ class DeptDaoImpl implements DeptDao {
     function DeptDaoImpl(S2Container_DataSource $dataSource) {
         $this->dataSource = $dataSource;
     }
-    
+
     function findDeptByDeptno($deptno){
         $db = $this->dataSource->getConnection();
-        $result = $db->query("select * from dept where deptno = '{$deptno}';"); 
+        $result = $db->query("select * from dept where deptno = '{$deptno}';");
         $row = $result->fetchRow();
         $this->dataSource->disconnect($db);
         return $row;
@@ -486,7 +487,7 @@ class FooLogic {
 
     function FooLogic() {
     }
-    
+
     function showYear(){
         return 2005;
     }
@@ -513,7 +514,7 @@ class FooLogic {
 class FooLogicTest extends S2Container_S2PHPUnit2TestCase {
 
     public $logic;   //--- dicon ƒtƒ@ƒCƒ‹‚É logic ‚Æ‚¢‚¤–¼‘O‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ª‘¶İ‚·‚ê‚Îİ’è‚³‚ê‚Ü‚·
-    
+
     function __construct($name) {
         parent::__construct($name);
     }
@@ -524,7 +525,7 @@ class FooLogicTest extends S2Container_S2PHPUnit2TestCase {
 
     function testShowYear(){
         $year = $this->logic->showYear();
-        $this->assertEquals($year , 2005);    
+        $this->assertEquals($year , 2005);
     }
 }
 ?&gt;
@@ -538,11 +539,11 @@ class FooAllTest {
     public static function main() {
         PHPUnit2_TextUI_TestRunner::run(self::suite());
     }
-    
+
     public static function suite() {
         $suite = new PHPUnit2_Framework_TestSuite();
         $suite->addTestSuite('FooLogicTest');
-        return $suite;  
+        return $suite;
     }
 }
 ?&gt;
@@ -675,8 +676,121 @@ $container = S2ContainerFileCacheFactory::create($PATH_C,'testC.dicon');
 >
 </pre>
 
+<!--
+S2ContainerMemcacheFactory
+-->
 
-<br>
+<h3><a name="cache-memcache">S2ContainerMemcacheFactory</a></h3>
+
+<div align="center" style="margin: 2em">
+<table border="1" width="50%">
+<tr><td align="center">Œx</td></tr>
+<tr><td>
+‚±‚ÌŠg’£ƒ‚ƒWƒ…[ƒ‹‚Í<i> ÀŒ±“I </i>‚È‚à‚Ì‚Å‚·B‚±‚ÌŠg’£ƒ‚ƒWƒ…[ƒ‹‚Ì“®ìEŠÖ”–¼E‚»‚Ì‘¼ƒhƒLƒ…ƒƒ“ƒg‚É‘‚©‚ê‚Ä‚¢‚é–€‚ÍA«—ˆ•ÏX‚³‚ê‚é‰Â”\«‚ª‚ ‚è‚Ü‚·B
+</td></tr>
+</table>
+</div>
+
+<p>S2ContainerMemcacheFactory‚ÍS2ContainerFileCacheFactory‚Æ“¯‚¶‚­AS2ContainerƒCƒ“ƒXƒ^ƒ“ƒX‚ğserialize‚µƒLƒƒƒbƒVƒ…‚µ‚Ü‚·B
+•Û‘¶æ‚ÍmemcachedƒT[ƒo‚É•Û‘¶‚µ‚Ü‚·B<br />
+S2ContainerMemcacheFactory‚ğ—˜—p‚·‚é‚É‚Í<a href="http://jp.php.net/manual/ja/ref.memcache.php">memcache Šg’£ƒ‚ƒWƒ…[ƒ‹</a>‚ğ“±“ü‚µ‚Ä‚¨‚­•K—v‚ª‚ ‚è‚Ü‚·B</p>
+
+<p>ƒLƒƒƒbƒVƒ…‚ÍS2ContainerMemcacheFactory‚ÌƒIƒvƒVƒ‡ƒ“‚Éİ’è‚³‚ê‚½ƒT[ƒo‚É•Û‘¶‚µ‚Ü‚·B
+ƒtƒ@ƒCƒ‹–¼‚Ícreateƒƒ\ƒbƒh‚Ì‘æ1ˆø”‚Åw’è‚Å‚«‚Ü‚·B‘æ2ˆø”‚É‚ÍƒLƒƒƒbƒVƒ…‚É—p‚¢‚éÛ‚Ì•Ê–¼ƒL[‚ğw’è‚Å‚«‚Ü‚·B
+‘æ2ˆø”‚ªÈ—ª‚³‚ê‚½ê‡‚ÍAdiconƒtƒ@ƒCƒ‹‚Ö‚ÌƒpƒX•¶š—ñ‚ğˆø”‚Æ‚µ‚Ä<a href="http://jp2.php.net/manual/ja/function.sha1.php">sha1ŠÖ”</a>‚Å
+ì¬‚³‚ê‚½ƒL[‚ªg—p‚³‚ê‚Ü‚·B<br />
+S2ContainerMemcacheFactory‚ÍƒIƒvƒVƒ‡ƒ“‚Åİ’è‚³‚ê‚½ŠúŠÔ‚ÌŠÔ‚¾‚¯ƒLƒƒƒbƒVƒ…‚ğ•Û‘¶‚µ‚Ü‚·B</p>
+
+s2container.php5/examples/extension/cache/memcacheClient.php
+<pre>
+&lt;?php
+...
+$memcacheOpt = array('host' => 'localhost', 'port' => 11211);
+$factory = S2ContainerMemcacheFactory::getInstance($memcacheOpt);
+
+$PATH_A = EXAMPLE_DIR . "/extension/cache/testA.dicon";
+$container = $factory->create($PATH_A);
+
+$PATH_B = EXAMPLE_DIR . "/extension/cache/testB.dicon";
+$container = $factory->create($PATH_B);
+
+$PATH_C = EXAMPLE_DIR . "/extension/cache/testC.dicon";
+$anotherOpt = array('host' => 'localhost', 'port' => 11211, 'cache_expire' => 1, 'cache_compress' => true);
+$factory->initialize($anotherOpt);
+$container = $factory->create($PATH_C, 'testC_Key');
+...
+?&gt;
+</pre>
+
+<p>Às—á</p>
+
+<pre>
+> cd s2container.php5/examples/extension/cache
+> php memcacheClient.php
+[INFO ] S2ContainerMemcacheFactory::create - create container and cache it.
+time : 0.117786884308
+[INFO ] S2ContainerMemcacheFactory::create - cached container available.
+time : 0.0606780052185
+[INFO ] S2ContainerMemcacheFactory::create - create container and cache it.
+...
+...
+...
+</pre>
+
+<p>S2ContainerMemcacheFactory‚Åİ’è‚Å‚«‚éƒIƒvƒVƒ‡ƒ“‚ÍˆÈ‰º‚É‚È‚è‚Ü‚·B<br />
+Ú×‚Èà–¾‚È‚Ç‚Í<a href="http://jp.php.net/manual/ja/ref.memcache.php">memcache Šg’£ƒ‚ƒWƒ…[ƒ‹</a>‚Ì€‚ğQÆ‚µ‚Ä‚­‚¾‚³‚¢B</p>
+
+<table border="1">
+    <thead>
+    <tr align="center" bgcolor="#d1f3f4">
+        <th>İ’èƒL[</th>
+        <th>à–¾</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td><code>host</code></td>
+        <td>memcached‚ª‹N“®‚µ‚Ä‚¢‚éƒzƒXƒg‚ğw’è‚µ‚Ü‚·BƒfƒtƒHƒ‹ƒg‚Ílocalhost‚É‚È‚Á‚Ä‚¢‚Ü‚·B</td>
+    </tr>
+    <tr>
+        <td><code>port</code></td>
+        <td>memcached‚ÖÚ‘±‚·‚é‚½‚ß‚Ìƒ|[ƒg”Ô†‚ğw’è‚µ‚Ü‚·BƒfƒtƒHƒ‹ƒg‚Í11211‚É‚È‚Á‚Ä‚¢‚Ü‚·B</td>
+    </tr>
+    <tr>
+        <td><code>timeout</code></td>
+        <td>memcached‚ÖÚ‘±‚·‚éÛ‚É—p‚¢‚é’l‚Å‚·B”’l‚Í•b’PˆÊ‚Åw’è‚µ‚Ü‚·B</td>
+    </tr>
+    <tr>
+        <td><code>cache_compress</code></td>
+        <td>memcached‚Ö•Û‘¶‚·‚éÛ‚É•Û‘¶‚·‚é’l‚ğˆ³k‚·‚é‚©‚Ç‚¤‚©‚ğboolean‚Åw’è‚µ‚Ü‚·B
+        ƒfƒtƒHƒ‹ƒg‚Ífalse(ˆ³k‚ğs‚í‚È‚¢)‚É‚È‚Á‚Ä‚¢‚Ü‚·B<br />ˆ³k‚É‚Ízlib‚ğg—p‚µ‚Ü‚·B</td>
+    </tr>
+    <tr>
+        <td><code>cache_expire</code></td>
+        <td>memcached‚Å•Û‘¶‚µ‚½’l‚Ì¶‘¶ŠúŠÔ(—LŒøŠúŒÀ)‚ğİ’è‚µ‚Ü‚·BƒfƒtƒHƒ‹ƒg‚Í0‚Å—LŒøŠúŒÀ–³‚µ‚Æ‚È‚Á‚Ä‚¢‚Ü‚·B<br />
+        İ’è‚Å‚«‚é’l‚Íunixƒ^ƒCƒ€ƒXƒ^ƒ“ƒv‚©Œ»İ‚©‚ç‚Ì•b”‚ğw’è‚·‚é‚±‚Æ‚ª‚Å‚«‚Ü‚·B</td>
+    </tr>
+    </tbody>
+</table>
+
+<p>ã‹L‚Ìİ’è—á‚ÍˆÈ‰º‚É‚È‚è‚Ü‚·B</p>
+
+<pre>
+$option = array('host' => 'memcached_host',
+                'port' => 11211,
+                'timeout' => 2,
+                'cache_compress' => true,
+                'cache_expire' => 0);
+
+$factory = S2ContainerMemcacheFactory::getInstance();
+$factory->initialize($option);
+</pre>
+
+<!--
+    /S2ContainerMemcacheFactory
+-->
+
+<br />
 <a name="autoRegister"><h3>©“®“o˜^</h3></a>
 <h3><a name="autoRegister-file">FileSystemComponentAutoRegister</a></h3>
 
@@ -917,7 +1031,7 @@ class HogeImpl {
     }
 
     /**
-     * @S2Container_AspectAnnotation(interceptor = 
+     * @S2Container_AspectAnnotation(interceptor =
      *                               new S2Container_TraceInterceptor());
      */
     public function m2($a,$b){

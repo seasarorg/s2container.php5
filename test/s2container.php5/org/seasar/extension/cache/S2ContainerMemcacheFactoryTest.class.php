@@ -118,7 +118,7 @@ class S2ContainerMemcacheFactoryTest extends PHPUnit2_Framework_TestCase {
     
     public function testMemcacheOption2(){
         $option = array('host' => $this->host, 'cache_expire' => 1);
-        $factory = S2ContainerMemcacheFactory::getInstance($option);
+        $factory = S2ContainerMemcacheFactory::getInstance();
         $factory->initialize($option);
         $a = $factory->create($this->path_a, 'aaaa');
         $factory->create($this->path_b, 'a');
@@ -163,14 +163,15 @@ class S2ContainerMemcacheFactoryTest extends PHPUnit2_Framework_TestCase {
         $this->assertNotNull($factory3->create($this->path_a));
     }
     
-    public function testSameContainer(){
+    public function testInstance(){
         $option = array('host' => $this->host);
+        $factory1 = S2ContainerMemcacheFactory::getInstance($option);
+        $factory2 = S2ContainerMemcacheFactory::newInstance($option);
         
-        S2ContainerMemcacheFactory::getInstance($option);
-        $container1 = S2ContainerMemcacheFactory::create($this->path_a);
+        $this->assertNotEquals($factory1, $factory2);
         
-        $factory = S2ContainerMemcacheFactory::getInstance($option);
-        $container2 = $factory->create($this->path_a);
+        $container1 = $factory1->create($this->path_a);
+        $container2 = $factory2->create($this->path_a);
         
         $this->assertEquals($container1, $container2);
     }
