@@ -118,6 +118,18 @@ class Date {
 &lt;/component&gt;
 </pre>
 
+    <h4><a name="interTypeTag">interTypeタグ</a></h4>
+    <p>InterTypeをコンポーネントに組み込みます。InterTypeの指定は、ボディでPHP式を使うか、子タグでcomponentタグを使います。<br>
+    ※PHP式については <a href="php.html">PHP式</a>を参照してください。1つのコンポーネントに複数のInterTypeを組み込んだ場合はInterTypeの登録順に組み込まれます。詳しい説明は<a href="#OriginalInterType">独自実装のInterType</a>を参照してください。</p>
+
+    <h5>設定例</h5>
+<pre>&lt;component class="Date"&gt;
+    &lt;interType&gt;
+        &lt;component class="S2Container_PropertyInterType"/&gt;
+    &lt;/interType&gt;
+&lt;/component&gt;
+</pre>
+
     <h3><a name="AOPInterceptor">S2AOPで用意されているInterceptor</a></h3>
     <p>S2AOPでは、以下のInterceptorを用意しています。また独自のInterceptorを簡単に作成できるようになっています。</p>
 

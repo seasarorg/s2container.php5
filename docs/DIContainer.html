@@ -59,6 +59,7 @@
                   <li><a href="#initMethodTag">initMethodタグ</a></li>
                   <li><a href="#destroyMethodTag">destroyMethodタグ</a></li>
                   <li><a href="#aspectTag">aspectタグ</a></li>
+                  <li><a href="#interTypeTag">interTypeタグ</a></li>
                   <li><a href="#descriptionTag">descriptionタグ</a></li>
                 </ul>
               </li>
@@ -500,7 +501,7 @@ containerを指定することで、コンテナのインスタンスを取得できます。また、S2Contain
 <pre>&lt;?php
 class Date {
     function Date() {}
-    
+
     function getTime(){
         return '12:00:30';
     }
@@ -648,6 +649,9 @@ END   Date#getTime() : 12:00:30
             <a name="aspectTag"><h3>aspectタグ(任意)</h3></a>
             <p>アスペクトをコンポーネントに組み込みます。詳しくは、<a href="aop.html#AOPExplanationFile">aspectタグ</a>の説明を参照してください。</p>
 
+            <a name="interTypeTag"><h3>interTypeタグ(任意)</h3></a>
+            <p>インタータイプをコンポーネントに組み込みます。詳しくは、S2AOPの<a href="aop.html#interTypeTag">interTypeタグ</a>の説明を参照してください。</p>
+
             <a name="descriptionTag"><h3>descriptionタグ(任意)</h3></a>
 
             <p><a href="#componentsTag">componentsタグ</a>、<a href="#componentTag">componentタグ</a>、<a href="#argTag">argタグ</a>、<a href="#propertyTag">propertyタグ</a>の子タグとしてdescriptionタグを使うことができます。自由に説明を記述できます。</p>
@@ -738,11 +742,11 @@ require_once('Hello.class.php');
 require_once('HelloConstructorInjection.class.php');
 
 $PATH =	EXAMPLE_DIR . "/dicon/injection/HelloConstructorInjection.dicon";
-		
+
 $container = S2ContainerFactory::create($PATH);
 $hello = $container->getComponent('Hello');
 $hello->showMessage();
-		
+
 $hello2 = $container->getComponent("hello");
 $hello2->showMessage();
 ?&gt;
@@ -842,7 +846,7 @@ require_once('Hello.class.php');
 require_once('HelloSetterInjection.class.php');
 
 $PATH = EXAMPLE_DIR . "/dicon/injection/HelloSetterInjection.dicon";
-		
+
 $container = S2ContainerFactory::create($PATH);
 $hello = $container->getComponent('Hello');
 $hello->showMessage();
@@ -892,9 +896,9 @@ interface Hello {
 class HelloMethodInjection implements Hello {
 
     private $buf = "";
-    
+
     public function HelloMethodInjection() {}
-    
+
     public function addMessage($message) {
         $this->buf .= $message;
     }
@@ -943,7 +947,7 @@ require_once('Hello.class.php');
 require_once('HelloMethodInjection.class.php');
 
 $PATH = EXAMPLE_DIR . "/dicon/injection/HelloMethodInjection.dicon";
-		
+
 $container = S2ContainerFactory::create($PATH);
 $hello = $container->getComponent('Hello');
 $hello->showMessage();
@@ -994,11 +998,11 @@ interface Hello {
 class AutoHelloConstructorInjection implements Hello {
 
     private $messages;
-    
+
     public function AutoHelloConstructorInjection(Map $messages) {
         $this->messages = $messages;
     }
-    
+
     public function showMessage() {
         print $this->messages->get('hello') . "\n";
     }
@@ -1026,17 +1030,17 @@ interface Map {
             <li type="circle">引数がMapのコンストラクタを定義します。</li>
             <li type="circle">showMessage()を実装します。</li>
         </ul>
-         
+
 <pre>&lt;?php
 class HashMap implements Map{
     private $pool = array();
-    
+
     function HashMap() {}
-    
+
     function put($key,$val){
         $this->pool[$key] = $val;
     }
-    
+
     function get($key){
         return array_key_exists($key,$this->pool) ? $this->pool[$key] : null;
     }
@@ -1089,7 +1093,7 @@ require_once('HashMap.class.php');
 require_once('AutoHelloConstructorInjection.class.php');
 
 $PATH =	EXAMPLE_DIR . "/dicon/autobinding/AutoHelloConstructorInjection.dicon";
-		
+
 $container = S2ContainerFactory::create($PATH);
 $hello = $container->getComponent('Hello');
 $hello->showMessage();
@@ -1136,9 +1140,9 @@ interface Hello {
 class AutoHelloSetterInjection implements Hello {
 
     private $messages;
-    
+
     public function AutoHelloSetterInjection() {}
-    
+
     public function setMessage(Map $messages) {
         $this->messages = $messages;
     }
@@ -1195,7 +1199,7 @@ require_once('HashMap.class.php');
 require_once('AutoHelloSetterInjection.class.php');
 
 $PATH = EXAMPLE_DIR . "/dicon/autobinding/AutoHelloSetterInjection.dicon";
-		
+
 $container = S2ContainerFactory::create($PATH);
 $hello = $container->getComponent('Hello');
 $hello->showMessage();
