@@ -12,7 +12,8 @@ require_once dirname(dirname(__FILE__)) . '/S2Container.php';
  */
 //require_once('S2Container/S2Container.php'); 
 
-require_once(S2CONTAINER_PHP5 . '/autoload.php');
+require_once('S2ContainerAutoLoad.php');
+
 /*
 S2ContainerClassLoader::import(S2CONTAINER_PHP5);
 function __autoload($class = null)
