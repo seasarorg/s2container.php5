@@ -23,7 +23,6 @@
 //
 // $Id$
 /**
- * @package org.seasar.framework.util
  * @author klove
  *         nowel
  */

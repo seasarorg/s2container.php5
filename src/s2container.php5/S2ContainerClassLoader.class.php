@@ -23,6 +23,8 @@
 //
 // $Id$
 /**
+ * @author klove
+ *         nowel
  */
 class S2ContainerClassLoader {
 

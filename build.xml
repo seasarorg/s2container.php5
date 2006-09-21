@@ -141,6 +141,8 @@
             <fileset dir="test/s2container.php5/${td}">
                 <include name="${tt}"/>
                 <exclude name="**/*PDO*/**"/>
+                <exclude name="**/*Memcache*/**"/>
+                <exclude name="**/S2Container_AbstractPropertyInterTypeTest*"/>
             </fileset>
         </alltest>
     </target>
@@ -164,6 +166,7 @@
         <echo message="build    ---> build all; don't create pear-package" />
         <echo message="pear-pkg ---> create pear-package" />
         <echo message="test     ---> run unit test suite from test/s2container.php5/" />
+        <echo message="all-test ---> run unit test suite from test/s2container.php5/" />
         <echo message="doc      ---> run phpdoc from src/s2container.php5/" />
         <echo message="clean    ---> remove build directory" />
         <echo message="----------------------------" />
