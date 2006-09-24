@@ -55,8 +55,9 @@ final class S2Container_AopProxyFactory
             }
         }
 
-        if (!$targetClass->isUserDefined() or
-             $targetClass->hasMethod('__call')) {
+        if (!$targetClass->isUserDefined()) {
+            S2Container_S2Logger::getLogger(__CLASS__)->
+                debug("not a user defined class <{$targetClass->getName()}> ignored.",__METHOD__);
             return $target;
         }
 
@@ -66,8 +67,8 @@ final class S2Container_AopProxyFactory
 
         if(null !== $interTypes && 0 < count($interTypes)){
             $generator = new S2Container_EnhancedClassGenerator($target,
-                                                          $targetClass,
-                                                          $parameters);
+                                                           $targetClass,
+                                                            $parameters);
             $generator->setInterTypes($interTypes);
             $generator->setInterceptors($methodInterceptorsMap);
             $concreteClassName = $generator->generate();
@@ -105,7 +106,7 @@ final class S2Container_AopProxyFactory
     {
         if (($aspects == null || count($aspects) == 0)
             && ($interTypes == null || count($interTypes) == 0)) {
-            throw new S2Container_EmptyRuntimeException("aspects and interTypes");
+            throw new S2Container_EmptyRuntimeException('aspects and interTypes');
         }
 
         $defaultPointcut = new S2Container_PointcutImpl($targetClass);
@@ -120,21 +121,23 @@ final class S2Container_AopProxyFactory
         $methodInterceptorsMap = array();
         $o = count($methods);
         for ($i = 0; $i < $o; ++$i) {
-            if (!self::isApplicableAspect($methods[$i])) {
+            $method = $methods[$i];
+            if (!self::isApplicableAspect($method)) {
                 continue;
             }
         
+            $methodName = $method->getName();
             $interceptorList = array();
             $p = count($aspects);
             for ($j = 0; $j < $p; ++$j) {
                 $aspect = $aspects[$j];
-                if ($aspects[$j]->getPointcut()->isApplied($methods[$i]->getName())) {
-                    $interceptorList[] = $aspects[$j]->getMethodInterceptor();
+                if ($aspect->getPointcut()->isApplied($methodName)) {
+                    $interceptorList[] = $aspect->getMethodInterceptor();
                 }
             }
             
             if (count($interceptorList) > 0) {
-                $methodInterceptorsMap[$methods[$i]->getName()] = $interceptorList;
+                $methodInterceptorsMap[$methodName] = $interceptorList;
             }
         }
         return $methodInterceptorsMap;
