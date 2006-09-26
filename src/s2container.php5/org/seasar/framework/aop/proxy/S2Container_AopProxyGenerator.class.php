@@ -41,22 +41,54 @@ class S2Container_AopProxyGenerator
      * @param ReflectionClass 
      * @param array Interceptors 
      */
-    public static function generate($target,$targetClass,$params = null)
+    public static function generate($targetClass)
     {
         $concreteClassName = 
             self::getConcreteClassName($targetClass->getName());
 
-        if (class_exists($concreteClassName,false)) {
+        if (class_exists($concreteClassName, false)) {
             return $concreteClassName;
         }
 
-        if (S2Container_FileCacheUtil::isAopCache()) {
-            if (S2Container_FileCacheUtil::loadAopCache($concreteClassName,
-               $targetClass->getFileName())) {
-                return $concreteClassName;
-            }
+        $support = S2Container_CacheSupportFactory::create();
+        if (!$support->isAopProxyCaching($targetClass->getFileName())) {
+            S2Container_S2Logger::getLogger(__CLASS__)->
+                info("set caching off.",__METHOD__);
+            $srcLine = self::generateInternal($concreteClassName, $targetClass);
+            self::evalInternal($srcLine);
+            return $concreteClassName;
         }
 
+        if ($srcLine = $support->loadAopProxyCache($targetClass->getFileName())) {
+            S2Container_S2Logger::getLogger(__CLASS__)->
+                    info("cached aop proxy found.",__METHOD__);
+            self::evalInternal($srcLine);
+            return $concreteClassName;
+        }
+        else {
+            S2Container_S2Logger::getLogger(__CLASS__)->
+                info("create aop proxy and cache it.",__METHOD__);
+            $srcLine = self::generateInternal($concreteClassName, $targetClass);
+            $support->saveAopProxyCache($srcLine, $targetClass->getFileName());
+            self::evalInternal($srcLine);
+            return $concreteClassName;
+        }
+    }
+
+    private static function evalInternal($srcLine) {
+        if(defined('S2CONTAINER_PHP5_DEBUG_EVAL') and S2CONTAINER_PHP5_DEBUG_EVAL){
+            S2Container_S2Logger::getLogger(__CLASS__)->
+                debug("[ $srcLine ]",__METHOD__);
+        }
+        eval($srcLine);
+    }
+
+    /**
+     * @param ReflectionClass 
+     * @param array Interceptors 
+     */
+    private static function generateInternal($concreteClassName, $targetClass)
+    {
         $interfaces = S2Container_ClassUtil::getInterfaces($targetClass); 
         $classSrc = 
           S2Container_ClassUtil::getClassSource(new 
@@ -82,7 +114,7 @@ class S2Container_AopProxyGenerator
             if (!$unApplicable) {
                 $interfaceNames[] = $interface->getName();
             }
-        }          
+        }
 
         if (count($interfaceNames) > 0) {
             $implLine = " implements " . implode(',',$interfaceNames) . ' {';
@@ -104,17 +136,7 @@ class S2Container_AopProxyGenerator
         }
 
         $srcLine .= "}\n";
-
-        if (S2Container_FileCacheUtil::isAopCache()) {
-            S2Container_FileCacheUtil::saveAopCache($concreteClassName,$srcLine);
-        }
-
-        if(defined('S2CONTAINER_PHP5_DEBUG_EVAL') and S2CONTAINER_PHP5_DEBUG_EVAL){
-            S2Container_S2Logger::getLogger(__CLASS__)->
-                debug("[ $srcLine ]",__METHOD__);
-        }
-        eval($srcLine);
-        return $concreteClassName;
+        return $srcLine;
     }
 
     /**

@@ -86,9 +86,7 @@ final class S2Container_AopProxyFactory
                                                    $parameters);
         }
 
-        $concreteClassName = S2Container_AopProxyGenerator::generate($target,
-                                                $targetClass,
-                                                $parameters);
+        $concreteClassName = S2Container_AopProxyGenerator::generate($targetClass);
         return new $concreteClassName($target,
                                       $targetClass,
                                       $methodInterceptorsMap,
