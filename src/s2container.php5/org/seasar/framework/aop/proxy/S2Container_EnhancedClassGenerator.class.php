@@ -115,6 +115,7 @@ class S2Container_EnhancedClassGenerator
             
             $iName = $interface->getName();
             $this->addInterface($iName);
+            
             $methods = $interface->getMethods();
             $unApplicable = false;
             foreach ($methods as $method) {
@@ -282,25 +283,39 @@ class S2Container_EnhancedClassGenerator
         if (class_exists($this->enhancedClassName, false)) {
             return $this->enhancedClassName;
         }
-
-        if (S2Container_FileCacheUtil::isAopCache()) {
-            if (S2Container_FileCacheUtil::loadAopCache($this->enhancedClassName,
-               $targetClass->getFileName())) {
-                return $this->enhancedClassName;
-            }
+        
+        $support = S2Container_CacheSupportFactory::create();
+        if (!$support->isAopProxyCaching($this->targetClass->getFileName())) {
+            S2Container_S2Logger::getLogger(__CLASS__)->
+                    info("set caching off.", __METHOD__);
+            $this->evalInternal($this->getevaluateSource());
+            return $this->enhancedClassName;
         }
         
-        $source = $this->getevaluateSource();
+        if ($srcLine = $support->loadAopProxyCache($this->targetClass->getFileName())) {
+            S2Container_S2Logger::getLogger(__CLASS__)->
+                    info("cached aop proxy found.", __METHOD__);
+            $this->evalInternal($srcLine);
+            return $this->enhancedClassName;
+        }
         
-        if (S2Container_FileCacheUtil::isAopCache()) {
-            S2Container_FileCacheUtil::saveAopCache($this->enhancedClassName, $source);
-        }
-
-        if(defined('S2CONTAINER_PHP5_DEBUG_EVAL') && S2CONTAINER_PHP5_DEBUG_EVAL){
-            S2Container_S2Logger::getLogger(__CLASS__)->debug("[ $srcLine ]",__METHOD__);
-        }
-        eval($source);
+        S2Container_S2Logger::getLogger(__CLASS__)->
+                    info("create aop proxy and cache it.", __METHOD__);
+        $srcLine = $this->getevaluateSource();
+        $support->saveAopProxyCache($srcLine, $this->targetClass->getFileName());
+        $this->evalInternal($srcLine);
         return $this->enhancedClassName;
+    }
+    
+    /**
+     * 
+     */
+    private function evalInternal($srcLine) {
+        if(defined('S2CONTAINER_PHP5_DEBUG_EVAL') and S2CONTAINER_PHP5_DEBUG_EVAL){
+            S2Container_S2Logger::getLogger(__CLASS__)->
+                    debug("[ $srcLine ]",__METHOD__);
+        }
+        eval($srcLine);
     }
 
     /**

@@ -23,7 +23,7 @@
 // $Id: S2Container_DefaultAopProxy.class.php 355 2006-08-28 17:15:42Z nowel $
 /**
  * @package org.seasar.framework.aop.proxy
- * @author klove
+ * @author nowel
  */
 class S2Container_EnhancedClassAopProxy {
 
@@ -53,7 +53,8 @@ class S2Container_EnhancedClassAopProxy {
      * @param array interceptor map
      * @param array parameters
      */
-    public function __construct($target, $targetClass, $methodInterceptorsMap, $parameters = array())
+    public function __construct($target, $targetClass,
+                                $methodInterceptorsMap, $parameters = array())
     {
         $this->target_ = $target;
         $this->targetClass_ = $targetClass;
