@@ -12,7 +12,7 @@ require_once dirname(dirname(__FILE__)) . '/S2Container.php';
  */
 //require_once('S2Container/S2Container.php'); 
 
-require_once('S2ContainerAutoLoad.php');
+require_once('S2ContainerSplAutoLoad.php');
 
 /*
 S2ContainerClassLoader::import(S2CONTAINER_PHP5);
