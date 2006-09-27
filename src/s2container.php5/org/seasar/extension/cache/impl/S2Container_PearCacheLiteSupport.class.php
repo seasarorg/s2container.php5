@@ -30,21 +30,70 @@ require_once('Cache/Lite.php');
  */
 class S2Container_PearCacheLiteSupport implements S2Container_CacheSupport
 {
-
-    public static $CONTAINER_OPTIONS = null;
-    public static $AOP_PROXY_OPTIONS = null;
     private $cacheLite4Container = null;
-    private $cacheLite4AopProxy = null;
+    private $containerOptions    = array();
+    private $containerInited     = false;
 
-    public function init() {
-        $this->cacheLite4Container = null;
-        $this->cacheLite4AopProxy = null;
+    private $cacheLite4AopProxy  = null;
+    private $aopProxyOptions     = array();
+    private $aopProxyInited      = false;
+
+    public function __construct() {
+        if (defined('S2CONTAINER_PHP5_CACHE_LITE_INI')) {
+            if (is_readable(S2CONTAINER_PHP5_CACHE_LITE_INI)) {
+                $this->initialize();
+            } else {
+                S2Container_S2Logger::getLogger(__CLASS__)->
+                    info('can not read ini file. [ ' . S2CONTAINER_PHP5_CACHE_LITE_INI . ' ]',__METHOD__);
+            }
+        }
     }
-    
+
+    private function initialize() {
+        $option = parse_ini_file(S2CONTAINER_PHP5_CACHE_LITE_INI, true);
+        if (isset($option['default'])) {
+            $this->containerOptions = $option['default'];
+            $this->aopProxyOptions  = $option['default'];
+            $this->containerInited  = true;
+            $this->aopProxyInited   = true;
+        }
+
+        if (isset($option['container'])) {
+            $this->containerInited = true;
+            foreach ($option['container'] as $key => $val) {
+                $this->containerOptions[$key] = $val;
+            }
+        }
+
+        if (isset($option['aop'])) {
+            $this->aopProxyInited = true;
+            foreach ($option['aop'] as $key => $val) {
+                $this->aopProxyOptions[$key] = $val;
+            }
+        }
+
+        if ($this->containerInited) {
+            if (isset($this->containerOptions['cacheDir'])) {
+                $this->containerOptions['cacheDir'] = 
+                    S2Container_StringUtil::expandPath($this->containerOptions['cacheDir']);
+            }
+
+            $this->cacheLite4Container = new Cache_Lite($this->containerOptions);
+        }
+
+        if ($this->aopProxyInited) {
+            if (isset($this->aopProxyOptions['cacheDir'])) {
+                $this->aopProxyOptions['cacheDir'] = 
+                    S2Container_StringUtil::expandPath($this->aopProxyOptions['cacheDir']);
+            }
+            $this->cacheLite4AopProxy = new Cache_Lite($this->aopProxyOptions);
+        }
+    }
+
     public function isContainerCaching($diconPath = null) {
-        if (is_array(self::$CONTAINER_OPTIONS)) {
-            if (isset(self::$CONTAINER_OPTIONS['caching'])) {
-                return self::$CONTAINER_OPTIONS['caching'];
+        if ($this->containerInited) {
+            if (isset($this->containerOptions['caching'])) {
+                return $this->containerOptions['caching'];
             }
             return true;
         } 
@@ -54,19 +103,23 @@ class S2Container_PearCacheLiteSupport implements S2Container_CacheSupport
     }
 
     public function loadContainerCache($diconPath) {
-        $cacheLite = $this->getCacheLite4Container();
-        return $cacheLite->get($diconPath);
+        if (!$this->containerInited) {
+            throw new Exception('container caching not initialized.');
+        }
+        return $this->cacheLite4Container->get($diconPath);
     }
 
     public function saveContainerCache($serializedContainer,$diconPath) {
-        $cacheLite = $this->getCacheLite4Container();
-        return $cacheLite->save($serializedContainer,$diconPath);
+        if (!$this->containerInited) {
+            throw new Exception('container caching not initialized.');
+        }
+        return $this->cacheLite4Container->save($serializedContainer,$diconPath);
     }
 
     public function isAopProxyCaching($targetClassFile = null) {
-        if (is_array(self::$AOP_PROXY_OPTIONS)) {
-            if (isset(self::$AOP_PROXY_OPTIONS['caching'])) {
-                return self::$AOP_PROXY_OPTIONS['caching'];
+        if ($this->aopProxyInited) {
+            if (isset($this->aopProxyOptions['caching'])) {
+                return $this->aopProxyOptions['caching'];
             }
             return true;
         } 
@@ -76,27 +129,17 @@ class S2Container_PearCacheLiteSupport implements S2Container_CacheSupport
     }
 
     public function loadAopProxyCache($targetClassFile) {
-        $cacheLite = $this->getCacheLite4AopProxy();
-        return $cacheLite->get($targetClassFile);
+        if (!$this->aopProxyInited) {
+            throw new Exception('aop proxy caching not initialized.');
+        }
+        return $this->cacheLite4AopProxy->get($targetClassFile);
     }
 
     public function saveAopProxyCache($srcLine, $targetClassFile) {
-        $cacheLite = $this->getCacheLite4AopProxy();
-        return $cacheLite->save($srcLine,$targetClassFile);
-    }
-
-    private function getCacheLite4Container() {
-        if (is_null($this->cacheLite4Container)) {
-            $this->cacheLite4Container = new Cache_Lite(self::$CONTAINER_OPTIONS);
+        if (!$this->aopProxyInited) {
+            throw new Exception('aop proxy caching not initialized.');
         }
-        return $this->cacheLite4Container;
-    }
-
-    private function getCacheLite4AopProxy() {
-        if (is_null($this->cacheLite4AopProxy)) {
-            $this->cacheLite4AopProxy = new Cache_Lite(self::$AOP_PROXY_OPTIONS);
-        }
-        return $this->cacheLite4AopProxy;
+        return $this->cacheLite4AopProxy->save($srcLine,$targetClassFile);
     }
 }
 ?>

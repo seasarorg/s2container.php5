@@ -27,17 +27,22 @@
  */
 final class S2Container_CacheSupportFactory
 {
-    public static $SUPPORT_CLASS_NAME = "S2Container_FileCacheSupport";
-    private static $supports = array();
+    private static $support = null;
 
     private function __construct(){}
 
     public static function create() {
-        $supportClassName = self::$SUPPORT_CLASS_NAME;
-        if (!isset(self::$supports[$supportClassName])) {
-            self::$supports[$supportClassName] = new $supportClassName();
+        $supportClassName = self::getSupportClassName();
+        if (is_null(self::$support)) {
+            self::$support = new $supportClassName();
         }
-        return self::$supports[$supportClassName];
+        return self::$support;
+    }
+
+    private static function getSupportClassName() {
+        return defined('S2CONTAINER_PHP5_CACHE_SUPPORT_CLASS') ?
+               S2CONTAINER_PHP5_CACHE_SUPPORT_CLASS :
+               'S2Container_FileCacheSupport';
     }
 }
 ?>
