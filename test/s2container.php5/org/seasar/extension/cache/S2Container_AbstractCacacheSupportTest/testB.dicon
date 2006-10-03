@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
+"components21.dtd">
+<components>
+    <component class="A_S2Container_AbstractCacacheSupportTest"/>
+    <component class="A_S2Container_AbstractCacacheSupportTest" name="a"/>
+    <component class="A_S2Container_AbstractCacacheSupportTest" name="b"/>
+<!-- 
+    <component class="A_S2Container_AbstractCacacheSupportTest" name="c"/>
+    <component class="A_S2Container_AbstractCacacheSupportTest" name="d"/>
+    <component class="A_S2Container_AbstractCacacheSupportTest" name="e"/>
+    <component class="A_S2Container_AbstractCacacheSupportTest" name="f"/>
+    <component class="A_S2Container_AbstractCacacheSupportTest" name="g"/>
+    <component class="A_S2Container_AbstractCacacheSupportTest" name="h"/>
+    <component class="A_S2Container_AbstractCacacheSupportTest" name="i"/>
+    <component class="A_S2Container_AbstractCacacheSupportTest" name="j"/>
+    <component class="A_S2Container_AbstractCacacheSupportTest" name="k"/>
+    <component class="A_S2Container_AbstractCacacheSupportTest" name="l"/>
+    <component class="A_S2Container_AbstractCacacheSupportTest" name="m"/>
+    <component class="A_S2Container_AbstractCacacheSupportTest" name="n"/>
+    <component class="A_S2Container_AbstractCacacheSupportTest" name="o"/>
+    <component class="A_S2Container_AbstractCacacheSupportTest" name="p"/>
+    <component class="A_S2Container_AbstractCacacheSupportTest" name="q"/>
+    <component class="A_S2Container_AbstractCacacheSupportTest" name="r"/>
+    <component class="A_S2Container_AbstractCacacheSupportTest" name="s"/>
+    <component class="A_S2Container_AbstractCacacheSupportTest" name="t"/>
+    <component class="A_S2Container_AbstractCacacheSupportTest" name="u"/>
+    <component class="A_S2Container_AbstractCacacheSupportTest" name="v"/>
+    <component class="A_S2Container_AbstractCacacheSupportTest" name="w"/>
+    <component class="A_S2Container_AbstractCacacheSupportTest" name="x"/>
+    <component class="A_S2Container_AbstractCacacheSupportTest" name="y"/>
+    <component class="A_S2Container_AbstractCacacheSupportTest" name="z"/>
+-->
+</components>

@@ -189,11 +189,7 @@ final class S2Container_MemcacheSupport implements S2Container_CacheSupport {
             throw new Exception('container caching not initialized.');
         }
         $keyName = $this->createCacheKeyName($diconPath);
-        $container = unserialize($this->get($this->memcache4Container, $keyName));
-        if (is_object($container) && $container instanceof S2Container){
-            return $container;
-        }
-        throw new Exception('invalid cache found.');
+        return $this->get($this->memcache4Container, $keyName);
     }
     
     /**
@@ -205,11 +201,7 @@ final class S2Container_MemcacheSupport implements S2Container_CacheSupport {
             throw new Exception('container caching not initialized.');
         }
         $keyName = $this->createCacheKeyName($targetClassFile);
-        $cache = $this->get($this->memcache4Aop, $keyName);
-        if($cache !== false && !is_object($cache)){
-            return $cache;
-        }
-        throw new Exception('invalid cache found.');
+        return $this->get($this->memcache4Aop, $keyName);
     }
 
     /**

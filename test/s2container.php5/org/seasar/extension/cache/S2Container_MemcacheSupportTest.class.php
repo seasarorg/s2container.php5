@@ -25,34 +25,24 @@
  * @package org.seasar.framework.extension.cache
  * @author nowel
  */
-class S2ContainerMemcacheFactoryTest extends PHPUnit2_Framework_TestCase {
+class S2Container_MemcacheSupport extends S2Container_AbstractCacacheSupportTest {
     
-    private $path_a;
-    private $path_b;
-    private $path_c;
     private $host;
     
     public function __construct($name) {
         parent::__construct($name);
     }
 
-    public function setUp(){
-        print __CLASS__ . "::{$this->getName()}\n";
-        $this->path_a = dirname(__FILE__) . "/testA.dicon";
-        $this->path_b = dirname(__FILE__) . "/testB.dicon";
-        $this->path_c = dirname(__FILE__) . "/testC.dicon";
+    protected function init(){
         // memcached host
         $this->host = 'localhost';
     }
 
-    public function tearDown() {
-        print "\n";
-        $this->path_a = null;
-        $this->path_b = null;
-        $this->path_c = null;
+    protected function shutDown() {
         $this->host = null;
     }
     
+    /*
     public function testContainerCreate(){
         $option = array('host' => $this->host);
         $factory = S2ContainerMemcacheFactory::getInstance($option);
@@ -175,10 +165,8 @@ class S2ContainerMemcacheFactoryTest extends PHPUnit2_Framework_TestCase {
         
         $this->assertEquals($container1, $container2);
     }
+    */
 
-}
-
-class A_S2Container_Cache {
 }
 
 ?>
