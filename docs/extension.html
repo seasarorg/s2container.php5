@@ -53,7 +53,9 @@
 <li><a href="#cache">Cache</a>
     <ul>
     <li><a href="#cache-file">S2ContainerFileCacheFactory</a></li>
+    <!--
     <li><a href="#cache-memcache">S2ContainerMemcacheFactory</a></li>
+    -->
     </ul>
 </li>
 
@@ -67,6 +69,20 @@
 
 <li><a href="#commentAnnotation">コメントアノテーション</a></li>
 
+<li><a href="#yamldiconbuilder">Yaml形式によるDicon定義</a>
+    <ul>
+        <li><a href="#yaml-components">componentsキー</a></li>
+        <li><a href="#yaml-include">includeキー</a></li>
+        <li><a href="#yaml-component">componentキー</a></li>
+        <li><a href="#yaml-arg">argキー</a></li>
+        <li><a href="#yaml-property">propertyキー</a></li>
+        <li><a href="#yaml-meta">metaキー</a></li>
+        <li><a href="#yaml-initMethod">initMethodキー</a></li>
+        <li><a href="#yaml-destroyMethod">destroyMethodキー</a></li>
+        <li><a href="#yaml-aspect">aspectキー</a></li>
+        <li><a href="#yaml-interType">interTypeキー</a></li>
+    </ul>
+</li>
 
 </ul>
 
@@ -1361,6 +1377,344 @@ Seasar annotation not exists on greeting method.
 >
 </pre>
 
+<!--
+
+    Yaml Dicon Builder
+
+-->
+<h3><a name="yamldiconbuilder">Yaml形式によるDicon定義</a></h3>
+<p>S2Container.PHP5-1.1.2以降では、<a href="DIContainer.html">通常のDicon定義のXML形式</a>以外にYaml形式のサポートをしています。<br />
+    Dicon定義ファイルの拡張子は ".yml" を用います。</p>
+<p>Yaml形式によるDicon定義を使うには、<a href="http://spyc.sourceforge.net/">Spyc</a>を用います。S2Container.PHP5からは
+    Spycを読み込みにいきませんので、Yaml形式のDicon定義を使う場合には予め読み込んでおく必要があります。</p>
+<p>Yaml形式によるDicon定義は通常のXML定義とほぼ同等です。以下に簡単なDicon定義を示します。</p>
+
+<pre>
+components:
+    - component: .
+        name: hello
+        - class: HelloConstructorInjection
+            - arg: Hello World!
+</pre>
+
+<h4><a name="yaml-components">Components定義(任意)</a></h4>
+<p>トップレベルにおいて省略可能な定義です。もしnamespaceなどの定義が無い場合は省略することが可能です。</p>
+<pre>
+  components:
+      :
+      :
+</pre>
+
+<h4><a name="yaml-namespace">Namespace定義(任意)</a></h4>
+<p><a href="DIContainer.html#Namespace">名前空間</a>を指定することができます。PHPの識別子として使えるものにします。</p>
+<pre>
+components:
+    namespace: hoge
+    :
+    :
+    :
+</pre>
+
+<h4><a name="yaml-include">Include定義(任意)</a></h4>
+<p>分割されたS2Containerの定義を<a href="DIContainer.html#Include">取り込む</a>場合に使います。</p>
+<pre>
+components:
+    include: [%DICON_DIR%/foo.yml]
+    include: [%DICON_DIR%/foo.yml, %DICON_DIR%/bar.yml]
+    include:
+        - %DICON_DIR%/foo.yml
+    include:
+        - %DICON_DIR%/foo.yml
+        - %DICON_DIR%/bar.yml
+</pre>
+
+<h4><a name="yaml-component">Component定義(任意)</a></h4>
+<p>コンポーネントを定義します。</p>
+
+<h5>classキー(任意)</h5>
+<p>クラス名を指定します。直接キーの値として<a href="php.html">PHP式</a>を使ってコンポーネントを指定した場合は、class属性を省略することができます。
+    PHP式を使った場合にclass属性を指定すると、型チェックを行います。</p>
+
+<h5>nameキー(任意)</h5>
+<p>名前を指定することもできます。PHPの識別子として使えるものにします。詳しくは、コンポーネントの取得を参照してください。</p>
+
+<h5>instanceキー(任意)</h5>
+<p>S2Containerがどのようにコンポーネントのインスタンスを管理するのかを指定することができます。
+    singleton(デフォルト)、prototype、outer、request、sessionを指定することができます。詳しくは<a href="DIContainer.html#InstanceMode">インスタンス管理</a>を参照してください。</p>
+
+<h5>autoBindingキー(任意)</h5>
+<p>S2Containerがコンポーネントの依存関係をどのように解決するのかを指定できます。
+    auto(デフォルト)、constructor、property、noneを指定することができます。詳しくは、<a href="DIContainer.html#AutoBindingMode">自動バインディング</a>を参照してください。</p>
+
+<pre>
+components:
+    - component: .
+        - class: hoge
+    - component: .
+        name: a
+        - class: hoge
+    - component: .
+        name: b
+        instance: prototype
+        - class: hoge
+    - component: .
+        name: c
+        instance: prototype
+        autoBinding: auto
+        - class: hoge
+</pre>
+<p>Yaml形式によるDicon定義において、複数のcomponentが存在する場合<pre> - component: .</pre>のようにcomponentキーの後ろに"."(ドット)を用います。<br />
+    複数のcomponent定義をする場合は必ず"."(ドット)を付けるようにしてください。<br />
+    また、classキーにおいては、必ず<pre>- class: className</pre>となるように、classキーは"-"(ハイフン)を付けてください。</p>
+
+
+<h4><a name="yaml-arg">Arg定義(任意)</a></h4>
+<p>Arg定義の説明は<a href="DIContainer.html#argTag">XMLのDicon定義</a>と同じですが、
+    YAML形式のArg定義には2パターンあり、キーの種類は arg:とphp:の2種類が存在します。</p>
+<h5>argキー</h5>
+<p>argキーは、通常の文字列として扱われます。</p>
+
+<h5>phpキー</h5>
+<p>phpキーは、<a href="php.html">PHP式</a>の扱いとなり、phpキーで囲われた値がそのままPHP式に使われます。</p>
+
+<p>もし複数行に渡るPHP式を用いる場合は、<pre>arg: . </pre>と<pre>php:&gt;</pre>を組み合わせることで複数行のPHP式も使用可能です。</p>
+
+<pre>
+components:
+    - component: .
+        - class: AAA
+            - arg: "val 1"
+            - arg: "val 2"
+    - component: .
+        - class: BBB
+            - php: d
+            - arg: "val 2"
+    - component: .
+        - class: CCC
+            - arg: d
+            - arg: e
+    - component: .
+        - class: DDD
+        - property: .
+            name: hoge
+            - arg: .
+                php:>
+                    $msg1 = "Hello ";
+                    $msg2 = "World";
+                    return $msg1 . $msg2;
+</pre>
+
+<h4><a name="yaml-property">Property定義(任意)</a></h4>
+<p>componentキーの子として使います。プロパティとして設定される実際の値は、直接キーの値としてPHP式を使います。</p>
+
+<h5>nameキー(必須)</h5>
+<p>プロパティ名を指定します。</p>
+
+<pre>
+components:
+    - component: .
+        name: "a"
+        - class: "AAA"
+            - property: .
+                name: "val1"
+                - arg: "val 1."
+    - component: .
+        name: "b"
+        - class: "BBB"
+            - property: .
+                name: "val1"
+                - arg: "val 1."
+            - property: .
+                name: "val2"
+                - arg: .
+                    - component: .
+                        name: "d"
+                        - class: "DDD"
+    - component: .
+        name: "c"
+        - class: "CCC"
+            - property: .
+                name: "val1"
+                - php: 1+1;
+</pre>
+<p>Yaml形式によるDicon定義において、複数のpropertyが存在する場合<pre>- property: .</pre>のようにpropertyキーの後ろに"."(ドット)を用います。<br />
+    複数のproperty定義をする場合は必ず"."(ドット)を付けるようにしてください。</p>
+
+
+<h4><a name="yaml-initMethod">initMethod定義(任意)</a></h4>
+<p>componentタグの子タグとして使います。引数は、子タグでargキーを使います。
+    name属性を書かずにPHP式を使って、コンポーネントのメソッドを呼び出すこともできます。
+    initMethodが定義されているコンポーネント自身を表す
+    $componentがinitMethodキーの値としてPHP式を記述するだけで有効なオブジェクトとして使えます。</p>
+
+<h5>nameキー</h5>
+<p>メソッド名を指定します。</p>
+
+<pre>
+components:
+    - component: .
+        name: "a"
+        - class: "AAA"
+            - initMethod: $component->culc(1, 2);
+    - component: .
+        - class: "BBB"
+            - initMethod: .
+                name: "addMessage"
+                - arg: Hello
+            - initMethod: $component->addMessage("World!")
+    - component: .
+        name: "mock"
+        - class: "S2Container_MockInterceptor"
+            - initMethod: .
+                name: "setReturnValue"
+                - arg: add
+                - arg: "5"
+</pre>
+
+
+<h4><a name="yaml-destroyMethod">DestroyMethod定義</a></h4>
+<p>initMethodタグと同様です。</p>
+<pre>
+components:
+    - component: .
+        name: "a"
+        - class: "AAA"
+            - destroyMethod: .
+                - php: print 'destroy method expression test.';
+</pre>
+
+
+<h4><a name="yaml-aspect">Aspect定義</a></h4>
+<p>アスペクトをコンポーネントに組み込みます。詳しくは、<a href="aop.html#AOPExplanationFile">aspectタグ</a>の説明を参照してください。</p>
+
+<pre>
+components:
+    namespace: AAA
+    - component: .
+        - class: "Hoge"
+            - aspect: .
+            - component: .
+                - class: "Foo"
+    - component: .
+        - class: "Bar"
+            - aspect: AAA.mock
+    - component: .
+        name: "mock"
+        - class: "S2Container_MockInterceptor"
+            - initMethod: .
+                name: "setReturnValue"
+                - arg: "add"
+                - arg: "12"
+</pre>
+
+
+<h4><a href="yaml-interType">interType定義(任意)</a></h4>
+<p>インタータイプをコンポーネントに組み込みます。詳しくは、S2AOPの<a href="aop.html#interTypeTag">interTypeタグ</a>の説明を参照してください。</p>
+
+<pre>
+components:
+    - component: .
+        - class: "Hello"
+            - interType: S2Container_SerializableInterType
+            - interType: S2Container_PropertyInterType
+</pre>
+
+<h4><a href="yaml-meta">Meta定義</a></h4>
+<p>Meta定義の説明は<a href="DIContainer.html#metaTag">XMLのDicon定義</a>と同じです。<br />
+    しかし、YamlでMeta定義を扱う場合、Yamlの豊富な表現力によっていくつものMeta記述が可能です。</p>
+
+<pre>
+components:
+    - meta: .
+        name: "m1"
+        - arg: "m1-val1"
+    - meta: .
+        name: "m2"
+        - php: 1+1
+    - meta: .
+        name: "m3"
+        - php: "n"
+    - component: .
+        name: "a"
+        - class: "AAA"
+            - meta: .
+                name: "a1"
+                - arg: "m2-val2"
+                - arg: "test value."
+
+    - component: .
+        name: "b"
+        - class: "BBB"
+            - arg: "test value."
+                - meta: .
+                    name: "b1"
+                    - arg: "m1-val1"
+                - meta: .
+                    name: "b2"
+                    - php: 1+1
+                - meta: .
+                    name: "b3"
+                    - php: "b"
+
+    - component: .
+        name: "c"
+        - class: "CCC"
+            - property: .
+                name: "cProp1"
+                - arg: "val 1."
+                - meta: .
+                    name: "c1"
+                    - arg: "m1-val1"
+                - meta: .
+                    name: "c2"
+                    - php: 1+1
+                - meta: .
+                    name: "c3"
+                    - php: b
+
+    - component: .
+        name: "d"
+        - class: "DDD"
+            - initMethod: .
+                name: "dIni1"
+                - arg: "val 1."
+                    - meta: .
+                        name: "d1"
+                        - arg: "m1-val1"
+                    - meta: .
+                        name: "d2"
+                        - php: 1+1
+                    - meta: .
+                        name: "d3"
+                        - php: "b"
+
+    - component: .
+        name: "e"
+        - class: "EEE"
+            - destroyMethod: .
+                name: "eDest1"
+                - arg: "end of century."
+                    - meta: .
+                        name: "e1"
+                        - arg: "m1-val1"
+                    - meta: .
+                        name: "e2"
+                        - php: 1+1
+                    - meta: .
+                        name: "e3"
+                        - php: "b"
+</pre>
+
+<h4>その他Yaml形式について</h4>
+<p>Yaml形式によるDicon定義は、XMLのそれよりも省略が可能な形式となっていますが、複雑な階層を持つDicon定義には向いていません。その点は注意してください。</p>
+<p>XMLのDicon定義とYamlのDicon定義の対比については、
+    <a href="http://wiki.s2php5.jp/s2container.php5">wiki.s2php5.jp/s2container.php5</a>の
+    <a href="http://wiki.s2php5.jp/s2container.php5/dicontainerbuilder%E3%81%AE%E5%AF%BE%E5%BF%9C">DIContainerBuilderの対応</a>が参考になります。</p>
+<!--
+
+    / Yaml Dicon Builder
+
+-->
 
 <!-- document end -->
 <!-- don't edit start -->
