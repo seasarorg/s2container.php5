@@ -66,7 +66,7 @@ class S2Conatiner_AbstractComponentAutoRegisterTest
         $this->assertEquals($a->testTrace(2,3),5);
         $this->assertEquals($a->getData(),1000);
     }
-
+/*
     function testProcessClass() {
         $register = new Test_S2Container_AbstractComponentAutoRegister();
         $register->setContainer(new S2ContainerImpl());
@@ -106,6 +106,7 @@ class S2Conatiner_AbstractComponentAutoRegisterTest
         $cd = $register->findComponentDef('a');
         $this->assertEquals($cd,null);
     }
+    */
 }
 
 class Test_S2Container_AbstractComponentAutoRegister

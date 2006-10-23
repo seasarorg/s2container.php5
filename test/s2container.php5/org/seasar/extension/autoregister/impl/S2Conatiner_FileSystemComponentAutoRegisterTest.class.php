@@ -29,6 +29,7 @@ class S2Conatiner_FileSystemComponentAutoRegisterTest
     extends PHPUnit2_Framework_TestCase {
 
     private static $SAMPLE_DIR;
+    private static $SAMPLE2_DIR;
                                
     public function __construct($name) {
         parent::__construct($name);
@@ -36,6 +37,10 @@ class S2Conatiner_FileSystemComponentAutoRegisterTest
                           . "/sample/" 
                           . __CLASS__
                           . "/";
+        self::$SAMPLE2_DIR = dirname(__FILE__)
+                           . "/sample2/" 
+                           . __CLASS__
+                           . "/";
     }
 
     public function setUp(){
@@ -118,6 +123,78 @@ class S2Conatiner_FileSystemComponentAutoRegisterTest
         $this->assertEquals($register->isIgnore('Foo'),true);
         $this->assertEquals($register->isIgnore('Bar'),true);
         $this->assertEquals($register->isIgnore('Hoge'),false);
+    }
+
+    function testRegisterTwiseException() {
+        $register = new S2Container_FileSystemComponentAutoRegister();
+        $container = new S2ContainerImpl();
+        $register->setContainer($container);
+        $register->addClassPattern(self::$SAMPLE_DIR, 'A_');
+        $register->addClassPattern(self::$SAMPLE_DIR, 'A_');
+        $register->registerAll();
+
+        try {
+            $d = $container->getComponent('A_S2Container_FileSystemComponentAutoRegister');
+            $this->fail();
+        } catch(Exception $e) {
+        	$this->assertTrue(true);
+            print "{$e->getMessage()} \n";
+        }
+    }
+
+    function testTwoClassPattern() {
+        $register = new S2Container_FileSystemComponentAutoRegister();
+        $container = new S2ContainerImpl();
+        $register->setContainer($container);
+        $register->addClassPattern(self::$SAMPLE_DIR, 'A_');
+        $register->addClassPattern(self::$SAMPLE2_DIR);
+        $register->registerAll();
+
+        $this->assertEquals(1 , $container->getComponentDefSize());
+    }
+
+    function testProcessClass() {
+        $register = new S2Container_FileSystemComponentAutoRegister();
+        $register->setContainer(new S2ContainerImpl());
+        $classFilePath = self::$SAMPLE_DIR
+                       . 'D_S2Container_FileSystemComponentAutoRegister.class.php';
+        $cp = new S2Container_ClassPattern();
+        $cp->setShortClassNames("^D_");
+        $register->setProcessingClassPattern($cp);
+        
+        $register->processClass($classFilePath,
+                            'D_S2Container_FileSystemComponentAutoRegister');
+        $a = $register->getContainer()->getComponent('a');
+        $this->assertType('S2Container_DefaultAopProxy',$a);
+        $cd = $register->getContainer()->findComponentDefs('a');
+        $this->assertEquals(count($cd),1);
+        
+        $classFilePath = self::$SAMPLE_DIR
+                       . 'E_S2Container_FileSystemComponentAutoRegister.class.php';
+        $register->processClass($classFilePath,'e');
+        try {
+            $a = $register->getContainer()->getComponent('e');
+            $this->fail();
+        } catch(Exception $e) {
+        	print "{$e->getMessage()} \n";
+        }
+    }
+
+    function testProcessClassIgnore() {
+        $register = new S2Container_FileSystemComponentAutoRegister();
+        $register->setContainer(new S2ContainerImpl());
+        $classFilePath = self::$SAMPLE_DIR
+                       . 'D_S2Container_FileSystemComponentAutoRegister.class.php';
+
+        $cp = new S2Container_ClassPattern();
+        $cp->setShortClassNames("^D_");
+        $register->addIgnoreClassPattern($cp);
+        $register->setProcessingClassPattern($cp);
+        
+        $register->processClass($classFilePath,
+                            'D_S2Container_FileSystemComponentAutoRegister');
+        $cd = $register->getContainer()->findComponentDefs('a');
+        $this->assertEquals(count($cd),0);
     }
 }
 
