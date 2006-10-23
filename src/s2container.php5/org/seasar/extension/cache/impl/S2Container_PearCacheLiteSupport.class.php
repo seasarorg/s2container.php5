@@ -22,8 +22,6 @@
 //
 // $Id: $
 
-require_once('Cache/Lite.php');
-
 /**
  * @package org.seasar.framework.cache.impl
  * @author klove
@@ -77,7 +75,7 @@ class S2Container_PearCacheLiteSupport implements S2Container_CacheSupport
                 $this->containerOptions['cacheDir'] = 
                     S2Container_StringUtil::expandPath($this->containerOptions['cacheDir']);
             }
-
+            require_once('Cache/Lite.php');
             $this->cacheLite4Container = new Cache_Lite($this->containerOptions);
         }
 
@@ -86,6 +84,7 @@ class S2Container_PearCacheLiteSupport implements S2Container_CacheSupport
                 $this->aopProxyOptions['cacheDir'] = 
                     S2Container_StringUtil::expandPath($this->aopProxyOptions['cacheDir']);
             }
+            require_once('Cache/Lite.php');
             $this->cacheLite4AopProxy = new Cache_Lite($this->aopProxyOptions);
         }
     }

@@ -27,9 +27,15 @@
  */
 class S2Container_FileSystemComponentAutoRegister 
     extends S2Container_AbstractComponentAutoRegister
+    implements S2Container_ClassTraversalClassHandler
 {
     const INIT_METHOD = "registerAll";
-        
+    private $processingClassPattern = null;
+
+    public function setProcessingClassPattern(S2Container_ClassPattern $pattern) {
+        $this->processingClassPattern = $pattern;
+    }   
+    
     /**
      * @S2Container_InitMethodAnnotation
      */
@@ -39,13 +45,40 @@ class S2Container_FileSystemComponentAutoRegister
 
         $c = $this->getClassPatternSize();
         for ($i = 0; $i < $c; ++$i) {
-            $cp = $this->getClassPattern($i);
-            $this->registerInternal($cp);
+            $this->processingClassPattern = $this->getClassPattern($i);
+            $this->registerInternal($this->processingClassPattern);
         }
-        S2Container_ChildComponentDefBindingUtil::bind($this->getContainer());
-        
+        $this->processingClassPattern = null;
+        S2Container_ChildComponentDefBindingUtil::bind($this->getContainer());      
     }
 
+    /**
+     * 
+     */
+    public function processClass($classFilePath, $className)
+    {
+        if (! $this->processingClassPattern instanceof S2Container_ClassPattern) {
+            throw new S2Container_S2RuntimeException('ESSR0017',array('invalid processing class pattern found.'));            
+        }
+        
+        if ($this->isIgnore($className)) {
+            return;
+        }
+        
+        if ($this->processingClassPattern->isAppliedShortClassName($className)) {
+            $this->register($classFilePath, $className);
+        }
+        /*
+        $c = $this->getClassPatternSize();
+        for ($i = 0; $i < $c; ++$i) {
+            $cp = $this->getClassPattern($i);
+            if ($cp->isAppliedShortClassName($className)) {
+                $this->register($classFilePath, $className);
+            }
+        }
+        */
+    }
+    
     /**
      * @param string dir path
      * @param string null or class name string

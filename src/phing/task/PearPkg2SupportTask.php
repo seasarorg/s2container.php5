@@ -7,7 +7,8 @@ class PearPkg2SupportTask extends Task {
     public function init(){}
 
     public function main(){
-        $URIs['S2Container']   = $this->uri;
+        $URIs = array();
+        //$URIs['S2Container']   = $this->uri;
 
         $this->log("pkgFile : {$this->pkgFile}");
 

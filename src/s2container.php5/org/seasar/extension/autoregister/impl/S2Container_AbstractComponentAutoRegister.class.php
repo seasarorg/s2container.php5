@@ -27,10 +27,7 @@
  */
 abstract class S2Container_AbstractComponentAutoRegister 
     extends S2Container_AbstractAutoRegister 
-    implements S2Container_ClassTraversalClassHandler
 {
-    const CLASS_SUFFIX = ".class.php";
-
     private $autoNaming = null;
     private $instanceMode = "singleton";
 
@@ -76,7 +73,6 @@ abstract class S2Container_AbstractComponentAutoRegister
    
     /**
      * 
-     */
     public function processClass($classFilePath, $className)
     {
         if ($this->isIgnore($className)) {
@@ -91,6 +87,7 @@ abstract class S2Container_AbstractComponentAutoRegister
             }
         }
     }
+     */
 
     /**
      * 

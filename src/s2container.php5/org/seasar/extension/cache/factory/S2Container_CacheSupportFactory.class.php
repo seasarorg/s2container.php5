@@ -32,8 +32,8 @@ final class S2Container_CacheSupportFactory
     private function __construct(){}
 
     public static function create() {
-        $supportClassName = self::getSupportClassName();
         if (is_null(self::$support)) {
+            $supportClassName = self::getSupportClassName();
             self::$support = new $supportClassName();
         }
         return self::$support;
