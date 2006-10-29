@@ -287,20 +287,20 @@ class S2Container_EnhancedClassGenerator
         $support = S2Container_CacheSupportFactory::create();
         if (!$support->isAopProxyCaching($this->targetClass->getFileName())) {
             S2Container_S2Logger::getLogger(__CLASS__)->
-                    info("set caching off.", __METHOD__);
+                    debug("set caching off.", __METHOD__);
             $this->evalInternal($this->getevaluateSource());
             return $this->enhancedClassName;
         }
         
         if ($srcLine = $support->loadAopProxyCache($this->targetClass->getFileName())) {
             S2Container_S2Logger::getLogger(__CLASS__)->
-                    info("cached aop proxy found.", __METHOD__);
+                    debug("cached aop proxy found.", __METHOD__);
             $this->evalInternal($srcLine);
             return $this->enhancedClassName;
         }
         
         S2Container_S2Logger::getLogger(__CLASS__)->
-                    info("create aop proxy and cache it.", __METHOD__);
+                    debug("create aop proxy and cache it.", __METHOD__);
         $srcLine = $this->getevaluateSource();
         $support->saveAopProxyCache($srcLine, $this->targetClass->getFileName());
         $this->evalInternal($srcLine);

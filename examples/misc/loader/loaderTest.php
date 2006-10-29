@@ -17,7 +17,7 @@ S2ContainerClassLoader::import($classes);
 S2ContainerClassLoader::import('jk.classes.php','J');
 S2ContainerClassLoader::import('jk.classes.php','K');
 
-print_r(S2ContainerClassLoader::$USER_CLASSES);
+//print_r(S2ContainerClassLoader::$USER_CLASSES);
 $obj = new A();
 print get_class($obj)."\n";
 $obj = new B();

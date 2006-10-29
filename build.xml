@@ -27,18 +27,18 @@
 
     <target name="prepare" depends="init">
         <mkdir dir="${project.build.dir}" />
-        <mkdir dir="${project.build.dir}/${project.name}/S2Container" />
+        <mkdir dir="${project.build.dir}/${project.name}/${package.name}" />
     </target>
 
     <target name="build" depends="prepare">
-        <copy2 toDir="${project.build.dir}/${project.name}/S2Container">
+        <copy2 toDir="${project.build.dir}/${project.name}/${package.name}">
             <fileset dir="${project.src.dir}">
                 <include name="${project.name}/**/*.php"/>
                 <include name="${project.name}/**/*.properties"/>
             </fileset>
         </copy2>
 
-        <gcore searchDir="${project.build.dir}/${project.name}/S2Container"
+        <gcore searchDir="${project.build.dir}/${project.name}/${package.name}"
                coreFile="${project.build.dir}/${project.name}/s2container.core.classes.php"
                listFile="${project.basedir}/src/phing/etc/s2container.core.files.txt"/>
 
@@ -121,13 +121,13 @@
     </target>
 
     <target name="test" depends="build">
-        <echo>test directory : test/s2container.php5/${td}</echo>
+        <echo>test directory : test/${project.name}/${td}</echo>
         <echo>test target    : ${tt}</echo>
         <php expression="require_once('test/test.inc.php')"/>
         <phpunit2 haltonfailure="false" haltonerror="false">
             <formatter type="plain" usefile="false"/>
             <batchtest>
-                <fileset dir="test/s2container.php5/${td}">
+                <fileset dir="test/${project.name}/${td}">
                     <include name="${tt}"/>
                 </fileset>
             </batchtest>
@@ -135,10 +135,10 @@
     </target>
     
     <target name="all-test" depends="build">
-        <echo>test directory : test/s2container.php5/${td}</echo>
+        <echo>test directory : test/${project.name}/${td}</echo>
         <php expression="require_once('test/test.inc.php')"/>
         <alltest name="${project.name} All Test">
-            <fileset dir="test/s2container.php5/${td}">
+            <fileset dir="test/${project.name}/${td}">
                 <include name="${tt}"/>
                 <exclude name="**/*PDO*/**"/>
                 <exclude name="**/*Memcache*/**"/>

@@ -27,12 +27,40 @@
  */
 interface S2Container_CacheSupport
 {
+    /**
+     * @param string $diconPath
+     * @return boolean 
+     */
     public function isContainerCaching($diconPath = null);
+
+    /**
+     * @param string $diconPath
+     * @return string|boolean serialized S2Container or boolean false.
+     */
     public function loadContainerCache($diconPath);
+    
+    /**
+     * @param string $serializedContainer
+     * @param string $diconPath
+     */
     public function saveContainerCache($serializedContainer,$diconPath);
 
+    /**
+     * @param string $targetClassFile
+     * @return boolean 
+     */
     public function isAopProxyCaching($targetClassFile = null);
+
+    /**
+     * @param string $targetClassFile
+     * @return string|boolean AopProxy source or boolean false.
+     */
     public function loadAopProxyCache($targetClassFile);
+
+    /**
+     * @param string $srcLine
+     * @param string $targetClassFile
+     */
     public function saveAopProxyCache($srcLine, $targetClassFile);
 }
 ?>

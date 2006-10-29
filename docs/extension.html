@@ -50,9 +50,12 @@
     </ul>
 </li>
 
-<li><a href="#cache">Cache</a>
+<li><a href="#cache-support">S2Container_CacheSupport</a>
     <ul>
-    <li><a href="#cache-file">S2ContainerFileCacheFactory</a></li>
+    <li><a href="#cache-lite-support">S2Container_PearCacheLiteSupport</a></li>
+    <li><a href="#cache-mem-support">S2Container_PearCacheLiteSupport</a></li>
+    <li><a href="#cache-factory">S2ContainerCacheFactory</a></li>
+    <li><a href="#cache-file">S2ContainerFileCacheFactory</a><i>( deprecated ) </i></li>
     <!--
     <li><a href="#cache-memcache">S2ContainerMemcacheFactory</a></li>
     -->
@@ -124,7 +127,7 @@ S2CONTAINER_PHP5_SIMPLE_LOG_FILE ’è”‚ÉƒƒOƒtƒ@ƒCƒ‹‚ğİ’è‚·‚é‚±‚Æ‚ÅAƒƒO‚ğƒtƒ@ƒ
 
 
 <h4>log4php‚ğg—p‚·‚é</h4>
-<p><a href="http://logging.apache.org/log4php/">log4php</a> ‚ğg—p‚·‚éê‡‚ÍAS2LogFactory ‚Ì LOGGER •Ï”‚ğİ’è‚µ‚Ü‚·BƒƒOƒŒƒxƒ‹‚âA‚»‚Ìİ’è‚Í SimpleLogger ‚Å‚Ìİ’è•û–@‚Æ“¯‚¶‚Å‚·B</p>
+<p><a href="http://logging.apache.org/log4php/">log4php</a> ‚ğg—p‚·‚éê‡‚ÍAS2LogFactory ‚Ì LOGGER •Ï”‚ğİ’è‚µ‚Ü‚·BƒƒOƒŒƒxƒ‹‚âo—ÍŒ`®“™‚Ìİ’è‚ÍAlog4php.properties ƒtƒ@ƒCƒ‹‚Ås‚¢‚Ü‚·B</p>
 <pre>&lt;?php
 require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php');
 define('LOG4PHP_DIR', dirname(__FILE__) . '/log4php-***/src/log4php');
@@ -647,8 +650,68 @@ S2ContainerClassLoader::import($classes);
 ƒNƒ‰ƒX–¼‚ğƒL[‚Æ‚µ‚ÄƒNƒ‰ƒX’è‹`ƒtƒ@ƒCƒ‹‚ªw’è‚³‚ê‚½˜A‘z”z—ñ‚ğimport‚µ‚Ü‚·B
 
 <br>
-<a name="cache"><h3>Cache</h3></a>
-<h3><a name="cache-file">S2ContainerFileCacheFactory</a></h3>
+<br>
+<h3><a name="cache-support">S2Container_CacheSupport</a></h3>
+<p>
+S2Container_CacheSupport ‚Å‚ÍAS2Container ƒCƒ“ƒXƒ^ƒ“ƒX‚Ì serialize ƒf[ƒ^‚ÆAS2AOP ‚Å¶¬‚³‚ê‚é‚Ì AopProxy ƒR[ƒh‚ğƒLƒƒƒbƒVƒ…‚µ‚Ü‚·BS2Container_CacheSupport‚ÌÀ‘•ƒNƒ‰ƒX‚Æ‚µ‚ÄAS2Container_PearCacheLiteSupport ‚Æ S2Container_MemcacheSupport ‚ª‚ ‚è‚Ü‚·B‚Ç‚Ì CacheSupport ƒNƒ‰ƒX‚ğg—p‚·‚é‚©‚ÍAS2CONTAINER_PHP5_CACHE_SUPPORT_CLASS ’è”‚Åw’è‚µ‚Ü‚·BƒfƒtƒHƒ‹ƒg‚ÍAS2Container_PearCacheLiteSupport ‚Å‚·B
+MemcacheSupport g—p‚·‚éê‡‚ÍŸ‚Ì‚æ‚¤‚É’è‹`‚µ‚Ü‚·B
+</p>
+<pre>
+&lt;?php
+    require_once('S2Container/S2Container.php');
+    define('S2CONTAINER_PHP5_CACHE_SUPPORT_CLASS', 'S2Container_MemcacheSupport');
+?&gt;
+</pre>
+
+<h3><a name="cache-lite-support">S2Container_PearCacheLiteSupport</a></h3>
+<p>
+S2Container_PearCacheLiteSupport ‚ÍA<a href="http://pear.php.net/manual/ja/package.caching.cache-lite.php">PEAR Cache_Lite</a> ‚ğg—p‚µ‚ÄƒLƒƒƒbƒVƒ…‚µ‚Ü‚·BS2Container_PearCacheLiteSupport ‚ğ—LŒø‚É‚·‚é‚½‚ßAS2CONTAINER_PHP5_CACHE_LITE_INI ’è”‚ğ’è‹`‚µ‚Ü‚·BS2CONTAINER_PHP5_CACHE_LITE_INI ’è”‚Ìİ’è’l‚Í Cache_Lite ‚ÌƒIƒvƒVƒ‡ƒ“‚ğw’è‚·‚é INI Œ`®ƒtƒ@ƒCƒ‹‚Ö‚ÌƒpƒX‚É‚È‚è‚Ü‚·B
+</p>
+<pre>
+&lt;?php
+    require_once('S2Container/S2Container.php');
+    define('S2CONTAINER_PHP5_CACHE_LITE_INI', '/path/to/cache_lite.ini');
+?&gt;
+</pre>
+<p>
+Cache_Lite ‚ÌƒIƒvƒVƒ‡ƒ“‚ğw’è‚·‚é INI Œ`®ƒtƒ@ƒCƒ‹‚ÍŸ‚Ì3‚Â‚ÌƒZƒNƒVƒ‡ƒ“‚ğ‚¿‚Ü‚·B
+</p>
+<ul>
+<li>[default]<br>‚±‚ÌƒZƒNƒVƒ‡ƒ“‚Åİ’è‚µ‚½’l‚ÍA[container] ƒZƒNƒVƒ‡ƒ“‚Æ [aop] ƒZƒNƒVƒ‡ƒ“‚ÌƒfƒtƒHƒ‹ƒg’l‚Æ‚È‚è‚Ü‚·B</li>
+<li>[container]<br> S2Container ƒCƒ“ƒXƒ^ƒ“ƒX‚ÌƒLƒƒƒbƒVƒ…‚É‚Â‚¢‚Ä‚ÌŒÅ—LƒIƒvƒVƒ‡ƒ“‚ğİ’è‚µ‚Ü‚·B</li>
+<li>[aop]<br> S2AOP ‚Å¶¬‚³‚ê‚é‚Ì AopProxy ƒR[ƒh‚ÌƒLƒƒƒbƒVƒ…‚É‚Â‚¢‚Ä‚ÌŒÅ—LƒIƒvƒVƒ‡ƒ“‚ğİ’è‚µ‚Ü‚·B</li>
+</ul>
+
+<p>
+ŠeƒZƒNƒVƒ‡ƒ“‚Åİ’è‚·‚é <a href="http://pear.php.net/manual/ja/package.caching.cache-lite.cache-lite.cache-lite.php">Cache_Lite ƒIƒvƒVƒ‡ƒ“‚É‚Â‚¢‚Ä‚Í‚±‚¿‚ç</a>‚ğQÆ‰º‚³‚¢B<br>
+S2Container_PearCacheLiteSupport ‚ğ—p‚¢‚½ƒTƒ“ƒvƒ‹‚ÍAs2container.php5/examples/extension/cache/pearCacheLiteClient.php ‚É‚ ‚è‚Ü‚·BƒTƒ“ƒvƒ‹‚Åg—p‚µ‚Ä‚¢‚é ƒIƒvƒVƒ‡ƒ“İ’è INI ƒtƒ@ƒCƒ‹‚ÍŸ‚É‚È‚è‚Ü‚·B( cacheLite.ini )
+</p>
+<pre>
+[default]
+cacheDir = "%EXAMPLE_DIR%/extension/cache/var/"       &lt;-- ‚±‚±‚Åİ’è‚µ‚½ƒLƒƒƒbƒVƒ…ƒfƒBƒŒƒNƒgƒŠ‚ÍA
+                                                          container ‚Æ aop ‚É”½‰f‚³‚ê‚Ü‚·B
+[container]                                               æ“ª‚É%...%‚ÅˆÍ‚Ş‚±‚Æ‚Å’è”‚ğ–„‚ß‚Ş‚±‚Æ‚ª‚Å‚«‚Ü‚·B
+caching  = "true" 
+lifeTime = "3600"
+
+[aop]
+caching  = "true" 
+lifeTime = "7200"
+</pre>
+
+<h3><a name="cache-mem-support">S2Container_MemcacheSupport</a></h3>
+
+<h3><a name="cache-factory">S2ContainerCacheFactory</a></h3>
+<center>
+<table border="1" width="50%">
+<tr><td align="center">Œx</td></tr>
+<tr><td>
+‚±‚ÌŠg’£ƒ‚ƒWƒ…[ƒ‹‚Í<i> ÀŒ±“I </i>‚È‚à‚Ì‚Å‚·B‚±‚ÌŠg’£ƒ‚ƒWƒ…[ƒ‹‚Ì“®ìEŠÖ”–¼E‚»‚Ì‘¼ƒhƒLƒ…ƒƒ“ƒg‚É‘‚©‚ê‚Ä‚¢‚é–€‚ÍA«—ˆ•ÏX‚³‚ê‚é‰Â”\«‚ª‚ ‚è‚Ü‚·B
+</td></tr>
+</table>
+</center>
+
+<h3><a name="cache-file">S2ContainerFileCacheFactory (<font color="pink"><i>deprecated </i></font>)</a></h3>
 
 <center>
 <table border="1" width="50%">

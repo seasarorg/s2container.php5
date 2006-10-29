@@ -11,6 +11,12 @@ print_r($hoge);
 $service = $container->getComponent('service');
 print_r($service);
 
+$entity = $container->getComponent('HogeEntity');
+print_r($entity);
+
+$action = $container->getComponent('HogeAction');
+print_r($action);
+
 if(!$container->hasComponentDef('HogeDao')){
      print "HogeDao not found.\n";   
 }

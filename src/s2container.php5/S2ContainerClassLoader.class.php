@@ -65,7 +65,7 @@ class S2ContainerClassLoader {
                 self::$USER_CLASSES[$key] = $path;
             }
         } else {
-            trigger_error("invalid args. path : $path, key : $key", E_USER_WARNING);
+            trigger_error(__CLASS__ . " : invalid args. path : $path, key : $key", E_USER_WARNING);
         }
     }
 }

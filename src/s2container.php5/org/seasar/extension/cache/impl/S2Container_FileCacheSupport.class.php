@@ -27,6 +27,9 @@
  */
 class S2Container_FileCacheSupport implements S2Container_CacheSupport
 {
+    /**
+     * @see S2Container_CacheSupport::isContainerCaching()
+     */
     public function isContainerCaching($diconPath = null) {
         if (defined('S2CONTAINER_PHP5_CACHE_DIR') and
             is_dir(S2CONTAINER_PHP5_CACHE_DIR) and 
@@ -37,6 +40,9 @@ class S2Container_FileCacheSupport implements S2Container_CacheSupport
         }
     }
 
+    /**
+     * @see S2Container_CacheSupport::loadContainerCache()
+     */
     public function loadContainerCache($diconPath) {
         $cacheFilePath = $this->getContainerCacheFilePath($diconPath);
         if (is_file($cacheFilePath) and 
@@ -49,6 +55,9 @@ class S2Container_FileCacheSupport implements S2Container_CacheSupport
         }
     }
 
+    /**
+     * @see S2Container_CacheSupport::saveContainerCache()
+     */
     public function saveContainerCache($serializedContainer,$diconPath) {
         if (!file_put_contents($this->getContainerCacheFilePath($diconPath), $serializedContainer, LOCK_EX)) {
             throw new Exception('cache write fail. [ ' . $this->getContainerCacheFilePath($diconPath) . ' ]');
@@ -63,6 +72,9 @@ class S2Container_FileCacheSupport implements S2Container_CacheSupport
     }
 
 
+    /**
+     * @see S2Container_CacheSupport::isAopProxyCaching()
+     */
     public function isAopProxyCaching($targetClassFile = null) {
         if (defined('S2AOP_PHP5_FILE_CACHE') and
            S2AOP_PHP5_FILE_CACHE and
@@ -74,6 +86,9 @@ class S2Container_FileCacheSupport implements S2Container_CacheSupport
         return false;
     }
 
+    /**
+     * @see S2Container_CacheSupport::loadAopProxyCache()
+     */
     public function loadAopProxyCache($targetClassFile) {
         $cacheFile = $this->getAopProxyCacheFilePath($targetClassFile);
         if (is_readable($cacheFile) and
@@ -83,6 +98,9 @@ class S2Container_FileCacheSupport implements S2Container_CacheSupport
         return false;
     }
 
+    /**
+     * @see S2Container_CacheSupport::saveAopProxyCache()
+     */
     public function saveAopProxyCache($srcLine, $targetClassFile) {
         if (!file_put_contents($this->getAopProxyCacheFilePath($targetClassFile), $srcLine, LOCK_EX)) {
             throw new Exception('cache write fail. [' . $this->getAopProxyCacheFilePath($targetClassFile) . ' ]');

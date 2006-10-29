@@ -28,11 +28,14 @@
 final class S2Container_CacheSupportFactory
 {
     private static $support = null;
-
+    const DEFAULT_CACHE_SUPPORT_CLASS = 'S2Container_PearCacheLiteSupport';
     private function __construct(){}
 
+    /**
+     * @retrun S2Container_CacheSupport singleton
+     */
     public static function create() {
-        if (is_null(self::$support)) {
+        if (self::$support === null) {
             $supportClassName = self::getSupportClassName();
             self::$support = new $supportClassName();
         }
@@ -42,7 +45,7 @@ final class S2Container_CacheSupportFactory
     private static function getSupportClassName() {
         return defined('S2CONTAINER_PHP5_CACHE_SUPPORT_CLASS') ?
                S2CONTAINER_PHP5_CACHE_SUPPORT_CLASS :
-               'S2Container_FileCacheSupport';
+               self::DEFAULT_CACHE_SUPPORT_CLASS;
     }
 }
 ?>

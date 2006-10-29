@@ -47,6 +47,33 @@ class S2Container_PearCacheLiteSupport implements S2Container_CacheSupport
         }
     }
 
+    /**
+     * Initialize with ini format file, defined S2CONTAINER_PHP5_CACHE_LITE_INI
+     * 
+     * INI format sections
+     *   [default]
+     *     defined options are applied to both [container] and [aop] as default value.  
+     *   [container]
+     *     for container options.
+     *   [aop]
+     *     for aop options.
+     * 
+     * Available options
+     *   @see http://pear.php.net/manual/ja/package.caching.cache-lite.cache-lite.cache-lite.php
+     * 
+     * Example
+     *   [default]
+     *   cacheDir = "/tmp"
+     * 
+     *   [container]
+     *   caching = "true"
+     *   lifeTime = "3600"
+     * 
+     *   [aop]
+     *   caching = "false"
+     *   lifeTime = "60"
+     * 
+     */
     private function initialize() {
         $option = parse_ini_file(S2CONTAINER_PHP5_CACHE_LITE_INI, true);
         if (isset($option['default'])) {
@@ -89,6 +116,9 @@ class S2Container_PearCacheLiteSupport implements S2Container_CacheSupport
         }
     }
 
+    /**
+     * @see S2Container_CacheSupport::isContainerCaching()
+     */
     public function isContainerCaching($diconPath = null) {
         if ($this->containerInited) {
             if (isset($this->containerOptions['caching'])) {
@@ -101,6 +131,9 @@ class S2Container_PearCacheLiteSupport implements S2Container_CacheSupport
         }
     }
 
+    /**
+     * @see S2Container_CacheSupport::loadContainerCache()
+     */
     public function loadContainerCache($diconPath) {
         if (!$this->containerInited) {
             throw new Exception('container caching not initialized.');
@@ -108,6 +141,9 @@ class S2Container_PearCacheLiteSupport implements S2Container_CacheSupport
         return $this->cacheLite4Container->get($diconPath);
     }
 
+    /**
+     * @see S2Container_CacheSupport::saveContainerCache()
+     */
     public function saveContainerCache($serializedContainer,$diconPath) {
         if (!$this->containerInited) {
             throw new Exception('container caching not initialized.');
@@ -115,6 +151,9 @@ class S2Container_PearCacheLiteSupport implements S2Container_CacheSupport
         return $this->cacheLite4Container->save($serializedContainer,$diconPath);
     }
 
+    /**
+     * @see S2Container_CacheSupport::isAopProxyCaching()
+     */
     public function isAopProxyCaching($targetClassFile = null) {
         if ($this->aopProxyInited) {
             if (isset($this->aopProxyOptions['caching'])) {
@@ -127,6 +166,9 @@ class S2Container_PearCacheLiteSupport implements S2Container_CacheSupport
         }
     }
 
+    /**
+     * @see S2Container_CacheSupport::loadAopProxyCache()
+     */
     public function loadAopProxyCache($targetClassFile) {
         if (!$this->aopProxyInited) {
             throw new Exception('aop proxy caching not initialized.');
@@ -134,6 +176,9 @@ class S2Container_PearCacheLiteSupport implements S2Container_CacheSupport
         return $this->cacheLite4AopProxy->get($targetClassFile);
     }
 
+    /**
+     * @see S2Container_CacheSupport::saveAopProxyCache()
+     */
     public function saveAopProxyCache($srcLine, $targetClassFile) {
         if (!$this->aopProxyInited) {
             throw new Exception('aop proxy caching not initialized.');

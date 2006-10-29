@@ -25,7 +25,7 @@
  * @package org.seasar.framework.extension.db.pdo
  * @author klove
  */
-class S2Conatiner_PDODataSourceTest
+class S2Container_PDODataSourceTest
     extends PHPUnit2_Framework_TestCase {
 
     public function __construct($name) {

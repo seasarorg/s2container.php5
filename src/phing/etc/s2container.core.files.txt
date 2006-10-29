@@ -69,6 +69,9 @@ S2Container_Invocation
 S2Container_MethodInvocation
 S2Container_S2MethodInvocation
 S2Container_S2MethodInvocationImpl
-S2ContainerClassLoader
+S2Container_CacheSupport
+S2Container_PearCacheLiteSupport
+S2Container_CacheSupportFactory
 S2ContainerFactory
+S2ContainerClassLoader
 S2ContainerMessageUtil

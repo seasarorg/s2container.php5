@@ -26,7 +26,7 @@
 <ul>
 <li><a href="#setup">セットアップ</a></li>
   <ul>
-   <li><a href="#pear-install">PEARパッケージとしてインストール</a></li>
+   <li><a href="#pear-install">PEARパッケージのインストール / アンインストール</a></li>
    <li><a href="#pear-archive">PEARパッケージを解凍してセットアップ</a></li>
    <li><a href="#src-install">ソース一式をダウンロードしてセットアップ</a></li>
   </ul>
@@ -34,7 +34,7 @@
 
 <a name="setup"><h2>セットアップ</h2></a>
 
-<a name="pear-install"><h3>PEARパッケージとしてインストール</h3></a>
+<a name="pear-install"><h3>PEARパッケージのインストール / アンインストール</h3></a>
 
 
 <p>
@@ -53,36 +53,34 @@ S2Container             version       state
 </pre>
 
 <p>
-S2Container.php を読み込み、__autoload関数を次のように定義して下さい。S2Container.PHP5が使用可能となります。
+S2Container.php と S2ContainerSplAutoLoad.php を require して下さい。S2Container.PHP5が使用可能となります。
 </p>
 
 <pre>&lt?php
 require_once('S2Container/S2Container.php');
-function __autoload($class = null){
-    if($class != null){
-        include_once("$class.class.php");
-    }
-}
+require_once('S2Container/S2ContainerSplAutoLoad.php');
 ?&gt;
 </pre>
 
-<p>
-S2ContainerClassLoaderを利用する場合は、__autoload関数を次のように定義して下さい。
-</p>
+S2ContainerSplAutoLoad.php で、__autoload関数 は次のように記述されています。
 <pre>&lt?php
-require_once('S2Container/S2Container.php');
+S2ContainerClassLoader::import(S2CONTAINER_PHP5);
+if (function_exists('__autoload')) {
+    spl_autoload_register('__autoload');
+}
+spl_autoload_register(array('S2ContainerClassLoader', 'load'));
+?&gt;
+</pre>
+
+また、同様に S2ContainerAutoLoad.php も用意していますので適宜ご利用下さい。
+
+<pre>&lt?php
 S2ContainerClassLoader::import(S2CONTAINER_PHP5);
 function __autoload($class = null){
     S2ContainerClassLoader::load($class);
 }
 ?&gt;
 </pre>
-***注） S2ContainerClassLoader::load メソッドの引数($class)は、__autoload関数の引数を渡して下さい。
-<br>
-<br>
-
-<p>開発中のアプリケーションや使用しているフレームワークで既に__autoload関数が定義されている場合は、上記の __autoload関数内容を定義済み __autoload関数に追記して下さい。
-</p>
 
 <p>
 S2Container.PHP5をアンインストールする場合は、pear uninstall を実施して下さい。
@@ -109,36 +107,34 @@ S2Container-version/
   +-- S2Container.php
 </pre>
 <p>
-S2Container.php を読み込み、__autoload関数を次のように定義して下さい。S2Container.PHP5が使用可能となります。
+S2Container.php と S2ContainerSplAutoLoad.php を require して下さい。S2Container.PHP5が使用可能となります。
 </p>
 
 <pre>&lt?php
-require_once('/path/to/S2Container/S2Container.php');
-function __autoload($class = null){
-    if($class != null){
-        include_once("$class.class.php");
-    }
-}
+require_once('/path/to/S2Container-version/S2Container.php');
+require_once('S2Container/S2ContainerSplAutoLoad.php');
 ?&gt;
 </pre>
 
-<p>
-S2ContainerClassLoaderを利用する場合は、__autoload関数を次のように定義して下さい。
-</p>
+S2ContainerSplAutoLoad.php で、__autoload関数 は次のように記述されています。
 <pre>&lt?php
-require_once('/path/to/S2Container/S2Container.php');
+S2ContainerClassLoader::import(S2CONTAINER_PHP5);
+if (function_exists('__autoload')) {
+    spl_autoload_register('__autoload');
+}
+spl_autoload_register(array('S2ContainerClassLoader', 'load'));
+?&gt;
+</pre>
+
+また、同様に S2ContainerAutoLoad.php も用意していますので適宜ご利用下さい。
+
+<pre>&lt?php
 S2ContainerClassLoader::import(S2CONTAINER_PHP5);
 function __autoload($class = null){
     S2ContainerClassLoader::load($class);
 }
 ?&gt;
 </pre>
-***注） S2ContainerClassLoader::load メソッドの引数($class)は、__autoload関数の引数を渡して下さい。
-<br>
-<br>
-
-<p>開発中のアプリケーションや使用しているフレームワークで既に__autoload関数が定義されている場合は、上記の __autoload関数内容を定義済み __autoload関数に追記して下さい。
-</p>
 
 <br>
 <a name="src-install"><h3>ソース一式をダウンロードしてセットアップ</h3></a>
@@ -162,36 +158,34 @@ s2container.php5/
   +-- S2Container.php
 </pre>
 <p>
-S2Container.php を読み込み、__autoload関数を次のように定義して下さい。S2Container.PHP5が使用可能となります。
+S2Container.php と S2ContainerSplAutoLoad.php を require して下さい。S2Container.PHP5が使用可能となります。
 </p>
 
 <pre>&lt?php
 require_once('/path/to/s2container.php5/S2Container.php');
-function __autoload($class = null){
-    if($class != null){
-        include_once("$class.class.php");
-    }
-}
+require_once('S2Container/S2ContainerSplAutoLoad.php');
 ?&gt;
 </pre>
 
-<p>
-S2ContainerClassLoaderを利用する場合は、__autoload関数を次のように定義して下さい。
-</p>
+S2ContainerSplAutoLoad.php で、__autoload関数 は次のように記述されています。
 <pre>&lt?php
-require_once('/path/to/s2container.php5/S2Container.php');
+S2ContainerClassLoader::import(S2CONTAINER_PHP5);
+if (function_exists('__autoload')) {
+    spl_autoload_register('__autoload');
+}
+spl_autoload_register(array('S2ContainerClassLoader', 'load'));
+?&gt;
+</pre>
+
+また、同様に S2ContainerAutoLoad.php も用意していますので適宜ご利用下さい。
+
+<pre>&lt?php
 S2ContainerClassLoader::import(S2CONTAINER_PHP5);
 function __autoload($class = null){
     S2ContainerClassLoader::load($class);
 }
 ?&gt;
 </pre>
-***注） S2ContainerClassLoader::load メソッドの引数($class)は、__autoload関数の引数を渡して下さい。
-<br>
-<br>
-
-<p>開発中のアプリケーションや使用しているフレームワークで既に__autoload関数が定義されている場合は、上記の __autoload関数内容を定義済み __autoload関数に追記して下さい。
-</p>
 
 <!-- document end -->
 <!-- don't edit start -->
