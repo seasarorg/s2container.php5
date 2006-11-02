@@ -1,6 +1,29 @@
-﻿2006-09-02 S2Container.PHP5-1.1.2
+﻿2006-11-03 S2Container.PHP5-1.1.2
 
 ================ S2Container.PHP5-1.1.2 更新履歴 ===================
+
+	* modify: package org.seasar.framework.extension.cache
+	- S2Container_PearCacheLiteSupport を 追加しました。
+	- S2Container_MemcacheSupport を 追加しました。
+	- S2ContainerFileCacheFactory を deprecated としました。
+	* pear package2 に移行しました。
+	* add: package org.seasar.framework.container.factory
+	S2Container_YamlS2ContainerBuilder を追加しました。
+	* add: package org.seasar.framework.aop
+	S2Container_InterType を追加しました。
+	* add: package org.seasar.framework.aop.intertype
+	- S2Container_AbstractInterType を追加しました。
+	- S2Container_DefaultPropertyAnnotationHandler を追加しました。
+	- S2Container_InterTypeChain を追加しました。
+	- S2Container_PropertyAnnotationHandler を追加しました。
+	- S2Container_PropertyInterType を追加しました。
+	- S2Container_SerializableInterType を追加しました。
+	* S2ContainerAutoLoad.php、S2ContainerSplAutoLoad.php を追加しました。
+	* fix: package org.seasar.extension.autoregister.impl
+	FileSystemComponentAutoRegister で複数のClassPatternで同じ検索キーを設定すると、
+	重複してコンポーネントを登録してしまう問題を修正しました。
+
+2006-09-02 S2Container.PHP5-1.1.2
 
 	* delete: package org.seasar.framework.container
 	- S2Container_ContainerConstants::REQUEST_NAME
