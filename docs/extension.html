@@ -665,7 +665,7 @@ MemcacheSupport 使用する場合は次のように定義します。
 
 <h3><a name="cache-lite-support">S2Container_PearCacheLiteSupport</a></h3>
 <p>
-S2Container_PearCacheLiteSupport は、<a href="http://pear.php.net/manual/ja/package.caching.cache-lite.php">PEAR Cache_Lite</a> を使用してキャッシュします。S2Container_PearCacheLiteSupport を有効にするため、S2CONTAINER_PHP5_CACHE_LITE_INI 定数を定義します。S2CONTAINER_PHP5_CACHE_LITE_INI 定数の設定値は Cache_Lite のオプションを指定する INI 形式ファイルへのパスになります。
+S2Container_PearCacheLiteSupport は、<a href="http://pear.php.net/manual/ja/package.caching.cache-lite.php">PEAR Cache_Lite</a> を使用してキャッシュします。PEAR Cache_Lite を別途インストールして下さい。S2Container_PearCacheLiteSupport を有効にするため、S2CONTAINER_PHP5_CACHE_LITE_INI 定数を定義します。S2CONTAINER_PHP5_CACHE_LITE_INI 定数の設定値は Cache_Lite のオプションを指定する INI 形式ファイルへのパスになります。
 </p>
 <pre>
 &lt;?php
@@ -700,6 +700,71 @@ lifeTime = "7200"
 </pre>
 
 <h3><a name="cache-mem-support">S2Container_MemcacheSupport</a></h3>
+<p>
+S2Container_MemcacheSupport は、memcachedサーバにキャッシュを保存します。S2Container_MemcacheSupport を使用する場合は、<a href="http://jp.php.net/manual/ja/ref.memcache.php">memcache 拡張モジュール</a>を導入しておく必要があります。S2Container_MemcacheSupport で設定できるオプションは以下になります。詳細な説明などは<a href="http://jp.php.net/manual/ja/ref.memcache.php">memcache 拡張モジュール</a>の項を参照してください。</p>
+
+<table border="1">
+    <thead>
+    <tr align="center" bgcolor="#d1f3f4">
+        <th>設定キー</th>
+        <th>説明</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td><code>host</code></td>
+        <td>memcachedが起動しているホストを指定します。デフォルトはlocalhostになっています。</td>
+    </tr>
+    <tr>
+        <td><code>port</code></td>
+        <td>memcachedへ接続するためのポート番号を指定します。デフォルトは11211になっています。</td>
+    </tr>
+    <tr>
+        <td><code>timeout</code></td>
+        <td>memcachedへ接続する際に用いる値です。数値は秒単位で指定します。</td>
+    </tr>
+    <tr>
+        <td><code>cache_compress</code></td>
+        <td>memcachedへ保存する際に保存する値を圧縮するかどうかをbooleanで指定します。
+        デフォルトはfalse(圧縮を行わない)になっています。<br />圧縮にはzlibを使用します。</td>
+    </tr>
+    <tr>
+        <td><code>cache_expire</code></td>
+        <td>memcachedで保存した値の生存期間(有効期限)を設定します。デフォルトは0で有効期限無しとなっています。<br />
+        設定できる値はunixタイムスタンプか現在からの秒数を指定することができます。</td>
+    </tr>
+    </tbody>
+</table>
+<br>
+<p>オプション設定値を変更する場合は、S2CONTAINER_PHP5_MEMCACHE_INI 定数にオプション設定INIファイルを指定します。</p>
+
+<pre>
+&lt;?php
+    require_once('S2Container/S2Container.php');
+    define('S2CONTAINER_PHP5_CACHE_SUPPORT_CLASS', 'S2Container_MemcacheSupport');
+    define('S2CONTAINER_PHP5_MEMCACHE_INI', '/path/to/memcached.ini');
+?&gt;
+</pre>
+<p>
+Memcached のオプションを指定する INI 形式ファイルは次の3つのセクションを持ちます。
+</p>
+<ul>
+<li>[default]<br>このセクションで設定した値は、[container] セクションと [aop] セクションのデフォルト値となります。</li>
+<li>[container]<br> S2Container インスタンスのキャッシュについての固有オプションを設定します。</li>
+<li>[aop]<br> S2AOP で生成されるの AopProxy コードのキャッシュについての固有オプションを設定します。</li>
+</ul>
+
+<p>
+S2Container_MemcacheSupport を用いたサンプルは、s2container.php5/examples/extension/cache/memcachedClient.php にあります。サンプルで使用している オプション設定 INI ファイルは次になります。( memcached.ini )
+</p>
+<pre>
+[default]
+
+[container]
+
+[aop]
+</pre>
+
 
 <h3><a name="cache-factory">S2ContainerCacheFactory</a></h3>
 <center>
@@ -710,6 +775,21 @@ lifeTime = "7200"
 </td></tr>
 </table>
 </center>
+<br>
+<p>
+S2ContainerCacheFactory は、S2Container_CacheSupport を用いて S2Containerインスタンスをキャッシュします。<br>
+( <i>S2ContainerFactory ではS2Container_CacheSupport が有効でもキャッシュされません。</i> )<br>
+S2ContainerCacheFactory::create() メソッドを用いて S2Container インスタンスを取得します。
+</p>
+<pre>
+&lt;?php
+    require_once('S2Container/S2Container.php');
+    define('S2CONTAINER_PHP5_CACHE_SUPPORT_CLASS', 'S2Container_MemcacheSupport');
+    define('S2CONTAINER_PHP5_MEMCACHE_INI', '/path/to/memcached.ini');
+
+    $container = S2ContainerCacheFactory::create('/path/to/file.dicon');
+?&gt;
+</pre>
 
 <h3><a name="cache-file">S2ContainerFileCacheFactory (<font color="pink"><i>deprecated </i></font>)</a></h3>
 
