@@ -64,7 +64,8 @@ class S2Container_ExpressionConstructorAssembler
         }
         if ($componentClass instanceof ReflectionClass) {
              $refExpClass = new ReflectionClass($component);
-               if (!$refExpClass->isSubclassOf($componentClass)) {
+               if ($refExpClass->getName() != $componentClass->getName() and
+                   !$refExpClass->isSubclassOf($componentClass)) {
                   throw new S2Container_ClassUnmatchRuntimeException($componentClass,
                                                                      $refExpClass);    
                }
