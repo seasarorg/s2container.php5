@@ -63,13 +63,13 @@ class S2Container_ExpressionConstructorAssembler
                                array("eval() result isnt an Object. "));
         }
         if ($componentClass instanceof ReflectionClass) {
-             $refExpClass = new ReflectionClass($component);
-               if ($refExpClass->getName() != $componentClass->getName() and
-                   !$refExpClass->isSubclassOf($componentClass)) {
-                  throw new S2Container_ClassUnmatchRuntimeException($componentClass,
-                                                                     $refExpClass);    
-               }
-           }
+            $refExpClass = new ReflectionClass($component);
+            if ($refExpClass->getName() != $componentClass->getName() and
+                !$refExpClass->isSubclassOf($componentClass)) {
+                throw new S2Container_ClassUnmatchRuntimeException($componentClass,
+                                                                   $refExpClass);    
+            }
+        }
         $cd->setComponentClass(new ReflectionClass($component));
         return $component;        
     }
