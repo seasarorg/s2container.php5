@@ -53,7 +53,7 @@
 <li><a href="#cache-support">S2Container_CacheSupport</a>
     <ul>
     <li><a href="#cache-lite-support">S2Container_PearCacheLiteSupport</a></li>
-    <li><a href="#cache-mem-support">S2Container_PearCacheLiteSupport</a></li>
+    <li><a href="#cache-mem-support">S2Container_MemcacheSupport</a></li>
     <li><a href="#cache-factory">S2ContainerCacheFactory</a></li>
     <li><a href="#cache-file">S2ContainerFileCacheFactory</a><i>( deprecated ) </i></li>
     <!--
@@ -691,11 +691,11 @@ S2Container_PearCacheLiteSupport を用いたサンプルは、s2container.php5/examples/e
 cacheDir = "%EXAMPLE_DIR%/extension/cache/var/"       &lt;-- ここで設定したキャッシュディレクトリは、
                                                           container と aop に反映されます。
 [container]                                               先頭に%...%で囲むことで定数を埋め込むことができます。
-caching  = "true" 
+caching  = "true"
 lifeTime = "3600"
 
 [aop]
-caching  = "true" 
+caching  = "true"
 lifeTime = "7200"
 </pre>
 
@@ -759,10 +759,20 @@ S2Container_MemcacheSupport を用いたサンプルは、s2container.php5/examples/extens
 </p>
 <pre>
 [default]
+host = "localhost"
+port = "11211"
+cache_compress = "false"
 
 [container]
+host = "ContinerHost"
+cache_compress = "false"
+cache_expire = "0"
 
 [aop]
+host = "AopHost"
+cache_compress = true"
+timeout = "10"
+
 </pre>
 
 
@@ -834,120 +844,6 @@ $container = S2ContainerFileCacheFactory::create($PATH_C,'testC.dicon');
 06fb37bcebbfe225537873c3a16dced48b6b2b4e.dicon     testC.dicon
 >
 </pre>
-
-<!--
-S2ContainerMemcacheFactory
--->
-
-<h3><a name="cache-memcache">S2ContainerMemcacheFactory</a></h3>
-
-<div align="center" style="margin: 2em">
-<table border="1" width="50%">
-<tr><td align="center">警告</td></tr>
-<tr><td>
-この拡張モジュールは<i> 実験的 </i>なものです。この拡張モジュールの動作・関数名・その他ドキュメントに書かれている事項は、将来変更される可能性があります。
-</td></tr>
-</table>
-</div>
-
-<p>S2ContainerMemcacheFactoryはS2ContainerFileCacheFactoryと同じく、S2Containerインスタンスをserializeしキャッシュします。
-保存先はmemcachedサーバに保存します。<br />
-S2ContainerMemcacheFactoryを利用するには<a href="http://jp.php.net/manual/ja/ref.memcache.php">memcache 拡張モジュール</a>を導入しておく必要があります。</p>
-
-<p>キャッシュはS2ContainerMemcacheFactoryのオプションに設定されたサーバに保存します。
-ファイル名はcreateメソッドの第1引数で指定できます。第2引数にはキャッシュに用いる際の別名キーを指定できます。
-第2引数が省略された場合は、diconファイルへのパス文字列を引数として<a href="http://jp2.php.net/manual/ja/function.sha1.php">sha1関数</a>で
-作成されたキーが使用されます。<br />
-S2ContainerMemcacheFactoryはオプションで設定された期間の間だけキャッシュを保存します。</p>
-
-s2container.php5/examples/extension/cache/memcacheClient.php
-<pre>
-&lt;?php
-...
-$memcacheOpt = array('host' => 'localhost', 'port' => 11211);
-$factory = S2ContainerMemcacheFactory::getInstance($memcacheOpt);
-
-$PATH_A = EXAMPLE_DIR . "/extension/cache/testA.dicon";
-$container = $factory->create($PATH_A);
-
-$PATH_B = EXAMPLE_DIR . "/extension/cache/testB.dicon";
-$container = $factory->create($PATH_B);
-
-$PATH_C = EXAMPLE_DIR . "/extension/cache/testC.dicon";
-$anotherOpt = array('host' => 'localhost', 'port' => 11211, 'cache_expire' => 1, 'cache_compress' => true);
-$factory->initialize($anotherOpt);
-$container = $factory->create($PATH_C, 'testC_Key');
-...
-?&gt;
-</pre>
-
-<p>実行例</p>
-
-<pre>
-> cd s2container.php5/examples/extension/cache
-> php memcacheClient.php
-[INFO ] S2ContainerMemcacheFactory::create - create container and cache it.
-time : 0.117786884308
-[INFO ] S2ContainerMemcacheFactory::create - cached container available.
-time : 0.0606780052185
-[INFO ] S2ContainerMemcacheFactory::create - create container and cache it.
-...
-...
-...
-</pre>
-
-<p>S2ContainerMemcacheFactoryで設定できるオプションは以下になります。<br />
-詳細な説明などは<a href="http://jp.php.net/manual/ja/ref.memcache.php">memcache 拡張モジュール</a>の項を参照してください。</p>
-
-<table border="1">
-    <thead>
-    <tr align="center" bgcolor="#d1f3f4">
-        <th>設定キー</th>
-        <th>説明</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td><code>host</code></td>
-        <td>memcachedが起動しているホストを指定します。デフォルトはlocalhostになっています。</td>
-    </tr>
-    <tr>
-        <td><code>port</code></td>
-        <td>memcachedへ接続するためのポート番号を指定します。デフォルトは11211になっています。</td>
-    </tr>
-    <tr>
-        <td><code>timeout</code></td>
-        <td>memcachedへ接続する際に用いる値です。数値は秒単位で指定します。</td>
-    </tr>
-    <tr>
-        <td><code>cache_compress</code></td>
-        <td>memcachedへ保存する際に保存する値を圧縮するかどうかをbooleanで指定します。
-        デフォルトはfalse(圧縮を行わない)になっています。<br />圧縮にはzlibを使用します。</td>
-    </tr>
-    <tr>
-        <td><code>cache_expire</code></td>
-        <td>memcachedで保存した値の生存期間(有効期限)を設定します。デフォルトは0で有効期限無しとなっています。<br />
-        設定できる値はunixタイムスタンプか現在からの秒数を指定することができます。</td>
-    </tr>
-    </tbody>
-</table>
-
-<p>上記の設定例は以下になります。</p>
-
-<pre>
-$option = array('host' => 'memcached_host',
-                'port' => 11211,
-                'timeout' => 2,
-                'cache_compress' => true,
-                'cache_expire' => 0);
-
-$factory = S2ContainerMemcacheFactory::getInstance();
-$factory->initialize($option);
-</pre>
-
-<!--
-    /S2ContainerMemcacheFactory
--->
 
 <br />
 <a name="autoRegister"><h3>自動登録</h3></a>
