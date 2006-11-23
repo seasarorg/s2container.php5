@@ -148,7 +148,7 @@
         </alltest>
     </target>
 
-    <target name="doc" depends="build">
+    <target name="doc" depends="prepare">
         <echo>src directory : ${project.src.dir}/${project.name}/${dd}</echo>
         <phpdoc title="${project.name} Documentation"
             destdir="${project.build.dir}/apidocs"

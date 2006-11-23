@@ -52,10 +52,13 @@ class S2Container_RequestComponentDeployer
             $componentName = $className;
         }
         $component = null;
+        if (!is_array($_REQUEST)) {
+            $_REQUEST = array();
+        }
         if (array_key_exists($componentName,$_REQUEST)) {
             $component = $_REQUEST[$componentName];
         }
-        if ($component != null) {
+        if (is_object($component)) {
             if ($component instanceof $className) {
                 return $component;
             } else {

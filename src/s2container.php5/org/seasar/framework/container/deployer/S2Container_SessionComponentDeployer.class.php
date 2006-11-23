@@ -53,11 +53,11 @@ class S2Container_SessionComponentDeployer
         }
 
         $component = null;
-        if (isset($_SESSION[$componentName])) {
+        if (is_array($_SESSION) and isset($_SESSION[$componentName])) {
              $component = $_SESSION[$componentName];
         }
 
-        if ($component != null) {
+        if (is_object($component)) {
             if ($component instanceof $className) {
                 return $component;
             } else {
@@ -68,7 +68,9 @@ class S2Container_SessionComponentDeployer
             }
         }
         $component = $this->getConstructorAssembler()->assemble();
-        $_SESSION[$componentName] = $component;
+        if (is_array($_SESSION)) {
+            $_SESSION[$componentName] = $component;
+        }
         $this->getPropertyAssembler()->assemble($component);
         $this->getInitMethodAssembler()->assemble($component);
         return $component;

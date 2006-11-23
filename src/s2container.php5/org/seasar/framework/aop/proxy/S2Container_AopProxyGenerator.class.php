@@ -51,7 +51,7 @@ class S2Container_AopProxyGenerator
         }
 
         $support = S2Container_CacheSupportFactory::create();
-        if (!$support->isAopProxyCaching($targetClass->getFileName())) {
+        if (!$support->isAopProxyCaching($targetClass->getFileName() . $concreteClassName)) {
             S2Container_S2Logger::getLogger(__CLASS__)->
                 debug("set caching off.",__METHOD__);
             $srcLine = self::generateInternal($concreteClassName, $targetClass);
@@ -59,7 +59,7 @@ class S2Container_AopProxyGenerator
             return $concreteClassName;
         }
 
-        if ($srcLine = $support->loadAopProxyCache($targetClass->getFileName())) {
+        if ($srcLine = $support->loadAopProxyCache($targetClass->getFileName() . $concreteClassName)) {
             S2Container_S2Logger::getLogger(__CLASS__)->
                     debug("cached aop proxy found.",__METHOD__);
             self::evalInternal($srcLine);
@@ -69,7 +69,7 @@ class S2Container_AopProxyGenerator
             S2Container_S2Logger::getLogger(__CLASS__)->
                 debug("create aop proxy and cache it.",__METHOD__);
             $srcLine = self::generateInternal($concreteClassName, $targetClass);
-            $support->saveAopProxyCache($srcLine, $targetClass->getFileName());
+            $support->saveAopProxyCache($srcLine, $targetClass->getFileName() . $concreteClassName);
             self::evalInternal($srcLine);
             return $concreteClassName;
         }
