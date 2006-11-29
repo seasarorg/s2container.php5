@@ -1,4 +1,9 @@
-﻿
+﻿2006-11-30 S2Container.PHP5-1.1.3
+
+    * modify: package org.seasar.framework.aop.proxy
+    S2Container_EnhancedClassGeneratorにおいて、同一の呼び出しからEnhanceされたクラスが
+    常に1つとなっていたのを修正し常に呼ばれる毎に生成するようにしました。
+
 2006-11-22 S2Container.PHP5-1.1.3
 
 ================ S2Container.PHP5-1.1.3 更新履歴 ===================
