@@ -61,6 +61,8 @@ class S2Container_EnhancedClassGenerator
     protected $source = array();
     /** Evaluate Sources */
     protected $evaluate = array();
+    
+    private static $instancate = 0; 
 
     /**
      * 
@@ -280,6 +282,7 @@ class S2Container_EnhancedClassGenerator
      */
     public function generate()
     {
+        // TODO: 同一のEnhanceを返したい場合はどうするか
         if (class_exists($this->enhancedClassName, false)) {
             return $this->enhancedClassName;
         }
@@ -324,7 +327,8 @@ class S2Container_EnhancedClassGenerator
     {
         return self::CLASS_NAME_PREFIX .
                $this->targetClass->getName() . 
-               self::CLASS_NAME_POSTFIX;
+               self::CLASS_NAME_POSTFIX .
+               self::$instancate++;
     }
     
     /**
