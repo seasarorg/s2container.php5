@@ -1,115 +1,172 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html><head><!-- don't edit start --><title>Seasar - DI Container with AOP -</title><meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja"><head>
+
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Language" content="ja">
 <meta http-equiv="Content-Style-Type" content="text/css">
-<link href="seasar_b.css" type="text/css" rel="stylesheet" media="screen"><link href="seasar_p.css" type="text/css" rel="stylesheet" media="print"><script src="seasar_b.js" type="text/JavaScript" language="JavaScript"></script></head>
+<meta name="keywords" content="Seasar2, S2Container, DI, AOP, Dependency Injection, Aspect Oriented Programming, The Seasar Foundation, OSS, オープンソースソフトウェア, Java, フレームワーク">
+<meta name="description" content="私たちSeasarプロジェクトはオープンソースという仕組みの元、開発者のゆとりを実現できるプロダクトの開発と提供を通じて、ユーザと開発者とが共に喜びを分かち合える環境実現をお手伝いすることを目指し活動しています。 ">
+<title>The Seasar Project - S2Container.PHP5</title>
 
+<link rel="stylesheet" type="text/css" href="theme/main.css" media="screen,projection">
+<link rel="stylesheet" type="text/css" href="theme/print.css" media="print"></head><body>
 
-<body onload="preload('ja')"><table align="left" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr>
-<td align="left" valign="top" width="780"><table class="white" border="0" cellpadding="0" cellspacing="0" width="780">
-<tbody><tr><td colspan="7"><img src="images/top01_b.gif" alt="" height="5" width="780"></td></tr>
-<tr><td width="235"><img src="images/top02_b.gif" alt="Seasar" height="117" width="235"></td>
-<td colspan="3"><img src="images/top03.gif" alt="DI Container with AOP" height="117" width="289"></td>
-<td colspan="3"><img src="images/spacer.gif" alt="" height="117" width="256"></td>
-</tr><tr><td rowspan="2"><img src="images/top04.gif" alt="" height="49" width="235"></td>
-<td><a href="http://www.seasar.org/index.html"><img src="images/menu01_b_ja.gif" alt="" id="menu01" onmouseover="swap(1)" onmouseout="restore(1)" border="0" height="30" width="78"></a></td>
-<td><a href="http://www.seasar.org/projects.html"><img src="images/menu02_b_ja.gif" alt="" id="menu02" onmouseover="swap(2)" onmouseout="restore(2)" border="0" height="30" width="101"></a></td>
-<td><a href="http://www.seasar.org/products.html"><img src="images/menu03_b_ja.gif" alt="" id="menu03" onmouseover="swap(3)" onmouseout="restore(3)" border="0" height="30" width="110"></a></td>
-<td><a href="http://www.seasar.org/resources.html"><img src="images/menu04_b_ja.gif" alt="" id="menu04" onmouseover="swap(4)" onmouseout="restore(4)" border="0" height="30" width="113"></a></td>
-<td><img src="images/menu05_b_ja.gif" alt="" id="menu05" onmouseover="swap(5)" onmouseout="restore(5)" border="0" height="30" width="109"></td>
-<td width="34"><img src="images/menu06.gif" alt="" height="30" width="34"></td></tr><tr>
-<td colspan="6"><img src="images/spacer.gif" alt="" height="19" width="545"></td></tr></tbody></table>
-<table class="white" border="0" cellpadding="0" cellspacing="0" width="780">
-<tbody><tr align="left" valign="top"><td width="18"><img src="images/spacer.gif" alt="" height="14" width="18"></td><td class="main" width="744">
-<!-- don't edit end -->
-<!-- document start -->
+<div id="wrapper">
 
+<div id="header">
+
+<div class="line"><span class="hide">spacer</span></div>
+
+<div id="logo">
+<h1 id="h01" class="hide">The Seasar Project</h1>
+<a href="http://www.seasar.org/">
+<img src="images/seasar_logo_blue.gif" alt="The Seasar Project" height="180" width="390">
+</a>
+</div>
+
+<div id="tool">
+</div>
+
+<div id="navi">
+<p><font size="-1"><a href="index.html">S2Container.PHP5 ホーム</a> &raquo; ドキュメント &raquo; Extension</font></p>
+</div>
+
+</div><!-- header -->
+
+<div id="contents_left">
+
+<h2>メニュー</h2>
+
+<h3>ドキュメント</h3>
 <ul>
-<li><a href="#diconInclude">dicon�t�@�C����include�p�X�ݒ�</a></li>
-<li><a href="#log">���O�ݒ�</a></li>
-<li><a href="#uuset">__set()�ł̃Z�b�^�[�E�C���W�F�N�V����</a></li>
-<li><a href="#dba">�f�[�^�x�[�X�ڑ�</a></li>
-    <ul>
-    <li><a href="#dba-ds">DataSource�ɂ���</a></li>
+    <li><a href="setup.html">セットアップ</a></li>
+    <li><a href="DIContainer.html">DIContainer</a></li>
+    <li><a href="aop.html">AOP</a></li>
+    <li>Extension
+        <font size="-2">
         <ul>
-        <li type="circle"><a href="#dba-ds-peardb">pdo.dicon �e���v���[�g</a></li>
-        <li type="circle"><a href="#dba-ds-use">�g�p���@</a></li>
+            <li><a href="#diconInclude">diconファイルのincludeパス設定</a></li>
+            <li><a href="#log">ログ設定</a></li>
+            <li><a href="#uuset">__set()でのセッター・インジェクション</a></li>
+            <li><a href="#dba">データベース接続</a>
+                <ul>
+                    <li><a href="#dba-ds">DataSourceについて</a>
+                        <ul>
+                            <li type="circle"><a href="#dba-ds-peardb">pdo.dicon テンプレート</a></li>
+                            <li type="circle"><a href="#dba-ds-use">使用方法</a></li>
+                        </ul>
+                     </li>
+                </ul>
+            </li>
+            <li><a href="#unit">S2Unit</a>
+                <ul>
+                    <li><a href="#unit-example">Example</a></li>
+                </ul>
+            </li>
+            <li><a href="#loader">S2ContainerClassLoader</a>
+                <ul>
+                    <li><a href="#loader-file">クラス定義ファイルを指定する</a></li>
+                    <li><a href="#loader-dir">ディレクトリを指定する</a></li>
+                    <li><a href="#loader-array">クラス定義の配列を使用する</a></li>
+                </ul>
+            </li>
+            <li><a href="#cache-support">S2Container_CacheSupport</a>
+                <ul>
+                    <li><a href="#cache-lite-support">S2Container_PearCache LiteSupport</a></li>
+                    <li><a href="#cache-mem-support">S2Container_Memcache Support</a></li>
+                    <li><a href="#cache-factory">S2ContainerCache Factory</a></li>
+                    <li><a href="#cache-file">S2ContainerFile CacheFactory</a><i> (deprecated)</i></li>
+                </ul>
+            </li>
+            <li><a href="#autoRegister">自動登録</a>
+                <ul>
+                    <li><a href="#autoRegister-file">FileSystemComponent AutoRegister</a></li>
+                    <li><a href="#autoRegister-aspect">AspectAutoRegister</a></li>
+                    <li><a href="#autoRegister-interface">InterfaceAspect AutoRegister</a></li>
+                </ul>
+            </li>
+            <li><a href="#commentAnnotation">コメントアノテーション</a></li>
+            <li><a href="#yamldiconbuilder">Yaml形式によるDicon定義</a>
+                <ul>
+                    <li><a href="#yaml-components">componentsキー</a></li>
+                    <li><a href="#yaml-include">includeキー</a></li>
+                    <li><a href="#yaml-component">componentキー</a></li>
+                    <li><a href="#yaml-arg">argキー</a></li>
+                    <li><a href="#yaml-property">propertyキー</a></li>
+                    <li><a href="#yaml-meta">metaキー</a></li>
+                    <li><a href="#yaml-initMethod">initMethodキー</a></li>
+                    <li><a href="#yaml-destroyMethod">destroyMethodキー</a></li>
+                    <li><a href="#yaml-aspect">aspectキー</a></li>
+                    <li><a href="#yaml-interType">interTypeキー</a></li>
+                </ul>
+            </li>
         </ul>
-    </ul>
-
-<li><a href="#unit">S2Unit</a>
-    <ul>
-    <li><a href="#unit-example">Example</a></li>
-    </ul>
-</li>
-
-<li><a href="#loader">S2ContainerClassLoader</a>
-    <ul>
-    <li><a href="#loader-file">�N���X��`�t�@�C�����w�肷��</a></li>
-    <li><a href="#loader-dir">�f�B���N�g�����w�肷��</a></li>
-    <li><a href="#loader-array">�N���X��`�̔z����g�p����</a></li>
-    </ul>
-</li>
-
-<li><a href="#cache-support">S2Container_CacheSupport</a>
-    <ul>
-    <li><a href="#cache-lite-support">S2Container_PearCacheLiteSupport</a></li>
-    <li><a href="#cache-mem-support">S2Container_MemcacheSupport</a></li>
-    <li><a href="#cache-factory">S2ContainerCacheFactory</a></li>
-    <li><a href="#cache-file">S2ContainerFileCacheFactory</a><i>( deprecated ) </i></li>
-    <!--
-    <li><a href="#cache-memcache">S2ContainerMemcacheFactory</a></li>
-    -->
-    </ul>
-</li>
-
-<li><a href="#autoRegister">�����o�^</a>
-    <ul>
-    <li><a href="#autoRegister-file">FileSystemComponentAutoRegister</a></li>
-    <li><a href="#autoRegister-aspect">AspectAutoRegister</a></li>
-    <li><a href="#autoRegister-interface">InterfaceAspectAutoRegister</a></li>
-    </ul>
-</li>
-
-<li><a href="#commentAnnotation">�R�����g�A�m�e�[�V����</a></li>
-
-<li><a href="#yamldiconbuilder">Yaml�`���ɂ��Dicon��`</a>
-    <ul>
-        <li><a href="#yaml-components">components�L�[</a></li>
-        <li><a href="#yaml-include">include�L�[</a></li>
-        <li><a href="#yaml-component">component�L�[</a></li>
-        <li><a href="#yaml-arg">arg�L�[</a></li>
-        <li><a href="#yaml-property">property�L�[</a></li>
-        <li><a href="#yaml-meta">meta�L�[</a></li>
-        <li><a href="#yaml-initMethod">initMethod�L�[</a></li>
-        <li><a href="#yaml-destroyMethod">destroyMethod�L�[</a></li>
-        <li><a href="#yaml-aspect">aspect�L�[</a></li>
-        <li><a href="#yaml-interType">interType�L�[</a></li>
-    </ul>
-</li>
-
+        </font>
+    </li>
+    <li><a href="php.html">PHP式</a></li>
 </ul>
 
-<br>
-<b><h2>Extension</h2></b>
-<a name="diconInclude"><h3>dicon�t�@�C����include�p�X�ݒ�</h3></a>
+<h3>リンク</h3>
+<ul>
+    <li><a href="http://www.seasar.org/">Seasar.org</a></li>
+    <li><a href="http://svn.seasar.org/browse/?root=s2container.php5">SVN リポジトリブラウザ</a></li>
+    <li><a href="https://www.seasar.org/svn/s2container.php5/">SVN リポジトリ</a></li>
+    <li><a href="https://www.seasar.org/issues/browse/CONTAINERPHP">Issue Tracker</a></li>
+    <li><a href="http://labs.s2php5.jp/">labs.s2php5.jp</a></li>
+</ul>
 
-<p>dicon�t�@�C����include�^�O��path�����ł́A�擪��%...%�ň͂ނ��ƂŒ萔�𖄂ߍ��ނ��Ƃ��ł��܂��B<br>
+<h2>PHP プロジェクト</h2>
+
+<h3>Seasar.PHP</h3>
+
+<ul>
+    <li><a href="http://s2container.php5.seasar.org/">S2Container.PHP5</a></li>
+    <li><a href="http://s2dao.php5.seasar.org/">S2Dao.PHP5</a></li>
+</ul>
+
+<h3>Sandbox.PHP</h3>
+
+<ul>
+    <li><a href="http://kunit.jp/maple/">Maple.PHP</a></li>
+    <li><a href="http://s2base.php5.sandbox.seasar.org/">S2Base.PHP5</a></li>
+</ul>
+
+
+
+</div><!-- contents_left -->
+
+<div id="contents_center">
+
+<div id="article">
+<div class="section">
+<h2 id="h02"><a name="diconInclude">diconファイルのincludeパス設定</a></h2>
+
+<p>
+　diconファイルのincludeタグのpath属性では、先頭に%...%で囲むことで定数を埋め込むことができます。
 </p>
 <pre>
-define(DICON_DIR,'/path/to/dir');   //��`�ς݂Ƃ���
+define(DICON_DIR,'/path/to/dir');   //定義済みとする
 
 &lt;components&gt;
     &lt;include path="%DICON_DIR%/bar.dicon"/&gt;
 &lt;/components&gt;
-��) �p�X�̐擪��%...%�̂ݓW�J����܂��B
+注) パスの先頭の%...%のみ展開されます。
 </pre>
-
 <br>
-<a name="log"><h3>���O�ݒ�</h3></a>
-<h4>SimpleLogger</h4>
+</div>
+
+<div class="section">
+<h2 id="h02"><a name="log">ログ設定</a></h2>
+
+<h3>SimpleLogger</h3>
 <p>
-S2Logger �N���X�� getLogger ���\�b�h�́A�f�t�H���g�ł� SimpleLogger �̃C���X�^���X��Ԃ��܂��BSimpleLogger �̓f�t�H���g�ŕW���o�͂Ƀ��O��\�����܂��B���O���x���� DEBUG�AINFO�AWARN�AERROR�AFATAL �� 5 �ł��B���O���x���̐ݒ�� S2CONTAINER_PHP5_LOG_LEVEL �萔�ōs���܂��B
+　S2Logger クラスの getLogger メソッドは、デフォルトでは SimpleLogger のインスタンスを返します。
+SimpleLogger はデフォルトで標準出力にログを表示します。ログレベルは DEBUG、INFO、WARN、ERROR、FATAL の 5 つです。
+ログレベルの設定は S2CONTAINER_PHP5_LOG_LEVEL 定数で行います。
 </p>
+
 <pre>&lt;?php
 require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php');
 
@@ -122,12 +179,18 @@ $logger->error('test error');
 $logger->fatal('test fatal');
 ?&gt;
 </pre>
-S2CONTAINER_PHP5_SIMPLE_LOG_FILE �萔�Ƀ��O�t�@�C����ݒ肷�邱�ƂŁA���O���t�@�C���ɏo�͂��邱�Ƃ��ł��܂��B<br>
-���̃T���v���� examples/misc/logger/simpleLogClient.php �ɂ���܂��B
+
+S2CONTAINER_PHP5_SIMPLE_LOG_FILE 定数にログファイルを設定することで、ログをファイルに出力することができます。<br>
+このサンプルは examples/misc/logger/simpleLogClient.php にあります。
 
 
-<h4>log4php���g�p����</h4>
-<p><a href="http://logging.apache.org/log4php/">log4php</a> ���g�p����ꍇ�́AS2LogFactory �� LOGGER �ϐ���ݒ肵�܂��B���O���x����o�͌`�����̐ݒ�́Alog4php.properties �t�@�C���ōs���܂��B</p>
+<h3>log4phpを使用する</h3>
+
+<p>
+　<a href="http://logging.apache.org/log4php/">log4php</a> を使用する場合は、S2LogFactory の LOGGER 変数を設定します。
+ログレベルや出力形式等の設定は、log4php.properties ファイルで行います。
+</p>
+
 <pre>&lt;?php
 require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php');
 define('LOG4PHP_DIR', dirname(__FILE__) . '/log4php-***/src/log4php');
@@ -144,26 +207,33 @@ $logger->error('test error');
 $logger->fatal('test fatal');
 ?&gt;
 </pre>
-���̃T���v���� examples/misc/logger/log4phpClient.php �ɂ���܂��B
+このサンプルは examples/misc/logger/log4phpClient.php にあります。
 
 <br>
-<a name="uuset"><h3>__set()�ł̃Z�b�^�[�E�C���W�F�N�V����</h3></a>
-<p>PHP5����ǉ����ꂽ__set()���g�p���āA�Z�b�^�[�E�C���W�F�N�V�������s�����Ƃ��ł��܂��B</p>
+</div>
+
+<div class="section">
+<h2 id="h02"><a name="uuset">__set()でのセッター・インジェクション</a></h2>
+
+<p>
+　PHP5から追加された__set()を使用して、セッター・インジェクションを行うことができます。
+</p>
+
 <ul>
-<li>�v���p�e�B�������I�Ɏw�肳��Ă��� (dicon�t�@�C���� property�^�O���L�q����Ă���)</li>
-<li>�C���W�F�N�V�����ΏۃN���X���Z�b�^�[���\�b�h���������Ă��Ȃ�</li>
-<li>�C���W�F�N�V�����ΏۃN���X��__set()���������Ă���</li>
+<li>プロパティが明示的に指定されている (diconファイルで propertyタグが記述されている)</li>
+<li>インジェクション対象クラスがセッターメソッドを実装していない</li>
+<li>インジェクション対象クラスが__set()を実装している</li>
 </ul>
-��L�����Ɉ�v����ꍇ�ɁA__set()�ɂ��Z�b�^�[�E�C���W�F�N�V���������s����܂��B<br>
+上記条件に一致する場合に、__set()によりセッター・インジェクションが実行されます。<br>
 
 <br>
-<b>�����N���X�̍쐬</b>
+<h5>実装クラスの作成</h5>
 <ul>
-<li type="circle">�Z�b�^�[�E���\�b�h(setMessageA)���`���܂��B</li>
-<li type="circle">__set()���������܂��B</li>
-<li type="circle">showMessage()���������܂��B</li>
+<li type="circle">セッター・メソッド(setMessageA)を定義します。</li>
+<li type="circle">__set()を実装します。</li>
+<li type="circle">showMessage()を実装します。</li>
 </ul>
-<p>$messageB�v���p�e�B�̃Z�b�^�[���\�b�h�͒�`���Ă��܂���B</p>
+<p>$messageBプロパティのセッターメソッドは定義していません。</p>
 <pre>&lt;?php
 class HelloImpl {
 
@@ -187,13 +257,18 @@ class HelloImpl {
 ?&gt;
 </pre>
 
-<br>
-<b>dicon�t�@�C���̍쐬</b>
+
+<h5>diconファイルの作成</h5>
+
 <ul>
-<li type="circle">component�^�O�ŃR���|�[�l���g���`���܂��B</li>
-<li type="circle">component�^�O�̎q�^�O��property�^�O�ŃR���|�[�l���g�̃v���p�e�B�l���`���܂��B</li>
+<li type="circle">componentタグでコンポーネントを定義します。</li>
+<li type="circle">componentタグの子タグのpropertyタグでコンポーネントのプロパティ値を定義します。</li>
 </ul>
-<p>s2container.php5/examples/extension/uuset/uuset.dicon</p>
+
+<p>
+s2container.php5/examples/extension/uuset/uuset.dicon
+</p>
+
 <pre>&lt;components&gt;
     &lt;component class="HelloImpl"&gt;
         &lt;property name="messageA"&gt;"Hello"&lt;/property&gt;
@@ -202,16 +277,18 @@ class HelloImpl {
 &lt;/components&gt;
 </pre>
 
-<br>
-<b>���s�X�N���v�g�̍쐬</b>
+<h5>実行スクリプトの作成</h5>
 
 <ul>
-<li type="circle">S2ContainerFactory#create($path)���Ăяo����S2Container���쐬���܂��B</li>
-<li type="circle">getComponent()���g�p���āAS2Container����R���|�[�l���g�����o���܂��B</li>
-<li type="circle">�擾�����R���|�[�l���g�̃��\�b�h���Ăяo���܂��B</li>
+<li type="circle">S2ContainerFactory#create($path)を呼び出してS2Containerを作成します。</li>
+<li type="circle">getComponent()を使用して、S2Containerからコンポーネントを取り出します。</li>
+<li type="circle">取得したコンポーネントのメソッドを呼び出します。</li>
 </ul>
 
-<p>s2container.php5/examples/extension/uuset/uusetClient.php</p>
+<p>
+s2container.php5/examples/extension/uuset/uusetClient.php
+</p>
+
 <pre>&lt;?php
 require_once(dirname(__FILE__) . '/uuset.inc.php');
 $PATH = EXAMPLE_DIR . "/extension/uuset/uuset.dicon";
@@ -220,9 +297,12 @@ $hello = $container->getComponent('HelloImpl');
 $hello->showMessage();
 ?&gt;
 </pre>
-<br>
-<b>���s����</b>
-<p>property�^�O�Ŏw�肵�������񂪐������\������Ă��邱�Ƃ��m�F�ł��܂��B</p>
+
+<h5>実行結果</h5>
+
+<p>
+propertyタグで指定した文字列が正しく表示されていることが確認できます。
+</p>
 
 <pre>
 % php uusetClient.php
@@ -230,150 +310,144 @@ Hello World
 %
 </pre>
 
-����example�́As2container.php5/examples/extension/uuset/�ȉ��ɗp�ӂ���Ă��܂��B<br>
+このexampleは、s2container.php5/examples/extension/uuset/以下に用意されています。<br>
 
+</div>
+
+<div class="section">
+<h2 id="h02"><a name="dba">データベース接続</a></h2>
+
+<p>
+　データベースへの接続フレームワークをextennsionとして含めています。
+</p>
+
+<p>以降の説明では、以下のサンプルテーブルを用います。
+サンプルテーブルを作成する demo.sql は s2container.php5/src/s2container.php5/org/seasar/extension/db/sql/
+にあります。
+</p>
+
+テーブル：EMP
+<table border="1" class="main">
+    <tr bgcolor="#d1f3f4" align="center">
+        <th>カラム名</th>
+        <th>論理名</th>
+        <th>型</th>
+        <th>NotNull</th>
+        <th>主キー</th>
+    </tr>
+    <tr>
+        <td>EMPNO</td>
+        <td>従業員番号</td>
+        <td>NUMBER</td>
+        <td align="center">〇</td>
+        <td align="center">〇</td>
+    </tr>
+    <tr>
+        <td>ENAME</td>
+        <td>従業員名</td>
+        <td>VARCHAR</td>
+        <td><br /></td>
+        <td><br /></td>
+    </tr>
+    <tr>
+        <td>JOB</td>
+        <td>仕事</td>
+        <td>VARCHAR</td>
+        <td><br /></td>
+        <td><br /></td>
+    </tr>
+    <tr>
+        <td>MGR</td>
+        <td>上司</td>
+        <td>NUMBER</td>
+        <td><br /></td>
+        <td><br /></td>
+    </tr>
+    <tr>
+        <td>HIREDATE</td>
+        <td>雇用日</td>
+        <td>DATE</td>
+        <td><br /></td>
+        <td><br /></td>
+    </tr>
+    <tr>
+        <td>SAL</td>
+        <td>給料</td>
+        <td>NUMBER</td>
+        <td><br /></td>
+        <td><br /></td>
+    </tr>
+    <tr>
+        <td>COMM</td>
+        <td>手数料</td>
+        <td>NUMBER</td>
+        <td><br /></td>
+        <td><br /></td>
+    </tr>
+    <tr>
+        <td>DEPTNO</td>
+        <td>部署番号</td>
+        <td>NUMBER</td>
+        <td><br /></td>
+        <td><br /></td>
+    </tr>
+    <tr>
+        <td>TSTAMP</td>
+        <td>タイムスタンプ</td>
+        <td>TIMESTAMP</td>
+        <td><br /></td>
+        <td><br /></td>
+    </tr>
+</table>
+<br/>
+
+テーブル：DEPT
+<table border="1" class="main">
+    <tr bgcolor="#d1f3f4" align="center">
+        <th>カラム名</th>
+        <th>論理名</th>
+        <th>型</th>
+        <th>NotNull</th>
+        <th>主キー</th>
+    </tr>
+    <tr>
+        <td>DEPTNO</td>
+        <td>部署番号</td>
+        <td>NUMBER</td>
+        <td align="center">〇</td>
+        <td align="center">〇</td>
+    </tr>
+    <tr>
+        <td>DNAME</td>
+        <td>部署名</td>
+        <td>VARCHAR</td>
+        <td><br /></td>
+        <td><br /></td>
+    </tr>
+    <tr>
+        <td>LOC</td>
+        <td>ロケーション</td>
+        <td>VARCHAR</td>
+        <td><br /></td>
+        <td><br /></td>
+    </tr>
+    <tr>
+        <td>VERSIONNO</td>
+        <td>バージョン番号</td>
+        <td>NUMBER</td>
+        <td><br /></td>
+        <td><br /></td>
+    </tr>
+</table>
 
 <br>
-<a name="dba"><h3>�f�[�^�x�[�X�ڑ�</h3></a>
-<p>�f�[�^�x�[�X�ւ̐ڑ��t���[�����[�N��extennsion�Ƃ��Ċ܂߂Ă��܂��B
+<a name="dba-ds"><h3>DataSourceについて</h3></a>
+
+<a name="dba-ds-peardb"><h4>pdo.dicon テンプレート</h4></a>
+<p>
+　pdo.diconのテンプレートを以下に示します。
+dataSourceコンポーネントのdsnプロパティを、ご使用のデータベースに接続できる値に設定して下さい。
 </p>
-<p>�ȍ~�̐����ł́A�ȉ��̃T���v���e�[�u����p���܂��B
-�T���v���e�[�u�����쐬���� demo.sql �� s2container.php5/src/s2container.php5/org/seasar/extension/db/sql/
-�ɂ���܂��B
-</p>
-
-        �e�[�u���FEMP
-        <table border="1" class="main">
-            <tr bgcolor="#d1f3f4" align="center">
-              <th>�J������</th>
-              <th>�_����</th>
-              <th>�^</th>
-              <th>NotNull</th>
-
-              <th>��L�[</th>
-            </tr>
-            <tr>
-              <td>EMPNO</td>
-              <td>�]�ƈ��ԍ�</td>
-              <td>NUMBER</td>
-              <td align="center">�Z</td>
-
-              <td align="center">�Z</td>
-            </tr>
-            <tr>
-              <td>ENAME</td>
-              <td>�]�ƈ���</td>
-              <td>VARCHAR</td>
-              <td><br /></td>
-
-              <td><br /></td>
-            </tr>
-            <tr>
-              <td>JOB</td>
-              <td>�d��</td>
-              <td>VARCHAR</td>
-              <td><br /></td>
-
-              <td><br /></td>
-            </tr>
-            <tr>
-              <td>MGR</td>
-              <td>��i</td>
-              <td>NUMBER</td>
-              <td><br /></td>
-
-              <td><br /></td>
-            </tr>
-            <tr>
-              <td>HIREDATE</td>
-              <td>�ٗp��</td>
-              <td>DATE</td>
-              <td><br /></td>
-
-              <td><br /></td>
-            </tr>
-            <tr>
-              <td>SAL</td>
-              <td>����</td>
-              <td>NUMBER</td>
-              <td><br /></td>
-
-              <td><br /></td>
-            </tr>
-            <tr>
-              <td>COMM</td>
-              <td>�萔��</td>
-              <td>NUMBER</td>
-              <td><br /></td>
-
-              <td><br /></td>
-            </tr>
-            <tr>
-              <td>DEPTNO</td>
-              <td>�����ԍ�</td>
-              <td>NUMBER</td>
-              <td><br /></td>
-
-              <td><br /></td>
-            </tr>
-            <tr>
-              <td>TSTAMP</td>
-              <td>�^�C���X�^���v</td>
-              <td>TIMESTAMP</td>
-              <td><br /></td>
-
-              <td><br /></td>
-            </tr>
-        </table>
-        <br />�e�[�u���FDEPT
-        <table border="1" class="main">
-            <tr bgcolor="#d1f3f4" align="center">
-              <th>�J������</th>
-               <th>�_����</th>
-
-              <th>�^</th>
-              <th>NotNull</th>
-              <th>��L�[</th>
-            </tr>
-            <tr>
-              <td>DEPTNO</td>
-              <td>�����ԍ�</td>
-
-              <td>NUMBER</td>
-              <td align="center">�Z</td>
-              <td align="center">�Z</td>
-            </tr>
-            <tr>
-              <td>DNAME</td>
-              <td>������</td>
-
-              <td>VARCHAR</td>
-              <td><br /></td>
-              <td><br /></td>
-            </tr>
-            <tr>
-              <td>LOC</td>
-              <td>���P�[�V����</td>
-
-              <td>VARCHAR</td>
-              <td><br /></td>
-              <td><br /></td>
-            </tr>
-            <tr>
-              <td>VERSIONNO</td>
-              <td>�o�[�W�����ԍ�</td>
-
-              <td>NUMBER</td>
-              <td><br /></td>
-              <td><br /></td>
-            </tr>
-        </table>
-
-<br>
-<a name="dba-ds"><h3>DataSource�ɂ���</h3></a>
-<a name="dba-ds-peardb"><h3>pdo.dicon �e���v���[�g</h3></a>
-<p>pdo.dicon�̃e���v���[�g���ȉ��Ɏ����܂��B
-dataSource�R���|�[�l���g��dsn�v���p�e�B���A���g�p�̃f�[�^�x�[�X�ɐڑ��ł���l�ɐݒ肵�ĉ������B</p>
 
 <pre>
 &lt;?xml version="1.0" encoding="Shift_JIS"?&gt;
@@ -389,15 +463,16 @@ dataSource�R���|�[�l���g��dsn�v���p�e�B���A���g�p�̃f�[�^�x�[�X�ɐڑ��ł���l�ɐ
 &lt;/components&gt;
 </pre>
 
-<br>
+<a name="dba-ds-use"><h4>使用方法</h4></a>
+<p>
+　サンプルとして、引数で受け取ったDEPTNO値でDEPTテーブルを検索し、その結果を返すDAOを実装してみます。<br>
+この演習は、s2container.php5/examples/extension/db/以下に用意されています。
+</p>
 
-<a name="dba-ds-use"><h3>�g�p���@</h3></a>
-<p>�T���v���Ƃ��āA�����Ŏ󂯎����DEPTNO�l��DEPT�e�[�u�����������A���̌��ʂ�Ԃ�DAO���������Ă݂܂��B<br>
-���̉��K�́As2container.php5/examples/extension/db/�ȉ��ɗp�ӂ���Ă��܂��B</p>
-<p><b>�C���^�t�F�[�X�̒�`</b></p>
+<h5>インタフェースの定義</h5>
 <ul>
-<li type="circle">DeptDao�C���^�t�F�[�X���`���܂��B</li>
-<li type="circle">DEPTNO�l�Ō������s�� findDeptByDeptno���\�b�h���`���܂��B</li>
+<li type="circle">DeptDaoインタフェースを定義します。</li>
+<li type="circle">DEPTNO値で検索を行う findDeptByDeptnoメソッドを定義します。</li>
 </ul>
 
 <pre>
@@ -408,11 +483,11 @@ interface DeptDao {
 ?&gt;
 </pre>
 
-<p><b>�����N���X�̍쐬</b></p>
+<h5>実装クラスの作成</h5>
 <ul>
-<li type="circle">DeptDao�C���^�t�F�[�X�� implements ���� DeptDaoImpl�N���X���쐬���܂��B</li>
-<li type="circle">�R���X�g���N�^������ S2Container_DataSource ���󂯎��悤�ɂ��܂��B</li>
-<li type="circle">findDeptByDeptno ���\�b�h���������܂��B�f�[�^�x�[�X�ւ̃R�l�N�V�����́ADataSource���擾���܂��B</li>
+<li type="circle">DeptDaoインタフェースを implements する DeptDaoImplクラスを作成します。</li>
+<li type="circle">コンストラクタ引数で S2Container_DataSource を受け取るようにします。</li>
+<li type="circle">findDeptByDeptno メソッドを実装します。データベースへのコネクションは、DataSourceより取得します。</li>
 </ul>
 
 <pre>
@@ -435,11 +510,13 @@ class DeptDaoImpl implements DeptDao {
 }
 ?&gt;
 </pre>
-<br>
 
-<p><b>dicon�t�@�C���̍쐬</b></p>
+<h5>diconファイルの作成</h5>
 
-<p>deptDao.dicon ���쐬���Apdo.dicon �� include ���܂��B</p>
+<p>
+　deptDao.dicon を作成し、pdo.dicon を include します。
+</p>
+
 <pre>
 &lt;components&gt;
     &lt;include path="%S2CONTAINER_PHP5%/org/seasar/extension/db/pdo.dicon"/&gt;
@@ -447,15 +524,15 @@ class DeptDaoImpl implements DeptDao {
 &lt;/components&gt;
 </pre>
 
-<br>
-<p><b>���s�X�N���v�g�̍쐬</b></p>
+<h5>実行スクリプトの作成</h5>
 <ul>
-<li type="circle">deptDao.dicon���w�肵�ăR���e�i���쐬���܂��B</li>
-<li type="circle">�R���e�i���AdeptDao�R���|�[�l���g���擾���܂��B</li>
-<li type="circle">DEPTNO(10) �� findDeptByDeptno ���\�b�h���Ăяo���܂��B</li>
+<li type="circle">deptDao.diconを指定してコンテナを作成します。</li>
+<li type="circle">コンテナより、deptDaoコンポーネントを取得します。</li>
+<li type="circle">DEPTNO(10) で findDeptByDeptno メソッドを呼び出します。</li>
 </ul>
 
 <p>dataSourceClient.php</p>
+
 <pre>
 &lt;?php
 require_once(dirname(__FILE__) . '/db.inc.php');
@@ -469,7 +546,7 @@ print_r($result);
 ?&gt;
 </pre>
 
-<p><b>���s����</b></p>
+<h5>実行結果</h5>
 <pre>
 % php dataSourceClient.php
 Array
@@ -482,24 +559,36 @@ Array
 %
 </pre>
 
-
+</div>
 <br>
-<a name="unit"><h3>S2Unit</h3></a>
-<p>S2�ł́A�R���e�i���g�����J���̃e�X�g���y���������Ȃ���悤�Ƀe�X�e�B���O�t���[�����[�N���g�ݍ��܂�Ă��܂��B<a href="http://pear.php.net/package/PHPUnit2">PHPUnit2</a>�A<a href="http://www.lastcraft.com/simple_test.php">SimpleTest</a>���g�����Ă��܂��B��ȋ@�\�͈ȉ��̂Ƃ���ł��B</p>
+
+<div class="section">
+<h2 id="h02"><a name="unit">S2Unit</a></h2>
+
+<p>
+　S2では、コンテナを使った開発のテストを楽しくおこなえるようにテスティングフレームワークが組み込まれています。
+<a href="http://pear.php.net/package/PHPUnit2">PHPUnit2</a>、<a href="http://www.lastcraft.com/simple_test.php">SimpleTest</a>を拡張しています。主な機能は以下のとおりです。
+</p>
+
 <ul>
-<li>�e�X�g���\�b�h(testXxx)���ƂɎ����I��S2Container���쐬���܂��B</li>
-
-<li>S2Container�ɑ΂���register()�AgetComponent()�Ainclude() ���p�ӂ���Ă��܂��B</li>
-<li>TestCase�� public �ȃt�B�[���h������ƁA�t�B�[���h���Ɠ������O�̃R���|�[�l���g���R���e�i�ɑ��݂���Ύ����I�ɃZ�b�g����܂��B</li>
-<li>�e�X�g���\�b�h���I���Ǝ����Z�b�g���ꂽ�l�͎����I�ɃN���A( null ���Z�b�g)����܂��B</li>
-<li>�e�X�g���\�b�h( testXxx )�ɑΉ����� setUpXxx()�AtearDownXxx() ���`���Ă����ƁAsetUp()�̌�AtearDown()�̑O�Ɏ����I�ɌĂяo����܂��B�ʂ̃e�X�g���\�b�h���Ƃ̏������E�I���������ȒP�ɍs����悤�ɂȂ�܂��B</li>
+<li>テストメソッド(testXxx)ごとに自動的にS2Containerを作成します。</li>
+<li>S2Containerに対するregister()、getComponent()、include() が用意されています。</li>
+<li>TestCaseに public なフィールドがあると、フィールド名と同じ名前のコンポーネントがコンテナに存在すれば自動的にセットされます。</li>
+<li>テストメソッドが終わると自動セットされた値は自動的にクリア( null をセット)されます。</li>
+<li>テストメソッド( testXxx )に対応する setUpXxx()、tearDownXxx() を定義しておくと、setUp()の後、tearDown()の前に自動的に呼び出されます。個別のテストメソッドごとの初期化・終了処理を簡単に行えるようになります。</li>
 </ul>
-<h3><a name="unit-example">Example</a></h3>
-<p>Pear PHPUnit2 ���g������ S2Container_S2PHPUnit2TestCase ��p���܂��B<br>
-���̃T���v���́As2container.php5/examples/extension/unit/�ȉ��ɂ���܂��B</p>
 
-<p><b>�e�X�g�Ώ�</b></p>
-<p>s2container.php5/examples/extension/unit/src/foo/FooLogic.class.php</p>
+<h3><a name="unit-example">Example</a></h3>
+<p>
+　Pear PHPUnit2 を拡張した S2Container_S2PHPUnit2TestCase を用います。<br>
+このサンプルは、s2container.php5/examples/extension/unit/以下にあります。
+</p>
+
+<h5>テスト対象</h5>
+<p>
+　s2container.php5/examples/extension/unit/src/foo/FooLogic.class.php
+</p>
+
 <pre>
 &lt;?php
 class FooLogic {
@@ -514,9 +603,12 @@ class FooLogic {
 ?&gt;
 </pre>
 
-<p><b>dicon�t�@�C��</b></p>
+<h5>diconファイル</h5>
 
-<p>s2container.php5/examples/extension/unit/src/foo/foo.dicon</p>
+<p>
+　s2container.php5/examples/extension/unit/src/foo/foo.dicon
+</p>
+
 <pre>&lt;?xml version="1.0" encoding="Shift_JIS"?&gt;
 &lt;!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
 "http://www.seasar.org/dtd/components21.dtd"&gt;
@@ -525,21 +617,24 @@ class FooLogic {
 &lt;/components&gt;
 </pre>
 
-<p><b>�e�X�g�N���X</b></p>
+<h5>テストクラス</h5>
 
-<p>s2container.php5/examples/extension/unit/test/phpunit2/foo/FooLogicTest.class.php</p>
+<p>
+　s2container.php5/examples/extension/unit/test/phpunit2/foo/FooLogicTest.class.php
+</p>
+
 <pre>
 &lt;?php
 class FooLogicTest extends S2Container_S2PHPUnit2TestCase {
 
-    public $logic;   //--- dicon �t�@�C���� logic �Ƃ������O�̃R���|�[�l���g�����݂���ΐݒ肳��܂�
+    public $logic;   //--- dicon ファイルに logic という名前のコンポーネントが存在すれば設定されます
 
     function __construct($name) {
         parent::__construct($name);
     }
 
     function setUp(){
-        $this->includeDicon(UNIT_EXAMPLE . "/src/foo/foo.dicon");   //--- dicon �t�@�C���� include ���܂�
+        $this->includeDicon(UNIT_EXAMPLE . "/src/foo/foo.dicon");   //--- dicon ファイルを include します
     }
 
     function testShowYear(){
@@ -568,8 +663,11 @@ class FooAllTest {
 ?&gt;
 </pre>
 
-<p><b>���s�X�N���v�g</b></p>
-<p>s2container.php5/examples/extension/unit/test/phpunit2/foo/fooTests.php</p>
+<h5>実行スクリプト</h5>
+<p>
+　s2container.php5/examples/extension/unit/test/phpunit2/foo/fooTests.php
+</p>
+
 <pre>
 &lt;?php
 define('PHPUnit2_MAIN_METHOD', 'FooAllTest::main()');
@@ -581,7 +679,8 @@ FooAllTest::main();
 </pre>
 
 
-<p><b>���s����</b></p>
+<h5>実行結果</h5>
+
 <pre>
 % php allTests.php
 
@@ -596,16 +695,19 @@ OK (1 test)
 %
 </pre>
 
-<p>SimpleTest ��p�������l�̃T���v���� s2container.php5/examples/extension/unit/test/�ȉ��ɂ���܂��B</p>
+<p>SimpleTest を用いた同様のサンプルが s2container.php5/examples/extension/unit/test/以下にあります。</p>
+</div>
 
 <br>
-<a name="loader"><h3>S2ContainerClassLoader</h3></a>
+<div class="section">
+<h2 id="h02"><a name="loader">S2ContainerClassLoader</a></h2>
+
 <p>
-S2Container.PHP5�ł́A�N���X��`�̓ǂݍ��݂� S2ContainerClassLoader ���Ǘ����܂��B
-S2ContainerClassLoader �ɂ� import���\�b�h����`����Ă���A�C�ӂ̃N���X��o�^�ł��܂��B�o�^���ꂽ�N���X�́A__autoload�֐����œǂݍ��܂�܂��B
+　S2Container.PHP5では、クラス定義の読み込みを S2ContainerClassLoader が管理します。
+S2ContainerClassLoader には importメソッドが定義されており、任意のクラスを登録できます。登録されたクラスは、__autoload関数内で読み込まれます。
 </p>
 
-<h3><a name="loader-file">�N���X��`�t�@�C�����w�肷��</a></h3>
+<h3><a name="loader-file">クラス定義ファイルを指定する</a></h3>
 
 <pre>
 &lt;?php
@@ -614,10 +716,10 @@ S2ContainerClassLoader::import('/path/to/Foo.php');
 ?&gt;
 </pre>
 
-�N���X���͎w�肳�ꂽ�t�@�C�����̐擪����u.�v�܂łɂȂ�܂��BHoge.class.php�̏ꍇ�́uHoge�v�ƂȂ�܂��B
+クラス名は指定されたファイル名の先頭から「.」までになります。Hoge.class.phpの場合は「Hoge」となります。
 <br>
 <br>
-<p><b>�N���X�����w�肷��</b></p>
+<h5>クラス名を指定する</h5>
 <pre>
 &lt;?php
 S2ContainerClassLoader::import('/path/to/Hoge.class.php','Hoge');
@@ -625,19 +727,19 @@ S2ContainerClassLoader::import('/path/to/classes.php','Foo');
 S2ContainerClassLoader::import('/path/to/classes.php','Bar');
 ?&gt;
 </pre>
-import���\�b�h�̑������ŃN���X�����w��ł��܂��B
+importメソッドの第二引数でクラス名を指定できます。
 
 <br>
-<h3><a name="loader-dir">�f�B���N�g�����w�肷��</a></h3>
+<h3><a name="loader-dir">ディレクトリを指定する</a></h3>
 <pre>
 &lt;?php
 S2ContainerClassLoader::import('/path/to/dir');
 ?&gt;
 </pre>
 
-�w�肳�ꂽ�f�B���N�g���ɂ���N���X��`�t�@�C����import���܂��B
+指定されたディレクトリにあるクラス定義ファイルをimportします。
 
-<h3><a name="loader-array">�N���X��`�̔z����g�p����</a></h3>
+<h3><a name="loader-array">クラス定義の配列を使用する</a></h3>
 
 <pre>
 &lt;?php
@@ -647,15 +749,16 @@ S2ContainerClassLoader::import($classes);
 ?&gt;
 </pre>
 
-�N���X�����L�[�Ƃ��ăN���X��`�t�@�C�����w�肳�ꂽ�A�z�z���import���܂��B
+クラス名をキーとしてクラス定義ファイルが指定された連想配列をimportします。
 
-<br>
-<br>
-<h3><a name="cache-support">S2Container_CacheSupport</a></h3>
+<div class="section">
+<h2 id="h02"><a name="cache-support">S2Container_CacheSupport</a></h2>
+
 <p>
-S2Container_CacheSupport �ł́AS2Container �C���X�^���X�� serialize �f�[�^�ƁAS2AOP �Ő��������� AopProxy �R�[�h���L���b�V�����܂��BS2Container_CacheSupport�̎����N���X�Ƃ��āAS2Container_PearCacheLiteSupport �� S2Container_MemcacheSupport ������܂��B�ǂ� CacheSupport �N���X���g�p���邩�́AS2CONTAINER_PHP5_CACHE_SUPPORT_CLASS �萔�Ŏw�肵�܂��B�f�t�H���g�́AS2Container_PearCacheLiteSupport �ł��B
-MemcacheSupport �g�p����ꍇ�͎��̂悤�ɒ�`���܂��B
+　S2Container_CacheSupport では、S2Container インスタンスの serialize データと、S2AOP で生成されるの AopProxy コードをキャッシュします。S2Container_CacheSupportの実装クラスとして、S2Container_PearCacheLiteSupport と S2Container_MemcacheSupport があります。どの CacheSupport クラスを使用するかは、S2CONTAINER_PHP5_CACHE_SUPPORT_CLASS 定数で指定します。
+デフォルトは、S2Container_PearCacheLiteSupport です。MemcacheSupport 使用する場合は次のように定義します。
 </p>
+
 <pre>
 &lt;?php
     require_once('S2Container/S2Container.php');
@@ -665,32 +768,36 @@ MemcacheSupport �g�p����ꍇ�͎��̂悤�ɒ�`���܂��B
 
 <h3><a name="cache-lite-support">S2Container_PearCacheLiteSupport</a></h3>
 <p>
-S2Container_PearCacheLiteSupport �́A<a href="http://pear.php.net/manual/ja/package.caching.cache-lite.php">PEAR Cache_Lite</a> ���g�p���ăL���b�V�����܂��BPEAR Cache_Lite ��ʓr�C���X�g�[�����ĉ������BS2Container_PearCacheLiteSupport ��L���ɂ��邽�߁AS2CONTAINER_PHP5_CACHE_LITE_INI �萔���`���܂��BS2CONTAINER_PHP5_CACHE_LITE_INI �萔�̐ݒ�l�� Cache_Lite �̃I�v�V�������w�肷�� INI �`���t�@�C���ւ̃p�X�ɂȂ�܂��B
+　S2Container_PearCacheLiteSupport は、<a href="http://pear.php.net/manual/ja/package.caching.cache-lite.php">PEAR Cache_Lite</a> を使用してキャッシュします。
+PEAR Cache_Lite を別途インストールして下さい。S2Container_PearCacheLiteSupport を有効にするため、S2CONTAINER_PHP5_CACHE_LITE_INI 定数を定義します。S2CONTAINER_PHP5_CACHE_LITE_INI 定数の設定値は 
+Cache_Lite のオプションを指定する INI 形式ファイルへのパスになります。
 </p>
+
 <pre>
 &lt;?php
     require_once('S2Container/S2Container.php');
     define('S2CONTAINER_PHP5_CACHE_LITE_INI', '/path/to/cache_lite.ini');
 ?&gt;
 </pre>
+
 <p>
-Cache_Lite �̃I�v�V�������w�肷�� INI �`���t�@�C���͎���3�̃Z�N�V�����������܂��B
+Cache_Lite のオプションを指定する INI 形式ファイルは次の3つのセクションを持ちます。
 </p>
 <ul>
-<li>[default]<br>���̃Z�N�V�����Őݒ肵���l�́A[container] �Z�N�V������ [aop] �Z�N�V�����̃f�t�H���g�l�ƂȂ�܂��B</li>
-<li>[container]<br> S2Container �C���X�^���X�̃L���b�V���ɂ��Ă̌ŗL�I�v�V������ݒ肵�܂��B</li>
-<li>[aop]<br> S2AOP �Ő��������� AopProxy �R�[�h�̃L���b�V���ɂ��Ă̌ŗL�I�v�V������ݒ肵�܂��B</li>
+<li>[default]<br>このセクションで設定した値は、[container] セクションと [aop] セクションのデフォルト値となります。</li>
+<li>[container]<br> S2Container インスタンスのキャッシュについての固有オプションを設定します。</li>
+<li>[aop]<br> S2AOP で生成されるの AopProxy コードのキャッシュについての固有オプションを設定します。</li>
 </ul>
 
 <p>
-�e�Z�N�V�����Őݒ肷�� <a href="http://pear.php.net/manual/ja/package.caching.cache-lite.cache-lite.cache-lite.php">Cache_Lite �I�v�V�����ɂ��Ă͂�����</a>���Q�Ɖ������B<br>
-S2Container_PearCacheLiteSupport ��p�����T���v���́As2container.php5/examples/extension/cache/pearCacheLiteClient.php �ɂ���܂��B�T���v���Ŏg�p���Ă��� �I�v�V�����ݒ� INI �t�@�C���͎��ɂȂ�܂��B( cacheLite.ini )
+各セクションで設定する <a href="http://pear.php.net/manual/ja/package.caching.cache-lite.cache-lite.cache-lite.php">Cache_Lite オプションについてはこちら</a>を参照下さい。<br>
+S2Container_PearCacheLiteSupport を用いたサンプルは、s2container.php5/examples/extension/cache/pearCacheLiteClient.php にあります。サンプルで使用している オプション設定 INI ファイルは次になります。( cacheLite.ini )
 </p>
 <pre>
 [default]
-cacheDir = "%EXAMPLE_DIR%/extension/cache/var/"       &lt;-- �����Őݒ肵���L���b�V���f�B���N�g���́A
-                                                          container �� aop �ɔ��f����܂��B
-[container]                                               �擪��%...%�ň͂ނ��ƂŒ萔�𖄂ߍ��ނ��Ƃ��ł��܂��B
+cacheDir = "%EXAMPLE_DIR%/extension/cache/var/"       &lt;-- ここで設定したキャッシュディレクトリは、
+                                                          container と aop に反映されます。
+[container]                                               先頭に%...%で囲むことで定数を埋め込むことができます。
 caching  = "true"
 lifeTime = "3600"
 
@@ -701,42 +808,48 @@ lifeTime = "7200"
 
 <h3><a name="cache-mem-support">S2Container_MemcacheSupport</a></h3>
 <p>
-S2Container_MemcacheSupport �́Amemcached�T�[�o�ɃL���b�V����ۑ����܂��BS2Container_MemcacheSupport ���g�p����ꍇ�́A<a href="http://jp.php.net/manual/ja/ref.memcache.php">memcache �g�����W���[��</a>�𓱓����Ă����K�v������܂��BS2Container_MemcacheSupport �Őݒ�ł���I�v�V�����͈ȉ��ɂȂ�܂��B�ڍׂȐ����Ȃǂ�<a href="http://jp.php.net/manual/ja/ref.memcache.php">memcache �g�����W���[��</a>�̍����Q�Ƃ��Ă��������B</p>
+　S2Container_MemcacheSupport は、memcachedサーバにキャッシュを保存します。
+S2Container_MemcacheSupport を使用する場合は、<a href="http://jp.php.net/manual/ja/ref.memcache.php">memcache 拡張モジュール</a>を導入しておく必要があります。
+S2Container_MemcacheSupport で設定できるオプションは以下になります。詳細な説明などは<a href="http://jp.php.net/manual/ja/ref.memcache.php">memcache 拡張モジュール</a>の項を参照してください。
+</p>
 
 <table border="1">
     <thead>
     <tr align="center" bgcolor="#d1f3f4">
-        <th>�ݒ�L�[</th>
-        <th>����</th>
+        <th>設定キー</th>
+        <th>説明</th>
     </tr>
     </thead>
     <tbody>
     <tr>
         <td><code>host</code></td>
-        <td>memcached���N�����Ă���z�X�g���w�肵�܂��B�f�t�H���g��localhost�ɂȂ��Ă��܂��B</td>
+        <td>memcachedが起動しているホストを指定します。デフォルトはlocalhostになっています。</td>
     </tr>
     <tr>
         <td><code>port</code></td>
-        <td>memcached�֐ڑ����邽�߂̃|�[�g�ԍ����w�肵�܂��B�f�t�H���g��11211�ɂȂ��Ă��܂��B</td>
+        <td>memcachedへ接続するためのポート番号を指定します。デフォルトは11211になっています。</td>
     </tr>
     <tr>
         <td><code>timeout</code></td>
-        <td>memcached�֐ڑ�����ۂɗp����l�ł��B���l�͕b�P�ʂŎw�肵�܂��B</td>
+        <td>memcachedへ接続する際に用いる値です。数値は秒単位で指定します。</td>
     </tr>
     <tr>
         <td><code>cache_compress</code></td>
-        <td>memcached�֕ۑ�����ۂɕۑ�����l�����k���邩�ǂ�����boolean�Ŏw�肵�܂��B
-        �f�t�H���g��false(���k���s��Ȃ�)�ɂȂ��Ă��܂��B<br />���k�ɂ�zlib���g�p���܂��B</td>
+        <td>memcachedへ保存する際に保存する値を圧縮するかどうかをbooleanで指定します。
+        デフォルトはfalse(圧縮を行わない)になっています。<br />圧縮にはzlibを使用します。</td>
     </tr>
     <tr>
         <td><code>cache_expire</code></td>
-        <td>memcached�ŕۑ������l�̐�������(�L������)��ݒ肵�܂��B�f�t�H���g��0�ŗL�����������ƂȂ��Ă��܂��B<br />
-        �ݒ�ł���l��unix�^�C���X�^���v�����݂���̕b�����w�肷�邱�Ƃ��ł��܂��B</td>
+        <td>memcachedで保存した値の生存期間(有効期限)を設定します。デフォルトは0で有効期限無しとなっています。<br />
+        設定できる値はunixタイムスタンプか現在からの秒数を指定することができます。</td>
     </tr>
     </tbody>
 </table>
 <br>
-<p>�I�v�V�����ݒ�l��ύX����ꍇ�́AS2CONTAINER_PHP5_MEMCACHE_INI �萔�ɃI�v�V�����ݒ�INI�t�@�C�����w�肵�܂��B</p>
+
+<p>
+オプション設定値を変更する場合は、S2CONTAINER_PHP5_MEMCACHE_INI 定数にオプション設定INIファイルを指定します。
+</p>
 
 <pre>
 &lt;?php
@@ -745,18 +858,22 @@ S2Container_MemcacheSupport �́Amemcached�T�[�o�ɃL���b�V����ۑ����܂��BS2Conta
     define('S2CONTAINER_PHP5_MEMCACHE_INI', '/path/to/memcached.ini');
 ?&gt;
 </pre>
+
 <p>
-Memcached �̃I�v�V�������w�肷�� INI �`���t�@�C���͎���3�̃Z�N�V�����������܂��B
+Memcached のオプションを指定する INI 形式ファイルは次の3つのセクションを持ちます。
 </p>
+
 <ul>
-<li>[default]<br>���̃Z�N�V�����Őݒ肵���l�́A[container] �Z�N�V������ [aop] �Z�N�V�����̃f�t�H���g�l�ƂȂ�܂��B</li>
-<li>[container]<br> S2Container �C���X�^���X�̃L���b�V���ɂ��Ă̌ŗL�I�v�V������ݒ肵�܂��B</li>
-<li>[aop]<br> S2AOP �Ő��������� AopProxy �R�[�h�̃L���b�V���ɂ��Ă̌ŗL�I�v�V������ݒ肵�܂��B</li>
+<li>[default]<br>このセクションで設定した値は、[container] セクションと [aop] セクションのデフォルト値となります。</li>
+<li>[container]<br> S2Container インスタンスのキャッシュについての固有オプションを設定します。</li>
+<li>[aop]<br> S2AOP で生成されるの AopProxy コードのキャッシュについての固有オプションを設定します。</li>
 </ul>
 
 <p>
-S2Container_MemcacheSupport ��p�����T���v���́As2container.php5/examples/extension/cache/memcachedClient.php �ɂ���܂��B�T���v���Ŏg�p���Ă��� �I�v�V�����ݒ� INI �t�@�C���͎��ɂȂ�܂��B( memcached.ini )
+S2Container_MemcacheSupport を用いたサンプルは、s2container.php5/examples/extension/cache/memcachedClient.php にあります。
+サンプルで使用している オプション設定 INI ファイルは次になります。( memcached.ini )
 </p>
+
 <pre>
 [default]
 host = "localhost"
@@ -779,17 +896,17 @@ timeout = "10"
 <h3><a name="cache-factory">S2ContainerCacheFactory</a></h3>
 <center>
 <table border="1" width="50%">
-<tr><td align="center">�x��</td></tr>
+<tr><td align="center">警告</td></tr>
 <tr><td>
-���̊g�����W���[����<i> �����I </i>�Ȃ��̂ł��B���̊g�����W���[���̓���E�֐����E���̑��h�L�������g�ɏ�����Ă��鎖���́A�����ύX�����\��������܂��B
+この拡張モジュールは<i> 実験的 </i>なものです。この拡張モジュールの動作・関数名・その他ドキュメントに書かれている事項は、将来変更される可能性があります。
 </td></tr>
 </table>
 </center>
 <br>
 <p>
-S2ContainerCacheFactory �́AS2Container_CacheSupport ��p���� S2Container�C���X�^���X���L���b�V�����܂��B<br>
-( <i>S2ContainerFactory �ł�S2Container_CacheSupport ���L���ł��L���b�V������܂���B</i> )<br>
-S2ContainerCacheFactory::create() ���\�b�h��p���� S2Container �C���X�^���X���擾���܂��B
+　S2ContainerCacheFactory は、S2Container_CacheSupport を用いて S2Containerインスタンスをキャッシュします。<br>
+( <i>S2ContainerFactory ではS2Container_CacheSupport が有効でもキャッシュされません。</i> )<br>
+S2ContainerCacheFactory::create() メソッドを用いて S2Container インスタンスを取得します。
 </p>
 <pre>
 &lt;?php
@@ -805,19 +922,19 @@ S2ContainerCacheFactory::create() ���\�b�h��p���� S2Container �C���X�^���X����
 
 <center>
 <table border="1" width="50%">
-<tr><td align="center">�x��</td></tr>
+<tr><td align="center">警告</td></tr>
 <tr><td>
-���̊g�����W���[����<i> �����I </i>�Ȃ��̂ł��B���̊g�����W���[���̓���E�֐����E���̑��h�L�������g�ɏ�����Ă��鎖���́A�����ύX�����\��������܂��B
+この拡張モジュールは<i> 実験的 </i>なものです。この拡張モジュールの動作・関数名・その他ドキュメントに書かれている事項は、将来変更される可能性があります。
 </td></tr>
 </table>
 </center>
 
 <p>
-S2ContainerFileCacheFactory��S2Container�C���X�^���X��serialize���A�L���b�V���t�@�C���ɕۑ����܂��B
-�L���b�V���t�@�C����S2CONTAINER_PHP5_CACHE_DIR�萔�Ŏw�肳�ꂽ�f�B���N�g���ɕۑ�����܂��B
-�t�@�C������create���\�b�h�̑�2�����Ŏw��ł��܂��B��2�������ȗ����ꂽ�ꍇ�́Adicon�t�@�C���ւ̃p�X�������
-�����Ƃ���<a href="http://jp2.php.net/manual/ja/function.sha1.php">sha1�֐�</a>�ō쐬���ꂽ�����񂪎g�p����܂��B
-S2ContainerFileCacheFactory��dicon�t�@�C�����X�V�����ƃL���b�V�����X�V���܂��B
+　S2ContainerFileCacheFactoryはS2Containerインスタンスをserializeし、キャッシュファイルに保存します。
+キャッシュファイルはS2CONTAINER_PHP5_CACHE_DIR定数で指定されたディレクトリに保存されます。
+ファイル名はcreateメソッドの第2引数で指定できます。第2引数が省略された場合は、diconファイルへのパス文字列を
+引数として<a href="http://jp2.php.net/manual/ja/function.sha1.php">sha1関数</a>で作成された文字列が使用されます。
+S2ContainerFileCacheFactoryはdiconファイルが更新されるとキャッシュを更新します。
 </p>
 
 s2container.php5/examples/extension/cache/cacheClient.php
@@ -844,92 +961,100 @@ $container = S2ContainerFileCacheFactory::create($PATH_C,'testC.dicon');
 06fb37bcebbfe225537873c3a16dced48b6b2b4e.dicon     testC.dicon
 >
 </pre>
+<br>
+</div>
 
-<br />
-<a name="autoRegister"><h3>�����o�^</h3></a>
+<div class="section">
+<h2 id="h02"><a name="autoRegister">自動登録</a></h2>
+
 <h3><a name="autoRegister-file">FileSystemComponentAutoRegister</a></h3>
 
-<p><a href="DIContainer.html#AutoBindingMode">�����o�C���f�B���O</a>�ɂ��ADI�̐ݒ�͂قڎ������ł��܂��B
-����ɁA�R���|�[�l���g�̓o�^�����������Ă��܂����Ƃ����̂��A�R���|�[�l���g�̎����o�^�@�\�ł��B
-�萔�A�m�e�[�V�����܂���<a href="#commentAnnotation">�R�����g�A�m�e�[�V����</a>���g���čׂ������䂷�邱�Ƃ��\�ł��B</p>
+<p>
+　<a href="DIContainer.html#AutoBindingMode">自動バインディング</a>により、DIの設定はほぼ自動化できます。
+さらに、コンポーネントの登録も自動化してしまおうというのが、コンポーネントの自動登録機能です。
+定数アノテーションまたは<a href="#commentAnnotation">コメントアノテーション</a>を使って細かく制御することも可能です。
+</p>
 
 <table border="1">
-<tr bgcolor="#d1f3f4" align="center">
-<th>�v���p�e�B</th>
-
-<th>����</th>
-</tr>
-<tr>
-<td><a href="DIContainer.html#InstanceMode">instanceMode</a></td>
-<td>�����o�^�����R���|�[�l���g�ɓK�p����InstanceMode���w�肵�܂��B</td>
-</tr>
-<tr>
-<td><code>autoNaming</code></td>
-<td>�N���X������R���|�[�l���g���������I�Ɍ��肷��R���|�[�l���g�B<br>S2Container_AutoNaming�C���^�[�t�F�[�X���������Ă���K�v������܂��B<br>�f�t�H���g�ͤS2Container_DefaultAutoNaming�N���X�̃C���X�^���X�ɂȂ�܂��B</td>
-
-</tr>
+    <tr bgcolor="#d1f3f4" align="center">
+        <th>プロパティ</th>
+        <th>説明</th>
+    </tr>
+    <tr>
+        <td><a href="DIContainer.html#InstanceMode">instanceMode</a></td>
+        <td>自動登録されるコンポーネントに適用するInstanceModeを指定します。</td>
+    </tr>
+    <tr>
+        <td><code>autoNaming</code></td>
+        <td>クラス名からコンポーネント名を自動的に決定するコンポーネント。<br>S2Container_AutoNamingインターフェースを実装している必要があります。<br>デフォルトは､S2Container_DefaultAutoNamingクラスのインスタンスになります。</td>
+    </tr>
 </table>
-<br />
-<table border="1">
-<tr bgcolor="#d1f3f4" align="center">
-<th>���\�b�h</th>
-<th>����</th>
-</tr>
-<tr>
-<td><code>addClassPattern</code></td>
-<td>�����o�^�������N���X�p�^�[����o�^���܂��B������2�����܂��B�ŏ��̈����ͤ�R���|�[�l���g�̃N���X��`�t�@�C������������f�B���N�g���p�X�ł��B�T�u�f�B���N�g�����ċA�I�Ɍ������܂��B�N���X�t�@�C����SUFFIX�́u.class.php�v�ł��B�N���X���ƃt�@�C�����͈�v���Ȃ���΂����܂���B2�Ԗڂ̈����̓N���X���ł��B���K�\�����g���܂��B�u,�v��؂�ŕ����L�q���邱�Ƃ��ł��܂��B</td>
-</tr>
-<tr>
 
-<td><code>addIgnoreClassPattern</code></td>
-<td>�����o�^�������Ȃ��N���X�p�^�[����o�^���܂��B������1�����܂��B�����̓N���X���ł��B���K�\�����g���܂��B�J���}�u,�v��؂�ŕ����L�q���邱�Ƃ��ł��܂��B</td>
-</tr>
+<br>
+
+<table border="1">
+    <tr bgcolor="#d1f3f4" align="center">
+        <th>メソッド</th>
+        <th>説明</th>
+    </tr>
+    <tr>
+        <td><code>addClassPattern</code></td>
+        <td>自動登録したいクラスパターンを登録します。引数を2つ持ちます。最初の引数は､コンポーネントのクラス定義ファイルを検索するディレクトリパスです。サブディレクトリも再帰的に検索します。クラスファイルのSUFFIXは「.class.php」です。クラス名とファイル名は一致しなければいけません。2番目の引数はクラス名です。正規表現が使えます。「,」区切りで複数記述することもできます。</td>
+    </tr>
+    <tr>
+        <td><code>addIgnoreClassPattern</code></td>
+        <td>自動登録したくないクラスパターンを登録します。引数を1つ持ちます。引数はクラス名です。正規表現が使えます。カンマ「,」区切りで複数記述することもできます。</td>
+    </tr>
 </table>
 
 <h4>AutoNaming</h4>
-<p>�R���|�[�l���g�̖��O��AutoNaming�ɂ�萧�䂵�܂��B</p>
+<p>
+　コンポーネントの名前はAutoNamingにより制御します。
+</p>
 
 <h5><a name="DefaultAutoNaming">DefaultAutoNaming</a></h5>
-<p>�N���X���̍Ōオ Impl �܂��� Bean �ŏI����Ă�����폜���A�擪���������ɂ������O���R���|�[�l���g�̖��O�ɐݒ肵�܂��B<br>
-�Ⴆ�ΤHogeImpl�N���X�̏ꍇ��R���|�[�l���g���� hoge �ɂȂ�܂��B</p>
+
+<p>
+　クラス名の最後が Impl または Bean で終わっていたら削除し、先頭を小文字にした名前をコンポーネントの名前に設定します。<br>
+例えば､HogeImplクラスの場合､コンポーネント名は hoge になります。
+</p>
 
 <table border="1">
-
-<tr bgcolor="#d1f3f4" align="center">
-<th>�v���p�e�B</th>
-<th>����</th>
-</tr>
-<tr>
-<td><code>decapitalize</code></td>
-<td>�R���|�[�l���g���̐擪���������ɂ���ꍇ��true���w�肵�܂��B�f�t�H���g��true�ł��B</td>
-</tr>
-
+    <tr bgcolor="#d1f3f4" align="center">
+        <th>プロパティ</th>
+        <th>説明</th>
+    </tr>
+    <tr>
+        <td><code>decapitalize</code></td>
+        <td>コンポーネント名の先頭を小文字にする場合はtrueを指定します。デフォルトはtrueです。</td>
+    </tr>
 </table>
+
 <br>
+
 <table border="1">
-<tr bgcolor="#d1f3f4" align="center">
-
-<th>���\�b�h</th>
-<th>����</th>
-</tr>
-<tr>
-<td><code>setCustomizedName</code></td>
-<td>�f�t�H���g�̃��[���ɏ]��Ȃ��N���X��o�^���܂��B�ŏ��̈����ͤ�N���X���ł��B
-2�Ԗڂ̈����ͤ�R���|�[�l���g���ł��B</td>
-</tr>
-<tr>
-<td><code>addIgnoreClassSuffix</code></td>
-<td>�N���X���̖�������폜���镔�����w�肵�܂��B�f�t�H���g�� Impl ����� Bean ���o�^����Ă��܂��B</td>
-</tr>
-
-<tr>
-<td><code>addReplaceRule</code></td>
-<td>���K�\���ɂ��u�����[����ǉ����܂��B�ŏ��̈����͐��K�\���ł��B2�Ԗڂ̈����͒u��������ł��B</td>
-</tr>
-<tr>
-<td><code>clearReplaceRule</code></td>
-<td>setCustomizedName�AaddIgnoreClassSuffix�AaddReplaceRule�œo�^�����ϊ��K�����N���A���܂��B�f�t�H���g�œo�^����Ă��� Impl ����� Bean ���N���A����܂��B</td>
-</tr>
+    <tr bgcolor="#d1f3f4" align="center">
+        <th>メソッド</th>
+        <th>説明</th>
+    </tr>
+    <tr>
+        <td><code>setCustomizedName</code></td>
+        <td>デフォルトのルールに従わないクラスを登録します。最初の引数は､クラス名です。
+            2番目の引数は､コンポーネント名です。
+        </td>
+    </tr>
+    <tr>
+        <td><code>addIgnoreClassSuffix</code></td>
+        <td>クラス名の末尾から削除する部分を指定します。デフォルトで Impl および Bean が登録されています。</td>
+    </tr>
+    <tr>
+        <td><code>addReplaceRule</code></td>
+        <td>正規表現による置換ルールを追加します。最初の引数は正規表現です。2番目の引数は置換文字列です。</td>
+    </tr>
+    <tr>
+        <td><code>clearReplaceRule</code></td>
+        <td>setCustomizedName、addIgnoreClassSuffix、addReplaceRuleで登録した変換規則をクリアします。デフォルトで登録されている Impl および Bean もクリアされます。</td>
+    </tr>
 </table>
 
 <br>
@@ -954,17 +1079,21 @@ s2container.php5/examples/extension/autoregister/autoFile.dicon
     &lt;/component&gt;
 &lt;/components&gt;
 </pre>
-*** S2Container_FileSystemComponentAutoRegister::registerAll���\�b�h��initMthod�Ƃ��Đݒ肵�ĉ������B
+*** S2Container_FileSystemComponentAutoRegister::registerAllメソッドをinitMthodとして設定して下さい。
 
-<h4>�A�m�e�[�V����</h4>
+<h4>アノテーション</h4>
 <p>
-�萔�A�m�e�[�V�����܂���<a href="#commentAnnotation">�R�����g�A�m�e�[�V����</a>��p���Ď����o�^����R���|�[�l���g���ׂ����ݒ肷�邱�Ƃ��ł��܂��B�萔�A�m�e�[�V�����ƃR�����g�A�m�e�[�V�����̑I���́AS2CONTAINER_PHP5_ANNOTATION_HANDLER�萔�Őݒ肵�܂��BS2CONTAINER_PHP5_ANNOTATION_HANDLER�萔�ɁuS2Container_ConstantAnnotationHandler�v�܂��́uS2Container_CommentAnnotationHandler�v���`���ĉ������B�f�t�H���g�͒萔�A�m�e�[�V�����ł��B
+　定数アノテーションまたは<a href="#commentAnnotation">コメントアノテーション</a>を用いて自動登録するコンポーネントを細かく設定することができます。定数アノテーションとコメントアノテーションの選択は、S2CONTAINER_PHP5_ANNOTATION_HANDLER定数で設定します。S2CONTAINER_PHP5_ANNOTATION_HANDLER定数に「S2Container_ConstantAnnotationHandler」または
+「S2Container_CommentAnnotationHandler」を定義して下さい。デフォルトは定数アノテーションです。
 </p>
-<h5>Component�A�m�e�[�V����</h5>
+
+<h5>Componentアノテーション</h5>
+
 <p>
-<a href="DIContainer.html#componentsTag">component�^�O</a>�̂����Ɏg����̂��AComponent�A�m�e�[�V�����ł��B
+　<a href="DIContainer.html#componentsTag">componentタグ</a>のかわりに使えるのが、Componentアノテーションです。
 </p>
-�萔�A�m�e�[�V�����͈ȉ��̂悤�ɂȂ�܂��B
+
+定数アノテーションは以下のようになります。
 <pre>
 &lt;?php
 class HogeImpl {
@@ -976,7 +1105,7 @@ class HogeImpl {
 ?&gt;
 </pre>
 
-�R�����g�A�m�e�[�V�����͈ȉ��̂悤�ɂȂ�܂��B
+コメントアノテーションは以下のようになります。
 <pre>
 &lt;?php
 /**
@@ -989,16 +1118,17 @@ class HogeImpl {
 }
 ?&gt;
 </pre>
-s2container.php5/examples/extension/autoregister/compAnnoClient.php ���Q�Ɖ������B
+s2container.php5/examples/extension/autoregister/compAnnoClient.php を参照下さい。
 
-<h5>Binding�A�m�e�[�V����</h5>
+<h5>Bindingアノテーション</h5>
 
 <p>
-<a href="DIContainer.html#propertyTag">property�^�O</a>�̂����Ɏg����̂��ABinding�A�m�e�[�V�����ł��BBinding�A�m�e�[�V�����Őݒ肳���l�̓R���|�[�l���g���܂���expression(PHP��)�Ƃ��Ĉ����܂��B<br>
-�v���p�e�B�� + _BINDING �萔��<br>
+　<a href="DIContainer.html#propertyTag">propertyタグ</a>のかわりに使えるのが、Bindingアノテーションです。
+Bindingアノテーションで設定される値はコンポーネント名またはexpression(PHP式)として扱われます。<br>
+プロパティ名 + _BINDING 定数名<br>
 </p>
 
-�萔�A�m�e�[�V�����͈ȉ��̂悤�ɂȂ�܂��B�v���p�e�B�� + _BINDING �Ƃ������O�̒萔���`���܂��B
+定数アノテーションは以下のようになります。プロパティ名 + _BINDING という名前の定数を定義します。
 <pre>
 &lt;?php
 class HogeImpl {
@@ -1020,7 +1150,7 @@ class HogeImpl {
 ?&gt;
 </pre>
 
-�R�����g�A�m�e�[�V�����͈ȉ��̂悤�ɂȂ�܂��B
+コメントアノテーションは以下のようになります。
 <pre>
 &lt;?php
 class HogeImpl {
@@ -1043,14 +1173,15 @@ class HogeImpl {
 }
 ?&gt;
 </pre>
-s2container.php5/examples/extension/autoregister/bindAnnoClient.php ���Q�Ɖ������B
+s2container.php5/examples/extension/autoregister/bindAnnoClient.php を参照下さい。
 
-<h5>Aspect�A�m�e�[�V����</h5>
+<h5>Aspectアノテーション</h5>
 <p>
-<a href="DIContainer.html#aspectTag">aspect�^�O</a>�̂����Ɏg����̂��AAspect�A�m�e�[�V�����ł��Baspect�^�O�ƈقȂ褕�����`���邱�Ƃ͂ł��Ȃ��̂Ť�����̃C���^�[�Z�v�^��K�p�������ꍇ�ͤ<a href="aop.html#InterceptorChain">InterceptorChain</a>���g���Ă��������Bpointcut���w�肵�Ȃ��Ƃ��́A���̃N���X���������Ă��邷�ׂẴC���^�[�t�F�[�X�̃��\�b�h���ΏۂɂȂ�܂��B������pointcut���w�肷��ꍇ�̓X�y�[�X��؂�Ƃ��ĉ������B
+　<a href="DIContainer.html#aspectTag">aspectタグ</a>のかわりに使えるのが、Aspectアノテーションです。aspectタグと異なり､複数定義することはできないので､複数のインターセプタを適用したい場合は､<a href="aop.html#InterceptorChain">InterceptorChain</a>を使ってください。pointcutを指定しないときは、そのクラスが実装しているすべてのインターフェースのメソッドが対象になります。
+複数のpointcutを指定する場合はスペース区切りとして下さい。
 </p>
 
-�萔�A�m�e�[�V�����͈ȉ��̂悤�ɂȂ�܂��B
+定数アノテーションは以下のようになります。
 <pre>
 &lt;?php
 class HogeImpl {
@@ -1071,7 +1202,7 @@ class HogeImpl {
 ?&gt;
 </pre>
 
-�R�����g�A�m�e�[�V�����͈ȉ��̂悤�ɂȂ�܂��B
+コメントアノテーションは以下のようになります。
 <pre>
 &lt;?php
 /**
@@ -1097,15 +1228,16 @@ class HogeImpl {
 }
 ?&gt;
 </pre>
-s2container.php5/examples/extension/autoregister/aspectAnnoClient.php ���Q�Ɖ������B
+s2container.php5/examples/extension/autoregister/aspectAnnoClient.php を参照下さい。
 
 
-<h5>InitMethod�A�m�e�[�V����</h5>
+<h5>InitMethodアノテーション</h5>
 <p>
-<a href="DIContainer.html#initMethodTag">initMethod�^�O</a>�̂����Ɏg����̂��AInitMethod�A�m�e�[�V�����ł��B initMethod�^�O�ƈقȂ�PHP������������A������ݒ肷�邱�Ƃ͂ł��܂���B���������\�b�h�𕡐��w�肵�����ꍇ�ͤ�J���}(,)�ŋ�؂��Ă��������B
+　<a href="DIContainer.html#initMethodTag">initMethodタグ</a>のかわりに使えるのが、InitMethodアノテーションです。 initMethodタグと異なり､PHP式を書いたり、引数を設定することはできません。
+初期化メソッドを複数指定したい場合は､カンマ(,)で区切ってください。
 </p>
 
-�萔�A�m�e�[�V�����͈ȉ��̂悤�ɂȂ�܂��B
+定数アノテーションは以下のようになります。
 <pre>
 &lt;?php
 class HogeImpl {
@@ -1125,7 +1257,7 @@ class HogeImpl {
 ?&gt;
 </pre>
 
-�R�����g�A�m�e�[�V�����͈ȉ��̂悤�ɂȂ�܂��B
+コメントアノテーションは以下のようになります。
 <pre>
 &lt;?php
 class HogeImpl {
@@ -1149,45 +1281,48 @@ class HogeImpl {
 }
 ?&gt;
 </pre>
-s2container.php5/examples/extension/autoregister/methodAnnoClient.php ���Q�Ɖ������B
+s2container.php5/examples/extension/autoregister/methodAnnoClient.php を参照下さい。
 
 <h3><a name="autoRegister-aspect">AspectAutoRegister</a></h3>
-<p><a href="#autoRegister-file">�R���|�[�l���g�̎����o�^</a>�ɂ��A�R���|�[�l���g�̓o�^�͎������ł��܂��B
-����ɁA�A�X�y�N�g�̓o�^�����������Ă��܂����Ƃ����̂��A�A�X�y�N�g�̎����o�^�@�\�ł��B
-�R���|�[�l���g�̎����o�^�Ƒg�ݍ��킹��ꍇ�ͤ
-�R���|�[�l���g�̎����o�^�̐ݒ������ɁA�A�X�y�N�g�̎����o�^�̐ݒ���L�q����K�v������܂��B</p>
+<p>
+　<a href="#autoRegister-file">コンポーネントの自動登録</a>により、コンポーネントの登録は自動化できます。
+さらに、アスペクトの登録も自動化してしまおうというのが、アスペクトの自動登録機能です。
+コンポーネントの自動登録と組み合わせる場合は､
+コンポーネントの自動登録の設定よりも後に、アスペクトの自動登録の設定を記述する必要があります。
+</p>
 
 <table border="1">
-<tr bgcolor="#d1f3f4" align="center">
-<th>�v���p�e�B</th>
-<th>����</th>
-</tr>
-<tr>
-<td><code>interceptor</code></td>
-<td>�C���^�[�Z�v�^���w�肵�܂��B�����̃C���^�[�Z�v�^���w�肵�����ꍇ�ͤ<a href="aop.html#InterceptorChain">InterceptorChain</a>���g���Ă��������B</td>
-</tr>
-
-<tr>
-<td><code>pointcut</code></td>
-<td> �C���^�[�Z�v�^��K�p���郁�\�b�h���J���}��؂�Ŏw�肵�܂��Bpointcut���w�肵�Ȃ��ꍇ�́A�R���|�[�l���g���������Ă���C���^�[�t�F�[�X�̂��ׂẴ��\�b�h���ΏۂɂȂ�܂��B���\�b�h���ɂ͐��K�\�����g���܂��B </td>
-</tr>
+    <tr bgcolor="#d1f3f4" align="center">
+        <th>プロパティ</th>
+        <th>説明</th>
+    </tr>
+    <tr>
+        <td><code>interceptor</code></td>
+        <td>インターセプタを指定します。複数のインターセプタを指定したい場合は､<a href="aop.html#InterceptorChain">InterceptorChain</a>を使ってください。</td>
+    </tr>
+    <tr>
+        <td><code>pointcut</code></td>
+        <td> インターセプタを適用するメソッドをカンマ区切りで指定します。pointcutを指定しない場合は、コンポーネントが実装しているインターフェースのすべてのメソッドが対象になります。メソッド名には正規表現も使えます。 </td>
+    </tr>
 </table>
-<br />
+
+<br>
+
 <table border="1">
-<tr bgcolor="#d1f3f4" align="center">
-<th>���\�b�h</th>
-<th>����</th>
-</tr>
-<tr>
-
-<td><code>addClassPattern</code></td>
-<td>�����o�^�������N���X�p�^�[����o�^���܂��B�����̓N���X���ł��B���K�\�����g���܂��B�u,�v��؂�ŕ����L�q���邱�Ƃ��ł��܂��B</td>
-</tr>
-<tr>
-<td><code>addIgnoreClassPattern</code></td>
-<td>�����o�^�������Ȃ��N���X�p�^�[����o�^���܂��B�����̓N���X���ł��B���K�\�����g���܂��B�u,�v��؂�ŕ����L�q���邱�Ƃ��ł��܂��B</td>
-</tr>
+    <tr bgcolor="#d1f3f4" align="center">
+        <th>メソッド</th>
+        <th>説明</th>
+    </tr>
+    <tr>
+        <td><code>addClassPattern</code></td>
+        <td>自動登録したいクラスパターンを登録します。引数はクラス名です。正規表現が使えます。「,」区切りで複数記述することもできます。</td>
+    </tr>
+    <tr>
+        <td><code>addIgnoreClassPattern</code></td>
+        <td>自動登録したくないクラスパターンを登録します。引数はクラス名です。正規表現が使えます。「,」区切りで複数記述することもできます。</td>
+    </tr>
 </table>
+
 <br>
 s2container.php5/examples/extension/autoregister/autoAspect.dicon
 <pre>
@@ -1204,25 +1339,25 @@ s2container.php5/examples/extension/autoregister/autoAspect.dicon
     &lt;component class="HogeBean"/&gt;
 &lt;/components&gt;
 </pre>
-*** S2Container_AspectAutoRegister::registerAll���\�b�h��initMthod�Ƃ��Đݒ肵�ĉ������B<br>
-*** ���̃R���|�[�l���g��`����ɒ�`����K�v������܂��B<br>
-*** S2Container_FileSystemComponentAutoRegister�ƕ��p����ꍇ�́AS2Container_FileSystemComponentAutoRegister�̒�`����ɂȂ�܂��B<br>
+*** S2Container_AspectAutoRegister::registerAllメソッドをinitMthodとして設定して下さい。<br>
+*** 他のコンポーネント定義より先に定義する必要があります。<br>
+*** S2Container_FileSystemComponentAutoRegisterと併用する場合は、S2Container_FileSystemComponentAutoRegisterの定義が先になります。<br>
 
 <h3><a name="autoRegister-interface">InterfaceAspectAutoRegister</a></h3>
-<table border="1">
-<tr bgcolor="#d1f3f4" align="center">
-<th>�v���p�e�B</th>
-<th>����</th>
-</tr>
-<tr>
-<td><code>interceptor</code></td>
-<td>�C���^�[�Z�v�^���w�肵�܂��B�����̃C���^�[�Z�v�^���w�肵�����ꍇ�ͤ<a href="aop.html#InterceptorChain">InterceptorChain</a>���g���Ă��������B</td>
 
-</tr>
-<tr>
-<td><code>targetInterface</code></td>
-<td> �w�肵���C���^�[�t�F�[�X���������Ă���R���|�[�l���g�ɑ΂��Ĥ�A�X�y�N�g��K�p���܂��B </td>
-</tr>
+<table border="1">
+    <tr bgcolor="#d1f3f4" align="center">
+        <th>プロパティ</th>
+        <th>説明</th>
+    </tr>
+    <tr>
+        <td><code>interceptor</code></td>
+        <td>インターセプタを指定します。複数のインターセプタを指定したい場合は､<a href="aop.html#InterceptorChain">InterceptorChain</a>を使ってください。</td>
+    </tr>
+    <tr>
+        <td><code>targetInterface</code></td>
+        <td> 指定したインターフェースを実装しているコンポーネントに対して､アスペクトを適用します。 </td>
+    </tr>
 </table>
 
 <br>
@@ -1238,52 +1373,57 @@ s2container.php5/examples/extension/autoregister/autoInterface.dicon
     &lt;component class="HogeBeanImpl"/&gt;
 &lt;/components&gt;
 </pre>
-*** S2Container_InterfaceAspectAutoRegister::registerAll���\�b�h��initMthod�Ƃ��Đݒ肵�ĉ������B<br>
-*** ���̃R���|�[�l���g��`����ɒ�`����K�v������܂��B<br>
-*** S2Container_FileSystemComponentAutoRegister�ƕ��p����ꍇ�́AS2Container_FileSystemComponentAutoRegister�̒�`����ɂȂ�܂��B<br>
-
-
-
+*** S2Container_InterfaceAspectAutoRegister::registerAllメソッドをinitMthodとして設定して下さい。<br>
+*** 他のコンポーネント定義より先に定義する必要があります。<br>
+*** S2Container_FileSystemComponentAutoRegisterと併用する場合は、S2Container_FileSystemComponentAutoRegisterの定義が先になります。<br>
 
 <br>
-<a name="commentAnnotation"><h3>�R�����g�A�m�e�[�V����</h3></a>
+</div>
+
+<div class="section">
+<h2 id="h02"><a name="commentAnnotation">コメントアノテーション</a></h2>
 
 <p>
-�R�����g�A�m�e�[�V�����́APhpDoc�ɋL�q���ꂽ�A�m�e�[�V��������ǂݍ��ރt���[�����[�N�ł��B<br>
-<a href="#autoRegister-file">�R���|�[�l���g�̎����o�^</a>�Ŏg�p�ł��܂��B
+　コメントアノテーションは、PhpDocに記述されたアノテーション情報を読み込むフレームワークです。<br>
+<a href="#autoRegister-file">コンポーネントの自動登録</a>で使用できます。
 </p>
 
-<h4>S2Container_Annotations</h4>
-<p>S2Container_Annotations�N���X��3��Static���\�b�h���������Ă��܂��B</p>
+<h3>S2Container_Annotations</h3>
+
+<p>
+　S2Container_Annotationsクラスは3つのStaticメソッドを実装しています。
+</p>
+
 <table border="1">
-<tr bgcolor="#d1f3f4" align="center">
-<th>���\�b�h</th>
-<th>����</th>
-</tr>
-
-<tr>
-<td><code>getAnnotations</code></td>
-<td>
-�N���X�܂��̓��\�b�h�̂��ׂẴA�m�e�[�V�������擾���܂��B��1�����̓N���X���ł��B���\�b�h�̃A�m�e�[�V�������擾����ꍇ�͑�2�����Ń��\�b�h�����w�肵�܂��B
-</td>
-</tr>
-
-<tr>
-<td><code>getAnnotation</code></td>
-<td>
-�N���X�܂��̓��\�b�h�̎w�肵���A�m�e�[�V�������擾���܂��B��1�����ŃA�m�e�[�V�����^�C�v���w�肵�܂��B��2�����ŃN���X���A��3�����Ń��\�b�h�����w�肵�܂��B
-</td>
-</tr>
-
-<td><code>isAnnotationPresents</code></td>
-<td>
-�N���X�܂��̓��\�b�h�Ɏw�肵���A�m�e�[�V���������݂��邩�ǂ����𒲂ׂ܂��B��1�����ŃA�m�e�[�V�����^�C�v���w�肵�܂��B��2�����ŃN���X���A��3�����Ń��\�b�h�����w�肵�܂��B
-</td>
-</tr>
+    <tr bgcolor="#d1f3f4" align="center">
+        <th>メソッド</th>
+        <th>説明</th>
+    </tr>
+    <tr>
+        <td><code>getAnnotations</code></td>
+        <td>クラスまたはメソッドのすべてのアノテーションを取得します。第1引数はクラス名です。
+            メソッドのアノテーションを取得する場合は第2引数でメソッド名を指定します。
+        </td>
+    </tr>
+    <tr>
+        <td><code>getAnnotation</code></td>
+        <td>クラスまたはメソッドの指定したアノテーションを取得します。第1引数でアノテーションタイプを指定します。
+            第2引数でクラス名、第3引数でメソッド名を指定します。
+        </td>
+    </tr>
+    <tr>
+        <td><code>isAnnotationPresents</code></td>
+        <td>クラスまたはメソッドに指定したアノテーションが存在するかどうかを調べます。
+            第1引数でアノテーションタイプを指定します。第2引数でクラス名、第3引数でメソッド名を指定します。
+        </td>
+    </tr>
 </table>
 
-<h4>�A�m�e�[�V�����̋L�q</h4>
-PhpDoc�ɋL�q�����R�����g�A�m�e�[�V�����͈ȉ��̃t�H�[�}�b�g�ɂȂ�܂��B
+<h3>アノテーションの記述</h3>
+<p>
+　PhpDocに記述されるコメントアノテーションは以下のフォーマットになります。
+</p>
+
 <pre>
 /**
  * @Seasar
@@ -1303,8 +1443,8 @@ class Hello {
 }
 </pre>
 
-�A�m�e�[�V�����^�C�v�͗\�߃N���X��`���ǂݍ��܂�Ă���K�v������܂��B<br>
-��L�̏ꍇ�A�A�m�e�[�V�����^�C�v�́ASeasar�AFoo�ABar�AHoge�N���X�ɂȂ�܂��B
+アノテーションタイプは予めクラス定義が読み込まれている必要があります。<br>
+上記の場合、アノテーションタイプは、Seasar、Foo、Bar、Hogeクラスになります。
 
 <pre>
 &lt;?php
@@ -1326,10 +1466,10 @@ class Hoge {
 </pre>
 
 <p>
-�A�m�e�[�V�����̈����̓A�m�e�[�V�����^�C�v�̃v���p�e�B�ɐݒ肳��܂��B�C�R�[��(=)�ƃJ���}(,)�͋�؂蕶���Ƃ��Ďg�p����܂��B��L�̗�ł́A@Seasar�A�m�e�[�V�����͈������Ƃ�܂���B@Foo��@Bar�A�m�e�[�V�����͒l�����������܂��B�l������1�̏ꍇ��(@Foo�̏ꍇ)�Avalue�v���p�e�B�ɂ��̂܂ܑ������܂��B�l�����������̏ꍇ(@Bar�̏ꍇ)�Avalue�v���p�e�B�ɒl�̔z��Ƃ��đ������܂��B�Ō��@Hoge�͈����Ƃ��ăL�[�ƒl�̃y�A�[���Ƃ�܂��B�L�[���v���p�e�B���ƂȂ�A�l���������܂��B
+アノテーションの引数はアノテーションタイプのプロパティに設定されます。イコール(=)とカンマ(,)は区切り文字として使用されます。上記の例では、@Seasarアノテーションは引数をとりません。@Fooと@Barアノテーションは値引数を持ちます。値引数が1つの場合は(@Fooの場合)、valueプロパティにそのまま代入されます。値引数が複数の場合(@Barの場合)、valueプロパティに値の配列として代入されます。最後の@Hogeは引数としてキーと値のペアーをとります。キーがプロパティ名となり、値が代入されます。
 </p>
 
-<h4>�A�m�e�[�V�����̎擾</h4>
+<h3>アノテーションの取得</h3>
 <h5>S2Container_Annotations::getAnnotations()</h5>
 s2container.php5/examples/extension/annotation/annoClient.php
 <pre>
@@ -1339,7 +1479,7 @@ print_r($annos);
 ...
 </pre>
 
-Hello�N���X��greeting���\�b�h�ɕt���Ă���A�m�e�[�V���������ׂĎ擾���܂��B
+Helloクラスのgreetingメソッドに付いているアノテーションをすべて取得します。
 
 <pre>
 > php annoClient.php
@@ -1374,7 +1514,7 @@ print_r($anno);
 ...
 </pre>
 
-Hello�N���X�ɕt���Ă���Foo��Bar�A�m�e�[�V�������擾���܂��B
+Helloクラスに付いているFooとBarアノテーションを取得します。
 
 <pre>
 > php annoClient.php
@@ -1407,7 +1547,7 @@ if(!S2Container_Annotations::isAnnotationPresent('Seasar','Hello','greeting')){
 ...
 </pre>
 
-Hello�N���X��greeting���\�b�h��Seasar�A�m�e�[�V�������t���Ă��邩�ǂ����𒲂ׂ܂��B
+HelloクラスとgreetingメソッドにSeasarアノテーションが付いているかどうかを調べます。
 
 <pre>
 > php annoClient.php
@@ -1421,12 +1561,26 @@ Seasar annotation not exists on greeting method.
     Yaml Dicon Builder
 
 -->
-<h3><a name="yamldiconbuilder">Yaml�`���ɂ��Dicon��`</a></h3>
-<p>S2Container.PHP5-1.1.2�ȍ~�ł́A<a href="DIContainer.html">�ʏ��Dicon��`��XML�`��</a>�ȊO��Yaml�`���̃T�|�[�g�����Ă��܂��B<br />
-    Dicon��`�t�@�C���̊g���q�� ".yml" ��p���܂��B</p>
-<p>Yaml�`���ɂ��Dicon��`���g���ɂ́A<a href="http://spyc.sourceforge.net/">Spyc</a>��p���܂��BS2Container.PHP5�����
-    Spyc��ǂݍ��݂ɂ����܂���̂ŁAYaml�`����Dicon��`���g���ꍇ�ɂ͗\�ߓǂݍ���ł����K�v������܂��B</p>
-<p>Yaml�`���ɂ��Dicon��`�͒ʏ��XML��`�Ƃقړ����ł��B�ȉ��ɊȒP��Dicon��`�������܂��B</p>
+</div>
+
+<br>
+
+<div class="section">
+<h2 id="h02"><a name="yamldiconbuilder">Yaml形式によるDicon定義</a></h2>
+
+<p>
+　S2Container.PHP5-1.1.2以降では、<a href="DIContainer.html">通常のDicon定義のXML形式</a>以外にYaml形式のサポートをしています。<br />
+Dicon定義ファイルの拡張子は ".yml" を用います。
+</p>
+
+<p>
+Yaml形式によるDicon定義を使うには、<a href="http://spyc.sourceforge.net/">Spyc</a>を用います。S2Container.PHP5からは
+    Spycを読み込みにいきませんので、Yaml形式のDicon定義を使う場合には予め読み込んでおく必要があります。
+</p>
+
+<p>
+Yaml形式によるDicon定義は通常のXML定義とほぼ同等です。以下に簡単なDicon定義を示します。
+</p>
 
 <pre>
 components:
@@ -1436,16 +1590,23 @@ components:
             - arg: Hello World!
 </pre>
 
-<h4><a name="yaml-components">Components��`(�C��)</a></h4>
-<p>�g�b�v���x���ɂ����ďȗ��\�Ȓ�`�ł��B����namespace�Ȃǂ̒�`�������ꍇ�͏ȗ����邱�Ƃ��\�ł��B</p>
+<h3><a name="yaml-components">Components定義(任意)</a></h3>
+<p>
+　トップレベルにおいて省略可能な定義です。もしnamespaceなどの定義が無い場合は省略することが可能です。
+</p>
+
 <pre>
   components:
       :
       :
 </pre>
 
-<h4><a name="yaml-namespace">Namespace��`(�C��)</a></h4>
-<p><a href="DIContainer.html#Namespace">���O���</a>���w�肷�邱�Ƃ��ł��܂��BPHP�̎��ʎq�Ƃ��Ďg������̂ɂ��܂��B</p>
+<h3><a name="yaml-namespace">Namespace定義(任意)</a></h3>
+
+<p>
+　<a href="DIContainer.html#Namespace">名前空間</a>を指定することができます。PHPの識別子として使えるものにします。
+</p>
+
 <pre>
 components:
     namespace: hoge
@@ -1454,8 +1615,11 @@ components:
     :
 </pre>
 
-<h4><a name="yaml-include">Include��`(�C��)</a></h4>
-<p>�������ꂽS2Container�̒�`��<a href="DIContainer.html#Include">��荞��</a>�ꍇ�Ɏg���܂��B</p>
+<h3><a name="yaml-include">Include定義(任意)</a></h3>
+<p>
+　分割されたS2Containerの定義を<a href="DIContainer.html#Include">取り込む</a>場合に使います。
+</p>
+
 <pre>
 components:
     include: [%DICON_DIR%/foo.yml]
@@ -1467,23 +1631,26 @@ components:
         - %DICON_DIR%/bar.yml
 </pre>
 
-<h4><a name="yaml-component">Component��`(�C��)</a></h4>
-<p>�R���|�[�l���g���`���܂��B</p>
+<h3><a name="yaml-component">Component定義(任意)</a></h3>
 
-<h5>class�L�[(�C��)</h5>
-<p>�N���X�����w�肵�܂��B���ڃL�[�̒l�Ƃ���<a href="php.html">PHP��</a>���g���ăR���|�[�l���g���w�肵���ꍇ�́Aclass�������ȗ����邱�Ƃ��ł��܂��B
-    PHP�����g�����ꍇ��class�������w�肷��ƁA�^�`�F�b�N���s���܂��B</p>
+<p>
+　コンポーネントを定義します。
+</p>
 
-<h5>name�L�[(�C��)</h5>
-<p>���O���w�肷�邱�Ƃ��ł��܂��BPHP�̎��ʎq�Ƃ��Ďg������̂ɂ��܂��B�ڂ����́A�R���|�[�l���g�̎擾���Q�Ƃ��Ă��������B</p>
+<h5>classキー(任意)</h5>
+<p>クラス名を指定します。直接キーの値として<a href="php.html">PHP式</a>を使ってコンポーネントを指定した場合は、class属性を省略することができます。
+    PHP式を使った場合にclass属性を指定すると、型チェックを行います。</p>
 
-<h5>instance�L�[(�C��)</h5>
-<p>S2Container���ǂ̂悤�ɃR���|�[�l���g�̃C���X�^���X���Ǘ�����̂����w�肷�邱�Ƃ��ł��܂��B
-    singleton(�f�t�H���g)�Aprototype�Aouter�Arequest�Asession���w�肷�邱�Ƃ��ł��܂��B�ڂ�����<a href="DIContainer.html#InstanceMode">�C���X�^���X�Ǘ�</a>���Q�Ƃ��Ă��������B</p>
+<h5>nameキー(任意)</h5>
+<p>名前を指定することもできます。PHPの識別子として使えるものにします。詳しくは、コンポーネントの取得を参照してください。</p>
 
-<h5>autoBinding�L�[(�C��)</h5>
-<p>S2Container���R���|�[�l���g�̈ˑ��֌W���ǂ̂悤�ɉ�������̂����w��ł��܂��B
-    auto(�f�t�H���g)�Aconstructor�Aproperty�Anone���w�肷�邱�Ƃ��ł��܂��B�ڂ����́A<a href="DIContainer.html#AutoBindingMode">�����o�C���f�B���O</a>���Q�Ƃ��Ă��������B</p>
+<h5>instanceキー(任意)</h5>
+<p>S2Containerがどのようにコンポーネントのインスタンスを管理するのかを指定することができます。
+    singleton(デフォルト)、prototype、outer、request、sessionを指定することができます。詳しくは<a href="DIContainer.html#InstanceMode">インスタンス管理</a>を参照してください。</p>
+
+<h5>autoBindingキー(任意)</h5>
+<p>S2Containerがコンポーネントの依存関係をどのように解決するのかを指定できます。
+    auto(デフォルト)、constructor、property、noneを指定することができます。詳しくは、<a href="DIContainer.html#AutoBindingMode">自動バインディング</a>を参照してください。</p>
 
 <pre>
 components:
@@ -1502,21 +1669,25 @@ components:
         autoBinding: auto
         - class: hoge
 </pre>
-<p>Yaml�`���ɂ��Dicon��`�ɂ����āA������component�����݂���ꍇ<pre> - component: .</pre>�̂悤��component�L�[�̌���"."(�h�b�g)��p���܂��B<br />
-    ������component��`������ꍇ�͕K��"."(�h�b�g)��t����悤�ɂ��Ă��������B<br />
-    �܂��Aclass�L�[�ɂ����ẮA�K��<pre>- class: className</pre>�ƂȂ�悤�ɁAclass�L�[��"-"(�n�C�t��)��t���Ă��������B</p>
+<p>Yaml形式によるDicon定義において、複数のcomponentが存在する場合<pre> - component: .</pre>のようにcomponentキーの後ろに"."(ドット)を用います。<br />
+    複数のcomponent定義をする場合は必ず"."(ドット)を付けるようにしてください。<br />
+    また、classキーにおいては、必ず<pre>- class: className</pre>となるように、classキーは"-"(ハイフン)を付けてください。</p>
 
 
-<h4><a name="yaml-arg">Arg��`(�C��)</a></h4>
-<p>Arg��`�̐�����<a href="DIContainer.html#argTag">XML��Dicon��`</a>�Ɠ����ł����A
-    YAML�`����Arg��`�ɂ�2�p�^�[������A�L�[�̎�ނ� arg:��php:��2��ނ����݂��܂��B</p>
-<h5>arg�L�[</h5>
-<p>arg�L�[�́A�ʏ�̕�����Ƃ��Ĉ����܂��B</p>
+<h3><a name="yaml-arg">Arg定義(任意)</a></h3>
 
-<h5>php�L�[</h5>
-<p>php�L�[�́A<a href="php.html">PHP��</a>�̈����ƂȂ�Aphp�L�[�ň͂�ꂽ�l�����̂܂�PHP���Ɏg���܂��B</p>
+<p>
+　Arg定義の説明は<a href="DIContainer.html#argTag">XMLのDicon定義</a>と同じですが、
+YAML形式のArg定義には2パターンあり、キーの種類は arg:とphp:の2種類が存在します。
+</p>
 
-<p>���������s�ɓn��PHP����p����ꍇ�́A<pre>arg: . </pre>��<pre>php:&gt;</pre>��g�ݍ��킹�邱�Ƃŕ����s��PHP�����g�p�\�ł��B</p>
+<h5>argキー</h5>
+<p>argキーは、通常の文字列として扱われます。</p>
+
+<h5>phpキー</h5>
+<p>phpキーは、<a href="php.html">PHP式</a>の扱いとなり、phpキーで囲われた値がそのままPHP式に使われます。</p>
+
+<p>もし複数行に渡るPHP式を用いる場合は、<pre>arg: . </pre>と<pre>php:&gt;</pre>を組み合わせることで複数行のPHP式も使用可能です。</p>
 
 <pre>
 components:
@@ -1543,11 +1714,14 @@ components:
                     return $msg1 . $msg2;
 </pre>
 
-<h4><a name="yaml-property">Property��`(�C��)</a></h4>
-<p>component�L�[�̎q�Ƃ��Ďg���܂��B�v���p�e�B�Ƃ��Đݒ肳�����ۂ̒l�́A���ڃL�[�̒l�Ƃ���PHP�����g���܂��B</p>
+<h3><a name="yaml-property">Property定義(任意)</a></h3>
 
-<h5>name�L�[(�K�{)</h5>
-<p>�v���p�e�B�����w�肵�܂��B</p>
+<p>
+　componentキーの子として使います。プロパティとして設定される実際の値は、直接キーの値としてPHP式を使います。
+</p>
+
+<h5>nameキー(必須)</h5>
+<p>プロパティ名を指定します。</p>
 
 <pre>
 components:
@@ -1576,18 +1750,21 @@ components:
                 name: "val1"
                 - php: 1+1;
 </pre>
-<p>Yaml�`���ɂ��Dicon��`�ɂ����āA������property�����݂���ꍇ<pre>- property: .</pre>�̂悤��property�L�[�̌���"."(�h�b�g)��p���܂��B<br />
-    ������property��`������ꍇ�͕K��"."(�h�b�g)��t����悤�ɂ��Ă��������B</p>
+<p>Yaml形式によるDicon定義において、複数のpropertyが存在する場合<pre>- property: .</pre>のようにpropertyキーの後ろに"."(ドット)を用います。<br />
+    複数のproperty定義をする場合は必ず"."(ドット)を付けるようにしてください。</p>
 
 
-<h4><a name="yaml-initMethod">initMethod��`(�C��)</a></h4>
-<p>component�^�O�̎q�^�O�Ƃ��Ďg���܂��B�����́A�q�^�O��arg�L�[���g���܂��B
-    name��������������PHP�����g���āA�R���|�[�l���g�̃��\�b�h���Ăяo�����Ƃ��ł��܂��B
-    initMethod����`����Ă���R���|�[�l���g���g��\��
-    $component��initMethod�L�[�̒l�Ƃ���PHP�����L�q���邾���ŗL���ȃI�u�W�F�N�g�Ƃ��Ďg���܂��B</p>
+<h3><a name="yaml-initMethod">initMethod定義(任意)</a></h3>
 
-<h5>name�L�[</h5>
-<p>���\�b�h�����w�肵�܂��B</p>
+<p>
+　componentタグの子タグとして使います。引数は、子タグでargキーを使います。
+name属性を書かずにPHP式を使って、コンポーネントのメソッドを呼び出すこともできます。
+initMethodが定義されているコンポーネント自身を表す
+$componentがinitMethodキーの値としてPHP式を記述するだけで有効なオブジェクトとして使えます。
+</p>
+
+<h5>nameキー</h5>
+<p>メソッド名を指定します。</p>
 
 <pre>
 components:
@@ -1610,9 +1787,10 @@ components:
                 - arg: "5"
 </pre>
 
+<h3><a name="yaml-destroyMethod">DestroyMethod定義</a></h3>
 
-<h4><a name="yaml-destroyMethod">DestroyMethod��`</a></h4>
-<p>initMethod�^�O�Ɠ��l�ł��B</p>
+<p>　initMethodタグと同様です。</p>
+
 <pre>
 components:
     - component: .
@@ -1623,8 +1801,10 @@ components:
 </pre>
 
 
-<h4><a name="yaml-aspect">Aspect��`</a></h4>
-<p>�A�X�y�N�g���R���|�[�l���g�ɑg�ݍ��݂܂��B�ڂ����́A<a href="aop.html#AOPExplanationFile">aspect�^�O</a>�̐������Q�Ƃ��Ă��������B</p>
+<h3><a name="yaml-aspect">Aspect定義</a></h3>
+<p>　
+アスペクトをコンポーネントに組み込みます。詳しくは、<a href="aop.html#AOPExplanationFile">aspectタグ</a>の説明を参照してください。
+</p>
 
 <pre>
 components:
@@ -1646,9 +1826,10 @@ components:
                 - arg: "12"
 </pre>
 
-
-<h4><a href="yaml-interType">interType��`(�C��)</a></h4>
-<p>�C���^�[�^�C�v���R���|�[�l���g�ɑg�ݍ��݂܂��B�ڂ����́AS2AOP��<a href="aop.html#interTypeTag">interType�^�O</a>�̐������Q�Ƃ��Ă��������B</p>
+<h3><a href="yaml-interType">interType定義(任意)</a></h3>
+<p>
+　インタータイプをコンポーネントに組み込みます。詳しくは、S2AOPの<a href="aop.html#interTypeTag">interTypeタグ</a>の説明を参照してください。
+</p>
 
 <pre>
 components:
@@ -1658,9 +1839,11 @@ components:
             - interType: S2Container_PropertyInterType
 </pre>
 
-<h4><a href="yaml-meta">Meta��`</a></h4>
-<p>Meta��`�̐�����<a href="DIContainer.html#metaTag">XML��Dicon��`</a>�Ɠ����ł��B<br />
-    �������AYaml��Meta��`�������ꍇ�AYaml�̖L�x�ȕ\���͂ɂ���Ă�������Meta�L�q���\�ł��B</p>
+<h3><a href="yaml-meta">Meta定義</a></h3>
+<p>
+　Meta定義の説明は<a href="DIContainer.html#metaTag">XMLのDicon定義</a>と同じです。<br />
+しかし、YamlでMeta定義を扱う場合、Yamlの豊富な表現力によっていくつものMeta記述が可能です。
+</p>
 
 <pre>
 components:
@@ -1744,30 +1927,30 @@ components:
                         - php: "b"
 </pre>
 
-<h4>���̑�Yaml�`���ɂ���</h4>
-<p>Yaml�`���ɂ��Dicon��`�́AXML�̂�������ȗ����\�Ȍ`���ƂȂ��Ă��܂����A���G�ȊK�w������Dicon��`�ɂ͌����Ă��܂���B���̓_�͒��ӂ��Ă��������B</p>
-<p>XML��Dicon��`��Yaml��Dicon��`�̑Δ�ɂ��ẮA
-    <a href="http://wiki.s2php5.jp/s2container.php5">wiki.s2php5.jp/s2container.php5</a>��
-    <a href="http://wiki.s2php5.jp/s2container.php5/dicontainerbuilder%E3%81%AE%E5%AF%BE%E5%BF%9C">DIContainerBuilder�̑Ή�</a>���Q�l�ɂȂ�܂��B</p>
+<h3>その他Yaml形式について</h3>
+<p>
+　Yaml形式によるDicon定義は、XMLのそれよりも省略が可能な形式となっていますが、複雑な階層を持つDicon定義には向いていません。その点は注意してください。
+</p>
+
+<p>XMLのDicon定義とYamlのDicon定義の対比については、
+    <a href="http://wiki.s2php5.jp/s2container.php5">wiki.s2php5.jp/s2container.php5</a>の
+    <a href="http://wiki.s2php5.jp/s2container.php5/dicontainerbuilder%E3%81%AE%E5%AF%BE%E5%BF%9C">DIContainerBuilderの対応</a>が参考になります。</p>
 <!--
 
     / Yaml Dicon Builder
 
 -->
 
-<!-- document end -->
-<!-- don't edit start -->
-</td>
-<td width="14"><img src="images/spacer.gif" alt="" height="14" width="14"></td>
-</tr><tr>
-<td width="14"><img src="images/spacer.gif" alt="" height="30" width="14"></td>
-<td width="766"><img src="images/spacer.gif" alt="" height="30" width="592"></td>
-</tr><tr>
-<td width="14"><img src="images/spacer.gif" alt="" height="14" width="14"></td>
-<td class="copyright" width="766">&#169; Copyright The Seasar Project and the others 2005-2006, all rights reserved.</td>
-</tr></tbody></table>
-</td><td class="backright" align="left" valign="top">&nbsp;</td></tr><tr>
-<td class="backunder" align="left" height="16" valign="top" width="780">&nbsp;</td>
-<td class="backcorner" align="left" height="16" valign="top">&nbsp;</td>
-</tr></tbody></table><!-- don't edit end -->
+</div>
+</div><!-- article -->
+
+</div><!-- contents_center -->
+
+<div id="footer">
+<address>&#169; Copyright The Seasar Foundation and the others 2004-2006, all rights reserved.</address>
+<div class="line"><span class="hide">spacer</span></div>
+</div><!-- footer -->
+
+</div><!-- wrapper -->
+
 </body></html>

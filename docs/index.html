@@ -1,35 +1,96 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html><head><!-- don't edit start --><title>Seasar - DI Container with AOP -</title><meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja"><head>
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Language" content="ja">
 <meta http-equiv="Content-Style-Type" content="text/css">
-<link href="seasar_b.css" type="text/css" rel="stylesheet" media="screen"><link href="seasar_p.css" type="text/css" rel="stylesheet" media="print"><script src="seasar_b.js" type="text/JavaScript" language="JavaScript"></script></head>
+<meta name="keywords" content="Seasar2, S2Container, DI, AOP, Dependency Injection, Aspect Oriented Programming, The Seasar Foundation, OSS, ã‚ªãƒ¼ãƒ—ãƒ³ã‚½ãƒ¼ã‚¹ã‚½ãƒ•ãƒˆã‚¦ã‚§ã‚¢, Java, ãƒ•ãƒ¬ãƒ¼ãƒ ãƒ¯ãƒ¼ã‚¯">
+<meta name="description" content="ç§ãŸã¡Seasarãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã¯ã‚ªãƒ¼ãƒ—ãƒ³ã‚½ãƒ¼ã‚¹ã¨ã„ã†ä»•çµ„ã¿ã®å…ƒã€é–‹ç™ºè€…ã®ã‚†ã¨ã‚Šã‚’å®Ÿç¾ã§ãã‚‹ãƒ—ãƒ­ãƒ€ã‚¯ãƒˆã®é–‹ç™ºã¨æä¾›ã‚’é€šã˜ã¦ã€ãƒ¦ãƒ¼ã‚¶ã¨é–‹ç™ºè€…ã¨ãŒå…±ã«å–œã³ã‚’åˆ†ã‹ã¡åˆãˆã‚‹ç’°å¢ƒå®Ÿç¾ã‚’ãŠæ‰‹ä¼ã„ã™ã‚‹ã“ã¨ã‚’ç›®æŒ‡ã—æ´»å‹•ã—ã¦ã„ã¾ã™ã€‚ ">
+<title>The Seasar Project - S2Container.PHP5</title>
+
+<link rel="stylesheet" type="text/css" href="theme/main.css" media="screen,projection">
+<link rel="stylesheet" type="text/css" href="theme/print.css" media="print"></head><body>
+
+<div id="wrapper">
+
+<div id="header">
+
+<div class="line"><span class="hide">spacer</span></div>
+
+<div id="logo">
+<h1 id="h01" class="hide">The Seasar Project</h1>
+<a href="http://www.seasar.org/">
+<img src="images/seasar_logo_blue.gif" alt="The Seasar Project" height="180" width="390">
+</a>
+</div>
+
+<div id="tool">
+</div>
+
+<div id="navi">
+<p><font size="-1">S2Container.PHP5 ãƒ›ãƒ¼ãƒ </font></p>
+</div>
+
+</div><!-- header -->
+
+<div id="contents_left">
+
+<h2>ãƒ¡ãƒ‹ãƒ¥ãƒ¼</h2>
+
+<h3>ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆ</h3>
+<ul>
+    <li><a href="setup.html">ã‚»ãƒƒãƒˆã‚¢ãƒƒãƒ—</a></li>
+    <li><a href="DIContainer.html">DIContainer</a></li>
+    <li><a href="aop.html">AOP</a></li>
+    <li><a href="extension.html">Extension</a></li>
+    <li><a href="php.html">PHPå¼</a></li>
+</ul>
+
+<h3>ãƒªãƒ³ã‚¯</h3>
+<ul>
+    <li><a href="http://www.seasar.org/">Seasar.org</a></li>
+    <li><a href="http://svn.seasar.org/browse/?root=s2container.php5">SVN ãƒªãƒã‚¸ãƒˆãƒªãƒ–ãƒ©ã‚¦ã‚¶</a></li>
+    <li><a href="https://www.seasar.org/svn/s2container.php5/">SVN ãƒªãƒã‚¸ãƒˆãƒª</a></li>
+    <li><a href="https://www.seasar.org/issues/browse/CONTAINERPHP">Issue Tracker</a></li>
+    <li><a href="http://labs.s2php5.jp/">labs.s2php5.jp</a></li>
+</ul>
+
+<h2>PHP ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆ</h2>
+
+<h3>Seasar.PHP</h3>
+
+<ul>
+    <li><a href="http://s2container.php5.seasar.org/">S2Container.PHP5</a></li>
+    <li><a href="http://s2dao.php5.seasar.org/">S2Dao.PHP5</a></li>
+</ul>
+
+<h3>Sandbox.PHP</h3>
+
+<ul>
+    <li><a href="http://kunit.jp/maple/">Maple.PHP</a></li>
+    <li><a href="http://s2base.php5.sandbox.seasar.org/">S2Base.PHP5</a></li>
+</ul>
 
 
-<body onload="preload('ja')"><table align="left" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr>
-<td align="left" valign="top" width="780"><table class="white" border="0" cellpadding="0" cellspacing="0" width="780">
-<tbody><tr><td colspan="7"><img src="images/top01_b.gif" alt="" height="5" width="780"></td></tr>
-<tr><td width="235"><img src="images/top02_b.gif" alt="Seasar" height="117" width="235"></td>
-<td colspan="3"><img src="images/top03.gif" alt="DI Container with AOP" height="117" width="289"></td>
-<td colspan="3"><img src="images/spacer.gif" alt="" height="117" width="256"></td>
-</tr><tr><td rowspan="2"><img src="images/top04.gif" alt="" height="49" width="235"></td>
-<td><a href="http://www.seasar.org/index.html"><img src="images/menu01_b_ja.gif" alt="" id="menu01" onmouseover="swap(1)" onmouseout="restore(1)" border="0" height="30" width="78"></a></td>
-<td><a href="http://www.seasar.org/projects.html"><img src="images/menu02_b_ja.gif" alt="" id="menu02" onmouseover="swap(2)" onmouseout="restore(2)" border="0" height="30" width="101"></a></td>
-<td><a href="http://www.seasar.org/products.html"><img src="images/menu03_b_ja.gif" alt="" id="menu03" onmouseover="swap(3)" onmouseout="restore(3)" border="0" height="30" width="110"></a></td>
-<td><a href="http://www.seasar.org/resources.html"><img src="images/menu04_b_ja.gif" alt="" id="menu04" onmouseover="swap(4)" onmouseout="restore(4)" border="0" height="30" width="113"></a></td>
-<td><img src="images/menu05_b_ja.gif" alt="" id="menu05" onmouseover="swap(5)" onmouseout="restore(5)" border="0" height="30" width="109"></td>
-<td width="34"><img src="images/menu06.gif" alt="" height="30" width="34"></td></tr><tr>
-<td colspan="6"><img src="images/spacer.gif" alt="" height="19" width="545"></td></tr></tbody></table>
-<table class="white" border="0" cellpadding="0" cellspacing="0" width="780">
-<tbody><tr align="left" valign="top"><td width="18"><img src="images/spacer.gif" alt="" height="14" width="18"></td><td class="main" width="744">
-<!-- don't edit end -->
-<!-- document start -->
 
-<h2>S2Container.PHP5 ƒvƒƒWƒFƒNƒg‚Ö‚æ‚¤‚±‚»I</h2>
+</div><!-- contents_left -->
+
+<div id="contents_center">
+
+<div id="article">
+
+<div class="section">
+<h2 id="h02">S2Container.PHP5 ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã¸ã‚ˆã†ã“ãï¼</h2>
 <p>
-S2Container.PHP5ƒvƒƒWƒFƒNƒg‚Å‚ÍAJava”ÅSeasar2 ‚ğ PHP5 ‚ÉˆÚA‚µ‚Ü‚·B
+ã€€S2Container.PHP5ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã§ã¯ã€Javaç‰ˆSeasar2 ã‚’ PHP5 ã«ç§»æ¤ã—ã¾ã™ã€‚
+<br>
+<br>
 </p>
+</div>
 
-<h3>ƒ_ƒEƒ“ƒ[ƒh</h3>
-
+<div class="section">
+<h2 id="h02">ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰</h2>
 <ul>
 <li>2006-11-05
 <table>
@@ -68,193 +129,183 @@ S2Container.PHP5ƒvƒƒWƒFƒNƒg‚Å‚ÍAJava”ÅSeasar2 ‚ğ PHP5 ‚ÉˆÚA‚µ‚Ü‚·B
 <td>Full Package : </td>
 <td><a href="download/s2container.php5-1.1.0.zip">s2container.php5-1.1.0.zip</a></td>
 </tr>
-</table>
+</table><br>
 </li>
+
+<li><a href="https://www.seasar.org/svn/s2container.php5/trunk/ChangeLog">ChangeLog</a></li>
 
 </ul>
 
-<h3>“®ìŠÂ‹«</h3>
-<p>PHP-5.1 ˆÈ~‚Å“®ì‚µ‚Ü‚·BˆÈ‰º‚ÌŠÂ‹«‚ÅŠJ”­E“®ìŠm”F‚µ‚Ä‚¢‚Ü‚·B</p>
+<br>
+</div>
+
+<div class="section">
+<h2 id="h02">ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆ</h2>
+<ul class="docu">
+    <li><a href="setup.html">ã‚»ãƒƒãƒˆã‚¢ãƒƒãƒ—</a></li>
+    <li><a href="DIContainer.html">DIContainer</a></li>
+    <li><a href="aop.html">AOP</a></li>
+    <li><a href="extension.html">Extension</a></li>
+    <li><a href="php.html">PHPå¼</a></li>
+</ul>
+<br>
+</div>
+
+
+<div class="section">
+<h2 id="h02">å‹•ä½œç’°å¢ƒ</h2>
+<p>ã€€PHP-5.1 ä»¥é™ã§å‹•ä½œã—ã¾ã™ã€‚ä»¥ä¸‹ã®ç’°å¢ƒã§é–‹ç™ºãƒ»å‹•ä½œç¢ºèªã—ã¦ã„ã¾ã™ã€‚</p>
 <ul>
     <li>WindowsXP : php-5.1.6-Win32</li>
     <li>Debian GNU/Linux 3.1 : php-5.1.6, php-5.2.0</li>
 </ul>
+<br>
+</div>
 
-<h3>ƒhƒLƒ…ƒƒ“ƒg</h3>
-<ul>
-<li><a href="setup.html">ƒZƒbƒgƒAƒbƒv</a></li>
-<li><a href="DIContainer.html">DIContainer</a></li>
-<li><a href="aop.html">AOP</a></li>
-<li><a href="extension.html">Extension</a></li>
-<li><a href="php.html">PHP®</a></li>
-</ul>
-
-<h3>ƒ[ƒŠƒ“ƒOƒŠƒXƒg</h3>
+<div class="section">
+<h2 id="h02">ãƒ¡ãƒ¼ãƒªãƒ³ã‚°ãƒªã‚¹ãƒˆ</h2>
 <ul>
 <li>
 <a href="https://www.seasar.org/mailman/listinfo/s2container-php5">
-S2Container-PHP5 ƒ[ƒŠƒ“ƒOƒŠƒXƒg
+S2Container-PHP5 ãƒ¡ãƒ¼ãƒªãƒ³ã‚°ãƒªã‚¹ãƒˆ
 </a><br>
-S2Container.PHP5/S2Dao.PHP5‚ğg‚Á‚Ä‚¢‚Ä¢‚Á‚½‚±‚ÆE¿–âE—v–]‚È‚Ç‚Í‚±‚¿‚ç‚ÖD
+S2Container.PHP5/S2Dao.PHP5ã‚’ä½¿ã£ã¦ã„ã¦å›°ã£ãŸã“ã¨ãƒ»è³ªå•ãƒ»è¦æœ›ãªã©ã¯ã“ã¡ã‚‰ã¸ï¼
 </li>
 
 <li>
 <a href="https://www.seasar.org/mailman/listinfo/seasar-php">
-Seasar-php ƒ[ƒŠƒ“ƒOƒŠƒXƒg
+Seasar-php ãƒ¡ãƒ¼ãƒªãƒ³ã‚°ãƒªã‚¹ãƒˆ
 </a><br>
-Seasar PHPŠJ”­‚ÉŠÖ‚·‚é‹c˜_‚Í‚±‚¿‚ç‚ÖD
+Seasar PHPé–‹ç™ºã«é–¢ã™ã‚‹è­°è«–ã¯ã“ã¡ã‚‰ã¸ï¼
 </li>
 </ul>
+<br>
+</div>
 
+<div class="section">
+<h2 id="h02">ãƒ‹ãƒ¥ãƒ¼ã‚¹</h2>
 
-<h3>ƒŠƒ“ƒN</h3>
-<ul>
-<li>
-<a href="http://svn.seasar.org/browse/?root=s2container.php5">
-SVN ƒŠƒ|ƒWƒgƒŠƒuƒ‰ƒEƒU
-</a>
-</li>
-<li>
-<a href="https://www.seasar.org/svn/s2container.php5/">
-SVN ƒŠƒ|ƒWƒgƒŠ
-</a>
-</li>
-<li>
-<a href="https://www.seasar.org/issues/browse/CONTAINERPHP">
-ƒgƒ‰ƒbƒLƒ“ƒO
-</a>
-</li>
-<li>
-<a href="http://labs.s2php5.jp/">
-labs.s2php5.jp
-</a>
-</li>
-
-</ul>
-
-<h3>ƒjƒ…[ƒX</h3>
+<br>
 <table>
 
-<tr><td align="right" valign="top" width="120">2006-11-05@@</td><td>
-s2container.php5-1.1.2 ‚ğƒŠƒŠ[ƒX</td></tr>
+<tr><td align="right" valign="top" width="120">2006-12-XXã€€ã€€</td><td>
+S2Container.PHP5 ãƒ›ãƒ¼ãƒ ãƒšãƒ¼ã‚¸ã‚’ãƒªãƒ‹ãƒ¥ãƒ¼ã‚¢ãƒ«ã—ã¾ã—ãŸã€‚</td></tr>
 
-<tr><td align="right" valign="top" width="120">2006-10-18@@</td><td>
-‹Zp•]˜_Ğ Software Design 2006”N11Œ† uOSCJ Times`OSSƒvƒƒWƒFƒNƒg‚ğæ‚èŠª‚­ƒCƒ“ƒTƒCƒhƒXƒg[ƒŠ[v‚É‚Ä‹L–‚ğŒfÚ’¸‚«‚Ü‚µ‚½B</td></tr>
+<tr><td align="right" valign="top" width="120">2006-11-05ã€€ã€€</td><td>
+s2container.php5-1.1.2 ã‚’ãƒªãƒªãƒ¼ã‚¹</td></tr>
 
-<tr><td align="right" valign="top" width="120">2006-09-04@@</td><td>
-<a href="http://codezine.jp/a/article.aspx?aid=495">ãÄ‰jĞ CodeZineFuS2Container.PHP5‚ğ—p‚¢‚½DIƒx[ƒX‚ÌŠJ”­v</a> ‚Ì‹L–‚ğŒfÚ’¸‚«‚Ü‚µ‚½B</td></tr>
+<tr><td align="right" valign="top" width="120">2006-10-18ã€€ã€€</td><td>
+æŠ€è¡“è©•è«–ç¤¾ Software Design 2006å¹´11æœˆå· ã€ŒOSCJ Timesï½OSSãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã‚’å–ã‚Šå·»ãã‚¤ãƒ³ã‚µã‚¤ãƒ‰ã‚¹ãƒˆãƒ¼ãƒªãƒ¼ã€ã«ã¦è¨˜äº‹ã‚’æ²è¼‰é ‚ãã¾ã—ãŸã€‚</td></tr>
 
-<tr><td align="right" valign="top" width="120">2006-07-24@@</td><td>
-S2Container.PHP5 ƒvƒƒWƒFƒNƒg‚Í Sandbox.PHP ƒvƒƒWƒFƒNƒg‚ğ‘²‹Æ‚µ <a href="http://www.seasar.org/index.html#seasar.php">Seasar.PHP</a> ƒvƒƒWƒFƒNƒg‚É“ü‚è‚Ü‚µ‚½B</td></tr>
+<tr><td align="right" valign="top" width="120">2006-09-04ã€€ã€€</td><td>
+<a href="http://codezine.jp/a/article.aspx?aid=495">ç¿”æ³³ç¤¾ CodeZineï¼šã€ŒS2Container.PHP5ã‚’ç”¨ã„ãŸDIãƒ™ãƒ¼ã‚¹ã®é–‹ç™ºã€</a> ã®è¨˜äº‹ã‚’æ²è¼‰é ‚ãã¾ã—ãŸã€‚</td></tr>
 
-<tr><td align="right" valign="top" width="120">2006-07-09@@</td><td>
-s2container.php5-1.1.1 ‚ğƒŠƒŠ[ƒX</td></tr>
+<tr><td align="right" valign="top" width="120">2006-07-24ã€€ã€€</td><td>
+S2Container.PHP5 ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã¯ Sandbox.PHP ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã‚’å’æ¥­ã— <a href="http://www.seasar.org/index.html#seasar.php">Seasar.PHP</a> ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã«å…¥ã‚Šã¾ã—ãŸã€‚</td></tr>
 
-<tr><td align="right" valign="top" width="120">2006-05-14@@</td><td>
-Seasar Conference 2006 Spring ‚É‚Äƒu[ƒXo“W</td></tr>
+<tr><td align="right" valign="top" width="120">2006-07-09ã€€ã€€</td><td>
+s2container.php5-1.1.1 ã‚’ãƒªãƒªãƒ¼ã‚¹</td></tr>
 
-<tr><td align="right" valign="top" width="120">2006-04-29@@</td><td>
-s2container.php5-1.1.0 ‚ğŒöŠJ</td></tr>
+<tr><td align="right" valign="top" width="120">2006-05-14ã€€ã€€</td><td>
+Seasar Conference 2006 Spring ã«ã¦ãƒ–ãƒ¼ã‚¹å‡ºå±•</td></tr>
 
-<tr><td align="right" valign="top" width="120">2006-04-16@@</td><td>
-s2container.php5-1.1.0-rc2 ‚ğŒöŠJ</td></tr>
+<tr><td align="right" valign="top" width="120">2006-04-29ã€€ã€€</td><td>
+s2container.php5-1.1.0 ã‚’å…¬é–‹</td></tr>
 
-<tr><td align="right" valign="top" width="120">2006-03-19@@</td><td>
-s2container.php5-1.1.0-rc1 ‚ğŒöŠJ</td></tr>
+<tr><td align="right" valign="top" width="120">2006-04-16ã€€ã€€</td><td>
+s2container.php5-1.1.0-rc2 ã‚’å…¬é–‹</td></tr>
 
-<tr><td align="right" valign="top" width="120">2006-03-18@@</td><td>
-<a href="http://www.ospn.jp/osc2006/">OSC2006 Tokyo/Spring</a> ‚ÉQ‰Á‚µ‚Ü‚µ‚½B
-<br>uSeasar.PHPƒvƒƒ_ƒNƒg‚ğg‚Á‚½WebƒAƒvƒŠŠJ”­v
-<br>utF‚‹´–M•FAklove/ƒnƒ^ iSeasarƒtƒ@ƒEƒ“ƒf[ƒVƒ‡ƒ“j
+<tr><td align="right" valign="top" width="120">2006-03-19ã€€ã€€</td><td>
+s2container.php5-1.1.0-rc1 ã‚’å…¬é–‹</td></tr>
+
+<tr><td align="right" valign="top" width="120">2006-03-18ã€€ã€€</td><td>
+<a href="http://www.ospn.jp/osc2006/">OSC2006 Tokyo/Spring</a> ã«å‚åŠ ã—ã¾ã—ãŸã€‚
+<br>ã€ŒSeasar.PHPãƒ—ãƒ­ãƒ€ã‚¯ãƒˆã‚’ä½¿ã£ãŸWebã‚¢ãƒ—ãƒªé–‹ç™ºã€
+<br>è¬›å¸«ï¼šé«˜æ©‹é‚¦å½¦ã€klove/ãƒã‚¿ ï¼ˆSeasarãƒ•ã‚¡ã‚¦ãƒ³ãƒ‡ãƒ¼ã‚·ãƒ§ãƒ³ï¼‰
 </td></tr>
 
-<tr><td align="right" valign="top" width="120">2006-02-16@@</td><td>
-s2container.php5-1.1.0-beta2 ‚ğŒöŠJ</td></tr>
+<tr><td align="right" valign="top" width="120">2006-02-16ã€€ã€€</td><td>
+s2container.php5-1.1.0-beta2 ã‚’å…¬é–‹</td></tr>
 
-<tr><td align="right" valign="top" width="120">2005-12-07@@</td><td>
-s2container.php5-1.1.0-beta1 ‚ğŒöŠJ</td></tr>
+<tr><td align="right" valign="top" width="120">2005-12-07ã€€ã€€</td><td>
+s2container.php5-1.1.0-beta1 ã‚’å…¬é–‹</td></tr>
 
-<tr><td align="right" valign="top" width="120">2005-11-23@@</td><td>
-s2container.php5-1.0.0-beta3 ‚ğŒöŠJ</td></tr>
+<tr><td align="right" valign="top" width="120">2005-11-23ã€€ã€€</td><td>
+s2container.php5-1.0.0-beta3 ã‚’å…¬é–‹</td></tr>
 
-<tr><td align="right" valign="top" width="120">2005-11-09@@</td><td>
-<a href="http://s2dao.php5.sandbox.seasar.org/">S2Dao.PHP5-1.0.0-beta1 ƒŠƒŠ[ƒXII</a>
+<tr><td align="right" valign="top" width="120">2005-11-09ã€€ã€€</td><td>
+<a href="http://s2dao.php5.sandbox.seasar.org/">S2Dao.PHP5-1.0.0-beta1 ãƒªãƒªãƒ¼ã‚¹ï¼ï¼</a>
 </td></tr>
 
-<tr><td align="right" valign="top" width="120">2005-10-22@@</td><td>
-Seasar PandN Summit @Osaka ŠJÃ
+<tr><td align="right" valign="top" width="120">2005-10-22ã€€ã€€</td><td>
+Seasar PandN Summit @Osaka é–‹å‚¬
 </td></tr>
 
-<tr><td align="right" valign="top" width="120">2005-10-05@@</td><td>
-s2container.php5-1.0.0-beta2 ‚ğŒöŠJ
+<tr><td align="right" valign="top" width="120">2005-10-05ã€€ã€€</td><td>
+s2container.php5-1.0.0-beta2 ã‚’å…¬é–‹
 </td></tr>
 
-<tr><td align="right" valign="top" width="120">2005-09-17@@</td><td>
-<a href="http://www.ospn.jp/osc2005-fall/">OSC2005-Fall </a>‚É‚ÄAS2Container.PHP5 ‚ğĞ‰î’¸‚«‚Ü‚µ‚½B
-<br>u.NET‚ÆPHP‚ÉV‚µ‚¢—Í‚ğ’“ü‚·‚éSeasar2 v 
-<br>utF ‰H¶ Í—m iSeasarƒtƒ@ƒEƒ“ƒf[ƒVƒ‡ƒ“j
+<tr><td align="right" valign="top" width="120">2005-09-17ã€€ã€€</td><td>
+<a href="http://www.ospn.jp/osc2005-fall/">OSC2005-Fall </a>ã«ã¦ã€S2Container.PHP5 ã‚’ç´¹ä»‹é ‚ãã¾ã—ãŸã€‚
+<br>ã€Œ.NETã¨PHPã«æ–°ã—ã„åŠ›ã‚’æ³¨å…¥ã™ã‚‹Seasar2 ã€ 
+<br>è¬›å¸«ï¼š ç¾½ç”Ÿ ç« æ´‹ ï¼ˆSeasarãƒ•ã‚¡ã‚¦ãƒ³ãƒ‡ãƒ¼ã‚·ãƒ§ãƒ³ï¼‰
 </td></tr>
 
-<tr><td align="right" valign="top" width="120">2005-09-05@@</td><td>
-s2container.php5-1.0.0-beta1 ‚ğŒöŠJ
+<tr><td align="right" valign="top" width="120">2005-09-05ã€€ã€€</td><td>
+s2container.php5-1.0.0-beta1 ã‚’å…¬é–‹
 </td></tr>
 
-<tr><td align="right" valign="top" width="120">2005-08-27@@</td><td>
-ƒvƒƒWƒFƒNƒg–¼‚ğ S2Container.PHP5 ‚É‰ü–¼<br>
-ƒŠƒ|ƒWƒgƒŠ‚ğ OSCJ.net ‚©‚ç Seasar.org ‚ÉˆÚ“®
+<tr><td align="right" valign="top" width="120">2005-08-27ã€€ã€€</td><td>
+ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆåã‚’ S2Container.PHP5 ã«æ”¹å<br>
+ãƒªãƒã‚¸ãƒˆãƒªã‚’ OSCJ.net ã‹ã‚‰ Seasar.org ã«ç§»å‹•
 </td></tr>
 
-<tr><td align="right" valign="top" width="120">2005-07-16@@</td><td>
-sandboxƒCƒxƒ“ƒguSeasar‚Ì‚·‚È‚ ‚»‚Ñv<br>
-S2PHP5‚àQ‰Á‚µ‚Ü‚µ‚½B
+<tr><td align="right" valign="top" width="120">2005-07-16ã€€ã€€</td><td>
+sandboxã‚¤ãƒ™ãƒ³ãƒˆã€ŒSeasarã®ã™ãªã‚ãã³ã€<br>
+S2PHP5ã‚‚å‚åŠ ã—ã¾ã—ãŸã€‚
 </td></tr>
 
-<tr><td align="right" valign="top">2005-07-09@@</td><td>
-<a href="http://www.ospn.jp/osc2005-do/modules/eguide/event.php?eid=16">OSC2005-Do@uJava/PHP/.net‚É‘Î‰I ‹Æ–±ƒVƒXƒeƒ€\’z‚ğ‚æ‚è•Ö—˜‚É‚·‚éDIxAOPv</a>
+<tr><td align="right" valign="top">2005-07-09ã€€ã€€</td><td>
+<a href="http://www.ospn.jp/osc2005-do/modules/eguide/event.php?eid=16">OSC2005-Doã€€ã€ŒJava/PHP/.netã«å¯¾å¿œï¼ æ¥­å‹™ã‚·ã‚¹ãƒ†ãƒ æ§‹ç¯‰ã‚’ã‚ˆã‚Šä¾¿åˆ©ã«ã™ã‚‹DIxAOPã€</a>
 </td></tr>
 
-<tr><td align="right" valign="top">2005-07-03@@</td><td>
-s2php5-0.94‚ğŒöŠJ<br>
-@EPHPİ’èƒtƒ@ƒCƒ‹Œ`®‚Ìdiconƒtƒ@ƒCƒ‹‚Ö‚Ì‘Î‰<br>
-@EDBÚ‘±ŠÖ˜A‚ğ extension ‚Æ‚µ‚Ä’Ç‰Á<br>
-@Eextension ƒhƒLƒ…ƒƒ“ƒgì¬<br>
+<tr><td align="right" valign="top">2005-07-03ã€€ã€€</td><td>
+s2php5-0.94ã‚’å…¬é–‹<br>
+ã€€ãƒ»PHPè¨­å®šãƒ•ã‚¡ã‚¤ãƒ«å½¢å¼ã®diconãƒ•ã‚¡ã‚¤ãƒ«ã¸ã®å¯¾å¿œ<br>
+ã€€ãƒ»DBæ¥ç¶šé–¢é€£ã‚’ extension ã¨ã—ã¦è¿½åŠ <br>
+ã€€ãƒ»extension ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆä½œæˆ<br>
 </td></tr>
-<tr><td align="right" valign="top">2005-06-09@@</td><td>
-s2php5-0.93‚ğŒöŠJ<br>
-@EˆÚAŠ®—¹ (M1)<br>
-@EExampleì¬<br>
-@EƒhƒLƒ…ƒƒ“ƒgì¬<br>
+<tr><td align="right" valign="top">2005-06-09ã€€ã€€</td><td>
+s2php5-0.93ã‚’å…¬é–‹<br>
+ã€€ãƒ»ç§»æ¤å®Œäº† (M1)<br>
+ã€€ãƒ»Exampleä½œæˆ<br>
+ã€€ãƒ»ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆä½œæˆ<br>
 </td></tr>
-<tr><td align="right" valign="top">2005-06-08@@</td><td>
+<tr><td align="right" valign="top">2005-06-08ã€€ã€€</td><td>
 [@IT] 
 <a href="http://www.atmarkit.co.jp/fjava/rensai3/seasar2_01/seasar2_01.html">
-The Seasar Project‚Ì‘S–e‚ğ’T‚é(1)
+The Seasar Projectã®å…¨è²Œã‚’æ¢ã‚‹(1)
 </a></td></tr>
-<tr><td align="right" valign="top">2005-05-30@@</td><td>
+<tr><td align="right" valign="top">2005-05-30ã€€ã€€</td><td>
 [PC WEB] 
 <a href="http://pcweb.mycom.co.jp/news/2005/05/30/015.html">
-uJ2EE‚ğˆÕ‚µ‚­v‚ğ.NET‚Å‚à - .NET”ÅSeasaruS2.NETvŒöŠJAS2JCA 0.2.0‚à
+ã€ŒJ2EEã‚’æ˜“ã—ãã€ã‚’.NETã§ã‚‚ - .NETç‰ˆSeasarã€ŒS2.NETã€å…¬é–‹ã€S2JCA 0.2.0ã‚‚
 </a></td></tr>
-<tr><td align="right" valign="top">2005-05-29@@</td><td>ƒo[ƒWƒ‡ƒ“ŠÇ—ƒVƒXƒeƒ€‚ÉƒCƒ“ƒ|[ƒg</td></tr>
-<tr><td align="right" valign="top">2005-05-18@@</td><td>s2php5-0.92‚ğŒöŠJ</td></tr>
-<tr><td align="right" valign="top">2005-05-15@@</td><td>OSCJ.net‚É‚ÄS2PHP5ƒvƒƒWƒFƒNƒg‚ğn“®</td></tr>
+<tr><td align="right" valign="top">2005-05-29ã€€ã€€</td><td>ãƒãƒ¼ã‚¸ãƒ§ãƒ³ç®¡ç†ã‚·ã‚¹ãƒ†ãƒ ã«ã‚¤ãƒ³ãƒãƒ¼ãƒˆ</td></tr>
+<tr><td align="right" valign="top">2005-05-18ã€€ã€€</td><td>s2php5-0.92ã‚’å…¬é–‹</td></tr>
+<tr><td align="right" valign="top">2005-05-15ã€€ã€€</td><td>OSCJ.netã«ã¦S2PHP5ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã‚’å§‹å‹•</td></tr>
 </table>
+<br>
+</div>
+</div><!-- article -->
 
+</div><!-- contents_center -->
 
+<div id="footer">
+<address>&#169; Copyright The Seasar Foundation and the others 2004-2006, all rights reserved.</address>
+<div class="line"><span class="hide">spacer</span></div>
+</div><!-- footer -->
 
-<!-- document end -->
-<!-- don't edit start -->
-</td>
-<td width="14"><img src="images/spacer.gif" alt="" height="14" width="14"></td>
-</tr><tr>
-<td width="14"><img src="images/spacer.gif" alt="" height="30" width="14"></td>
-<td width="766"><img src="images/spacer.gif" alt="" height="30" width="592"></td>
-</tr><tr>
-<td width="14"><img src="images/spacer.gif" alt="" height="14" width="14"></td>
-<td class="copyright" width="766">&#169; Copyright The Seasar Project and the others 2005-2006, all rights reserved.</td>
-</tr></tbody></table>
-</td><td class="backright" align="left" valign="top">&nbsp;</td></tr><tr>
-<td class="backunder" align="left" height="16" valign="top" width="780">&nbsp;</td>
-<td class="backcorner" align="left" height="16" valign="top">&nbsp;</td>
-</tr></tbody></table><!-- don't edit end -->
+</div><!-- wrapper -->
+
 </body></html>
