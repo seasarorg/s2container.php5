@@ -36,12 +36,70 @@ final class S2ContainerFactory
     private function __construct()
     {
     }
+
+    private static function getEnvDicon($path) {
+        $pinfo = pathinfo($path);
+        $pattern = '/\./';
+        $replacement = '_' . S2CONTAINER_PHP5_ENV . '.';
+        $envDicon = $pinfo['dirname']
+                  . DIRECTORY_SEPARATOR
+                  . preg_replace($pattern, $replacement, $pinfo['basename'], 1);
+        if (is_readable($envDicon)) {
+            return $envDicon;
+        }
+        
+        return null;
+    }
+
+    /**
+     * @param string dicon path 
+     */
+    public static function create($diconPath) 
+    {
+        $support = S2Container_CacheSupportFactory::create();
+
+        if (!$support->isContainerCaching($diconPath)) {
+            S2Container_S2Logger::getLogger(__CLASS__)->
+                info("set caching off.",__METHOD__);
+            return self::createInternal($diconPath);
+        }
+
+        if ($data = $support->loadContainerCache($diconPath)) {
+            S2Container_S2Logger::getLogger(__CLASS__)->
+                    info("cached container found.",__METHOD__);
+            $container = unserialize($data);
+            if (is_object($container) and 
+                $container instanceof S2Container) {
+                $container->reconstruct(S2Container_ComponentDef::RECONSTRUCT_FORCE);
+                return $container;
+            } else {
+                 throw new Exception("invalid cache found.");
+            }
+        }
+        else {
+            S2Container_S2Logger::getLogger(__CLASS__)->
+                info("create container and cache it.",__METHOD__);
+            $container = self::createInternal($diconPath);
+            $support->saveContainerCache(serialize($container), $diconPath);
+            return $container;
+        }
+    }
+    
     
     /**
      * @param string dicon path 
      */
-    public static function create($path) 
+    private static function createInternal($path) 
     {
+        if (!is_readable($path)) {
+            throw new S2Container_S2RuntimeException('ESSR0001',array($path));
+        }
+
+        if (defined('S2CONTAINER_PHP5_ENV')) {
+            $envDicon = self::getEnvDicon($path);
+            $path = $envDicon === null ? $path : $envDicon;
+        }
+
         self::_enter($path);
         $ext = pathinfo($path,PATHINFO_EXTENSION);
         $container = null;
@@ -61,6 +119,14 @@ final class S2ContainerFactory
      */
     public static function includeChild(S2Container $parent, $path)
     {
+        if (!is_readable($path)) {
+            throw new S2Container_S2RuntimeException('ESSR0001',array($path));
+        }
+        if (defined('S2CONTAINER_PHP5_ENV')) {
+             $envDicon = self::getEnvDicon($path);
+             $path = $envDicon === null ? $path : $envDicon;
+        }
+
         self::_enter($path);
         $root = $parent->getRoot();
         $child = null;

@@ -324,6 +324,8 @@ class S2Container_XmlS2ContainerBuilderTest
     }
 
     function testSession() {
+        $_SESSION = array();
+        session_id('test');
         $container = S2ContainerFactory::create(
                                 $this->diconDir . '/testSession.dicon');
         $ll = $container->getComponent("ll");
@@ -336,6 +338,8 @@ class S2Container_XmlS2ContainerBuilderTest
           
         $ll = $container->getComponent('ll');
         $this->assertType('L_S2Container_XmlS2ContainerBuilder',$ll);
+        $_SESSION = null;
+        session_id('');
     }
 
     function testUuSet() {
@@ -359,9 +363,9 @@ class S2Container_XmlS2ContainerBuilderTest
        
         try{
             $a = $container->getComponent('A_S2Container_XmlS2ContainerBuilder');
-            $thid->assertTrue(false);
+            $this->assertTrue($a instanceof A_S2Container_XmlS2ContainerBuilder);
         }catch(Exception $e){
-            $this->assertType('S2Container_TooManyRegistrationRuntimeException',$e);
+            $this->fail($e->__toString());
         }
     }
 
@@ -404,7 +408,7 @@ class S2Container_XmlS2ContainerBuilderTest
         $this->assertEquals($c->add(5,3),'12');
     }
     
-    function testPintcutEreg() {
+    function testPointcutEreg() {
         $container = S2ContainerFactory::create(
                                 $this->diconDir . '/testPintcutEreg.dicon');
               
@@ -549,6 +553,17 @@ class S2Container_XmlS2ContainerBuilderTest
                              $this->diconDir . '/testCircularIncludeRuntimeExceptionA.dicon');
         }catch(Exception $e){
             $this->assertType('S2Container_CircularIncludeRuntimeException',$e);
+            print $e->getMessage() . "\n";
+        }
+    }
+
+    function testReflectionNotFoundException() {
+        try{ 
+            $container = S2ContainerFactory::create(
+                             $this->diconDir . '/testReflectionNotFoundException.dicon');
+            $container->getComponent('service');
+            $this->fail();
+        }catch(Exception $e){
             print $e->getMessage() . "\n";
         }
     }

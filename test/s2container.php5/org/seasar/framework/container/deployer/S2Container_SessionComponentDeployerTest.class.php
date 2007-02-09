@@ -41,6 +41,9 @@ class S2Container_SessionComponentDeployerTest
     }
 
     function testSession1() {
+        $_SESSION = array();
+        session_id('test');
+        
         $container = new S2ContainerImpl();
         $container->register('D_S2Container_SessionComponentDeployer','d');
         $container->register('L_S2Container_SessionComponentDeployer','l');
@@ -53,11 +56,15 @@ class S2Container_SessionComponentDeployerTest
 
         $ll = $container->getComponent('l');
         $this->assertTrue($l === $ll);
+
+        $_SESSION = null;
+        session_id('');
     }
    
     function testSession2() {
         $_SESSION['l'] = "test string";
-          
+        session_id('test');
+
         $container = new S2ContainerImpl();
         $container->register('D_S2Container_SessionComponentDeployer','d');
         $container->register('L_S2Container_SessionComponentDeployer','l');
@@ -67,7 +74,29 @@ class S2Container_SessionComponentDeployerTest
           
         $l = $container->getComponent('l');
         $this->assertType('L_S2Container_SessionComponentDeployer',$l);
+
+        $_SESSION = null;
+        session_id('');
     }
+
+    function testSession3() {
+        $_SESSION['l'] = new D_S2Container_SessionComponentDeployer();
+        session_id('test');
+
+        $container = new S2ContainerImpl();
+        $container->register('D_S2Container_SessionComponentDeployer','d');
+        $container->register('L_S2Container_SessionComponentDeployer','l');
+          
+        $cd = $container->getComponentDef('l');
+        $cd->setInstanceMode(S2Container_ContainerConstants::INSTANCE_SESSION);
+          
+        $l = $container->getComponent('l');
+        $this->assertType('L_S2Container_SessionComponentDeployer',$l);
+
+        $_SESSION = null;
+        session_id('');
+    }
+
 }
 
 interface IG_S2Container_SessionComponentDeployer{}

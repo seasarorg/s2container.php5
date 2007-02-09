@@ -150,7 +150,6 @@ class S2Container_ComponentDefImplTest
         $this->assertType('S2Container_ComponentDefImpl',$cd);
         $this->assertNull($cd->getComponentClass());
         $this->assertNull($cd->getConcreteClass());
-
         try{
             $cd->getComponent();
         }catch(Exception $e){

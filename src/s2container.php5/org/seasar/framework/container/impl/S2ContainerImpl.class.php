@@ -140,8 +140,11 @@ class S2ContainerImpl implements S2Container
     {
         $classes = $this->getAssignableClasses($componentDef->getComponentClass());
         $o = count($classes);
+        $componentName = $componentDef->getComponentName();
         for ($i = 0; $i < $o; ++$i) {
-            $this->_registerMap($classes[$i], $componentDef);
+            if ($classes[$i] != $componentName) {
+                $this->_registerMap($classes[$i], $componentDef);
+            }
         }
     }
 

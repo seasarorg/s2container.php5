@@ -325,6 +325,8 @@ class S2Container_YamlS2ContainerBuilderTest
     }
 
     function testSession() {
+        $_SESSION = array();
+        session_id('test');
         $container = S2ContainerFactory::create(
                                 $this->diconDir . '/testSession.dicon.yml');
         $ll = $container->getComponent("ll");
@@ -337,6 +339,8 @@ class S2Container_YamlS2ContainerBuilderTest
           
         $ll = $container->getComponent('ll');
         $this->assertType('L_S2Container_YamlS2ContainerBuilder',$ll);
+        $_SESSION = null;
+        session_id('');
     }
 
     function testUuSet() {
@@ -360,9 +364,9 @@ class S2Container_YamlS2ContainerBuilderTest
        
         try{
             $a = $container->getComponent('A_S2Container_YamlS2ContainerBuilder');
-            $thid->assertTrue(false);
+            $this->assertTrue($a instanceof A_S2Container_YamlS2ContainerBuilder);
         }catch(Exception $e){
-            $this->assertType('S2Container_TooManyRegistrationRuntimeException',$e);
+            $this->fail($e->__toString());
         }
     }
 

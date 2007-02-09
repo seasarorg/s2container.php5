@@ -1,7 +1,13 @@
 ﻿
-2006-11-30 S2Container.PHP5-1.1.3
+2007-02-09 S2Container.PHP5-1.1.3
 
 ================ S2Container.PHP5-1.1.3 更新履歴 ===================
+
+	* info: PHP-5.2.1-Win32 での動作確認を行いました。
+	* add: package org.seasar.framework.container.impl
+	S2ContainerImplで、コンポーネント名とクラス名が同じ場合に重複して登録しないようにしました。
+
+2006-11-30 S2Container.PHP5-1.1.3
 
 	* modify: package org.seasar.framework.aop.proxy
 	S2Container_EnhancedClassGeneratorにおいて、同一の呼び出しからEnhanceされたクラスが
