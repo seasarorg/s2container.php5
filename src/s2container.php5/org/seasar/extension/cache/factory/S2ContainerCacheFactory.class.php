@@ -24,6 +24,7 @@
 /**
  * @package org.seasar.extension.cache.factory
  * @author klove
+ * @deprecated deprecated since version 1.1.2
  */
 final class S2ContainerCacheFactory
 {

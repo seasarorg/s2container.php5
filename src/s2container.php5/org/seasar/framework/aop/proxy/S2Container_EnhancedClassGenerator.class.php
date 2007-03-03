@@ -305,7 +305,7 @@ class S2Container_EnhancedClassGenerator
         S2Container_S2Logger::getLogger(__CLASS__)->
                     debug("create aop proxy and cache it.", __METHOD__);
         $srcLine = $this->getevaluateSource();
-        $support->saveAopProxyCache($srcLine, $this->targetClass->getFileName());
+        $support->saveAopProxyCache($srcLine, $this->targetClass->getFileName() . $this->enhancedClassName);
         $this->evalInternal($srcLine);
         return $this->enhancedClassName;
     }
