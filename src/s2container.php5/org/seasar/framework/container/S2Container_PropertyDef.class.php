@@ -3,7 +3,7 @@
 // +----------------------------------------------------------------------+
 // | PHP version 5                                                        |
 // +----------------------------------------------------------------------+
-// | Copyright 2005-2006 the Seasar Foundation and the Others.            |
+// | Copyright 2005-2007 the Seasar Foundation and the Others.            |
 // +----------------------------------------------------------------------+
 // | Licensed under the Apache License, Version 2.0 (the "License");      |
 // | you may not use this file except in compliance with the License.     |
@@ -42,7 +42,7 @@
  * プロパティ定義が存在しない場合、バインディングモード設定に従って自動バインディングが行われる事があります。
  * </p>
  * 
- * @copyright  2005-2006 the Seasar Foundation and the Others.
+ * @copyright  2005-2007 the Seasar Foundation and the Others.
  * @license    http://www.apache.org/licenses/LICENSE-2.0
  * @version    Release: 1.1.2
  * @link       http://s2container.php5.seasar.org/

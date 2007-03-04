@@ -753,9 +753,18 @@ S2ContainerClassLoader::import($classes);
 
 <div class="section">
 <h2 id="h02"><a name="cache-support">S2Container_CacheSupport</a></h2>
+<br>
+<center>
+<table border="1" width="50%">
+<tr><td align="center">警告</td></tr>
+<tr><td>
+この拡張モジュールは<i> 実験的 </i>なものです。この拡張モジュールの動作・関数名・その他ドキュメントに書かれている事項は、将来変更される可能性があります。
+</td></tr>
+</table>
+</center>
 
 <p>
-　S2Container_CacheSupport では、S2Container インスタンスの serialize データと、S2AOP で生成されるの AopProxy コードをキャッシュします。S2Container_CacheSupportの実装クラスとして、S2Container_PearCacheLiteSupport と S2Container_MemcacheSupport があります。どの CacheSupport クラスを使用するかは、S2CONTAINER_PHP5_CACHE_SUPPORT_CLASS 定数で指定します。
+　S2Container_CacheSupport では、S2ContainerFactory で生成される S2Container インスタンスの serialize データと、S2AOP で生成されるの AopProxy コードをキャッシュします。S2Container_CacheSupportの実装クラスとして、S2Container_PearCacheLiteSupport と S2Container_MemcacheSupport があります。どの CacheSupport クラスを使用するかは、S2CONTAINER_PHP5_CACHE_SUPPORT_CLASS 定数で指定します。
 デフォルトは、S2Container_PearCacheLiteSupport です。MemcacheSupport 使用する場合は次のように定義します。
 </p>
 
@@ -893,7 +902,7 @@ timeout = "10"
 </pre>
 
 
-<h3><a name="cache-factory">S2ContainerCacheFactory</a></h3>
+<h3><a name="cache-factory">S2ContainerCacheFactory (<font color="pink"><i>deprecated この機能は S2Container.PHP5-1.1.3 で S2ContainerFactory に移動しました。</i></font>)</a></h3>
 <center>
 <table border="1" width="50%">
 <tr><td align="center">警告</td></tr>
@@ -905,7 +914,6 @@ timeout = "10"
 <br>
 <p>
 　S2ContainerCacheFactory は、S2Container_CacheSupport を用いて S2Containerインスタンスをキャッシュします。<br>
-( <i>S2ContainerFactory ではS2Container_CacheSupport が有効でもキャッシュされません。</i> )<br>
 S2ContainerCacheFactory::create() メソッドを用いて S2Container インスタンスを取得します。
 </p>
 <pre>
@@ -917,51 +925,6 @@ S2ContainerCacheFactory::create() メソッドを用いて S2Container インス
     $container = S2ContainerCacheFactory::create('/path/to/file.dicon');
 ?&gt;
 </pre>
-
-<h3><a name="cache-file">S2ContainerFileCacheFactory (<font color="pink"><i>deprecated </i></font>)</a></h3>
-
-<center>
-<table border="1" width="50%">
-<tr><td align="center">警告</td></tr>
-<tr><td>
-この拡張モジュールは<i> 実験的 </i>なものです。この拡張モジュールの動作・関数名・その他ドキュメントに書かれている事項は、将来変更される可能性があります。
-</td></tr>
-</table>
-</center>
-
-<p>
-　S2ContainerFileCacheFactoryはS2Containerインスタンスをserializeし、キャッシュファイルに保存します。
-キャッシュファイルはS2CONTAINER_PHP5_CACHE_DIR定数で指定されたディレクトリに保存されます。
-ファイル名はcreateメソッドの第2引数で指定できます。第2引数が省略された場合は、diconファイルへのパス文字列を
-引数として<a href="http://jp2.php.net/manual/ja/function.sha1.php">sha1関数</a>で作成された文字列が使用されます。
-S2ContainerFileCacheFactoryはdiconファイルが更新されるとキャッシュを更新します。
-</p>
-
-s2container.php5/examples/extension/cache/cacheClient.php
-<pre>
-&lt;?php
-...
-define('S2CONTAINER_PHP5_CACHE_DIR',EXAMPLE_DIR . "/extension/cache/var");
-$PATH_B = EXAMPLE_DIR . "/extension/cache/testB.dicon";
-$container = S2ContainerFileCacheFactory::create($PATH_B);
-
-$PATH_C = EXAMPLE_DIR . "/extension/cache/testC.dicon";
-$container = S2ContainerFileCacheFactory::create($PATH_C,'testC.dicon');
-...
-?&gt;
-</pre>
-
-<pre>
-> cd s2container.php5/examples/extension/cache
-> php ./cacheClient.php
-...
-...
-...
-> ls var
-06fb37bcebbfe225537873c3a16dced48b6b2b4e.dicon     testC.dicon
->
-</pre>
-<br>
 </div>
 
 <div class="section">
@@ -1947,7 +1910,7 @@ components:
 </div><!-- contents_center -->
 
 <div id="footer">
-<address>&#169; Copyright The Seasar Foundation and the others 2004-2006, all rights reserved.</address>
+<address>&#169; Copyright The Seasar Foundation and the others 2005-2007, all rights reserved.</address>
 <div class="line"><span class="hide">spacer</span></div>
 </div><!-- footer -->
 

@@ -1,7 +1,19 @@
 ﻿
-2007-02-09 S2Container.PHP5-1.1.3
+2007-03-04 S2Container.PHP5-1.1.3
 
 ================ S2Container.PHP5-1.1.3 更新履歴 ===================
+
+	* fix: package org.seasar.framework.aop.proxy
+	S2Container_EnhancedClassGenerator で AopProxyのcacheキーにクラス名を含めるようにしました。
+	* info: package org.seasar.framework
+	org.seasar.extension.cache パッケージを org.seasar.framework パッケージに移動しました。
+	* add: package org.seasar.framework.container.factory
+	S2ContainerFactoryにS2ContainerCacheFactoryのキャッシュ機能をマージしました。
+	* modify: package org.seasar.framework.container.factory
+	S2ContainerFactoryで、S2ContainerBuilderに渡すダイコンファイルで、S2CONTAINER_PHP5_ENV定数で指定された
+	suffixを付けたダイコンファイルが存在していれば優先して読み込むようにしました。
+
+2007-02-09 S2Container.PHP5-1.1.3
 
 	* info: PHP-5.2.1-Win32 での動作確認を行いました。
 	* add: package org.seasar.framework.container.impl
@@ -16,9 +28,9 @@
 2006-11-22 S2Container.PHP5-1.1.3
 
 	* fix: package org.seasar.framework.container.deployer
-	S2Container_RequestComponentDeployerで$_REQUEST の初期化済み確認を行うようにしました。
+	S2Container_RequestComponentDeployer で $_REQUEST の定義済み確認を行うようにしました。
 	* fix: package org.seasar.framework.container.deployer
-	S2Container_SessionComponentDeployerで$_SESSION の初期化済み確認を行うようにしました。
+	S2Container_SessionComponentDeployerで $_SESSION の定義済み確認を行うようにしました。
 	* fix: package org.seasar.framework.aop.proxy
 	S2Container_AopProxyGenerator で AopProxyのcacheキーにクラス名を含めるようにしました。
 

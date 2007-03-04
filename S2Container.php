@@ -3,7 +3,7 @@
 // +----------------------------------------------------------------------+
 // | PHP version 5                                                        |
 // +----------------------------------------------------------------------+
-// | Copyright 2005-2006 the Seasar Foundation and the Others.            |
+// | Copyright 2005-2007 the Seasar Foundation and the Others.            |
 // +----------------------------------------------------------------------+
 // | Licensed under the Apache License, Version 2.0 (the "License");      |
 // | you may not use this file except in compliance with the License.     |
@@ -27,7 +27,7 @@
  * S2Container System Definition
  *   S2Container define these definitions.
  *   - S2CONTAINER_PHP5 : S2Container.PHP5 ROOT Directory
- *                        [ string default s2container.php5/src ]
+ *       [ string default /path/to/S2Container ]
  * 
  * User Definition
  *   User could define these definitions.
@@ -44,27 +44,8 @@
  *   - S2CONTAINER_PHP5_ANNOTATION_HANDLER : constant or comment annotation available
  *       [ string default S2Container_ConstantAnnotationHandler
  *         available handler S2Container_CommentAnnotationHandler ]
- *   - S2CONTAINER_PHP5_CACHE_DIR : S2ContainerFileCacheFactory uses this directory path.
+ *   - S2CONTAINER_PHP5_ENV : append suffix to dicon file.
  *       [ string default not defined ]
- *   - S2AOP_PHP5_FILE_CACHE : S2AOP proxy class file cache
- *       [ boolean default false ]
- *   - S2AOP_PHP5_FILE_CACHE_DIR : S2AOP proxy class file cache directory
- *       [ string default not defined ]
- *
- * Autoload function must be defined
- *   sample : use S2ContainerClassLoader
- *     S2ContainerClassLoader::import(S2CONTAINER_PHP5);
- *     function __autoload($class=null){
- *         S2ContainerClassLoader::load($class);
- *     }
- * 
- *   sample : use include_once directly
- *     function __autoload($class=null){
- *         if($class != null){
- *             include_once("$class.class.php");
- *         }
- *     }
- * 
  */
 
 require_once('build/s2container.php5/S2Container.php');

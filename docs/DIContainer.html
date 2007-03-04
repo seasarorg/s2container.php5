@@ -84,6 +84,17 @@
                     <li><a href="#descriptionTag">descriptionタグ</a></li>
                 </ul>
             </li>
+            <li><a href="#constant-def">S2Containerで使用される定数</a>
+                <ul>
+                    <li><a href="#const-dom-valid">S2CONTAINER_PHP5_DOM_VALIDATE</a></li>
+                    <li><a href="#const-app-dicon">S2CONTAINER_PHP5_APP_DICON</a></li>
+                    <li><a href="#const-log-level">S2CONTAINER_PHP5_LOG_LEVEL</a></li>
+                    <li><a href="#const-log-eval">S2CONTAINER_PHP5_DEBUG_EVAL</a></li>
+                    <li><a href="#const-log-file">S2CONTAINER_PHP5_SIMPLE_LOG_FILE</a></li>
+                    <li><a href="#const-anno">S2CONTAINER_PHP5_ANNOTATION_HANDLER</a></li>
+                    <li><a href="#const-env">S2CONTAINER_PHP5_ENV</a></li>
+                </ul>
+            </li>
             <li><a href="#Example">Example</a>
                 <ul>
                     <li><a href="#ConstructorInjectionEx">コンストラクタ・インジェクション</a></li>
@@ -870,6 +881,59 @@ PropertyDefで定義されている次のメソッドで取得することが出
 <br>
 
 </div>
+
+<!-- ######################################################### -->
+<div class="section">
+<h2 id="h03"><a name="constant-def">S2Containerで使用される定数</a></h2>
+
+<a name="const-dom-valid"><h3>S2CONTAINER_PHP5_DOM_VALIDATE</h3></a>
+<p>
+　ダイコンファイルを読み込む際に、DTD検証を実施するかどうかをbool値で指定します。<br>
+　 - デフォルト値 ： true 
+</p>
+
+<a name="const-app-dicon"><h3>S2CONTAINER_PHP5_APP_DICON</h3></a>
+<p>
+　S2Container_SingletonS2ContainerFactorが使用するダイコンファイル指定します。<br>
+　 - デフォルト値 ： 未定義
+</p>
+
+<a name="const-log-level"><h3>S2CONTAINER_PHP5_LOG_LEVEL</h3></a>
+<p>
+　S2Container.PHP5のログレベルを定義します。S2Container.PHP5 の S2Container_SimpleLoggerクラスのログレベルには、DEBUG、INFO、WARN、ERROR、FATAL があります。<br>
+　 - デフォルト値 ： S2Container_SimpleLogger::WARN
+</p>
+
+<a name="const-log-eval"><h3>S2CONTAINER_PHP5_DEBUG_EVAL</h3></a>
+<p>
+　S2Container.PHP5のログレベルが DEBUG の場合に、eval関数で実行されるスクリプトを出力するかどうかをbool値で指定します。<br>
+　 - デフォルト値 ： false
+</p>
+
+<a name="const-log-file"><h3>S2CONTAINER_PHP5_SIMPLE_LOG_FILE</h3></a>
+<p>
+　S2Container_SimpleLoggerのログ出力先ファイルを指定します。<br>
+　 - デフォルト値 ： 未定義 (stdout)
+</p>
+
+<a name="const-anno"><h3>S2CONTAINER_PHP5_ANNOTATION_HANDLER</h3></a>
+<p>
+　アノテーションタイプをクラス名で指定します。(S2Container_ConstantAnnotationHandler または S2Container_CommentAnnotationHandler)<br>
+　 - デフォルト値 ： S2Container_ConstantAnnotationHandler
+</p>
+
+<a name="const-env"><h3>S2CONTAINER_PHP5_ENV</h3></a>
+<p>
+　環境指定を行います。この値は、ダイコンファイルを読み込む際に、ダイコンファイルのSuffixとして使用されます。<br>
+S2CONTAINER_PHP5_ENV が test と定義されていて、foo.dicon と foo_test.diconが存在した場合、foo_test.diconが
+使用されます。<br>
+　 - デフォルト値 ： 未定義
+</p>
+
+</div>
+<br>
+
+<!-- ######################################################### -->
 <div class="section">
 <h2 id="h03"><a name="Example">Example</a></h2>
 <p>
@@ -1526,7 +1590,7 @@ Hello World!
 </div><!-- contents_center -->
 
 <div id="footer">
-<address>&#169; Copyright The Seasar Foundation and the others 2004-2006, all rights reserved.</address>
+<address>&#169; Copyright The Seasar Foundation and the others 2005-2007, all rights reserved.</address>
 <div class="line"><span class="hide">spacer</span></div>
 </div><!-- footer -->
 
