@@ -22,7 +22,7 @@
 //
 // $Id:$
 /**
- * @package org.seasar.extension.cache.factory
+ * @package org.seasar.framework.cache.factory
  * @author klove
  */
 final class S2Container_CacheSupportFactory

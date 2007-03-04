@@ -22,7 +22,7 @@
 //
 // $Id$
 /**
- * @package org.seasar.extension.cache
+ * @package org.seasar.framework.cache
  * @author klove
  * @deprecated deprecated since version 1.1.1
  */
