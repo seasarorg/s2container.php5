@@ -37,20 +37,6 @@ final class S2ContainerFactory
     {
     }
 
-    private static function getEnvDicon($path) {
-        $pinfo = pathinfo($path);
-        $pattern = '/\./';
-        $replacement = '_' . S2CONTAINER_PHP5_ENV . '.';
-        $envDicon = $pinfo['dirname']
-                  . DIRECTORY_SEPARATOR
-                  . preg_replace($pattern, $replacement, $pinfo['basename'], 1);
-        if (is_readable($envDicon)) {
-            return $envDicon;
-        }
-        
-        return null;
-    }
-
     /**
      * @param string dicon path 
      */
@@ -198,6 +184,20 @@ final class S2ContainerFactory
     private static function _leave($path)
     {
         array_pop(self::$processingPaths_);
+    }
+
+    private static function getEnvDicon($path) {
+        $pinfo = pathinfo($path);
+        $pattern = '/\./';
+        $replacement = '_' . S2CONTAINER_PHP5_ENV . '.';
+        $envDicon = $pinfo['dirname']
+                  . DIRECTORY_SEPARATOR
+                  . preg_replace($pattern, $replacement, $pinfo['basename'], 1);
+        if (is_readable($envDicon)) {
+            return $envDicon;
+        }
+        
+        return null;
     }
 }
 ?>

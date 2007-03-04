@@ -69,6 +69,37 @@ class S2ContainerFactoryTest
             print "{$e->getMessage()} \n";
         }
     }
+
+    function testEnvDicon(){
+        define('S2CONTAINER_PHP5_ENV', 'mock');
+        try {
+            //     exist : testEnvDiconA.dicon
+            // not exist : testEnvDiconA_mock.dicon
+            $diconFile = $this->diconDir . '/testEnvDiconA.dicon';
+            $container = S2ContainerFactory::create($diconFile);
+            $this->assertType('S2Container', $container);
+        } catch (Exception $e) {
+            $this->fail($e->getMessage());
+        }
+
+        // exist : testEnvDiconB.dicon
+        // exist : testEnvDiconB_mock.dicon
+        $diconFile = $this->diconDir . '/testEnvDiconB.dicon';
+        $container = S2ContainerFactory::create($diconFile);
+        $this->assertEquals($container->getPath(), $this->diconDir . DIRECTORY_SEPARATOR . 'testEnvDiconB_mock.dicon');
+
+        // exist : testEnvDiconC.xml.dicon
+        // exist : testEnvDiconC_mock.xml.dicon
+        $diconFile = $this->diconDir . '/testEnvDiconC.xml.dicon';
+        $container = S2ContainerFactory::create($diconFile);
+        $this->assertEquals($container->getPath(), $this->diconDir . DIRECTORY_SEPARATOR . 'testEnvDiconC_mock.xml.dicon');
+
+        // exist : testEnvDiconD.dicon
+        // exist : testEnvDiconD_mock.xml.dicon
+        $diconFile = $this->diconDir . '/testEnvDiconD.dicon';
+        $container = S2ContainerFactory::create($diconFile);
+        $this->assertEquals($container->getPath(), $this->diconDir . '/testEnvDiconD.dicon');
+    }
 }
 
 class A_S2ContainerFactory{}
