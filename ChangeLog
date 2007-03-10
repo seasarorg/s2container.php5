@@ -1,7 +1,15 @@
 ﻿
-2007-03-04 S2Container.PHP5-1.1.3
+2007-03-10 S2Container.PHP5-1.1.3
 
 ================ S2Container.PHP5-1.1.3 更新履歴 ===================
+
+	* fix: package org.seasar.framework.aop.proxy
+	S2Container_AopProxyGenerator のインターフェイスのimplements部で、extends しているインターフェイスを
+	多重実装してしまう点を修正しました。
+
+
+2007-03-04 S2Container.PHP5-1.1.3
+
 	* fix: package org.seasar.framework.aop.proxy
 	S2Container_EnhancedClassGenerator で AopProxyのcacheキーにクラス名を含めるようにしました。
 	* info: package org.seasar.framework

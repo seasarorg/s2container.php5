@@ -95,10 +95,11 @@ class S2Container_AopProxyGenerator
                          ReflectionClass('S2Container_DefaultAopProxy'));
         $addMethodSrc = array();
         $interfaceNames = array();
+        $repeatInterfaces = array();
         foreach ($interfaces as $interface) {
             $interfaceSrc = S2Container_ClassUtil::getSource($interface);
             $methods = $interface->getMethods();
-            $unApplicable = false;
+            $hasUnApplicableMethod = false;
             foreach ($methods as $method) {
                 if ($method->getDeclaringClass()->getName() == $interface->getName()) {
                     if (S2Container_AopProxyFactory::isApplicableAspect($method)) {
@@ -106,18 +107,21 @@ class S2Container_AopProxyGenerator
                              S2Container_AopProxyGenerator::getMethodDefinition($method,
                              $interfaceSrc);
                     } else {
-                        $unApplicable = true;
+                        $hasUnApplicableMethod = true;
                         break;
                     }
+                } else {
+                    $repeatInterfaces[] = $method->getDeclaringClass()->getName();
                 }
             }
-            if (!$unApplicable) {
+            if (!$hasUnApplicableMethod) {
                 $interfaceNames[] = $interface->getName();
             }
         }
 
+        $interfaceNames = array_diff($interfaceNames, $repeatInterfaces);
         if (count($interfaceNames) > 0) {
-            $implLine = " implements " . implode(',',$interfaceNames) . ' {';
+            $implLine = ' implements ' . implode(',',$interfaceNames) . ' {';
         } else {
             $implLine = ' {';
         }
@@ -132,10 +136,10 @@ class S2Container_AopProxyGenerator
         }
         
         foreach ($addMethodSrc as $methodSrc) {
-            $srcLine .= "    " . $methodSrc . "\n";
+            $srcLine .= '    ' . $methodSrc . PHP_EOL;
         }
 
-        $srcLine .= "}\n";
+        $srcLine .= '}' . PHP_EOL;
         return $srcLine;
     }
 
@@ -166,7 +170,7 @@ class S2Container_AopProxyGenerator
                 throw new S2Container_S2RuntimeException('ESSR0017',array($msg));
             }
 
-            $defLine .= $regs[1] . "(" . $regs[2] . "){";
+            $defLine .= $regs[1] . '(' . $regs[2] . '){';
             $argLine = $regs[2];
         }else{
             $msg = "cannot get args [ $srcLine ]";

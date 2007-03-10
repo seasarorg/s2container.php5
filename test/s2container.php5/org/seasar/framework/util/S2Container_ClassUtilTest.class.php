@@ -21,6 +21,11 @@
 // +----------------------------------------------------------------------+
 //
 // $Id:$
+
+class U_S2Container_ClassUtil{
+    function __construct(&$arg) {}
+}
+
 /**
  * @package org.seasar.framework.container.util
  * @author klove
@@ -43,7 +48,6 @@ class S2Container_ClassUtilTest
     function testGetClassSource() {
         $uRef = new ReflectionClass('U_S2Container_ClassUtil');
         $src = S2Container_ClassUtil::getClassSource($uRef);
-
         $this->assertEquals(trim($src[0]),"class U_S2Container_ClassUtil{");       
         $this->assertEquals(trim($src[count($src)-1]),"}");       
     }
@@ -51,8 +55,8 @@ class S2Container_ClassUtilTest
     function testGetSource() {
         $uRef = new ReflectionClass('U_S2Container_ClassUtil');
         $src = S2Container_ClassUtil::getSource($uRef);
-        $this->assertEquals(trim($src[79]),"class U_S2Container_ClassUtil{");       
-        $this->assertEquals(trim($src[81]),"}");       
+        $this->assertEquals(trim($src[24]),"class U_S2Container_ClassUtil{");
+        $this->assertEquals(trim($src[26]),"}");       
     }
 
     function testGetMethod() {
@@ -75,10 +79,17 @@ class S2Container_ClassUtilTest
         $cRef = new ReflectionClass('IW_S2Container_ClassUtil');
         $this->assertEquals(count(S2Container_ClassUtil::getInterfaces($cRef)),2);
     }
-}
 
-class U_S2Container_ClassUtil{
-    function __construct(&$arg) {}
+    function testGetNoneRepeatInterfaces() {
+        $cRef = new ReflectionClass('G_S2Container_ClassUtil');
+        $this->assertEquals(count(S2Container_ClassUtil::getNoneRepeatInterfaces($cRef)),1);
+
+        $cRef = new ReflectionClass('IW_S2Container_ClassUtil');
+        $this->assertEquals(count(S2Container_ClassUtil::getNoneRepeatInterfaces($cRef)),1);
+
+        $cRef = new ReflectionClass('B_S2Container_ClassUtil');
+        $this->assertEquals(count(S2Container_ClassUtil::getNoneRepeatInterfaces($cRef)),1);
+    }
 }
 
 class C_S2Container_ClassUtil {
@@ -114,5 +125,15 @@ interface IW_S2Container_ClassUtil
     extends IO_S2Container_ClassUtil {
     function wm1($arg1=null,IA &$a);
     function wm2();
+}
+
+class A_S2Container_ClassUtil implements IO_S2Container_ClassUtil {
+    function om1(){}
+    function om2(){}
+}
+class B_S2Container_ClassUtil extends A_S2Container_ClassUtil 
+                              implements IW_S2Container_ClassUtil {
+    function wm1($arg1=null,IA &$a){}
+    function wm2(){}
 }
 ?>

@@ -98,5 +98,29 @@ final class S2Container_ClassUtil
       
         return $interfaces;
     }
+
+    /**
+     * @param ReflectionClass
+     */
+    public static function getNoneRepeatInterfaces(ReflectionClass $clazz)
+    {
+        $impls = $clazz->getInterfaces();
+        if ($clazz->isInterface()) {
+            $impls[$clazz->getName()] = $clazz;
+        }
+
+        $repeats = array();
+        foreach ($impls as $childName => $childRef) {
+            foreach ($impls as $parentName => $parentRef) {
+                if ($childName === $parentName) {
+                    continue;
+                }
+                if ($childRef->isSubclassOf($parentRef)) {
+                    $repeats[$parentName] = $parentRef;
+                }
+            }
+        }
+        return array_values(array_diff_key($impls, $repeats));
+    }
 }
 ?>
