@@ -59,7 +59,7 @@ final class S2ContainerFactory
                 $container->reconstruct(S2Container_ComponentDef::RECONSTRUCT_FORCE);
                 return $container;
             } else {
-                 throw new Exception("invalid cache found.");
+                 throw new S2Container_S2RuntimeException('ESSR0017', array('invalid cache found.'));
             }
         }
         else {
