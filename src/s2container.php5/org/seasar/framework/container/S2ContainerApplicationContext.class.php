@@ -25,7 +25,7 @@
  * @package org.seasar.framework.container
  * @author klove
  */
- class S2ContainerApplicationContext {
+class S2ContainerApplicationContext {
     public  static $CLASSES = array();
     public  static $DICONS  = array();
     private static $includePattern = array();
@@ -35,6 +35,7 @@
     const COMPONENT_ANNOTATION = '@S2Component';
     const BINDING_ANNOTATION   = '@S2Binding';
     const ASPECT_ANNOTATION    = '@S2Aspect';
+    const ANNOTATION_END_DELIMITER = '\s';
 
     public static function load($className) {
         if (isset(self::$CLASSES[$className])) {
@@ -90,16 +91,18 @@
     }
 
     public static function create() {
-        $support = S2Container_CacheSupportFactory::create();
         $dicons  = array_values(self::filter(self::$DICONS));
         $classes = array_keys(self::filter(self::$CLASSES));
-        $cacheKey = implode(',', array_merge($dicons, $classes));
+        //$classes = self::filter(array_keys(self::$CLASSES));
+        //$classes = array_unique(array_merge($classes, array_keys(self::filter(self::$CLASSES))));
 
         if (count($dicons) == 0 and count($classes) == 0) {
-            S2Container_S2Logger::getLogger(__CLASS__)->info("none dicon, class found. create empty container.", __METHOD__);
+            S2Container_S2Logger::getLogger(__CLASS__)->info("dicon, class not found at all. create empty container.", __METHOD__);
             return new S2ContainerImpl();
         }
 
+        $support = S2Container_CacheSupportFactory::create();
+        $cacheKey = implode(',', array_merge($dicons, $classes));
         if (!$support->isContainerCaching($cacheKey)) {
             S2Container_S2Logger::getLogger(__CLASS__)->
                 info("set caching off.",__METHOD__);
@@ -192,18 +195,24 @@
     }
 
     private static function setupPropertyDef(S2Container_ComponentDef $cd, ReflectionMethod $methodRef, $propName) {
-        $propName = strtolower(substr($propName, 0, 1)) . substr($propName, 1);
-        $propertyDef = new S2Container_PropertyDefImpl($propName);
-        $cd->addPropertyDef($propertyDef);
         $propInfo = self::getAnnotation($methodRef, self::BINDING_ANNOTATION);
         if (isset($propInfo[0])) {
+            $propName = strtolower(substr($propName, 0, 1)) . substr($propName, 1);
+            $propertyDef = new S2Container_PropertyDefImpl($propName);
+            $cd->addPropertyDef($propertyDef);
             $propertyDef->setExpression($propInfo[0]);
             S2Container_ChildComponentDefBindingUtil::put($propInfo[0], $propertyDef);
+        } else {
+            S2Container_S2Logger::getLogger(__CLASS__)->debug("binding annotation found. cannot get values.", __METHOD__);
         }
     }
 
     private static function setupClassAspectDef(S2Container_ComponentDef $cd, ReflectionClass $classRef) {
         $annoInfo = self::getAnnotation($classRef, self::ASPECT_ANNOTATION);
+        if (count($annoInfo) === 0) {
+            S2Container_S2Logger::getLogger(__CLASS__)->debug("class aspect annotation found. cannot get values.", __METHOD__);
+            return;
+        }
         if (isset($annoInfo['interceptor'])) {
             if (isset($annoInfo['pointcut'])) {
                 $pointcut = new S2Container_PointcutImpl(preg_split('/,/', $annoInfo['pointcut']));
@@ -221,6 +230,10 @@
 
     private static function setupMethodAspectDef(S2Container_ComponentDef $cd, ReflectionMethod $methodRef) {
         $annoInfo = self::getAnnotation($methodRef, self::ASPECT_ANNOTATION);
+        if (count($annoInfo) === 0) {
+            S2Container_S2Logger::getLogger(__CLASS__)->debug("method aspect annotation found. cannot get values.", __METHOD__);
+            return;
+        }
         if (isset($annoInfo['interceptor'])) {
             $pointcut = new S2Container_PointcutImpl(array('^' . $methodRef->getName() . '$'));
             $aspectDef = new S2Container_AspectDefImpl($pointcut);
@@ -234,7 +247,7 @@
     }
 
     public static function hasAnnotation($refClazz, $annoName) {
-        return preg_match("/$annoName\s*[\(;]/s", $refClazz->getDocComment());
+        return preg_match("/$annoName\s*[\(]/s", $refClazz->getDocComment()) === 0 ? false : true;
     }
 
     public static function getAnnotation($refClazz, $annoName) {
@@ -251,8 +264,9 @@
         }
 
         $matches = array();
-        if (preg_match("/$annoName\s*\((.*?)\);/s", $comment, $matches)) {
-            $cmd = S2Container_EvalUtil::getExpression('array(' . $matches[1] . ')');
+        $regex = "/$annoName\s*(\(.+?\))" . self::ANNOTATION_END_DELIMITER . '/';
+        if (preg_match($regex, $comment, $matches)) {
+            $cmd = S2Container_EvalUtil::getExpression('array' . $matches[1]);
             if(defined('S2CONTAINER_PHP5_DEBUG_EVAL') and S2CONTAINER_PHP5_DEBUG_EVAL){
                 S2Container_S2Logger::getLogger(__CLASS__)->debug("[ $cmd ]",__METHOD__);
             }
@@ -264,13 +278,13 @@
     }
 
     public static function formatCommentLine($commentLine) {
-        $comments = preg_split('/[\n\r]/', $commentLine, -1, PREG_SPLIT_NO_EMPTY);
-        $comment = '';
+        $comments = preg_split('/[\n\r]/', $commentLine);
+        $comment = ' ';
         foreach ($comments as $line) {
             $line = preg_replace('/^\/\*+/', '', trim($line));
             $line = preg_replace('/\*+\/$/', '', trim($line));
             $line = preg_replace('/^\**/',   '', trim($line));
-            $comment .= ' ' . $line;
+            $comment .= $line . ' ';
         }
         return $comment;
     }
@@ -290,32 +304,28 @@
         return $items;
     }
 
-    public static function addIncludePattern($val) {
-        self::$includePattern = array_merge(self::$includePattern, (array)$val);
+    public static function addIncludePattern($pattern) {
+        self::$includePattern = array_merge(self::$includePattern, (array)$pattern);
     }
 
     public static function getIncludePattern() {
         return self::$includePattern;
     }
 
-    public static function setIncludePattern($val = array()) {
-        self::$includePattern = (array)$val;
+    public static function setIncludePattern($pattern = array()) {
+        self::$includePattern = (array)$pattern;
     }
 
-    public static function addExcludePattern($val) {
-        self::$excludePattern = array_merge(self::$excludePattern, (array)$val);
+    public static function addExcludePattern($pattern) {
+        self::$excludePattern = array_merge(self::$excludePattern, (array)$pattern);
     }
 
     public static function getExcludePattern() {
         return self::$excludePattern;
     }
 
-    public static function setExcludePattern($val = array()) {
-        self::$excludePattern = (array)$val;
-    }
-
-    public static function addClass($className) {
-        self::$CLASSES[$className] = $className;
+    public static function setExcludePattern($pattern = array()) {
+        self::$excludePattern = (array)$pattern;
     }
 }
 ?>
