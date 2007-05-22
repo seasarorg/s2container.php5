@@ -28,12 +28,12 @@
 class S2Container_ArgDefImpl 
     implements S2Container_ArgDef 
 {
-    private $value_;
-    private $container_;
+    private $value_ = null;
+    private $container_ = null;
     private $expression_ = "";
     private $exp_ = null;
     private $childComponentDef_ = null;
-    private $metaDefSupport_;
+    private $metaDefSupport_ = null;
 
     /**
      * @param value
@@ -121,7 +121,12 @@ class S2Container_ArgDefImpl
         }
         $this->childComponentDef_ = $componentDef;
     }
-    
+
+    public final function getChildComponentDef()
+    {
+         return $this->childComponentDef_;
+    }
+
     /**
      * @see S2Container_MetaDefAware::addMetaDef()
      */

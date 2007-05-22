@@ -71,24 +71,19 @@ final class S2Container_BeanDescImpl implements S2Container_BeanDesc
     public function getPropertyDesc($propertyName)
     {
         if (is_int($propertyName)) {
-            if ($propertyName >= count($this->propertyDescCacheIndex_)) {
+            if ($propertyName < 0 or $propertyName >= count($this->propertyDescCacheIndex_)) {
                 throw new S2Container_PropertyNotFoundRuntimeException($this->beanClass_,
                                'index ' . $propertyName);
             }
-            return $this->propertyDescCache_[
-                       $this->propertyDescCacheIndex_[$propertyName]];
-        }
-        $pd = null;
-        if (array_key_exists($propertyName,$this->propertyDescCache_)) {
-            $pd = $this->propertyDescCache_[$propertyName];
+            return $this->propertyDescCache_[$this->propertyDescCacheIndex_[$propertyName]];
         }
 
-        if ($pd == null) {
+        if (array_key_exists($propertyName,$this->propertyDescCache_)) {
+            return $this->propertyDescCache_[$propertyName];
+        } else {
             throw new S2Container_PropertyNotFoundRuntimeException($this->beanClass_,
                               $propertyName);
         }
-        
-        return $pd;
     }
     
     /**

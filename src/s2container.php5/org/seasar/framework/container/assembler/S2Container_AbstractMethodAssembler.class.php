@@ -53,7 +53,7 @@ abstract class S2Container_AbstractMethodAssembler
             $method = null;
             try {
                 if ($methodDef->getArgDefSize() > 0) {
-                    $args = $methodDef->getArgs();
+                    $args = $methodDef->getArgs($beanDesc->getMethods($methodName)->getParameters());
                 } else {
                     $methods = $beanDesc->getMethods($methodName);
                     $method = $this->_getSuitableMethod($methods);

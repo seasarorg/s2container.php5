@@ -88,5 +88,13 @@ interface S2Container_ArgDef extends S2Container_MetaDefAware
      */
     public function setChildComponentDef(S2Container_ComponentDef $componentDef);
 
+    /**
+     * 引数定義の値となるコンポーネント定義を返します。
+     * 
+     * @return S2Container_ComponentDef
+     *        引数定義の値となるコンポーネント定義
+     */
+    public function getChildComponentDef();
+
 }
 ?>

@@ -42,10 +42,31 @@ class S2Container_ManualConstructorAssembler
     public function assemble()
     {
         $args = array();
-        $o = $this->getComponentDef()->getArgDefSize();
+        $refParams = array();
+        $componentDef = $this->getComponentDef();
+        $refConstructor = $componentDef->getConcreteClass()->getConstructor();
+        if ($refConstructor instanceof ReflectionMethod) {
+            $refParams = $refConstructor->getParameters();
+        }
+        $o = $componentDef->getArgDefSize();
         for ($i = 0; $i < $o; ++$i) {
             try {
-                $args[$i] = $this->getComponentDef()->getArgDef($i)->getValue();
+                $argDef = $this->getComponentDef()->getArgDef($i);
+                $value = null;
+                try {
+                    $value = $argDef->getValue();
+                } catch(S2Container_TooManyRegistrationRuntimeException $tooManyException) {
+                    if (isset($refParams[$i]) and $refParams[$i]->isArray()) {
+                        $componentDefs = $argDef->getChildComponentDef()->getComponentDefs();
+                        $value = array();
+                        foreach ($componentDefs as $componentDef) {
+                            $value[] = $componentDef->getComponent();
+                        }
+                    } else {
+                        throw $tooManyException;
+                    }
+                }
+                $args[$i] = $value;
             } catch (S2Container_ComponentNotFoundRuntimeException $cause) {
                 throw new S2Container_IllegalConstructorRuntimeException($this->
                                          getComponentDef()->getComponentClass(),

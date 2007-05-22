@@ -45,25 +45,39 @@ class S2Container_ManualPropertyAssembler
         $size = $this->getComponentDef()->getPropertyDefSize();
         for ($i = 0; $i < $size; ++$i) {
             $propDef = $this->getComponentDef()->getPropertyDef($i);
-            $value = $this->getValue($propDef, $component);
+            $value = null;
             try {
                 $propDesc =
                     $beanDesc->getPropertyDesc($propDef->getPropertyName());
+                if (!$propDesc->hasWriteMethod()) {
+                    throw new S2Container_PropertyNotFoundRuntimeException($beanDesc->getBeanClass(),
+                              $propDef->getPropertyName());
+                }
+                try {
+                    $value = $this->getValue($propDef, $component);
+                } catch(S2Container_TooManyRegistrationRuntimeException $tooManyException) {
+                    $refParams = $propDesc->getWriteMethod()->getParameters();
+                    if ($refParams[0]->isArray()) {
+                        $componentDefs = $propDef->getChildComponentDef()->getComponentDefs();
+                        $value = array();
+                        foreach ($componentDefs as $componentDef) {
+                            $value[] = $componentDef->getComponent();
+                        }
+                    } else {
+                        throw $tooManyException;
+                    }
+                }
             } catch (S2Container_PropertyNotFoundRuntimeException $e1) {
                 try {
                     $propDesc =
                         $beanDesc->getPropertyDesc('__set');
-                    $propDesc->setSetterPropertyName($propDef->getPropertyName());    
+                    $propDesc->setSetterPropertyName($propDef->getPropertyName());
+                    $value = $this->getValue($propDef, $component);
                 } catch(S2Container_PropertyNotFoundRuntimeException $e2) {
                     throw $e1;
                 }
             }
 
-            if (!$propDesc->hasWriteMethod()) {
-                $propDesc =
-                    $beanDesc->getPropertyDesc('__set');
-                $propDesc->setSetterPropertyName($propDef->getPropertyName());    
-            }    
             $this->setValue($propDesc,$component,$value);
         }
     }

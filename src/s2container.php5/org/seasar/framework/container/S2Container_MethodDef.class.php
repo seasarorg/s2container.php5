@@ -55,10 +55,10 @@ interface S2Container_MethodDef extends S2Container_ArgDefAware
     
     /**
      * メソッド引数を返します。
-     * 
+     * @param ReflectionParameter[]
      * @return array メソッド引数
      */
-    public function getArgs();
+    public function getArgs($argTypes);
 
     /**
      * 引数および式を評価するコンテキストとなるS2コンテナを返します。

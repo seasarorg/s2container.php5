@@ -60,10 +60,12 @@ class S2Container_AutoPropertyAssembler
                     $value = $container->getComponent($propDesc->
                                                getPropertyType()->getName());
                 } catch (S2Container_ComponentNotFoundRuntimeException $ex) {
+/*
                     if ($propDesc->getReadMethod() != null and
                         $propDesc->getValue($component) != null) {
                         continue;
                     }
+*/
                     $this->log_->info($ex->getMessage() . ". skip property<$propName>.",
                                       __METHOD__);
                     continue;

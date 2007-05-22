@@ -77,14 +77,30 @@ abstract class S2Container_MethodDefImpl
     }
 
     /**
-     * @see S2Container_MethodDef::getArgs()
+     * @see S2Container_MethodDef::getArgs($argTypes)
      */
-    public function getArgs()
+    public function getArgs($argTypes)
     {
         $args = array();
         $o = $this->getArgDefSize();
         for ($i = 0; $i < $o; ++$i) {
-            $args[$i] = $this->getArgDef($i)->getValue();
+            $value = null;
+            try {
+                $value = $this->getArgDef($i)->getValue();
+            } catch(S2Container_TooManyRegistrationRuntimeException $tooManyException) {
+                if (isset($argTypes[$i]) and $argTypes[$i]->isArray()) {
+                    $componentDefs = $this->getArgDef($i)->getChildComponentDef()->getComponentDefs();
+                    $value = array();
+                    foreach ($componentDefs as $componentDef) {
+                        $value[] = $componentDef->getComponent();
+                    }
+                } else {
+                    throw $tooManyException;
+                }
+            }
+            $args[$i] = $value;
+
+           // $args[$i] = $this->getArgDef($i)->getValue();
         }
         return $args;
     }

@@ -35,25 +35,30 @@ final class S2Container_AutoBindingUtil
     }
 
     /**
-     * 
+     * @param array|ReflectionClass $classes
+     * @return boolean 
      */
     public static final function isSuitable($classes)
     {
         if (is_array($classes)) {
             $o = count($classes);
             for ($i = 0; $i < $o; ++$i) {
-                if (!S2Container_AutoBindingUtil::isSuitable($classes[$i])) {
+                if (S2Container_AutoBindingUtil::isSuitable($classes[$i]) === false) {
                     return false;
                 }
             }
-        } else {
-            if ($classes != null) {
-                return $classes->isInterface();
-            } else {
-                return false;
+            return true;
+        } else if ($classes instanceof ReflectionClass) {
+            if (defined('S2CONTAINER_PHP5_PERMIT_CLASS_INJECTION') and
+                S2CONTAINER_PHP5_PERMIT_CLASS_INJECTION === true){
+                return true;
+            }
+
+            if ($classes->isInterface()) {
+                return true;
             }
         }
-        return true;
+        return false;
     }
     
     /**
