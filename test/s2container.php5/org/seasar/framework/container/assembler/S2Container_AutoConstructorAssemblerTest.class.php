@@ -55,7 +55,34 @@ class S2Container_AutoConstructorAssemblerTest extends PHPUnit2_Framework_TestCa
         $f = $container->getComponent('f');
         $this->assertEquals($f->getItem(),$d);
     }
+
+    function testClassInjection() {
+        $container = new S2ContainerImpl();
+        $container->register('A_S2Container_AutoConstructorAssembler','a');
+        $container->register('B_S2Container_AutoConstructorAssembler','b');
+
+        $a = $container->getComponent('a');
+        if (defined('S2CONTAINER_PHP5_PERMIT_CLASS_INJECTION') and
+            S2CONTAINER_PHP5_PERMIT_CLASS_INJECTION === true){
+            $this->assertType('B_S2Container_AutoConstructorAssembler',$a->getB());
+        } else {
+            $this->assertEquals(null,$a->getB());
+        }
+    }
 }
+
+class A_S2Container_AutoConstructorAssembler {
+    private $b;
+
+    public function __construct(B_S2Container_AutoConstructorAssembler $b = null){
+        $this->b = $b;
+    }
+    public function getB() {
+        return $this->b;
+    }
+}
+
+class B_S2Container_AutoConstructorAssembler {}
 
 class C_S2Container_AutoConstructorAssembler {
     private $name;

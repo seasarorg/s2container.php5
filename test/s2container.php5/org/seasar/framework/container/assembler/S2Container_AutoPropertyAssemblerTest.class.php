@@ -72,6 +72,61 @@ class S2Container_AutoPropertyAssemblerTest
         $l = $container->getComponent('l');
         $this->assertType('L_S2Container_AutoPropertyAssembler',$l);
     }
+
+    function testClassInjection() {
+        $container = new S2ContainerImpl();
+        $container->register('A_S2Container_AutoPropertyAssembler','a');
+        $container->register('B_S2Container_AutoPropertyAssembler','b');
+
+        $a = $container->getComponent('a');
+        if (defined('S2CONTAINER_PHP5_PERMIT_CLASS_INJECTION') and
+            S2CONTAINER_PHP5_PERMIT_CLASS_INJECTION === true){
+            $this->assertType('B_S2Container_AutoPropertyAssembler',$a->getB());
+        } else {
+            $this->assertEquals(1,$a->getB());
+        }
+    }
+}
+
+class A_S2Container_AutoPropertyAssembler {
+    private $b = 1;
+    public function setB(B_S2Container_AutoPropertyAssembler $b){
+        $this->b = $b;
+    }
+    public function getB() {
+        return $this->b;
+    }
+}
+
+class B_S2Container_AutoPropertyAssembler {}
+
+class D_S2Container_AutoPropertyAssembler
+    implements IG_S2Container_AutoPropertyAssembler{}
+
+class E_S2Container_AutoPropertyAssembler {
+    private $d;
+    private $name;
+    function __construct(IG_S2Container_AutoPropertyAssembler $d) {
+        $this->d = $d;
+    }
+    
+    function getItem(){
+        return $this->d;    
+    }
+
+    function setName($name){
+        $this->name = $name;    
+    }
+    function getName(){
+        return $this->name;    
+    }
+
+    function setD(D_S2Container_AutoPropertyAssembler $d){
+        $this->d = $d;
+    }
+    function getD(){
+        return $this->d;
+    }
 }
 
 interface IG_S2Container_AutoPropertyAssembler {}
@@ -109,35 +164,6 @@ class H_S2Container_AutoPropertyAssembler {
     }
     function getG(){
         return $this->g;
-    }
-}
-
-class D_S2Container_AutoPropertyAssembler
-    implements IG_S2Container_AutoPropertyAssembler{}
-
-class E_S2Container_AutoPropertyAssembler {
-    private $d;
-    private $name;
-    function __construct(IG_S2Container_AutoPropertyAssembler $d) {
-        $this->d = $d;
-    }
-    
-    function getItem(){
-        return $this->d;    
-    }
-
-    function setName($name){
-        $this->name = $name;    
-    }
-    function getName(){
-        return $this->name;    
-    }
-
-    function setD(D_S2Container_AutoPropertyAssembler $d){
-        $this->d = $d;
-    }
-    function getD(){
-        return $this->d;
     }
 }
 

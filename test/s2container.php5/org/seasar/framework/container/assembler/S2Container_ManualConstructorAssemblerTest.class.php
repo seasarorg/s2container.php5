@@ -96,7 +96,54 @@ class S2Container_ManualConstructorAssemblerTest
         $d = $container->getComponent('d');
         $this->assertEquals($c->say(),$d);
     }
+
+    function testArrayChildComponentDef() {
+        $container = new S2ContainerImpl();
+        $container->register('A_S2Container_ManualConstructorAssembler','a');
+        $container->register('BImpl_S2Container_ManualConstructorAssembler','b');
+        $container->register('EImpl_S2Container_ManualConstructorAssembler','e');
+          
+        $cd = $container->getComponentDef('a');
+        $arg = new S2Container_ArgDefImpl();
+        $arg->setValue('seasar');
+        $cd->addArgDef($arg);
+
+        $arg = new S2Container_ArgDefImpl();
+        $arg->setChildComponentDef($container->getComponentDef('B_S2Container_ManualConstructorAssembler'));
+        $cd->addArgDef($arg);
+
+        $a = $container->getComponent('a');
+        $this->assertEquals($a->getName(), 'seasar');
+        $ib = $a->getIb();
+        $this->assertEquals(count($ib), 2);
+        $this->assertTrue($ib[0] instanceof BImpl_S2Container_ManualConstructorAssembler);
+        $this->assertTrue($ib[1] instanceof EImpl_S2Container_ManualConstructorAssembler);
+    }
 }
+
+class A_S2Container_ManualConstructorAssembler {
+    private $name;
+    private $ib;
+    
+    function __construct($name, array $ib) {
+        $this->name =$name;
+        $this->ib = $ib;
+    }
+
+    public function getName() {
+        return $this->name;
+    }
+
+    public function getIb() {
+        return $this->ib;
+    }
+}
+
+interface B_S2Container_ManualConstructorAssembler {}
+class BImpl_S2Container_ManualConstructorAssembler
+    implements B_S2Container_ManualConstructorAssembler {}
+class EImpl_S2Container_ManualConstructorAssembler
+    implements B_S2Container_ManualConstructorAssembler {}
 
 class C_S2Container_ManualConstructorAssembler {
     private $name;

@@ -82,11 +82,81 @@ class S2Container_DefaultInitMethodAssemblerTest
         $i = $container->getComponent('i');
         $this->assertEquals($i->getResult(),5);
     }
+
+    function testArrayChildComponentDef() {
+        $container = new S2ContainerImpl();
+        $container->register('A_S2Container_DefaultInitMethodAssembler','a');
+        $container->register('BImpl_S2Container_DefaultInitMethodAssembler','b');
+        $container->register('CImpl_S2Container_DefaultInitMethodAssembler','c');
+          
+        $cd = $container->getComponentDef('a');
+        $im = new S2Container_InitMethodDefImpl('setupIb');
+        $cd->addInitMethodDef($im);
+
+        $arg = new S2Container_ArgDefImpl();
+        $arg->setChildComponentDef($container->getComponentDef('B_S2Container_DefaultInitMethodAssembler'));
+        $im->addArgDef($arg);
+
+        $a = $container->getComponent('a');
+        $ib = $a->getIb();
+        $this->assertEquals(count($ib), 2);
+        $this->assertTrue($ib[0] instanceof BImpl_S2Container_DefaultInitMethodAssembler);
+        $this->assertTrue($ib[1] instanceof CImpl_S2Container_DefaultInitMethodAssembler);
+    }
+
+    function testClassInjection() {
+        $container = new S2ContainerImpl();
+        $container->register('E_S2Container_DefaultInitMethodAssembler','e');
+        $container->register('F_S2Container_DefaultInitMethodAssembler','f');
+
+        $cd = $container->getComponentDef('e');
+        $im = new S2Container_InitMethodDefImpl('setupF');
+        $cd->addInitMethodDef($im);
+
+        $e = $container->getComponent('e');
+        if (defined('S2CONTAINER_PHP5_PERMIT_CLASS_INJECTION') and
+            S2CONTAINER_PHP5_PERMIT_CLASS_INJECTION === true){
+            $this->assertType('F_S2Container_DefaultInitMethodAssembler',$e->getF());
+        } else {
+            $this->assertEquals(null,$e->getF());
+        }
+    }
 }
+
+class A_S2Container_DefaultInitMethodAssembler {
+    private $ib;
+
+    public function setupIb(array $ib) {
+        $this->ib = $ib;
+    }
+
+    public function getIb() {
+        return $this->ib;
+    }
+}
+
+interface B_S2Container_DefaultInitMethodAssembler {}
+class BImpl_S2Container_DefaultInitMethodAssembler
+    implements B_S2Container_DefaultInitMethodAssembler {}
+class CImpl_S2Container_DefaultInitMethodAssembler
+    implements B_S2Container_DefaultInitMethodAssembler {}
 
 interface IG_S2Container_DefaultInitMethodAssembler{}
 class D_S2Container_DefaultInitMethodAssembler
     implements IG_S2Container_DefaultInitMethodAssembler{}
+
+class E_S2Container_DefaultInitMethodAssembler {
+    private $f;
+
+    public function setupF(F_S2Container_DefaultInitMethodAssembler $f = null){
+        $this->f = $f;
+    }
+    public function getF() {
+        return $this->f;
+    }
+}
+
+class F_S2Container_DefaultInitMethodAssembler {}
 
 class I_S2Container_DefaultInitMethodAssembler {
     private $result = -1;

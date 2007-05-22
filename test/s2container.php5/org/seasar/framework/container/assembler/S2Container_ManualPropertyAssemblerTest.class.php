@@ -85,8 +85,69 @@ class S2Container_ManualPropertyAssemblerTest
           
         $e = $container->getComponent('e');
         $this->assertEquals($e->getName(),2);
-    }   
+    }
+
+    function testUuSet() {
+        $container = new S2ContainerImpl();
+        $container->register('a_S2Container_ManualPropertyAssembler','a');
+
+        $cd = $container->getComponentDef('a');
+        $pro = new S2Container_PropertyDefImpl('name', 'seasar');
+        $cd->addPropertyDef($pro);
+
+        $pro = new S2Container_PropertyDefImpl('year', '2007');
+        $cd->addPropertyDef($pro);
+
+        $a = $container->getComponent('a');
+        $this->assertEquals($a->name, 'seasar');
+
+        $this->assertEquals($a->getYear(), '2007');
+    }
+
+    function testArrayChild() {
+        $container = new S2ContainerImpl();
+        $container->register('A_S2Container_ManualPropertyAssembler','a');
+        $container->register('B_S2Container_ManualPropertyAssembler','b');
+        $container->register('C_S2Container_ManualPropertyAssembler','c');
+
+        $cd = $container->getComponentDef('a');
+        $pro = new S2Container_PropertyDefImpl('ib',null);
+        $pro->setChildComponentDef($container->getComponentDef('IB_S2Container_ManualPropertyAssembler'));
+        $cd->addPropertyDef($pro);
+
+        $a = $container->getComponent('a');
+        $ibs = $a->getIb();
+        $this->assertEquals(count($ibs), 2);
+        $this->assertTrue($ibs[0] instanceof B_S2Container_ManualPropertyAssembler);
+        $this->assertTrue($ibs[1] instanceof C_S2Container_ManualPropertyAssembler);
+    }
 }
+
+class A_S2Container_ManualPropertyAssembler {
+    public function __set($name, $value) {
+        $this->$name = $value;
+    }
+
+    private $year;
+    public function getYear() {
+        return $this->year;
+    }
+
+    private $ib;
+    public function setIb(array $ib) {
+        $this->ib = $ib;
+    }
+    public function getIb() {
+        return $this->ib;
+    }
+}
+
+interface IB_S2Container_ManualPropertyAssembler {}
+class B_S2Container_ManualPropertyAssembler 
+    implements IB_S2Container_ManualPropertyAssembler{}
+
+class C_S2Container_ManualPropertyAssembler 
+    implements IB_S2Container_ManualPropertyAssembler{}
 
 interface IG_S2Container_ManualPropertyAssembler {}
 class D_S2Container_ManualPropertyAssembler 

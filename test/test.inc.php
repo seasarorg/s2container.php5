@@ -20,4 +20,6 @@ define('S2CONTAINER_PHP5_LOG_LEVEL',S2Container_SimpleLogger::DEBUG);
 //define('S2CONTAINER_PHP5_SIMPLE_LOG_FILE',dirname(__FILE__) . '/simple.log');
 
 //define('S2CONTAINER_PHP5_CACHE_LITE_INI', dirname(__FILE__) . '/cache_lite.ini');
+
+define('S2CONTAINER_PHP5_PERMIT_CLASS_INJECTION', true);
 ?>
