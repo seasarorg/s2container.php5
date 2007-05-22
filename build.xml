@@ -82,13 +82,13 @@
                 <element>
                     <element key="handle" value="klove"/>
                     <element key="name" value="klove"/>
-                    <element key="email" value="seasar-s2dicon-php5@lists.sourceforge.jp"/>
+                    <element key="email" value="s2container-php5@ml.seasar.org"/>
                     <element key="role" value="lead"/>
                 </element>
                 <element>
                     <element key="handle" value="nowel"/>
                     <element key="name" value="nowel"/>
-                    <element key="email" value="seasar-s2dicon-php5@lists.sourceforge.jp"/>
+                    <element key="email" value="s2container-php5@ml.seasar.org"/>
                     <element key="role" value="developer"/>
                 </element>
             </mapping>
