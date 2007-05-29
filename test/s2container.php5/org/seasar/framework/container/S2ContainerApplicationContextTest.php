@@ -200,24 +200,24 @@ class S2ContainerApplicationContextTest extends PHPUnit2_Framework_TestCase {
         S2ContainerApplicationContext::setIncludePattern(array());
         S2ContainerApplicationContext::setExcludePattern(array());
 
-        $items = array('a' => 'A','b' => 'B','c' => 'C');
+        $items = array('A', 'B', 'C');
         $filtered = S2ContainerApplicationContext::filter($items);
         $this->assertEquals($items, $filtered);
 
         S2ContainerApplicationContext::setIncludePattern('/A/');
         $filtered = S2ContainerApplicationContext::filter($items);
-        $this->assertEquals(array('a' => 'A'), $filtered);
+        $this->assertEquals(array('A'), $filtered);
 
         S2ContainerApplicationContext::setIncludePattern('/A/');
         S2ContainerApplicationContext::addIncludePattern('/B/');
         S2ContainerApplicationContext::setExcludePattern('/B/');
         $filtered = S2ContainerApplicationContext::filter($items);
-        $this->assertEquals(array('a' => 'A'), $filtered);
+        $this->assertEquals(array('A'), $filtered);
 
         S2ContainerApplicationContext::setIncludePattern(array());
         S2ContainerApplicationContext::setExcludePattern('/B/');
         $filtered = S2ContainerApplicationContext::filter($items);
-        $this->assertEquals(array('a' => 'A', 'c' => 'C'), $filtered);
+        $this->assertEquals(array('A', 'C'), $filtered);
     }
 
     public function setUp(){
