@@ -91,10 +91,8 @@ class S2ContainerApplicationContext {
     }
 
     public static function create() {
-        $dicons  = array_values(self::filter(self::$DICONS));
-        $classes = array_keys(self::filter(self::$CLASSES));
-        //$classes = self::filter(array_keys(self::$CLASSES));
-        //$classes = array_unique(array_merge($classes, array_keys(self::filter(self::$CLASSES))));
+        $dicons  = self::filter(array_values(self::$DICONS));
+        $classes = self::filter(array_keys(self::$CLASSES));
 
         if (count($dicons) == 0 and count($classes) == 0) {
             S2Container_S2Logger::getLogger(__CLASS__)->info("dicon, class not found at all. create empty container.", __METHOD__);
@@ -290,18 +288,41 @@ class S2ContainerApplicationContext {
     }
 
     public static function filter($items) {
-        if (count(self::$includePattern) > 0) {
+        $includePatternCount = count(self::$includePattern);
+        if ($includePatternCount > 0) {
             $includes = array();
-            foreach (self::$includePattern as $pattern) {
-                $includes = array_merge($includes, preg_grep($pattern, $items));
+            $o = count($items);
+            for($i=0; $i<$o; $i++) {
+                for($j=0; $j<$includePatternCount; $j++){
+                    if (preg_match(self::$includePattern[$j], $items[$i])) {
+                        $includes[] = $items[$i];
+                        break;
+                    }
+                }
             }
             $items = $includes;
         }
 
-        foreach (self::$excludePattern as $pattern) {
-            $items = preg_grep($pattern, $items, PREG_GREP_INVERT);
+        $excludePatternCount = count(self::$excludePattern);
+        if ($excludePatternCount === 0) {
+            return $items;
         }
-        return $items;
+
+        $includes = array();
+        $o = count($items);
+        for($i=0; $i<$o; $i++) {
+            $matched = false;
+            for($j=0; $j<$excludePatternCount; $j++){
+                if (preg_match(self::$excludePattern[$j], $items[$i])) {
+                    $matched = true;
+                    break;
+                }
+            }
+            if (!$matched) {
+                $includes[] = $items[$i];
+            }
+        }
+        return $includes;
     }
 
     public static function addIncludePattern($pattern) {

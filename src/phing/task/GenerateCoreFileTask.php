@@ -79,10 +79,10 @@ class GenerateCoreFileTask extends Task {
                 trim($line) == '?>'){
                 continue;
             }
-            if (ereg("\/\*",$line)){
+            if (preg_match("/^\/\*/", trim($line))){
                 $isComment = true;
             }
-            if (ereg("\*\/",$line)){
+            if (preg_match("/\*\/$/", trim($line))){
                 $isComment = false;
                 continue;
             }
