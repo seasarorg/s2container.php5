@@ -121,6 +121,25 @@ class S2Container_ManualPropertyAssemblerTest
         $this->assertTrue($ibs[0] instanceof B_S2Container_ManualPropertyAssembler);
         $this->assertTrue($ibs[1] instanceof C_S2Container_ManualPropertyAssembler);
     }
+
+    function testArrayObjectChild() {
+        $container = new S2ContainerImpl();
+        $container->register('F_S2Container_ManualPropertyAssembler','f');
+        $container->register('B_S2Container_ManualPropertyAssembler','b');
+        $container->register('C_S2Container_ManualPropertyAssembler','c');
+
+        $cd = $container->getComponentDef('f');
+        $pro = new S2Container_PropertyDefImpl('ib',null);
+        $pro->setChildComponentDef($container->getComponentDef('IB_S2Container_ManualPropertyAssembler'));
+        $cd->addPropertyDef($pro);
+
+        $a = $container->getComponent('f');
+        $ibs = $a->getIb();
+        $this->assertEquals(count($ibs), 2);
+        $this->assertTrue($ibs instanceof ArrayObject);
+        $this->assertTrue($ibs[0] instanceof B_S2Container_ManualPropertyAssembler);
+        $this->assertTrue($ibs[1] instanceof C_S2Container_ManualPropertyAssembler);
+    }
 }
 
 class A_S2Container_ManualPropertyAssembler {
@@ -177,5 +196,24 @@ class E_S2Container_ManualPropertyAssembler {
     function getD(){
         return $this->d;
     }   
+}
+
+class F_S2Container_ManualPropertyAssembler {
+    public function __set($name, $value) {
+        $this->$name = $value;
+    }
+
+    private $year;
+    public function getYear() {
+        return $this->year;
+    }
+
+    private $ib;
+    public function setIb(ArrayObject $ib) {
+        $this->ib = $ib;
+    }
+    public function getIb() {
+        return $this->ib;
+    }
 }
 ?>

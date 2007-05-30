@@ -29,8 +29,6 @@
  * @package    org.seasar.framework.container
  * @author     klove
  */
-require_once('S2ContainerApplicationContext.class.php');
-spl_autoload_register(array('S2ContainerApplicationContext', 'load'));
 class S2ContainerApplicationContextTest extends PHPUnit2_Framework_TestCase {
     public function __construct($name) {
         parent::__construct($name);
@@ -58,7 +56,7 @@ class S2ContainerApplicationContextTest extends PHPUnit2_Framework_TestCase {
 
         S2ContainerApplicationContext::import($this->sampleDir . '/sample', true);
         $classes = array_keys(S2ContainerApplicationContext::$CLASSES);
-        $this->assertEquals($classes, array('Bar_S2ContainerApplicationContext','Foo_S2ContainerApplicationContext','Hoge_S2ContainerApplicationContext'));
+        $this->assertTrue(count($classes) === 4);
     }
 
     public function testImportDicon(){
@@ -159,6 +157,9 @@ class S2ContainerApplicationContextTest extends PHPUnit2_Framework_TestCase {
         $ret = S2ContainerApplicationContext::hasAnnotation($clazzB->getMethod('b'), 
                                S2ContainerApplicationContext::ASPECT_ANNOTATION);
         $this->assertTrue($ret);
+        $ret = S2ContainerApplicationContext::hasAnnotation($clazzB->getMethod('a'), 
+                               S2ContainerApplicationContext::BINDING_ANNOTATION);
+        $this->assertTrue($ret);
     }
 
     public function testGetAnnotation(){
@@ -171,6 +172,9 @@ class S2ContainerApplicationContextTest extends PHPUnit2_Framework_TestCase {
         $ret = S2ContainerApplicationContext::getAnnotation($clazzB, 
                                S2ContainerApplicationContext::COMPONENT_ANNOTATION);
         $this->assertEquals($ret['name'], 'b');
+        $ret = S2ContainerApplicationContext::getAnnotation($clazzB->getMethod('a'),
+                               S2ContainerApplicationContext::BINDING_ANNOTATION);
+        $this->assertEquals($ret[0], 'abc');
     }
 
     public function testFormatCommentLine(){

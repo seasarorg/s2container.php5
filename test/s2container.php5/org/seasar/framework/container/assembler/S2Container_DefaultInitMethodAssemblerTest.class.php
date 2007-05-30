@@ -104,6 +104,28 @@ class S2Container_DefaultInitMethodAssemblerTest
         $this->assertTrue($ib[1] instanceof CImpl_S2Container_DefaultInitMethodAssembler);
     }
 
+    function testArrayObjectChildComponentDef() {
+        $container = new S2ContainerImpl();
+        $container->register('J_S2Container_DefaultInitMethodAssembler','j');
+        $container->register('BImpl_S2Container_DefaultInitMethodAssembler','b');
+        $container->register('CImpl_S2Container_DefaultInitMethodAssembler','c');
+          
+        $cd = $container->getComponentDef('j');
+        $im = new S2Container_InitMethodDefImpl('setupIb');
+        $cd->addInitMethodDef($im);
+
+        $arg = new S2Container_ArgDefImpl();
+        $arg->setChildComponentDef($container->getComponentDef('B_S2Container_DefaultInitMethodAssembler'));
+        $im->addArgDef($arg);
+
+        $a = $container->getComponent('j');
+        $ib = $a->getIb();
+        $this->assertEquals(count($ib), 2);
+        $this->assertTrue($ib instanceof ArrayObject);
+        $this->assertTrue($ib[0] instanceof BImpl_S2Container_DefaultInitMethodAssembler);
+        $this->assertTrue($ib[1] instanceof CImpl_S2Container_DefaultInitMethodAssembler);
+    }
+
     function testClassInjection() {
         $container = new S2ContainerImpl();
         $container->register('E_S2Container_DefaultInitMethodAssembler','e');
@@ -179,6 +201,18 @@ class I_S2Container_DefaultInitMethodAssembler {
     
     function getResult(){
         return $this->result;
+    }
+}
+
+class J_S2Container_DefaultInitMethodAssembler {
+    private $ib;
+
+    public function setupIb(ArrayObject $ib) {
+        $this->ib = $ib;
+    }
+
+    public function getIb() {
+        return $this->ib;
     }
 }
 ?>

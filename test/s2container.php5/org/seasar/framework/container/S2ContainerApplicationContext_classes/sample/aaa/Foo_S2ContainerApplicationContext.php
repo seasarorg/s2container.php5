@@ -4,9 +4,6 @@ class Foo_S2ContainerApplicationContext {
         return "i am foo.";
     }
 
-    /**
-     * @Binding('bar')
-     */
     public function setBar($bar){
         $this->bar = $bar;
     }
