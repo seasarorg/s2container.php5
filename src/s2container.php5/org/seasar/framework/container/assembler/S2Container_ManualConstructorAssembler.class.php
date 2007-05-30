@@ -56,11 +56,23 @@ class S2Container_ManualConstructorAssembler
                 try {
                     $value = $argDef->getValue();
                 } catch(S2Container_TooManyRegistrationRuntimeException $tooManyException) {
-                    if (isset($refParams[$i]) and $refParams[$i]->isArray()) {
-                        $componentDefs = $argDef->getChildComponentDef()->getComponentDefs();
-                        $value = array();
-                        foreach ($componentDefs as $componentDef) {
-                            $value[] = $componentDef->getComponent();
+                    if (isset($refParams[$i])) {
+                        $typeHintRefClass = $refParams[$i]->getClass();
+                        if ($refParams[$i]->isArray()) {
+                            $componentDefs = $argDef->getChildComponentDef()->getComponentDefs();
+                            $value = array();
+                            foreach ($componentDefs as $componentDef) {
+                                $value[] = $componentDef->getComponent();
+                            }
+                        } else if($typeHintRefClass instanceof ReflectionClass and
+                                  $typeHintRefClass->getName() == 'ArrayObject') {
+                            $componentDefs = $argDef->getChildComponentDef()->getComponentDefs();
+                            $value = new ArrayObject();
+                            foreach ($componentDefs as $componentDef) {
+                                $value[] = $componentDef->getComponent();
+                            }
+                        } else {
+                            throw $tooManyException;
                         }
                     } else {
                         throw $tooManyException;

@@ -26,6 +26,9 @@
  */
 S2ContainerClassLoader::import(S2CONTAINER_PHP5);
 function __autoload($class = null){
-    S2ContainerClassLoader::load($class);
+    if (S2ContainerClassLoader::load($class)) {
+        return;
+    }
+    S2ContainerApplicationContext::load($class);
 }
 ?>

@@ -139,6 +139,9 @@ class S2ContainerApplicationContext {
         S2Container_ChildComponentDefBindingUtil::init();
         foreach($classes as $className) {
             $cd = self::createComponentDef($className);
+            if ($cd === null) {
+                continue;
+            }
             $container->register($cd);
             self::setupComponentDef($cd, $className);
             S2Container_S2Logger::getLogger(__CLASS__)->debug("register component : $className", __METHOD__);
@@ -155,6 +158,10 @@ class S2ContainerApplicationContext {
         }
 
         $componentInfo = self::getAnnotation($refClass, self::COMPONENT_ANNOTATION);
+        if (isset($componentInfo['available']) and (boolean)$componentInfo['available'] === false) {
+            return null;
+        }
+        
         if (isset($componentInfo['name'])) {
             $cd = new S2Container_ComponentDefImpl($refClass, $componentInfo['name']);
         } else {

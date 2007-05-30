@@ -57,9 +57,17 @@ class S2Container_ManualPropertyAssembler
                     $value = $this->getValue($propDef, $component);
                 } catch(S2Container_TooManyRegistrationRuntimeException $tooManyException) {
                     $refParams = $propDesc->getWriteMethod()->getParameters();
+                    $typeHintRefClass = $refParams[0]->getClass();
                     if ($refParams[0]->isArray()) {
                         $componentDefs = $propDef->getChildComponentDef()->getComponentDefs();
                         $value = array();
+                        foreach ($componentDefs as $componentDef) {
+                            $value[] = $componentDef->getComponent();
+                        }
+                    } else if ($typeHintRefClass instanceof ReflectionClass and
+                               $typeHintRefClass->getName() == 'ArrayObject') {
+                        $componentDefs = $propDef->getChildComponentDef()->getComponentDefs();
+                        $value = new ArrayObject();
                         foreach ($componentDefs as $componentDef) {
                             $value[] = $componentDef->getComponent();
                         }

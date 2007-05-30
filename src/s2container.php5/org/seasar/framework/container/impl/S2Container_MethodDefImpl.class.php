@@ -88,11 +88,23 @@ abstract class S2Container_MethodDefImpl
             try {
                 $value = $this->getArgDef($i)->getValue();
             } catch(S2Container_TooManyRegistrationRuntimeException $tooManyException) {
-                if (isset($argTypes[$i]) and $argTypes[$i]->isArray()) {
-                    $componentDefs = $this->getArgDef($i)->getChildComponentDef()->getComponentDefs();
-                    $value = array();
-                    foreach ($componentDefs as $componentDef) {
-                        $value[] = $componentDef->getComponent();
+                if (isset($argTypes[$i])) {
+                    $typeHintRefClass = $argTypes[$i]->getClass();
+                    if ($argTypes[$i]->isArray()) {
+                        $componentDefs = $this->getArgDef($i)->getChildComponentDef()->getComponentDefs();
+                        $value = array();
+                        foreach ($componentDefs as $componentDef) {
+                            $value[] = $componentDef->getComponent();
+                        }
+                    } else if ($typeHintRefClass instanceof ReflectionClass and
+                               $typeHintRefClass->getName() == 'ArrayObject') {
+                        $componentDefs = $this->getArgDef($i)->getChildComponentDef()->getComponentDefs();
+                        $value = new ArrayObject();
+                        foreach ($componentDefs as $componentDef) {
+                            $value[] = $componentDef->getComponent();
+                        }
+                    } else {
+                        throw $tooManyException;
                     }
                 } else {
                     throw $tooManyException;

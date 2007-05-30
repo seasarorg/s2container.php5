@@ -29,4 +29,5 @@ if (function_exists('__autoload')) {
     spl_autoload_register('__autoload');
 }
 spl_autoload_register(array('S2ContainerClassLoader', 'load'));
+spl_autoload_register(array('S2ContainerApplicationContext', 'load'));
 ?>
