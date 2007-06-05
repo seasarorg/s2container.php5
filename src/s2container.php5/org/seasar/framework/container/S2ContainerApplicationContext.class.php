@@ -46,6 +46,13 @@ class S2ContainerApplicationContext {
         }
     }
 
+    public static function init() {
+        self::$CLASSES = array();
+        self::$DICONS  = array();
+        self::$includePattern = array();
+        self::$excludePattern = array();
+    }
+
     public static function import($path, $subDir = false, $pear = false) {
         if (is_dir($path)) {
             self::scanDir($path, $subDir, $pear, array());

@@ -31,6 +31,7 @@ class S2Container_S2MethodInvocationImpl
     private $interceptorIndex = 0;
     private $interceptors;
     private $method;
+    private $concreteMethod;
     private $methodArgs;
     private $parameters_;
 
@@ -44,12 +45,16 @@ class S2Container_S2MethodInvocationImpl
      */
     private $targetClass;
 
+    private $concreteClass;
+
     /**
      * 
      */    
     function __construct($target,
                          $targetClass,
+                         $concreteClass,
                          $method,
+                         $concreteMethod,
                          $methodArgs,
                          $interceptors,
                          $parameters = null)
@@ -57,7 +62,9 @@ class S2Container_S2MethodInvocationImpl
             
         $this->target = $target;
         $this->targetClass = $targetClass;
+        $this->concreteClass = $concreteClass;
         $this->method = $method;
+        $this->concreteMethod = $concreteMethod;
         $this->methodArgs = $methodArgs;
         $this->interceptors = $interceptors;
         if (is_array($parameters)) {
@@ -130,7 +137,7 @@ class S2Container_S2MethodInvocationImpl
                               array($this->method->getName(),
                                     $this->targetClass->getName()));
             }
-            return S2Container_MethodUtil::invoke($this->method,
+            return S2Container_MethodUtil::invoke($this->concreteMethod,
                                                   $this->target,
                                                   $this->methodArgs);
         }

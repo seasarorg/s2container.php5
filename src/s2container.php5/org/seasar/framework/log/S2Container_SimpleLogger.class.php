@@ -27,7 +27,6 @@
  */
 class S2Container_SimpleLogger
 {
-    private $className;
     const DEBUG = 1;
     const INFO  = 2;
     const WARN  = 3;
@@ -39,7 +38,6 @@ class S2Container_SimpleLogger
      */    
     function __construct($className)
     {
-        $this->className = $className;
         if (!defined('S2CONTAINER_PHP5_LOG_LEVEL')) {
             define('S2CONTAINER_PHP5_LOG_LEVEL',3);
         }
@@ -48,7 +46,7 @@ class S2Container_SimpleLogger
     /**
      * 
      */
-    private function _cli($level,$msg = "",$methodName = "")
+    private function _log($level,$msg = "",$methodName = "")
     {
         switch ($level) {
             case S2Container_SimpleLogger::DEBUG :
@@ -67,7 +65,7 @@ class S2Container_SimpleLogger
                 $logLevel = "FATAL";
                 break;    
         }
-        if (S2CONTAINER_PHP5_LOG_LEVEL <= $level) {            
+        if (S2CONTAINER_PHP5_LOG_LEVEL <= $level) {
             if (defined('S2CONTAINER_PHP5_SIMPLE_LOG_FILE')) {
                 file_put_contents(S2CONTAINER_PHP5_SIMPLE_LOG_FILE,
                     sprintf("[%-5s] %s - %s\n",$logLevel,$methodName,$msg),
@@ -85,7 +83,7 @@ class S2Container_SimpleLogger
      */
     public function debug($msg = "",$methodName = "")
     {
-        $this->_cli(S2Container_SimpleLogger::DEBUG,$msg,$methodName);
+        $this->_log(S2Container_SimpleLogger::DEBUG,$msg,$methodName);
     }
 
     /**
@@ -94,7 +92,7 @@ class S2Container_SimpleLogger
      */
     public function info($msg = "",$methodName = "") 
     {
-        $this->_cli(S2Container_SimpleLogger::INFO,$msg,$methodName);
+        $this->_log(S2Container_SimpleLogger::INFO,$msg,$methodName);
     }
 
     /**
@@ -103,7 +101,7 @@ class S2Container_SimpleLogger
      */
     public function warn($msg = "",$methodName = "")
     {
-        $this->_cli(S2Container_SimpleLogger::WARN,$msg,$methodName);
+        $this->_log(S2Container_SimpleLogger::WARN,$msg,$methodName);
     }
 
     /**
@@ -112,7 +110,7 @@ class S2Container_SimpleLogger
      */
     public function error($msg = "",$methodName = "")
     {
-        $this->_cli(S2Container_SimpleLogger::ERROR,$msg,$methodName);
+        $this->_log(S2Container_SimpleLogger::ERROR,$msg,$methodName);
     }
 
     /**
@@ -121,7 +119,7 @@ class S2Container_SimpleLogger
      */
     public function fatal($msg = "",$methodName = "")
     {
-        $this->_cli(S2Container_SimpleLogger::FATAL,$msg,$methodName);
+        $this->_log(S2Container_SimpleLogger::FATAL,$msg,$methodName);
     }
 }
 ?>

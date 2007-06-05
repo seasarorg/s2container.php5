@@ -52,7 +52,13 @@ class S2Container_AopProxyUtil
         $parameters = array();
         $parameters[S2Container_ContainerConstants::COMPONENT_DEF_NAME] = 
                                                                   $componentDef;
-
+/*
+        return S2Container_AopConcreteClassFactory::create($args,
+                   $componentDef->getComponentClass(),
+                   self::getAspects($componentDef),
+                   self::getInterTypes($componentDef),
+                   $parameters);
+*/
         $target = null;
         $componentClass = $componentDef->getComponentClass();
         if (!$componentClass->isInterface() && !$componentClass->isAbstract()) {

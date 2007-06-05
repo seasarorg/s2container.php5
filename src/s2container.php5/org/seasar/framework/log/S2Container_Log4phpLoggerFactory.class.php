@@ -20,36 +20,17 @@
 // | Authors: klove                                                       |
 // +----------------------------------------------------------------------+
 //
-// $Id$
+// $Id:$
 /**
  * @package org.seasar.framework.log
  * @author klove
  */
-final class S2Container_S2Logger
+class S2Container_Log4phpLoggerFactory
 {
-    public static $LOGGER_FACTORY = 'S2Container_SimpleLoggerFactory';
-    private static $loggerFactory = null;
-
-    public static function setLoggerFactory($factory){
-        self::$loggerFactory = $factory;
-    }
-
-    private function __construct() {}
-
-    /**
-     * @param string class name 
-     */
-    public static final function getLogger($className)
+    public function __construct(){}
+    public function getInstance($className)
     {
-        return self::getLoggerFactory()->getInstance($className);
-    }
-
-    public static final function getLoggerFactory()
-    {
-        if (self::$loggerFactory === null) {
-            self::$loggerFactory = new self::$LOGGER_FACTORY;
-        }
-        return self::$loggerFactory;
+        return LoggerManager::getLogger($className);
     }
 }
 ?>

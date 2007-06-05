@@ -55,7 +55,7 @@ class S2Container_MethodDefImplTest
         $arg = $im->getArgDef(1);
         $this->assertTrue($arg === $arg2);
 
-        $args = $im->getArgs();
+        $args = $im->getArgs(array());
         $this->assertEquals($args,array('a','b','c'));
     } 
 }

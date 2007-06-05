@@ -558,7 +558,7 @@ class S2Container_YamlS2ContainerBuilderTest
             print $e->getMessage() . "\n";
         }
     }
-    
+    /*
     function testIntertype(){
         // property intertype
         $container = S2ContainerFactory::create($this->diconDir . '/testIntertype.yml');
@@ -594,7 +594,7 @@ class S2Container_YamlS2ContainerBuilderTest
         $refB = new ReflectionClass(get_class($b));
         $this->assertTrue($refB->hasMethod("serialize"));
         $this->assertTrue($refB->hasMethod("unserialize"));
-    }
+    }*/
 }
 
 interface IA_S2Container_YamlS2ContainerBuilder{}

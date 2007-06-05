@@ -67,6 +67,8 @@ class S2Container_DefaultAopProxy {
             $methodInvocation = 
                 new S2Container_S2MethodInvocationImpl($this->target_,
                                     $this->targetClass_,
+                                    $this->targetClass_,
+                                    $this->targetClass_->getMethod($name),
                                     $this->targetClass_->getMethod($name),
                                     $args,
                                     $this->methodInterceptorsMap_[$name],
