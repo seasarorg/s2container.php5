@@ -91,7 +91,7 @@ interface IO_S2Container_AopConcreteClassFactory {
 
 interface IW_S2Container_AopConcreteClassFactory 
     extends IO_S2Container_AopConcreteClassFactory {
-    function wm1($arg1=null,IA &$a);
+    function wm1($arg1=null,IA_S2Container_AopConcreteClassFactory &$a);
     function wm2();
 }
 
@@ -104,7 +104,7 @@ abstract class AW_S2Container_AopConcreteClassFactory implements IW_S2Container_
         print __METHOD__ . " called.\n";    
     }
 
-    public function wm1($arg1,IA &$a){
+    public function wm1($arg1,IA_S2Container_AopConcreteClassFactory &$a){
         print __METHOD__ . " called.\n";    
     }
 
@@ -122,4 +122,5 @@ class WextendAW_S2Container_AopConcreteClassFactory extends AW_S2Container_AopCo
 }
 
 final class A_S2Container_AopConcreteClassFactory {}
+interface IA_S2Container_AopConcreteClassFactory{}
 ?>

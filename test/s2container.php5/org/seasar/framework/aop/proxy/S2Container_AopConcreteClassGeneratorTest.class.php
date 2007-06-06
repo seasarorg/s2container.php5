@@ -60,7 +60,7 @@ class S2Container_AopConcreteClassGeneratorTest extends PHPUnit2_Framework_TestC
         $this->assertTrue($ref->hasMethod('aa_bb10_EnhancedByS2AOP'));
         $this->assertTrue($ref->hasMethod('aa_bb11_EnhancedByS2AOP'));
         $this->assertTrue($ref->hasMethod('aa_bb12_EnhancedByS2AOP'));
-        $this->assertTrue($ref->hasMethod('aa_bb13_EnhancedByS2AOP'));
+        $this->assertFalse($ref->hasMethod('aa_bb13_EnhancedByS2AOP'));
         $this->assertTrue($ref->hasMethod('aa_bb14_EnhancedByS2AOP'));
         $this->assertTrue($ref->hasMethod('__invokeParentMethod_EnhancedByS2AOP'));
         $this->assertTrue($ref->hasMethod('__invokeMethodInvocationProceed_EnhancedByS2AOP'));
@@ -96,7 +96,7 @@ class S2Container_AopConcreteClassGeneratorTest extends PHPUnit2_Framework_TestC
         $this->assertTrue($ref->hasMethod('aa_bb10_EnhancedByS2AOP'));
         $this->assertTrue($ref->hasMethod('aa_bb11_EnhancedByS2AOP'));
         $this->assertTrue($ref->hasMethod('aa_bb12_EnhancedByS2AOP'));
-        $this->assertTrue($ref->hasMethod('aa_bb13_EnhancedByS2AOP'));
+        $this->assertFalse($ref->hasMethod('aa_bb13_EnhancedByS2AOP'));
         $this->assertTrue($ref->hasMethod('aa_bb14_EnhancedByS2AOP'));
         $this->assertTrue($ref->hasMethod('__invokeParentMethod_EnhancedByS2AOP'));
         $this->assertTrue($ref->hasMethod('__invokeMethodInvocationProceed_EnhancedByS2AOP'));
@@ -132,7 +132,7 @@ class S2Container_AopConcreteClassGeneratorTest extends PHPUnit2_Framework_TestC
         $this->assertTrue($ref->hasMethod('aa_bb10_EnhancedByS2AOP'));
         $this->assertTrue($ref->hasMethod('aa_bb11_EnhancedByS2AOP'));
         $this->assertTrue($ref->hasMethod('aa_bb12_EnhancedByS2AOP'));
-        $this->assertTrue($ref->hasMethod('aa_bb13_EnhancedByS2AOP'));
+        $this->assertFalse($ref->hasMethod('aa_bb13_EnhancedByS2AOP'));
         $this->assertTrue($ref->hasMethod('aa_bb14_EnhancedByS2AOP'));
         $this->assertTrue($ref->hasMethod('__invokeParentMethod_EnhancedByS2AOP'));
         $this->assertTrue($ref->hasMethod('__invokeMethodInvocationProceed_EnhancedByS2AOP'));
@@ -185,7 +185,46 @@ class S2Container_AopConcreteClassGeneratorTest extends PHPUnit2_Framework_TestC
             print $e->getMessage();
         }
     }
+
+    public function testGetMethodDefSrc() {
+        $targetClass = new ReflectionClass('K_S2Container_AopConcreteClassGeneratorTests');
+        $methodDef = S2Container_AopConcreteClassGenerator::getMethodDefSrc($targetClass->getMethod('a'));
+        $this->assertEquals($methodDef,'public function a() {');
+        $methodDef = S2Container_AopConcreteClassGenerator::getMethodDefSrc($targetClass->getMethod('b'));
+        $this->assertEquals($methodDef,'public function b($b) {');
+        $methodDef = S2Container_AopConcreteClassGenerator::getMethodDefSrc($targetClass->getMethod('c'));
+        $this->assertEquals($methodDef,'public function c(array $c) {');
+        $methodDef = S2Container_AopConcreteClassGenerator::getMethodDefSrc($targetClass->getMethod('d'));
+        $this->assertEquals($methodDef,'public function d(array &$d) {');
+        $methodDef = S2Container_AopConcreteClassGenerator::getMethodDefSrc($targetClass->getMethod('e'));
+        $this->assertEquals($methodDef,'public function e(Foo_S2Container_AopConcreteClassGeneratorTests $d) {');
+        $methodDef = S2Container_AopConcreteClassGenerator::getMethodDefSrc($targetClass->getMethod('f'));
+        $this->assertEquals($methodDef,'public function f($f = \'abc\') {');
+        $methodDef = S2Container_AopConcreteClassGenerator::getMethodDefSrc($targetClass->getMethod('g'));
+        $this->assertEquals($methodDef,'public function g($g = array()) {');
+        $methodDef = S2Container_AopConcreteClassGenerator::getMethodDefSrc($targetClass->getMethod('h'));
+        $this->assertFalse($methodDef);
+        $methodDef = S2Container_AopConcreteClassGenerator::getMethodDefSrc($targetClass->getMethod('i'));
+        $this->assertEquals($methodDef,'public function i(Foo_S2Container_AopConcreteClassGeneratorTests $d, $i = null) {');
+        $methodDef = S2Container_AopConcreteClassGenerator::getMethodDefSrc($targetClass->getMethod('j'));
+        $this->assertEquals($methodDef,'public function j($g = array(), $j = null) {');
+        $methodDef = S2Container_AopConcreteClassGenerator::getMethodDefSrc($targetClass->getMethod('k'));
+        $this->assertEquals($methodDef,'public function k($k = null, $g = \'abc\') {');
+        $methodDef = S2Container_AopConcreteClassGenerator::getMethodDefSrc($targetClass->getMethod('l'));
+        $this->assertEquals($methodDef,'public function l($b, $l = null, $g = array()) {');
+        $methodDef = S2Container_AopConcreteClassGenerator::getMethodDefSrc($targetClass->getMethod('m'));
+        $this->assertEquals($methodDef,'public function m($m = true) {');
+        $methodDef = S2Container_AopConcreteClassGenerator::getMethodDefSrc($targetClass->getMethod('n'));
+        $this->assertEquals($methodDef,'public function n($n = false) {');
+        $methodDef = S2Container_AopConcreteClassGenerator::getMethodDefSrc($targetClass->getMethod('o'));
+        $this->assertEquals($methodDef,'public function o($o = 100) {');
+        $methodDef = S2Container_AopConcreteClassGenerator::getMethodDefSrc($targetClass->getMethod('p'));
+        $this->assertEquals($methodDef,'public function p($p = 0) {');
+    }
 }
+
+interface IA_AopConcreteClassGeneratorTests{}
+interface IB_AopConcreteClassGeneratorTests{}
 
 interface A_S2Container_AopConcreteClassGeneratorTests {
     
@@ -194,20 +233,20 @@ interface A_S2Container_AopConcreteClassGeneratorTests {
 
     public function aa_bb3();
     
-    public function aa_bb4(IA $a,
-                           IB $b);
+    public function aa_bb4(IA_AopConcreteClassGeneratorTests $a,
+                           IB_AopConcreteClassGeneratorTests $b);
 
     public function aa_bb5(
-                           IA $a,
-                           IB &$b);
+                           IA_AopConcreteClassGeneratorTests $a,
+                           IB_AopConcreteClassGeneratorTests &$b);
 
-    public function aa_bb6( IA $a,
+    public function aa_bb6( IA_AopConcreteClassGeneratorTests $a,
 
-                           IB $b);
+                           IB_AopConcreteClassGeneratorTests $b);
 
-    public function aa_bb7( IA $a,
+    public function aa_bb7( IA_AopConcreteClassGeneratorTests $a,
 
-                           IB $b
+                           IB_AopConcreteClassGeneratorTests $b
                            );
 
     public function aa_bb8($a = '$b',$b = "test");
@@ -220,9 +259,6 @@ interface A_S2Container_AopConcreteClassGeneratorTests {
 
     public function aa_bb11($a="abc",$b = "te\"st");
     public function aa_bb12($a="abc",$b = array());
-    public function aa_bb13($a="abc",$b = array(1,
-                                                2,
-                                                3));
     public function aa_bb14(S2Container $a);
 }
 
@@ -233,20 +269,20 @@ class B_S2Container_AopConcreteClassGeneratorTests {
 
     public function aa_bb3(){}
     
-    public function aa_bb4(IA $a,
-                           IB $b){}
+    public function aa_bb4(IA_AopConcreteClassGeneratorTests $a,
+                           IB_AopConcreteClassGeneratorTests $b){}
 
     public function aa_bb5(
-                           IA $a,
-                           IB &$b){}
+                           IA_AopConcreteClassGeneratorTests $a,
+                           IB_AopConcreteClassGeneratorTests &$b){}
 
-    public function aa_bb6( IA $a,
+    public function aa_bb6( IA_AopConcreteClassGeneratorTests $a,
 
-                           IB $b){}
+                           IB_AopConcreteClassGeneratorTests $b){}
 
-    public function aa_bb7( IA $a,
+    public function aa_bb7( IA_AopConcreteClassGeneratorTests $a,
 
-                           IB $b
+                           IB_AopConcreteClassGeneratorTests $b
                            ){}
 
     public function aa_bb8($a = '$b',$b = "test"){}
@@ -272,20 +308,20 @@ abstract class C_S2Container_AopConcreteClassGeneratorTests {
 
     public function aa_bb3(){}
     
-    abstract public function aa_bb4(IA $a,
-                           IB $b);
+    abstract public function aa_bb4(IA_AopConcreteClassGeneratorTests $a,
+                           IB_AopConcreteClassGeneratorTests $b);
 
     abstract public function aa_bb5(
-                           IA $a,
-                           IB &$b);
+                           IA_AopConcreteClassGeneratorTests $a,
+                           IB_AopConcreteClassGeneratorTests &$b);
 
-    abstract public function aa_bb6( IA $a,
+    abstract public function aa_bb6( IA_AopConcreteClassGeneratorTests $a,
 
-                           IB $b);
+                           IB_AopConcreteClassGeneratorTests $b);
 
-    public function aa_bb7( IA $a,
+    public function aa_bb7( IA_AopConcreteClassGeneratorTests $a,
 
-                           IB $b
+                           IB_AopConcreteClassGeneratorTests $b
                            ){}
 
     public function aa_bb8($a = '$b',$b = "test"){}
@@ -343,4 +379,24 @@ class J_S2Container_AopConcreteClassGeneratorTests {
     function aa_bb1_EnhancedByS2AOP(){}
 }
 
+class K_S2Container_AopConcreteClassGeneratorTests {
+    public function a(){}
+    public function b($b){}
+    public function c(array $c){}
+    public function d(array &$d){}
+    public function e(Foo_S2Container_AopConcreteClassGeneratorTests $d){}
+    public function f($f = 'abc'){}
+    public function g($g = array()){}
+    public function h($h = array('a','b')){}
+    public function i(Foo_S2Container_AopConcreteClassGeneratorTests $d, $i = null){}
+    public function j($g = array(), $j = null){}
+    public function k($k = null, $g = 'abc'){}
+    public function l($b, $l = null, $g = array()){}
+    public function m($m = true){}
+    public function n($n = false){}
+    public function o($o = 100){}
+    public function p($p = 0){}
+}
+
+class Foo_S2Container_AopConcreteClassGeneratorTests {}
 ?>
