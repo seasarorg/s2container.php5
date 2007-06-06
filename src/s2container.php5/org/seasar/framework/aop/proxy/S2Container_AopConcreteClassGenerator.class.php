@@ -40,7 +40,7 @@ class S2Container_AopConcreteClassGenerator
      * @param ReflectionClass 
      * @param array Interceptors 
      */
-    public static function generate(ReflectionClass $targetClass, array $applicableMethods, array $interTypes)
+    public static function generate(ReflectionClass $targetClass, array $applicableMethods)
     {
         $concreteClassName = $targetClass->getName() . self::CLASS_NAME_POSTFIX;
 
@@ -50,23 +50,20 @@ class S2Container_AopConcreteClassGenerator
 
         $support = S2Container_CacheSupportFactory::create();
         if (!$support->isAopProxyCaching($targetClass->getFileName() . $concreteClassName)) {
-            S2Container_S2Logger::getLogger(__CLASS__)->
-                debug("set caching off.",__METHOD__);
-            $srcLine = self::generateInternal($concreteClassName, $targetClass, $applicableMethods, $interTypes);
+            S2Container_S2Logger::getLogger(__CLASS__)->debug("set caching off.",__METHOD__);
+            $srcLine = self::generateInternal($concreteClassName, $targetClass, $applicableMethods);
             self::evalInternal($srcLine);
             return $concreteClassName;
         }
 
         if ($srcLine = $support->loadAopProxyCache($targetClass->getFileName() . $concreteClassName)) {
-            S2Container_S2Logger::getLogger(__CLASS__)->
-                    debug("cached aop proxy found.",__METHOD__);
+            S2Container_S2Logger::getLogger(__CLASS__)->debug("cached aop proxy found.",__METHOD__);
             self::evalInternal($srcLine);
             return $concreteClassName;
         }
         else {
-            S2Container_S2Logger::getLogger(__CLASS__)->
-                debug("create aop proxy and cache it.",__METHOD__);
-            $srcLine = self::generateInternal($concreteClassName, $targetClass, $applicableMethods, $interTypes);
+            S2Container_S2Logger::getLogger(__CLASS__)->debug("create aop proxy and cache it.",__METHOD__);
+            $srcLine = self::generateInternal($concreteClassName, $targetClass, $applicableMethods);
             $support->saveAopProxyCache($srcLine, $targetClass->getFileName() . $concreteClassName);
             self::evalInternal($srcLine);
             return $concreteClassName;
@@ -75,17 +72,59 @@ class S2Container_AopConcreteClassGenerator
 
     private static function evalInternal($srcLine) {
         if(defined('S2CONTAINER_PHP5_DEBUG_EVAL') and S2CONTAINER_PHP5_DEBUG_EVAL){
-            S2Container_S2Logger::getLogger(__CLASS__)->
-                debug("[ $srcLine ]",__METHOD__);
+            S2Container_S2Logger::getLogger(__CLASS__)->debug("[ $srcLine ]",__METHOD__);
         }
         eval($srcLine);
+    }
+
+    public static function getMethodDefSrc(ReflectionMethod $method) {
+        $src = 'public function ' . $method->getName() . '(';
+        $params = $method->getParameters();
+        $paramSrcs = array();
+        foreach($params as $param) {
+            $paramSrc = '';
+            if ($param->isArray()) {
+                $paramSrc .= 'array ';
+            } else if ($param->getClass() !== null) {
+                $paramSrc .= $param->getClass()->getName() . ' ';
+            }
+            if ($param->isPassedByReference()) {
+                $paramSrc .= '&';
+            }
+            $paramSrc .= '$' . $param->getName();
+
+            if ($param->isDefaultValueAvailable()) {
+                $valSrc = '';
+                $defaultValue = $param->getDefaultValue();
+                if (is_string($defaultValue)) {
+                    $valSrc .= "'$defaultValue'";
+                } else if (is_array($defaultValue)) {
+                    if (count($defaultValue) === 0) {
+                        $valSrc .= 'array()';
+                    } else {
+                        return false;
+                    }
+                } else if (is_null($defaultValue)) {
+                    $valSrc .= 'null';
+                } else if (is_bool($defaultValue)) {
+                    $valSrc .= $defaultValue ? 'true' : 'false';
+                } else if (is_numeric($defaultValue)){
+                    $valSrc .= $defaultValue;
+                } else {
+                    return false;
+                }
+                $paramSrc .= ' = ' . $valSrc;
+            }
+            $paramSrcs[] = $paramSrc;
+        }
+        return $src . implode(', ', $paramSrcs) . ') {';
     }
 
     /**
      * @param ReflectionClass 
      * @param array Interceptors 
      */
-    public static function generateInternal($concreteClassName, ReflectionClass $targetClass, array $applicableMethods, array $interTypes)
+    public static function generateInternal($concreteClassName, ReflectionClass $targetClass, array $applicableMethods)
     {
         self::validateTargetClass($targetClass);
         $srcLine = 'class ' . $concreteClassName . ' ';
@@ -97,69 +136,28 @@ class S2Container_AopConcreteClassGenerator
         $srcLine .= PHP_EOL;
         $srcLine .= '    public $clazz_EnhancedByS2AOP = null;
     public $concreteClazz_EnhancedByS2AOP = null;
-    public $methodInterceptorsMap_EnhancedByS2AOP = null;
+    public $methodInterceptorsMap_EnhancedByS2AOP = array();
     public $parameters_EnhancedByS2AOP = null;' . PHP_EOL;
-        $classSrc = S2Container_ClassUtil::getSource($targetClass);
         $abstractMethods = array();
         foreach ($applicableMethods as $methodName) {
-            $refMethod = $targetClass->getMethod($methodName);
-            if ($refMethod->isAbstract()) {
-                $abstractMethods[] = $refMethod->getName();
-                $methodDef = self::getAbstractMethodDefinition($refMethod, $classSrc);
-            } else {
-                $methodDef = self::getMethodDefinition($refMethod, $classSrc);
+            $methodRef = $targetClass->getMethod($methodName);
+            $methodDef = self::getMethodDefSrc($methodRef);
+            if ($methodDef === false) {
+                S2Container_S2Logger::getLogger(__CLASS__)->info("cannot parse param [{$methodRef->getDeclaringClass()->getName()}::{$methodRef->getName()}()]",__METHOD__);
+                continue;
             }
-            self::validateMethodName($refMethod, $methodDef);
-            $srcLine .= self::getMethodSrc($targetClass, $refMethod, $methodDef);
+            if ($methodRef->isAbstract()) {
+                $abstractMethods[] = $methodName;
+            }
+            $srcLine .= self::getMethodSrc($targetClass, $methodRef, $methodDef);
             $srcLine .= PHP_EOL;
         }
         $srcLine .= self::addInvokeParentMethodSrc($abstractMethods);
         $srcLine .= PHP_EOL;
         $srcLine .= self::addInvokeProceedMethodSrc();
-        $srcLine .= self::addInterTypeSrc($targetClass, $interTypes);
         $srcLine .= '}' . PHP_EOL;
         return $srcLine;
     }
-
-    public static function getAbstractMethodDefinition(ReflectionMethod $refMethod, $interfaceSrc)
-    {
-        $srcLines = S2Container_MethodUtil::getSource($refMethod, $interfaceSrc);
-        $srcLine = implode(' ', $srcLines);
-        return $srcLine;
-    }
-
-    /**
-     * @param ReflectionMethod
-     * @param string
-     */
-    public static function getMethodDefinition(ReflectionMethod $refMethod,$classSrc)
-    {
-        $srcLines = S2Container_MethodUtil::getSource($refMethod,$classSrc);
-        $srcLine = implode(' ', $srcLines);
-        $matches = array();
-        if (preg_match('/^(.+?\))\s*{/', $srcLine, $matches)) {
-            $srcLine = $matches[1] . ';';
-        } else {
-            $msg = "cannot get method definition. [$srcLine]";
-            throw new S2Container_S2RuntimeException('ESSR0017',array($msg));
-        }
-        return $srcLine;
-    }
-
-    public static function validateMethodName(ReflectionMethod $refMethod, $methodDef)
-    {
-        $matches = array();
-        if (preg_match('/([^\s]+?)\s*\(/', $methodDef, $matches)) {
-            if ($matches[1] !== $refMethod->getName()) {
-                $msg = "cannot get method definition [{$matches[1]} supposed to be {$refMethod->getName()}]. [$methodDef]";
-                throw new S2Container_S2RuntimeException('ESSR0017',array($msg));
-            }
-        } else {
-            $msg = "cannot get method name from definition. [$methodDef]";
-            throw new S2Container_S2RuntimeException('ESSR0017',array($msg));
-        }
-    }
-
 
     public static function addInvokeParentMethodSrc(array $abstractMethods)
     {
@@ -175,14 +173,6 @@ class S2Container_AopConcreteClassGenerator
         return call_user_func_array(array($this, \'parent::\' . $methodName), $args);
     }';
         return $methodContent . PHP_EOL;
-        /*
-        $argNum = count($args);
-        $argLine = array();
-        for ($i=0; $i<$argNum; $i++) { $argLine[] = \'$args[\' . $i . \']\';}
-        $argLine = implode(\',\', $argLine);
-        $cmd = \'return parent::\' . $methodName . \'(\' . $argLine . \');\';
-        return eval($cmd);
-        */
     }
 
     public static function addInvokeProceedMethodSrc()
@@ -190,7 +180,7 @@ class S2Container_AopConcreteClassGenerator
         $methodContent = '    private function __invokeMethodInvocationProceed_EnhancedByS2AOP() {
         $args = func_get_args();
         $methodName = array_pop($args);
-        $methodInvocation = new S2Container_S2MethodInvocationImpl($this, $this->clazz_EnhancedByS2AOP, $this->concreteClazz_EnhancedByS2AOP, $this->concreteClazz_EnhancedByS2AOP->getMethod($methodName), $this->concreteClazz_EnhancedByS2AOP->getMethod($methodName . \'_EnhancedByS2AOP\'), $args, $this->methodInterceptorsMap_EnhancedByS2AOP[$methodName], $this->parameters_EnhancedByS2AOP);
+        $methodInvocation = new S2Container_S2MethodInvocationImpl($this, $this->clazz_EnhancedByS2AOP, $this->concreteClazz_EnhancedByS2AOP, $this->clazz_EnhancedByS2AOP->getMethod($methodName), $this->concreteClazz_EnhancedByS2AOP->getMethod($methodName . \'_EnhancedByS2AOP\'), $args, $this->methodInterceptorsMap_EnhancedByS2AOP[$methodName], $this->parameters_EnhancedByS2AOP);
         return $methodInvocation->proceed();
     }';
         return $methodContent . PHP_EOL;
@@ -203,8 +193,6 @@ class S2Container_AopConcreteClassGenerator
     public static function getMethodSrc(ReflectionClass $targetClass, ReflectionMethod $refMethod, $methodDef)
     {
         //$methodDef = preg_replace("/protected\s/i", 'public ', $methodDef, 1);
-        $methodDef = preg_replace("/abstract\s/i", '', $methodDef, 1);
-        $methodDef = preg_replace('/;$/', ' {', $methodDef);
         $params = $refMethod->getParameters();
         $args = array();
         foreach ($params as $param) {
@@ -231,10 +219,6 @@ class S2Container_AopConcreteClassGenerator
     }' . PHP_EOL;
         $methodContent  = preg_replace('/@@METHOD_NAME@@/', $refMethod->getName(), $methodContent);
         return $methodContent;
-    }
-
-    private static function addInterTypeSrc(ReflectionClass $targetClass, array $interTypes) {
-        return '';
     }
 
     private static function validateTargetClass(ReflectionClass $targetClass) {

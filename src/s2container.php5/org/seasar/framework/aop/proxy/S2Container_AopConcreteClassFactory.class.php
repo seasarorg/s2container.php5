@@ -45,21 +45,19 @@ final class S2Container_AopConcreteClassFactory
                            $parameters = null)
     {
         if (!$targetClass->isUserDefined()) {
-            S2Container_S2Logger::getLogger(__CLASS__)->
-                info("not a user defined class [{$targetClass->getName()}] ignored.",__METHOD__);
+            S2Container_S2Logger::getLogger(__CLASS__)->info("not a user defined class [{$targetClass->getName()}] ignored.",__METHOD__);
             return S2Container_ConstructorUtil::newInstance($targetClass, $args);
         }
 
         if ($targetClass->isFinal()) {
-            S2Container_S2Logger::getLogger(__CLASS__)->
-                info("cannot aspect to final class [{$targetClass->getName()}] ignored.",__METHOD__);
+            S2Container_S2Logger::getLogger(__CLASS__)->info("cannot aspect to final class [{$targetClass->getName()}] ignored.",__METHOD__);
             return S2Container_ConstructorUtil::newInstance($targetClass, $args);
         }
 
         $applicableMethods = self::getApplicableMethods($targetClass);
         $methodInterceptorsMap = self::creatMethodInterceptorsMap($targetClass, $aspects, $applicableMethods);
 
-        $concreteClassName = S2Container_AopConcreteClassGenerator::generate($targetClass, $applicableMethods, $interTypes);
+        $concreteClassName = S2Container_AopConcreteClassGenerator::generate($targetClass, $applicableMethods);
         $ref = new ReflectionClass($concreteClassName);
         $obj = S2Container_ConstructorUtil::newInstance($ref, $args);
         $obj->clazz_EnhancedByS2AOP = $targetClass;
