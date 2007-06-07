@@ -84,7 +84,8 @@ final class S2Container_AopConcreteClassFactory
         }
         
         $methodInterceptorsMap = array();
-        foreach ($applicableMethods as $methodName) {
+        foreach ($applicableMethods as $method) {
+            $methodName = $method->getName();
             $interceptorList = array();
             for ($j = 0; $j < $aspectCount; ++$j) {
                 $aspect = $aspects[$j];
@@ -116,7 +117,7 @@ final class S2Container_AopConcreteClassFactory
                 $methods[$i]->isConstructor() ) {
                     continue;
             }
-            $applicableMethods[] = $methods[$i]->getName();
+            $applicableMethods[] = $methods[$i];
         }
         return $applicableMethods;
     }

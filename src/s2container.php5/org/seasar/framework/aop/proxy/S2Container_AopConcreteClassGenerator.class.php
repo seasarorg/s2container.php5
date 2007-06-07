@@ -139,15 +139,14 @@ class S2Container_AopConcreteClassGenerator
     public $methodInterceptorsMap_EnhancedByS2AOP = array();
     public $parameters_EnhancedByS2AOP = null;' . PHP_EOL;
         $abstractMethods = array();
-        foreach ($applicableMethods as $methodName) {
-            $methodRef = $targetClass->getMethod($methodName);
+        foreach ($applicableMethods as $methodRef) {
             $methodDef = self::getMethodDefSrc($methodRef);
             if ($methodDef === false) {
                 S2Container_S2Logger::getLogger(__CLASS__)->info("cannot parse param [{$methodRef->getDeclaringClass()->getName()}::{$methodRef->getName()}()]",__METHOD__);
                 continue;
             }
             if ($methodRef->isAbstract()) {
-                $abstractMethods[] = $methodName;
+                $abstractMethods[] = $methodRef->getName();
             }
             $srcLine .= self::getMethodSrc($targetClass, $methodRef, $methodDef);
             $srcLine .= PHP_EOL;

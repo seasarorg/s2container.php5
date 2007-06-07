@@ -185,9 +185,11 @@ class S2ContainerApplicationContext {
     }
 
     public static function setupComponentDef(S2Container_ComponentDef $cd, $className) {
-        $methodRefs = $cd->getComponentClass()->getMethods();
+        $classRef = $cd->getComponentClass();
+        $methodRefs = $classRef->getMethods();
         foreach ($methodRefs as $methodRef) {
-            if (!$methodRef->isPublic() or $methodRef->isStatic() or
+            if (!$methodRef->isPublic() or 
+                $methodRef->isConstructor() or
                 preg_match('/^_/', $methodRef->getName()) ) {
                 continue;
             }
@@ -196,12 +198,15 @@ class S2ContainerApplicationContext {
                 self::hasAnnotation($methodRef, self::BINDING_ANNOTATION)) {
                 self::setupPropertyDef($cd, $methodRef, $matches[1]);
             }
-            if (self::hasAnnotation($methodRef, self::ASPECT_ANNOTATION)) {
+            if (!$methodRef->isStatic() and 
+                !$methodRef->isFinal() and
+                self::hasAnnotation($methodRef, self::ASPECT_ANNOTATION)) {
                 self::setupMethodAspectDef($cd, $methodRef);
             }
         }
-        if (self::hasAnnotation($cd->getComponentClass(), self::ASPECT_ANNOTATION)) {
-            self::setupClassAspectDef($cd, $cd->getComponentClass());
+        if (!$classRef->isFinal() and
+            self::hasAnnotation($classRef, self::ASPECT_ANNOTATION)) {
+            self::setupClassAspectDef($cd, $classRef);
         }
         return $cd;
     }
@@ -292,8 +297,9 @@ class S2ContainerApplicationContext {
     public static function formatCommentLine($commentLine) {
         $comments = preg_split('/[\n\r]/', $commentLine);
         $comment = ' ';
-        foreach ($comments as $line) {
-            $line = preg_replace('/^\/\*+/', '', trim($line));
+        $o = count($comments);
+        for ($i=0; $i<$o; $i++) {
+            $line = preg_replace('/^\/\*+/', '', trim($comments[$i]));
             $line = preg_replace('/\*+\/$/', '', trim($line));
             $line = preg_replace('/^\**/',   '', trim($line));
             $comment .= $line . ' ';
