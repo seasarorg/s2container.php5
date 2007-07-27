@@ -1,8 +1,6 @@
 ﻿
 2007-07-09 S2Container.PHP5-1.2.0
 
-	* add: package org.seasar.framework.container
-	S2ContainerApplicationContextクラスにaspect auto register機能を追加しました。
 	* modify: package org.seasar.framework.aop
 	アスペクトの実装を__callメソッドを用いるProxyタイプから
 	アスペクト対象クラスを継承するタイプに変更しました。
