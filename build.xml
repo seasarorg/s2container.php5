@@ -131,6 +131,7 @@
             <fileset dir="test/${project.name}/${td}">
                 <include name="${tt}"/>
                 <exclude name="**/*PDO*/**"/>
+                <exclude name="**/*InterType*/**"/>
                 <exclude name="**/*Memcache*/**"/>
                 <exclude name="**/S2Container_AbstractPropertyInterTypeTest*"/>
                 <exclude name="**/S2Container_AbstractCacacheSupportTest*"/>

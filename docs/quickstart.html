@@ -1,0 +1,527 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja"><head>
+
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Language" content="ja">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<meta name="keywords" content="Seasar2, S2Container, DI, AOP, Dependency Injection, Aspect Oriented Programming, The Seasar Foundation, OSS, オープンソースソフトウェア, Java, フレームワーク">
+<meta name="description" content="私たちSeasarプロジェクトはオープンソースという仕組みの元、開発者のゆとりを実現できるプロダクトの開発と提供を通じて、ユーザと開発者とが共に喜びを分かち合える環境実現をお手伝いすることを目指し活動しています。 ">
+<title>The Seasar Project - S2Container.PHP5</title>
+
+<link rel="stylesheet" type="text/css" href="theme/main.css" media="screen,projection">
+<link rel="stylesheet" type="text/css" href="theme/print.css" media="print"></head><body>
+
+<div id="wrapper">
+
+<div id="header">
+
+<div class="line"><span class="hide">spacer</span></div>
+
+<div id="logo">
+<h1 id="h01" class="hide">The Seasar Project</h1>
+<a href="http://www.seasar.org/">
+<img src="images/seasar_logo_blue.gif" alt="The Seasar Project" height="180" width="390">
+</a>
+</div>
+
+<div id="tool">
+</div>
+
+<div id="navi">
+<p><font size="-1"><a href="index.html">S2Container.PHP5 ホーム</a> &raquo; ドキュメント &raquo; クイックスタート</font></p>
+</div>
+
+</div><!-- header -->
+
+<div id="contents_left">
+
+<h2>メニュー</h2>
+
+<h3>ドキュメント</h3>
+<ul>
+    <li><a href="setup.html">セットアップ</a>
+    <li>クイックスタート
+        <font size="-2">
+        <ul>
+            <li><a href="#start">はじめに</a></li>
+            <li><a href="#container">コンテナの生成</a></li>
+            <li><a href="#component">コンポーネントの生成</a></li>
+            <li><a href="#get-component">コンポーネントの取得</a></li>
+            <li><a href="#many-component">複数のコンポーネントを扱ってみる</a></li>
+            <li><a href="#di">DI ( Dependency Injection ) してみる</a></li>
+            <li><a href="#named-component">コンポーネントに名前を付ける</a></li>
+            <li><a href="#di-with-name">コンポーネントを指定しての DI</a></li>
+            <li><a href="#aspect">アスペクトしてみる</a></li>
+            <li><a href="#dicon">DICON ファイルを使用する場合</a></li>
+        </ul>
+        </font>
+    </li>
+    <li><a href="DIContainer.html">DIContainer</a></li>
+    <li><a href="aop.html">AOP</a></li>
+    <li><a href="extension.html">Extension</a></li>
+    <li><a href="php.html">PHP式</a></li>
+</ul>
+
+<h3>リンク</h3>
+
+<ul>
+    <li><a href="http://www.seasar.org/">Seasar.org</a></li>
+    <li><a href="http://svn.seasar.org/browse/?root=s2container.php5">SVN リポジトリブラウザ</a></li>
+    <li><a href="https://www.seasar.org/svn/s2container.php5/">SVN リポジトリ</a></li>
+    <li><a href="https://www.seasar.org/issues/browse/CONTAINERPHP">Issue Tracker</a></li>
+    <li><a href="http://labs.s2php5.jp/">labs.s2php5.jp</a></li>
+</ul>
+
+<h2>PHP プロジェクト</h2>
+
+<h3>Seasar.PHP</h3>
+
+<ul>
+    <li><a href="http://s2container.php5.seasar.org/">S2Container.PHP5</a></li>
+    <li><a href="http://s2dao.php5.seasar.org/">S2Dao.PHP5</a></li>
+</ul>
+
+<h3>Sandbox.PHP</h3>
+
+<ul>
+    <li><a href="http://s2ana.php5.sandbox.seasar.org/">S2AnA.PHP5</a></li>
+    <li><a href="http://kunit.jp/maple/">Maple.PHP</a></li>
+    <li><a href="http://s2base.php5.sandbox.seasar.org/">S2Base.PHP5</a></li>
+</ul>
+
+
+
+</div><!-- contents_left -->
+
+<div id="contents_center">
+
+<div id="article">
+<div class="section">
+<h2 id="h02"><a name="start">はじめに</a></h2>
+<p>
+　はじめに<a href="setup.html">セットアップドキュメント</a>にしたがって S2Container.PHP5 をインストールして下さい。
+</p>
+
+<br>
+<h2 id="h02"><a name="container">コンテナの生成</a></h2>
+<p>
+　S2ContainerApplicationContext クラスの <a href="DIContainer.html#AppContainer">create メソッド</a>を使ってからっぽのコンテナを作ってみます。
+</p>
+
+<p>　　quickstart.php</p>
+<pre>
+&lt;?php
+require_once('S2Container/S2Container.php');
+require_once('S2ContainerSplAutoLoad.php');
+
+$container = S2ContainerApplicationContext::create();
+$container->getComponentDefSize() == 0 ?
+    print 'コンテナはからっぽです。' :
+    print 'コンポーネントが入ってます。';
+?&gt;
+</pre>
+
+<p>
+　実行してみます。
+</p>
+
+<pre>
+% php quickstart.php
+コンテナはからっぽです。
+%
+</pre>
+
+</div>
+
+<br>
+<div class="section">
+<h2 id="h02"><a name="component">コンポーネントの生成</a></h2>
+<p>
+　カレントディレクトリに classes ディレクトリを作成して、Hello クラスを作ります。
+</p>
+
+<p>　　classes/Hello.class.php</p>
+<pre>
+&lt;?php
+class Hello {
+    public function sayHello() {
+        print 'Hello World !' . PHP_EOL;
+    }
+}
+?&gt;
+</pre>
+
+<p>
+　quickstart.php で classes ディレクトリ以下のクラスファイルが Autoload されるように classes ディレクトリを <a href="DIContainer.html#AppImport">import</a> します。
+</p>
+
+<p>　　quickstart.php</p>
+<pre>
+&lt;?php
+require_once('S2Container/S2Container.php');
+require_once('S2ContainerSplAutoLoad.php');
+
+S2ContainerApplicationContext::import(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'classes');
+$container = S2ContainerApplicationContext::create();
+$container->getComponentDefSize() == 0 ?
+    print 'コンテナはからっぽです。' :
+    print 'コンポーネントが入ってます。';
+?&gt;
+</pre>
+
+<p>
+　実行してみます。
+</p>
+
+<pre>
+% php quickstart.php
+コンポーネントが入ってます。
+%
+</pre>
+
+</div>
+
+<br>
+<div class="section">
+<h2 id="h02"><a name="get-component">コンポーネントの取得</a></h2>
+<p>
+　「コンポーネントが入ってます。」と表示されたので、取り出してみます。次を quickstart.php に追記します。
+</p>
+
+<p>　　quickstart.php</p>
+<pre>
+&lt;?php
+require_once('S2Container/S2Container.php');
+require_once('S2ContainerSplAutoLoad.php');
+
+S2ContainerApplicationContext::import(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'classes');
+$container = S2ContainerApplicationContext::create();
+$container->getComponentDefSize() == 0 ?
+    print 'コンテナはからっぽです。' :
+    print 'コンポーネントが入ってます。';
+$hello = $container->getComponent('Hello');
+$hello->sayHello();
+?&gt;
+</pre>
+
+<p>
+　実行してみます。
+</p>
+
+<pre>
+% php quickstart.php
+コンポーネントが入ってます。
+Hello World !
+%
+</pre>
+
+</div>
+
+<br>
+<div class="section">
+<h2 id="h02"><a name="many-component">複数のコンポーネントを扱ってみる</a></h2>
+<p>
+　classes ディレクトリに次のような Printer インタフェースと ConsolePrinter クラスを追加します。
+</p>
+
+<p>　　classes/Printer.class.php</p>
+<pre>
+&lt;?php
+interface Printer {
+    public function printOut($message);
+}
+?&gt;
+</pre>
+
+<p>　　classes/ConsolePrinter.class.php</p>
+<pre>
+&lt;?php
+class ConsolePrinter implements Printer {
+    public function printOut($message) {
+        print __METHOD__ . ' : ' . $message . PHP_EOL;
+    }
+?&gt;
+</pre>
+
+<p>
+　quickstart.php を次のように編集して ConsolePrinter コンポーネントを取り出してみます。Printer インタフェースについては、コンポーネントとしては扱わないので、S2ContainerApplicationContext クラスの <a href="DIContainer.html#AppComponent">setExcludePattern メソッド</a>で除外します。
+</p>
+
+<pre>
+&lt;?php
+require_once('S2Container/S2Container.php');
+require_once('S2ContainerSplAutoLoad.php');
+
+S2ContainerApplicationContext::import(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'classes');
+S2ContainerApplicationContext::setExcludePattern('/^Printer$/');
+$container = S2ContainerApplicationContext::create();
+$hello = $container->getComponent('Hello');
+$hello->sayHello();
+$printer = $container-&gt;getComponent('ConsolePrinter');
+$printer->printOut('Hello World !');
+?&gt;
+</pre>
+
+<p>
+　実行してみます。
+</p>
+
+<pre>
+% php quickstart.php
+Hello World !
+ConsolePrinter::printOut : Hello World !
+%
+</pre>
+
+</div>
+
+<br>
+<div class="section">
+<h2 id="h02"><a name="di">DI してみる</a></h2>
+<p>
+　2つのコンポーネントが作成できたので、Hello コンポーネントに ConsolePrinter コンポーネントを DI ( Dependency Injection) してみます。
+<br>
+Hello クラスに ConsolePrinter インスタンスを受け取るセッターメソッドを追加します。また、sayHelloメソッドでConsolePrinterを用いて
+出力するように変更します。
+</p>
+
+<p>　　classes/Hello.class.php</p>
+<pre>
+&lt;?php
+class Hello {
+    private $printer;
+    public function setPrinter(Printer $printer) {
+        $this-&gt;printer = $printer;
+    }
+    public function sayHello() {
+        $this-&gt;printer-&gt;printOut('Hello World ! with DI');
+    }
+}
+?&gt;
+</pre>
+
+<p>
+　実行してみます。
+</p>
+
+<pre>
+% php quickstart.php
+ConsolePrinter::printOut : Hello World ! with DI
+%
+</pre>
+
+</div>
+
+<br>
+<div class="section">
+<h2 id="h02"><a name="named-component">コンポーネントに名前を付ける</a></h2>
+<p>
+　コンポーネントに名前を付ける場合は、<a href="DIContainer.html#AppAnnotation">@S2Component アノテーション</a>で行います。
+ConsolePrinter コンポーネントに「console」という名前を付けてみます。
+</p>
+
+<p>　　classes/ConsolePrinter.class.php</p>
+<pre>
+&lt;?php
+/**
+ * @S2Component('name' => 'console')
+ */
+class ConsolePrinter implements Printer {
+    public function printOut($message) {
+        print __METHOD__ . ' : ' . $message . PHP_EOL;
+    }
+?&gt;
+</pre>
+<p>
+　start.php の ConsolePrinter コンポーネントを取得しているコンポーネント名を、
+「ConsolePrinter」から「console」に変更します。
+</p>
+
+<pre>
+&lt;?php
+require_once('S2Container/S2Container.php');
+require_once('S2ContainerSplAutoLoad.php');
+
+S2ContainerApplicationContext::import(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'classes');
+S2ContainerApplicationContext::setExcludePattern('/^Printer$/');
+$container = S2ContainerApplicationContext::create();
+$printer = $container-&gt;getComponent('console');
+$printer-&gt;printOut('Hello Wolrd !');
+?&gt;
+</pre>
+
+<p>
+　実行してみます。
+</p>
+
+<pre>
+% php quickstart.php
+ConsolePrinter::printOut : Hello World !
+%
+</pre>
+
+</div>
+
+<br>
+<div class="section">
+<h2 id="h02"><a name="di-with-name">コンポーネントを指定しての DI</a></h2>
+<p>
+　<a href="#di">DI してみる</a>では、Hello クラスに ConsolePrinter インスタンスを受け取るセッターメソッドを実装することで
+ DI が実施されました。これは、S2Container の自動インジェクション機能により実施されています。ConsolePrinter クラスは Printer インターフェイスを
+実装しています。この Printer インターフェイスをセッターメソッドの引数に TypeHint することで、自動インジェクションが動作します。 <br>
+<br>
+なにもインタフェースを実装していないクラスの場合は、自動インジェクション機能を使用できません。その場合は、
+セッターメソッドに <a href="DIContainer.html#AppAnnotation">@S2Binding アノテーション</a>を記述し、DI したいコンポーネントを指定します。Hello クラスの setPrinter メソッド
+の場合は、次のようにアノテーションを記述します。
+</p>
+
+<pre>
+&lt;?php
+class Hello {
+    private $printer = null;
+    /**
+     * @S2Binding('console');
+     */
+    public function setPrinter($printer) {
+        $this-&gt;printer = $printer;
+    }
+    public function sayHello() {
+        $this-&gt;printer-&gt;printOut('Hello World ! with DI');
+    }
+}
+?&gt;
+</pre>
+
+</div>
+
+<br>
+<div class="section">
+<h2 id="h02"><a name="aspect">アスペクトしてみる</a></h2>
+<p>
+　次のようなメソッド呼び出しの時間計測を行うサンプル Interceptor を classes ディレクトリに作成します。
+</p>
+
+<p>　　classes/TimeInterceptor.class.php</p>
+<pre>
+&lt;?php
+class TimeInterceptor extends S2Container_AbstractInterceptor {
+    public function invoke(S2Container_MethodInvocation $invocation){
+        $start  = $this-&gt;microtime_float();
+        $result = $invocation-&gt;proceed();
+        $stop   = $this-&gt;microtime_float();
+        $time   = $stop - $start;
+        print "execute time : $time" . PHP_EOL;
+        return $result;
+    }
+    private function microtime_float() {
+        list($usec, $sec) = explode(" ", microtime());
+        return ((float)$usec + (float)$sec);
+    }
+}
+?&gt;
+</pre>
+
+<p>
+　この Interceptor を ConsolePrinter クラスの printOut メソッドにアスペクトします。アスペクト設定は、
+<a href="DIContainer.html#AppAnnotation">@S2Aspect アノテーション</a>で行います。次のように printOut メソッドにアノテーションを記述します。
+</p>
+
+<pre>
+&lt;?php
+/**
+ * @S2Component('name' =&gt; 'console');
+ */
+class ConsolePrinter implements Printer {
+
+    /**
+     * @S2Aspect('interceptor' =&gt; 'TimeInterceptor');
+     */
+    public function printOut($message) {
+        print __METHOD__ . ' : ' . $message . PHP_EOL;
+    }
+}
+?&gt;
+</pre>
+
+<p>
+　実行してみます。
+</p>
+
+<pre>
+% php quickstart.php
+ConsolePrinter::printOut : Hello World ! with DI
+execute time : 0.00099
+%
+</pre>
+
+</div>
+
+
+<br>
+<div class="section">
+<h2 id="h02"><a name="dicon">DICON ファイルを使用する場合</a></h2>
+<p>
+　これまでの作業をダイコンファイルに記述すると次のようになります。カレントディレクトリに
+dicon ディレクトリを作成して hello.dicon として保存します。
+</p>
+
+<p>　　dicon/hello.dicon</p>
+<pre>
+&lt;?xml version="1.0" encoding="Shift_JIS"?&gt;
+&lt;!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN" "components21.dtd"&gt;
+&lt;components&gt;
+    &lt;component class="Hello"&gt;
+        &lt;property name="printer"&gt;console&lt;/property&gt;
+    &lt;/component&gt;
+    &lt;component name="console" class="ConsolePrinter"&gt;
+        &lt;aspect pointcut="printOut"&gt;TimeInterceptor&lt;/aspect&gt;
+    &lt;/component&gt;
+    &lt;component class="TimeInterceptor"/&gt;
+&lt;/components&gt;
+</pre>
+
+<p>
+　このダイコンファイルを使用するかたちに quickstart.php を編集します。<a href="DIContainer.html#AppComponent">setIncludePattern メソッド</a>でダイコンファイルを Include Pattern に設定します。
+</p>
+
+<pre>
+&lt;?php
+require_once('S2Container/S2Container.php');
+require_once('S2ContainerSplAutoLoad.php');
+
+S2ContainerApplicationContext::import(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'classes');
+S2ContainerApplicationContext::import(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'dicon');
+S2ContainerApplicationContext::setIncludePattern('/\.dicon$/');
+$container = S2ContainerApplicationContext::create();
+$hello = $container-&gt;getComponent('Hello');
+$hello-&gt;sayHello();
+?&gt;
+</pre>
+
+<p>
+　実行すると同様の結果が表示されます。
+</p>
+
+<pre>
+% php quickstart.php
+ConsolePrinter::printOut : Hello World ! with DI
+execute time : 0.00177
+%
+</pre>
+
+</div>
+
+
+</div><!-- article -->
+</div><!-- contents_center -->
+
+<div id="footer">
+<address>&#169; Copyright The Seasar Foundation and the others 2005-2007, all rights reserved.</address>
+<div class="line"><span class="hide">spacer</span></div>
+</div><!-- footer -->
+
+</div><!-- wrapper -->
+
+</body></html>

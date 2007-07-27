@@ -22,4 +22,7 @@ define('S2CONTAINER_PHP5_LOG_LEVEL',S2Container_SimpleLogger::DEBUG);
 //define('S2CONTAINER_PHP5_CACHE_LITE_INI', dirname(__FILE__) . '/cache_lite.ini');
 
 define('S2CONTAINER_PHP5_PERMIT_CLASS_INJECTION', true);
+
+require_once('PHPUnit2/Framework/TestSuite.php');
+require_once('PHPUnit2/Framework/TestCase.php');
 ?>

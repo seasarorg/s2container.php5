@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN" "components21.dtd">
+<components>
+    <component class="Hello">
+        <property name="printer">console</property>
+    </component>
+    <component name="console" class="ConsolePrinter">
+        <aspect pointcut="printOut">TimeInterceptor</aspect>
+    </component>
+    <component class="TimeInterceptor"/>
+</components>

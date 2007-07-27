@@ -1,12 +1,34 @@
 ﻿
-2007-03-10 S2Container.PHP5-1.1.3
+2007-07-09 S2Container.PHP5-1.2.0
 
-================ S2Container.PHP5-1.1.3 更新履歴 ===================
+	* add: package org.seasar.framework.container
+	S2ContainerApplicationContextクラスにaspect auto register機能を追加しました。
+	* modify: package org.seasar.framework.aop
+	アスペクトの実装を__callメソッドを用いるProxyタイプから
+	アスペクト対象クラスを継承するタイプに変更しました。
+	* modify: package org.seasar.framework.container.util
+	S2Container_AutoBindingUtil::isSuitable() メソッドにて、Typehintがクラスの場合もDIを
+	許可できるように変更しました。
+	* add: package org.seasar.framework.log
+	S2Container_ZendLoggerFactory を追加しました。
+	* add: package org.seasar.framework.cache.impl
+	S2Container_ZendCacheSupport を追加しました。
+
+================ S2Container.PHP5-1.2.0 更新履歴 ===================
+
+2007-05-22 S2Container.PHP5-1.2.0
+
+	* add: package org.seasar.framework.container
+	S2ContainerApplicationContextクラス を追加しました。
+	* modify: package org.seasar.framework.container
+	Manual Injection において、Typehint が array または ArrayObject の場合に、
+	TooManyRegisteredなコンポーネントを配列として Injection するようにしました。
+
+2007-03-10 S2Container.PHP5-1.1.3
 
 	* fix: package org.seasar.framework.aop.proxy
 	S2Container_AopProxyGenerator のインターフェイスのimplements部で、extends しているインターフェイスを
 	多重実装してしまう点を修正しました。
-
 
 2007-03-04 S2Container.PHP5-1.1.3
 

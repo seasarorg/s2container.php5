@@ -42,9 +42,18 @@
 <h3>ドキュメント</h3>
 <ul>
     <li><a href="setup.html">セットアップ</a></li>
+    <li><a href="quickstart.html">クイックスタート</a></li>
     <li>DIContainer
         <font size="-2">
         <ul>
+            <li><a href="#S2ContainerAppReference">S2ContainerApplicationContext リファレンス</a>
+                <ul>
+                    <li><a href="#AppImport">クラスのインポート</a></li>
+                    <li><a href="#AppContainer">S2Container の生成</a></li>
+                    <li><a href="#AppComponent">コンポーネントの選択</a></li>
+                    <li><a href="#AppAnnotation">アノテーション</a></li>
+                </ul>
+            </li>
             <li><a href="#S2ContainerReference">S2Containerリファレンス</a>
                 <ul>
                     <li><a href="#CreateFile">作成すべきファイル</a></li>
@@ -52,11 +61,13 @@
                     <li><a href="#S2ContainerCreation">S2Containerの生成</a></li>
                     <li><a href="#getComponent">コンポーネントの取得</a></li>
                     <li><a href="#DIType">Dependency Injectionのタイプ</a>
+<!--
                         <ul>
                             <li type="circle"><a href="#ConstructorInjection">コンストラクタ・インジェクション</a></li>
                             <li type="circle"><a href="#SetterInjection">セッター・インジェクション</a></li>
                             <li type="circle"><a href="#MethodInjection">メソッド・インジェクション</a></li>
                         </ul>
+-->
                     </li>
                     <li><a href="#Include">S2Container定義の分割とインクルード</a></li>
                     <li><a href="#Namespace">名前空間</a></li>
@@ -135,6 +146,7 @@
 <h3>Sandbox.PHP</h3>
 
 <ul>
+    <li><a href="http://s2ana.php5.sandbox.seasar.org/">S2AnA.PHP5</a></li>
     <li><a href="http://kunit.jp/maple/">Maple.PHP</a></li>
     <li><a href="http://s2base.php5.sandbox.seasar.org/">S2Base.PHP5</a></li>
 </ul>
@@ -147,7 +159,221 @@
 
 <div id="article">
 <div class="section">
-<h2 id="h02"><a name="S2ContainerReference">S2Containerリファレンス</a></h2>
+<h2 id="h02"><a name="S2ContainerAppReference">S2ContainerApplicationContext リファレンス</a></h2>
+<p>
+</p>
+
+<a name="AppImport"><b><h3>クラスのインポート</h3></b></a>
+<p>
+　クラスのインポートは次のメソッドで行います。
+</p>
+<pre>
+S2ContainerApplicationContext::import($path, $subDir = false, $pear = false)
+</pre>
+
+<ul>
+<li>第1引数 : ディレクトリパス</li>
+<li>第2引数 : サブディレクトリ検索を行うかどうかを指定</li>
+<li>第3引数 : PEAR パッケージ形式のクラスファイルかどうかを指定</li>
+</ul>
+
+<p>
+　第1引数で指定したディレクトリにあるクラスファイル( .php、.class.php など)、ダイコンファイル( .dicon )をインポートします。インポートではクラス名とクラスファイルのパスを取得します。この情報は autoload 関数でクラス定義が require される際に使用されます。クラス名はクラスファイル名の拡張子を除く部分になります。
+クラスファイル名が S2Container.php や S2Container.class.php の場合、「 S2Container 」がクラス名になります。
+第2引数、第3引数を true と設定した場合、サブディレクトリを検索しPEAR パッケージ形式のクラスファイルとしてインポート
+します。
+</p>
+
+<a name="AppContainer"><b><h3>S2Container の生成</h3></b></a>
+<p>
+　S2Container インスタンスの生成は次のメソッドで行います。
+</p>
+
+<pre>
+S2ContainerApplicationContext::create()
+</pre>
+
+<p>
+　生成される S2Container は、import メソッドでインポートされた全クラスをコンポーネントとして持ちます。
+import メソッドが実行されていない場合は、コンポーネントを持たない空の S2Container インスタンスが戻ります。
+import メソッドで取得されたダイコンファイルについては、そのダイコンファイルを用いて S2Container を生成し、
+子コンテナとして include します。
+</p>
+
+<a name="AppComponent"><b><h3>コンポーネントの選択</h3></b></a>
+<p>
+　create メソッドで S2Container を生成する際に、インポートされたクラスやダイコンファイルから一部を選択することができます。
+</p>
+<ul>
+<li>default (パターン設定無し) : インポートされた全てのクラスをコンポーネントとして扱い、全てのダイコンファイルを子コンテナとして include します。</li>
+<li>Include Pattern : インポートされたクラスファイルとダイコンファイルに対してパターンにマッチ( preg_match )するもののみを使用します。</li>
+<li>Exclude Pattern : インポートされたクラスファイルとダイコンファイルに対してパターンにマッチ( preg_match )するものは除外します。</li>
+<li>Include &amp; Exclude : Include Pattern と Exclude Pattern が両方設定されている場合は、Include Pattern にマッチしたものから Exclude Pattern にマッチしたものが除外されます。</li>
+</ul>
+
+<b><h4>setIncludePattern メソッド</h4></b>
+<pre>
+S2ContainerApplicationContext::setIncludePattern($pattern = array())
+</pre>
+<ul>
+<li>第1引数 : 正規表現文字列、またはその配列</li>
+</ul>
+
+<p>
+　引数の正規表現は preg_match 関数で使用されます。クラス名が「 Bean 」で終わっているクラスを含めたい場合は、引数値は「 /Bean\./ 」となります。
+</p>
+
+<p>
+　setIncludePattern メソッドは、現在設定されている Include Pattern を上書きします。
+</p>
+
+<b><h4>addIncludePattern メソッド</h4></b>
+<pre>
+S2ContainerApplicationContext::addIncludePattern($pattern)
+</pre>
+
+<ul>
+<li>第1引数 : 正規表現文字列</li>
+</ul>
+
+<p>
+　addIncludePattern メソッドは、現在設定されている Include Pattern にパターンを追加します。
+</p>
+
+<b><h4>setExcludePattern メソッド</h4></b>
+<pre>
+S2ContainerApplicationContext::setExcludePattern($pattern)
+</pre>
+
+<ul>
+<li>第1引数 : 正規表現文字列、またはその配列</li>
+</ul>
+
+<p>
+　引数の正規表現は preg_match 関数で使用されます。クラス名が「 Abstract 」を含むクラスを除外する場合は、引数値は「 /Abstract/ 」となります。
+</p>
+
+<p>
+　setExcludePattern メソッドは、現在設定されている Exclude Pattern を上書きします。
+</p>
+
+<b><h4>addExcludePattern メソッド</h4></b>
+<pre>
+S2ContainerApplicationContext::addEcludePattern($pattern)
+</pre>
+<ul>
+<li>第1引数 : 正規表現文字列</li>
+</ul>
+
+<p>
+　addExcludePattern メソッドは、現在設定されている Exclude Pattern にパターンを追加します。
+</p>
+
+
+<a name="AppAnnotation"><b><h3>アノテーション</h3></b></a>
+<p>
+　コンポーネントの細かい設定や、Dependency Injection 設定、Aspect の適用を行う場合はアノテーションを用います。
+アノテーションの形式は、@アノテーション名[()] です。アットマーク(@)で開始します。末尾はスペース、または改行となります。
+アノテーションでは引数を記述することができます。引数の形式は、PHP 配列と同じフォーマットです。
+</p>
+
+<b><h4>@S2Component アノテーション</h4></b>
+<p>
+　コンポーネント情報を設定します。
+</p>
+<ul>
+<li>アノテーションの表記 : @S2Component</li>
+<li>引数<br>
+  <ul>
+  <li>name : コンポーネント名</li>
+  <li>instance : <a href="#InstanceMode">インスタンスモードタイプ</a></li>
+  <li>autoBinding : <a href="#AutoBindingMode">バインディングモードタイプ</a></li>
+  </ul>
+</li>
+<li>注釈ポイント : クラス</li>
+<li>サンプル<br>
+<pre>
+  /**
+   * @S2Component('name' =&gt; 'hoge')
+   */
+ 
+  /**
+   * @S2Component('name' =&gt; 'hoge', 'instance' =&gt; 'singleton', 'autoBinding' =&gt; 'auto')
+   */
+</pre>
+</li>
+</ul>
+
+<b><h4>@S2Binding アノテーション</h4></b>
+<p>
+　手動インジェクション設定を行います。
+</p>
+<ul>
+<li>アノテーションの表記 : @S2Binding</li>
+<li>引数 : インジェクションするコンポーネント名、または Expression</li>
+<li>注釈ポイント : セッターメソッド</li>
+<li>サンプル<br>
+<pre>
+  /**
+   * @S2Binding('hoge')
+   */
+  public function setHoge($hoge) {
+      $this->hoge = $hoge;
+  }
+ 
+  /**
+   * @S2Binding('Hello World')
+   */
+  public funcion setHello($val) {
+      $this->hello = $val;
+  }
+</pre>
+</li>
+</ul>
+
+<b><h4>@S2Aspect アノテーション</h4></b>
+<p>
+　アスペクト情報を設定します。
+</p>
+<ul>
+<li>アノテーションの表記 : @S2Aspect</li>
+<li>引数<br>
+  <ul>
+  <li>interceptor : Interceptorコンポーネント名、または Expression</li>
+  <li>pointcut : ポイントカットをカンマ区切りで指定</li>
+  </ul>
+</li>
+<li>注釈ポイント : クラス、メソッド</li>
+<li>サンプル<br>
+<pre>
+  /**
+   * @S2Aspect('interceptor' => 'traceInterceptor',
+   *           'pointcut'    => '.+Action')
+   */
+  class CdController {
+      public function indexAction(){
+          ・・・
+      }
+  }
+
+  class DvdController {
+      /**
+       * @S2Aspect('interceptor' => 'new S2Container_TraceInterceptor()')
+       */
+      public funcion indexAction() {
+          ・・・
+      }
+  }
+</pre>
+</li>
+</ul>
+
+</div>
+
+
+<br>
+<div class="section">
+<h2 id="h02"><a name="S2ContainerReference">S2Container リファレンス</a></h2>
 
 <a name="CreateFile"><b><h3>作成すべきファイル</h3></b></a>
 <p>

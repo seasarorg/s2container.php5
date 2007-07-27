@@ -28,13 +28,16 @@
 class S2ContainerApplicationContext {
     public  static $CLASSES = array();
     public  static $DICONS  = array();
+    private static $envPrefix   = null;
+    private static $filterByEnv = true;
     private static $includePattern = array();
     private static $excludePattern = array();
-    private static $commentCache = array();
+    private static $commentCache   = array();
 
     const COMPONENT_ANNOTATION = '@S2Component';
     const BINDING_ANNOTATION   = '@S2Binding';
     const ASPECT_ANNOTATION    = '@S2Aspect';
+    const META_ANNOTATION      = '@S2Meta';
     const ANNOTATION_END_DELIMITER = '\s';
 
     public static function load($className) {
@@ -53,9 +56,9 @@ class S2ContainerApplicationContext {
         self::$excludePattern = array();
     }
 
-    public static function import($path, $subDir = false, $pear = false) {
+    public static function import($path, $subDir = 0, $pear = false) {
         if (is_dir($path)) {
-            self::scanDir($path, $subDir, $pear, array());
+            self::scanDir($path, (int)$subDir, $pear, array());
         } else if (is_file($path)) {
             self::importInternal($path);
         } else {
@@ -63,17 +66,20 @@ class S2ContainerApplicationContext {
         }
     }
 
-    private static function scanDir($parentPath, $subDir, $pear, $pkgs) {
+    private static function scanDir($parentPath, $subDir, $pear, $pkgs = array()) {
         $entries = scandir($parentPath);
         foreach($entries as $entry) {
             if (preg_match('/^\./', $entry)) {
                 continue;
             }
             $path = $parentPath . DIRECTORY_SEPARATOR . $entry;
-            if ($subDir === true and is_dir($path)) {
-                $pkgs[] = $entry;
-                self::scanDir($path, $subDir, $pear, $pkgs);
-                array_pop($pkgs);
+            if (is_dir($path)) {
+                if ($subDir === -1 or 
+                    $subDir > count($pkgs)) {
+                    $pkgs[] = $entry;
+                    self::scanDir($path, $subDir, $pear, $pkgs);
+                    array_pop($pkgs);
+                }
             } else if(is_file($path)) {
                 self::importInternal($path, $pear, $pkgs);
             }
@@ -94,12 +100,15 @@ class S2ContainerApplicationContext {
         } else if (preg_match('/\.dicon$/', $fileName)) {
             self::$DICONS[$fileName] = $filePath;
             S2Container_S2Logger::getLogger(__CLASS__)->debug("find dicon $fileName : $filePath", __METHOD__);
+        } else {
+            S2Container_S2Logger::getLogger(__CLASS__)->debug("ignore file $fileName : $filePath", __METHOD__);
         }
     }
 
-    public static function create() {
+    public static function create($cacheKey = null) {
         $dicons  = self::filter(array_values(self::$DICONS));
         $classes = self::filter(array_keys(self::$CLASSES));
+        $classes = self::envFilter($classes);
 
         if (count($dicons) == 0 and count($classes) == 0) {
             S2Container_S2Logger::getLogger(__CLASS__)->info("dicon, class not found at all. create empty container.", __METHOD__);
@@ -107,7 +116,9 @@ class S2ContainerApplicationContext {
         }
 
         $support = S2Container_CacheSupportFactory::create();
-        $cacheKey = implode(',', array_merge($dicons, $classes));
+        if ($cacheKey === null) {
+            $cacheKey = implode(',', array_merge($dicons, $classes));
+        }
         if (!$support->isContainerCaching($cacheKey)) {
             S2Container_S2Logger::getLogger(__CLASS__)->
                 info("set caching off.",__METHOD__);
@@ -208,6 +219,11 @@ class S2ContainerApplicationContext {
             self::hasAnnotation($classRef, self::ASPECT_ANNOTATION)) {
             self::setupClassAspectDef($cd, $classRef);
         }
+
+        if (self::hasAnnotation($cd->getComponentClass(), self::META_ANNOTATION)) {
+            self::setupClassMetaDef($cd, $cd->getComponentClass());
+        }
+
         return $cd;
     }
 
@@ -263,6 +279,21 @@ class S2ContainerApplicationContext {
         }
     }
 
+    private static function setupClassMetaDef(S2Container_ComponentDef $cd, ReflectionClass $classRef) {
+        $annoInfo = self::getAnnotation($classRef, self::META_ANNOTATION);
+        if (count($annoInfo) === 0) {
+            S2Container_S2Logger::getLogger(__CLASS__)->debug("class aspect annotation found. cannot get values.", __METHOD__);
+            return;
+        }
+
+        foreach($annoInfo as $key => $val) {
+            $metaDef = new S2Container_MetaDefImpl($key);
+            $cd->addMetaDef($metaDef);
+            $metaDef->setExpression($val);
+            S2Container_ChildComponentDefBindingUtil::put($val,$metaDef);
+        }
+    }
+
     public static function hasAnnotation($refClazz, $annoName) {
         return preg_match("/$annoName\s*[\(]/s", $refClazz->getDocComment()) === 0 ? false : true;
     }
@@ -305,6 +336,30 @@ class S2ContainerApplicationContext {
             $comment .= $line . ' ';
         }
         return $comment;
+    }
+
+    public static function envFilter($items) {
+        $envPrefix = null;
+        if (self::$filterByEnv and defined('S2CONTAINER_PHP5_ENV')) {
+            if (self::$envPrefix === null) {
+                $envPrefix = ucfirst(strtolower(S2CONTAINER_PHP5_ENV));
+            } else {
+                $envPrefix = ucfirst(strtolower(self::$envPrefix));
+            }
+        } else {
+            return $items;
+        }
+        $classes = array();
+        $c = count($items);
+        for ($i=0; $i<$c; $i++) {
+            $envClassName = $envPrefix . $items[$i];
+            if (in_array($envClassName, $items)) {
+                continue;
+            } else {
+                $classes[] = $items[$i];
+            }
+        }
+        return $classes;
     }
 
     public static function filter($items) {
@@ -367,6 +422,14 @@ class S2ContainerApplicationContext {
 
     public static function setExcludePattern($pattern = array()) {
         self::$excludePattern = (array)$pattern;
+    }
+
+    public static function setFilterByEnv($val = true) {
+        self::$filterByEnv = $val;
+    }
+
+    public static function setEnvPrefix($val = null) {
+        self::$envPrefix = $val;
     }
 }
 ?>

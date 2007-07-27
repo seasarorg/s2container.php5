@@ -65,17 +65,67 @@ class S2ContainerApplicationContextTest extends PHPUnit2_Framework_TestCase {
         S2ContainerApplicationContext::import($this->sampleDir . '/dicon/aaa.dicon');
         $dicons = array_keys(S2ContainerApplicationContext::$DICONS);
         $this->assertEquals($dicons, array('aaa.dicon'));
+        $this->assertFalse(in_array('ccc.dicon', $dicons));
 
-        S2ContainerApplicationContext::import($this->sampleDir . '/dicon', true);
+        S2ContainerApplicationContext::$DICONS = array();
+        S2ContainerApplicationContext::import($this->sampleDir . '/dicon', 1);
+        $dicons = array_keys(S2ContainerApplicationContext::$DICONS);
+        $this->assertEquals($dicons, array('aaa.dicon','ccc.dicon'));
+
+        S2ContainerApplicationContext::$DICONS = array();
+        S2ContainerApplicationContext::import($this->sampleDir . '/dicon', -1);
         $dicons = array_keys(S2ContainerApplicationContext::$DICONS);
         $this->assertEquals($dicons, array('aaa.dicon','ccc.dicon'));
     }
 
     public function testImportPear(){
         S2ContainerApplicationContext::$CLASSES = array();
-        S2ContainerApplicationContext::import($this->sampleDir . '/pear', true, true);
+        S2ContainerApplicationContext::import($this->sampleDir . '/pear', -1, true);
         $classes = array_keys(S2ContainerApplicationContext::$CLASSES);
+        $this->assertTrue(in_array('Www_S2ContainerApplicationContext', $classes));
+        $this->assertTrue(in_array('Xxx_XImpl_S2ContainerApplicationContext', $classes));
         $this->assertTrue(in_array('Xxx_Yyy_YImpl_S2ContainerApplicationContext', $classes));
+        $this->assertTrue(in_array('Xxx_Yyy_Zzz_ZImpl_S2ContainerApplicationContext', $classes));
+
+        S2ContainerApplicationContext::$CLASSES = array();
+        S2ContainerApplicationContext::import($this->sampleDir . '/pear', 0, true);
+        $classes = array_keys(S2ContainerApplicationContext::$CLASSES);
+        $this->assertTrue(in_array('Www_S2ContainerApplicationContext', $classes));
+        $this->assertFalse(in_array('Xxx_XImpl_S2ContainerApplicationContext', $classes));
+        $this->assertFalse(in_array('Xxx_Yyy_YImpl_S2ContainerApplicationContext', $classes));
+        $this->assertFalse(in_array('Xxx_Yyy_Zzz_ZImpl_S2ContainerApplicationContext', $classes));
+
+        S2ContainerApplicationContext::$CLASSES = array();
+        S2ContainerApplicationContext::import($this->sampleDir . '/pear', 1, true);
+        $classes = array_keys(S2ContainerApplicationContext::$CLASSES);
+        $this->assertTrue(in_array('Www_S2ContainerApplicationContext', $classes));
+        $this->assertTrue(in_array('Xxx_XImpl_S2ContainerApplicationContext', $classes));
+        $this->assertFalse(in_array('Xxx_Yyy_YImpl_S2ContainerApplicationContext', $classes));
+        $this->assertFalse(in_array('Xxx_Yyy_Zzz_ZImpl_S2ContainerApplicationContext', $classes));
+
+        S2ContainerApplicationContext::$CLASSES = array();
+        S2ContainerApplicationContext::import($this->sampleDir . '/pear', 2, true);
+        $classes = array_keys(S2ContainerApplicationContext::$CLASSES);
+        $this->assertTrue(in_array('Www_S2ContainerApplicationContext', $classes));
+        $this->assertTrue(in_array('Xxx_XImpl_S2ContainerApplicationContext', $classes));
+        $this->assertTrue(in_array('Xxx_Yyy_YImpl_S2ContainerApplicationContext', $classes));
+        $this->assertFalse(in_array('Xxx_Yyy_Zzz_ZImpl_S2ContainerApplicationContext', $classes));
+
+        S2ContainerApplicationContext::$CLASSES = array();
+        S2ContainerApplicationContext::import($this->sampleDir . '/pear', 3, true);
+        $classes = array_keys(S2ContainerApplicationContext::$CLASSES);
+        $this->assertTrue(in_array('Www_S2ContainerApplicationContext', $classes));
+        $this->assertTrue(in_array('Xxx_XImpl_S2ContainerApplicationContext', $classes));
+        $this->assertTrue(in_array('Xxx_Yyy_YImpl_S2ContainerApplicationContext', $classes));
+        $this->assertTrue(in_array('Xxx_Yyy_Zzz_ZImpl_S2ContainerApplicationContext', $classes));
+
+        S2ContainerApplicationContext::$CLASSES = array();
+        S2ContainerApplicationContext::import($this->sampleDir . '/pear', 4, true);
+        $classes = array_keys(S2ContainerApplicationContext::$CLASSES);
+        $this->assertTrue(in_array('Www_S2ContainerApplicationContext', $classes));
+        $this->assertTrue(in_array('Xxx_XImpl_S2ContainerApplicationContext', $classes));
+        $this->assertTrue(in_array('Xxx_Yyy_YImpl_S2ContainerApplicationContext', $classes));
+        $this->assertTrue(in_array('Xxx_Yyy_Zzz_ZImpl_S2ContainerApplicationContext', $classes));
     }
 
     public function testImportInternal(){
@@ -134,6 +184,20 @@ class S2ContainerApplicationContextTest extends PHPUnit2_Framework_TestCase {
         $container = S2ContainerApplicationContext::create();
         $this->assertTrue($container instanceof S2Container);
         $this->assertTrue($container->getComponentDefSize() == 1);
+
+        S2ContainerApplicationContext::$CLASSES = array();
+        S2ContainerApplicationContext::setIncludePattern();
+        S2ContainerApplicationContext::setExcludePattern();
+        S2ContainerApplicationContext::import($this->sampleDir . '/sample', true);
+        $container = S2ContainerApplicationContext::create();
+        $this->assertTrue($container instanceof S2Container);
+        $this->assertTrue($container->hasComponentDef('Foo_S2ContainerApplicationContext'));
+        $cd = $container->getComponentDef('Foo_S2ContainerApplicationContext');
+        $c = $cd->getMetaDefSize();
+        $this->assertEquals($c, 3);
+        $this->assertEquals($cd->getMetaDef('name')->getValue(), 'xyz');
+        $this->assertEquals($cd->getMetaDef('year')->getValue(), 2007);
+        $this->assertEquals($cd->getMetaDef('add')->getValue(), 5);
     }
 
     public function testCreateComponentDef(){
@@ -222,6 +286,26 @@ class S2ContainerApplicationContextTest extends PHPUnit2_Framework_TestCase {
         S2ContainerApplicationContext::setExcludePattern('/B/');
         $filtered = S2ContainerApplicationContext::filter($items);
         $this->assertEquals(array('A', 'C'), $filtered);
+    }
+
+    public function testEnvFilter(){
+        $items = array('A', 'B', 'C');
+        $filtered = S2ContainerApplicationContext::envFilter($items);
+        $this->assertEquals($items, $filtered);
+        
+        if (!defined('S2CONTAINER_PHP5_ENV')) {define('S2CONTAINER_PHP5_ENV', 'test');}
+        $items = array('TestA', 'A', 'B', 'C');
+        $filtered = S2ContainerApplicationContext::envFilter($items);
+        $this->assertEquals(array('TestA', 'B', 'C'), $filtered);
+
+        S2ContainerApplicationContext::setEnvPrefix('mock');
+        $items = array('TestA', 'A', 'MockB', 'B', 'C');
+        $filtered = S2ContainerApplicationContext::envFilter($items);
+        $this->assertEquals(array('TestA', 'A', 'MockB', 'C'), $filtered);
+
+        S2ContainerApplicationContext::setFilterByEnv(false);
+        $filtered = S2ContainerApplicationContext::envFilter($items);
+        $this->assertEquals(array('TestA', 'A', 'MockB', 'B', 'C'), $filtered);
     }
 
     public function setUp(){

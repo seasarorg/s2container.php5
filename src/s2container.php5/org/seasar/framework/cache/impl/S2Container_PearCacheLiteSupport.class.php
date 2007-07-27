@@ -102,6 +102,9 @@ class S2Container_PearCacheLiteSupport implements S2Container_CacheSupport
                 $this->containerOptions['cacheDir'] = 
                     S2Container_StringUtil::expandPath($this->containerOptions['cacheDir']);
             }
+            if (isset($this->containerOptions['caching'])) {
+                $this->containerOptions['caching'] = strtolower($this->containerOptions['caching']) === 'true' ? true : false;
+            }
             require_once('Cache/Lite.php');
             $this->cacheLite4Container = new Cache_Lite($this->containerOptions);
         }
@@ -110,6 +113,9 @@ class S2Container_PearCacheLiteSupport implements S2Container_CacheSupport
             if (isset($this->aopProxyOptions['cacheDir'])) {
                 $this->aopProxyOptions['cacheDir'] = 
                     S2Container_StringUtil::expandPath($this->aopProxyOptions['cacheDir']);
+            }
+            if (isset($this->aopProxyOptions['caching'])) {
+                $this->aopProxyOptions['caching'] = strtolower($this->aopProxyOptions['caching']) === 'true' ? true : false;
             }
             require_once('Cache/Lite.php');
             $this->cacheLite4AopProxy = new Cache_Lite($this->aopProxyOptions);
