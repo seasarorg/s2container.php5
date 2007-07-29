@@ -79,11 +79,11 @@ class S2Container_AutoPropertyAssemblerTest
         $container->register('B_S2Container_AutoPropertyAssembler','b');
 
         $a = $container->getComponent('a');
-        if (defined('S2CONTAINER_PHP5_PERMIT_CLASS_INJECTION') and
-            S2CONTAINER_PHP5_PERMIT_CLASS_INJECTION === true){
-            $this->assertType('B_S2Container_AutoPropertyAssembler',$a->getB());
-        } else {
+        if (defined('S2CONTAINER_PHP5_AUTO_DI_INTERFACE') and
+            S2CONTAINER_PHP5_AUTO_DI_INTERFACE === true){
             $this->assertEquals(1,$a->getB());
+        } else {
+            $this->assertType('B_S2Container_AutoPropertyAssembler',$a->getB());
         }
     }
 }

@@ -136,11 +136,11 @@ class S2Container_DefaultInitMethodAssemblerTest
         $cd->addInitMethodDef($im);
 
         $e = $container->getComponent('e');
-        if (defined('S2CONTAINER_PHP5_PERMIT_CLASS_INJECTION') and
-            S2CONTAINER_PHP5_PERMIT_CLASS_INJECTION === true){
-            $this->assertType('F_S2Container_DefaultInitMethodAssembler',$e->getF());
-        } else {
+        if (defined('S2CONTAINER_PHP5_AUTO_DI_INTERFACE') and
+            S2CONTAINER_PHP5_AUTO_DI_INTERFACE === true){
             $this->assertEquals(null,$e->getF());
+        } else {
+            $this->assertType('F_S2Container_DefaultInitMethodAssembler',$e->getF());
         }
     }
 }

@@ -58,11 +58,11 @@ class S2Container_AutoBindingUtilTest
 
     function testIsSuitable() {
         $this->assertTrue(S2Container_AutoBindingUtil::isSuitable(new ReflectionClass('IA_S2Container_AutoBindingUtil')));
-        if (defined('S2CONTAINER_PHP5_PERMIT_CLASS_INJECTION') and
-            S2CONTAINER_PHP5_PERMIT_CLASS_INJECTION === true){
-            $this->assertTrue(S2Container_AutoBindingUtil::isSuitable(new ReflectionClass('A_S2Container_AutoBindingUtil')));
-        } else {
+        if (defined('S2CONTAINER_PHP5_AUTO_DI_INTERFACE') and
+            S2CONTAINER_PHP5_AUTO_DI_INTERFACE === true){
             $this->assertFalse(S2Container_AutoBindingUtil::isSuitable(new ReflectionClass('A_S2Container_AutoBindingUtil')));
+        } else {
+            $this->assertTrue(S2Container_AutoBindingUtil::isSuitable(new ReflectionClass('A_S2Container_AutoBindingUtil')));
         }
         $res = array(new ReflectionClass('IA_S2Container_AutoBindingUtil'),
                       new ReflectionClass('IB_S2Container_AutoBindingUtil'));
@@ -71,11 +71,11 @@ class S2Container_AutoBindingUtilTest
         $res = array(new ReflectionClass('A_S2Container_AutoBindingUtil'),
                       new ReflectionClass('IB_S2Container_AutoBindingUtil'));
 
-        if (defined('S2CONTAINER_PHP5_PERMIT_CLASS_INJECTION') and
-            S2CONTAINER_PHP5_PERMIT_CLASS_INJECTION === true){
-            $this->assertTrue(S2Container_AutoBindingUtil::isSuitable($res));
-        } else {
+        if (defined('S2CONTAINER_PHP5_AUTO_DI_INTERFACE') and
+            S2CONTAINER_PHP5_AUTO_DI_INTERFACE === true){
             $this->assertFalse(S2Container_AutoBindingUtil::isSuitable($res));
+        } else {
+            $this->assertTrue(S2Container_AutoBindingUtil::isSuitable($res));
         }
     }
 }
