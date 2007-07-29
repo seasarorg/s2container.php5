@@ -49,12 +49,12 @@ final class S2Container_AutoBindingUtil
             }
             return true;
         } else if ($classes instanceof ReflectionClass) {
-            if (defined('S2CONTAINER_PHP5_PERMIT_CLASS_INJECTION') and
-                S2CONTAINER_PHP5_PERMIT_CLASS_INJECTION === true){
-                return true;
-            }
-
-            if ($classes->isInterface()) {
+            if (defined('S2CONTAINER_PHP5_AUTO_DI_INTERFACE') and
+                S2CONTAINER_PHP5_AUTO_DI_INTERFACE === true){
+                if ($classes->isInterface()) {
+                    return true;
+                }
+            } else {
                 return true;
             }
         }
