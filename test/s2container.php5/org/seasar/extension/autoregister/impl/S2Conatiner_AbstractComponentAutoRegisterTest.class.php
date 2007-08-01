@@ -62,7 +62,7 @@ class S2Conatiner_AbstractComponentAutoRegisterTest
         $cd = $register->findComponentDef('a');
         $cd->init();
         $a = $cd->getComponent();
-        $this->assertType('S2Container_DefaultAopProxy',$a);
+        $this->assertType('A_S2Container_AbstractComponentAutoRegister_EnhancedByS2AOP',$a);
         $this->assertEquals($a->testTrace(2,3),5);
         $this->assertEquals($a->getData(),1000);
     }

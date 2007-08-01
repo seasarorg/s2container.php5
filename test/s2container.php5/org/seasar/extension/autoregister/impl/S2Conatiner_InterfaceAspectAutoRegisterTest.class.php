@@ -58,7 +58,7 @@ class S2Conatiner_InterfaceAspectAutoRegisterTest
         $container->init();
         $a = $container->getComponent('a');
         $a->test();
-        $this->assertType('A_S2Container_InterfaceAspectAutoRegisterEnhancedByS2AOP',$a);
+        $this->assertType('A_S2Container_InterfaceAspectAutoRegister_EnhancedByS2AOP',$a);
 
         $b = $container->getComponent('b');
         $this->assertType('B_S2Container_InterfaceAspectAutoRegister',$b);

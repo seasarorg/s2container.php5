@@ -58,7 +58,7 @@ class S2Conatiner_AspectAutoRegisterTest
         $container->init();
         $a = $container->getComponent('a');
         $a->test();
-        $this->assertType('S2Container_DefaultAopProxy',$a);
+        $this->assertType('A_S2Container_AspectAutoRegister_EnhancedByS2AOP',$a);
 
         $b = $container->getComponent('b');
         $this->assertType('B_S2Container_AspectAutoRegister',$b);
@@ -67,8 +67,8 @@ class S2Conatiner_AspectAutoRegisterTest
         $this->assertType('C_S2Container_A_spectAutoRegister',$c);
 
         $d = $container->getComponent('d');
-        $this->assertType('S2Container_DefaultAopProxy',$d);
-    }    
+        $this->assertType('D_S2Container_AspectAutoRegister_EnhancedByS2AOP',$d);
+    }
 }
 
 class A_S2Container_AspectAutoRegister {

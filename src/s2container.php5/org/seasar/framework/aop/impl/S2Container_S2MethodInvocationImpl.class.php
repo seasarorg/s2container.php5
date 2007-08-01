@@ -52,25 +52,35 @@ class S2Container_S2MethodInvocationImpl
      */    
     function __construct($target,
                          $targetClass,
-                         $concreteClass,
                          $method,
-                         $concreteMethod,
                          $methodArgs,
                          $interceptors,
-                         $parameters = null)
+                         $parameters = null,
+                         $concreteClass = null,
+                         $concreteMethod = null)
     {
-            
         $this->target = $target;
         $this->targetClass = $targetClass;
-        $this->concreteClass = $concreteClass;
         $this->method = $method;
-        $this->concreteMethod = $concreteMethod;
         $this->methodArgs = $methodArgs;
         $this->interceptors = $interceptors;
+
         if (is_array($parameters)) {
             $this->parameters_ = $parameters;
         } else {
             $this->parameters_ = array();
+        }
+        
+        if ($concreteClass == null) {
+            $this->concreteClass = $targetClass;
+        } else {
+            $this->concreteClass = $concreteClass;
+        }
+        
+        if ($concreteMethod == null) {
+            $this->concreteMethod = $method;
+        } else {
+            $this->concreteMethod = $concreteMethod;
         }
     }
 

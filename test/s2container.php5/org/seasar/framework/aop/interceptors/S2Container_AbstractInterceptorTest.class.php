@@ -79,6 +79,8 @@ class Date_S2Container_AbstractInterceptor {
     }
 }
 
+interface IG_S2Container_AbstractInterceptor{}
+
 class I_S2Container_AbstractInterceptor {
 
     private $result = -1;
@@ -95,7 +97,7 @@ class I_S2Container_AbstractInterceptor {
         $this->result = $a+$b;
     }
 
-    function culc3(IG $d){
+    function culc3(IG_S2Container_AbstractInterceptor $d){
         if($d instanceof D){
             $this->result = 4;
         }else{return -1;}

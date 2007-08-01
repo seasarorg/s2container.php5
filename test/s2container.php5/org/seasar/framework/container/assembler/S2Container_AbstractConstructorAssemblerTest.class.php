@@ -57,7 +57,7 @@ class S2Container_AbstractConstructorAssemblerTest extends PHPUnit2_Framework_Te
         $asm = new Test_S2Container_AbstractConstructorAssembler($cd);
 
         $a = $asm->assembleDefaultTest();
-        $this->assertTrue($a instanceof A_S2Container_AbstractConstructorAssemblerEnhancedByS2AOP);
+        $this->assertTrue($a instanceof A_S2Container_AbstractConstructorAssembler_EnhancedByS2AOP);
     }
 
 }

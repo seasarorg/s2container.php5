@@ -148,6 +148,7 @@ class S2Container_AopConcreteClassGenerator
             if ($methodRef->isAbstract()) {
                 $abstractMethods[] = $methodRef->getName();
             }
+
             $srcLine .= self::getMethodSrc($targetClass, $methodRef, $methodDef);
             $srcLine .= PHP_EOL;
         }
@@ -179,7 +180,7 @@ class S2Container_AopConcreteClassGenerator
         $methodContent = '    private function __invokeMethodInvocationProceed_EnhancedByS2AOP() {
         $args = func_get_args();
         $methodName = array_pop($args);
-        $methodInvocation = new S2Container_S2MethodInvocationImpl($this, $this->clazz_EnhancedByS2AOP, $this->concreteClazz_EnhancedByS2AOP, $this->clazz_EnhancedByS2AOP->getMethod($methodName), $this->concreteClazz_EnhancedByS2AOP->getMethod($methodName . \'_EnhancedByS2AOP\'), $args, $this->methodInterceptorsMap_EnhancedByS2AOP[$methodName], $this->parameters_EnhancedByS2AOP);
+        $methodInvocation = new S2Container_S2MethodInvocationImpl($this, $this->clazz_EnhancedByS2AOP, $this->clazz_EnhancedByS2AOP->getMethod($methodName), $args, $this->methodInterceptorsMap_EnhancedByS2AOP[$methodName], $this->parameters_EnhancedByS2AOP, $this->concreteClazz_EnhancedByS2AOP, $this->concreteClazz_EnhancedByS2AOP->getMethod($methodName . \'_EnhancedByS2AOP\'));
         return $methodInvocation->proceed();
     }';
         return $methodContent . PHP_EOL;
@@ -204,7 +205,6 @@ class S2Container_AopConcreteClassGenerator
             $msg = "target class has [{$targetClass->getName()}::$parentMethodName] method. cannot aspect.";
             throw new S2Container_S2RuntimeException('ESSR0017',array($msg));
         }
-
         $parentMethodDef  = preg_replace("/{$refMethod->getName()}/", $parentMethodName, $methodDef, 1) . PHP_EOL;
         $parentMethodContent ='        return $this->__invokeParentMethod_EnhancedByS2AOP(' . $args . ');' . PHP_EOL;
         $methodContent = '    ' . $parentMethodDef . $parentMethodContent . '    }' . PHP_EOL;

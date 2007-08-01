@@ -165,7 +165,7 @@ class S2Conatiner_FileSystemComponentAutoRegisterTest
         $register->processClass($classFilePath,
                             'D_S2Container_FileSystemComponentAutoRegister');
         $a = $register->getContainer()->getComponent('a');
-        $this->assertType('S2Container_DefaultAopProxy',$a);
+        $this->assertType('D_S2Container_FileSystemComponentAutoRegister_EnhancedByS2AOP',$a);
         $cd = $register->getContainer()->findComponentDefs('a');
         $this->assertEquals(count($cd),1);
         

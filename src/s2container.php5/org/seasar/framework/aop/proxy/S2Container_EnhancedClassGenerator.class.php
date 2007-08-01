@@ -288,14 +288,14 @@ class S2Container_EnhancedClassGenerator
         }
         
         $support = S2Container_CacheSupportFactory::create();
-        if (!$support->isAopProxyCaching($this->targetClass->getFileName())) {
+        if (!$support->isAopProxyCaching($this->targetClass->getFileName() . $this->enhancedClassName)) {
             S2Container_S2Logger::getLogger(__CLASS__)->
                     debug("set caching off.", __METHOD__);
             $this->evalInternal($this->getevaluateSource());
             return $this->enhancedClassName;
         }
         
-        if ($srcLine = $support->loadAopProxyCache($this->targetClass->getFileName())) {
+        if ($srcLine = $support->loadAopProxyCache($this->targetClass->getFileName() . $this->enhancedClassName)) {
             S2Container_S2Logger::getLogger(__CLASS__)->
                     debug("cached aop proxy found.", __METHOD__);
             $this->evalInternal($srcLine);

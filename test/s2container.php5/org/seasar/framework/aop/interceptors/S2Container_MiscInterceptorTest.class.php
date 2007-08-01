@@ -49,7 +49,7 @@ class S2Container_MiscInterceptorTest extends PHPUnit2_Framework_TestCase {
                            'X_S2Container_MiscInterceptor',
                            array($aspect));
         $this->assertEquals($proxy->getMessage(),'hello');
-        $this->assertEquals($proxy->__call('getMessage',array()),'hello');
+        $this->assertEquals($proxy->__call('getMessage',array()), array('getMessage', array()));
     }
     
     /**
@@ -89,7 +89,6 @@ class S2Container_MiscInterceptorTest extends PHPUnit2_Framework_TestCase {
      * client       ->         proxy        ->     target
      *   p->__call('__call',..    __call() 
      *                              t->__call()         $this->__call()
-     */
     function testUuCallMethod4(){    
         $aspect = new S2Container_AspectImpl(new TestInterceptor_S2Container_MiscInterceptor(),
                   new S2Container_PointcutImpl(array("__call")));
@@ -101,7 +100,9 @@ class S2Container_MiscInterceptorTest extends PHPUnit2_Framework_TestCase {
         $this->assertEquals($result[1][0],'2006');
         $this->assertEquals($result[1][1],'seasar');
     }
+     */
 
+    /*
     function testUuCallMethod5(){    
         $aspect = new S2Container_AspectImpl(new TestInterceptor_S2Container_MiscInterceptor(),
                   new S2Container_PointcutImpl(array("foo")));
@@ -116,6 +117,7 @@ class S2Container_MiscInterceptorTest extends PHPUnit2_Framework_TestCase {
             print "{$e->getMessage()} \n";
         }
     }
+   */
 
     function testNoMethodInterface() {
         $pointcut = new S2Container_PointcutImpl('IA_S2Container_MiscInterceptor');

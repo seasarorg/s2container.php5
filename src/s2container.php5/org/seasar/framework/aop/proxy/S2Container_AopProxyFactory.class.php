@@ -42,7 +42,8 @@ final class S2Container_AopProxyFactory
                            $targetClass,
                            $aspects,
                            $interTypes = null,
-                           $parameters = null)
+                           $parameters = null,
+                           $args = null)
     {
         if (!$targetClass instanceof ReflectionClass) {
             if (is_string($targetClass)) {
@@ -61,9 +62,8 @@ final class S2Container_AopProxyFactory
             return $target;
         }
 
-        $methodInterceptorsMap = self::_creatMethodInterceptorsMap($targetClass,
-                                                                  $aspects,
-                                                                  $interTypes);
+        $applicableMethods = self::getApplicableMethods($targetClass);
+        $methodInterceptorsMap = self::creatMethodInterceptorsMap($targetClass, $aspects, $applicableMethods);
 
         if(null !== $interTypes && 0 < count($interTypes)){
             $generator = new S2Container_EnhancedClassGenerator($target,
@@ -77,20 +77,21 @@ final class S2Container_AopProxyFactory
                                       $methodInterceptorsMap,
                                       $parameters);
         }
-        
-        $interfaces = S2Container_ClassUtil::getInterfaces($targetClass); 
-        if (count($interfaces) == 0) {
-            return new S2Container_DefaultAopProxy($target,
-                                                   $targetClass,
-                                                   $methodInterceptorsMap,
-                                                   $parameters);
+
+        if ($targetClass->isFinal()) {
+            S2Container_S2Logger::getLogger(__CLASS__)->info("cannot aspect to final class [{$targetClass->getName()}] ignored.",__METHOD__);
+            return S2Container_ConstructorUtil::newInstance($targetClass, $args);
         }
 
-        $concreteClassName = S2Container_AopProxyGenerator::generate($targetClass);
-        return new $concreteClassName($target,
-                                      $targetClass,
-                                      $methodInterceptorsMap,
-                                      $parameters);
+        $concreteClassName = S2Container_AopConcreteClassGenerator::generate($targetClass, $applicableMethods);
+
+        $ref = new ReflectionClass($concreteClassName);
+        $obj = S2Container_ConstructorUtil::newInstance($ref, $args);
+        $obj->clazz_EnhancedByS2AOP = $targetClass;
+        $obj->concreteClazz_EnhancedByS2AOP = $ref;
+        $obj->methodInterceptorsMap_EnhancedByS2AOP = $methodInterceptorsMap;
+        $obj->parameters_EnhancedByS2AOP = $parameters;
+        return $obj;
     }
 
     /**
@@ -98,36 +99,21 @@ final class S2Container_AopProxyFactory
      * @param array Aspect array
      * @param array InterType array
      */
-    private static function _creatMethodInterceptorsMap($targetClass,
-                                                        $aspects = null,
-                                                        $interTypes = null)
+    private static function creatMethodInterceptorsMap(ReflectionClass $targetClass, $aspects = null, $applicableMethods = array())
     {
-        if (($aspects == null || count($aspects) == 0)
-            && ($interTypes == null || count($interTypes) == 0)) {
-            throw new S2Container_EmptyRuntimeException('aspects and interTypes');
-        }
-
+        $aspectCount = count($aspects);
         $defaultPointcut = new S2Container_PointcutImpl($targetClass);
-        $c = count($aspects);
-        for ($i = 0; $i < $c; ++$i) {
+        for ($i = 0; $i < $aspectCount; ++$i) {
             if ($aspects[$i]->getPointcut() == null) {
                 $aspects[$i]->setPointcut($defaultPointcut);
             }
         }
         
-        $methods = $targetClass->getMethods();
         $methodInterceptorsMap = array();
-        $o = count($methods);
-        for ($i = 0; $i < $o; ++$i) {
-            $method = $methods[$i];
-            if (!self::isApplicableAspect($method)) {
-                continue;
-            }
-        
+        foreach ($applicableMethods as $method) {
             $methodName = $method->getName();
             $interceptorList = array();
-            $p = count($aspects);
-            for ($j = 0; $j < $p; ++$j) {
+            for ($j = 0; $j < $aspectCount; ++$j) {
                 $aspect = $aspects[$j];
                 if ($aspect->getPointcut()->isApplied($methodName)) {
                     $interceptorList[] = $aspect->getMethodInterceptor();
@@ -139,6 +125,27 @@ final class S2Container_AopProxyFactory
             }
         }
         return $methodInterceptorsMap;
+    }
+
+    /**
+     * @param ReflectionMethod
+     */
+    public static function getApplicableMethods(ReflectionClass $targetClass)
+    {
+        $methods = $targetClass->getMethods();
+        $applicableMethods = array();
+        $o = count($methods);
+        for ($i = 0; $i < $o; ++$i) {
+            if (!$methods[$i]->isPublic() or
+                preg_match('/^_/', $methods[$i]->getName()) or
+                $methods[$i]->isStatic() or
+                $methods[$i]->isFinal() or
+                $methods[$i]->isConstructor() ) {
+                    continue;
+            }
+            $applicableMethods[] = $methods[$i];
+        }
+        return $applicableMethods;
     }
 
     /**

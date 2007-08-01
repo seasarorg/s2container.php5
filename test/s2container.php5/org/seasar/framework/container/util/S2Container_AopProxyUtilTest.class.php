@@ -46,7 +46,7 @@ class S2Container_AopProxyUtilTest
         $cd->addAspectDef($aspect1);
         
         $a = S2Container_AopProxyUtil::getProxyObject($cd,array());
-        $this->assertType('A_S2Container_AopProxyUtilEnhancedByS2AOP',$a);
+        $this->assertType('A_S2Container_AopProxyUtil_EnhancedByS2AOP',$a);
     }
 }
 

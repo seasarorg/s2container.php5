@@ -102,11 +102,12 @@ class S2Container_AopProxyFactoryTest extends PHPUnit2_Framework_TestCase {
                                                      array(),
                                                      array());
         }catch(Exception $e){
-            $this->assertType('S2Container_EmptyRuntimeException',$e);
-            print $e->getMessage() . "\n";
+            print $e->getMessage() . "\n";exit;
         }
     }
 }
+
+interface IA_S2Container_AopProxyFactory {}
 
 interface IO_S2Container_AopProxyFactory {
     function om1();
@@ -115,7 +116,7 @@ interface IO_S2Container_AopProxyFactory {
 
 interface IW_S2Container_AopProxyFactory 
     extends IO_S2Container_AopProxyFactory {
-    function wm1($arg1=null,IA &$a);
+    function wm1($arg1=null,IA_S2Container_AopProxyFactory &$a);
     function wm2();
 }
 
@@ -128,7 +129,7 @@ abstract class AW_S2Container_AopProxyFactory implements IW_S2Container_AopProxy
         print __METHOD__ . " called.\n";    
     }
 
-    public function wm1($arg1,IA &$a){
+    public function wm1($arg1,IA_S2Container_AopProxyFactory &$a){
         print __METHOD__ . " called.\n";    
     }
 
