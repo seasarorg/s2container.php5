@@ -28,11 +28,14 @@
 class S2ContainerApplicationContext {
     public  static $CLASSES = array();
     public  static $DICONS  = array();
-    private static $envPrefix   = null;
-    private static $filterByEnv = true;
-    private static $includePattern = array();
-    private static $excludePattern = array();
-    private static $commentCache   = array();
+    public  static $includePattern = array();
+    public  static $excludePattern = array();
+    public  static $autoAspects = array();
+
+    private static $envPrefix    = null;
+    private static $filterByEnv  = true;
+    private static $commentCache = array();
+    private static $readParentAnnotation = false;
 
     const COMPONENT_ANNOTATION = '@S2Component';
     const BINDING_ANNOTATION   = '@S2Binding';
@@ -54,6 +57,7 @@ class S2ContainerApplicationContext {
         self::$DICONS  = array();
         self::$includePattern = array();
         self::$excludePattern = array();
+        self::$autoAspects    = array();
     }
 
     public static function import($path, $subDir = 0, $pear = false) {
@@ -199,6 +203,10 @@ class S2ContainerApplicationContext {
         $classRef = $cd->getComponentClass();
         $methodRefs = $classRef->getMethods();
         foreach ($methodRefs as $methodRef) {
+            if (self::$readParentAnnotation === false and 
+                $methodRef->getDeclaringClass()->getName() !== $classRef->getName()) {
+                continue;
+            }
             if (!$methodRef->isPublic() or 
                 $methodRef->isConstructor() or
                 preg_match('/^_/', $methodRef->getName()) ) {
@@ -221,7 +229,14 @@ class S2ContainerApplicationContext {
         }
 
         if (self::hasAnnotation($cd->getComponentClass(), self::META_ANNOTATION)) {
-            self::setupClassMetaDef($cd, $cd->getComponentClass());
+            self::setupClassMetaDef($cd, $classRef);
+        }
+
+        foreach(self::$autoAspects as $aspectInfo) {
+            if (preg_match($aspectInfo['componentPattern'], $cd->getComponentName()) or
+                preg_match($aspectInfo['componentPattern'], $cd->getComponentClass()->getName())) {
+                self::setupAspectDef($cd, $aspectInfo);
+            }
         }
 
         return $cd;
@@ -240,25 +255,13 @@ class S2ContainerApplicationContext {
         }
     }
 
-    private static function setupClassAspectDef(S2Container_ComponentDef $cd, ReflectionClass $classRef) {
+    private static function setupClassAspectDef(S2Container_ComponentDef $cd, $classRef) {
         $annoInfo = self::getAnnotation($classRef, self::ASPECT_ANNOTATION);
         if (count($annoInfo) === 0) {
             S2Container_S2Logger::getLogger(__CLASS__)->debug("class aspect annotation found. cannot get values.", __METHOD__);
             return;
         }
-        if (isset($annoInfo['interceptor'])) {
-            if (isset($annoInfo['pointcut'])) {
-                $pointcut = new S2Container_PointcutImpl(preg_split('/,/', $annoInfo['pointcut']));
-            } else {
-                $pointcut = new S2Container_PointcutImpl($classRef);
-            }
-            $aspectDef = new S2Container_AspectDefImpl($pointcut);
-            $cd->addAspectDef($aspectDef);
-            $aspectDef->setExpression($annoInfo['interceptor']);
-            S2Container_ChildComponentDefBindingUtil::put($annoInfo['interceptor'], $aspectDef);
-        } else {
-            throw new S2Container_S2RuntimeException('ESSR0017', array("invalid annotaion. interceptor not found. [{$classRef->getName()} @Aspect]"));
-        }
+        self::setupAspectDef($cd, $annoInfo);
     }
 
     private static function setupMethodAspectDef(S2Container_ComponentDef $cd, ReflectionMethod $methodRef) {
@@ -267,15 +270,23 @@ class S2ContainerApplicationContext {
             S2Container_S2Logger::getLogger(__CLASS__)->debug("method aspect annotation found. cannot get values.", __METHOD__);
             return;
         }
+        $annoInfo['pointcut'] = '^' . $methodRef->getName() . '$';
+        self::setupAspectDef($cd, $annoInfo);
+    }
+
+    private static function setupAspectDef(S2Container_ComponentDef $cd, array $annoInfo) {
         if (isset($annoInfo['interceptor'])) {
-            $pointcut = new S2Container_PointcutImpl(array('^' . $methodRef->getName() . '$'));
+            if (isset($annoInfo['pointcut'])) {
+                $pointcut = new S2Container_PointcutImpl(preg_split('/,/', $annoInfo['pointcut']));
+            } else {
+                $pointcut = new S2Container_PointcutImpl($cd->getComponentClass());
+            }
             $aspectDef = new S2Container_AspectDefImpl($pointcut);
             $cd->addAspectDef($aspectDef);
             $aspectDef->setExpression($annoInfo['interceptor']);
             S2Container_ChildComponentDefBindingUtil::put($annoInfo['interceptor'], $aspectDef);
         } else {
-            throw new S2Container_S2RuntimeException('ESSR0017',array(
-                      "invalid annotaion. interceptor not found. [{$methodRef->getDeclaringClass()->getName()}::{$methodRef->getName()} @Aspect]"));
+            throw new S2Container_S2RuntimeException('ESSR0017', array("invalid aspect info. interceptor not found. [{$classRef->getName()} @Aspect]"));
         }
     }
 
@@ -430,6 +441,22 @@ class S2ContainerApplicationContext {
 
     public static function setEnvPrefix($val = null) {
         self::$envPrefix = $val;
+    }
+
+    public static function setReadParentAnnotation($val = true) {
+        self::$readParentAnnotation = $val;
+    }
+
+    public static function registerAspect($componentPattern, $interceptor, $pointcut = null) {
+        if ($pointcut == null) {
+            $aspectInfo = array('componentPattern' => $componentPattern,
+                                'interceptor'      => $interceptor);
+        } else {
+            $aspectInfo = array('componentPattern' => $componentPattern,
+                                'interceptor'      => $interceptor,
+                                'pointcut'         => $pointcut);
+        }
+        self::$autoAspects[] = $aspectInfo;
     }
 }
 ?>

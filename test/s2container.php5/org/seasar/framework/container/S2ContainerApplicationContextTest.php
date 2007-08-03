@@ -293,19 +293,63 @@ class S2ContainerApplicationContextTest extends PHPUnit2_Framework_TestCase {
         $filtered = S2ContainerApplicationContext::envFilter($items);
         $this->assertEquals($items, $filtered);
         
-        if (!defined('S2CONTAINER_PHP5_ENV')) {define('S2CONTAINER_PHP5_ENV', 'test');}
-        $items = array('TestA', 'A', 'B', 'C');
+        if (!defined('S2CONTAINER_PHP5_ENV')) {define('S2CONTAINER_PHP5_ENV', 'mock');}
+        $items = array('MockA', 'A', 'B', 'C');
         $filtered = S2ContainerApplicationContext::envFilter($items);
-        $this->assertEquals(array('TestA', 'B', 'C'), $filtered);
+        $this->assertEquals(array('MockA', 'B', 'C'), $filtered);
 
-        S2ContainerApplicationContext::setEnvPrefix('mock');
+        S2ContainerApplicationContext::setEnvPrefix('test');
         $items = array('TestA', 'A', 'MockB', 'B', 'C');
         $filtered = S2ContainerApplicationContext::envFilter($items);
-        $this->assertEquals(array('TestA', 'A', 'MockB', 'C'), $filtered);
+        $this->assertEquals(array('TestA', 'MockB', 'B', 'C'), $filtered);
 
         S2ContainerApplicationContext::setFilterByEnv(false);
         $filtered = S2ContainerApplicationContext::envFilter($items);
         $this->assertEquals(array('TestA', 'A', 'MockB', 'B', 'C'), $filtered);
+    }
+
+    public function testReadParentAnnotation(){
+        S2ContainerApplicationContext::init();
+        S2ContainerApplicationContext::$CLASSES['AnnoTestD_S2ContainerApplicationContextTest'] = '';
+        $container = S2ContainerApplicationContext::create();
+        $d = $container->getComponent('d');
+        $this->assertType('AnnoTestD_S2ContainerApplicationContextTest', $d);
+
+        S2ContainerApplicationContext::setReadParentAnnotation();
+        $container = S2ContainerApplicationContext::create();
+        $d = $container->getComponent('d');
+        $this->assertType('AnnoTestD_S2ContainerApplicationContextTest_EnhancedByS2AOP', $d);
+        S2ContainerApplicationContext::setReadParentAnnotation(false);
+    }
+
+    public function testRegisterAnnotation(){
+        S2ContainerApplicationContext::init();
+        S2ContainerApplicationContext::$CLASSES['AnnoTestE_S2ContainerApplicationContextTest'] = '';
+        S2ContainerApplicationContext::registerAspect('/AnnoTestE_/', 'new S2Container_TraceInterceptor', 'hoge');
+        $container = S2ContainerApplicationContext::create();
+        $e = $container->getComponent('AnnoTestE_S2ContainerApplicationContextTest');
+        $this->assertType('AnnoTestE_S2ContainerApplicationContextTest_EnhancedByS2AOP', $e);
+
+        S2ContainerApplicationContext::$CLASSES['AnnoTestE_S2ContainerApplicationContextTest'] = '';
+        S2ContainerApplicationContext::$CLASSES['AnnoTestF_S2ContainerApplicationContextTest'] = '';
+        S2ContainerApplicationContext::registerAspect('/AnnoTestE_/', 'new S2Container_TraceInterceptor', 'hoge');
+        $container = S2ContainerApplicationContext::create();
+        $e = $container->getComponent('AnnoTestE_S2ContainerApplicationContextTest');
+        $f = $container->getComponent('annoTestF');
+        $this->assertType('AnnoTestE_S2ContainerApplicationContextTest_EnhancedByS2AOP', $e);
+        $this->assertType('AnnoTestF_S2ContainerApplicationContextTest', $f);
+
+        S2ContainerApplicationContext::init();
+        S2ContainerApplicationContext::$CLASSES['AnnoTestE_S2ContainerApplicationContextTest'] = '';
+        S2ContainerApplicationContext::$CLASSES['AnnoTestF_S2ContainerApplicationContextTest'] = '';
+        S2ContainerApplicationContext::registerAspect('/AnnoTestE_/', 'new S2Container_TraceInterceptor', 'hoge');
+        S2ContainerApplicationContext::registerAspect('/annoTestF/', 'new S2Container_TraceInterceptor');
+        $container = S2ContainerApplicationContext::create();
+        $e = $container->getComponent('AnnoTestE_S2ContainerApplicationContextTest');
+        $f = $container->getComponent('annoTestF');
+        $this->assertType('AnnoTestE_S2ContainerApplicationContextTest_EnhancedByS2AOP', $e);
+        $this->assertType('AnnoTestF_S2ContainerApplicationContextTest_EnhancedByS2AOP', $f);
+        $f->hoge();
     }
 
     public function setUp(){
@@ -343,4 +387,32 @@ class AnnoTestB_S2ContainerApplicationContextTest {
      */
     public static function b(){}
 }
+
+class AnnoTestC_S2ContainerApplicationContextTest {
+    /**
+     * @S2Aspect('interceptor' => 'new S2Container_TraceInterceptor')
+     */
+    public function hoge(){}
+}
+
+/**
+ * @S2Component('name' => 'd')
+ */
+class AnnoTestD_S2ContainerApplicationContextTest extends AnnoTestC_S2ContainerApplicationContextTest{}
+
+class AnnoTestE_S2ContainerApplicationContextTest {
+    public function hoge(){}
+}
+
+interface IAnnoTestF_S2ContainerApplicationContextTest{
+    public function hoge();
+}
+
+/**
+ * @S2Component('name' => 'annoTestF')
+ */
+class AnnoTestF_S2ContainerApplicationContextTest implements IAnnoTestF_S2ContainerApplicationContextTest {
+    public function hoge(){}
+}
+
 ?>
