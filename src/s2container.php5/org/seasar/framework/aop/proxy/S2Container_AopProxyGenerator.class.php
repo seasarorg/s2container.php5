@@ -82,6 +82,22 @@ class S2Container_AopProxyGenerator
         }
         eval($srcLine);
     }
+    
+    /**
+     * <code>$target</code>にしていされたInterfaceが<code>interfaces</code>の
+     * どのサブインタフェースでないことを検証します。
+     * @param array ReflectionClass(Reflected Interface) array
+     * @param ReflectionClass targetReflected Interface
+     * @return boolean 継承されたインタフェースだった場合true
+     */
+    private static function hasNestedInterface(array $interfaces, ReflectionClas $target){
+        foreach($interfaces as $interface){
+            if($interface->isSubClassOf($target)){
+                return true;
+            }
+        }
+        return false;
+    }
 
     /**
      * @param ReflectionClass 
@@ -114,7 +130,7 @@ class S2Container_AopProxyGenerator
                     $repeatInterfaces[] = $method->getDeclaringClass()->getName();
                 }
             }
-            if (!$hasUnApplicableMethod) {
+            if (!$hasUnApplicableMethod && !self::hasNestedInterface($interfaces, $interface)) {
                 $interfaceNames[] = $interface->getName();
             }
         }
