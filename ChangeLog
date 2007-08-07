@@ -1,4 +1,8 @@
-﻿
+﻿2007-08-07 S2Container.PHP5-1.2.0
+
+    * modify: S2Container_AopProxyGenerator
+    継承されたインタフェースによる多重実装をしないように修正
+
 2007-07-09 S2Container.PHP5-1.2.0
 
 	* modify: package org.seasar.framework.aop
