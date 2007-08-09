@@ -78,11 +78,11 @@ class S2ContainerApplicationContext {
             }
             $path = $parentPath . DIRECTORY_SEPARATOR . $entry;
             if (is_dir($path)) {
-                if ($subDir === -1 or 
-                    $subDir > count($pkgs)) {
+                if ($subDir === -1 or $subDir > count($pkgs)) {
                     $pkgs[] = $entry;
                     self::scanDir($path, $subDir, $pear, $pkgs);
                     array_pop($pkgs);
+                    //self::scanDir($path, $subDir, $pear, array_merge($pkgs, array($entry)));
                 }
             } else if(is_file($path)) {
                 self::importInternal($path, $pear, $pkgs);
