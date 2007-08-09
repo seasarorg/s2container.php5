@@ -51,9 +51,8 @@
             <li><a href="#get-component">コンポーネントの取得</a></li>
             <li><a href="#many-component">複数のコンポーネントを扱ってみる</a></li>
             <li><a href="#di">DI ( Dependency Injection ) してみる</a></li>
-            <li><a href="#named-component">コンポーネントに名前を付ける</a></li>
-            <li><a href="#di-with-name">コンポーネントを指定しての DI</a></li>
             <li><a href="#aspect">アスペクトしてみる</a></li>
+            <li><a href="#autoaspect">自動アスペクト</a></li>
             <li><a href="#dicon">DICON ファイルを使用する場合</a></li>
         </ul>
         </font>
@@ -285,7 +284,6 @@ Printer::printOut : Hello World ! with DI
 <a href="DIContainer.html#AppAnnotation">@S2Aspect アノテーション</a>で行います。次のように printOut メソッドにアノテーションを記述します。
 </p>
 
-classes/Printer.class.php
 <p>　　classes/Printer.class.php</p>
 <pre>
 &lt;?php
@@ -316,7 +314,7 @@ END   Printer#printOut(Hello World ! with DI) : null
 
 <br>
 <div class="section">
-<h2 id="h02"><a name="autoaspect">自動アスペクトしてみる</a></h2>
+<h2 id="h02"><a name="autoaspect">自動アスペクト</a></h2>
 <p>
 　<a href="DIContainer.html#AppAutoAspect">S2ContainerApplicationContext クラスの registerAspect メソッドを用いて自動アスペクト</a>を行います。このサンプルは s2container.php5/examples/quickstart/quickstart7 にあります。 <br><br>
 
