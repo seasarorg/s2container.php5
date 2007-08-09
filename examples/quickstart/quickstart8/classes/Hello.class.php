@@ -1,10 +1,8 @@
 <?php
 class Hello {
     private $printer;
-    /**
-     * @S2Binding('console')
-     */
-    public function setPrinter($printer) {
+
+    public function setPrinter(Printer $printer) {
         $this->printer = $printer;
     }
     public function sayHello() {
