@@ -6,7 +6,8 @@ define('LOG4PHP_CONFIGURATION', dirname(__FILE__) . '/log4php.properties');
 require_once(LOG4PHP_DIR . '/LoggerManager.php');
 
 
-S2Container_S2LogFactory::$LOGGER = S2Container_S2LogFactory::LOG4PHP;
+//S2Container_S2LogFactory::$LOGGER = S2Container_S2LogFactory::LOG4PHP;
+S2Container_S2Logger::$LOGGER_FACTORY = 'S2Container_Log4phpLoggerFactory';
 
 $logger = S2Container_S2Logger::getLogger('log4phpClient.php');
 $logger->debug('test debug');
