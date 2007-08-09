@@ -2,10 +2,9 @@
 <!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN" "components21.dtd">
 <components>
     <component class="Hello">
-        <property name="printer">console</property>
+        <property name="printer">Printer</property>
     </component>
-    <component name="console" class="ConsolePrinter">
-        <aspect pointcut="printOut">TimeInterceptor</aspect>
+    <component class="Printer">
+        <aspect pointcut="printOut">new S2Container_TraceInterceptor</aspect>
     </component>
-    <component class="TimeInterceptor"/>
 </components>
