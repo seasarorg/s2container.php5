@@ -51,6 +51,7 @@
                     <li><a href="#AppImport">クラスのインポート</a></li>
                     <li><a href="#AppContainer">S2Container の生成</a></li>
                     <li><a href="#AppComponent">コンポーネントの選択</a></li>
+                    <li><a href="#AppAutoAspect">自動アスペクト</a></li>
                     <li><a href="#AppAnnotation">アノテーション</a></li>
                 </ul>
             </li>
@@ -125,41 +126,13 @@
     <li><a href="php.html">PHP式</a></li>
 </ul>
 
-<h3>リンク</h3>
-<ul>
-    <li><a href="http://www.seasar.org/">Seasar.org</a></li>
-    <li><a href="http://svn.seasar.org/browse/?root=s2container.php5">SVN リポジトリブラウザ</a></li>
-    <li><a href="https://www.seasar.org/svn/s2container.php5/">SVN リポジトリ</a></li>
-    <li><a href="https://www.seasar.org/issues/browse/CONTAINERPHP">Issue Tracker</a></li>
-    <li><a href="http://labs.s2php5.jp/">labs.s2php5.jp</a></li>
-</ul>
-
-<h2>PHP プロジェクト</h2>
-
-<h3>Seasar.PHP</h3>
-
-<ul>
-    <li><a href="http://s2container.php5.seasar.org/">S2Container.PHP5</a></li>
-    <li><a href="http://s2dao.php5.seasar.org/">S2Dao.PHP5</a></li>
-</ul>
-
-<h3>Sandbox.PHP</h3>
-
-<ul>
-    <li><a href="http://s2ana.php5.sandbox.seasar.org/">S2AnA.PHP5</a></li>
-    <li><a href="http://kunit.jp/maple/">Maple.PHP</a></li>
-    <li><a href="http://s2base.php5.sandbox.seasar.org/">S2Base.PHP5</a></li>
-</ul>
-
-
-
 </div><!-- contents_left -->
 
 <div id="contents_center">
 
 <div id="article">
 <div class="section">
-<h2 id="h02"><a name="S2ContainerAppReference">S2ContainerApplicationContext リファレンス</a></h2>
+<h2 id="h02"><a name="S2ContainerAppReference">S2ContainerApplicationContext リファレンス</a> <i>(version 1.2 以降 ) </i></h2>
 <p>
 </p>
 
@@ -168,20 +141,19 @@
 　クラスのインポートは次のメソッドで行います。
 </p>
 <pre>
-S2ContainerApplicationContext::import($path, $subDir = false, $pear = false)
+S2ContainerApplicationContext::import($path, $subDir = 0, $pear = false)
 </pre>
 
 <ul>
 <li>第1引数 : ディレクトリパス</li>
-<li>第2引数 : サブディレクトリ検索を行うかどうかを指定</li>
+<li>第2引数 : サブディレクトリ検索を行う回数を指定</li>
 <li>第3引数 : PEAR パッケージ形式のクラスファイルかどうかを指定</li>
 </ul>
 
 <p>
 　第1引数で指定したディレクトリにあるクラスファイル( .php、.class.php など)、ダイコンファイル( .dicon )をインポートします。インポートではクラス名とクラスファイルのパスを取得します。この情報は autoload 関数でクラス定義が require される際に使用されます。クラス名はクラスファイル名の拡張子を除く部分になります。
 クラスファイル名が S2Container.php や S2Container.class.php の場合、「 S2Container 」がクラス名になります。
-第2引数、第3引数を true と設定した場合、サブディレクトリを検索しPEAR パッケージ形式のクラスファイルとしてインポート
-します。
+第2引数に -1 を指定すると無制限にサブディレクトリ検索を行います。第3引数を true と設定した場合、サブディレクトリを検索しPEAR パッケージ形式のクラスファイルとしてインポートします。
 </p>
 
 <a name="AppContainer"><b><h3>S2Container の生成</h3></b></a>
@@ -220,7 +192,7 @@ S2ContainerApplicationContext::setIncludePattern($pattern = array())
 </ul>
 
 <p>
-　引数の正規表現は preg_match 関数で使用されます。クラス名が「 Bean 」で終わっているクラスを含めたい場合は、引数値は「 /Bean\./ 」となります。
+　引数の正規表現は preg_match 関数で使用されます。クラス名が「 Bean 」で終わっているクラスを含めたい場合は、引数値は「 /Bean$/ 」となります。
 </p>
 
 <p>
@@ -269,6 +241,44 @@ S2ContainerApplicationContext::addEcludePattern($pattern)
 　addExcludePattern メソッドは、現在設定されている Exclude Pattern にパターンを追加します。
 </p>
 
+<b><h4>ENV Filter</h4></b>
+<p>
+　環境設定によりインクルードするコンポーネントを選択します。この機能はデフォルトで有効化されています。この機能を無効化する場合は、次のメソッドで設定できます。
+</p>
+<pre>
+S2ContainerApplicationContext::setFilterByEnv($val = true)
+</pre>
+<ul>
+<li>第1引数 : bool 値</li>
+</ul>
+
+<p>
+　例として、<a href="#constant-def">S2CONTAINER_PHP5_ENV</a> 定数が "mock" と定義されている場合、インポートされたクラスに、Hoge クラスと MockHoge クラスが存在すると、MockHoge クラスのみ選択します。
+</p>
+
+<a name="AppAutoAspect"><b><h3>自動アスペクト</h3></b></a>
+<p>
+　<a href="#AppComponent">コンポーネントの選択</a>でインクルードされたコンポーネントに対して、自動的にアスペクトを適用します。
+</p>
+<pre>
+S2ContainerApplicationContext::registerAspect($componentPattern, $interceptor, $pointcut = null)
+</pre>
+<ul>
+<li>第1引数 : コンポーネント名またはコンポーネントクラス名にパターンマッチする正規表現文字列</li>
+<li>第2引数 : Interceptorコンポーネント名、または Expression
+<li>第3引数 : ポイントカットをカンマ区切りで指定</li>
+</ul>
+
+<p>
+　コンポーネントクラス名が「Dao」で終わっているコンポーネントに、dao.interceptorをアスペクトしたい場合は、次のように設定します。
+</p>
+<pre>
+S2ContainerApplicationContext::registerAspect('/Dao$/', 'dao.interceptor');
+</pre>
+<p>
+　自動アスペクトはコンポーネントに対してのみ適用されます。インクルードされたダイコンファイルに含まれるコンポーネントには適用されません。
+</p>
+
 
 <a name="AppAnnotation"><b><h3>アノテーション</h3></b></a>
 <p>
@@ -276,6 +286,18 @@ S2ContainerApplicationContext::addEcludePattern($pattern)
 アノテーションの形式は、@アノテーション名[()] です。アットマーク(@)で開始します。末尾はスペース、または改行となります。
 アノテーションでは引数を記述することができます。引数の形式は、PHP 配列と同じフォーマットです。
 </p>
+
+<b><h4>親クラスのメソッドアノテーション</h4></b>
+<p>
+　デフォルトでは親クラスのメソッドアノテーションは無効となります。親クラスのメソッドアノテーションを有効とする場合は、次のメソッドで設定できます。
+</p>
+<pre>
+S2ContainerApplicationContext::setReadParentAnnotation($val = true)
+</pre>
+<ul>
+<li>第1引数 : bool 値、trueを設定すると親クラスのメソッドアノテーションが有効となります。</li>
+</ul>
+
 
 <b><h4>@S2Component アノテーション</h4></b>
 <p>
@@ -288,6 +310,7 @@ S2ContainerApplicationContext::addEcludePattern($pattern)
   <li>name : コンポーネント名</li>
   <li>instance : <a href="#InstanceMode">インスタンスモードタイプ</a></li>
   <li>autoBinding : <a href="#AutoBindingMode">バインディングモードタイプ</a></li>
+  <li>available : コンポーネントとして使用するかどうか (boolean default true)</a></li>
   </ul>
 </li>
 <li>注釈ポイント : クラス</li>
@@ -298,7 +321,7 @@ S2ContainerApplicationContext::addEcludePattern($pattern)
    */
  
   /**
-   * @S2Component('name' =&gt; 'hoge', 'instance' =&gt; 'singleton', 'autoBinding' =&gt; 'auto')
+   * @S2Component('name' =&gt; 'hoge', 'instance' =&gt; 'singleton', 'autoBinding' =&gt; 'auto', 'available' =&gt; true)
    */
 </pre>
 </li>
@@ -347,8 +370,8 @@ S2ContainerApplicationContext::addEcludePattern($pattern)
 <li>サンプル<br>
 <pre>
   /**
-   * @S2Aspect('interceptor' => 'traceInterceptor',
-   *           'pointcut'    => '.+Action')
+   * @S2Aspect('interceptor' =&gt; 'traceInterceptor',
+   *           'pointcut'    =&gt; '.+Action')
    */
   class CdController {
       public function indexAction(){
@@ -358,9 +381,37 @@ S2ContainerApplicationContext::addEcludePattern($pattern)
 
   class DvdController {
       /**
-       * @S2Aspect('interceptor' => 'new S2Container_TraceInterceptor()')
+       * @S2Aspect('interceptor' =&gt; 'new S2Container_TraceInterceptor()')
        */
       public funcion indexAction() {
+          ・・・
+      }
+  }
+</pre>
+</li>
+</ul>
+
+<b><h4>@S2Meta アノテーション</h4></b>
+<p>
+　<a href="#Meta">メタ情報</a>を設定します。
+</p>
+<ul>
+<li>アノテーションの表記 : @S2Meta</li>
+<li>引数<br>
+  <ul>
+  <li>name : メタ情報の識別名</li>
+  <li>value : 値、または Expression</li>
+  </ul>
+</li>
+<li>注釈ポイント : クラス</li>
+<li>サンプル<br>
+<pre>
+  /**
+   * @S2Meta('nameA' =&gt; 'valueA',
+   *         'nameB' =&gt; 'valueB')
+   */
+  class CdController {
+      public function indexAction(){
           ・・・
       }
   }
@@ -1156,6 +1207,13 @@ PropertyDefで定義されている次のメソッドで取得することが出
 S2CONTAINER_PHP5_ENV が test と定義されていて、foo.dicon と foo_test.diconが存在した場合、foo_test.diconが
 使用されます。<br>
 　 - デフォルト値 ： 未定義
+</p>
+
+<h3><a name="const-env">S2CONTAINER_PHP5_AUTO_DI_INTERFACE</a> <i>( version 1.2 以降 ) </i></h3>
+<p>
+　自動インジェクションにおいて、インターフェイスでタイプヒンティングされている場合にのみDIを許可するかどうかを bool値 で指定します。
+<br>
+　 - デフォルト値 ： 未定義 (false)
 </p>
 
 </div>

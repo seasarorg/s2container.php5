@@ -49,7 +49,13 @@
         <font size="-2">
         <ul>
             <li><a href="#diconInclude">diconファイルのincludeパス設定</a></li>
-            <li><a href="#log">ログ設定</a></li>
+            <li><a href="#log">ログ設定</a>
+                <ul>
+                    <li><a href="#simple-log">SimpleLogger</a></li>
+                    <li><a href="#zend-log">Zend_Log を使用する</a></li>
+                    <li><a href="#log4php-log">log4php を使用する</a></li>
+                </ul>
+            </li>
             <li><a href="#uuset">__set()でのセッター・インジェクション</a></li>
             <li><a href="#dba">データベース接続</a>
                 <ul>
@@ -77,10 +83,9 @@
             </li>
             <li><a href="#cache-support">S2Container_CacheSupport</a>
                 <ul>
-                    <li><a href="#cache-lite-support">S2Container_PearCache LiteSupport</a></li>
-                    <li><a href="#cache-mem-support">S2Container_Memcache Support</a></li>
-                    <li><a href="#cache-factory">S2ContainerCache Factory</a></li>
-                    <li><a href="#cache-file">S2ContainerFile CacheFactory</a><i> (deprecated)</i></li>
+                    <li><a href="#cache-lite-support">S2Container_PearCacheLiteSupport</a></li>
+                    <li><a href="#cache-mem-support">S2Container_MemcacheSupport</a></li>
+                    <li><a href="#zend-cache-support">S2Container_ZendCacheSupport</a></li>
                 </ul>
             </li>
             <li><a href="#autoRegister">自動登録</a>
@@ -111,33 +116,6 @@
     <li><a href="php.html">PHP式</a></li>
 </ul>
 
-<h3>リンク</h3>
-<ul>
-    <li><a href="http://www.seasar.org/">Seasar.org</a></li>
-    <li><a href="http://svn.seasar.org/browse/?root=s2container.php5">SVN リポジトリブラウザ</a></li>
-    <li><a href="https://www.seasar.org/svn/s2container.php5/">SVN リポジトリ</a></li>
-    <li><a href="https://www.seasar.org/issues/browse/CONTAINERPHP">Issue Tracker</a></li>
-    <li><a href="http://labs.s2php5.jp/">labs.s2php5.jp</a></li>
-</ul>
-
-<h2>PHP プロジェクト</h2>
-
-<h3>Seasar.PHP</h3>
-
-<ul>
-    <li><a href="http://s2container.php5.seasar.org/">S2Container.PHP5</a></li>
-    <li><a href="http://s2dao.php5.seasar.org/">S2Dao.PHP5</a></li>
-</ul>
-
-<h3>Sandbox.PHP</h3>
-
-<ul>
-    <li><a href="http://s2ana.php5.sandbox.seasar.org/">S2AnA.PHP5</a></li>
-    <li><a href="http://kunit.jp/maple/">Maple.PHP</a></li>
-    <li><a href="http://s2base.php5.sandbox.seasar.org/">S2Base.PHP5</a></li>
-</ul>
-
-
 
 </div><!-- contents_left -->
 
@@ -164,7 +142,7 @@ define(DICON_DIR,'/path/to/dir');   //定義済みとする
 <div class="section">
 <h2 id="h02"><a name="log">ログ設定</a></h2>
 
-<h3>SimpleLogger</h3>
+<h3><a name="simple-log">SimpleLogger</a></h3>
 <p>
 　S2Logger クラスの getLogger メソッドは、デフォルトでは SimpleLogger のインスタンスを返します。
 SimpleLogger はデフォルトで標準出力にログを表示します。ログレベルは DEBUG、INFO、WARN、ERROR、FATAL の 5 つです。
@@ -176,22 +154,53 @@ require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php');
 
 define('S2CONTAINER_PHP5_LOG_LEVEL',S2Container_SimpleLogger::DEBUG);
 $logger = S2Container_S2Logger::getLogger('simpleLogClient.php');
-$logger->debug('test debug');
-$logger->info ('test info ');
-$logger->warn ('test warn ');
-$logger->error('test error');
-$logger->fatal('test fatal');
+$logger-&gt;debug('test debug');
+$logger-&gt;info ('test info ');
+$logger-&gt;warn ('test warn ');
+$logger-&gt;error('test error');
+$logger-&gt;fatal('test fatal');
 ?&gt;
 </pre>
 
 S2CONTAINER_PHP5_SIMPLE_LOG_FILE 定数にログファイルを設定することで、ログをファイルに出力することができます。<br>
 このサンプルは examples/misc/logger/simpleLogClient.php にあります。
 
+<h3><a name="zend-log">Zend_Log を使用する</a> <i>( version 1.2 以降 ) </i></h3>
+<p>
+　<a href="http://framework.zend.com/manual/ja/zend.log.html">Zend_Log</a> を使用する場合は、S2Logger クラスの LOGGER_FACTORY 変数に S2Container_ZendLoggerFactory を設定します。
+</p>
 
-<h3>log4phpを使用する</h3>
+<pre>&lt;?php
+require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php'); 
+require_once('Zend/Log.php');
+require_once('Zend/Log/Writer/Stream.php');
+require_once('Zend/Log/Filter/Priority.php');
+
+define('S2CONTAINER_PHP5_LOG_LEVEL', Zend_Log::DEBUG);
+S2Container_S2Logger::$LOGGER_FACTORY = 'S2Container_ZendLoggerFactory';
+S2Container_S2Logger::setLoggerFactory(null);
+$logger = S2Container_S2Logger::getLogger('s2base_zf');
+$logger-&gt;addWriter(new Zend_Log_Writer_Stream(dirname(__FILE__) . '/zendLog.log'));
+$logger-&gt;addFilter(new Zend_Log_Filter_Priority(S2CONTAINER_PHP5_LOG_LEVEL));
+
+$logger-&gt;debug ('test debug');
+$logger-&gt;info  ('test info ');
+$logger-&gt;notice('test notice ');
+$logger-&gt;warn  ('test warn ');
+$logger-&gt;err   ('test err ');
+$logger-&gt;crit  ('test fatal');
+$logger-&gt;alert ('test alert ');
+$logger-&gt;emerg ('test emerg ');
+?&gt;
+</pre>
+このサンプルは examples/misc/logger/zendLogClient.php にあります。
+<br>
+
+<h3><a name="log4php-log">log4phpを使用する</a></h3>
 
 <p>
-　<a href="http://logging.apache.org/log4php/">log4php</a> を使用する場合は、S2LogFactory の LOGGER 変数を設定します。
+　<a href="http://logging.apache.org/log4php/">log4php</a> を使用する場合は、S2Logger の
+LOGGER_FACTORY 変数に S2Container_Log4phpLoggerFactory を設定します。
 ログレベルや出力形式等の設定は、log4php.properties ファイルで行います。
 </p>
 
@@ -201,14 +210,14 @@ define('LOG4PHP_DIR', dirname(__FILE__) . '/log4php-***/src/log4php');
 define('LOG4PHP_CONFIGURATION', dirname(__FILE__) . '/log4php.properties');
 require_once(LOG4PHP_DIR . '/LoggerManager.php');
 
-S2Container_S2LogFactory::$LOGGER = S2Container_S2LogFactory::LOG4PHP;
+S2Container_S2Logger::$LOGGER_FACTORY = 'S2Container_Log4phpLoggerFactory';
 
 $logger = S2Container_S2Logger::getLogger('log4phpClient.php');
-$logger->debug('test debug');
-$logger->info ('test info ');
-$logger->warn ('test warn ');
-$logger->error('test error');
-$logger->fatal('test fatal');
+$logger-&gt;debug('test debug');
+$logger-&gt;info ('test info ');
+$logger-&gt;warn ('test warn ');
+$logger-&gt;error('test error');
+$logger-&gt;fatal('test fatal');
 ?&gt;
 </pre>
 このサンプルは examples/misc/logger/log4phpClient.php にあります。
@@ -768,16 +777,8 @@ S2ContainerClassLoader::import($classes);
 </center>
 
 <p>
-　S2Container_CacheSupport では、S2ContainerFactory で生成される S2Container インスタンスの serialize データと、S2AOP で生成されるの AopProxy コードをキャッシュします。S2Container_CacheSupportの実装クラスとして、S2Container_PearCacheLiteSupport と S2Container_MemcacheSupport があります。どの CacheSupport クラスを使用するかは、S2CONTAINER_PHP5_CACHE_SUPPORT_CLASS 定数で指定します。
-デフォルトは、S2Container_PearCacheLiteSupport です。MemcacheSupport 使用する場合は次のように定義します。
-</p>
-
-<pre>
-&lt;?php
-    require_once('S2Container/S2Container.php');
-    define('S2CONTAINER_PHP5_CACHE_SUPPORT_CLASS', 'S2Container_MemcacheSupport');
-?&gt;
-</pre>
+　S2Container_CacheSupport では、S2ContainerFactory で生成される S2Container インスタンスの serialize データと、S2AOP で生成されるの AopProxy コードをキャッシュします。S2Container_CacheSupportの実装クラスとして、S2Container_PearCacheLiteSupport、S2Container_MemcacheSupport、S2Container_ZendCacheSupport があります。どの CacheSupport クラスを使用するかは、S2CONTAINER_PHP5_CACHE_SUPPORT_CLASS 定数で指定します。
+デフォルトは、S2Container_PearCacheLiteSupport です。
 
 <h3><a name="cache-lite-support">S2Container_PearCacheLiteSupport</a></h3>
 <p>
@@ -823,6 +824,16 @@ lifeTime = "7200"
 <p>
 　S2Container_MemcacheSupport は、memcachedサーバにキャッシュを保存します。
 S2Container_MemcacheSupport を使用する場合は、<a href="http://jp.php.net/manual/ja/ref.memcache.php">memcache 拡張モジュール</a>を導入しておく必要があります。
+MemcacheSupport 使用する場合は次のように S2CONTAINER_PHP5_CACHE_SUPPORT_CLASS 定数を定義します。
+</p>
+
+<pre>
+&lt;?php
+    require_once('S2Container/S2Container.php');
+    define('S2CONTAINER_PHP5_CACHE_SUPPORT_CLASS', 'S2Container_MemcacheSupport');
+?&gt;
+</pre>
+
 S2Container_MemcacheSupport で設定できるオプションは以下になります。詳細な説明などは<a href="http://jp.php.net/manual/ja/ref.memcache.php">memcache 拡張モジュール</a>の項を参照してください。
 </p>
 
@@ -906,29 +917,52 @@ timeout = "10"
 </pre>
 
 
-<h3><a name="cache-factory">S2ContainerCacheFactory (<font color="pink"><i>deprecated この機能は S2Container.PHP5-1.1.3 で S2ContainerFactory に移動しました。</i></font>)</a></h3>
-<center>
-<table border="1" width="50%">
-<tr><td align="center">警告</td></tr>
-<tr><td>
-この拡張モジュールは<i> 実験的 </i>なものです。この拡張モジュールの動作・関数名・その他ドキュメントに書かれている事項は、将来変更される可能性があります。
-</td></tr>
-</table>
-</center>
-<br>
+<h3><a name="zend-cache-support">S2Container_ZendCacheSupport</a> <i>( version 1.2 以降 ) </i></h3>
+
 <p>
-　S2ContainerCacheFactory は、S2Container_CacheSupport を用いて S2Containerインスタンスをキャッシュします。<br>
-S2ContainerCacheFactory::create() メソッドを用いて S2Container インスタンスを取得します。
+　S2Container_ZendCacheSupport は、<a href="http://framework.zend.com/manual/ja/zend.cache.html">Zend_Cache</a> を使用してキャッシュします。
+Zend_Cache を別途インストールして下さい。S2Container_ZendCacheSupport を有効にするため、S2CONTAINER_PHP5_CACHE_SUPPORT_CLASS 定数と S2CONTAINER_PHP5_ZEND_CACHE_INI 定数を定義します。S2CONTAINER_PHP5_ZEND_CACHE_INI 定数の設定値は 
+Zend_Cache のオプションを指定する <a href="http://framework.zend.com/manual/ja/zend.config.adapters.ini.html">Zend_Config_Ini</a> 形式ファイルへのパスになります。
 </p>
+
 <pre>
 &lt;?php
     require_once('S2Container/S2Container.php');
-    define('S2CONTAINER_PHP5_CACHE_SUPPORT_CLASS', 'S2Container_MemcacheSupport');
-    define('S2CONTAINER_PHP5_MEMCACHE_INI', '/path/to/memcached.ini');
-
-    $container = S2ContainerCacheFactory::create('/path/to/file.dicon');
+    define('S2CONTAINER_PHP5_CACHE_SUPPORT_CLASS', 'S2Container_ZendCacheSupport');
+    define('S2CONTAINER_PHP5_ZEND_CACHE_INI', '/path/to/zend_cache.ini');
 ?&gt;
 </pre>
+
+<p>
+Zend_Cache のオプションを指定する INI 形式ファイルは次の3つのセクションを持ちます。
+</p>
+<ul>
+<li>[default]<br>このセクションで設定した値は、[container] セクションと [aop] セクションのデフォルト値となります。</li>
+<li>[container]<br> S2Container インスタンスのキャッシュについての固有オプションを設定します。</li>
+<li>[aop]<br> S2AOP で生成されるの AopProxy コードのキャッシュについての固有オプションを設定します。</li>
+</ul>
+
+<p>
+各セクションでZend_Cache オプションを、<a href="http://framework.zend.com/manual/ja/zend.cache.frontends.html">フロントエンド</a>、<a href="http://framework.zend.com/manual/ja/zend.cache.backends.html">バックエンド</a>ごとに設定します。<br>
+S2Container_ZendCacheSupport を用いたサンプルは、s2container.php5/examples/extension/cache/zendCacheClient.php にあります。サンプルで使用している オプション設定 INI ファイルは次になります。( zendCache.ini )
+</p>
+<pre>
+[default]
+frontend.name = "Core"
+backend.name = "File"
+backend.cache_dir = "%EXAMPLE_DIR%/extension/cache/var/"   &lt;-- 先頭に%...%で囲むことで定数を埋め込むことができます。
+
+[container : default]
+frontend.caching  = "false" 
+frontend.lifetime = "3600"
+
+[aop : default]
+frontend.caching  = "true" 
+frontend.lifetime = "7200"
+</pre>
+
+<br>
+
 </div>
 
 <div class="section">
