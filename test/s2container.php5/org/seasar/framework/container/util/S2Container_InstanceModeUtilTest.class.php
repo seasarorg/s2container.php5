@@ -26,7 +26,7 @@
  * @author klove
  */
 class S2Container_InstanceModeUtilTest
-    extends PHPUnit2_Framework_TestCase {
+    extends PHPUnit_Framework_TestCase {
 
     public function __construct($name) {
         parent::__construct($name);

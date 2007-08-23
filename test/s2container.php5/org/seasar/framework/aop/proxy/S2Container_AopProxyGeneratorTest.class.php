@@ -25,7 +25,7 @@
  * @package org.seasar.framework.aop.proxy
  * @author klove
  */
-class S2Container_AopProxyGeneratorTest extends PHPUnit2_Framework_TestCase {
+class S2Container_AopProxyGeneratorTest extends PHPUnit_Framework_TestCase {
 
     public function __construct($name) {
         parent::__construct($name);

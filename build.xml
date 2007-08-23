@@ -4,20 +4,20 @@
     <taskdef name="copy2" classname="src.phing.task.CopyFilesToOneDirTask" />
     <taskdef name="gcore" classname="src.phing.task.GenerateCoreFileTask" />
     <taskdef name="pearpkg2" classname="src.phing.task.PearPkg2SupportTask" />
-    <taskdef name="alltest" classname="src.phing.task.PHPUnit2AllTestTask" />
+    <taskdef name="alltest" classname="src.phing.task.PHPUnitAllTestTask" />
 
     <target name="init">
         <property name="project.name" value="${phing.project.name}" />
         <property name="package.name" value="S2Container" />
-        <property name="project.version" value="1.1.3" />
-        <property name="project.state" value="stable" />
+        <property name="project.version" value="1.2.0" />
+        <property name="project.state" value="beta" />
         <property name="project.build.dir" value="${project.basedir}/build" />
         <property name="project.src.dir" value="${project.basedir}/src" />
         <property name="project.pear.uri" value="http://s2container.php5.seasar.org/download/S2Container-${project.version}" />
         <property name="license.file" value="Apache_Software_License_2.0.txt" />
         <property name="release.notes" value="Release ${project.version}" />
         <property name="td" value="" />
-        <property name="tt" value="**/*Test.class.php" />
+        <property name="tt" value="**/*Test*.php" />
         <property name="dd" value="" />
     </target>
 
@@ -114,14 +114,14 @@
         <echo>test directory : test/${project.name}/${td}</echo>
         <echo>test target    : ${tt}</echo>
         <php expression="require_once('test/test.inc.php')"/>
-        <phpunit2 haltonfailure="false" haltonerror="false">
+        <phpunit3 haltonfailure="false" haltonerror="false">
             <formatter type="plain" usefile="false"/>
             <batchtest>
                 <fileset dir="test/${project.name}/${td}">
                     <include name="${tt}"/>
                 </fileset>
             </batchtest>
-        </phpunit2>
+        </phpunit3>
     </target>
     
     <target name="all-test" depends="build">
@@ -133,6 +133,7 @@
                 <exclude name="**/*PDO*/**"/>
                 <exclude name="**/*InterType*/**"/>
                 <exclude name="**/*Memcache*/**"/>
+                <exclude name="**/*Yaml*/**"/>
                 <exclude name="**/S2Container_AbstractPropertyInterTypeTest*"/>
                 <exclude name="**/S2Container_AbstractCacacheSupportTest*"/>
             </fileset>

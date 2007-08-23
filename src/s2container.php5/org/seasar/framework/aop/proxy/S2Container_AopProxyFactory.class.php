@@ -62,10 +62,9 @@ final class S2Container_AopProxyFactory
             return $target;
         }
 
-        $applicableMethods = self::getApplicableMethods($targetClass);
-        $methodInterceptorsMap = self::creatMethodInterceptorsMap($targetClass, $aspects, $applicableMethods);
-
         if(null !== $interTypes && 0 < count($interTypes)){
+            $applicableMethods = self::getApplicableMethods($targetClass);
+            $methodInterceptorsMap = self::creatMethodInterceptorsMap($targetClass, $aspects, $applicableMethods);
             $generator = new S2Container_EnhancedClassGenerator($target,
                                                            $targetClass,
                                                             $parameters);
@@ -83,6 +82,8 @@ final class S2Container_AopProxyFactory
             return S2Container_ConstructorUtil::newInstance($targetClass, $args);
         }
 
+        $applicableMethods = self::getApplicableMethods($targetClass, true);
+        $methodInterceptorsMap = self::creatMethodInterceptorsMap($targetClass, $aspects, $applicableMethods);
         $concreteClassName = S2Container_AopConcreteClassGenerator::generate($targetClass, $applicableMethods);
 
         $ref = new ReflectionClass($concreteClassName);
@@ -130,12 +131,19 @@ final class S2Container_AopProxyFactory
     /**
      * @param ReflectionMethod
      */
-    public static function getApplicableMethods(ReflectionClass $targetClass)
+    public static function getApplicableMethods(ReflectionClass $targetClass, $checkAbstract = false)
     {
         $methods = $targetClass->getMethods();
         $applicableMethods = array();
         $o = count($methods);
         for ($i = 0; $i < $o; ++$i) {
+            if ($checkAbstract and
+                $targetClass->isAbstract() and
+                $methods[$i]->isAbstract() and
+                $methods[$i]->isProtected()) {
+                throw new S2Container_S2RuntimeException('ESSR1013',
+                       array($targetClass->getName(), $methods[$i]->getName()));
+            }
             if (!$methods[$i]->isPublic() or
                 preg_match('/^_/', $methods[$i]->getName()) or
                 $methods[$i]->isStatic() or

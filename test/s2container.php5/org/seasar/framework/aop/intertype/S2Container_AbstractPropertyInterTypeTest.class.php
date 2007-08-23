@@ -25,7 +25,7 @@
  * @package org.seasar.framework.aop.intertype
  * @author nowel
  */
-abstract class S2Container_AbstractPropertyInterTypeTest extends PHPUnit2_Framework_TestCase {
+abstract class S2Container_AbstractPropertyInterTypeTest extends PHPUnit_Framework_TestCase {
 
     private $target;
     private $targetClass;

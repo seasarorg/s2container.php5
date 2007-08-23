@@ -25,7 +25,7 @@
  * @package org.seasar.framework.aop.intertype
  * @author nowel
  */
-class S2Container_AbstractInterTypeTest extends PHPUnit2_Framework_TestCase {
+class S2Container_AbstractInterTypeTest extends PHPUnit_Framework_TestCase {
 
     public function __construct($name) {
         parent::__construct($name);

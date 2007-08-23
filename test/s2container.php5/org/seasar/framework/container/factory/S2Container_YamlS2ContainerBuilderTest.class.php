@@ -26,7 +26,7 @@
  * @author nowel
  */
 class S2Container_YamlS2ContainerBuilderTest
-    extends PHPUnit2_Framework_TestCase {
+    extends PHPUnit_Framework_TestCase {
 
     private $diconDir;
     public function __construct($name) {

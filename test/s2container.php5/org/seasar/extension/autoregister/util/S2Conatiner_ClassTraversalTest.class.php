@@ -26,7 +26,7 @@
  * @author klove
  */
 class S2Conatiner_ClassTraversalTest
-    extends PHPUnit2_Framework_TestCase {
+    extends PHPUnit_Framework_TestCase {
 
     private static $SAMPLE_DIR;
                                

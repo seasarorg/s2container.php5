@@ -25,7 +25,7 @@
  * @package org.seasar.framework.aop.proxy
  * @author klove
  */
-class S2Container_AopProxyFactoryTest extends PHPUnit2_Framework_TestCase {
+class S2Container_AopProxyFactoryTest extends PHPUnit_Framework_TestCase {
 
     public function __construct($name) {
         parent::__construct($name);
@@ -105,6 +105,18 @@ class S2Container_AopProxyFactoryTest extends PHPUnit2_Framework_TestCase {
             print $e->getMessage() . "\n";exit;
         }
     }
+
+    function testAbstractProtectedMethod() {
+        try{
+            $c = S2Container_AopProxyFactory::create(null,
+                                                     new ReflectionClass('C_S2Container_AopProxyFactory'),
+                                                     array(),
+                                                     array(),
+                                                     array());
+        }catch(Exception $e){
+            print $e->getMessage() . "\n";exit;
+        }
+    }
 }
 
 interface IA_S2Container_AopProxyFactory {}
@@ -144,5 +156,9 @@ class WextendAW_S2Container_AopProxyFactory extends AW_S2Container_AopProxyFacto
     function awm1(){
         print __METHOD__ . " called.\n";    
     }
+}
+
+abstract class C_S2Container_AopProxyFactory {
+    abstract protected function x();
 }
 ?>

@@ -25,7 +25,7 @@
  * @package org.seasar.framework.beans.factory
  * @author klove
  */
-class S2Container_BeanDescFactoryTest extends PHPUnit2_Framework_TestCase {
+class S2Container_BeanDescFactoryTest extends PHPUnit_Framework_TestCase {
 
     public function __construct($name) {
         parent::__construct($name);

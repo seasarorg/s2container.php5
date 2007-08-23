@@ -26,7 +26,7 @@
  * @author nowel
  */
 abstract class S2Container_AbstractCacacheSupportTest
-extends PHPUnit2_Framework_TestCase {
+extends PHPUnit_Framework_TestCase {
     
     protected $path_a = null;
     protected $path_b = null;

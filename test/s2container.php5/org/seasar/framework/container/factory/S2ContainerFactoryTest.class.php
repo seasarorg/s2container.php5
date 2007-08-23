@@ -26,7 +26,7 @@
  * @author klove
  */
 class S2ContainerFactoryTest
-    extends PHPUnit2_Framework_TestCase {
+    extends PHPUnit_Framework_TestCase {
 
     private $diconDir;
     public function __construct($name) {

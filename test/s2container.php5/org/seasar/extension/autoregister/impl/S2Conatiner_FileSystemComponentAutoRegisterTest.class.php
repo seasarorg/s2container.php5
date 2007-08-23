@@ -26,7 +26,7 @@
  * @author klove
  */
 class S2Conatiner_FileSystemComponentAutoRegisterTest
-    extends PHPUnit2_Framework_TestCase {
+    extends PHPUnit_Framework_TestCase {
 
     private static $SAMPLE_DIR;
     private static $SAMPLE2_DIR;

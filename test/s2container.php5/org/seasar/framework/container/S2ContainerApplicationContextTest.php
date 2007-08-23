@@ -29,7 +29,7 @@
  * @package    org.seasar.framework.container
  * @author     klove
  */
-class S2ContainerApplicationContextTest extends PHPUnit2_Framework_TestCase {
+class S2ContainerApplicationContextTest extends PHPUnit_Framework_TestCase {
     public function __construct($name) {
         parent::__construct($name);
     }

@@ -23,6 +23,4 @@ define('S2CONTAINER_PHP5_LOG_LEVEL',S2Container_SimpleLogger::DEBUG);
 
 //define('S2CONTAINER_PHP5_AUTO_DI_INTERFACE', true);
 
-require_once('PHPUnit2/Framework/TestSuite.php');
-require_once('PHPUnit2/Framework/TestCase.php');
 ?>
