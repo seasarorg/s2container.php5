@@ -102,7 +102,7 @@ class S2Container_AopProxyFactoryTest extends PHPUnit_Framework_TestCase {
                                                      array(),
                                                      array());
         }catch(Exception $e){
-            print $e->getMessage() . "\n";exit;
+            print $e->getMessage() . "\n";
         }
     }
 
@@ -113,8 +113,9 @@ class S2Container_AopProxyFactoryTest extends PHPUnit_Framework_TestCase {
                                                      array(),
                                                      array(),
                                                      array());
+            $this->fail();
         }catch(Exception $e){
-            print $e->getMessage() . "\n";exit;
+            print $e->getMessage() . "\n";
         }
     }
 }
