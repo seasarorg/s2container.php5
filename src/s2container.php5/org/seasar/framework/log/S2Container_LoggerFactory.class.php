@@ -25,7 +25,7 @@
  * @package org.seasar.framework.log
  * @author klove
  */
-interface class S2Container_LoggerFactory
+interface S2Container_LoggerFactory
 {
     public static function getInstance($className);
 }
