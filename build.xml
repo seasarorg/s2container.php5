@@ -3,13 +3,12 @@
 
     <taskdef name="copy2" classname="src.phing.task.CopyFilesToOneDirTask" />
     <taskdef name="gcore" classname="src.phing.task.GenerateCoreFileTask" />
-    <taskdef name="pearpkg2" classname="src.phing.task.PearPkg2SupportTask" />
     <taskdef name="alltest" classname="src.phing.task.PHPUnitAllTestTask" />
 
     <target name="init">
         <property name="project.name" value="${phing.project.name}" />
         <property name="package.name" value="S2Container" />
-        <property name="project.version" value="1.2.0" />
+        <property name="project.version" value="1.2.0RC1" />
         <property name="project.state" value="beta" />
         <property name="project.build.dir" value="${project.basedir}/build" />
         <property name="project.src.dir" value="${project.basedir}/src" />
@@ -17,7 +16,7 @@
         <property name="license.file" value="Apache_Software_License_2.0.txt" />
         <property name="release.notes" value="Release ${project.version}" />
         <property name="td" value="" />
-        <property name="tt" value="**/*Test*.php" />
+        <property name="tt" value="**/*Test.class.php" />
         <property name="dd" value="" />
     </target>
 
@@ -51,30 +50,34 @@
               overwrite="true"/>
     </target>
 
-    <target name="pear-pkg-xml" depends="build">
-        <pearpkg name="${package.name}" 
-                 dir="${project.build.dir}/${project.name}" 
-                 destFile="${project.build.dir}/${project.name}/package.xml">
+    <target name="pear-pkg" depends="build">
+        <pearpkg2 name="${package.name}" 
+                  dir="${project.build.dir}/${project.name}">
             <fileset dir="${project.build.dir}/${project.name}">
                 <include name="**/*"/>
             </fileset>
-            <option name="notes">${release.notes}</option>
-            <option name="description">S2Container is a lightweight container which supports DI(Dependency Injection) and AOP(Aspect Oriented Programming). The goal of S2Container.PHP5 project is to port Java Seasar2 to PHP5.</option>
+            <option name="outputdirectory" value="${project.build.dir}/${project.name}"/>
+            <option name="packagefile" value="package2.xml"/>
+            <!-- option name="uri" value="http://s2container.php5.seasar.org/"/ -->
+            <option name="channel" value="pear.php.net"/>
             <option name="summary">S2Container.PHP5, a lightweight container supports DI and AOP.</option>
-            <option name="version" value="${project.version}"/>
-            <option name="state" value="${project.state}"/>
-            <option name="baseinstalldir" value="${package.name}"/>
+            <option name="description">S2Container is a lightweight container which supports DI(Dependency Injection) and AOP(Aspect Oriented Programming). The goal of S2Container.PHP5 project is to port Java Seasar2 to PHP5.</option>
+            <option name="releaseversion" value="${project.version}"/>
+            <option name="releasestability" value="${project.state}"/>
             <option name="license" value="The Apache License, Version 2.0"/>
+            <option name="notes">${release.notes}</option>
+            <option name="phpdep" value="5.2.0"/>
+            <option name="pearinstallerdep" value="1.4.11"/>
+            <option name="packagetype" value="php"/>
+            <option name="apiversion" value="${project.version}"/>
+            <option name="apistability" value="${project.state}"/>
+            <option name="baseinstalldir" value="${package.name}"/>
             <mapping name="deps">
-                <element>
-                    <element key="type" value="php"/>
-                    <element key="rel" value="ge"/>
-                    <element key="version" value="5.1.0"/>
-                </element>
                 <element>
                     <element key="type" value="pkg"/>
                     <element key="rel" value="has"/>
                     <element key="name" value="Cache_Lite"/>
+                    <element key="channel" value="pear.php.net"/>
                     <element key="optional" value="true"/>
                 </element>
             </mapping>
@@ -82,23 +85,31 @@
                 <element>
                     <element key="handle" value="klove"/>
                     <element key="name" value="klove"/>
-                    <element key="email" value="s2container-php5@ml.seasar.org"/>
+                    <element key="email" value="seasar-s2dicon-php5@lists.sourceforge.jp"/>
                     <element key="role" value="lead"/>
                 </element>
                 <element>
                     <element key="handle" value="nowel"/>
                     <element key="name" value="nowel"/>
-                    <element key="email" value="s2container-php5@ml.seasar.org"/>
+                    <element key="email" value="seasar-s2dicon-php5@lists.sourceforge.jp"/>
                     <element key="role" value="developer"/>
                 </element>
             </mapping>
-        </pearpkg>
+            <mapping name="exceptions">
+                <element key="Apache_Software_License_2.0.txt" value="php"/>
+            </mapping>
+        </pearpkg2>
 
-        <pearpkg2 uri="${project.pear.uri}"
-                  pkgFile="${project.build.dir}/${project.name}/package.xml"/>
-    </target>
- 
-    <target name="pear-pkg" depends="pear-pkg-xml">
+        <reflexive>
+            <fileset dir="${project.build.dir}/${project.name}">
+                <include name="package2.xml"/>
+            </fileset>
+            <filterchain>
+                <replaceregexp>
+                    <regexp pattern="=(.)data(.)" replace="=\1php\2" ignoreCase="true"/>
+                </replaceregexp>
+            </filterchain>
+        </reflexive>
         <exec command="pear package package2.xml" 
               dir="${project.build.dir}/${project.name}" />
 
