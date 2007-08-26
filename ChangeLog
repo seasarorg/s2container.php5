@@ -1,9 +1,11 @@
-﻿2007-08-07 S2Container.PHP5-1.2.0
+﻿2007-08-07 S2Container.PHP5-1.2.0-RC1
 
-    * modify: S2Container_AopProxyGenerator
-    継承されたインタフェースによる多重実装をしないように修正
+================ S2Container.PHP5-1.2.0-RC1 更新履歴 ===================
 
-2007-07-09 S2Container.PHP5-1.2.0
+	* modify: S2Container_AopProxyGenerator
+	継承されたインタフェースによる多重実装をしないように修正
+
+2007-07-09 S2Container.PHP5-1.2.0-RC1
 
 	* modify: package org.seasar.framework.aop
 	アスペクトの実装を__callメソッドを用いるProxyタイプから
@@ -16,9 +18,7 @@
 	* add: package org.seasar.framework.cache.impl
 	S2Container_ZendCacheSupport を追加しました。
 
-================ S2Container.PHP5-1.2.0 更新履歴 ===================
-
-2007-05-22 S2Container.PHP5-1.2.0
+2007-05-22 S2Container.PHP5-1.2.0-RC1
 
 	* add: package org.seasar.framework.container
 	S2ContainerApplicationContextクラス を追加しました。
@@ -27,6 +27,8 @@
 	TooManyRegisteredなコンポーネントを配列として Injection するようにしました。
 
 2007-03-10 S2Container.PHP5-1.1.3
+
+================ S2Container.PHP5-1.1.3 更新履歴 ===================
 
 	* fix: package org.seasar.framework.aop.proxy
 	S2Container_AopProxyGenerator のインターフェイスのimplements部で、extends しているインターフェイスを
