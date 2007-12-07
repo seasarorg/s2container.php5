@@ -286,7 +286,7 @@ class S2ContainerApplicationContext {
             $aspectDef->setExpression($annoInfo['interceptor']);
             S2Container_ChildComponentDefBindingUtil::put($annoInfo['interceptor'], $aspectDef);
         } else {
-            throw new S2Container_S2RuntimeException('ESSR0017', array("invalid aspect info. interceptor not found. [{$classRef->getName()} @Aspect]"));
+            throw new S2Container_S2RuntimeException('ESSR0017', array("invalid aspect info. interceptor not found. [{$cd->getComponentClass()->getName()} @S2Aspect]"));
         }
     }
 

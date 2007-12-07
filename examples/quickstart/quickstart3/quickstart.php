@@ -4,7 +4,7 @@ require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php');
 S2ContainerApplicationContext::import(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'classes');
 $container = S2ContainerApplicationContext::create();
 $container->getComponentDefSize() == 0 ?
-    print '¥³¥ó¥Æ¥Ê¤Ï¤«¤é¤Ã¤Ý¤Ç¤¹¡£' . PHP_EOL:
-    print '¥³¥ó¥Ý¡¼¥Í¥ó¥È¤¬Æþ¤Ã¤Æ¤Þ¤¹¡£' . PHP_EOL;
+    print 'ã‚³ãƒ³ãƒ†ãƒŠã¯ã‹ã‚‰ã£ã½ã§ã™ã€‚' . PHP_EOL:
+    print 'ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆãŒå…¥ã£ã¦ã¾ã™ã€‚' . PHP_EOL;
 $hello = $container->getComponent('Hello');
 $hello->sayHello();

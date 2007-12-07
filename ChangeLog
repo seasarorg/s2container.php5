@@ -1,4 +1,17 @@
-﻿2007-08-07 S2Container.PHP5-1.2.0-RC1
+
+2007-12-08 S2Container.PHP5-1.2.0-RC2
+
+================ S2Container.PHP5-1.2.0-RC2 更新履歴 ===================
+
+	* fix: package org.seasar.framework.container.impl
+	S2ContainerFactoryクラスのログ出力レベルの変更を行いました。
+
+2007-11-29 S2Container.PHP5-1.2.0-RC2
+
+	* fix: package org.seasar.framework.container
+	S2ContainerApplicationContextクラスでaspectアノテーションのエラーメッセージを修正しました。
+
+2007-08-07 S2Container.PHP5-1.2.0-RC1
 
 ================ S2Container.PHP5-1.2.0-RC1 更新履歴 ===================
 

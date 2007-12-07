@@ -45,8 +45,7 @@ final class S2ContainerFactory
         $support = S2Container_CacheSupportFactory::create();
 
         if (!$support->isContainerCaching($diconPath)) {
-            S2Container_S2Logger::getLogger(__CLASS__)->
-                info("set caching off.",__METHOD__);
+            S2Container_S2Logger::getLogger(__CLASS__)->debug("set caching off.",__METHOD__);
             return self::createInternal($diconPath);
         }
 
