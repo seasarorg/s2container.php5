@@ -8,7 +8,7 @@
     <target name="init">
         <property name="project.name" value="${phing.project.name}" />
         <property name="package.name" value="S2Container" />
-        <property name="project.version" value="1.2.0RC2" />
+        <property name="project.version" value="1.2.0" />
         <property name="project.state" value="beta" />
         <property name="project.build.dir" value="${project.basedir}/build" />
         <property name="project.src.dir" value="${project.basedir}/src" />
