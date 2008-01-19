@@ -9,7 +9,7 @@
         <property name="project.name" value="${phing.project.name}" />
         <property name="package.name" value="S2Container" />
         <property name="project.version" value="1.2.0" />
-        <property name="project.state" value="beta" />
+        <property name="project.state" value="stable" />
         <property name="project.build.dir" value="${project.basedir}/build" />
         <property name="project.src.dir" value="${project.basedir}/src" />
         <property name="project.pear.uri" value="http://s2container.php5.seasar.org/download/S2Container-${project.version}" />
