@@ -1,0 +1,247 @@
+<chapter id="misc"><title>MISC</title>
+  <sect1 id="misc201"><title>コンポーネントでS2Containerを使用する</title>
+    <para>
+        コンポーネントが自分自身が登録されているS2Containerに依存している場合は、プロパティインジェクションやセッターインジェクションで
+    S2containerインスタンスを取得することができます。S2Containerのコンポーネント名は「container」です。
+    <sbr/>
+        例として、次のようなサービスクラスを作成します。自動バインディングによりプロパティインジェクションによってS2ContainerインスタンスがDIされます。
+   
+    </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+class Service {
+    public $container = 'S2Binding container';
+    //public $container = 'S2Binding seasar::container::S2Container';
+
+    public function add($a, $b) {
+        return $a + $b;
+    }
+}
+]]></programlisting>
+
+    <para>
+        実行スクリプトは次のように作成します。
+    </para>  
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+
+seasar::container::S2ApplicationContext::import(dirname(__FILE__) . '/classes');
+$container = seasar::container::S2ApplicationContext::create();
+$service   = $container->getComponent('Service');
+
+print get_class($service->container) . PHP_EOL;
+
+]]></programlisting>
+    <note><title>NOTE</title>
+      <para>このExampleは examples/misc/s2container にあります。</para>
+    </note>
+
+  </sect1>
+
+
+
+  <!-- ##################################################################### -->
+  <sect1 id="misc202"><title>S2Containerのログ設定</title>
+    <para>
+    S2Containerでは、次のようにS2LoggerのgetLoggerメソッドでLoggerインスタンスを取得し、ログ出力を行います。
+    </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+
+seasar::log::S2Logger::getLogger()->debug('debug message.');
+]]></programlisting>
+
+    <sect2><title>S2Logger</title>
+      <para>
+      S2Containerでは、ログ出力を行う Loggerインスタンスを seasar::log::S2Logger クラスを介して取得します。
+      S2Logger::getLogger メソッドは、デフォルトでは SimpleLogger のインスタンスを返します。
+      Loggerクラスを生成するLoggerFactoryや、ログ出力のレベル設定等は、seasar::Configクラスのプロパティとして設定します。
+      </para>
+
+      <blockquote>
+        <formalpara><title>LOGGER_FACTORY</title></formalpara>
+        <para>
+                使用するLoggerを生成するLoggerFactoryクラスを指定します。
+        </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+seasar::Config::$LOGGER_FACTORY = 'seasar::log::impl::SimpleLoggerFactory';
+]]></programlisting>
+
+        <formalpara><title>LOG_LEVEL</title></formalpara>
+        <para>
+                ログ出力のレベルを設定します。
+        </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+seasar::Config::$LOG_LEVEL = seasar::log::impl::SimpleLogger::DEBUG;
+]]></programlisting>
+
+        <formalpara><title>DEBUG_EVAL</title></formalpara>
+        <para>
+                ログ出力レベルがDEBUG設定の場合に、eval関数で処理されるExpressionをログ出力します。
+        </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+seasar::Config::$DEBUG_EVAL = false;
+]]></programlisting>
+      </blockquote>
+    </sect2>
+
+    <sect2><title>SimpleLogger</title>
+      <para>
+      SimpleLogger はデフォルトで標準出力にログを表示します。ログレベルは DEBUG、NOTICE、INFO、WARN、ERROR、FATAL の 6 つです。
+      </para>
+
+      <blockquote>
+        <formalpara><title>LOGGER_FACTORY</title></formalpara>
+        <para>
+        SimpleLoggerのLoggerFactoryはSimpleLoggerFactoryです。
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+seasar::Config::$LOGGER_FACTORY = 'seasar::log::impl::SimpleLoggerFactory';
+]]></programlisting>
+
+        <formalpara><title>LOG_LEVEL</title></formalpara>
+        <para>
+                ログ出力のレベルを設定します。DEBUG、NOTICE、INFO、WARN、ERROR、FATALの6つを指定できます。
+        </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+seasar::Config::$LOG_LEVEL = seasar::log::impl::SimpleLogger::DEBUG;
+seasar::Config::$LOG_LEVEL = seasar::log::impl::SimpleLogger::NOTICE;
+seasar::Config::$LOG_LEVEL = seasar::log::impl::SimpleLogger::INFO;
+seasar::Config::$LOG_LEVEL = seasar::log::impl::SimpleLogger::WARN;
+seasar::Config::$LOG_LEVEL = seasar::log::impl::SimpleLogger::ERROR;
+seasar::Config::$LOG_LEVEL = seasar::log::impl::SimpleLogger::FATAL;
+]]></programlisting>
+
+        <formalpara><title>SIMPLE_LOG_FILE</title></formalpara>
+        <para>
+                ログ出力をファイルに行う場合のログファイルを設定します。
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+seasar::Config::$SIMPLE_LOG_FILE = null;
+]]></programlisting>
+      </blockquote>
+    </sect2>
+  </sect1>
+
+  <!-- ##################################################################### -->
+  <sect1 id="misc203"><title>Annotation API リファレンス</title>
+    <para>   
+    seasar::util::Annotation は、クラスに記述されたコメントや定数値をアノテーションとして読み込みます。
+        読み込んだ文字列は配列のExpressionとしてeval関数で処理します。
+    <sbr/>
+       例として、次のようなアノテーションが記述されたサービスクラスを作成します。
+    </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+/**
+ * @Sample('name' => 'seasar')
+ */
+class Service {
+    const SAMPLE = '"name" => "seasar.php"';
+}
+]]></programlisting>
+
+    <para>
+       アノテーションを取得する実行スクリプトは次のようになります。
+    </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php');
+seasar::util::ClassLoader::import(dirname(__FILE__) . '/classes');
+seasar::util::Annotation::$CONSTANT = true;
+
+$service = new ReflectionClass('Service');
+
+$annotation = seasar::util::Annotation::get($service, '@Sample');
+print_r($annotation);
+
+$annotation = seasar::util::Annotation::get($service, 'SAMPLE');
+print_r($annotation);
+]]></programlisting>
+
+    <para>
+       上記スクリプトを実行すると、コメントアノテーションと定数アノテーションで記述した値を配列値として取得できます。
+    </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+% php example.php
+Array
+(
+    [name] => seasar
+)
+Array
+(
+    [name] => seasar.php
+)
+%
+]]></programlisting>
+    <note><title>NOTE</title>
+      <para>このExampleは examples/misc/annotation にあります。</para>
+    </note>
+
+    <sbr/>
+    <blockquote>
+      <formalpara><title>COMMENT設定</title></formalpara>
+      <para>
+            コメントアノテーションを読み込む設定とします。
+      </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+seasar::util::Annotation::$COMMENT = true;
+]]></programlisting>
+
+      <formalpara><title>CONSTANT設定</title></formalpara>
+      <para>
+            定数アノテーションを読み込む設定とします。
+      </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+seasar::util::Annotation::$CONSTANT = false;
+]]></programlisting>
+
+      <formalpara><title>Annotation::get メソッド</title></formalpara>
+      <para>
+            アノテーションを取得します。第1引数には、ReflectionClass、ReflectionMethod、ReflectionPropertyを指定でいます。
+            クラスアノテーションまたは定数アノテーションを取得する場合はReflectionClassを渡します。メソッドアノテーションを取得する場合は
+      ReflectionMethod、プロパティアノテーションを取得する場合はReflectionPropertyを渡します。
+      </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+/**
+ * @param ReflectionClass|ReflectionMethod|ReflectionProperty $reflection
+ * @param string $annotation
+ * @return array
+ * @throw seasar::exception::AnnotationNotFoundException
+ */
+publi static function get($reflection, $annotation)
+]]></programlisting>
+
+      <formalpara><title>Annotation::has メソッド</title></formalpara>
+      <para>
+            アノテーションが記述されているかを取得します。第1引数には、ReflectionClass、ReflectionMethod、ReflectionPropertyを指定でいます。
+            クラスアノテーションまたは定数アノテーションを調べる場合はReflectionClassを渡します。メソッドアノテーションを調べる場合は
+      ReflectionMethod、プロパティアノテーションを調べる場合はReflectionPropertyを渡します。
+      </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+/**
+ * @param ReflectionClass|ReflectionMethod|ReflectionProperty $reflection
+ * @param string $annotation
+ * @return boolean
+ */
+publi static function has($reflection, $annotation)
+]]></programlisting>
+
+    </blockquote>
+  </sect1>
+
+
+  <!-- ##################################################################### -->
+  <sect1 id="misc204"><title>ClassLoader API リファレンス</title>
+  </sect1>
+
+</chapter>

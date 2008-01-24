@@ -1,0 +1,1832 @@
+<chapter id="dicon"><title>S2Container.PHPリファレンス</title>
+
+  <sect1 id="dicon.s2container"><title>S2Container リファレンス</title>
+    <sect2><title>S2Containerの生成</title>
+       <para>
+         S2Containerの生成は <link linkend="dicon.application">S2ApplicationContext</link> クラス、
+                  または <link linkend="dicon.factory">S2ContainerFactory</link> クラスのcreateメソッドで行います。
+       </para>
+
+       <para>
+         <link linkend="dicon.application">S2ApplicationContext</link> クラスを用いる場合は、
+         importメソッドでファイルシステムからクラス定義ファイルを検索し、検索結果クラスをコンポーネントとして持つS2Containerを
+                  生成します。
+       </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+seasar::container::S2ApplicationContext::import('/path/to/classes');
+$container = seasar::container::S2ApplicationContext::create();
+
+]]></programlisting>
+
+       <para>
+         <link linkend="dicon.factory">S2ContainerFactory</link> クラスを用いる場合は、
+                  コンポーネントの定義を記述したダイコンファイルを読み込んでS2Containerを生成します。
+       </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+$container =　seasar::container::S2ContainerFactory::create('/path/to/diconファイル');
+
+]]></programlisting>
+   </sect2>
+
+    <!-- ################################################################### -->
+    <sbr/>
+    <sect2><title>コンポーネントの取得</title>
+       <para>S2Containerからコンポーネントを取り出すには、次のメソッドを使用します。</para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+S2Container::getComponent($componentKey)
+]]></programlisting>
+    <para>
+          引数にはコンポーネントのクラス名、もしくはコンポーネント名を指定します。<sbr/>
+     S2Containerの中に指定したクラスを実装しているコンポーネントが複数ある場合、S2Containerは
+          どのコンポーネントを返せばよいのか判断できないため TooManyRegistrationRuntimeExceptionをスローします。
+          実装コンポーネントがユニークに決まるクラス名を指定してください。<sbr/>
+          コンポーネント名で取得する場合も同様に、1つのS2Containerの中でユニークとなるコンポーネント名を指定します。
+          同じ名前をもつコンポーネントが複数登録されている場合は、 TooManyRegistrationRuntimeExceptionが発生します。    
+    </para>
+
+    <para>
+        例として、次のようにダイコンファイルでコンポーネントが定義されているとします。
+    </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components>
+    <component name="action" class="IndexAction" />
+</components>
+]]></programlisting>
+
+    <para>
+       クラス名を指定してコンポーネントを取得する場合は次のようになります。
+    </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+$container = seasar::container::impl::S2ContainerFactory::create('/path/to/diconファイル');
+$component = $container->getComponent('IndexAction');
+
+]]></programlisting>
+
+    <para>
+       コンポーネント名を指定してコンポーネントを取得する場合は次のようになります。
+    </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+$container = seasar::container::impl::S2ContainerFactory::create('/path/to/diconファイル');
+$component = $container->getComponent('action');
+
+]]></programlisting>
+
+    </sect2>
+ 
+    <!-- ################################################################### -->
+    <sbr/>
+    <sect2><title>自動バインディングによるDI</title>
+       <para>
+       S2Containerの自動バインディングは、コンポーネント間の依存関係をプロパティやセッターメソッドのタイプヒントで指定される
+              クラスやインターフェースの情報で解決します。
+              自動バインディングによる Dependency Injection には次の3つのタイプがあります。
+       </para>
+       <itemizedlist>
+          <listitem>プロパティ・インジェクション</listitem>
+          <listitem>セッターメソッド・インジェクション</listitem>
+          <listitem>コンストラクタ・インジェクション</listitem>
+       </itemizedlist>
+
+       <sbr/>
+       <blockquote><formalpara><title>プロパティ・インジェクション</title></formalpara>
+         <para>
+                  プロパティ・インジェクションでは、アクセス修飾子が public なプロパティに Dependency Injection を行います。
+         </para>
+
+         <para>
+                  例として、あるアクションにサービスをDIする場合を次に示します。<sbr/>
+                  アクションクラスにはサービスを設定する public なプロパティを実装します。プロパティのデフォルト値にタイプヒントを設定します。
+                 タイプヒントは「S2Binding コンポーネント名」と記述します。また、複数のコンポーネントをまとめて配列としDIすることができます。
+                  配列としてDIする場合は、タイプヒントに「S2Binding コンポーネント名[]」と記述します。
+                 次のようなアクションクラスをカレントディレクトリに classes/Action.php として保存します。
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Action {
+
+    /**
+     * @var Service
+     */
+    public $service = 'S2Binding Service';
+
+    /**
+     * アクション実装メソッド
+     */
+    public function execute() {
+        $result = $this->service->add(2,3);    
+    }
+}
+]]></programlisting>
+
+         <para>
+                 次のようなサービスクラスをカレントディレクトリに classes/Service.php として保存します。
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Service {
+
+    /**
+     * 足し算を行います。
+     *
+     * @param integer $a
+     * @param integer $b
+     * @return integer
+     */
+    public function add($a, $b) {
+        return $a + $b;    
+    }
+}
+]]></programlisting>
+
+         <para>
+         S2ApplicationContextクラスを用いてコンテナを生成し、アクションコンポーネントを取得します。
+                 取得したアクションコンポーネントにはS2Containerの自動バインディング機能によって、サービスコンポーネントがDIされています。
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+
+seasar::container::S2ApplicationContext::import(dirname(__FILE__) . '/classes');
+$container = seasar::container::S2ApplicationContext::create();
+$action    = $container->getComponent('Action');
+
+$action->execute();
+
+]]></programlisting>
+
+         <para>
+         S2ContainerFactoryクラスを用いてコンテナを生成する場合は次のようなダイコンファイルを用意します。
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components>
+    <component class="Action"/>
+    <component class="Service"/>
+</components>
+]]></programlisting>
+
+         <para>
+         S2ContainerFactoryクラスを用いてコンテナを生成し、アクションコンポーネントを取得します。
+                 取得したアクションコンポーネントにはS2Containerの自動バインディング機能によって、サービスコンポーネントがDIされています。
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+
+seasar::util::ClassLoader::import(dirname(__FILE__) . '/classes');
+$container = seasar::container::S2ContainerFactory::create('/path/to/diconファイル');
+$action    = $container->getComponent('Action');
+
+$action->execute();
+
+]]></programlisting>
+
+       </blockquote>
+       <note><title>NOTE</title>
+         <para>このExampleは examples/AutoDI/property と examples/AutoDI/property_array にあります。</para>
+       </note>
+
+       <sbr/>
+       <blockquote><formalpara><title>セッターメソッド・インジェクション</title><sbr/></formalpara>
+         <para>
+                  セッターメソッド･インジェクションでは、任意のプロパティにセッターメソッドを使用してDependency Injectionを行います。
+                  セッターメソッドには命名規則があります。プロパティ名が「service」 の場合、先頭一文字を大文字とし「set」を先頭に付加して、
+                  「setService」がセッターメソッド名となります。
+         </para>
+
+         <para>
+                  例として、あるアクションにサービスをDIする場合を次に示します。<sbr/>
+                  アクションクラスにはサービスを設定するセッターメソッドを実装します。セッターメソッドの引数は、サービスクラスでタイプヒントします。
+                 次のようなアクションクラスをカレントディレクトリに classes/Action.php として保存します。
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Action {
+
+    /**
+     * @var Service
+     */
+    private $service = null;
+
+    /**
+     * サービスのセッターメソッド
+     *
+     * @param Service $service
+     */
+    public function setService(Service $service) {
+        $this->service = $service;    
+    }
+
+    /**
+     * アクション実装メソッド
+     */
+    public function execute() {
+        $result = $this->service->add(2,3);    
+    }
+}
+]]></programlisting>
+
+         <para>
+                 次のようなサービスクラスをカレントディレクトリに classes/Service.php として保存します。
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Service {
+
+    /**
+     * 足し算を行います。
+     *
+     * @param integer $a
+     * @param integer $b
+     * @return integer
+     */
+    public function add($a, $b) {
+        return $a + $b;    
+    }
+}
+]]></programlisting>
+
+         <para>
+         S2ApplicationContextクラスを用いてコンテナを生成し、アクションコンポーネントを取得します。
+                 取得したアクションコンポーネントにはS2Containerの自動バインディング機能によって、サービスコンポーネントがDIされています。
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+
+seasar::container::S2ApplicationContext::import(dirname(__FILE__) . '/classes');
+$container = seasar::container::S2ApplicationContext::create();
+$action    = $container->getComponent('Action');
+
+$action->execute();
+
+]]></programlisting>
+
+         <para>
+         S2ContainerFactoryクラスを用いてコンテナを生成する場合は次のようなダイコンファイルを用意します。
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components>
+    <component class="Action"/>
+    <component class="Service"/>
+</components>
+]]></programlisting>
+
+         <para>
+         S2ContainerFactoryクラスを用いてコンテナを生成し、アクションコンポーネントを取得します。
+                 取得したアクションコンポーネントにはS2Containerの自動バインディング機能によって、サービスコンポーネントがDIされています。
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+
+seasar::util::ClassLoader::import(dirname(__FILE__) . '/classes');
+$container = seasar::container::S2ContainerFactory::create('/path/to/diconファイル');
+$action    = $container->getComponent('Action');
+
+$action->execute();
+
+]]></programlisting>
+       </blockquote>
+       <note><title>NOTE</title>
+         <para>このExampleは examples/AutoDI/setter にあります。</para>
+       </note>
+
+
+       <sbr/>
+       <blockquote><formalpara><title>コンストラクタ・インジェクション</title></formalpara>
+         <para>
+                  コンストラクタ・インジェクションでは、クラスのコンストラクタ引数を用いて Dependency Injection を行います。
+         </para>
+
+         <para>
+                  例として、あるアクションにサービスをDIする場合を次に示します。<sbr/>
+                  アクションクラスではサービスを設定するため、コンストラクタ引数を用意しサービスクラスでタイプヒントします。
+                 次のようなアクションクラスをカレントディレクトリに classes/Action.php として保存します。
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Action {
+
+    /**
+     * @var Service
+     */
+    private $service = null;
+
+    /**
+     * Actionクラスを構築します。
+     *
+     * @param Service $service
+     */
+    public function __construct(Service $service) {
+        $this->service = $service;    
+    }
+
+    /**
+     * アクション実装メソッド
+     */
+    public function execute() {
+        $result = $this->service->add(2,3);    
+    }
+}
+]]></programlisting>
+
+         <para>
+                 次のようなサービスクラスをカレントディレクトリに classes/Service.php として保存します。
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Service {
+
+    /**
+     * 足し算を行います。
+     *
+     * @param integer $a
+     * @param integer $b
+     * @return integer
+     */
+    public function add($a, $b) {
+        return $a + $b;    
+    }
+}
+]]></programlisting>
+
+         <para>
+         S2ApplicationContextクラスを用いてコンテナを生成し、アクションコンポーネントを取得します。
+                 取得したアクションコンポーネントにはS2Containerの自動バインディング機能によって、サービスコンポーネントがDIされています。
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+
+seasar::container::S2ApplicationContext::import(dirname(__FILE__) . '/classes');
+$container = seasar::container::S2ApplicationContext::create();
+$action    = $container->getComponent('Action');
+
+$action->execute();
+
+]]></programlisting>
+
+         <para>
+         S2ContainerFactoryクラスを用いてコンテナを生成する場合は次のようなダイコンファイルを用意します。
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components>
+    <component class="Action"/>
+    <component class="Service"/>
+</components>
+]]></programlisting>
+
+         <para>
+         S2ContainerFactoryクラスを用いてコンテナを生成し、アクションコンポーネントを取得します。
+                 取得したアクションコンポーネントにはS2Containerの自動バインディング機能によって、サービスコンポーネントがDIされています。
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+
+seasar::util::ClassLoader::import(dirname(__FILE__) . '/classes');
+$container = seasar::container::S2ContainerFactory::create('/path/to/diconファイル');
+$action    = $container->getComponent('Action');
+
+$action->execute();
+
+]]></programlisting>
+      </blockquote>
+       <note><title>NOTE</title>
+         <para>このExampleは examples/AutoDI/consructor にあります。</para>
+       </note>
+
+    </sect2>
+  
+    <sbr/>
+    <sect2><title>マニュアル設定によるDI</title>
+       <para>マニュアル設定による Dependency Injection には次の4つのタイプがあります。</para>
+       <itemizedlist>
+          <listitem>プロパティ・インジェクション</listitem>
+          <listitem>セッターメソッド・インジェクション</listitem>
+          <listitem>コンストラクタ・インジェクション</listitem>
+          <listitem>InitMethod・インジェクション</listitem>
+       </itemizedlist>
+       <blockquote><formalpara><title>プロパティ・インジェクション</title></formalpara>
+         <para>
+                  プロパティ・インジェクションとは、アクセス修飾子が public なプロパティに Dependency Injection を行います。<sbr/>
+         </para>
+
+         <blockquote><formalpara><title>コメントアノテーションで設定する</title><sbr/></formalpara>
+         <para>
+                    次のようなアクションクラスをカレントディレクトリに classes/Action.php として保存します。
+                    各プロパティのコメントアノテーションで、インジェクションを行う値やExpression、他のコンポーネントへの参照を記述します。
+                    参照しているコンポーネントが複数の場合はセッターメソッドのタイプヒントに array を指定することで配列としてDIすることができます。
+          (array タイプヒントが成されていない場合は、TooManyRegistrationRuntimeException がスローされます。)          
+         </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Action {
+
+    /**
+     * @S2Binding('"seasar"')
+     */
+    public $name    = null;     // 文字列 seasar がインジェクションされます。    
+
+    /**
+     * @S2Binding('2000 + 8')
+     */
+    public $year    = null;     // 数値 2008 がインジェクションされます。
+
+    /**
+     * @S2Binding('Service')
+     */
+    public $service = null;     // Service コンポーネントがインジェクションされます。
+}
+]]></programlisting>
+         <para>
+                 次のようなサービスクラスをカレントディレクトリに classes/Service.php として保存します。
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Service {
+
+    /**
+     * 足し算を行います。
+     *
+     * @param integer $a
+     * @param integer $b
+     * @return integer
+     */
+    public function add($a, $b) {
+        return $a + $b;    
+    }
+}
+]]></programlisting>
+
+         <para>
+         S2ApplicationContextクラスを用いてコンテナを生成し、アクションコンポーネントを取得します。
+                 取得したアクションコンポーネントにはアノテーションで設定した値やサービスコンポーネントがDIされています。
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+
+seasar::container::S2ApplicationContext::import(dirname(__FILE__) . '/classes');
+$container = seasar::container::S2ApplicationContext::create();
+$action    = $container->getComponent('Action');
+
+var_dump($action);
+
+]]></programlisting>
+         </blockquote>
+
+
+         <sbr/>
+         <blockquote><formalpara><title>diconファイルで設定する</title></formalpara>
+         <para>
+         S2Containerの定義ファイルである diconファイルで設定する場合は、次のような内容を記述します。
+         </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components>
+    <component class="Action">
+        <property name="name">"seasar"</property>
+        <property name="year">2000 + 8</property>
+        <property name="service">Service</property>
+    </component>
+    <component class="Service" />
+</components>
+]]></programlisting>
+         <para>
+                   コンポーネントのプロパティは、componentタグの子タグであるpropertyタグを使って指定します。
+         name属性でプロパティ名を指定します。
+         propertyタグのボディには、クゥオーテーションで囲まれた値、PHPを記述したExpression、他のコンポーネントへの参照を設定できます。
+                    参照しているコンポーネントが複数の場合はセッターメソッドのタイプヒントに array を指定することで配列としてDIすることができます。
+          (array タイプヒントが成されていない場合は、TooManyRegistrationRuntimeException がスローされます。)
+         </para>
+
+         <para>
+                  次のようなアクションクラスをカレントディレクトリに classes/Action.php として保存します。
+                  アクションクラスには、各プロパティのセッターメソッドを記述します。
+         </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Action {
+    public $name    = null;     // 文字列 seasar がインジェクションされます。    
+    public $year    = null;     // 数値 2008 がインジェクションされます。
+    public $service = null;     // Service コンポーネントがインジェクションされます。
+}
+]]></programlisting>
+
+         <para>
+                 次のようなサービスクラスをカレントディレクトリに classes/Service.php として保存します。
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Service {
+
+    /**
+     * 足し算を行います。
+     *
+     * @param integer $a
+     * @param integer $b
+     * @return integer
+     */
+    public function add($a, $b) {
+        return $a + $b;    
+    }
+}
+]]></programlisting>
+
+         <para>
+         S2ContainerFactoryクラスを用いてコンテナを生成し、アクションコンポーネントを取得します。
+                 取得したアクションコンポーネントにはダイコンファイルで設定した値やサービスコンポーネントがDIされています。
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+
+seasar::util::ClassLoader::import(dirname(__FILE__) . '/classes');
+$container = seasar::container::S2ContainerFactory::create('/path/to/diconファイル');
+$action    = $container->getComponent('Action');
+
+var_dump($action);
+
+]]></programlisting>
+         </blockquote>
+       </blockquote>
+
+       <note><title>NOTE</title>
+         <para>このExampleは examples/ManualDI/property と examples/ManualDI/property_array にあります。</para>
+       </note>
+
+       <sbr/>
+       <blockquote><formalpara><title>セッターメソッド・インジェクション</title><sbr/></formalpara>
+         <para>
+                  セッター･インジェクションとは、任意のプロパティにセッターメソッドを使用してDependency Injectionを行います。<sbr/>
+         </para>
+
+         <blockquote><formalpara><title>コメントアノテーションで設定する</title><sbr/></formalpara>
+         <para>
+                    次のようなアクションクラスをカレントディレクトリに classes/Action.php として保存します。
+                    各プロパティのセッターメソッドを記述します。セッターメソッドにはコメントアノテーションで、インジェクションを
+                    行う値やExpression、他のコンポーネントへの参照を記述します。
+                    参照しているコンポーネントが複数の場合はセッターメソッドのタイプヒントに array を指定することで配列としてDIすることができます。
+          (array タイプヒントが成されていない場合は、TooManyRegistrationRuntimeException がスローされます。)          
+         </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Action {
+    private $name    = null;
+    private $year    = null;
+    private $service = null;
+
+    /**
+     * @S2Binding('"seasar"')
+     */
+    public function setName($name) {
+        $this->name = $name;    // 文字列 seasar がインジェクションされます。    
+    }
+    
+    /**
+     * @S2Binding('2000 + 8')
+     */
+    public function setYear($year) {
+        $this->year = $year;    // 数値 2008 がインジェクションされます。
+    }
+    
+    /**
+     * @S2Binding('Service')
+     */
+    public function setService(Service $service) {
+        $this->service  = $service     // Service コンポーネントがインジェクションされます。
+    }
+}
+]]></programlisting>
+         <para>
+                 次のようなサービスクラスをカレントディレクトリに classes/Service.php として保存します。
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Service {
+
+    /**
+     * 足し算を行います。
+     *
+     * @param integer $a
+     * @param integer $b
+     * @return integer
+     */
+    public function add($a, $b) {
+        return $a + $b;    
+    }
+}
+]]></programlisting>
+
+         <para>
+         S2ApplicationContextクラスを用いてコンテナを生成し、アクションコンポーネントを取得します。
+                 取得したアクションコンポーネントにはアノテーションで設定した値やサービスコンポーネントがDIされています。
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+
+seasar::container::S2ApplicationContext::import(dirname(__FILE__) . '/classes');
+$container = seasar::container::S2ApplicationContext::create();
+$action    = $container->getComponent('Action');
+
+var_dump($action);
+
+]]></programlisting>
+         </blockquote>
+
+         <sbr/>
+         <blockquote><formalpara><title>diconファイルで設定する</title></formalpara>
+         <para>
+         S2Containerの定義ファイルである diconファイルで設定する場合は、次のような内容を記述します。
+         </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components>
+    <component class="Action">
+        <property name="name">"seasar"</property>
+        <property name="year">2000 + 8</property>
+        <property name="service">Service</property>
+    </component>
+    <component class="Service" />
+</components>
+]]></programlisting>
+         <para>
+                   コンポーネントのプロパティは、componentタグの子タグであるpropertyタグを使って指定します。
+         name属性でプロパティ名を指定します。
+         propertyタグのボディには、クゥオーテーションで囲まれた値、PHPを記述したExpression、他のコンポーネントへの参照を設定できます。
+                    参照しているコンポーネントが複数の場合はセッターメソッドのタイプヒントに array を指定することで配列としてDIすることができます。
+          (array タイプヒントが成されていない場合は、TooManyRegistrationRuntimeException がスローされます。)
+         </para>
+
+         <para>
+                  次のようなアクションクラスをカレントディレクトリに classes/Action.php として保存します。
+                  アクションクラスには、各プロパティのセッターメソッドを記述します。
+         </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Action {
+    private $name    = null;
+    private $year    = null;
+    private $service = null;
+
+    public function setName($name) {
+        $this->name = $name;    // 文字列 seasar がインジェクションされます。    
+    }
+    
+    public function setYear($year) {
+        $this->year = $year;    // 数値 2008 がインジェクションされます。
+    }
+    
+    public function setService(Service $service) {
+        $this->service  = $service;     // Service コンポーネントがインジェクションされます。
+    }
+}
+]]></programlisting>
+
+         <para>
+                 次のようなサービスクラスをカレントディレクトリに classes/Service.php として保存します。
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Service {
+
+    /**
+     * 足し算を行います。
+     *
+     * @param integer $a
+     * @param integer $b
+     * @return integer
+     */
+    public function add($a, $b) {
+        return $a + $b;    
+    }
+}
+]]></programlisting>
+
+         <para>
+         S2ContainerFactoryクラスを用いてコンテナを生成し、アクションコンポーネントを取得します。
+                 取得したアクションコンポーネントにはダイコンファイルで設定した値やサービスコンポーネントがDIされています。
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+
+seasar::util::ClassLoader::import(dirname(__FILE__) . '/classes');
+$container = seasar::container::S2ContainerFactory::create('/path/to/diconファイル');
+$action    = $container->getComponent('Action');
+
+var_dump($action);
+
+]]></programlisting>
+         </blockquote>
+       </blockquote>
+       <note><title>NOTE</title>
+         <para>このExampleは examples/ManualDI/setter と examples/ManualDI/setter_array にあります。</para>
+       </note>
+
+
+       <sbr/>
+       <blockquote><formalpara><title>コンストラクタ・インジェクション</title></formalpara>
+       <para>
+               コンストラクタ・インジェクションとは、コンストラクタの引数値にDependency Injectionを実施します。<sbr/>
+        S2Containerの定義ファイルには、次のような内容を記述します。
+       </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components>
+    <component class="Action">
+        <arg>"seasar"</arg>
+        <arg>2000 + 8</arg>
+        <arg>Service</arg>
+    </component>
+    <component class="Service" />
+</components>
+]]></programlisting>
+       <para>
+              コンポーネントのコンストラクタの引数はcomponentタグの子タグであるargタグを使って指定します。
+       argタグのボディには、クゥオーテーションで囲まれた値、PHPを記述したExpression、他のコンポーネントへの参照を設定できます。
+                    参照しているコンポーネントが複数の場合はセッターメソッドのタイプヒントに array を指定することで配列としてDIすることができます。
+          (array タイプヒントが成されていない場合は、TooManyRegistrationRuntimeException がスローされます。)
+       </para>
+       <para>
+              アクションクラスのコンストラクタでは次のように、3つの引数を受け取ります。
+       </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Action {
+    private $name    = null;
+    private $year    = null;
+    private $service = null;
+
+    public function __construct($name, $year, Service $service) {
+        $this->name    = $name;    // 文字列 seasar がインジェクションされます。
+        $this->year    = $year;    // 数値 2008 がインジェクションされます。
+        $this->service = $service;     // service コンポーネントがインジェクションされます。
+    }
+}
+]]></programlisting>
+
+         <para>
+                 次のようなサービスクラスをカレントディレクトリに classes/Service.php として保存します。
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Service {
+
+    /**
+     * 足し算を行います。
+     *
+     * @param integer $a
+     * @param integer $b
+     * @return integer
+     */
+    public function add($a, $b) {
+        return $a + $b;    
+    }
+}
+]]></programlisting>
+
+         <para>
+         S2ContainerFactoryクラスを用いてコンテナを生成し、アクションコンポーネントを取得します。
+                 取得したアクションコンポーネントにはダイコンファイルで設定した値やサービスコンポーネントがDIされています。
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+
+seasar::util::ClassLoader::import(dirname(__FILE__) . '/classes');
+$container = seasar::container::S2ContainerFactory::create('/path/to/diconファイル');
+$action    = $container->getComponent('Action');
+
+var_dump($action);
+
+]]></programlisting>
+
+       </blockquote>
+       <note><title>NOTE</title>
+         <para>このExampleは examples/ManualDI/constructor と examples/ManualDI/constructor_array にあります。</para>
+       </note>
+
+
+
+      <sbr/>
+      <blockquote><formalpara><title>InitMethod・インジェクション</title></formalpara>
+       <para>
+        InitMethod・インジェクションとは、アクセス修飾子が public な任意のメソッドで Dependency Injection を実施します。<sbr/>
+        S2Containerの定義ファイルには、次のような内容を記述します。
+       </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components>
+    <component class="Action">
+        <initMethod name="setName">
+            <arg>"seasar"</arg>
+        </initMethod>
+        <initMethod name="setYear">
+            <arg>2000 + 8</arg>
+        </initMethod>
+        <initMethod>
+            $component->setService('new Service');
+        </initMethod>
+    </component>
+</components>
+]]></programlisting>
+       <para>
+              コンポーネントのコンストラクタの引数はcomponentタグの子タグであるargタグを使って指定します。
+       argタグのボディには、クゥオーテーションで囲まれた値、PHPを記述したExpression、他のコンポーネントへの参照を設定できます。
+       </para>
+       <para>
+              次のようなアクションクラスをカレントディレクトリに classes/Action.php として保存します。
+              アクションクラスには、各プロパティのセッターメソッドを記述します。
+       </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Action {
+    private $name    = null;
+    private $year    = null;
+    private $service = null;
+
+    public function setName($name) {
+        $this->name = $name;    // 文字列 seasar がインジェクションされます。    
+    }
+    
+    public function setYear($year) {
+        $this->year = $year;    // 数値 2008 がインジェクションされます。
+    }
+    
+    public function setService(Service $service) {
+        $this->service  = $service;     // Service コンポーネントがインジェクションされます。
+    }
+}
+]]></programlisting>
+
+         <para>
+                 次のようなサービスクラスをカレントディレクトリに classes/Service.php として保存します。
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Service {
+
+    /**
+     * 足し算を行います。
+     *
+     * @param integer $a
+     * @param integer $b
+     * @return integer
+     */
+    public function add($a, $b) {
+        return $a + $b;    
+    }
+}
+]]></programlisting>
+
+         <para>
+         S2ContainerFactoryクラスを用いてコンテナを生成し、アクションコンポーネントを取得します。
+                 取得したアクションコンポーネントにはダイコンファイルで設定した値やサービスコンポーネントがDIされています。
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+
+seasar::util::ClassLoader::import(dirname(__FILE__) . '/classes');
+$container = seasar::container::S2ContainerFactory::create('/path/to/diconファイル');
+$action    = $container->getComponent('Action');
+
+var_dump($action);
+
+]]></programlisting>
+
+       </blockquote>
+       <note><title>NOTE</title>
+         <para>このExampleは examples/ManualDI/method にあります。</para>
+       </note>
+
+    </sect2>
+  
+    <sbr/>
+    <sect2 id="dicon.binding"><title>バインディングタイプの設定</title>
+      <para>
+      S2Containerでは、コンポーネント単位でバインディングタイプを指定できます。バインディングタイプは次の2つがあります。     
+      </para>
+
+      <blockquote>
+      <table frame='all'><title>バインディングタイプ</title>
+        <tgroup cols='2' align='left' colsep='1' rowsep='1'>
+          <colspec colwidth="50" align="center"/>
+          <colspec colwidth="750"/>
+          <thead>
+            <row>
+              <entry align="center">autoBinding</entry>
+              <entry align="center">説明</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>auto (default)</entry>
+              <entry>
+                             コンストラクタの引数が明示的に指定されている場合は、それに従います。<sbr/>
+                             コンストラクタの引数が指定されていない場合は、タイプヒント情報により自動的にバインドします。<sbr/>
+                             プロパティが明示的に指定されている場合は、それに従います。<sbr/>
+                             プロパティが指定されていない場合は、タイプヒント情報により自動的にバインドします。
+              </entry>
+            </row>
+            <row>
+              <entry>none</entry>
+              <entry>
+                            コンストラクタの引数が明示的に指定されている場合は、それに従います。<sbr/>
+                            プロパティが明示的に指定されている場合は、それに従います。
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+      </blockquote>
+
+      <para>
+            コメントアノテーションでバインディングタイプを指定する場合は次のようになります。
+      </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+/**
+ * @S2Compnent('autoBinding' => 'none')
+ */
+class Service {}
+
+]]></programlisting>
+
+      <para>
+      S2Containerの定義ファイルで設定する場合は、次のような内容を記述します。
+      </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components>
+    <component class="Service"　autoBinding="none"/>
+</components>
+]]></programlisting>
+
+    </sect2>
+
+    <sbr/>
+    <sect2 id="dicon.instance"><title>インスタンスタイプの設定</title>
+      <para>
+      S2Containerでは、コンポーネント単位でインスタンスの管理方法を指定できます。インスタンスタイプは次の2つがあります。     
+      </para>
+
+      <blockquote>
+      <table frame='all'><title>インスタンスタイプ</title>
+        <tgroup cols='2' align='left' colsep='1' rowsep='1'>
+          <colspec colwidth="50" align="center"/>
+          <colspec colwidth="750"/>
+          <thead>
+            <row>
+              <entry align="center">instance</entry>
+              <entry align="center">説明</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>singleton (default)</entry>
+              <entry>
+              S2Container::getComponent()でコンポーネントを取得すると、常に同じインスタンスが返されます。
+              </entry>
+            </row>
+            <row>
+              <entry>prototype</entry>
+              <entry>
+              S2Container::getComponent()でコンポーネントを取得すると、常に新規インスタンスが返されます。
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+      </blockquote>
+
+      <para>
+            コメントアノテーションでインスタンスタイプを指定する場合は次のようになります。
+      </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+/**
+ * @S2Compnent('instance' => 'prototype')
+ */
+class Service {}
+
+]]></programlisting>
+
+      <para>
+      S2Containerの定義ファイルで設定する場合は、次のような内容を記述します。
+      </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components>
+    <component class="Service"　instance="prototype"/>
+</components>
+]]></programlisting>
+    </sect2>
+   
+  </sect1>
+
+
+
+
+  <sect1 id="dicon.application"><title>S2ApplicationContext リファレンス</title>
+       <para>
+         S2ApplicationContextの主な機能は次になります。
+       </para>
+        <itemizedlist>
+          <listitem>ファイルシステムからクラスの検索</listitem>
+          <listitem>検索されたクラスをコンポーネントとしてS2Containerの生成</listitem>
+          <listitem>コメントアノテーションによるコンポーネント情報の抽出</listitem>
+          <listitem>アスペクトの自動設定</listitem>
+        </itemizedlist>
+        <para>
+         S2ApplicationContextを用いてS2Containerを生成する場合は、ダイコンファイルによるコンポーネント定義は必要としません。
+                  ファイルシステムからクラスを検索する際に、ダイコンファイル(.dicon)が見つかった場合は、インクルード対象として自動的に読み込みます。
+                  頻繁に使用するコンポーネントのセットを設定ファイルとしてダイコンファイルを用いることができます。
+       </para>
+
+    <sbr/>
+    <sect2 id="dicon.application.import"><title>コンポーネントのインポート</title>
+       <para>クラスのインポートは次のメソッドで行います。</para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+S2ApplicationContext::import($path, array $namespace = array(), $strict = false, $pear = false, $recursive = true)
+]]></programlisting>
+      <blockquote>
+        <itemizedlist>
+          <listitem>第1引数 : 検索するディレクトリへのパス</listitem>
+          <listitem>第2引数 : namespaceの配列</listitem>
+          <listitem>第3引数 : trueの場合、$namespaceで指定されたネームスペースが使用されます。falseの場合は、検索したサブディレクトリが$namespaceに順次追加されます。</listitem>
+          <listitem>第4引数 : trueの場合は、$namespaceが「_」で展開されます。falseの場合は、$namespaceが「::」で展開されます</listitem>
+          <listitem>第5引数 : trueの場合は、再起的にディレクトリを検索します。falseの場合は、サブディレクトリを検索しません。</listitem>
+        </itemizedlist>
+      </blockquote>
+
+       <para>
+              　第1引数で指定したディレクトリにあるクラスファイル( .php、.class.php など)、ダイコンファイル( .dicon )をインポートします。
+              インポートではクラス名とクラスファイルのパスを取得します。この情報は autoload 関数でクラス定義が require される際に使用されます。
+              クラス名はクラスファイル名の拡張子を除く部分になります。クラスファイル名が S2Container.php や S2Container.class.php の場合、
+              「 S2Container 」がクラス名になります。
+       </para>
+   </sect2>
+
+
+    <sbr/>
+    <sect2 id="dicon.application.create"><title>S2Containerの生成</title>
+      <para>S2Container インスタンスの生成は次のメソッドで行います。</para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+S2ApplicationContext::create()
+]]></programlisting>
+      <para>
+              生成される S2Container は、import メソッドでインポートされた全クラスをコンポーネントとして持ちます。
+       import メソッドが実行されていない場合は、コンポーネントを持たない空の S2Container インスタンスが戻ります。
+       import メソッドで取得されたダイコンファイルについては、そのダイコンファイルを用いて S2Container を生成し、子コンテナとして include します。
+      </para>
+   </sect2>
+
+
+
+
+
+    <sbr/>
+    <sect2><title>コンポーネントの選択</title>
+       <para>create メソッドで S2Container を生成する際に、インポートされたクラスやダイコンファイルから一部を選択することができます。</para>
+        <itemizedlist>
+          <listitem>default (パターン設定無し) : インポートされた全てのクラスをコンポーネントとして扱い、全てのダイコンファイルを子コンテナとして include します。</listitem>
+          <listitem>Include Pattern : インポートされたクラスファイルとダイコンファイルに対してパターンにマッチ( preg_match )するもののみを使用します。</listitem>
+          <listitem>Exclude Pattern : インポートされたクラスファイルとダイコンファイルに対してパターンにマッチ( preg_match )するものは除外します。</listitem>
+          <listitem>Include &amp; Exclude : Include Pattern と Exclude Pattern が両方設定されている場合は、Include Pattern にマッチしたものから Exclude Pattern にマッチしたものが除外されます。</listitem>
+        </itemizedlist>
+   </sect2>
+
+   <sbr/>
+   <blockquote><formalpara><title>setIncludePattern メソッド</title>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+S2ApplicationContext::setIncludePattern($pattern = array())
+]]></programlisting>
+      <blockquote>
+        <itemizedlist>
+          <listitem>第1引数 : 正規表現文字列、またはその配列</listitem>
+        </itemizedlist>
+      </blockquote>
+      <para>
+            引数の正規表現は preg_match 関数で使用されます。クラス名が「 Bean 」で終わっているクラスを含めたい場合は、引数値は「 /Bean$/ 」となります。
+          　setIncludePattern メソッドは、現在設定されている Include Pattern を上書きします。 
+      </para>
+   </formalpara></blockquote>
+
+   <sbr/>
+   <blockquote><formalpara><title>addIncludePattern メソッド</title>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+S2ApplicationContext::addIncludePattern($pattern)
+]]></programlisting>
+      <blockquote>
+        <itemizedlist>
+          <listitem>第1引数 : 正規表現文字列</listitem>
+        </itemizedlist>
+      </blockquote>
+      <para>
+         　addIncludePattern メソッドは、現在設定されている Include Pattern にパターンを追加します。
+      </para>
+   </formalpara></blockquote>
+
+   <sbr/>
+   <blockquote><formalpara><title>setExcludePattern メソッド</title>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+S2ApplicationContext::setExcludePattern($pattern)
+]]></programlisting>
+      <blockquote>
+        <itemizedlist>
+          <listitem>第1引数 : 正規表現文字列、またはその配列</listitem>
+        </itemizedlist>
+      </blockquote>
+      <para>
+                引数の正規表現は preg_match 関数で使用されます。クラス名が「 Abstract 」を含むクラスを除外する場合は、引数値は「 /Abstract/ 」となります。
+        setExcludePattern メソッドは、現在設定されている Exclude Pattern を上書きします。 
+      </para>
+   </formalpara></blockquote>
+
+   <sbr/>
+   <blockquote><formalpara><title>addExcludePattern メソッド</title>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+S2ApplicationContext::addEcludePattern($pattern)
+]]></programlisting>
+      <blockquote>
+        <itemizedlist>
+          <listitem>第1引数 : 正規表現文字列</listitem>
+        </itemizedlist>
+      </blockquote>
+      <para>
+        addExcludePattern メソッドは、現在設定されている Exclude Pattern にパターンを追加します。
+      </para>
+   </formalpara></blockquote>
+
+   <sbr/>
+   <blockquote><formalpara><title>Emvironment Filter</title>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+S2ApplicationContext::setFilterByEnv($val = true)
+]]></programlisting>
+      <blockquote>
+        <itemizedlist>
+          <listitem>第1引数 : bool 値</listitem>
+        </itemizedlist>
+      </blockquote>
+      <para>
+            環境設定によりインクルードするコンポーネントを選択します。この機能はデフォルトで有効化されています。この機能を無効化する場合は、次のメソッドで設定できます。
+             例として、S2CONTAINER_PHP5_ENV 定数が "mock" と定義されている場合、インポートされたクラスに、Hoge クラスと
+      MockHoge クラスが存在すると、MockHoge クラスのみ選択します。
+      </para>
+   </formalpara></blockquote>
+
+    <sbr/>
+    <sect2 id="dicon.application.autoaspect"><title>自動アスペクト</title>
+       <para>コンポーネントの選択でインクルードされたコンポーネントに対して、自動的にアスペクトを適用します。</para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+S2ApplicationContext::registerAspect($componentPattern, $interceptor, $pointcut = null)
+]]></programlisting>
+      <blockquote>
+        <itemizedlist>
+          <listitem>第1引数 : コンポーネント名またはコンポーネントクラス名にパターンマッチする正規表現文字列</listitem>
+          <listitem>第2引数 : Interceptorコンポーネント名、または Expression</listitem>
+          <listitem>第3引数 : ポイントカットをカンマ区切りで指定</listitem>
+        </itemizedlist>
+      </blockquote>
+      <para>
+             コンポーネントクラス名が「Dao」で終わっているコンポーネントに、dao.interceptorをアスペクトしたい場合は、次のように設定します。
+      </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+S2ApplicationContext::registerAspect('/Dao$/', 'dao.interceptor');
+]]></programlisting>
+      <caution><title>注意</title>
+      <para>
+              自動アスペクトはimportされたコンポーネントに対してのみ適用されます。インクルードされたダイコンファイルに含まれるコンポーネントには適用されません。
+      </para>
+      </caution>
+    </sect2>
+
+
+    <sbr/>
+    <sect2><title>アノテーション</title>
+       <para>
+                コンポーネントの細かい設定や、Dependency Injection 設定、Aspect の適用を行う場合はアノテーションを用います。
+                アノテーションの形式は、@アノテーション名[()] です。アットマーク(@)で開始します。末尾はスペース、または改行となります。
+                アノテーションでは引数を記述することができます。引数の形式は、PHP 配列と同じフォーマットです。
+       </para>
+
+   <sbr/>
+   <blockquote><formalpara><title>親クラスのメソッドアノテーション</title></formalpara>
+      <para>デフォルトでは親クラスのメソッドアノテーションは無効となります。親クラスのメソッドアノテーションを有効とする場合は、次のメソッドで設定します。</para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+S2ApplicationContext::setReadParentAnnotation($val = true)
+]]></programlisting>
+      <blockquote>
+        <itemizedlist>
+          <listitem>第1引数 : bool 値、trueを設定すると親クラスのメソッドアノテーションが有効となります。</listitem>
+        </itemizedlist>
+      </blockquote>
+   </blockquote>
+
+   <sbr/>
+   <blockquote><formalpara><title>@S2Component アノテーション</title></formalpara>
+      <para>コンポーネント情報を設定します。</para>
+      <blockquote>
+        <itemizedlist>
+          <listitem>アノテーションの表記 : @S2Component</listitem>
+          <listitem>引数
+            <itemizedlist>
+               <listitem>name : コンポーネント名</listitem>
+               <listitem>instance : <link linkend="dicon.instance">インスタンスモードタイプ</link></listitem>
+               <listitem>autoBinding : <link linkend="dicon.binding">バインディングモードタイプ</link></listitem>
+               <listitem>available : コンポーネントとして使用するかどうか (boolean default true)</listitem>
+            </itemizedlist>
+          </listitem>
+          <listitem>注釈ポイント : クラス</listitem>
+          <listitem>サンプル
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+  /**
+   * @S2Component('name' => 'hoge')
+   */
+  class Hoge{} 
+  
+  /**
+   * @S2Component('name' => 'hoge', 'instance' => 'singleton', 'autoBinding' => 'auto', 'available' => true)
+   */
+  class Hoge{} 
+]]></programlisting>         
+          </listitem>
+        </itemizedlist>
+      </blockquote>
+   </blockquote>
+
+   <sbr/>
+   <blockquote><formalpara><title>@S2Binding アノテーション</title></formalpara>
+      <para>手動インジェクション設定を行います。</para>
+      <blockquote>
+        <itemizedlist>
+          <listitem>アノテーションの表記 : @S2Binding</listitem>
+          <listitem>引数 : インジェクションするコンポーネント名、または Expression</listitem>
+          <listitem>注釈ポイント : pulbicプロパティ、セッターメソッド</listitem>
+          <listitem>サンプル
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+class IndexAction {
+    /**
+     * @S2Binding('new HogeService')
+     */
+    public $service;
+ 
+    /**
+     * @S2Binding('Hello World')
+     */
+    public funcion setHello($val) {
+        $this->hello = $val;
+    }
+}
+]]></programlisting>         
+          </listitem>
+        </itemizedlist>
+      </blockquote>
+   </blockquote>
+
+
+   <sbr/>
+   <blockquote><formalpara id="dicon.application.annotation.aspect"><title>@S2Aspect アノテーション</title></formalpara>
+      <para>アスペクト情報を設定します。</para>
+      <blockquote>
+        <itemizedlist>
+          <listitem>アノテーションの表記 : @S2Aspect</listitem>
+          <listitem>引数
+            <itemizedlist>
+               <listitem>interceptor : Interceptorコンポーネント名、または Expression</listitem>
+               <listitem>pointcut : ポイントカットをカンマ区切りで指定</listitem>
+            </itemizedlist>
+          </listitem>
+          <listitem>注釈ポイント : クラス、メソッド</listitem>
+          <listitem>サンプル
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+  /**
+   * @S2Aspect('interceptor' => 'traceInterceptor',
+   *           'pointcut'    => '.+Action')
+   */
+  class CdController {
+      public function indexAction(){
+          ・・・
+      }
+  }
+
+  class DvdController {
+      /**
+       * @S2Aspect('interceptor' => 'new S2Container_TraceInterceptor()')
+       */
+      public funcion indexAction() {
+          ・・・
+      }
+  }
+]]></programlisting>         
+          </listitem>
+        </itemizedlist>
+      </blockquote>
+   </blockquote>
+
+   <sbr/>
+   <blockquote><formalpara><title>@S2Meta アノテーション</title></formalpara>
+      <para>メタ情報を設定します。</para>
+      <blockquote>
+        <itemizedlist>
+          <listitem>アノテーションの表記 : @S2Meta</listitem>
+          <listitem>引数
+            <itemizedlist>
+               <listitem>name : メタ情報の識別名</listitem>
+               <listitem>value : 値、または Expression</listitem>
+            </itemizedlist>
+          </listitem>
+          <listitem>注釈ポイント : クラス</listitem>
+          <listitem>サンプル
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+  /**
+   * @S2Meta('nameA' => 'valueA',
+   *         'nameB' => 'valueB')
+   */
+  class CdController {
+      public function indexAction(){
+          ・・・
+      }
+  }
+]]></programlisting>         
+          </listitem>
+        </itemizedlist>
+      </blockquote>
+   </blockquote>
+
+   </sect2>
+  </sect1>
+
+
+
+
+
+
+
+
+  <sect1 id="dicon.factory"><title>S2ContainerFactory リファレンス</title>
+
+    <sbr/>
+    <sect2><title>ダイコンファイルの作成</title>
+       <para>
+         S2Containerを使用するためには、定義ファイルを作成する必要があります。
+                  定義ファイルは、コンポーネントを組み立てるための設計書のようなものです。
+                  定義ファイルの拡張子は .dicon、または .xml です。diconは「ダイコン」と読みます。
+      </para>
+      <para>ダイコンファイルでのS2Containerの定義は次のようになります。</para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components>
+    <component name="..." class="...">
+            ...
+    </component>
+    <component name="..." class="...">
+            ...
+    </component>
+</components>
+]]></programlisting>
+
+      <para>
+        DOCTYPEは省略できません。diconファイルを作成する場合は、上記のサンプルをコピー＆ペーストしてください。
+                ルートは<link linkend="dicon.tag.components">componentsタグ</link>です。コンポーネントごとに、 <link linkend="dicon.tag.component">componentタグ</link>を定義していきます。
+        componentタグの class属性でコンポーネントのクラス名を指定します。name属性にはコンポーネント名を指定します。
+                詳細は、<link linkend="dicon.tag">S2Container定義タグリファレンス</link>を参照してください。
+      </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components>
+    <component name="action" class="IndexAction"/>
+</components>
+]]></programlisting>
+   </sect2>
+
+
+    <sbr/>
+    <sect2><title>S2Containerの生成</title>
+      <para>S2ContainerFactoryのcreateメソッドを用いて、ダイコンファイルからS2Containerを生成します。</para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+/**
+ * @param string $path
+ */
+S2ContainerFactory::create($path)
+]]></programlisting>
+      <blockquote>
+        <itemizedlist>
+          <listitem>第1引数 : ダイコンファイルへのパス</listitem>
+        </itemizedlist>
+      </blockquote>
+
+      <para>次のように、ダイコンファイルのパスを指定してS2Containerを生成します。</para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+
+$PATH = "path/to/ccc.dicon";
+$container = S2ContainerFactory::create($PATH);
+・・・
+
+]]></programlisting>
+   </sect2>
+  </sect1>
+
+  <sect1 id="dicon.tag"><title>ダイコンファイル タグリファレンス</title>
+    <sect2><title>DOCTYPE (必須)</title>
+       <para>DOCTYPEはXML宣言の次に指定します。次のように指定してください。</para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components>
+    <component name="hello" class="Hello"/>
+    ・・・
+</components>
+]]></programlisting>
+   </sect2>
+
+    <sect2 id="dicon.tag.components"><title>componentsタグ (必須)</title>
+       <para>ダイコンファイルのルートタグになります。componentsタグにはnamespace属性で名前空間を指定することができます。</para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components namespace="dao">
+    ...
+</components>
+]]></programlisting>
+
+    <para>
+      namespace属性で名前空間を指定することで、コンポーネントの定義を分割した場合に、
+            複数のコンポーネント定義間で名前が衝突することを避けることができます。
+          次の例では、parent.diconの中で、foo.dicon と bar.dicon が include されています。
+          それぞれのダイコンファイルで service という同名のコンポーネントが定義されています。
+    </para>
+
+    <itemizedlist>
+      <listitem>parent.dicon
+      </listitem>
+    </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components>
+    <include path="/path/to/foo.dicon"/>
+    <include path="/path/to/bar.dicon"/>
+
+    <component name="service" class="DefaultService"/>
+</components>
+]]></programlisting>
+
+    <itemizedlist>
+      <listitem>foo.dicon
+      </listitem>
+    </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components namespace="foo">
+    <component name="service" class="FooService"/>
+</components>
+]]></programlisting>
+
+    <itemizedlist>
+      <listitem>bar.dicon
+      </listitem>
+    </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components namespace="bar">
+    <component name="service" class="BarService"/>
+</components>
+]]></programlisting>
+
+      <para>
+        parent.diconで定義されている service コンポーネントは名前空間の指定無しで参照することができます。
+        foo.diconと bar.dicon で定義されている service コンポーネントを参照する場合は、名前空間を指定する
+                必要があります。名前空間の指定は、「.」 ピリオードで行います。foo.dicon の service コンポーネントを参照する場合は
+                次のようになります。
+      </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+$container  = S2ContainerFactory::create('/path/to/parent.dicon');
+$service    = $container->getComponent('service');
+$fooService = $container->getComponent('foo.service');
+$barService = $container->getComponent('bar.service');
+?>
+]]></programlisting>
+
+   </sect2>
+
+    <!-- ################################################################## -->
+    <sect2 id="dicon.tag.include"><title>includeタグ (任意)</title>
+       <para>
+                分割されたS2Containerの定義を取り込む場合に使います。
+        path属性でダイコンファイルのパスを指定します。(必須) includeタグは componentタグの前に記述する必要があります。
+        path属性で指定されたダイコンファイルが存在しない場合は、expression としてeval関数に渡されます。
+                そのため、パスに含まれる定数やクラス変数は展開されます。
+       </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components>
+    <include path="path/to/foo.dicon" />
+    <include path="DICON_DIR . '/bar.dicon'" />
+</components>
+]]></programlisting>
+
+      <para>
+              コンポーネントの検索順は、先ず自分自身に登録されているコンポーネントを探します。
+              見つからない場合は、 include されている順に子供の S2Container に登録されているコンポーネントを検索し、
+              最初に見つかったコンポーネントが返されます。
+      </para>
+   </sect2>
+
+
+
+
+
+    <!-- ################################################################## -->
+    <sect2 id="dicon.tag.component"><title>componentタグ (任意)</title>
+       <para>コンポーネントを定義します。</para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components>
+    <component name="action" class="IndexAction" instance="singleton" autoBinding="auto"/>
+</components>
+]]></programlisting>
+
+        <blockquote>
+          <para>name属性 (任意)</para>
+          <blockquote>
+                       コンポーネントに名前を付けます。デフォルト値はclass属性で指定したクラス名です。
+          </blockquote>
+          <para>class属性 (必須)</para>
+          <blockquote>
+                        コンポーネントのクラス名を指定します。
+          </blockquote>
+ 
+          <para>instance属性 (任意)</para>
+          <blockquote>
+            S2Containerがどのようにコンポーネントのインスタンスを管理するのかを指定することができます。
+            singleton(デフォルト)、prototypeを指定することができます。詳しくは<link linkend="dicon.instance">インスタンスタイプ</link>を参照してください。
+          </blockquote>
+
+          <para>autoBinding属性 (任意)</para>
+          <blockquote>
+            S2Containerがコンポーネントの依存関係をどのように解決するのかを指定できます。auto(デフォルト)、noneを指定することができます。
+                         詳しくは、<link linkend="dicon.binding">バインディングタイプ</link>を参照してください。
+          </blockquote>
+        </blockquote>
+   </sect2>
+
+
+    <!-- ################################################################## -->
+    <sect2 id="dicon.tag.arg"><title>argタグ (任意)</title>
+       <para>
+         componentタグの子タグとして使った場合は、コンストラクタの引数になります。記述した順番でコンストラクタに渡されます。
+         initMethodタグの子タグとして使った場合は、メソッドの引数になります。記述した順番でメソッドに渡されます。
+                   引数値として、ダブルクォーテーションで括った値、componentタグでコンポーネントを指定、ボディに記述したPHPの結果を設定できます。
+       </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components>
+    <component class="Hoge">
+        <arg>"seasar"</arg>
+        <arg><component class="Foo"/></arg>
+        <initMethod name="addService">
+            <arg>new Bar</arg>
+        </initMethod>
+    </component>
+</components>
+]]></programlisting>
+   </sect2>
+
+
+    <!-- ################################################################## -->
+    <sect2 id="dicon.tag.property"><title>propertyタグ (任意)</title>
+      <para>componentタグの子タグとして使います。
+                プロパティ値として、ダブルクォーテーションで括った値、componentタグでコンポーネントを指定、ボディに記述したPHPの結果を設定できます。
+      </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components>
+    <component class="Hoge">
+        <property name="project">"seasar"</property>
+    </component>
+</components>
+]]></programlisting>
+      <blockquote>
+        <para>name属性 (必須)</para>
+        <blockquote>
+                     プロパティ名を指定します。
+        </blockquote>
+      </blockquote>
+
+   </sect2>
+
+
+    <!-- ################################################################## -->
+    <sect2 id="dicon.tag.method"><title>initMethodタグ (任意)</title>
+       <para>
+       componentタグの子タグとして使います。引数は、子タグでargタグを使います。name属性を書かずにボディにPHPを記述して、コンポーネントのメソッドを呼び出すこともできます。
+       initMethodタグが定義されているコンポーネント自身を表す$componentがinitMethodタグ内だけで有効なオブジェクトとして使えます。
+       </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components>
+    <component class="HashMap">
+        <initMethod name="put">
+            <arg>"aaa"</arg>
+            <arg>111</arg>
+        </initMethod>
+        <initMethod>$component->put("aaa", 111);</initMethod>
+        <initMethod>print "Hello";</initMethod>
+    </component>
+</components>
+]]></programlisting>
+      <blockquote>
+        <para>name属性 (任意)</para>
+        <blockquote>
+                     メソッド名を指定します。
+        </blockquote>
+      </blockquote>
+   </sect2>
+
+
+    <!-- ################################################################## -->
+    <sect2 id="dicon.tag.aspect"><title>aspectタグ (任意)</title>
+       <para>アスペクトをコンポーネントに組み込みます。aspectタグのボディでInterceptorの名前を指定します。</para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components>
+    <component name="trace" class="seasar::aop::interceptor::TraceInterceptor"/>
+    <component class="IndexAction">
+        <aspect pointcut=".*Action">trace</aspect>
+    </component>
+</components>
+]]></programlisting>
+      <blockquote>
+        <para>pointcut属性 (任意)</para>
+        <blockquote>
+          pointcut属性にカンマ区切りで対象となるメソッド名を指定することができます。pointcut属性を指定しない場合は、
+                    コンポーネントが実装しているインターフェースのすべてのメソッドが対象になります。メソッド名には正規表現が使用可能です。
+        </blockquote>
+      </blockquote>
+   </sect2>
+
+
+    <!-- ################################################################## -->
+    <sect2 id="dicon.tag.meta"><title>metaタグ (任意)</title>
+       <para>componentsタグ、componentタグ、argタグ、propertyタグの子タグとして使います。
+                メタデータ値として、ダブルクォーテーションで括った値、componentタグでコンポーネントを指定、ボディに記述したPHPの結果を設定できます。
+       </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components>
+    <meta name="project">"seasar"</meta>
+    <component class="Hoge">
+        <meta name="service">true</meta>
+    </component>
+</components>
+]]></programlisting>
+      <blockquote>
+        <para>name属性 (必須)</para>
+        <blockquote>
+                    メタ名を指定します。
+        </blockquote>
+      </blockquote>
+
+   </sect2>
+
+    <!-- ################################################################## -->
+    <sect2><title>descriptionタグ (任意)</title>
+       <para>
+                componentsタグ、componentタグ、argタグ、propertyタグの子タグとしてdescriptionタグを使うことができます。
+                  自由に説明を記述できます。
+       </para>
+   </sect2>
+  </sect1>
+
+
+  <sect1 id="dicon.config"><title>S2Container 設定ファイル</title>
+    <para>
+    S2Containerの各種設定は、seasar::container::Configクラスのプロパティとして設定します。
+    </para>
+    <blockquote>
+
+        <formalpara><title>DOM_VALIDATE</title></formalpara>
+        <para>
+        XML形式のダイコンファイルをLoadする際にDTD検証を行うかどうかを設定します。
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+seasar::container::Config::$DOM_VALIDATE = false;
+]]></programlisting>
+
+        <formalpara><title>CONTAINER_BUILDERS</title></formalpara>
+        <para>
+                ダイコンファイルのパースクラスを拡張子ごとに登録します。
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+seasar::container::Config::$CONTAINER_BUILDERS = array(
+                      'dicon' => 'seasar::container::factory::XmlS2ContainerBuilder',
+                      'xml'   => 'seasar::container::factory::XmlS2ContainerBuilder');
+]]></programlisting>
+
+        <formalpara><title>ENVIRONMENT</title></formalpara>
+        <para>
+                環境を指定します。この値はS2ApplicationContextやS2ContainerFactoryクラスでコンテナを生成する際に使用されます。
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+seasar::container::Config::$ENVIRONMENT = null;
+]]></programlisting>
+
+    </blockquote>    
+  </sect1>
+</chapter>
