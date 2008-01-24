@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
+"components21.dtd">
+<components>
+    <include path="seasar::container::factory::S2ContainerFactoryTest::$DICON_DIR . '/test03CycleB.dicon'"/>
+    <component name="a" class="seasar::container::factory::A_S2ContainerFactoryTest"/>
+</components>
