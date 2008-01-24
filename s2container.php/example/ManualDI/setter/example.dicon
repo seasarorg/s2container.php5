@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
+"components21.dtd">
+<components>
+    <component class="Action">
+        <property name="name">"seasar"</property>
+        <property name="year">2000 + 8</property>
+        <property name="service">Service</property>
+    </component>
+    <component class="Service"/>
+</components>
