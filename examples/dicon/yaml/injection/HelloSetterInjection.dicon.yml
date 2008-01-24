@@ -1,6 +1,0 @@
-components:
-    - component: .
-        - class: HelloSetterInjection
-            - property: .
-                name: "message"
-                - arg: Hello World!

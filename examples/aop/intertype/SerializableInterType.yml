@@ -1,5 +1,0 @@
-components:
-    - component: .
-        - class: "Hello2"
-        - interType: S2Container_SerializableInterType
-        - interType: S2Container_PropertyInterType

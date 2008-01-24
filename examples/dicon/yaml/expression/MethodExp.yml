@@ -1,5 +1,0 @@
-components:
-    - component: .
-        name: "method"
-        - class: "MethodExp"
-            - initMethod: $component->init(10)

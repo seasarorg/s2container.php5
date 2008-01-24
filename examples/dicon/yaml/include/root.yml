@@ -1,7 +1,0 @@
-components:
-    include:
-        - %YAML_DICON_DIR%/include/aaa.yml
-        - %YAML_DICON_DIR%/include/bbb.yml
-    - component: .
-        name: "root"
-        - class: "RootHelloClient"
