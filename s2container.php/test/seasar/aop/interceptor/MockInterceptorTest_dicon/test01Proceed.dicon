@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
+"components21.dtd">
+<components>
+    <component name="a" class="seasar::aop::interceptor::A_MockInterceptorTest">
+        <aspect pointcut=".+">mock</aspect>
+    </component>
+    <component name="mock" class="seasar::aop::interceptor::MockInterceptor">
+        <initMethod name="setReturnValue">
+            <arg>"foo"</arg>
+            <arg>"abc"</arg>
+        </initMethod>
+    </component>
+</components>
