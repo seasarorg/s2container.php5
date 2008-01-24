@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
-"components21.dtd">
-<components namespace="testArgValue">
-    <component name="n" class="N_S2Container_XmlS2ContainerBuilder">
-        <arg>"test value."</arg>
-    </component>
-</components>

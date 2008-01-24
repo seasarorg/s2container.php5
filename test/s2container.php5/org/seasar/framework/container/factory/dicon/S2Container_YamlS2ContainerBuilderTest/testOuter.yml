@@ -1,7 +1,0 @@
-components:
-    namespace: "testOuter"
-    - component: .
-        - class: "SubActionImpl_S2Container_YamlS2ContainerBuilder"
-        instance: "outer"
-    - component: .
-        - class: "CalculatorImpl_S2Container_YamlS2ContainerBuilder"

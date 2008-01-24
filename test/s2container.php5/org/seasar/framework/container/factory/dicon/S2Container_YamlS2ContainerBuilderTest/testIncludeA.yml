@@ -1,9 +1,0 @@
-components:
-    namespace: testIncludeA
-    include: [%DICON_DIR_S2Container_YamlS2ContainerBuilderTest%/testIncludeB.yml]
-    - component: .
-        name: "a"
-        - class: "A_S2Container_YamlS2ContainerBuilder"
-    - component: .
-        - class: A_S2Container_YamlS2ContainerBuilder
-        name: "b"
