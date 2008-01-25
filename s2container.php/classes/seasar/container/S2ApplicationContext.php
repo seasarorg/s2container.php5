@@ -299,7 +299,7 @@ class S2ApplicationContext {
                 continue;
             }
             if (seasar::util::Annotation::has($ref, self::BINDING_ANNOTATION)) {
-                self::setupPropertyDef($cd, $ref, $name);
+                self::setupPropertyDef($cd, $ref, $propDesc->getPropertyName());
             }
         }
 
