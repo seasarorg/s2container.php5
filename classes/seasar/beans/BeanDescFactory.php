@@ -22,7 +22,7 @@
  * @link      http://s2container.php5.seasar.org/
  * @version   SVN: $Id:$
  * @since     Class available since Release 2.0.0
- * @package   seasar.reflection
+ * @package   seasar.beans
  * @author    klove
  */
 namespace seasar::beans;
