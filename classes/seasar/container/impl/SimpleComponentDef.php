@@ -91,7 +91,7 @@ class SimpleComponentDef implements seasar::container::ComponentDef {
      * @see seasar::container::ComponentDef::getComponentClass()
      */
     public function getComponentClass() {
-        return $this->componentClass->getReflectionInstance();
+        return $this->componentClass;
     }
 
     /**

@@ -233,7 +233,6 @@ class S2ContainerImpl implements seasar::container::S2Container {
      * @param string $key
      */
     private function getComponentDefInternal($key) {
-        $componentDef = null;
         if (array_key_exists($key, $this->componentDefMap)) {
             $componentDef = $this->componentDefMap[$key];
             return $componentDef;
