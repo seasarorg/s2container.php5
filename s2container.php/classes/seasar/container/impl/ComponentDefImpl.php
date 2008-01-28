@@ -185,20 +185,6 @@ class ComponentDefImpl implements seasar::container::ComponentDef {
     }
 
     /**
-     * @see seasar::container::ComponentDef::init()
-    public function init() {
-        $this->getComponentDeployer()->init();
-    }
-     */
-
-    /**
-     * @see seasar::container::ComponentDef::destroy()
-    public function destroy() {
-        $this->getComponentDeployer()->destroy();
-    }
-     */
-
-    /**
      * @see seasar::container::util::ArgDefSupport::getArgDef()
      */
     public function getArgDef($index) {
