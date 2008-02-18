@@ -28,7 +28,7 @@
  * @link      http://s2container.php5.seasar.org/
  * @version   SVN: $Id:$
  * @since     Class available since Release 1.0.0
- * @package   seasar.container::exception
+ * @package   seasar.container.exception
  * @author    klove
  */
 namespace seasar::container::exception;
