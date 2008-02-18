@@ -155,6 +155,14 @@ class S2ContainerImpl implements seasar::container::S2Container {
         for ($i = 0; $i < $o; ++$i) {
             if ($classes[$i] !== $componentName) {
                 $this->registerMap($classes[$i], $componentDef);
+                $className = seasar::util::ClassUtil::getClassName($classes[$i]);
+                if ($className !== $classes[$i] and $className !== $componentName) {
+                    $this->registerMap($className, $componentDef);
+                }
+                $lcClassName = seasar::util::StringUtil::lcfirst($className);
+                if ($lcClassName !== $className and $lcClassName !== $classes[$i] and $lcClassName !== $componentName) {
+                    $this->registerMap($lcClassName, $componentDef);
+                }
             }
         }
     }

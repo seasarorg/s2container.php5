@@ -143,8 +143,11 @@ class BeanDesc {
             if ($this->beanClass->getProperty($name)->isPublic()){
                 $propertyDesc = new PublicPropertyDesc($this->beanClass, $name);
                 $this->propertyDescs[$name] = $propertyDesc;
-                if (preg_match('/^S2Binding\s+(.+)$/i', trim($value), $matches)){
+                if (preg_match('/^S2Binding(.*)$/i', trim($value), $matches)){
                     $typehint = trim($matches[1]);
+                    if ($typehint === '') {
+                        $typehint = $name;
+                    }
                     $matches = array();
                     if (preg_match('/^(.+)\[\]\s*$/', $typehint, $matches)) {
                         $propertyDesc->setArrayAcceptable(true);

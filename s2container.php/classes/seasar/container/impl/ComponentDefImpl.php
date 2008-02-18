@@ -22,7 +22,7 @@
  * @link      http://s2container.php5.seasar.org/
  * @version   SVN: $Id:$
  * @since     Class available since Release 1.0.0
- * @package   seasar.container::impl
+ * @package   seasar.container.impl
  * @author    klove
  */
 namespace seasar::container::impl;
