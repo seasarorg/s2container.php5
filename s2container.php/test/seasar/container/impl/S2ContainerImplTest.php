@@ -102,9 +102,6 @@ class S2ContainerImplTest extends ::PHPUnit_Framework_TestCase {
         $this->assertTrue($root->getComponent('a') === $child);
     }
 
-    public function testNamespace() {
-    }
-
     public function testMetaDef() {
     }
 
@@ -135,6 +132,26 @@ class S2ContainerImplTest extends ::PHPUnit_Framework_TestCase {
         }
     }
 
+    public function testComponentNames() {
+        $container = new S2ContainerImpl();
+        $componentDef = new ComponentDefImpl('seasar::container::impl::A_S2ContainerImplTest', 'hoge');
+        $container->register($componentDef);
+        $components = $container->findComponents('hoge');
+        $this->assertTrue($container->hasComponentDef('hoge'));
+        $this->assertTrue($container->hasComponentDef('A_S2ContainerImplTest'));
+        $this->assertTrue($container->hasComponentDef('a_S2ContainerImplTest'));
+    }
+
+    public function testPropertyBinding() {
+        $container = new S2ContainerImpl();
+        $componentDef = new ComponentDefImpl('seasar::container::impl::A_S2ContainerImplTest');
+        $container->register($componentDef);
+        $componentDef = new ComponentDefImpl('seasar::container::impl::D_S2ContainerImplTest', 'd');
+        $container->register($componentDef);
+        $component = $container->getComponent('d');
+        $this->assertTrue($component->a_S2ContainerImplTest instanceof seasar::container::impl::A_S2ContainerImplTest);
+    }
+
     public function setUp(){
         print PHP_EOL . __CLASS__ . '->' . $this->getName() . '()' . PHP_EOL;
     }
@@ -149,3 +166,6 @@ class B_S2ContainerImplTest{}
 
 class C_S2ContainerImplTest{}
 
+class D_S2ContainerImplTest{
+    public $a_S2ContainerImplTest = 's2binding';
+}

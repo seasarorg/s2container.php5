@@ -60,6 +60,15 @@ class BeanDescTest extends ::PHPUnit_Framework_TestCase {
         $this->assertTrue($propertyDesc->isArrayAcceptable());
     }
 
+    public function testGetPublicPropertyDefault() {
+        $bean = BeanDescFactory::getBeanDesc('seasar::beans::C_BeanDescTest');
+        $propertyDesc = $bean->getPropertyDesc('hogeLogic');
+        $this->assertTrue($propertyDesc instanceof PublicPropertyDesc);
+        $this->assertTrue($propertyDesc->getProperty() instanceof ReflectionProperty);
+        $this->assertEquals($propertyDesc->getTypehint(), 'hogeLogic');
+        $this->assertFalse($propertyDesc->isArrayAcceptable());
+    }
+
     public function testGetPublicPropertyException() {
         try {
             $bean = BeanDescFactory::getBeanDesc('seasar::beans::A_BeanDescTest');
@@ -199,3 +208,7 @@ class A_BeanDescTest {
 }
 
 class B_BeanDescTest{}
+
+class C_BeanDescTest {
+    public $hogeLogic = 'S2Binding';
+}
