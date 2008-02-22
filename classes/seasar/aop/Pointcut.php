@@ -73,9 +73,9 @@ final class Pointcut {
         if (!$targetClass->isAbstract() and
             !$targetClass->isInterface() and
             count($targetClass->getInterfaces()) === 0) {
-            $methods = seasar::util::ClassUtil::getImplementMethods($targetClass);
+            $methods = seasar::util::ClassUtil::getDeclaringMethods($targetClass);
         } else {
-            $methods = seasar::util::ClassUtil::getAbstractMethods($targetClass);
+            $methods = seasar::util::ClassUtil::getImplementMethods($targetClass);
         }
         $o = count($methods);
         if ($o > 0) {

@@ -52,9 +52,8 @@ class TooManyRegistrationRuntimeException extends seasar::exception::S2RuntimeEx
      *            1つのキーに登録された複数コンポーネントのクラスの配列
      */
     public function __construct($key, array $componentClasses) {
-        $args[] = $key;
-        $args[] = self::getClassNames($componentClasses);
         $this->componentClasses = $componentClasses;
+        parent::__construct(115, array($key, self::getClassNames($componentClasses)));
     }
     
     /**

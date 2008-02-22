@@ -58,8 +58,8 @@ class S2AopFactory {
 
         $enhancedClassRef = new ReflectionClass($enhancedClassName);
         $targetObj = seasar::util::ClassUtil::newInstance($enhancedClassRef, $args);
-        $targetObj->clazz_EnhancedByS2AOP                 = $targetClass;
-        $targetObj->concreteClazz_EnhancedByS2AOP         = $enhancedClassRef;
+        $targetObj->class_EnhancedByS2AOP                 = $targetClass;
+        $targetObj->concreteClass_EnhancedByS2AOP         = $enhancedClassRef;
         $targetObj->methodInterceptorsMap_EnhancedByS2AOP = $methodInterceptorsMap;
         $targetObj->parameters_EnhancedByS2AOP            = $parameters;
         return $targetObj;

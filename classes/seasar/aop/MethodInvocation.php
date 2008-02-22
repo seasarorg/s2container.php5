@@ -35,35 +35,10 @@ interface MethodInvocation {
     public function getMethod();
 
     /**
-     * アスペクト対象のクラスを返します。
-     * @return ReflectionClass
-     */
-    public function getTargetClass();
-
-    /**
-     * アスペクト対象のクラスのEnhancedクラスを返します。
-     * @return ReflectionClass
-     */
-    public function getConcreteClass();
-
-    /**
-     * Enhancedクラスに実装されているメソッドのReflectionMethodを返します。
-     * @return ReflectionMethod
-     */
-    public function getConcreteMethod();
-
-    /**
      * @see http://aopalliance.sourceforge.net/doc/org/aopalliance/intercept/Invocation.html#getArguments()
      * @return array
      */
     public function getArguments();
-
-    /**
-     * S2Aop.PHP用の拡張パラメータを返します。
-     * @param string $name
-     * @return mixed
-     */
-    public function getParameter($name);
 
     /**
      * @see http://aopalliance.sourceforge.net/doc/org/aopalliance/intercept/Joinpoint.html#getThis()

@@ -86,8 +86,8 @@ class EnhancedClassGenerator {
             $srcLine .= 'extends ' . $targetClass->getName() . ' { ';
         }
         $srcLine .= PHP_EOL;
-        $srcLine .= '    public $clazz_EnhancedByS2AOP = null;
-    public $concreteClazz_EnhancedByS2AOP = null;
+        $srcLine .= '    public $class_EnhancedByS2AOP = null;
+    public $concreteClass_EnhancedByS2AOP = null;
     public $methodInterceptorsMap_EnhancedByS2AOP = array();
     public $parameters_EnhancedByS2AOP = null;' . PHP_EOL;
         $abstractMethods = array();
@@ -109,7 +109,13 @@ class EnhancedClassGenerator {
         $srcLine .= '    private function __invokeMethodInvocationProceed_EnhancedByS2AOP() {
         $args = func_get_args();
         $methodName = array_pop($args);
-        $methodInvocation = new seasar::aop::impl::S2MethodInvocationImpl($this, $this->clazz_EnhancedByS2AOP, $this->clazz_EnhancedByS2AOP->getMethod($methodName), $this->concreteClazz_EnhancedByS2AOP, $this->concreteClazz_EnhancedByS2AOP->getMethod($methodName . \'_EnhancedByS2AOP\'), $args, $this->methodInterceptorsMap_EnhancedByS2AOP[$methodName], $this->parameters_EnhancedByS2AOP);
+        $methodInvocation = new seasar::aop::impl::S2MethodInvocationImpl($this,
+            $this->class_EnhancedByS2AOP,
+            $this->class_EnhancedByS2AOP->getMethod($methodName),
+            $this->concreteClass_EnhancedByS2AOP,
+            $args,
+            $this->methodInterceptorsMap_EnhancedByS2AOP[$methodName],
+            $this->parameters_EnhancedByS2AOP);
         return $methodInvocation->proceed();
     }' . PHP_EOL;
         $srcLine .= '}' . PHP_EOL;
@@ -173,7 +179,7 @@ class EnhancedClassGenerator {
      *     $methodName = array_pop($args);
      *     if (in_array($methodName, $this->abstractMethods_EnhancedByS2AOP)) {
      *         throw new seasar::aop::exception::AbstractMethodInvocationRuntimeException(
-     *                               $this->clazz_EnhancedByS2AOP->getName(), $methodName);
+     *                               $this->class_EnhancedByS2AOP->getName(), $methodName);
      *     }
      *     return call_user_func_array(array($this, 'parent::' . $methodName), $args);
      * }
@@ -186,11 +192,11 @@ class EnhancedClassGenerator {
     public static function addInvokeParentMethodSrc(array $abstractMethods) {
         $methods = implode('\',\'', $abstractMethods);
         $methodContent = '    private $abstractMethods_EnhancedByS2AOP = array(\'' . $methods . '\');
-    private function __invokeParentMethod_EnhancedByS2AOP() {
+    public function __invokeParentMethod_EnhancedByS2AOP() {
         $args = func_get_args();
         $methodName = array_pop($args);
         if (in_array($methodName, $this->abstractMethods_EnhancedByS2AOP)) {
-            throw new seasar::aop::exception::AbstractMethodInvocationRuntimeException($this->clazz_EnhancedByS2AOP->getName(), $methodName);
+            throw new seasar::aop::exception::AbstractMethodInvocationRuntimeException($this->class_EnhancedByS2AOP->getName(), $methodName);
         }
         return call_user_func_array(array($this, \'parent::\' . $methodName), $args);
     }';
@@ -229,9 +235,8 @@ class EnhancedClassGenerator {
         }
         $parentMethodDef  = preg_replace("/{$refMethod->getName()}/", $parentMethodName, $methodDef, 1) . PHP_EOL;
         $parentMethodContent ='        return $this->__invokeParentMethod_EnhancedByS2AOP(' . $args . ');' . PHP_EOL;
-        $methodContent = '    ' . $parentMethodDef . $parentMethodContent . '    }' . PHP_EOL;
 
-        $methodContent .= '    ' . $methodDef;
+        $methodContent = '    ' . $methodDef;
         $methodContent .= '
         if (array_key_exists(\'@@METHOD_NAME@@\', $this->methodInterceptorsMap_EnhancedByS2AOP)) {
             return $this->__invokeMethodInvocationProceed_EnhancedByS2AOP(' . $args . ');
@@ -301,13 +306,13 @@ class EnhancedClassGenerator {
      * @throw seasar::aop::exception::EnhancedClassGenerationRuntimeException
      */
     private static function validateTargetClass(ReflectionClass $targetClass) {
-        if ($targetClass->hasProperty('clazz_EnhancedByS2AOP') or
-            $targetClass->hasProperty('concreteClazz_EnhancedByS2AOP') or
+        if ($targetClass->hasProperty('class_EnhancedByS2AOP') or
+            $targetClass->hasProperty('concreteClass_EnhancedByS2AOP') or
             $targetClass->hasProperty('methodInterceptorsMap_EnhancedByS2AOP') or
             $targetClass->hasProperty('parameters_EnhancedByS2AOP') or
             $targetClass->hasMethod('__invokeParentMethod_EnhancedByS2AOP') or
             $targetClass->hasMethod('__invokeMethodInvocationProceed_EnhancedByS2AOP')) {
-            throw new seasar::aop::exception::EnhancedClassGenerationRuntimeException($targetClass->getName(), array('clazz_EnhancedByS2AOP', 'concreteClazz_EnhancedByS2AOP', 'methodInterceptorsMap_EnhancedByS2AOP', 'parameters_EnhancedByS2AOP'));
+            throw new seasar::aop::exception::EnhancedClassGenerationRuntimeException($targetClass->getName(), array('clazz_EnhancedByS2AOP', 'concreteClass_EnhancedByS2AOP', 'methodInterceptorsMap_EnhancedByS2AOP', 'parameters_EnhancedByS2AOP'));
         }
     }
 }

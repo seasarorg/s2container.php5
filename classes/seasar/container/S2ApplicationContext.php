@@ -59,6 +59,11 @@ class S2ApplicationContext {
     public static $READ_PARENT_ANNOTATION = false;
 
     /**
+     * @var boolean
+     */
+    public static $INCLUDE_DECLARED_CLASS = false;
+
+    /**
      * @var string
      */
     private static $envPrefix = null;
@@ -184,14 +189,28 @@ class S2ApplicationContext {
     /**
      * importされたクラスとダイコンファイルからS2Containerを生成します。
      *
-     * @param string $cacheKey
+     * @param string $namespace
      * @return seasar::container::S2Container
      */
-    public static function create($cacheKey = null) {
-        $dicons  = self::filter(array_values(self::$DICONS));
-        $classes = self::filter(array_keys(self::$CLASSES));
-        $classes = self::envFilter($classes);
-
+    public static function create($namespace = '') {
+        $dicons = array_values(self::$DICONS);
+        if (count($dicons) > 0) {
+            $dicons = self::filter($dicons);
+        }
+        $classes = array_keys(self::$CLASSES);
+        if (count($classes) > 0) {
+            $classes = self::filter($classes);
+        }
+        if (count($classes) > 0) {
+            $classes = self::envFilter($classes);
+        }
+        if (self::$INCLUDE_DECLARED_CLASS) {
+            $declaredClasses = array_merge(get_declared_interfaces(), get_declared_classes());
+            $declaredClasses = self::filter($declaredClasses);
+            $declaredClasses = self::envFilter($declaredClasses);
+            $declaredClasses = self::componentAnnotationFilter($declaredClasses);
+            $classes = array_values(array_unique(array_merge($classes, $declaredClasses)));
+        }
         if (count($dicons) == 0 and count($classes) == 0) {
             seasar::log::S2Logger::getLogger(__CLASS__)->info("dicon, class not found at all. create empty container.", __METHOD__);
             return new seasar::container::impl::S2ContainerImpl();
@@ -199,9 +218,26 @@ class S2ApplicationContext {
 
         $const = seasar::util::Annotation::$CONSTANT;
         seasar::util::Annotation::$CONSTANT = false;
-        $container = self::createInternal($dicons, $classes);
+        $container = self::createInternal($dicons, $classes, $namespace);
         seasar::util::Annotation::$CONSTANT = $const;
         return $container;
+    }
+
+    /**
+     * @S2Componentアノテーションが付いているクラスのみを抽出します。
+     *
+     * @param array $classes
+     * @return array
+     */
+    private static function componentAnnotationFilter($classes) {
+        $filterdClasses = array();
+        foreach($classes as $className) {
+            $refClass = new ReflectionClass($className);
+            if (seasar::util::Annotation::has($refClass, self::COMPONENT_ANNOTATION)) {
+                $filterdClasses[] = $className;
+            }
+        }
+        return $filterdClasses;
     }
 
     /**
@@ -215,7 +251,7 @@ class S2ApplicationContext {
      * @param array $classes
      * @return seasar::container::S2Container
      */
-    public static function createInternal($dicons, $classes) {
+    public static function createInternal($dicons, $classes, $namespaceArg = '') {
         $container = new seasar::container::impl::S2ContainerImpl();
         foreach ($dicons as $dicon) {
             $child = seasar::container::factory::S2ContainerFactory::includeChild($container, $dicon);
@@ -225,22 +261,52 @@ class S2ApplicationContext {
 
         $o = count($classes);
         $importedClasses = array();
+        $registeredComponentDefs = array();
         for($i=0; $i<$o; $i++) {
-            $cd = self::createComponentDef($classes[$i]);
+            list($cd, $namespace) = self::createComponentDef($classes[$i]);
             if ($cd === null) {
                 continue;
             }
+            $matches = array();
+            if ($namespaceArg !== '' and
+                preg_match("/^$namespaceArg(.*)$/", $namespace, $matches)) {
+                $namespace = preg_replace('/^\./', '', $matches[1]);
+            }
             $importedClasses[] = $classes[$i];
-            $container->register($cd);
+            $registeredComponentDefs[] = $cd;
+            self::registerComponentDef($container, $cd, $namespace);
             seasar::log::S2Logger::getLogger(__CLASS__)->debug("import component : {$classes[$i]}", __METHOD__);
         }
 
-        $o = count($importedClasses);
+        $o = count($registeredComponentDefs);
         for($i=0; $i<$o; $i++) {
-            self::setupComponentDef($container->getComponentDef($i), $classes[$i]);
+            self::setupComponentDef($registeredComponentDefs[$i], $classes[$i]);
         }
 
         return $container;
+    }
+
+    public static function registerComponentDef(seasar::container::S2Container $container, seasar::container::ComponentDef $cd, $namespace = '') {
+        if ($namespace == '') {
+            $container->register($cd);
+        } else {
+            $names = preg_split('/\./', $namespace, 2);
+            if ($container->hasComponentDef($names[0])) {
+                $childContainer = $container->getComponent($names[0]);
+                if (!$childContainer instanceof seasar::container::S2Container) {
+                    throw new seasar::container::exception::TooManyRegistrationRuntimeException($names[0], array($container->getComponentDef($names[0])->getComponentClass(), new ReflectionClass('seasar::container::impl::S2ContainerImpl')));
+                }
+            } else {
+                $childContainer = new seasar::container::impl::S2ContainerImpl();
+                $childContainer->setNamespace($names[0]);
+                $container->includeChild($childContainer);
+            }
+            $restName = '';
+            if (isset($names[1])) {
+                $restName = $names[1];
+            }
+            self::registerComponentDef($childContainer, $cd, $restName);
+        }
     }
 
     /**
@@ -253,7 +319,7 @@ class S2ApplicationContext {
     public static function createComponentDef($className) {
         $refClass = new ReflectionClass($className);
         if (!seasar::util::Annotation::has($refClass, self::COMPONENT_ANNOTATION)) {
-            return new seasar::container::impl::ComponentDefImpl($refClass);
+            return array(new seasar::container::impl::ComponentDefImpl($refClass) , null);
         }
 
         $componentInfo = seasar::util::Annotation::get($refClass, self::COMPONENT_ANNOTATION);
@@ -271,7 +337,11 @@ class S2ApplicationContext {
         if (isset($componentInfo['autoBinding'])) {
             $cd->setAutoBindingDef(seasar::container::assembler::AutoBindingDefFactory::getAutoBindingDef($componentInfo['autoBinding']));
         }
-        return $cd;
+        $namespace = '';
+        if (isset($componentInfo['namespace'])) {
+            $namespace = $componentInfo['namespace'];
+        }
+        return array($cd, $namespace);
     }
 
     /**

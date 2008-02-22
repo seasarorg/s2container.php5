@@ -54,7 +54,7 @@ final class ClassUtil {
      * @param ReflectionClass $clazz
      * @return array
      */
-    public function getImplementMethods(ReflectionClass $clazz) {
+    public function getDeclaringMethods(ReflectionClass $clazz) {
         if ($clazz->getParentClass() === null) {
             return $clazz->getMethods();
         }
@@ -78,7 +78,7 @@ final class ClassUtil {
      * @param ReflectionClass $clazz
      * @return array
      */
-    public function getAbstractMethods(ReflectionClass $clazz) {
+    public function getImplementMethods(ReflectionClass $clazz) {
         if ($clazz->isInterface()) {
             return $clazz->getMethods();
         }
@@ -97,6 +97,30 @@ final class ClassUtil {
         $o = count($interfaces);
         for ($i = 0; $i < $o; $i++) {
             $methods = array_merge($methods, $interfaces[$i]->getMethods());
+        }
+        return $methods;
+    }
+
+    /**
+     * すべてのAbstractメソッドを返します。
+     *
+     * @param ReflectionClass $clazz
+     * @return array
+     */
+    public function getAbstractMethods(ReflectionClass $clazz) {
+        if ($clazz->isInterface()) {
+            return $clazz->getMethods();
+        }
+
+        $methods = array();
+        if ($clazz->isAbstract()) {
+            $methodRefs = $clazz->getMethods();
+            $o = count($methodRefs);
+            for ($j = 0; $j < $o; $j++) {
+                if($methodRefs[$j]->isAbstract()){
+                    $methods[] = $methodRefs[$j];
+                }
+            }
         }
         return $methods;
     }

@@ -107,7 +107,7 @@ class Annotation {
             return null;
         }
         $matches = array();
-        $regex = "/$annotation\s*\((.+?)\)" . self::END_DELIMITER . '/iu';
+        $regex = "/$annotation\s*\((.*?)\)" . self::END_DELIMITER . '/iu';
         $comment = self::formatCommentLine($reflection->getDocComment());
         if (preg_match($regex, $comment, $matches)) {
             $value = EvalUtil::formatArrayExpression(trim($matches[1]));
