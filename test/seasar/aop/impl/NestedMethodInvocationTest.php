@@ -54,7 +54,6 @@ class NestedMethodInvocationTest extends ::PHPUnit_Framework_TestCase {
         $this->assertTrue($invocation->getMethod()->getName() === 'service');
         $this->assertTrue($invocation->getTargetClass()->getName() === 'seasar::aop::impl::A_NestedMethodInvocation');
         $this->assertTrue($invocation->getConcreteClass()->getName() === 'seasar::aop::impl::A_NestedMethodInvocation' .  seasar::aop::EnhancedClassGenerator::CLASS_NAME_POSTFIX);
-        $this->assertTrue($invocation->getConcreteMethod()->getName() === 'service' . seasar::aop::EnhancedClassGenerator::CLASS_NAME_POSTFIX);
         $this->assertTrue($invocation->getParameter('name') === 'hoge');
     }
 

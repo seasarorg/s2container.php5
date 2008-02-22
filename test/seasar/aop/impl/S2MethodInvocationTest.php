@@ -41,7 +41,6 @@ class S2MethodInvocationTest extends ::PHPUnit_Framework_TestCase {
         $this->assertTrue($invocation->getMethod()->getName() === 'service');
         $this->assertTrue($invocation->getTargetClass()->getName() === 'seasar::aop::impl::A_S2MethodInvocation');
         $this->assertTrue($invocation->getConcreteClass()->getName() === 'seasar::aop::impl::A_S2MethodInvocation' .  seasar::aop::EnhancedClassGenerator::CLASS_NAME_POSTFIX);
-        $this->assertTrue($invocation->getConcreteMethod()->getName() === 'service' . seasar::aop::EnhancedClassGenerator::CLASS_NAME_POSTFIX);
         $this->assertTrue($invocation->getParameter('name') === 'hoge');
     }
 
