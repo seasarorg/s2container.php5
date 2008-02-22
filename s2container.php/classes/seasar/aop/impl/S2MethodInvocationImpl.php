@@ -32,17 +32,15 @@ class S2MethodInvocationImpl implements seasar::aop::MethodInvocation {
     private $target           = null;
     private $targetClass      = null;
     private $method           = null;
-    private $concreteClass    = null;
-    private $concreteMethod   = null;
     private $arguments        = null;
     private $parameters       = null;
+    private $concreteClass    = null;
 
     /**
      * @param object $target MethodInvocationを保持するインスタンス
      * @param ReflectionClass $targetClass Aspect対象クラスのReflectionClass
      * @param ReflectionMethod $method Aspect対象メソッドのReflectionMethod
      * @param ReflectionClass $concreteClass Aspect対象クラスをEnhanceしたクラスのReflectionClass
-     * @param ReflectionMethod $concreteMethod Aspect対象クラスをEnhanceしたクラスのAspect対象メソッドのReflectionMethod
      * @param array $arguments Aspect対象メソッドの呼び出し引数
      * @param array $interceptors Aspectするインターセプタ群
      * @param array $parameters S2Aop.PHP用の拡張パラメータ
@@ -51,7 +49,6 @@ class S2MethodInvocationImpl implements seasar::aop::MethodInvocation {
                          ReflectionClass $targetClass,
                          ReflectionMethod $method,
                          ReflectionClass $concreteClass,
-                         ReflectionMethod $concreteMethod,
                          array $arguments,
                          array $interceptors,
                          array $parameters = null) {
@@ -59,35 +56,31 @@ class S2MethodInvocationImpl implements seasar::aop::MethodInvocation {
         $this->targetClass    = $targetClass;
         $this->method         = $method;
         $this->concreteClass  = $concreteClass;
-        $this->concreteMethod = $concreteMethod;
         $this->arguments      = $arguments;
         $this->interceptors   = $interceptors;
         $this->parameters     = $parameters;
     }
 
     /**
-     * @see seasar::aop::MethodInvocation::getTargetClass()
+     * アスペクト対象のクラスを返します。
+     * @return ReflectionClass
      */
     public function getTargetClass() {
         return $this->targetClass;
     }
 
     /**
-     * @see seasar::aop::MethodInvocation::getConcreteClass()
+     * Enhancedクラスに実装されているメソッドのReflectionMethodを返します。
+     * @return ReflectionMethod
      */
     public function getConcreteClass() {
         return $this->concreteClass;
     }
 
     /**
-     * @see seasar::aop::MethodInvocation::getConcreteMethod()
-     */
-    public function getConcreteMethod() {
-        return $this->concreteMethod;
-    }
-
-    /**
-     * @see seasar::aop::MethodInvocation::getParamaeter()
+     * S2Aop.PHP用の拡張パラメータを返します。
+     * @param string $name
+     * @return mixed
      */
     public function getParameter($name) {
         if (array_key_exists($name, $this->parameters)) {
@@ -124,7 +117,7 @@ class S2MethodInvocationImpl implements seasar::aop::MethodInvocation {
         if ($this->interceptorIndex < count($this->interceptors)) {
             return $this->interceptors[$this->interceptorIndex++]->invoke($this);
         } else {
-            return seasar::util::MethodUtil::invoke($this->concreteMethod, $this->target, $this->arguments);
+            return seasar::util::MethodUtil::invoke($this->concreteClass->getMethod('__invokeParentMethod_EnhancedByS2AOP'), $this->target, array_merge($this->arguments, array($this->method->getName())));
         }
     }
 }

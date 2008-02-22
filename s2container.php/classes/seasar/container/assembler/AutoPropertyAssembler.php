@@ -64,7 +64,7 @@ class AutoPropertyAssembler extends ManualPropertyAssembler {
                     throw $e;
                 }
             } catch (seasar::container::exception::ComponentNotFoundRuntimeException $e) {
-                seasar::log::S2Logger::getInstance(__CLASS__)->debug("no component found for typehint proerty. [{$s2clazz->getName()}::$propertyName]", __METHOD__);
+                seasar::log::S2Logger::getInstance(__CLASS__)->debug("no component found for typehint proerty. [{$componentDef->getComponentClass()}::{$propDesc->getPropertyName()}]", __METHOD__);
                 continue;
             }
             $propDesc->setValue($component, $value);

@@ -84,28 +84,25 @@ class NestedMethodInvocation implements seasar::aop::MethodInvocation {
     }
 
     /**
-     * @see seasar::aop::MethodInvocation::getTargetClass()
+     * アスペクト対象のクラスを返します。
+     * @return ReflectionClass
      */
     public function getTargetClass() {
         return $this->parent->getTargetClass();
     }
 
     /**
-     * @see seasar::aop::MethodInvocation::getConcreteClass()
+     * Enhancedクラスに実装されているメソッドのReflectionMethodを返します。
+     * @return ReflectionMethod
      */
     public function getConcreteClass() {
         return $this->parent->getConcreteClass();
     }
 
     /**
-     * @see seasar::aop::MethodInvocation::getConcreteMethod()
-     */
-    public function getConcreteMethod() {
-        return $this->parent->getConcreteMethod();
-    }
-
-    /**
-     * @see seasar::aop::MethodInvocation::getParamaeter()
+     * S2Aop.PHP用の拡張パラメータを返します。
+     * @param string $name
+     * @return mixed
      */
     public function getParameter($name) {
         return $this->parent->getParameter($name);
