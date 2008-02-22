@@ -65,20 +65,6 @@ class EnhancedClassGeneratorTest extends ::PHPUnit_Framework_TestCase {
         $obj = new $concreteClassName;
         $this->assertTrue(is_object($obj));
         $ref = new ReflectionClass($concreteClassName);
-        $this->assertTrue($ref->hasMethod('aa_bb1_EnhancedByS2AOP'));
-        $this->assertTrue($ref->hasMethod('aa_bb2_EnhancedByS2AOP'));
-        $this->assertTrue($ref->hasMethod('aa_bb3_EnhancedByS2AOP'));
-        $this->assertTrue($ref->hasMethod('aa_bb4_EnhancedByS2AOP'));
-        $this->assertTrue($ref->hasMethod('aa_bb5_EnhancedByS2AOP'));
-        $this->assertTrue($ref->hasMethod('aa_bb6_EnhancedByS2AOP'));
-        $this->assertTrue($ref->hasMethod('aa_bb7_EnhancedByS2AOP'));
-        $this->assertTrue($ref->hasMethod('aa_bb8_EnhancedByS2AOP'));
-        $this->assertTrue($ref->hasMethod('aa_bb9_EnhancedByS2AOP'));
-        $this->assertTrue($ref->hasMethod('aa_bb10_EnhancedByS2AOP'));
-        $this->assertTrue($ref->hasMethod('aa_bb11_EnhancedByS2AOP'));
-        $this->assertTrue($ref->hasMethod('aa_bb12_EnhancedByS2AOP'));
-        $this->assertFalse($ref->hasMethod('aa_bb13_EnhancedByS2AOP'));
-        $this->assertTrue($ref->hasMethod('aa_bb14_EnhancedByS2AOP'));
         $this->assertTrue($ref->hasMethod('__invokeParentMethod_EnhancedByS2AOP'));
         $this->assertTrue($ref->hasMethod('__invokeMethodInvocationProceed_EnhancedByS2AOP'));
 
@@ -101,20 +87,6 @@ class EnhancedClassGeneratorTest extends ::PHPUnit_Framework_TestCase {
         $obj = new $concreteClassName;
         $this->assertTrue(is_object($obj));
         $ref = new ReflectionClass($concreteClassName);
-        $this->assertTrue($ref->hasMethod('aa_bb1_EnhancedByS2AOP'));
-        $this->assertTrue($ref->hasMethod('aa_bb2_EnhancedByS2AOP'));
-        $this->assertTrue($ref->hasMethod('aa_bb3_EnhancedByS2AOP'));
-        $this->assertTrue($ref->hasMethod('aa_bb4_EnhancedByS2AOP'));
-        $this->assertTrue($ref->hasMethod('aa_bb5_EnhancedByS2AOP'));
-        $this->assertTrue($ref->hasMethod('aa_bb6_EnhancedByS2AOP'));
-        $this->assertTrue($ref->hasMethod('aa_bb7_EnhancedByS2AOP'));
-        $this->assertTrue($ref->hasMethod('aa_bb8_EnhancedByS2AOP'));
-        $this->assertTrue($ref->hasMethod('aa_bb9_EnhancedByS2AOP'));
-        $this->assertTrue($ref->hasMethod('aa_bb10_EnhancedByS2AOP'));
-        $this->assertTrue($ref->hasMethod('aa_bb11_EnhancedByS2AOP'));
-        $this->assertTrue($ref->hasMethod('aa_bb12_EnhancedByS2AOP'));
-        $this->assertFalse($ref->hasMethod('aa_bb13_EnhancedByS2AOP'));
-        $this->assertTrue($ref->hasMethod('aa_bb14_EnhancedByS2AOP'));
         $this->assertTrue($ref->hasMethod('__invokeParentMethod_EnhancedByS2AOP'));
         $this->assertTrue($ref->hasMethod('__invokeMethodInvocationProceed_EnhancedByS2AOP'));
 
@@ -137,20 +109,6 @@ class EnhancedClassGeneratorTest extends ::PHPUnit_Framework_TestCase {
         $obj = new $concreteClassName;
         $this->assertTrue(is_object($obj));
         $ref = new ReflectionClass($concreteClassName);
-        $this->assertTrue($ref->hasMethod('aa_bb1_EnhancedByS2AOP'));
-        $this->assertTrue($ref->hasMethod('aa_bb2_EnhancedByS2AOP'));
-        $this->assertTrue($ref->hasMethod('aa_bb3_EnhancedByS2AOP'));
-        $this->assertTrue($ref->hasMethod('aa_bb4_EnhancedByS2AOP'));
-        $this->assertTrue($ref->hasMethod('aa_bb5_EnhancedByS2AOP'));
-        $this->assertTrue($ref->hasMethod('aa_bb6_EnhancedByS2AOP'));
-        $this->assertTrue($ref->hasMethod('aa_bb7_EnhancedByS2AOP'));
-        $this->assertTrue($ref->hasMethod('aa_bb8_EnhancedByS2AOP'));
-        $this->assertTrue($ref->hasMethod('aa_bb9_EnhancedByS2AOP'));
-        $this->assertTrue($ref->hasMethod('aa_bb10_EnhancedByS2AOP'));
-        $this->assertTrue($ref->hasMethod('aa_bb11_EnhancedByS2AOP'));
-        $this->assertTrue($ref->hasMethod('aa_bb12_EnhancedByS2AOP'));
-        $this->assertFalse($ref->hasMethod('aa_bb13_EnhancedByS2AOP'));
-        $this->assertTrue($ref->hasMethod('aa_bb14_EnhancedByS2AOP'));
         $this->assertTrue($ref->hasMethod('__invokeParentMethod_EnhancedByS2AOP'));
         $this->assertTrue($ref->hasMethod('__invokeMethodInvocationProceed_EnhancedByS2AOP'));
 
@@ -425,7 +383,7 @@ class K_EnhancedClassGeneratorTest {
 class Foo_EnhancedClassGeneratorTest {}
 
 class L_EnhancedClassGenerator {
-    private $clazz_EnhancedByS2AOP = null;
+    private $class_EnhancedByS2AOP = null;
 }
 
 class M_EnhancedClassGenerator {
