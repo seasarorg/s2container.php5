@@ -276,6 +276,15 @@ class S2ApplicationContextTest extends ::PHPUnit_Framework_TestCase {
         $this->assertTrue($container->getComponent('bar')->hasComponentDef('b'));
     }
 
+    public function testGetComponentDef(){
+        S2ApplicationContext::init();
+        S2ApplicationContext::$CLASSES[__NAMESPACE__ . '::A_S2ApplicationContextTest'] = '';
+        $cd = S2ApplicationContext::getComponentDef(__NAMESPACE__ . '::A_S2ApplicationContextTest');
+        $this->assertTrue($cd instanceof seasar::container::ComponentDef);
+        $cd2 = S2ApplicationContext::getComponentDef(__NAMESPACE__ . '::A_S2ApplicationContextTest');
+        $this->assertTrue($cd === $cd2);
+    }
+
     public function setUp(){
         print PHP_EOL . __CLASS__ . '->' . $this->getName() . '()' . PHP_EOL;
         $this->sampleDir = dirname(__FILE__) . '/S2ApplicationContext_classes';
