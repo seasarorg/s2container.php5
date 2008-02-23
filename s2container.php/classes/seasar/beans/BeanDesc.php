@@ -149,9 +149,12 @@ class BeanDesc {
                         $typehint = $name;
                     }
                     $matches = array();
-                    if (preg_match('/^(.+)\[\]\s*$/', $typehint, $matches)) {
+                    if (preg_match('/^(.*)\[\]\s*$/', $typehint, $matches)) {
+                        $typehint = trim($matches[1]);
+                        if ($typehint === '') {
+                            $typehint = $name;
+                        }
                         $propertyDesc->setArrayAcceptable(true);
-                        $typehint = $matches[1];
                     } else {
                         $propertyDesc->setArrayAcceptable(false);
                     }

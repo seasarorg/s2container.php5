@@ -64,6 +64,11 @@ class S2ApplicationContext {
     public static $INCLUDE_DECLARED_CLASS = false;
 
     /**
+     * @var array
+     */
+    public static $SINGLETON_CONTAINERS = array();
+
+    /**
      * @var string
      */
     private static $envPrefix = null;
@@ -104,6 +109,7 @@ class S2ApplicationContext {
     public static function init() {
         self::$CLASSES = array();
         self::$DICONS  = array();
+        self::$SINGLETON_CONTAINERS = array();
         self::$includePattern = array();
         self::$excludePattern = array();
         self::$autoAspects    = array();
@@ -184,6 +190,31 @@ class S2ApplicationContext {
         } else {
             seasar::log::S2Logger::getLogger(__CLASS__)->debug("ignore file $fileName : $filePath", __METHOD__);
         }
+    }
+
+    /**
+     * コンテナを生成してコンポーネントを返します。生成したコンテナはsingletonとして保持します。
+     *
+     * @param string  $key
+     * @param string  $namespace
+     * @return object
+     */
+    public static function getComponent($key, $namespace = '') {
+        return self::getComponentDef($key, $namespace)->getComponent();
+    }
+
+    /**
+     * コンテナを生成して、ComponentDefを返します。生成したコンテナはsingletonとして保持します。
+     *
+     * @param string  $key
+     * @param string  $namespace
+     * @return seasar::container::ComponentDef
+     */
+    public static function getComponentDef($key, $namespace = '') {
+        if (!array_key_exists($namespace, self::$SINGLETON_CONTAINERS)) {
+            self::$SINGLETON_CONTAINERS[$namespace] = self::create($namespace);
+        }
+        return self::$SINGLETON_CONTAINERS[$namespace]->getComponentDef($key);
     }
 
     /**
