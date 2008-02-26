@@ -73,7 +73,6 @@ class AutoPropertyAssemblerTest extends ::PHPUnit_Framework_TestCase {
         $this->assertEquals(get_class($e[1]), __NAMESPACE__ . '::E_AutoPropertyAssemblerTest');
     }
 
-    /*
     public function testPublicPropertyArrayOne() {
         $container = new seasar::container::impl::S2ContainerImpl();
         $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::D_AutoPropertyAssemblerTest', 'd');
@@ -87,7 +86,6 @@ class AutoPropertyAssemblerTest extends ::PHPUnit_Framework_TestCase {
         $this->assertTrue(is_array($e));
         $this->assertEquals(get_class($e[0]), __NAMESPACE__ . '::E_AutoPropertyAssemblerTest');
     }
-    */
 
     public function setUp(){
         print PHP_EOL . __CLASS__ . '->' . $this->getName() . '()' . PHP_EOL;

@@ -94,6 +94,23 @@ class ManualConstructorAssemblerTest extends ::PHPUnit_Framework_TestCase {
         $this->assertTrue(count($component->getD()) === 2);
     }
 
+    public function testOneArrayInjection() {
+        $container = new seasar::container::impl::S2ContainerImpl();
+        $componentDefD2 = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::D_ManualConstructorAssemblerTest', 'd');
+        $container->register($componentDefD2);
+
+        $componentDefE = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::E_ManualConstructorAssemblerTest', 'e');
+        $argDef = new seasar::container::impl::ArgDef();
+        $argDef->setChildComponentDef($container->getComponentDef('d'));
+        $componentDefE->addArgDef($argDef);
+        $container->register($componentDefE);
+        $assembler = new ManualConstructorAssembler($componentDefE);
+
+        $component = $assembler->assemble();
+        $this->assertTrue(is_array($component->getD()));
+        $this->assertTrue(count($component->getD()) === 1);
+    }
+
     public function setUp(){
         print PHP_EOL . __CLASS__ . '->' . $this->getName() . '()' . PHP_EOL;
     }
