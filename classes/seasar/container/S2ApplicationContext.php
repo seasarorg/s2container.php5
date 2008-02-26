@@ -204,6 +204,13 @@ class S2ApplicationContext {
     }
 
     /**
+     * @see seasar::container::S2ApplicationContext::getComponent()
+     */
+    public static function get($key, $namespace = '') {
+        return self::getComponent($key, $namespace);
+    }
+
+    /**
      * コンテナを生成して、ComponentDefを返します。生成したコンテナはsingletonとして保持します。
      *
      * @param string  $key

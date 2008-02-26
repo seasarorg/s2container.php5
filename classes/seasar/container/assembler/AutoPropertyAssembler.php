@@ -53,6 +53,9 @@ class AutoPropertyAssembler extends ManualPropertyAssembler {
             $value   = null;
             try {
                 $value = $container->getComponent($propDesc->getTypehint());
+                if ($propDesc->isArrayAcceptable()) {
+                    $value = array($value);
+                }
             } catch (seasar::container::exception::TooManyRegistrationRuntimeException $e) {
                 if ($propDesc->isArrayAcceptable()) {
                     $childComponentDefs = $container->getComponentDef($propDesc->getTypehint())->getComponentDefs();

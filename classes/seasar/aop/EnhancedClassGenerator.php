@@ -136,7 +136,12 @@ class EnhancedClassGenerator {
             if ($param->isArray()) {
                 $paramSrc .= 'array ';
             } else if ($param->getClass() !== null) {
-                $paramSrc .= $param->getClass()->getName() . ' ';
+                $clazz = $param->getClass();
+                $className = $clazz->getName();
+                if (seasar::util::ClassUtil::isGlobalClass($clazz)) {
+                    $className = '::' . $className;
+                }
+                $paramSrc .= $className . ' ';
             }
             if ($param->isPassedByReference()) {
                 $paramSrc .= '&';

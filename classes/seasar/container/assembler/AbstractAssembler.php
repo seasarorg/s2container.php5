@@ -84,6 +84,9 @@ abstract class AbstractAssembler {
         $value  = null;
         try {
             $value = $argDef->getValue();
+            if ($isArrayAcceptable) {
+                $value = array($value);
+            }
         } catch(seasar::container::exception::TooManyRegistrationRuntimeException $e) {
             if ($isArrayAcceptable) {
                 $childComponentDefs = $argDef->getChildComponentDef()->getComponentDefs();
