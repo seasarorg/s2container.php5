@@ -195,6 +195,8 @@ class EnhancedClassGeneratorTest extends ::PHPUnit_Framework_TestCase {
         $this->assertEquals($methodDef,'public function o($o = 100) {');
         $methodDef = EnhancedClassGenerator::getMethodDefSrc($targetClass->getMethod('p'));
         $this->assertEquals($methodDef,'public function p($p = 0) {');
+        $methodDef = EnhancedClassGenerator::getMethodDefSrc($targetClass->getMethod('q'));
+        $this->assertEquals($methodDef,'public function q(::Sample_EnhancedClassGenerator $sample = null) {');
     }
 
     public function setUp(){
@@ -361,6 +363,7 @@ class J_EnhancedClassGeneratorTest {
     function aa_bb1_EnhancedByS2AOP(){}
 }
 
+require_once(dirname(__FILE__) . '/Sample_EnhancedClassGenerator.php');
 class K_EnhancedClassGeneratorTest {
     public function a(){}
     public function b($b){}
@@ -378,6 +381,7 @@ class K_EnhancedClassGeneratorTest {
     public function n($n = false){}
     public function o($o = 100){}
     public function p($p = 0){}
+    public function q(::Sample_EnhancedClassGenerator $sample = null){}
 }
 
 class Foo_EnhancedClassGeneratorTest {}
@@ -390,3 +394,4 @@ class M_EnhancedClassGenerator {
     public function service_EnhancedByS2AOP(){}
     public function service(){}
 }
+

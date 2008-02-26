@@ -122,6 +122,60 @@ class InitMethodAssemblerTest extends ::PHPUnit_Framework_TestCase {
         $this->assertEquals($component->b, 2007);
     }
 
+    public function testManualArrayAssemble() {
+        $container = new seasar::container::impl::S2ContainerImpl();
+        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::E_InitMethodAssemblerTest', 'e');
+        $container->register($componentDef);
+        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::E_InitMethodAssemblerTest', 'e');
+        $container->register($componentDef);
+
+        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::D_InitMethodAssemblerTest');
+        $container->register($componentDef);
+
+        $methodDef = new seasar::container::impl::InitMethodDef('foo');
+        $componentDef->addInitMethodDef($methodDef);
+        $argDef = new seasar::container::impl::ArgDef;
+        $argDef->setChildComponentDef($container->getComponentDef('e'));
+        $methodDef->addArgDef($argDef);
+        $argDef = new seasar::container::impl::ArgDef(2007);
+        $methodDef->addArgDef($argDef);
+
+        $component = new seasar::container::assembler::D_InitMethodAssemblerTest;
+        $assembler = new InitMethodAssembler($componentDef);
+        $assembler->assemble($component);
+
+        $this->assertTrue(is_array($component->e));
+        $this->assertTrue(count($component->e) == 2);
+        $this->assertTrue(get_class($component->e[1]) == __NAMESPACE__ . '::E_InitMethodAssemblerTest');
+        $this->assertEquals($component->a, 2007);
+    }
+
+    public function testManualOneArrayAssemble() {
+        $container = new seasar::container::impl::S2ContainerImpl();
+        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::E_InitMethodAssemblerTest', 'e');
+        $container->register($componentDef);
+
+        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::D_InitMethodAssemblerTest');
+        $container->register($componentDef);
+
+        $methodDef = new seasar::container::impl::InitMethodDef('foo');
+        $componentDef->addInitMethodDef($methodDef);
+        $argDef = new seasar::container::impl::ArgDef;
+        $argDef->setChildComponentDef($container->getComponentDef('e'));
+        $methodDef->addArgDef($argDef);
+        $argDef = new seasar::container::impl::ArgDef(2007);
+        $methodDef->addArgDef($argDef);
+
+        $component = new seasar::container::assembler::D_InitMethodAssemblerTest;
+        $assembler = new InitMethodAssembler($componentDef);
+        $assembler->assemble($component);
+
+        $this->assertTrue(is_array($component->e));
+        $this->assertTrue(count($component->e) == 1);
+        $this->assertTrue(get_class($component->e[0]) == __NAMESPACE__ . '::E_InitMethodAssemblerTest');
+        $this->assertEquals($component->a, 2007);
+    }
+
     public function setUp(){
         print PHP_EOL . __CLASS__ . '->' . $this->getName() . '()' . PHP_EOL;
     }
@@ -158,7 +212,12 @@ class C_InitMethodAssemblerTest {
 }
 
 class D_InitMethodAssemblerTest {
-    public $name = 'S2Binding hoge[]';
+    public $a = null;
+    public $e = null;
+    public function foo(array $e, $a) {
+        $this->a = $a;
+        $this->e = $e;
+    }
 }
 
 class E_InitMethodAssemblerTest {}

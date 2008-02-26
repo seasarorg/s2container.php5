@@ -100,7 +100,6 @@ class ManualPropertyAssemblerTest extends ::PHPUnit_Framework_TestCase {
         }
     }
 
-    /*
     public function testManualAssembleWithPublicPropertyArrayOne() {
         $container = new seasar::container::impl::S2ContainerImpl();
         $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::D_ManualPropertyAssemblerTest', 'd');
@@ -115,7 +114,6 @@ class ManualPropertyAssemblerTest extends ::PHPUnit_Framework_TestCase {
         $this->assertTrue(is_array($component->name));
         $this->assertEquals(count($component->name), 1);
     }
-    */
 
     public function setUp(){
         print PHP_EOL . __CLASS__ . '->' . $this->getName() . '()' . PHP_EOL;
