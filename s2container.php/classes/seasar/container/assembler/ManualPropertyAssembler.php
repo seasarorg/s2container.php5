@@ -53,6 +53,9 @@ class ManualPropertyAssembler extends AbstractAssembler {
                 $propDesc = $beanDesc->getPropertyDesc($propertyName);
                 try {
                     $value = $propertyDef->getValue();
+                    if ($propDesc->isArrayAcceptable()) {
+                        $value = array($value);
+                    }
                 } catch(seasar::container::exception::TooManyRegistrationRuntimeException $e) {
                     if ($propDesc->isArrayAcceptable()) {
                         $childComponentDefs = $propertyDef->getChildComponentDef()->getComponentDefs();

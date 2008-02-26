@@ -159,6 +159,22 @@ final class ClassUtil {
     public static function getNamespace($className) {
         $items = explode('::', $className);
         array_pop($items);
+        if (count($items) == 0) {
+            return '::';
+        }
         return implode('::', $items);
+    }
+
+    /**
+     * グローバルクラスかどうかを返します。
+     *
+     * @param ReflectionClass $clazz
+     * @return boolean
+     */
+    public static function isGlobalClass(ReflectionClass $clazz) {
+        if (preg_match('/[^:]+::/', $clazz->getName())) {
+            return false;
+        }
+        return true;
     }
 }
