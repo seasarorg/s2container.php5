@@ -183,38 +183,43 @@ class Paginate {
      * 
      * @param object $dao
      * @param string $methodName
+     * @param string $totalMethodName
      * @return array
      * @throw Exception
      *        Daoが$methodNameメソッドを実装していない場合にスローされます。
      *        Daoが$methodName . 'Total' メソッドを実装していない場合にスローされます。
      *        全件数が取得できない場合にスローされます。
      */
-    final public function find($dao, $methodName) {
-        $totalMethodName = $methodName . 'Total';
+    final public function find($dao, $methodName, $totalMethodName = null) {
+        if ($totalMethodName === null) {
+            $totalMethodName = $methodName . 'Total';
+        }
 
         if (!in_array($methodName, get_class_methods($dao))) {
             throw new Exception("method [$methodName] not found.");
         }
 
-        if (!in_array($totalMethodName, get_class_methods($dao))) {
-            throw new Exception("method [$totalMethodName] not found.");
-        }
+        if ($this->total === null) {
+            if (!in_array($totalMethodName, get_class_methods($dao))) {
+                throw new Exception("method [$totalMethodName] not found.");
+            }
 
-        $rows = $dao->$totalMethodName($this);
-        if (count($rows) != 1) {
-            throw new Exception('could not get total.');
-        }
+            $rows = $dao->$totalMethodName($this);
+            if (count($rows) != 1) {
+                throw new Exception('could not get total.');
+            }
 
-        $values = array_values((array)$rows[0]);
-        if (count($values) != 1) {
-            throw new Exception('could not specify total.');
-        }
+            $values = array_values((array)$rows[0]);
+            if (count($values) != 1) {
+                throw new Exception('could not specify total.');
+            }
 
-        if (! is_numeric($values[0])) {
-            throw new Exception('invalid total:' . $values[0]);
-        }
+            if (! is_numeric($values[0])) {
+                throw new Exception('invalid total:' . $values[0]);
+            }
 
-        $this->setTotal($values[0]);
+            $this->setTotal($values[0]);
+        }
         return $dao->$methodName($this);
     }
 }
