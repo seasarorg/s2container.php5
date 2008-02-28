@@ -191,15 +191,15 @@ class Paginate {
      *        全件数が取得できない場合にスローされます。
      */
     final public function find($dao, $methodName, $totalMethodName = null) {
-        if ($totalMethodName === null) {
-            $totalMethodName = $methodName . 'Total';
-        }
-
         if (!in_array($methodName, get_class_methods($dao))) {
             throw new Exception("method [$methodName] not found.");
         }
 
         if ($this->total === null) {
+            if ($totalMethodName === null) {
+                $totalMethodName = $methodName . 'Total';
+            }
+
             if (!in_array($totalMethodName, get_class_methods($dao))) {
                 throw new Exception("method [$totalMethodName] not found.");
             }
@@ -220,6 +220,7 @@ class Paginate {
 
             $this->setTotal($values[0]);
         }
+
         return $dao->$methodName($this);
     }
 }
