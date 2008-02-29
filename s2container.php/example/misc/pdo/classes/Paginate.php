@@ -118,6 +118,9 @@ class Paginate {
      * @param integer $window
      */
     final public function setWindow($window) {
+        if ($window < 2) {
+            $window = 2;
+        }
         $this->window = $window;
     }
 
@@ -163,17 +166,27 @@ class Paginate {
      * @return array
      */
     final public function pages() {
-        $diff = round($this->window / 2);
-        $pages = array();
-        $totalPage = $this->getTotalPage();
-        $i = 0;
-        $j = $this->page - $diff + 1;
-        while($i < $this->window) {
-            if (0 < $j and $j <= $totalPage) {
-                $pages[] = $j;
+        $half = floor($this->window / 2);
+        if ($this->getTotalPage() < $this->window) {
+            $pages = range(1, $this->getTotalPage());
+        } else if ($this->page < $half + 1) {
+            $pages = range(1, $this->window);
+        } else if ($this->getTotalPage() - $half <= $this->page) {
+            $min = $this->getTotalPage() - $this->window + 1;
+            $max = $this->getTotalPage();
+            if ($this->window % 2 == 0 and
+                $this->getTotalPage() - $this->page >= $half) {
+                $min--;
+                $max--;
             }
-            $j++;
-            $i++;
+            $pages = range($min, $max);
+        } else {
+            $min = $this->page - $half;
+            $max = $this->page + $half;
+            if ($this->window % 2 == 0) {
+                $max--;
+            }
+            $pages = range($min, $max);
         }
         return $pages;
     }

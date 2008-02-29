@@ -93,32 +93,120 @@ class PaginateTest extends ::PHPUnit_Framework_TestCase {
 
     public function testPages() {
         $paginate = new Paginate;
-        $paginate->setTotal(55);
+        $paginate->setWindow(5);
+        $paginate->setTotal(30); // total pages : 3
+        $paginate->setPage(1);
         $this->assertEquals($paginate->pages(), array(1,2,3));
 
+        $paginate->setWindow(5);
+        $paginate->setTotal(200); // total pages : 20
+        $paginate->setPage(1);
+        $this->assertEquals($paginate->pages(), array(1,2,3,4,5));
+        $paginate->setPage(2);
+        $this->assertEquals($paginate->pages(), array(1,2,3,4,5));
         $paginate->setPage(3);
         $this->assertEquals($paginate->pages(), array(1,2,3,4,5));
-
         $paginate->setPage(4);
         $this->assertEquals($paginate->pages(), array(2,3,4,5,6));
-
         $paginate->setPage(5);
-        $this->assertEquals($paginate->pages(), array(3,4,5,6));
+        $this->assertEquals($paginate->pages(), array(3,4,5,6,7));
 
+        $paginate->setWindow(5);
+        $paginate->setTotal(200); // total pages : 20
+        $paginate->setPage(20);
+        $this->assertEquals($paginate->pages(), array(16,17,18,19,20));
+        $paginate->setPage(19);
+        $this->assertEquals($paginate->pages(), array(16,17,18,19,20));
+        $paginate->setPage(18);
+        $this->assertEquals($paginate->pages(), array(16,17,18,19,20));
+        $paginate->setPage(17);
+        $this->assertEquals($paginate->pages(), array(15,16,17,18,19));
+        $paginate->setPage(16);
+        $this->assertEquals($paginate->pages(), array(14,15,16,17,18));
+
+        $paginate->setWindow(5);
+        $paginate->setTotal(200); // total pages : 20
         $paginate->setPage(6);
-        $this->assertEquals($paginate->pages(), array(4,5,6));
+        $this->assertEquals($paginate->pages(), array(4,5,6,7,8));
 
-        $paginate->setWindow(10);
-        $this->assertEquals($paginate->pages(), array(2,3,4,5,6));
+        $paginate->setWindow(5);
+        $paginate->setTotal(200); // total pages : 20
+        $paginate->setPage(14);
+        $this->assertEquals($paginate->pages(), array(12,13,14,15,16));
 
-        $paginate->setPage(5);
-        $this->assertEquals($paginate->pages(), array(1,2,3,4,5,6));
-
-        $paginate->setPage(4);
-        $this->assertEquals($paginate->pages(), array(1,2,3,4,5,6));
-
+        $paginate->setWindow(6);
+        $paginate->setTotal(200); // total pages : 20
         $paginate->setPage(1);
         $this->assertEquals($paginate->pages(), array(1,2,3,4,5,6));
+        $paginate->setPage(2);
+        $this->assertEquals($paginate->pages(), array(1,2,3,4,5,6));
+        $paginate->setPage(3);
+        $this->assertEquals($paginate->pages(), array(1,2,3,4,5,6));
+        $paginate->setPage(4);
+        $this->assertEquals($paginate->pages(), array(1,2,3,4,5,6));
+        $paginate->setPage(5);
+        $this->assertEquals($paginate->pages(), array(2,3,4,5,6,7));
+
+        $paginate->setWindow(6);
+        $paginate->setTotal(200); // total pages : 20
+        $paginate->setPage(20);
+        $this->assertEquals($paginate->pages(), array(15,16,17,18,19,20));
+        $paginate->setPage(19);
+        $this->assertEquals($paginate->pages(), array(15,16,17,18,19,20));
+        $paginate->setPage(18);
+        $this->assertEquals($paginate->pages(), array(15,16,17,18,19,20));
+        $paginate->setPage(17);
+        $this->assertEquals($paginate->pages(), array(14,15,16,17,18,19));
+        $paginate->setPage(16);
+        $this->assertEquals($paginate->pages(), array(13,14,15,16,17,18));
+
+        $paginate->setWindow(6);
+        $paginate->setTotal(200); // total pages : 20
+        $paginate->setPage(6);
+        $this->assertEquals($paginate->pages(), array(3,4,5,6,7,8));
+        $paginate->setPage(7);
+        $this->assertEquals($paginate->pages(), array(4,5,6,7,8,9));
+
+        $paginate->setWindow(6);
+        $paginate->setTotal(200); // total pages : 20
+        $paginate->setPage(14);
+        $this->assertEquals($paginate->pages(), array(11,12,13,14,15,16));
+        $paginate->setPage(13);
+        $this->assertEquals($paginate->pages(), array(10,11,12,13,14,15));
+
+        $paginate->setWindow(2);
+        $paginate->setTotal(5); // total pages : 1
+        $paginate->setPage(1);
+        $this->assertEquals($paginate->pages(), array(1));
+
+        $paginate->setWindow(2);
+        $paginate->setTotal(20); // total pages : 2
+        $paginate->setPage(1);
+        $this->assertEquals($paginate->pages(), array(1,2));
+        $paginate->setPage(2);
+        $this->assertEquals($paginate->pages(), array(1,2));
+
+        $paginate->setWindow(2);
+        $paginate->setTotal(200); // total pages : 20
+        $paginate->setPage(1);
+        $this->assertEquals($paginate->pages(), array(1,2));
+        $paginate->setPage(2);
+        $this->assertEquals($paginate->pages(), array(1,2));
+        $paginate->setPage(3);
+        $this->assertEquals($paginate->pages(), array(2,3));
+        $paginate->setPage(4);
+        $this->assertEquals($paginate->pages(), array(3,4));
+        $paginate->setPage(5);
+        $this->assertEquals($paginate->pages(), array(4,5));
+
+        $paginate->setPage(20);
+        $this->assertEquals($paginate->pages(), array(19,20));
+        $paginate->setPage(19);
+        $this->assertEquals($paginate->pages(), array(18,19));
+        $paginate->setPage(18);
+        $this->assertEquals($paginate->pages(), array(17,18));
+        $paginate->setPage(17);
+        $this->assertEquals($paginate->pages(), array(16,17));
     }
 
     public function setUp(){
