@@ -171,7 +171,7 @@ class Paginate {
         } else {
             $start = $this->page - floor($this->window / 2);
             $start = $start < 1 ? 1 : $start;
-            $pages = range($start, $this->window + $start -1);
+            $pages = range($start, $start + $this->window -1);
             if ($this->getTotalPage() < $pages[$this->window - 1]) {
                 $diff = $pages[$this->window - 1] - $this->getTotalPage();
                 foreach ($pages as &$page) {
