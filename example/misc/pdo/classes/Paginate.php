@@ -166,27 +166,18 @@ class Paginate {
      * @return array
      */
     final public function pages() {
-        $half = floor($this->window / 2);
-        if ($this->getTotalPage() < $this->window) {
+        if ($this->getTotalPage() <= $this->window) {
             $pages = range(1, $this->getTotalPage());
-        } else if ($this->page < $half + 1) {
-            $pages = range(1, $this->window);
-        } else if ($this->getTotalPage() - $half <= $this->page) {
-            $min = $this->getTotalPage() - $this->window + 1;
-            $max = $this->getTotalPage();
-            if ($this->window % 2 == 0 and
-                $this->getTotalPage() - $this->page >= $half) {
-                $min--;
-                $max--;
-            }
-            $pages = range($min, $max);
         } else {
-            $min = $this->page - $half;
-            $max = $this->page + $half;
-            if ($this->window % 2 == 0) {
-                $max--;
+            $start = $this->page - floor($this->window / 2);
+            $start = $start < 1 ? 1 : $start;
+            $pages = range($start, $this->window + $start -1);
+            if ($this->getTotalPage() < $pages[$this->window - 1]) {
+                $diff = $pages[$this->window - 1] - $this->getTotalPage();
+                foreach ($pages as &$page) {
+                    $page -= $diff;
+                }
             }
-            $pages = range($min, $max);
         }
         return $pages;
     }
