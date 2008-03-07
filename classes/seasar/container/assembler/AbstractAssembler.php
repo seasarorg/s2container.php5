@@ -84,7 +84,7 @@ abstract class AbstractAssembler {
         $value  = null;
         try {
             $value = $argDef->getValue();
-            if ($isArrayAcceptable) {
+            if ($isArrayAcceptable and !is_array($value)) {
                 $value = array($value);
             }
         } catch(seasar::container::exception::TooManyRegistrationRuntimeException $e) {

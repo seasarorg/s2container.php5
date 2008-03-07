@@ -52,19 +52,10 @@ class AutoPropertyAssembler extends ManualPropertyAssembler {
             }
             $value   = null;
             try {
-                $value = $container->getComponent($propDesc->getTypehint());
                 if ($propDesc->isArrayAcceptable()) {
-                    $value = array($value);
-                }
-            } catch (seasar::container::exception::TooManyRegistrationRuntimeException $e) {
-                if ($propDesc->isArrayAcceptable()) {
-                    $childComponentDefs = $container->getComponentDef($propDesc->getTypehint())->getComponentDefs();
-                    $value = array();
-                    foreach ($childComponentDefs as $childComponentDef) {
-                        $value[] = $childComponentDef->getComponent();
-                    }
+                    $value = $container->findComponents($propDesc->getTypehint());
                 } else {
-                    throw $e;
+                    $value = $container->getComponent($propDesc->getTypehint());
                 }
             } catch (seasar::container::exception::ComponentNotFoundRuntimeException $e) {
                 seasar::log::S2Logger::getInstance(__CLASS__)->debug("no component found for typehint proerty. [{$componentDef->getComponentClass()}::{$propDesc->getPropertyName()}]", __METHOD__);
