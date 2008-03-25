@@ -77,6 +77,22 @@ class PublicPropertyDesc extends AbstractPropertyDesc {
     }
 
     /**
+     * Getterメソッドを持っているかどうかを返します。
+     * @return boolean
+     */
+    public function hasReadMethod() {
+        return true;
+    }
+
+    /**
+     * Setterメソッドを持っているかどうかを返します。
+     * @return boolean
+     */
+    public function hasWriteMethod() {
+        return true;
+    }
+
+    /**
      * @see seasar::beans::AbstractPropertyDesc::setValue()
      */
     public function setValue($instance, $value) {

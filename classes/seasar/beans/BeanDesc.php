@@ -76,6 +76,15 @@ class BeanDesc {
     }
 
     /**
+     * PropertyDesc数を返します
+     *
+     * @return integer
+     */
+    public function getPropertyDescSize() {
+        return count($this->propertyDescs);
+    }
+
+    /**
      * 指定されたプロパティ名についてPropertyDescが存在するかを返します。
      *
      * @param string $name
@@ -106,6 +115,15 @@ class BeanDesc {
      */
     public function getTypehintPropertyDescs() {
         return $this->typehintPropertyDescs;
+    }
+
+    /**
+     * タイプヒントされているPropertyDesc数を返します
+     *
+     * @return integer
+     */
+    public function getTypehintPropertyDescSize() {
+        return count($this->typehintPropertyDescs);
     }
 
     /**
@@ -143,7 +161,7 @@ class BeanDesc {
             if ($this->beanClass->getProperty($name)->isPublic()){
                 $propertyDesc = new PublicPropertyDesc($this->beanClass, $name);
                 $this->propertyDescs[$name] = $propertyDesc;
-                if (preg_match('/^S2Binding(.*)$/i', trim($value), $matches)){
+                if (is_string($value) and preg_match('/^S2Binding(.*)$/i', trim($value), $matches)){
                     $typehint = trim($matches[1]);
                     if ($typehint === '') {
                         $typehint = $name;

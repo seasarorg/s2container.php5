@@ -76,7 +76,7 @@ class EnhancedClassGenerator {
         $className = seasar::util::ClassUtil::getClassName($concreteClassName);
         $packageName = seasar::util::ClassUtil::getNamespace($concreteClassName);
         $srcLine = '';
-        if ($packageName != '') {
+        if ($packageName != '::') {
             $srcLine = 'namespace ' . $packageName . ';' . PHP_EOL;
         }
         $srcLine .= 'class ' . $className . ' ';

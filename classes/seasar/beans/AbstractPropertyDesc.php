@@ -26,29 +26,7 @@
  * @author    klove
  */
 namespace seasar::beans;
-abstract class AbstractPropertyDesc {
-
-    /**
-     * インスタンスのプロパティ値を設定します。
-     * @param object $instance
-     * @param mixed $value
-     */
-    abstract public function setValue($instance, $value);
-
-    /**
-     * インスタンスのプロパティ値を返します。
-     * @param object $instance
-     * @return mixed
-     */
-    abstract public function getValue($instance);
-
-    /**
-     * プロパティのReflectionClassを返します。
-     *  - PublicPropertyDescの場合は、プロパティのReflectionProperty
-     *  - AccessorMethodPropertyDescの場合は、セッターメソッドのReflectionMethod
-     * @return ReflectionClass|ReflectionProperty|ReflectionMethod
-     */
-    abstract public function getReflection();
+abstract class AbstractPropertyDesc implements PropertyDesc {
 
     /**
      * @var string
@@ -83,7 +61,7 @@ abstract class AbstractPropertyDesc {
      */
     public function __construct(ReflectionClass $beanClass, $propName) {
         $this->beanClass = $beanClass;
-        $this->propertyName    = $propName;
+        $this->propertyName = $propName;
     }
 
     /**
