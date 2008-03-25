@@ -47,11 +47,17 @@ class AccessorMethodPropertyDesc extends AbstractPropertyDesc {
         parent::__construct($beanClass, $propName);
         $methodName = self::getSetterMethodName($propName);
         if ($beanClass->hasMethod($methodName)) {
-            $this->setterMethod = $beanClass->getMethod($methodName);
+            $method = $beanClass->getMethod($methodName);
+            if ($method->isPublic()) {
+                $this->setterMethod = $method;
+            }
         }
         $methodName = self::getGetterMethodName($propName);
         if ($beanClass->hasMethod($methodName)) {
-            $this->getterMethod = $beanClass->getMethod($methodName);
+            $method = $beanClass->getMethod($methodName);
+            if ($method->isPublic()) {
+                $this->getterMethod = $method;
+            }
         }
 
         if ($this->setterMethod === null and $this->getterMethod === null) {
@@ -137,6 +143,22 @@ class AccessorMethodPropertyDesc extends AbstractPropertyDesc {
      */
     public function setReadMethod(ReflectionMethod $method) {
         $this->setGetterMethod($method);
+    }
+
+    /**
+     * Getterメソッドを持っているかどうかを返します。
+     * @return boolean
+     */
+    public function hasReadMethod() {
+        return $this->getterMethod instanceof ReflectionMethod;
+    }
+
+    /**
+     * Setterメソッドを持っているかどうかを返します。
+     * @return boolean
+     */
+    public function hasWriteMethod() {
+        return $this->setterMethod instanceof ReflectionMethod;
     }
 
     /**

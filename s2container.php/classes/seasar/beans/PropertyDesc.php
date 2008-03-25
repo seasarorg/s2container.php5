@@ -15,7 +15,7 @@
 // | governing permissions and limitations under the License.             |
 // +----------------------------------------------------------------------+
 /**
- * BeanDescを生成するファクトリクラスです。
+ * プロパティの定義を行うインタ^フェースです。
  *
  * @copyright 2005-2008 the Seasar Foundation and the Others.
  * @license   http://www.apache.org/licenses/LICENSE-2.0
@@ -26,46 +26,39 @@
  * @author    klove
  */
 namespace seasar::beans;
-class BeanDescFactory {
+interface PropertyDesc {
 
     /**
-     * @var array
+     * インスタンスのプロパティ値を設定します。
+     * @param object $instance
+     * @param mixed $value
      */
-    private static $spool = array();
+    public function setValue($instance, $value);
 
     /**
-     * BeanDescFactoryの構築は許可されていません。
+     * インスタンスのプロパティ値を返します。
+     * @param object $instance
+     * @return mixed
      */
-    private function __construct() {}
+    public function getValue($instance);
 
     /**
-     * BeanDescを生成します。
-     *
-     * @param string|object|ReflectionClass $obj
-     * @return seasar::beans::BeanDesc
+     * プロパティのReflectionClassを返します。
+     *  - PublicPropertyDescの場合は、プロパティのReflectionProperty
+     *  - AccessorMethodPropertyDescの場合は、セッターメソッドのReflectionMethod
+     * @return ReflectionClass|ReflectionProperty|ReflectionMethod
      */
-    public static function create($obj) {
-        if ($obj instanceof ReflectionClass) {
-            $clazz = $obj;
-            $className = $clazz->getName();
-        } else if (is_object($obj)) {
-            $clazz = new ReflectionClass($obj);
-            $className = $clazz->getName();
-        } else {
-            $clazz = new ReflectionClass($obj);
-            $className = $obj;
-        }
-
-        if (!isset(self::$spool[$className])) {
-            self::$spool[$className] = new BeanDesc($clazz);
-        }
-        return self::$spool[$className];
-    }
+    public function getReflection();
 
     /**
-     * @see seasar::beans::BeanDescFactory::create()
+     * Getterメソッドを持っているかどうかを返します。
+     * @return boolean
      */
-    public static function getBeanDesc($value) {
-        return self::create($value);
-    }
+    public function hasReadMethod();
+
+    /**
+     * Setterメソッドを持っているかどうかを返します。
+     * @return boolean
+     */
+    public function hasWriteMethod();
 }
