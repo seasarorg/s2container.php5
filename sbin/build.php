@@ -72,6 +72,7 @@ function getCoreClasses() { return array(
 'seasar::container::util::MetaDefSupport',
 'seasar::container::ComponentDef',
 'seasar::container::impl::SimpleComponentDef',
+'seasar::beans::PropertyDesc',
 'seasar::beans::AbstractPropertyDesc',
 'seasar::beans::AccessorMethodPropertyDesc',
 'seasar::beans::PublicPropertyDesc',
