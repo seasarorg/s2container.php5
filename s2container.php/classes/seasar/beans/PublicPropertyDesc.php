@@ -77,23 +77,35 @@ class PublicPropertyDesc extends AbstractPropertyDesc {
     }
 
     /**
-     * Getterメソッドを持っているかどうかを返します。
-     * @return boolean
+     * @see seasar::beans::PropertyDesc::hasReadMethod()
      */
     public function hasReadMethod() {
         return true;
     }
 
     /**
-     * Setterメソッドを持っているかどうかを返します。
-     * @return boolean
+     * @see seasar::beans::PropertyDesc::hasWriteMethod()
      */
     public function hasWriteMethod() {
         return true;
     }
 
     /**
-     * @see seasar::beans::AbstractPropertyDesc::setValue()
+     * @see seasar::beans::PropertyDesc::isReadable()
+     */
+    public function isReadable() {
+        return true;
+    }
+
+    /**
+     * @see seasar::beans::PropertyDesc::isWritable()
+     */
+    public function isWritable() {
+        return true;
+    }
+
+    /**
+     * @see seasar::beans::PropertyDesc::setValue()
      */
     public function setValue($instance, $value) {
         $this->property->setValue($instance, $value);

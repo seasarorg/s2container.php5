@@ -65,64 +65,56 @@ abstract class AbstractPropertyDesc implements PropertyDesc {
     }
 
     /**
-     * ReflectionClassインスタンスを返します。
-     * @return ReflectionClass
+     * @see seasar::beans::PropertyDesc::getBeanClass()
      */
     public function getBeanClass() {
         return $this->beanClass;
     }
 
     /**
-     * プロパティ名を返します。
-     * @return string
+     * @see seasar::beans::PropertyDesc::getPropertyName()
      */
     public function getPropertyName() {
         return $this->propertyName;
     }
 
     /**
-     * タイプヒントを返します。
-     * @return string
+     * @see seasar::beans::PropertyDesc::getTypehint()
      */
     public function getTypehint() {
         return $this->typehint;
     }
 
     /**
-     * タイプヒントを返します。
-     * @return string
+     * @see seasar::beans::PropertyDesc::setTypehint()
      */
     public function setTypehint($value) {
         $this->typehint = $value;
     }
 
     /**
-     * タイプヒントを返します。
-     * @return ReflectionClass
+     * @see seasar::beans::PropertyDesc::getTypehintClass()
      */
     public function getTypehintClass() {
         return $this->typehintClass;
     }
 
     /**
-     * タイプヒントを返します。
-     * @return ReflectionClass
+     * @see seasar::beans::PropertyDesc::setTypehintClass()
      */
     public function setTypehintClass(ReflectionClass $clazz) {
         $this->typehintClass = $clazz;
     }
 
     /**
-     * 配列が指定されているかどうかを返します。
-     * @return boolean
+     * @see seasar::beans::PropertyDesc::isArrayAcceptable()
      */
     public function isArrayAcceptable() {
         return $this->isArrayAcceptable;
     }
 
     /**
-     * 配列が指定されているかどうかを設定します。
-     * @param boolean $value
+     * @see seasar::beans::PropertyDesc::setArrayAcceptable()
      */
     public function setArrayAcceptable($value = true) {
         $this->isArrayAcceptable = $value;

@@ -61,4 +61,64 @@ interface PropertyDesc {
      * @return boolean
      */
     public function hasWriteMethod();
+
+    /**
+     * プロパティの値が取得できるかどうかを返します。
+     * @return boolean
+     */
+    public function isReadable();
+
+    /**
+     * プロパティの値が設定できるかどうかを返します。
+     * @return boolean
+     */
+    public function isWritable();
+
+    /**
+     * ReflectionClassインスタンスを返します。
+     * @return ReflectionClass
+     */
+    public function getBeanClass();
+
+    /**
+     * プロパティ名を返します。
+     * @return string
+     */
+    public function getPropertyName();
+
+    /**
+     * タイプヒントを返します。
+     * @return string
+     */
+    public function getTypehint();
+
+    /**
+     * タイプヒントを返します。
+     * @return string
+     */
+    public function setTypehint($value);
+
+    /**
+     * タイプヒントを返します。
+     * @return ReflectionClass
+     */
+    public function getTypehintClass();
+
+    /**
+     * タイプヒントを返します。
+     * @return ReflectionClass
+     */
+    public function setTypehintClass(ReflectionClass $clazz);
+
+    /**
+     * 配列が指定されているかどうかを返します。
+     * @return boolean
+     */
+    public function isArrayAcceptable();
+
+    /**
+     * 配列が指定されているかどうかを設定します。
+     * @param boolean $value
+     */
+    public function setArrayAcceptable($value = true);
 }
