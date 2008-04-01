@@ -54,7 +54,7 @@ final class ClassUtil {
      * @param ReflectionClass $clazz
      * @return array
      */
-    public function getDeclaringMethods(ReflectionClass $clazz) {
+    public static function getDeclaringMethods(ReflectionClass $clazz) {
         if ($clazz->getParentClass() === null) {
             return $clazz->getMethods();
         }
@@ -78,7 +78,7 @@ final class ClassUtil {
      * @param ReflectionClass $clazz
      * @return array
      */
-    public function getImplementMethods(ReflectionClass $clazz) {
+    public static function getImplementMethods(ReflectionClass $clazz) {
         if ($clazz->isInterface()) {
             return $clazz->getMethods();
         }
@@ -107,7 +107,7 @@ final class ClassUtil {
      * @param ReflectionClass $clazz
      * @return array
      */
-    public function getAbstractMethods(ReflectionClass $clazz) {
+    public static function getAbstractMethods(ReflectionClass $clazz) {
         if ($clazz->isInterface()) {
             return $clazz->getMethods();
         }
