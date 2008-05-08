@@ -65,7 +65,10 @@ final class Pointcut {
     }
 
     /**
-     * Pointcutの指定がなかった場合に、ターゲットクラスのAbstractメソッドを取得しPointcutとします。
+     * Pointcutの指定がなかった場合に、ターゲットクラスのAbstractメソッドを取得しPointcutとします。または、
+     * ターゲットクラスがAbstractメソッドをもっていなかった場合は、そのクラスの実装メソッドをPointcutとします。
+     * set、get、isで名前が始まるメソッドはPointcutに含まれません。
+     *
      * @param ReflectionClass $targetClass
      * @return array
      */
@@ -82,7 +85,12 @@ final class Pointcut {
             $this->methodNames = array();
         }
         for ($i = 0; $i < $o; ++$i) {
-            $this->methodNames[] = $methods[$i]->getName();
+            $methodName = $methods[$i]->getName();
+            if (preg_match('/^(set|get|is)[A-Z].*$/', $methodName)) {
+                seasar::log::S2Logger::getInstance(__NAMESPACE__)->debug('ignore method [' . $methodName . ']', __METHOD__);
+                continue;
+            }
+            $this->methodNames[] = $methodName;
         }
     }
 }
