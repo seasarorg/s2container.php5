@@ -15,7 +15,7 @@
 // | governing permissions and limitations under the License.             |
 // +----------------------------------------------------------------------+
 /**
- * ArroundインターセプタのAbstractクラス
+ * AroundインターセプタのAbstractクラス
  *
  * @copyright 2005-2008 the Seasar Foundation and the Others.
  * @license   http://www.apache.org/licenses/LICENSE-2.0
