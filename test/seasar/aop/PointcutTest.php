@@ -57,6 +57,12 @@ class PointcutTest extends ::PHPUnit_Framework_TestCase {
         $pc = new Pointcut(array('(!?a)$'));
         $this->assertFalse($pc->isApplied('abs'));
         $this->assertTrue($pc->isApplied('aba'));
+
+        $pc = new Pointcut(new ReflectionClass('seasar::aop::E_Pointcut'));
+        $this->assertFalse($pc->isApplied('setHoge'));
+        $this->assertFalse($pc->isApplied('getHoge'));
+        $this->assertFalse($pc->isApplied('isHoge'));
+        $this->assertTrue($pc->isApplied('setupHoge'));
     }
 
     public function setUp(){
@@ -113,4 +119,11 @@ class C_Pointcut {
 class D_Pointcut extends C_Pointcut {
     public function hello(){
     }
+}
+
+class E_Pointcut {
+    public function setHoge(){}
+    public function getHoge(){}
+    public function isHoge(){}
+    public function setupHoge(){}
 }
