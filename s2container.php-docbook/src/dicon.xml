@@ -1101,6 +1101,8 @@ class Service {}
           <listitem>検索されたクラスをコンポーネントとしてS2Containerの生成</listitem>
           <listitem>コメントアノテーションによるコンポーネント情報の抽出</listitem>
           <listitem>アスペクトの自動設定</listitem>
+          <listitem>S2Container 内における名前空間(namespace)単位でのコンポーネント登録</listitem>
+          <listitem>名前空間(namespace)単位でのにシングルトン S2Container インスタンス管理</listitem>
         </itemizedlist>
         <para>
          S2ApplicationContextを用いてS2Containerを生成する場合は、ダイコンファイルによるコンポーネント定義は必要としません。
@@ -1235,7 +1237,7 @@ S2ApplicationContext::setFilterByEnv($val = true)
       </blockquote>
       <para>
             環境設定によりインクルードするコンポーネントを選択します。この機能はデフォルトで有効化されています。この機能を無効化する場合は、次のメソッドで設定できます。
-             例として、S2CONTAINER_PHP5_ENV 定数が "mock" と定義されている場合、インポートされたクラスに、Hoge クラスと
+             例として、seasar::container::Config::$ENVIRONMENT が "mock" と定義されている場合、インポートされたクラスに、Hoge クラスと
       MockHoge クラスが存在すると、MockHoge クラスのみ選択します。
       </para>
    </formalpara></blockquote>
@@ -1300,6 +1302,7 @@ S2ApplicationContext::setReadParentAnnotation($val = true)
                <listitem>instance : <link linkend="dicon.instance">インスタンスモードタイプ</link></listitem>
                <listitem>autoBinding : <link linkend="dicon.binding">バインディングモードタイプ</link></listitem>
                <listitem>available : コンポーネントとして使用するかどうか (boolean default true)</listitem>
+               <listitem>namespace : <link linkend="dicon.tag.components">S2Container 内の名前空間</link></listitem>
             </itemizedlist>
           </listitem>
           <listitem>注釈ポイント : クラス</listitem>
@@ -1311,9 +1314,13 @@ S2ApplicationContext::setReadParentAnnotation($val = true)
   class Hoge{} 
   
   /**
-   * @S2Component('name' => 'hoge', 'instance' => 'singleton', 'autoBinding' => 'auto', 'available' => true)
+   * @S2Component('name' => 'huga',
+   *              'instance' => 'singleton',
+   *              'autoBinding' => 'auto',
+   *              'available' => true,
+   *              'namespace' => 'example.service')
    */
-  class Hoge{} 
+  class Huga{} 
 ]]></programlisting>         
           </listitem>
         </itemizedlist>
@@ -1417,9 +1424,19 @@ class IndexAction {
           </listitem>
         </itemizedlist>
       </blockquote>
-   </blockquote>
+    </blockquote>
 
-   </sect2>
+    </sect2>
+
+    <sbr/>
+    <sect2><title>名前空間単位でのコンポーネント登録</title>
+    </sect2>
+
+    <sbr/>
+    <sect2><title>Singleton S2Container インスタンスの管理</title>
+    </sect2>
+
+    <sbr/>
   </sect1>
 
 
