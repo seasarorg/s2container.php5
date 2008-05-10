@@ -242,6 +242,41 @@ publi static function has($reflection, $annotation)
 
   <!-- ##################################################################### -->
   <sect1 id="misc204"><title>ClassLoader API リファレンス</title>
+     <para>
+       seasar::util::ClassLoaderクラスは、ファイルシステム上のクラスファイルを検索し、autoload関数を介して
+              クラス定義をロードします。クラスのインポートは次のメソッドで行います。
+     </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+seasar::util::ClassLoader::import($path, array $namespace = array(), $strict = false, $pear = false, $recursive = true)
+]]></programlisting>
+    <blockquote>
+      <itemizedlist>
+        <listitem>第1引数 : 検索するディレクトリへのパス</listitem>
+        <listitem>第2引数 : namespaceの配列</listitem>
+        <listitem>第3引数 : trueの場合、$namespaceで指定されたネームスペースが使用されます。falseの場合は、検索したサブディレクトリが$namespaceに順次追加されます。</listitem>
+        <listitem>第4引数 : trueの場合は、$namespaceが「_」で展開されます。falseの場合は、$namespaceが「::」で展開されます</listitem>
+        <listitem>第5引数 : trueの場合は、再起的にディレクトリを検索します。falseの場合は、サブディレクトリを検索しません。</listitem>
+      </itemizedlist>
+    </blockquote>
+
+     <para>
+              　第1引数で指定したディレクトリにあるクラスファイル( .php、.class.php など)をインポートします。
+              インポートではクラス名とクラスファイルのパスを取得します。この情報は autoload 関数でクラス定義が require される際に使用されます。
+              クラス名はクラスファイル名の拡張子を除く部分になります。クラスファイル名が S2Container.php や S2Container.class.php の場合、
+              「 S2Container 」がクラス名になります。
+     </para>
   </sect1>
 
+  <!-- ##################################################################### -->
+  <sect1 id="misc205"><title>PDOを用いたデータベースアクセス</title>
+  </sect1>
+  <!-- ##################################################################### -->
+  <sect1 id="misc206"><title>メソッド引数を検証するStrictInterceptor</title>
+  </sect1>
+  <!-- ##################################################################### -->
+  <sect1 id="misc207"><title>Zend_ControllerでS2Containerを使用する</title>
+  </sect1>
+  <!-- ##################################################################### -->
+  <sect1 id="misc208"><title>SymfonyでS2Containerを使用する</title>
+  </sect1>
 </chapter>
