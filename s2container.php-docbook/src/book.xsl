@@ -4,7 +4,7 @@
   <!--xsl:import href="../lib/docbook-xsl/html/docbook.xsl"/ -->
   <xsl:import href="../lib/docbook-xsl/html/chunk.xsl"/>
 
-  <xsl:param name="html.stylesheet">main.css</xsl:param>
+  <xsl:param name="html.stylesheet">../../theme/docbook.css</xsl:param>
   <xsl:param name="toc.section.depth" select="2"/>
   <xsl:param name="use.id.as.filename" select="1"/>
   <xsl:param name="chapter.autolabel" select="1"/>
