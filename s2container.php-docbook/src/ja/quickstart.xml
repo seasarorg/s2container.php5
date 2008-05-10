@@ -1,0 +1,308 @@
+<chapter id="quickstart"><title>クイックスタート</title>
+
+  <!-- ################################################################### -->
+  <sect1 id="setup"><title>セットアップ</title>
+    <para>はじめに<link linkend="install">インストールドキュメント</link>にしたがって S2Container.PHP をインストールして下さい。</para>
+  </sect1>
+
+  <sect1 id="quick201"><title>コンテナの生成</title>
+    <para>S2ContainerApplicationContext クラスの <link linkend="dicon.application.create">create メソッド</link>を使ってからっぽのコンテナを作ってみます。</para>
+    <itemizedlist>
+      <listitem>quickstart.php
+      </listitem>
+    </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+
+$container = seasar::container::S2ApplicationContext::create();
+$container->getComponentDefSize() == 0 ?
+    print 'コンテナはからっぽです。' . PHP_EOL:
+    print 'コンポーネントが入ってます。' . PHP_EOL;
+]]></programlisting>
+
+    <para>quickstart.php を実行してみます。</para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+% php quickstart.php
+コンテナはからっぽです。
+%
+]]></programlisting>
+
+    <note><title>NOTE</title>
+      <para>このExampleは examples/quickstart/quickstart1 にあります。</para>
+    </note>
+  </sect1>
+
+
+  <!-- ################################################################### -->
+  <sect1 id="quick202"><title>コンポーネントの生成</title>
+    <para>コンテナが生成できたので、コンポーネントをインポートしてみます。カレントディレクトリに classes ディレクトリを作成して、Hello クラスを作ります。</para>
+    <itemizedlist>
+      <listitem>classes/Hello.php
+      </listitem>
+    </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Hello {
+    public function sayHello() {
+        print 'Hello World !' . PHP_EOL;
+    }
+}
+]]></programlisting>
+    <para>quickstart.php で classes ディレクトリ以下のクラスファイルが Autoload されるように classes ディレクトリを <link linkend="dicon.application.import">import</link> します。</para>
+    <itemizedlist>
+      <listitem>quickstart.php
+      </listitem>
+    </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+seasar::container::S2ApplicationContext::import(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'classes');
+$container = seasar::container::S2ApplicationContext::create();
+$container->getComponentDefSize() == 0 ?
+    print 'コンテナはからっぽです。' . PHP_EOL:
+    print 'コンポーネントが入ってます。' . PHP_EOL;
+]]></programlisting>
+
+    <para>quickstart.php を実行してみます。</para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+% php quickstart.php
+コンポーネントが入ってます。
+%
+]]></programlisting>
+
+    <note><title>NOTE</title>
+      <para>このExampleは examples/quickstart/quickstart2 にあります。</para>
+    </note>
+  </sect1>
+
+
+  <!-- ################################################################### -->
+  <sect1 id="quick203"><title>コンポーネントの取得</title>
+    <para>「コンポーネントが入ってます。」と表示されたので、取り出してみます。コンテナからコンポーネントを取り出す場合は、S2Container の getComponent メソッドを使用します。</para>
+    <itemizedlist>
+      <listitem>quickstart.php
+      </listitem>
+    </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+
+seasar::container::S2ApplicationContext::import(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'classes');
+$container = seasar::container::S2ApplicationContext::create();
+$container->getComponentDefSize() == 0 ?
+    print 'コンテナはからっぽです。' . PHP_EOL:
+    print 'コンポーネントが入ってます。' . PHP_EOL;
+$hello = $container->getComponent('Hello');
+$hello->sayHello();
+]]></programlisting>
+    <para>quickstart.php を実行してみます。</para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+% php quickstart.php
+コンポーネントが入ってます。
+Hello World !
+%
+]]></programlisting>
+    <note><title>NOTE</title>
+      <para>このExampleは examples/quickstart/quickstart3 にあります。</para>
+    </note>
+  </sect1>
+
+
+  <!-- ################################################################### -->
+  <sect1 id="quick204"><title>複数のコンポーネントを使用する</title>
+    <para>Helloコンポーネントが取得できたので、classes ディレクトリに次のような Printer クラスを追加し複数のコンポーネントを使ってみます。</para>
+    <itemizedlist>
+      <listitem>classes/Printer.php
+      </listitem>
+    </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Printer {
+    public function printOut($message) {
+        print __METHOD__ . ' : ' . $message . PHP_EOL;
+    }
+]]></programlisting>
+    <para>quickstart.php を次のように編集して Printer コンポーネントを取り出してみます。</para>
+    <itemizedlist>
+      <listitem>quickstart.php
+      </listitem>
+    </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+
+seasar::container::S2ApplicationContext::import(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'classes');
+$container = seasar::container::S2ApplicationContext::create();
+$hello = $container->getComponent('Hello');
+$hello->sayHello();
+$printer = $container->getComponent('Printer');
+$printer->printOut('Hello World !');
+]]></programlisting>
+    <para>quickstart.php を実行してみます。</para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+% php quickstart.php
+Hello World !
+Printer::printOut : Hello World !
+%
+]]></programlisting>
+    <note><title>NOTE</title>
+      <para>このExampleは examples/quickstart/quickstart4 にあります。</para>
+    </note>
+  </sect1>
+
+
+  <!-- ################################################################### -->
+  <sect1 id="quick205"><title>DI ( Dependency Injection )の実行</title>
+    <para>
+      2つのコンポーネントが作成できたので、Hello コンポーネントに Printer コンポーネントを DI ( Dependency Injection) してみます。
+      Hello クラスに Printer インスタンスを受け取るセッターメソッドを追加します。また、sayHelloメソッドでPrinter クラスを用いて出力するように変更します。
+    </para>
+    <itemizedlist>
+      <listitem>classes/Hello.php
+      </listitem>
+    </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Hello {
+    private $printer;
+    public function setPrinter(Printer $printer) {
+        $this->printer = $printer;
+    }
+    public function sayHello() {
+        $this->printer->printOut('Hello World ! with DI');
+    }
+}
+]]></programlisting>
+    <para>quickstart.php を実行してみます。</para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+% php quickstart.php
+Printer::printOut : Hello World ! with DI
+%
+]]></programlisting>
+    <note><title>NOTE</title>
+      <para>このExampleは examples/quickstart/quickstart5 にあります。</para>
+    </note>
+  </sect1>
+
+
+  <!-- ################################################################### -->
+  <sect1 id="quick206"><title>アスペクトの実行</title>
+    <para>
+      S2Container に付属の TraceInterceptor を Printer クラスの printOut メソッドにアスペクトしてみます。
+            アスペクト設定は、 <link linkend="dicon.application.annotation.aspect">@S2Aspect アノテーション</link>で行います。次のように printOut メソッドにアノテーションを記述します。
+    </para>
+    <itemizedlist>
+      <listitem>classes/Printer.php
+      </listitem>
+    </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Printer {
+    /**
+     * @S2Aspect('interceptor' => 'new seasar::aop::interceptor::TraceInterceptor');
+     */
+    public function printOut($message) {
+        print __METHOD__ . ' : ' . $message . PHP_EOL;
+    }
+}
+]]></programlisting>
+    <para>quickstart.php を実行してみます。</para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+% php quickstart.php
+BEGIN Printer#printOut(Hello World ! with DI)
+Printer::printOut : Hello World ! with DI
+END   Printer#printOut(Hello World ! with DI) : null
+%
+]]></programlisting>
+    <note><title>NOTE</title>
+      <para>このExampleは examples/quickstart/quickstart6 にあります。</para>
+    </note>
+  </sect1>
+
+  <!-- ################################################################### -->
+  <sect1 id="quick207"><title>自動アスペクト</title>
+    <para>
+      <link linkend="quick206">アスペクトの実行</link>では@Aspectアノテーションを記述し、個別にアスペクトを適用しました。
+            同様のアスペクトをS2ContainerApplicationContext クラスの registerAspect メソッドを用いて自動アスペクトを行うことができます。
+    </para>
+    <itemizedlist>
+      <listitem>quickstart.php
+      </listitem>
+    </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+
+seasar::container::S2ApplicationContext::import(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'classes');
+seasar::container::S2ApplicationContext::registerAspect('/Printer$/', 'new seasar::aop::interceptor::TraceInterceptor', 'printOut');
+$container = seasar::container::S2ApplicationContext::create();
+$hello = $container->getComponent('Hello');
+$hello->sayHello();
+]]></programlisting>
+    <para>quickstart.php を実行してみます。</para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+% php quickstart.php
+BEGIN Printer#printOut(Hello World ! with DI)
+Printer::printOut : Hello World ! with DI
+END   Printer#printOut(Hello World ! with DI) : null
+%
+]]></programlisting>
+    <note><title>NOTE</title>
+      <para>このExampleは examples/quickstart/quickstart7 にあります。</para>
+    </note>
+  </sect1>
+
+
+  <!-- ################################################################### -->
+  <sect1 id="quick208"><title>ダイコンファイルを使用する</title>
+    <para>これまでの作業をダイコンファイルで実施してみます。カレントディレクトリに dicon ディレクトリを作成して hello.dicon として保存します。</para>
+    <itemizedlist>
+      <listitem>dicon/hello.dicon
+      </listitem>
+    </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN" "components21.dtd">
+<components>
+    <component class="Hello">
+        <property name="printer">Printer</property>
+    </component>
+    <component class="Printer">
+        <aspect pointcut="printOut">seasar::aop::interceptor::TraceInterceptor</aspect>
+    </component>
+</components>
+]]></programlisting>
+
+    <para>このダイコンファイルを使用するかたちに quickstart.php を編集します。setIncludePattern メソッドでダイコンファイルを Include Pattern に設定します。</para>
+    <itemizedlist>
+      <listitem>quickstart.php
+      </listitem>
+    </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+
+seasar::container::S2ApplicationContext::import(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'classes');
+seasar::container::S2ApplicationContext::import(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'dicon');
+seasar::container::S2ApplicationContext::setIncludePattern('/hello.dicon$/');
+$container = seasar::container::S2ApplicationContext::create();
+$hello = $container->getComponent('Hello');
+$hello->sayHello();
+]]></programlisting>
+
+    <para>quickstart.php を実行してみます。</para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+% php quickstart.php
+BEGIN Printer#printOut(Hello World ! with DI)
+Printer::printOut : Hello World ! with DI
+END   Printer#printOut(Hello World ! with DI) : null
+%
+]]></programlisting>
+    <note><title>NOTE</title>
+      <para>このExampleは examples/quickstart/quickstart8 にあります。</para>
+    </note>
+  </sect1>
+
+
+</chapter>
