@@ -109,8 +109,10 @@ $result = $service->add(2, 3);
           <listitem>seasar::aop::interceptor::InterceptorChain <sbr/>
                     複数のInterceptorをグルーピング化し再利用しやすくします。
           </listitem>
+          <!--
           <listitem>seasar::aop::interceptor::AbstractAroundInterceptor <sbr/>
           </listitem>
+          -->
         </itemizedlist>
 
         <formalpara><title>Pointcut</title></formalpara>
@@ -708,11 +710,11 @@ interface MethodInterceptor {
 class SampleInterceptor implements seasar::aop::MethodInterceptor {
     public function invoke(seasar::aop::MethodInvocation $invocation){
 
-        print "Before \n";            // <-- 次のインターセプターや実際のメソッドを呼び出す前の処理
+        print 'Before' . PHP_EOL;            // <-- 次のインターセプターや実際のメソッドを呼び出す前の処理
 
         $result = $invocation->proceed();
 
-        print "After \n";             // <-- 次のインターセプターや実際のメソッドを呼び出した後の処理
+        print 'After' . PHP_EOL;             // <-- 次のインターセプターや実際のメソッドを呼び出した後の処理
 
         return $result;
     }
