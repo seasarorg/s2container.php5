@@ -56,19 +56,8 @@ S2Container::getComponent($componentKey)
 <!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
 "http://www.seasar.org/dtd/components21.dtd">
 <components>
-    <component name="action" class="IndexAction" />
+    <component name="action" class="example::IndexAction" />
 </components>
-]]></programlisting>
-
-    <para>
-       クラス名を指定してコンポーネントを取得する場合は次のようになります。
-    </para>
-<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-<?php
-require_once('S2Container/S2Container.php');
-$container = seasar::container::impl::S2ContainerFactory::create('/path/to/diconファイル');
-$component = $container->getComponent('IndexAction');
-
 ]]></programlisting>
 
     <para>
@@ -82,6 +71,38 @@ $component = $container->getComponent('action');
 
 ]]></programlisting>
 
+    <para>
+       クラス名を指定してコンポーネントを取得する場合は次のようになります。
+    </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+$container = seasar::container::impl::S2ContainerFactory::create('/path/to/diconファイル');
+$component = $container->getComponent('example::IndexAction');
+
+]]></programlisting>
+
+    <para>
+      　namespace を含まないクラス名でもコンポーネントを取得することができます。
+    </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+$container = seasar::container::impl::S2ContainerFactory::create('/path/to/diconファイル');
+$component = $container->getComponent('IndexAction');
+
+]]></programlisting>
+
+    <para>
+      　クラス名の先頭文字を小文字としたコンポーネント名で取得することもできます。
+    </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+$container = seasar::container::impl::S2ContainerFactory::create('/path/to/diconファイル');
+$component = $container->getComponent('indexAction');
+
+]]></programlisting>
     </sect2>
  
     <!-- ################################################################### -->
@@ -106,7 +127,30 @@ $component = $container->getComponent('action');
 
          <para>
                   例として、あるアクションにサービスをDIする場合を次に示します。<sbr/>
-                  アクションクラスにはサービスを設定する public なプロパティを実装します。プロパティのデフォルト値にタイプヒントを設定します。
+                  アクションクラスにはサービスを設定する public なプロパティを実装します。次の Action クラスでは $service プロパティを
+                  実装しています。この場合、プロパティ名がコンポーネント名として扱われるため、コンテナから service コンポーネントが DI されます。
+         </para>
+                  
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Action {
+
+    /**
+     * @var Service
+     */
+    public $service = null;
+
+    /**
+     * アクション実装メソッド
+     */
+    public function execute() {
+        $result = $this->service->add(2,3);    
+    }
+}
+]]></programlisting>
+
+         <para>
+                  プロパティのデフォルト値にタイプヒントを設定することで、DIするコンポーネントを指定できます。
                  タイプヒントは「S2Binding コンポーネント名」と記述します。また、複数のコンポーネントをまとめて配列としDIすることができます。
                   配列としてDIする場合は、タイプヒントに「S2Binding コンポーネント名[]」と記述します。
                  次のようなアクションクラスをカレントディレクトリに classes/Action.php として保存します。
