@@ -34,7 +34,7 @@ $container =　seasar::container::S2ContainerFactory::create('/path/to/diconフ�
 
     <!-- ################################################################### -->
     <sbr/>
-    <sect2><title>コンポーネントの取得</title>
+    <sect2 id="dicon.s2container.component"><title>コンポーネントの取得</title>
        <para>S2Containerからコンポーネントを取り出すには、次のメソッドを使用します。</para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 S2Container::getComponent($componentKey)
@@ -107,7 +107,7 @@ $component = $container->getComponent('indexAction');
  
     <!-- ################################################################### -->
     <sbr/>
-    <sect2><title>自動バインディングによるDI</title>
+    <sect2 id="dicon.di.auto"><title>自動バインディングによるDI</title>
        <para>
        S2Containerの自動バインディングは、コンポーネント間の依存関係をプロパティやセッターメソッドのタイプヒントで指定される
               クラスやインターフェースの情報で解決します。
@@ -120,7 +120,7 @@ $component = $container->getComponent('indexAction');
        </itemizedlist>
 
        <sbr/>
-       <blockquote><formalpara><title>プロパティ・インジェクション</title></formalpara>
+       <blockquote id="dicon.di.auto.property"><formalpara><title>プロパティ・インジェクション</title></formalpara>
          <para>
                   プロパティ・インジェクションでは、アクセス修飾子が public なプロパティに Dependency Injection を行います。
          </para>
@@ -249,7 +249,7 @@ $action->execute();
        </note>
 
        <sbr/>
-       <blockquote><formalpara><title>セッターメソッド・インジェクション</title><sbr/></formalpara>
+       <blockquote id="dicon.di.auto.setter"><formalpara><title>セッターメソッド・インジェクション</title><sbr/></formalpara>
          <para>
                   セッターメソッド･インジェクションでは、任意のプロパティにセッターメソッドを使用してDependency Injectionを行います。
                   セッターメソッドには命名規則があります。プロパティ名が「service」 の場合、先頭一文字を大文字とし「set」を先頭に付加して、
@@ -364,7 +364,7 @@ $action->execute();
 
 
        <sbr/>
-       <blockquote><formalpara><title>コンストラクタ・インジェクション</title></formalpara>
+       <blockquote id="dicon.di.auto.constructor"><formalpara><title>コンストラクタ・インジェクション</title></formalpara>
          <para>
                   コンストラクタ・インジェクションでは、クラスのコンストラクタ引数を用いて Dependency Injection を行います。
          </para>
@@ -907,7 +907,7 @@ var_dump($action);
 
 
       <sbr/>
-      <blockquote><formalpara><title>InitMethod・インジェクション</title></formalpara>
+      <blockquote id="dicon.di.manual.initmethod"><formalpara><title>InitMethod・インジェクション</title></formalpara>
        <para>
         InitMethod・インジェクションとは、アクセス修飾子が public な任意のメソッドで Dependency Injection を実施します。<sbr/>
         S2Containerの定義ファイルには、次のような内容を記述します。
@@ -1533,7 +1533,7 @@ class IndexAction {
     </sect2>
 
     <sbr/>
-    <sect2><title>Singleton S2Container インスタンスの管理</title>
+    <sect2 id="dicon.application.singleton"><title>Singleton S2Container インスタンスの管理</title>
       <para>
       S2ApplicationContext は、namespace 単位で Singleton S2Container を生成、管理します。
       Singleton S2Container は S2ApplicationContext::$SINGLETON_CONTAINERS に保存されます。

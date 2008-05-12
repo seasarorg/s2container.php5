@@ -51,7 +51,7 @@
     </itemizedlist>
   </sect1>
 
-  <sect1 id="aop.aspect"><title>S2AopFactoryを用いてアスペクトする</title>
+  <sect1 id="aop.aspect"><title>S2AopFactoryを用いてAspectする</title>
     <para>
     S2AopFactoryクラスのcreateメソッドを用いて、あるクラスの拡張クラスを生成し、アスペクトを織り込んだインスタンスを取得します。
     </para>
@@ -115,7 +115,7 @@ $result = $service->add(2, 3);
           -->
         </itemizedlist>
 
-        <formalpara><title>Pointcut</title></formalpara>
+        <formalpara id="aop.aspect.pointcut"><title>Pointcut</title></formalpara>
         <para>
         MethodInterceptorがどこに適用されるのかをあらわすクラスです。
         </para>
@@ -836,7 +836,7 @@ public function getParameter($name);
 seasar::aop::Config::$ENHANCED_CLASS_GENERATOR = 'seasar::aop::EnhancedClassGenerator';
 ]]></programlisting>
 
-        <formalpara><title>CACHING</title></formalpara>
+        <formalpara id="aop.config.caching"><title>CACHING</title></formalpara>
         <para>
                 アスペクトを織り込むために生成した拡張クラスをファイルに出力するかを設定します。
         </para>
