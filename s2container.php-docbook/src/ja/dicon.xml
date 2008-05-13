@@ -245,7 +245,7 @@ $action->execute();
 
        </blockquote>
        <note><title>NOTE</title>
-         <para>このExampleは examples/AutoDI/property と examples/AutoDI/property_array にあります。</para>
+         <para>このExampleは example/AutoDI/property と example/AutoDI/property_array にあります。</para>
        </note>
 
        <sbr/>
@@ -359,7 +359,7 @@ $action->execute();
 ]]></programlisting>
        </blockquote>
        <note><title>NOTE</title>
-         <para>このExampleは examples/AutoDI/setter にあります。</para>
+         <para>このExampleは example/AutoDI/setter にあります。</para>
        </note>
 
 
@@ -472,7 +472,7 @@ $action->execute();
 ]]></programlisting>
       </blockquote>
        <note><title>NOTE</title>
-         <para>このExampleは examples/AutoDI/consructor にあります。</para>
+         <para>このExampleは example/AutoDI/consructor にあります。</para>
        </note>
 
     </sect2>
@@ -495,8 +495,6 @@ $action->execute();
          <para>
                     次のようなアクションクラスをカレントディレクトリに classes/Action.php として保存します。
                     各プロパティのコメントアノテーションで、インジェクションを行う値やExpression、他のコンポーネントへの参照を記述します。
-                    参照しているコンポーネントが複数の場合はセッターメソッドのタイプヒントに array を指定することで配列としてDIすることができます。
-          (array タイプヒントが成されていない場合は、TooManyRegistrationRuntimeException がスローされます。)          
          </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
@@ -579,9 +577,7 @@ var_dump($action);
          <para>
                    コンポーネントのプロパティは、componentタグの子タグであるpropertyタグを使って指定します。
          name属性でプロパティ名を指定します。
-         propertyタグのボディには、クゥオーテーションで囲まれた値、PHPを記述したExpression、他のコンポーネントへの参照を設定できます。
-                    参照しているコンポーネントが複数の場合はセッターメソッドのタイプヒントに array を指定することで配列としてDIすることができます。
-          (array タイプヒントが成されていない場合は、TooManyRegistrationRuntimeException がスローされます。)
+         propertyタグのボディには、クォーテーションで囲まれた値、PHPを記述したExpression、他のコンポーネントへの参照を設定できます。
          </para>
 
          <para>
@@ -638,7 +634,7 @@ var_dump($action);
        </blockquote>
 
        <note><title>NOTE</title>
-         <para>このExampleは examples/ManualDI/property と examples/ManualDI/property_array にあります。</para>
+         <para>このExampleは example/ManualDI/property と example/ManualDI/property_array にあります。</para>
        </note>
 
        <sbr/>
@@ -744,7 +740,7 @@ var_dump($action);
          <para>
                    コンポーネントのプロパティは、componentタグの子タグであるpropertyタグを使って指定します。
          name属性でプロパティ名を指定します。
-         propertyタグのボディには、クゥオーテーションで囲まれた値、PHPを記述したExpression、他のコンポーネントへの参照を設定できます。
+         propertyタグのボディには、クォーテーションで囲まれた値、PHPを記述したExpression、他のコンポーネントへの参照を設定できます。
                     参照しているコンポーネントが複数の場合はセッターメソッドのタイプヒントに array を指定することで配列としてDIすることができます。
           (array タイプヒントが成されていない場合は、TooManyRegistrationRuntimeException がスローされます。)
          </para>
@@ -814,7 +810,7 @@ var_dump($action);
          </blockquote>
        </blockquote>
        <note><title>NOTE</title>
-         <para>このExampleは examples/ManualDI/setter と examples/ManualDI/setter_array にあります。</para>
+         <para>このExampleは example/ManualDI/setter と example/ManualDI/setter_array にあります。</para>
        </note>
 
 
@@ -839,8 +835,8 @@ var_dump($action);
 ]]></programlisting>
        <para>
               コンポーネントのコンストラクタの引数はcomponentタグの子タグであるargタグを使って指定します。
-       argタグのボディには、クゥオーテーションで囲まれた値、PHPを記述したExpression、他のコンポーネントへの参照を設定できます。
-                    参照しているコンポーネントが複数の場合はセッターメソッドのタイプヒントに array を指定することで配列としてDIすることができます。
+       argタグのボディには、クォーテーションで囲まれた値、PHPを記述したExpression、他のコンポーネントへの参照を設定できます。
+                    参照しているコンポーネントが複数の場合はコンストラクタ引数のタイプヒントに array を指定することで配列としてDIすることができます。
           (array タイプヒントが成されていない場合は、TooManyRegistrationRuntimeException がスローされます。)
        </para>
        <para>
@@ -901,7 +897,7 @@ var_dump($action);
 
        </blockquote>
        <note><title>NOTE</title>
-         <para>このExampleは examples/ManualDI/constructor と examples/ManualDI/constructor_array にあります。</para>
+         <para>このExampleは example/ManualDI/constructor と example/ManualDI/constructor_array にあります。</para>
        </note>
 
 
@@ -931,12 +927,12 @@ var_dump($action);
 </components>
 ]]></programlisting>
        <para>
-              コンポーネントのコンストラクタの引数はcomponentタグの子タグであるargタグを使って指定します。
-       argタグのボディには、クゥオーテーションで囲まれた値、PHPを記述したExpression、他のコンポーネントへの参照を設定できます。
+       InitMethodは、componentタグの子タグであるinitMthodeタグでメソッドを指定します。
+              メソッドの引数はargタグを使って指定します。argタグのボディには、クォーテーションで囲まれた値、PHPを記述したExpression、他のコンポーネントへの参照を設定できます。
        </para>
        <para>
               次のようなアクションクラスをカレントディレクトリに classes/Action.php として保存します。
-              アクションクラスには、各プロパティのセッターメソッドを記述します。
+              アクションクラスにはInitMethodを実装します。
        </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
@@ -999,7 +995,7 @@ var_dump($action);
 
        </blockquote>
        <note><title>NOTE</title>
-         <para>このExampleは examples/ManualDI/method にあります。</para>
+         <para>このExampleは example/ManualDI/method にあります。</para>
        </note>
 
     </sect2>
@@ -1172,7 +1168,7 @@ S2ApplicationContext::import($path, array $namespace = array(), $strict = false,
           <listitem>第2引数 : namespaceの配列</listitem>
           <listitem>第3引数 : trueの場合、$namespaceで指定されたネームスペースが使用されます。falseの場合は、検索したサブディレクトリが$namespaceに順次追加されます。</listitem>
           <listitem>第4引数 : trueの場合は、$namespaceが「_」で展開されます。falseの場合は、$namespaceが「::」で展開されます</listitem>
-          <listitem>第5引数 : trueの場合は、再起的にディレクトリを検索します。falseの場合は、サブディレクトリを検索しません。</listitem>
+          <listitem>第5引数 : trueの場合は、再帰的にディレクトリを検索します。falseの場合は、サブディレクトリを検索しません。</listitem>
         </itemizedlist>
       </blockquote>
 
