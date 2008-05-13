@@ -1,5 +1,124 @@
 <chapter id="misc"><title>MISC</title>
-  <sect1 id="misc151"><title>S2Container-1.2 と S2Container-2.0 Spec 比較表</title>
+  <sect1 id="misc151"><title>S2Container-1.2 と S2Container-2.0 機能比較</title>
+    <blockquote>
+      <table frame='all'><title>S2Container-1.2 と S2Container-2.0 機能比較表</title>
+        <tgroup cols='3' align='left' colsep='1' rowsep='1'>
+          <colspec colwidth="150" align="center" nowrap="1"/>
+          <colspec colwidth="300"/>
+          <colspec colwidth="300"/>
+          <thead>
+            <row>
+              <entry align="center">機能</entry>
+              <entry align="center">S2Container-1.2</entry>
+              <entry align="center">S2Container-2.0</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>プロパティ・インジェクション</entry>
+              <entry>無し</entry>
+              <entry><link linkend="dicon.di.auto.property">有り</link></entry>
+            </row>
+            <row>
+              <entry>セッターメソッド・インジェクション</entry>
+              <entry>有り</entry>
+              <entry><link linkend="dicon.di.auto.setter">有り</link></entry>
+            </row>
+            <row>
+              <entry>コンストラクタ・インジェクション</entry>
+              <entry>有り</entry>
+              <entry><link linkend="dicon.di.auto.constructor">有り</link></entry>
+            </row>
+            <row>
+              <entry>メソッド・インジェクション</entry>
+              <entry>InitMethod、DestroyMethod</entry>
+              <entry><link linkend="dicon.di.manual.initmethod">InitMethod</link></entry>
+            </row>
+            <row>
+              <entry>インスタンスタイプ</entry>
+              <entry>singleton、prototype、outer、request、session</entry>
+              <entry><link linkend="dicon.instance">singleton、prototype</link></entry>
+            </row>
+            <row>
+              <entry>バインディングタイプ</entry>
+              <entry>auto、constructor、property、none</entry>
+              <entry><link linkend="dicon.binding">auto、none</link></entry>
+            </row>
+            <row>
+              <entry>アノテーション</entry>
+              <entry>拡張機能(extension)でのAnnotation関連、S2ContainerApplicationContextクラスのアノテーション機能</entry>
+              <entry><link linkend="misc203">seasar::util:Annotationクラスに統合</link></entry>
+            </row>
+            <row>
+              <entry>バンドル Interceptor</entry>
+              <entry>
+                S2Container_TraceInterceptor <sbr/>
+                S2Container_MockInterceptor <sbr/>
+                S2Container_DelegateInterceptor <sbr/>
+                S2Container_PrototypeDelegateInterceptor <sbr/>
+                S2Container_ThrowsInterceptor <sbr/>
+                S2Container_TraceThrowsInterceptor <sbr/>
+                S2Container_InterceptorChain
+              </entry>
+              <entry>
+                seasar::aop::interceptor::TraceInterceptor <sbr/>
+                seasar::aop::interceptor::MockInterceptor <sbr/>
+                seasar::aop::interceptor::InterceptorChain
+              </entry>
+            </row>
+            <row>
+              <entry>デフォルト Pointcut</entry>
+              <entry>実装している Interface の すべての public メソッド。 Interface を実装していない場合は無し。</entry>
+              <entry>
+                                実装している Interface の すべての public メソッド。
+                Interface を実装していない場合は、そのクラスが実装しているすべての public メソッド。
+                                ただし、set、get、is で名前が始まるメソッドは除外される。
+              </entry>
+            </row>
+            <row>
+              <entry>ClassLoader</entry>
+              <entry>S2ContainerClassLoader、S2ContainerApplicationContext クラス</entry>
+              <entry><link linkend="misc204">seasar::util::ClassLoader クラス</link></entry>
+            </row>
+            <row>
+              <entry>Singleton S2Container 機能</entry>
+              <entry>S2Container_SingletonS2containerFactory クラス</entry>
+              <entry><link linkend="dicon.application.singleton">S2ApplicationContext クラスの Singleton S2Cotainer 機能</link></entry>
+            </row>
+            <row>
+              <entry>ログ機能</entry>
+              <entry>有り</entry>
+              <entry><link linkend="misc202">有り</link></entry>
+            </row>
+            <row>
+              <entry>S2Container キャッシュ機能</entry>
+              <entry>有り</entry>
+              <entry>無し</entry>
+            </row>
+            <row>
+              <entry>S2AOP キャッシュ機能</entry>
+              <entry>有り</entry>
+              <entry><link linkend="aop.config.caching">有り</link></entry>
+            </row>
+            <row>
+              <entry>コンポーネント自動登録機能</entry>
+              <entry>拡張機能(extension)のコンポーネント自動登録機能と S2ContainerApplicationContextのimport機能</entry>
+              <entry><link linkend="dicon.application.import">S2ApplicationContext クラスのimport機能に統合</link></entry>
+            </row>
+            <row>
+              <entry>Aspect 自動登録機能</entry>
+              <entry>拡張機能(extension)のAspect 自動登録機能と S2ContainerApplicationContextのregisterAspect機能</entry>
+              <entry><link linkend="dicon.application.autoaspect">S2ApplicationContext クラスのregisterAspect機能に統合</link></entry>
+            </row>
+            <row>
+              <entry>コンポーネントの登録名</entry>
+              <entry>コンポーネント名、クラス名</entry>
+              <entry><link linkend="dicon.s2container.component">コンポーネント名、namespace付きクラス名、クラス名、先頭が小文字のクラス名</link></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </blockquote>
   </sect1>
 
   <sect1 id="misc201"><title>コンポーネントでS2Containerを使用する</title>
@@ -258,12 +377,12 @@ seasar::util::ClassLoader::import($path, array $namespace = array(), $strict = f
         <listitem>第2引数 : namespaceの配列</listitem>
         <listitem>第3引数 : trueの場合、$namespaceで指定されたネームスペースが使用されます。falseの場合は、検索したサブディレクトリが$namespaceに順次追加されます。</listitem>
         <listitem>第4引数 : trueの場合は、$namespaceが「_」で展開されます。falseの場合は、$namespaceが「::」で展開されます</listitem>
-        <listitem>第5引数 : trueの場合は、再起的にディレクトリを検索します。falseの場合は、サブディレクトリを検索しません。</listitem>
+        <listitem>第5引数 : trueの場合は、再帰的にディレクトリを検索します。falseの場合は、サブディレクトリを検索しません。</listitem>
       </itemizedlist>
     </blockquote>
 
      <para>
-              　第1引数で指定したディレクトリにあるクラスファイル( .php、.class.php など)をインポートします。
+                第1引数で指定したディレクトリにあるクラスファイル( .php、.class.php など)をインポートします。
               インポートではクラス名とクラスファイルのパスを取得します。この情報は autoload 関数でクラス定義が require される際に使用されます。
               クラス名はクラスファイル名の拡張子を除く部分になります。クラスファイル名が S2Container.php や S2Container.class.php の場合、
               「 S2Container 」がクラス名になります。
@@ -271,14 +390,312 @@ seasar::util::ClassLoader::import($path, array $namespace = array(), $strict = f
   </sect1>
 
   <!-- ##################################################################### -->
-  <sect1 id="misc205"><title>PDOを用いたデータベースアクセス</title>
+  <sect1 id="misc.pdo"><title>PDOを用いたデータベースアクセス</title>
+    <sect2><title>PDOを継承するクラスを使用する</title>
+        <para>
+        PDOクラスを継承する任意のクラスを作成します。クラスのコンストラクタでデータソースを設定します。
+        </para>
+        <para>例として、次のようなSqlitePdoクラスを  /path/to/classes/SqlitePdo.php に作成します。</para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class SqlitePdo extends ::PDO {
+    public function __construct() {
+        parent::__construct('sqlite:' DB_DIR . '/sqlite.db');
+        $this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    }
+}
+]]></programlisting>
+
+        <para>作成したPDOクラスを使用するCdDaoを  /path/to/classes/CdDao.php に作成します。</para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class CdDao {
+    public $sqlitePdo = null;
+    public function findAll() {
+        $stmt = $sqlitePdo->prepare('select * from CD');
+        $stmt->setFetchMode(PDO::FETCH_OBJ);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+}
+]]></programlisting>
+
+        <para>PDOクラスやCdDaoクラスをS2ApplicationContextでimportします。</para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+use seasar::container::S2ApplicationCcontext as s2app;
+
+s2app::import('/path/to/classes');
+$cdDao = s2app::get('CdDao');
+var_dump($cdDao->findAll());
+
+]]></programlisting>
+    </sect2>
+
+    <sbr/>
+    <sect2><title>DICONファイルでPDOを設定する</title>
+        <para>
+        DICONファイルでPDOの設定を行います。例として、次のようなDICONファイルを /path/to/dicons/pdo.dicon として作成します。
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components>
+   <component name="sqlitePdo" class="PDO">
+       <arg>return 'sqlite:' . DB_DIR . '/sqlite.db'</arg>
+   </component>
+</components>
+
+]]></programlisting>
+
+        <para>作成したDICONファイルやCdDaoクラスをS2ApplicationContextでimportします。</para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+use seasar::container::S2ApplicationCcontext as s2app;
+
+s2app::import('/path/to/dicons');
+s2app::import('/path/to/classes');
+$cdDao = s2app::get('CdDao');
+var_dump($cdDao->findAll());
+
+]]></programlisting>
+    </sect2>
   </sect1>
+
+
+  <!-- ##################################################################### -->
+  <sect1 id="misc.pdointerceptor"><title>PdoInterceptorを用いたデータベースアクセス</title>
+    <sect2><title>Exampleの説明</title>
+      <para>
+        PdoInterceptorを用いたデータベースアクセスのExampleは、example/misc/pdo にあります。
+                各クラスファイル、設定ファイル、ディレクトリ構成は次になります。
+                
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+example/misc/pdo/
+ +-- classes/
+ |    +-- sample/
+ |    +-- Paginate.php
+ |    +-- PdoInterceptor.php
+ |    +-- SqlFileReader.php
+ +-- config/
+ |    +-- pdo.dicon
+ |    +-- SqliteAPdo.php
+ |    +-- SqliteBPdo.php
+ +-- db/
+ |    +-- sqlite_a.db
+ |    +-- sqlite_b.db
+ |    +-- sqlite_c.db
+ +-- tests/
+ +-- main.php
+      
+]]></programlisting>
+
+        clasesディレクトリにある次の3つのクラスがPdoInterceptorを使用するために必要となります。
+        <itemizedlist>
+          <listitem>PdoInterceptor.php</listitem>
+          <listitem>SqlFileReader.php</listitem>
+          <listitem>Paginate.php</listitem>
+        </itemizedlist>
+      </para>
+      
+      <para>
+        PDOのデータソース設定は、configディレクトリに次の3つのファイルで行っています。
+                それぞれ、dbディレクトリのSqliteデータベースファイルをデータソースとしています。
+        <itemizedlist>
+          <listitem>SqliteAPdo.php : db/sqlite_a.db を使用するDSN設定</listitem>
+          <listitem>SqliteBPdo.php : db/sqlite_b.db を使用するDSN設定</listitem>
+          <listitem>pdo.dicon : db/sqlite_c.db を使用するDSN設定</listitem>
+        </itemizedlist>
+                また、PDOの設定については、<link linkend="misc.pdo">PDOを用いたデータベースアクセス</link>を参照下さい。
+      </para>
+
+      <para>
+              テーブル設定
+      </para>
+    </sect2>
+
+    <sbr/>
+    <sect2><title>PdoInterceptorの概要</title>
+      <para>
+        PdoInterceptorのアスペクト対象は、クラスとインターフェースです。クラスにアスペクトした場合は、Pointcutに
+                適合したメソッドが実行されます。PdoInterceptorは、メソッドの戻り値が null または配列でなければ、SQLクエリ
+                として扱います。メソッドの戻り値が配列の場合は、1番目の値をSQLクエリ、2番目の値をSQL発行時のコンテキストとして
+                扱います。メソッドの戻り値が null の場合は、SQLファイルを探してSQLクエリを取得します。PdoIterceptorがインターフェースに
+                アスペクトされている場合は、メソッドの呼び出しを行いません。メソッドの戻り値が null の場合と同様に、SQLファイルを探してSQLクエリを取得します。
+      </para>
+      
+      <para>
+        SQLクエリが取得できた場合は、データベースに発行して結果を メソッドの戻り値として return します。
+                利用可能なPDO設定が複数ある場合、どのDSNを使用するかを@S2Pdoアノテーションで指定します。
+                データーベースへのSQLクエリの発行は、PDOのPrepared Statementが使用されます。 Prepared Statementにバインド
+                されるvalueは、メソッド引数が使用されます。メソッドの戻り値が配列の場合は、2番目の値がバインドvalueとして扱われます。       
+      </para>
+
+      <para>
+      PdoInterceptorには、ORマップ機能はありません。
+      PdoInterceptorには、自動SQL構築機能はありません。
+      </para>
+    </sect2>
+
+    <sbr/>
+    <sect2><title>クラスにアスペクトする</title>      
+      <para>
+        CDテーブルにアクセスするCdDaoクラスを作成します。CdDaoクラスには、CDテーブルから全件を取得するfindAllメソッドを実装します。
+                メソッドの戻り値としてデータベースに発行するSQLクエリを返します。
+      </para>
+      <blockquote>
+        <itemizedlist>
+          <listitem>classes/sample/pdo/CdDao.php</listitem>
+        </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+namespace sample::pdo;
+class CdDao {
+    public function findAll() {
+        return 'select * from CD';
+    }
+}
+
+]]></programlisting>      
+      </blockquote>
+
+      <para>
+             次の処理を行うsample1.phpを作成します。Sqliteデーターベースファイルはsqlite_a.dbを使用します。
+      </para>
+      <orderedlist>
+        <listitem>共通設定ファイルの読み込み</listitem>
+        <listitem>「Dao」クラスにPdoInterceptorを自動アスペクト</listitem>
+        <listitem>S2ApplicationContextにclassesディレクトリ以下をimport</listitem>
+        <listitem>S2ApplicationContextにsqlite_a.dbをDSNに設定するSqlitePdoA.phpをimport</listitem>
+        <listitem>CdDaoの取得</listitem>
+        <listitem>findAllメソッドの実行</listitem>
+      </orderedlist>
+      <blockquote>
+        <itemizedlist>
+          <listitem>sample1.php</listitem>
+        </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+define('ROOT_DIR', dirname(__FILE__));
+require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php');
+
+use seasar::container::S2ApplicationContext as s2app;
+s2app::registerAspect('/Dao$/', 'pdo.interceptor');
+s2app::import(ROOT_DIR . '/classes');
+s2app::import(ROOT_DIR . '/config/SqliteAPdo.php');
+
+$dao = s2app::get('sample::pdo::CdDao');
+$rows = $dao->findAll();
+var_dump($rows);
+
+]]></programlisting>      
+      </blockquote>
+    </sect2>
+
+    <sbr/>
+    <sect2><title>インターフェースにアスペクトする</title>      
+      <para>
+        CDテーブルにアクセスするICdDaoインターフェースを作成します。ICdDaoインターフェースには、CDテーブルから全件を取得するfindAllメソッドを定義します。
+      </para>
+      <blockquote>
+        <itemizedlist>
+          <listitem>classes/sample/pdo/ICdDao.php</listitem>
+        </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+namespace sample::pdo;
+class ICdDao {
+    public function findAll();
+}
+
+]]></programlisting>      
+      </blockquote>
+
+      <para>
+        findAllメソッドが呼ばれた際に発行するSQLクエリをSQLファイルに記述します。SQLファイルはインターフェースファイルと同じディレクトリに配置します。
+        SQLファイル名は、クラス名_メソッド名.sqlとなります。ICdDaoインターフェースのfindAllメソッドの場合は、ICdDao_findAll.sqlとなります。
+      </para>
+      <blockquote>
+        <itemizedlist>
+          <listitem>classes/sample/pdo/ICdDao_findAll.sql</listitem>
+        </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+select * from CD
+
+]]></programlisting>      
+      </blockquote>
+
+      <para>
+             次の処理を行うsample2.phpを作成します。Sqliteデーターベースファイルはsqlite_a.dbを使用します。
+      </para>
+      <orderedlist>
+        <listitem>共通設定ファイルの読み込み</listitem>
+        <listitem>「Dao」クラスにPdoInterceptorを自動アスペクト</listitem>
+        <listitem>S2ApplicationContextにclassesディレクトリ以下をimport</listitem>
+        <listitem>S2ApplicationContextにsqlite_a.dbをDSNに設定するSqlitePdoA.phpをimport</listitem>
+        <listitem>ICdDaoの取得</listitem>
+        <listitem>findAllメソッドの実行</listitem>
+      </orderedlist>
+      <blockquote>
+        <itemizedlist>
+          <listitem>sample2.php</listitem>
+        </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+define('ROOT_DIR', dirname(__FILE__));
+require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php');
+
+use seasar::container::S2ApplicationContext as s2app;
+s2app::registerAspect('/Dao$/', 'pdo.interceptor');
+s2app::import(ROOT_DIR . '/classes');
+s2app::import(ROOT_DIR . '/config/SqliteAPdo.php');
+
+$dao = s2app::get('sample::pdo::ICdDao');
+$rows = $dao->findAll();
+var_dump($rows);
+
+]]></programlisting>      
+      </blockquote>
+
+    </sect2>
+
+    <sbr/>
+    <sect2><title>メソッド引数でバインド値を設定する</title>      
+    </sect2>
+
+    <sbr/>
+    <sect2><title>メソッドの戻り値でバインド値を設定する</title>      
+    </sect2>
+
+    <sbr/>
+    <sect2><title>複雑なバインド値を設定する</title>      
+    </sect2>
+
+    <sbr/>
+    <sect2><title>アノテーションでDSNを指定する</title>      
+    </sect2>
+
+    <sbr/>
+    <sect2><title>DaoクラスでPDOを直接使用する</title>      
+    </sect2>
+
+    <sbr/>
+    <sect2><title>Paginateクラスでページング処理</title>      
+    </sect2>
+
+  </sect1>
+
   <!-- ##################################################################### -->
   <sect1 id="misc206"><title>メソッド引数を検証するStrictInterceptor</title>
   </sect1>
+
   <!-- ##################################################################### -->
   <sect1 id="misc207"><title>Zend_ControllerでS2Containerを使用する</title>
   </sect1>
+
   <!-- ##################################################################### -->
   <sect1 id="misc208"><title>SymfonyでS2Containerを使用する</title>
   </sect1>
