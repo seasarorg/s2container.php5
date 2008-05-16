@@ -468,7 +468,7 @@ var_dump($cdDao->findAll());
 
   <!-- ##################################################################### -->
   <sect1 id="misc.pdointerceptor"><title>PdoInterceptorを用いたデータベースアクセス</title>
-    <sect2><title>Exampleの説明</title>
+    <sect2><title>Exampleについて</title>
       <para>
         PdoInterceptorを用いたデータベースアクセスのExampleは、example/misc/pdo にあります。
                 各クラスファイル、設定ファイル、ディレクトリ構成は次になります。
@@ -570,7 +570,7 @@ class CdDao {
         <listitem>「Dao」クラスにPdoInterceptorを自動アスペクト</listitem>
         <listitem>S2ApplicationContextにclassesディレクトリ以下をimport</listitem>
         <listitem>S2ApplicationContextにsqlite_a.dbをDSNに設定するSqlitePdoA.phpをimport</listitem>
-        <listitem>CdDaoの取得</listitem>
+        <listitem>CdDaoコンポーネントの取得</listitem>
         <listitem>findAllメソッドの実行</listitem>
       </orderedlist>
       <blockquote>
@@ -616,7 +616,7 @@ class ICdDao {
 
       <para>
         findAllメソッドが呼ばれた際に発行するSQLクエリをSQLファイルに記述します。SQLファイルはインターフェースファイルと同じディレクトリに配置します。
-        SQLファイル名は、クラス名_メソッド名.sqlとなります。ICdDaoインターフェースのfindAllメソッドの場合は、ICdDao_findAll.sqlとなります。
+        SQLファイル名は、インターフェース名_メソッド名.sqlとなります。ICdDaoインターフェースのfindAllメソッドの場合は、ICdDao_findAll.sqlとなります。
       </para>
       <blockquote>
         <itemizedlist>
@@ -636,7 +636,7 @@ select * from CD
         <listitem>「Dao」クラスにPdoInterceptorを自動アスペクト</listitem>
         <listitem>S2ApplicationContextにclassesディレクトリ以下をimport</listitem>
         <listitem>S2ApplicationContextにsqlite_a.dbをDSNに設定するSqlitePdoA.phpをimport</listitem>
-        <listitem>ICdDaoの取得</listitem>
+        <listitem>ICdDaoコンポーネントの取得</listitem>
         <listitem>findAllメソッドの実行</listitem>
       </orderedlist>
       <blockquote>
@@ -664,33 +664,663 @@ var_dump($rows);
 
     <sbr/>
     <sect2><title>メソッド引数でバインド値を設定する</title>      
+      <para>
+        CDテーブルにアクセスするCdDaoクラスを作成します。CdDaoクラスには、CDテーブルからIDで検索するfindByIdメソッドを実装します。
+        findByIdメソッドの引数で検索するIDを指定します。SQLクエリへのIDの埋め込みは、「/*:変数名*/サンプルデータ」で行います。
+      </para>
+      <blockquote>
+        <itemizedlist>
+          <listitem>classes/sample/pdo/CdDao.php</listitem>
+        </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+namespace sample::pdo;
+class CdDao {
+    public function findById($id) {
+        return "select * from CD where id = /*:id*/5";    
+    }
+}
+
+]]></programlisting>      
+      </blockquote>
+
+      <para>
+             次の処理を行うsample3.phpを作成します。Sqliteデーターベースファイルはsqlite_a.dbを使用します。
+      </para>
+      <orderedlist>
+        <listitem>共通設定ファイルの読み込み</listitem>
+        <listitem>「Dao」クラスにPdoInterceptorを自動アスペクト</listitem>
+        <listitem>S2ApplicationContextにclassesディレクトリ以下をimport</listitem>
+        <listitem>S2ApplicationContextにsqlite_a.dbをDSNに設定するSqlitePdoA.phpをimport</listitem>
+        <listitem>CdDaoコンポーネントの取得</listitem>
+        <listitem>findByIdメソッドの実行</listitem>
+      </orderedlist>
+      <blockquote>
+        <itemizedlist>
+          <listitem>sample3.php</listitem>
+        </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+define('ROOT_DIR', dirname(__FILE__));
+require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php');
+
+use seasar::container::S2ApplicationContext as s2app;
+s2app::registerAspect('/Dao$/', 'pdo.interceptor');
+s2app::import(ROOT_DIR . '/classes');
+s2app::import(ROOT_DIR . '/config/SqliteAPdo.php');
+
+$dao = s2app::get('sample::pdo::ICdDao');
+$rows = $dao->findById(1);
+var_dump($rows);
+
+]]></programlisting>      
+      </blockquote>
+
+    </sect2>
+
+    <sbr/>
+    <sect2><title>バインド値にオブジェクトを使用する</title>      
+      <para>
+        CDテーブルにアクセスするCdDaoクラスを作成します。CdDaoクラスには、CDテーブルからIDで検索したデータを取得するfindBySqlFile1メソッドを実装します。
+                メソッドの戻り値として null を返します。PdoInterceptorはメソッドの戻り値が null の場合、SQLファイルからSQLクエリを取得します。
+      </para>
+      <blockquote>
+        <itemizedlist>
+          <listitem>classes/sample/pdo/CdDao.php</listitem>
+        </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+namespace sample::pdo;
+class CdDao {
+    public function findBySqlFile1($condition){}
+}
+
+]]></programlisting>      
+      </blockquote>
+
+      <para>
+        findBySqlFile1メソッドが呼ばれた際に発行するSQLクエリをSQLファイルに記述します。SQLファイルはCdDaoクラスファイルと同じディレクトリに配置します。
+        SQLファイル名は、クラス名_メソッド名.sqlとなります。CdDaoクラスのfindBySqlFile1メソッドの場合は、CdDao_findBySqlFile1.sqlとなります。
+        SQLファイルはPHPファイルとしてrequireされるので、PHPで記述することができます。SQLクエリにオブジェクトを用いてバインド値を埋め込む場合、
+                オブジェクトのプロパティやメソッドにアクセスする際は、アンダースコアで記述します。$conditionオブジェクトのidプロパティにアクセスする場合は、「:condition_id」
+                となります。
+      </para>
+      <blockquote>
+        <itemizedlist>
+          <listitem>classes/sample/pdo/CdDao_findBySqlFile1.sql</listitem>
+        </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+select * from CD
+/* <?php if (is_integer($condition->id)):?> */
+    where id = /*:condition_id*/5
+/* <?php endif?> */
+
+]]></programlisting>      
+      </blockquote>
+
+      <para>
+             次の処理を行うsample4.phpを作成します。Sqliteデーターベースファイルはsqlite_a.dbを使用します。
+      </para>
+      <orderedlist>
+        <listitem>共通設定ファイルの読み込み</listitem>
+        <listitem>「Dao」クラスにPdoInterceptorを自動アスペクト</listitem>
+        <listitem>S2ApplicationContextにclassesディレクトリ以下をimport</listitem>
+        <listitem>S2ApplicationContextにsqlite_a.dbをDSNに設定するSqlitePdoA.phpをimport</listitem>
+        <listitem>CdDaoコンポーネントの取得</listitem>
+        <listitem>conditionオブジェクトを作成</listitem>
+        <listitem>findBySqlFile1メソッドの実行</listitem>
+      </orderedlist>
+      <blockquote>
+        <itemizedlist>
+          <listitem>sample4.php</listitem>
+        </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+define('ROOT_DIR', dirname(__FILE__));
+require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php');
+
+use seasar::container::S2ApplicationContext as s2app;
+s2app::registerAspect('/Dao$/', 'pdo.interceptor');
+s2app::import(ROOT_DIR . '/classes');
+s2app::import(ROOT_DIR . '/config/SqliteAPdo.php');
+
+$dao = s2app::get('sample::pdo::ICdDao');
+$condition = new StdClass;
+$condition->id = 1;
+$rows = $dao->findBySqlFile1($condition);
+var_dump($rows);
+
+]]></programlisting>      
+      </blockquote>
+    </sect2>
+
+    <sbr/>
+    <sect2><title>バインド値に配列を使用する</title>      
+      <para>
+        CDテーブルにアクセスするCdDaoクラスを作成します。CdDaoクラスには、CDテーブルからIDで検索したデータを取得するfindBySqlFile3メソッドを実装します。
+                メソッドの戻り値として null を返します。PdoInterceptorはメソッドの戻り値が null の場合、SQLファイルからSQLクエリを取得します。
+      </para>
+      <blockquote>
+        <itemizedlist>
+          <listitem>classes/sample/pdo/CdDao.php</listitem>
+        </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+namespace sample::pdo;
+class CdDao {
+    public function findBySqlFile3($condition){}
+}
+
+]]></programlisting>      
+      </blockquote>
+
+      <para>
+        findBySqlFile1メソッドが呼ばれた際に発行するSQLクエリをSQLファイルに記述します。SQLファイルはCdDaoクラスファイルと同じディレクトリに配置します。
+        SQLファイル名は、クラス名_メソッド名.sqlとなります。CdDaoクラスのfindBySqlFile3メソッドの場合は、CdDao_findBySqlFile3.sqlとなります。
+        SQLファイルはPHPファイルとしてrequireされるので、PHPで記述することができます。SQLクエリに配列を用いてバインド値を埋め込む場合、
+                配列の値にアクセスする際は、アンダースコアで記述します。$condition配列のidキーにアクセスする場合は、「:condition_id」となります。
+      </para>
+      <blockquote>
+        <itemizedlist>
+          <listitem>classes/sample/pdo/CdDao_findBySqlFile3.sql</listitem>
+        </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+select * from CD
+/* <?php if (is_integer($condition['id']):?> */
+    where id = /*:condition_id*/5
+/* <?php endif?> */
+
+]]></programlisting>      
+      </blockquote>
+
+      <para>
+             次の処理を行うsample5.phpを作成します。Sqliteデーターベースファイルはsqlite_a.dbを使用します。
+      </para>
+      <orderedlist>
+        <listitem>共通設定ファイルの読み込み</listitem>
+        <listitem>「Dao」クラスにPdoInterceptorを自動アスペクト</listitem>
+        <listitem>S2ApplicationContextにclassesディレクトリ以下をimport</listitem>
+        <listitem>S2ApplicationContextにsqlite_a.dbをDSNに設定するSqlitePdoA.phpをimport</listitem>
+        <listitem>CdDaoコンポーネントの取得</listitem>
+        <listitem>condition配列を作成</listitem>
+        <listitem>findBySqlFile3メソッドの実行</listitem>
+      </orderedlist>
+      <blockquote>
+        <itemizedlist>
+          <listitem>sample5.php</listitem>
+        </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+define('ROOT_DIR', dirname(__FILE__));
+require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php');
+
+use seasar::container::S2ApplicationContext as s2app;
+s2app::registerAspect('/Dao$/', 'pdo.interceptor');
+s2app::import(ROOT_DIR . '/classes');
+s2app::import(ROOT_DIR . '/config/SqliteAPdo.php');
+
+$dao = s2app::get('sample::pdo::ICdDao');
+$condition = array('id' => 1);
+$rows = $dao->findBySqlFile3($condition);
+var_dump($rows);
+
+]]></programlisting>      
+      </blockquote>
     </sect2>
 
     <sbr/>
     <sect2><title>メソッドの戻り値でバインド値を設定する</title>      
+      <para>
+        CDテーブルにアクセスするCdDaoクラスを作成します。CdDaoクラスには、CDテーブルからタイトル名で検索するfindByTitleメソッドを実装します。
+                メソッドの戻り値を配列とし、1番目の値にSQLクエリ、2番目の値にSQLクエリにバインドする値を配列で指定します。
+      </para>
+      <blockquote>
+        <itemizedlist>
+          <listitem>classes/sample/pdo/CdDao.php</listitem>
+        </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+namespace sample::pdo;
+class CdDao {
+    public function findByTitle() {
+        return array("select * from CD where title = /*:title*/'AAA'", array('title' => 'S2Pdo!!!'));
+    }
+}
+
+]]></programlisting>      
+      </blockquote>
+
+      <para>
+             次の処理を行うsample6.phpを作成します。Sqliteデーターベースファイルはsqlite_a.dbを使用します。
+      </para>
+      <orderedlist>
+        <listitem>共通設定ファイルの読み込み</listitem>
+        <listitem>「Dao」クラスにPdoInterceptorを自動アスペクト</listitem>
+        <listitem>S2ApplicationContextにclassesディレクトリ以下をimport</listitem>
+        <listitem>S2ApplicationContextにsqlite_a.dbをDSNに設定するSqlitePdoA.phpをimport</listitem>
+        <listitem>CdDaoコンポーネントの取得</listitem>
+        <listitem>findByTitleメソッドの実行</listitem>
+      </orderedlist>
+      <blockquote>
+        <itemizedlist>
+          <listitem>sample6.php</listitem>
+        </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+define('ROOT_DIR', dirname(__FILE__));
+require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php');
+
+use seasar::container::S2ApplicationContext as s2app;
+s2app::registerAspect('/Dao$/', 'pdo.interceptor');
+s2app::import(ROOT_DIR . '/classes');
+s2app::import(ROOT_DIR . '/config/SqliteAPdo.php');
+
+$dao = s2app::get('sample::pdo::ICdDao');
+$rows = $dao->findByTitle();
+var_dump($rows);
+
+]]></programlisting>      
+      </blockquote>
+
     </sect2>
 
     <sbr/>
-    <sect2><title>複雑なバインド値を設定する</title>      
-    </sect2>
+    <sect2><title>@S2Pdoアノテーションを使用する</title>      
+      <para>
+        @S2Pdoアノテーションは、クラスまたはメソッドに注釈します。次の2つを設定できます。
+        <itemizedlist>
+          <listitem>複数のデータソースを使用する場合に、どのPDOコンポーネントを使用するかを指定します。</listitem>
+          <listitem>PdoInterceptor処理を実施するかどうかを指定します。(メソッドに注釈付けした場合)</listitem>
+        </itemizedlist>
+      </para>
+      <para>
+              書式は次のようになります。
+      </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+/**
+ * @S2Pdo('pdo'       => PDOコンポーネント名,
+ *        'available' => true)
+ */
+]]></programlisting>
 
-    <sbr/>
-    <sect2><title>アノテーションでDSNを指定する</title>      
+      <para>
+                例として、CDテーブルにアクセスするCdDaoクラスを作成します。CdDaoクラスには、sqlite_bデータベースの
+        CDテーブルから全件を取得するfindAllFromBメソッドを実装します。
+      </para>
+      <blockquote>
+        <itemizedlist>
+          <listitem>classes/sample/pdo/CdDao.php</listitem>
+        </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+namespace sample::pdo;
+class CdDao {
+    /**
+     * @S2Pdo('pdo' => 'sqliteBPdo')
+     */
+    public function findAllFromB() {
+        return "select * from CD";
+    }
+}
+
+]]></programlisting>      
+      </blockquote>
+
+      <para>
+             次の処理を行うsample7.phpを作成します。
+      </para>
+      <orderedlist>
+        <listitem>共通設定ファイルの読み込み</listitem>
+        <listitem>「Dao」クラスにPdoInterceptorを自動アスペクト</listitem>
+        <listitem>S2ApplicationContextにclassesディレクトリ以下をimport</listitem>
+        <listitem>S2ApplicationContextにconfディレクトリ以下をimport (3つのPDOコンポーネントが読み込まれます)</listitem>
+        <listitem>CdDaoコンポーネントの取得</listitem>
+        <listitem>findAllFromBメソッドの実行</listitem>
+      </orderedlist>
+      <blockquote>
+        <itemizedlist>
+          <listitem>sample7.php</listitem>
+        </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+define('ROOT_DIR', dirname(__FILE__));
+require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php');
+
+use seasar::container::S2ApplicationContext as s2app;
+s2app::registerAspect('/Dao$/', 'pdo.interceptor');
+s2app::import(ROOT_DIR . '/classes');
+s2app::import(ROOT_DIR . '/config');
+
+$dao = s2app::get('sample::pdo::CdDao');
+$rows = $dao->findAllFromB();
+var_dump($rows);
+
+]]></programlisting>      
+      </blockquote>
     </sect2>
 
     <sbr/>
     <sect2><title>DaoクラスでPDOを直接使用する</title>      
+      <para>
+      Daoクラスの中で直接PDOを使用する場合は、DaoクラスにPDOコンポーネントをインジェクションします。
+            次の例では、CdDaoクラスにSqliteBPdoコンポーネントをインジェクションするpublicプロパティを用意しています。
+            これにより、S2Containerの自動インジェクション機能によりPDOコンポーネントがCdDaoコンポーネントにインジェクションされます。
+      transactionalInsertメソッドでは、インジェクションされたPDOコンポーネントを使用してトランザクションを開始しています。
+      </para>
+
+      <blockquote>
+        <itemizedlist>
+          <listitem>classes/sample/pdo/CdDao.php</listitem>
+        </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+namespace sample::pdo;
+class CdDao {
+    public $sqliteBPdo = 's2binding';
+
+    /**
+     * @S2Pdo('available' => false)
+     */
+    public function transactionalInsert() {
+        try {
+            $this->sqliteBPdo->beginTransaction();
+            $this->insert(10, 'S2Pdo transaction', 'sample');
+            $this->sqliteBPdo->commit();
+        } catch (Exception $e) {
+            seasar::log::S2Logger::getInstance(__NAMESPACE__)->warn($e->getMessage(), __METHOD__);
+            $this->sqliteBPdo->rollBack();
+        }
+    }
+
+    /**
+     * @S2Pdo('pdo' => 'SqliteBPdo')
+     */
+    public function insert($id, $title, $content) {
+        return "insert into CD values(/*:id*/5, /*:title*/'aaa', /*:content*/'bbb' )";
+    }
+}
+
+]]></programlisting>      
+      </blockquote>
+
+      <para>
+             次の処理を行うsample8.phpを作成します。
+      </para>
+      <orderedlist>
+        <listitem>共通設定ファイルの読み込み</listitem>
+        <listitem>「Dao」クラスにPdoInterceptorを自動アスペクト</listitem>
+        <listitem>S2ApplicationContextにclassesディレクトリ以下をimport</listitem>
+        <listitem>S2ApplicationContextにconfディレクトリ以下をimport (3つのPDOコンポーネントが読み込まれます)</listitem>
+        <listitem>CdDaoコンポーネントの取得</listitem>
+        <listitem>transactionalInsertメソッドの実行</listitem>
+      </orderedlist>
+      <blockquote>
+        <itemizedlist>
+          <listitem>sample8.php</listitem>
+        </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+define('ROOT_DIR', dirname(__FILE__));
+require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php');
+
+use seasar::container::S2ApplicationContext as s2app;
+s2app::registerAspect('/Dao$/', 'pdo.interceptor');
+s2app::import(ROOT_DIR . '/classes');
+s2app::import(ROOT_DIR . '/config');
+
+$dao = s2app::get('sample::pdo::CdDao');
+$dao->transactionalInsert();
+
+]]></programlisting>      
+      </blockquote>
     </sect2>
 
     <sbr/>
     <sect2><title>Paginateクラスでページング処理</title>      
-    </sect2>
+      <para>
+        Paginateクラスは、データベースからのデータ取得の際にページングを行うユーティリティクラスです。    
+                 例として、EMPテーブルにアクセスするEmpDaoクラスを作成します。EmpDaoクラスには、次のようなfindByPaginateメソッドを実装します。
+        PDOコンポーネントにはdb/sqlite_c.dbをデータソースとするsqliteCコンポーネントを用いています。
+        sqliteCコンポーネントは、config/pdo.diconで設定されています。
+      </para>
+      <blockquote>
+        <itemizedlist>
+          <listitem>classes/sample/pdo/EmpDao.php</listitem>
+        </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+namespace sample::pdo;
+/**
+ * @S2Pdo('pdo' => 'sqliteC')
+ */
+class EmpDao {
 
+    /**
+     * @S2Pdo('available' => false)
+     */
+    public function findByPaginate(::Paginate $paginate) {
+        list($row) = $this->findAllTotal($paginate);
+        $paginate->setTotal($row->total);
+        return $this->findAll($paginate);
+    }
+
+    public function findAllTotal(::Paginate $paginate) {
+        return "select count(*) as total from EMP";
+    }
+
+    public function findAll(::Paginate $paginate) {
+        return "select * from EMP
+                limit /*:paginate_getLimit*/3 offset /*:paginate_getOffset*/5";
+    }
+}
+
+]]></programlisting>      
+      </blockquote>
+      <para>
+        findByPaginateメソッドでは、まずfindAllTotalメソッドで全件数を取得し、paginateインスタンスに設定します。
+        (Paginateクラスでページング処理を実施するために全件数が必要なため)
+                その後、findAllメソッドを実行し、データを取得しています。findAllメソッドでは、limit/offset値にpaginateインスタンスが持つ
+                情報を設定して、ページングを実施しています。
+      </para>
+      <para>
+             次の処理を行うsample9.phpを作成します。
+      </para>
+      <orderedlist>
+        <listitem>共通設定ファイルの読み込み</listitem>
+        <listitem>「Dao」クラスにPdoInterceptorを自動アスペクト</listitem>
+        <listitem>S2ApplicationContextにclassesディレクトリ以下をimport</listitem>
+        <listitem>S2ApplicationContextにsqlite_a.dbをDSNに設定するSqlitePdoA.phpをimport</listitem>
+        <listitem>EmpDaoコンポーネントの取得</listitem>
+        <listitem>Paginateインスタンスを生成し、1ページのアイテム数を設定</listitem>
+        <listitem>findByPaginateメソッドを実行</listitem>
+        <listitem>次のページに遷移</listitem>
+        <listitem>findByPaginateメソッドを実行</listitem>
+        <!-- 
+        <listitem>Paginateクラスのfindメソッドでデータの取得</listitem>
+         -->
+      </orderedlist>
+      <blockquote>
+        <itemizedlist>
+          <listitem>sample9.php</listitem>
+        </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+define('ROOT_DIR', dirname(__FILE__));
+require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php');
+
+use seasar::container::S2ApplicationContext as s2app;
+s2app::registerAspect('/Dao$/', 'pdo.interceptor');
+s2app::import(ROOT_DIR . '/classes');
+s2app::import(ROOT_DIR . '/config');
+
+$dao = s2app::get('sample::pdo::EmpDao');
+$paginate = new Paginate;
+$paginate->setLimit(5);
+$rows = $dao->findByPaginate($paginate);
+var_dump($rows);
+
+$paginate->next();
+$rows = $dao->findByPaginate($paginate);
+var_dump($rows);
+
+]]></programlisting>      
+      </blockquote>
+
+<!--
+      <para>
+        Paginateクラスのfindメソッドの定義は次になります。
+      </para>
+      <blockquote>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+final public function find($dao, $methodName, $totalMethodName = null);
+]]></programlisting>      
+        <itemizedlist>
+          <listitem>第1引数 : Daoインスタンス</listitem>
+          <listitem>第2引数 : データ取得メソッド名</listitem>
+          <listitem>第3引数 : データ件数取得メソッド名</listitem>
+        </itemizedlist>
+      </blockquote>
+      <para>
+              第3引数が省略された場合は、第2引数の値に "Total" を追記した文字列をメソッド名とします。上記例の場合は、
+              データ取得メソッド名が "findAll" なので、 データ件数取得メソッド名は "findAllTotal" となります。
+      </para>
+  -->      
+    </sect2>    
   </sect1>
 
   <!-- ##################################################################### -->
   <sect1 id="misc206"><title>メソッド引数を検証するStrictInterceptor</title>
+    <sect2><title>Exampleについて</title>
+      <para>
+        StrictInterceptorのExampleは、example/misc/strict にあります。
+                各クラスファイル、設定ファイル、ディレクトリ構成は次になります。
+                
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+example/misc/strict/
+ +-- classes/
+ |    +-- sample/
+ |    +-- StrictAnnotationFactory.php
+ |    +-- StrictException.php
+ |    +-- StrictInterceptor.php
+ +-- execute.php
+      
+]]></programlisting>
+
+        clasesディレクトリにある次の3つのクラスがStrictInterceptorを使用するために必要となります。
+        <itemizedlist>
+          <listitem>StrictAnnotationFactory.php</listitem>
+          <listitem>StrictException.php</listitem>
+          <listitem>StrictInterceptor.php</listitem>
+        </itemizedlist>
+      </para>
+    </sect2>
+
+    <sbr/>
+    <sect2><title>StrictInterceptorの概要</title>
+      <para>
+        StrictInterceptorはメソッド呼び出し時にメソッド引数と戻り値について型チェックをおこなうInterceptorです。
+                メソッド引数や戻り値の型の指定はコメントアノテーションで行います。
+        <itemizedlist>
+          <listitem>@param メソッドの引数の型を指定</listitem>
+          <listitem>@return メソッドの戻り値の型を指定</listitem>
+        </itemizedlist>
+        @paramアノテーションは、1引数にひとつ指定します。例として、Calcクラスのaddメソッドのアノテーションを次に示します。
+<blockquote>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Calc {
+    /**
+     * @param numeric $a
+     * @param numeric $b
+     * @return integer
+     */
+    public function add($a, $b) {
+        return $a + $b;
+    }
+}
+]]></programlisting>
+</blockquote>
+      </para>
+      
+      <para>
+               型のチェックは、指定された型がクラスの場合は、そのクラスに属するインスタンスかどうかが確認されます。
+               指定された型のクラスが存在しない場合は、指定された型の先頭に「is_」を付加した関数を使用してチェックを実施します。
+               型指定がintegerの場合は、is_integer関数が使用されます。また、型の指定は、「|」で区切ることで複数指定できます。
+               複数の型が指定されている場合は、ORチェックが成されます。
+      </para>
+    </sect2>
+
+    <sbr/>
+    <sect2><title>StrictInterceptorをアスペクトする</title>
+      <para>
+              例として、次のようなHogeクラスを作成します。
+      </para>
+<blockquote>
+        <itemizedlist>
+          <listitem>classes/sample/Hoge.php</listitem>
+        </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+namespace sample;
+class Hoge {
+    /**
+     * @param numeric $a is_numeric関数で確認されます。
+     * @param string  $b is_string関数で確認されます。
+     * @return object is_object関数で確認されます。
+     */
+    public function foo($a, $b) {
+        return new StdClass;
+    }
+
+    /**
+     * @param sample::Huga  $a Hugaクラスかどうか、または、is_subclass_of関数で確認されます。
+     * @param mixed $b 型チェックを行いません。
+     * @return null|sample::Huga is_null関数で確認されます。
+     *                           またはHugaクラスかどうか、またはis_subclass_of関数で確認されます。
+     */
+    public function bar(sample::Huga $a, $b) {
+        return null;
+    }
+}
+class Huga{}
+
+]]></programlisting>
+</blockquote>
+
+      <para>
+              実行スクリプトは次になります。HogeクラスにStrictInterceptorを自動アスペクトしています。
+      </para>
+<blockquote>
+        <itemizedlist>
+          <listitem>sample.php</listitem>
+        </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php');
+use seasar::container::S2ApplicationContext as s2app;
+
+s2app::import(dirname(__FILE__) . '/classes');
+s2app::registerAspect('/Hoge/', 'StrictInterceptor');
+$hoge = s2app::get('Hoge');
+
+$obj = $hoge->foo(1, 'abc');
+$obj = $hoge->bar(new sample::Huga, 100);
+
+try {
+    $obj = $hoge->foo(1, 2);
+} catch(StrictException $e) {
+    print $e->getMessage() . PHP_EOL;
+}
+
+]]></programlisting>
+</blockquote>
+      <para>
+        2番目のfooメソッドの実行では、第2引数が文字列ではないためStrictExceptionが発生します。
+                「argument[1] type unmatch. expected string」とメッセージが表示されます。
+      </para>
+    </sect2>
   </sect1>
+
 
   <!-- ##################################################################### -->
   <sect1 id="misc207"><title>Zend_ControllerでS2Containerを使用する</title>
