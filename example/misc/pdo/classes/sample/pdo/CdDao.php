@@ -16,13 +16,34 @@ class CdDao {
     }
 
     public function findByTitle() {
-        return array("select * from CD where title = /*:title*/'AAA'", array('title' => 'S2Dao!!!'));
+        return array("select * from CD where title = /*:title*/'AAA'", array('title' => 'S2Pdo!!!'));
+    }
+
+    /**
+     * @S2Pdo('pdo' => 'sqliteBPdo')
+     */
+    public function findAllFromB() {
+        return "select * from CD";
     }
 
     public function findBySqlFile1($condition){}
     public function findBySqlFile2($condition){}
     public function findBySqlFile3($condition){}
     public function findBySqlFile4($condition){}
+
+    /**
+     * @S2Pdo('available' => false)
+     */
+    public function transactionalInsert() {
+        try {
+            $this->sqliteBPdo->beginTransaction();
+            $this->insert(10, 'aaa', 'bbb');
+            $this->sqliteBPdo->commit();
+        } catch (Exception $e) {
+            seasar::log::S2Logger::getInstance(__NAMESPACE__)->warn($e->getMessage(), __METHOD__);
+            $this->sqliteBPdo->rollBack();
+        }
+    }
 
     /**
      * @S2Pdo('available' => false)
