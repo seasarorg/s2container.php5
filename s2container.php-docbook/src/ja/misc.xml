@@ -1,5 +1,5 @@
 <chapter id="misc"><title>MISC</title>
-  <sect1 id="misc151"><title>S2Container-1.2 と S2Container-2.0 機能比較</title>
+  <sect1 id="misc.spec"><title>S2Container-1.2 と S2Container-2.0 機能比較</title>
     <blockquote>
       <table frame='all'><title>S2Container-1.2 と S2Container-2.0 機能比較表</title>
         <tgroup cols='3' align='left' colsep='1' rowsep='1'>
@@ -47,7 +47,7 @@
             <row>
               <entry>アノテーション</entry>
               <entry>拡張機能(extension)でのAnnotation関連、S2ContainerApplicationContextクラスのアノテーション機能</entry>
-              <entry><link linkend="misc203">seasar::util:Annotationクラスに統合</link></entry>
+              <entry><link linkend="misc.annotation">seasar::util:Annotationクラスに統合</link></entry>
             </row>
             <row>
               <entry>バンドル Interceptor</entry>
@@ -78,7 +78,7 @@
             <row>
               <entry>ClassLoader</entry>
               <entry>S2ContainerClassLoader、S2ContainerApplicationContext クラス</entry>
-              <entry><link linkend="misc204">seasar::util::ClassLoader クラス</link></entry>
+              <entry><link linkend="misc.classloader">seasar::util::ClassLoader クラス</link></entry>
             </row>
             <row>
               <entry>Singleton S2Container 機能</entry>
@@ -88,7 +88,7 @@
             <row>
               <entry>ログ機能</entry>
               <entry>有り</entry>
-              <entry><link linkend="misc202">有り</link></entry>
+              <entry><link linkend="misc.s2log">有り</link></entry>
             </row>
             <row>
               <entry>S2Container キャッシュ機能</entry>
@@ -164,7 +164,7 @@ print get_class($service->container) . PHP_EOL;
 
 
   <!-- ##################################################################### -->
-  <sect1 id="misc202"><title>S2Containerのログ設定</title>
+  <sect1 id="misc.s2log"><title>S2Containerのログ設定</title>
     <para>
     S2Containerでは、次のようにS2LoggerのgetLoggerメソッドでLoggerインスタンスを取得し、ログ出力を行います。
     </para>
@@ -253,7 +253,7 @@ seasar::Config::$SIMPLE_LOG_FILE = null;
   </sect1>
 
   <!-- ##################################################################### -->
-  <sect1 id="misc203"><title>Annotation API リファレンス</title>
+  <sect1 id="misc.annotation"><title>Annotation API リファレンス</title>
     <para>   
     seasar::util::Annotation は、クラスに記述されたコメントや定数値をアノテーションとして読み込みます。
         読み込んだ文字列は配列のExpressionとしてeval関数で処理します。
@@ -363,7 +363,7 @@ publi static function has($reflection, $annotation)
 
 
   <!-- ##################################################################### -->
-  <sect1 id="misc204"><title>ClassLoader API リファレンス</title>
+  <sect1 id="misc.classloader"><title>ClassLoader API リファレンス</title>
      <para>
        seasar::util::ClassLoaderクラスは、ファイルシステム上のクラスファイルを検索し、autoload関数を介して
               クラス定義をロードします。クラスのインポートは次のメソッドで行います。
@@ -1189,7 +1189,7 @@ final public function find($dao, $methodName, $totalMethodName = null);
   </sect1>
 
   <!-- ##################################################################### -->
-  <sect1 id="misc206"><title>メソッド引数を検証するStrictInterceptor</title>
+  <sect1 id="misc.strict"><title>メソッド引数を検証するStrictInterceptor</title>
     <sect2><title>Exampleについて</title>
       <para>
         StrictInterceptorのExampleは、example/misc/strict にあります。
@@ -1323,10 +1323,14 @@ try {
 
 
   <!-- ##################################################################### -->
-  <sect1 id="misc207"><title>Zend_ControllerでS2Containerを使用する</title>
+  <sect1 id="misc.zend"><title>Zend_ControllerでS2Containerを使用する</title>
   </sect1>
 
   <!-- ##################################################################### -->
-  <sect1 id="misc208"><title>SymfonyでS2Containerを使用する</title>
+  <sect1 id="misc.symfony"><title>SymfonyでS2Containerを使用する</title>
+  </sect1>
+
+  <!-- ##################################################################### -->
+  <sect1 id="misc.beandesc"><title>BeanDesc API リファレンス</title>
   </sect1>
 </chapter>
