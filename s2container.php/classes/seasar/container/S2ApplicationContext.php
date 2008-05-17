@@ -148,7 +148,7 @@ class S2ApplicationContext {
     private static function scanDir($parentPath, $namespace, $strict, $pear, $recursive) {
         $iterator = new DirectoryIterator($parentPath);
         while($iterator->valid()) {
-            if ($iterator->isDot()) {
+            if (preg_match('/^\./', $iterator->getFilename())) {
                 $iterator->next();
                 continue;
             }

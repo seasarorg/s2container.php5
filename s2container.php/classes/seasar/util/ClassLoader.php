@@ -63,7 +63,7 @@ class ClassLoader {
     public static function import($dirPath, array $namespace = array(), $strict = false, $pear = false, $recursive = true) {
         $iterator = new DirectoryIterator($dirPath);
         while($iterator->valid()) {
-            if ($iterator->isDot()) {
+            if (preg_match('/^\./', $iterator->getFilename())) {
                 $iterator->next();
                 continue;
             }
