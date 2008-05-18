@@ -1,0 +1,131 @@
+  <sect1 id="misc.strict"><title>メソッド引数を検証するStrictInterceptor</title>
+    <sect2><title>Exampleについて</title>
+      <para>
+        StrictInterceptorのExampleは、example/misc/strict にあります。
+                各クラスファイル、設定ファイル、ディレクトリ構成は次になります。
+                
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+example/misc/strict/
+ +-- classes/
+ |    +-- sample/
+ |    +-- StrictAnnotationFactory.php
+ |    +-- StrictException.php
+ |    +-- StrictInterceptor.php
+ +-- execute.php
+      
+]]></programlisting>
+
+        clasesディレクトリにある次の3つのクラスがStrictInterceptorを使用するために必要となります。
+        <itemizedlist>
+          <listitem>StrictAnnotationFactory.php</listitem>
+          <listitem>StrictException.php</listitem>
+          <listitem>StrictInterceptor.php</listitem>
+        </itemizedlist>
+      </para>
+    </sect2>
+
+    <sbr/>
+    <sect2><title>StrictInterceptorの概要</title>
+      <para>
+        StrictInterceptorはメソッド呼び出し時にメソッド引数と戻り値について型チェックをおこなうInterceptorです。
+                メソッド引数や戻り値の型の指定はコメントアノテーションで行います。
+        <itemizedlist>
+          <listitem>@param メソッドの引数の型を指定</listitem>
+          <listitem>@return メソッドの戻り値の型を指定</listitem>
+        </itemizedlist>
+        @paramアノテーションは、1引数にひとつ指定します。例として、Calcクラスのaddメソッドのアノテーションを次に示します。
+<blockquote>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Calc {
+    /**
+     * @param numeric $a
+     * @param numeric $b
+     * @return integer
+     */
+    public function add($a, $b) {
+        return $a + $b;
+    }
+}
+]]></programlisting>
+</blockquote>
+      </para>
+      
+      <para>
+               型のチェックは、指定された型がクラスの場合は、そのクラスに属するインスタンスかどうかが確認されます。
+               指定された型のクラスが存在しない場合は、指定された型の先頭に「is_」を付加した関数を使用してチェックを実施します。
+               型指定がintegerの場合は、is_integer関数が使用されます。また、型の指定は、「|」で区切ることで複数指定できます。
+               複数の型が指定されている場合は、ORチェックが成されます。
+      </para>
+    </sect2>
+
+    <sbr/>
+    <sect2><title>StrictInterceptorをアスペクトする</title>
+      <para>
+              例として、次のようなHogeクラスを作成します。
+      </para>
+<blockquote>
+        <itemizedlist>
+          <listitem>classes/sample/Hoge.php</listitem>
+        </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+namespace sample;
+class Hoge {
+    /**
+     * @param numeric $a is_numeric関数で確認されます。
+     * @param string  $b is_string関数で確認されます。
+     * @return object is_object関数で確認されます。
+     */
+    public function foo($a, $b) {
+        return new StdClass;
+    }
+
+    /**
+     * @param sample::Huga  $a Hugaクラスかどうか、または、is_subclass_of関数で確認されます。
+     * @param mixed $b 型チェックを行いません。
+     * @return null|sample::Huga is_null関数で確認されます。
+     *                           またはHugaクラスかどうか、またはis_subclass_of関数で確認されます。
+     */
+    public function bar(sample::Huga $a, $b) {
+        return null;
+    }
+}
+class Huga{}
+
+]]></programlisting>
+</blockquote>
+
+      <para>
+              実行スクリプトは次になります。HogeクラスにStrictInterceptorを自動アスペクトしています。
+      </para>
+<blockquote>
+        <itemizedlist>
+          <listitem>sample.php</listitem>
+        </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php');
+use seasar::container::S2ApplicationContext as s2app;
+
+s2app::import(dirname(__FILE__) . '/classes');
+s2app::registerAspect('/Hoge/', 'StrictInterceptor');
+$hoge = s2app::get('Hoge');
+
+$obj = $hoge->foo(1, 'abc');
+$obj = $hoge->bar(new sample::Huga, 100);
+
+try {
+    $obj = $hoge->foo(1, 2);
+} catch(StrictException $e) {
+    print $e->getMessage() . PHP_EOL;
+}
+
+]]></programlisting>
+</blockquote>
+      <para>
+        2番目のfooメソッドの実行では、第2引数が文字列ではないためStrictExceptionが発生します。
+                「argument[1] type unmatch. expected string」とメッセージが表示されます。
+      </para>
+    </sect2>
+  </sect1>

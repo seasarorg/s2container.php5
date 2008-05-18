@@ -7,6 +7,10 @@
 <!ENTITY dicon      SYSTEM "dicon.xml">
 <!ENTITY aop        SYSTEM "aop.xml">
 <!ENTITY misc       SYSTEM "misc.xml">
+<!ENTITY misc.pdointerceptor    SYSTEM "misc.pdointerceptor.xml">
+<!ENTITY misc.strictinterceptor SYSTEM "misc.strictinterceptor.xml">
+<!ENTITY misc.zend    SYSTEM "misc.zend.xml">
+<!ENTITY misc.symfony SYSTEM "misc.symfony.xml">
 ]>
 <book lang="ja" id="index"><title>S2Container.PHP-2.0 ドキュメント</title>
   <bookinfo>

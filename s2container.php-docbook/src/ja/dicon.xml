@@ -126,30 +126,6 @@ $component = $container->getComponent('indexAction');
          </para>
 
          <para>
-                  例として、あるアクションにサービスをDIする場合を次に示します。<sbr/>
-                  アクションクラスにはサービスを設定する public なプロパティを実装します。次の Action クラスでは $service プロパティを
-                  実装しています。この場合、プロパティ名がコンポーネント名として扱われるため、コンテナから service コンポーネントが DI されます。
-         </para>
-                  
-<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-<?php
-class Action {
-
-    /**
-     * @var Service
-     */
-    public $service = null;
-
-    /**
-     * アクション実装メソッド
-     */
-    public function execute() {
-        $result = $this->service->add(2,3);    
-    }
-}
-]]></programlisting>
-
-         <para>
                   プロパティのデフォルト値にタイプヒントを設定することで、DIするコンポーネントを指定できます。
                  タイプヒントは「S2Binding コンポーネント名」と記述します。また、複数のコンポーネントをまとめて配列としDIすることができます。
                   配列としてDIする場合は、タイプヒントに「S2Binding コンポーネント名[]」と記述します。
@@ -172,6 +148,52 @@ class Action {
         $result = $this->service->add(2,3);    
     }
 }
+]]></programlisting>
+
+         <para>
+                    プロパティのデフォルト値のコンポーネント名は省略できます。コンポーネント名が省略された場合は、プロパティ名が
+                    コンポーネント名として扱われます。次の例では、コンポーネント名は「service」となります。
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+    /**
+     * @var Service
+     */
+    public $service = 'S2Binding';
+]]></programlisting>
+
+         <para>
+           seasar::container::Config::$PROPERTY_TYPEHINT_NULLに true を設定することで、
+                      プロパティのデフォルト値がnullの場合でも自動インジェクションを行うことができます。
+           seasar::container::Config::$PROPERTY_TYPEHINT_NULLのデフォルト値は false です。
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+seasar::container::Config::$PROPERTY_TYPEHINT_NULL = true;
+]]></programlisting>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+    /**
+     * @var Service
+     */
+    public $service = null;
+]]></programlisting>
+
+         <para>
+           seasar::container::Config::$PROPERTY_TYPEHINT_KEY に任意の文字列を指定することで、
+                      プロパティのタイプヒントのキーを設定できます。$PROPERTY_TYPEHINT_KEYに「DI」を設定した場合は、
+                     次のようにpublic プロパティのデフォルト値を設定できます。
+           seasar::container::Config::$PROPERTY_TYPEHINT_KEYのデフォルト値は「S2Binding」です。
+         </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+seasar::container::Config::$PROPERTY_TYPEHINT_KEY = 'DI';
+]]></programlisting>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+    /**
+     * @var Service
+     */
+    public $service = 'DI Service';
 ]]></programlisting>
 
          <para>
