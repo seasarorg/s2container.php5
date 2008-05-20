@@ -1,0 +1,2167 @@
+<chapter id="dicon"><title>S2Container.PHP Reference</title>
+
+  <sect1 id="dicon.s2container"><title>S2Container Reference</title>
+    <sect2><title>Generation of S2Container</title>
+       <para>
+         Generation of S2Container is carried out by the "create" method of <link linkend="dicon.application">S2ApplicationContext</link> class
+         or <link linkend="dicon.factory">S2ContainerFactory</link> class.
+       </para>
+
+       <para>
+         When using <link linkend="dicon.application">S2ApplicationContext</link> class, 
+         S2ApplicationContext searches a class definition file with an import method from a file system,
+         and then generates S2Container which has a search-results class as a component.
+       </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+seasar::container::S2ApplicationContext::import('/path/to/classes');
+$container = seasar::container::S2ApplicationContext::create();
+
+]]></programlisting>
+
+       <para>
+         When using <link linkend="dicon.factory">S2ContainerFactory</link> class, 
+         S2ContainerFactory reads the DICON file which described the definition of the component, 
+         and generates S2Container.
+       </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+$container = seasar::container::S2ContainerFactory::create('/path/to/dicon file');
+
+]]></programlisting>
+   </sect2>
+
+    <!-- ################################################################### -->
+    <sbr/>
+    <sect2 id="dicon.s2container.component"><title>Take out a component</title>
+       <para>The following method is used in order to take out a component from S2Container.</para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+S2Container::getComponent($componentKey)
+]]></programlisting>
+    <para>
+          The class name or component name of a component is specified as an argument.<sbr/>
+          When there are two or more components which indicates the class specified in S2Container,
+          Since S2Container cannot judge which component should be returned, it carries out a throw of the exception "TooManyRegistrationRuntimeException".
+          Therefore, please specify the class name it is decided uniquely that a component will be.<sbr/>
+          It is also the same as when taking out a component  by a component name.
+    </para>
+
+    <para>
+        As an example, it is assumed that the component is defined by the DICON file as follows.
+    </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components>
+    <component name="action" class="example::IndexAction" />
+</components>
+]]></programlisting>
+
+    <para>
+       It is as follows, when specifying a component name and acquiring a component.
+    </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+$container = seasar::container::impl::S2ContainerFactory::create('/path/to/dicon file');
+$component = $container->getComponent('action');
+
+]]></programlisting>
+
+    <para>
+       It is as follows, when specifying a class name and acquiring a component.
+    </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+$container = seasar::container::impl::S2ContainerFactory::create('/path/to/dicon file');
+$component = $container->getComponent('example::IndexAction');
+
+]]></programlisting>
+
+    <para>
+        A component is acquirable also by the class name which does not contain a name space.
+    </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+$container = seasar::container::impl::S2ContainerFactory::create('/path/to/dicon file');
+$component = $container->getComponent('IndexAction');
+
+]]></programlisting>
+
+    <para>
+        Also acquirable by the component name which the first letter of a class name made into the small letter.
+    </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+$container = seasar::container::impl::S2ContainerFactory::create('/path/to/dicon file');
+$component = $container->getComponent('indexAction');
+
+]]></programlisting>
+    </sect2>
+ 
+    <!-- ################################################################### -->
+    <sbr/>
+    <sect2 id="dicon.di.auto"><title>DI by automatic binding</title>
+       <para>
+         Automatic binding of S2Container solves the dependency between components by
+         the information specified with the type hint of the property or setter method of a class and an interface.
+         There are the following three types of Dependency Injection based on automatic binding.
+       </para>
+
+       <itemizedlist>
+          <listitem>Property Injection</listitem>
+          <listitem>Setter Method Injection</listitem>
+          <listitem>Constructor Injection</listitem>
+       </itemizedlist>
+
+       <sbr/>
+       <blockquote id="dicon.di.auto.property"><formalpara><title>Property Injection</title></formalpara>
+         <para>
+            By property injection, Dependency Injection is performed to public property.
+         </para>
+
+         <para>
+           As a example, the case where a service class is injected to an action class is shown below.<sbr/>
+           In an action class, a property for service component is implemented.
+           In Action class shown below, the "$service" property is prepared.
+           In this case, since a property name is treated as a component name, 
+           "service" component is taken out from S2Container and is injected to Action.
+           The following action class is saved at a current directory as "classes/Action.php".
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Action {
+
+    /**
+     * @var Service
+     */
+    public $service = null;
+
+    /**
+     * action execution method
+     */
+    public function execute() {
+        $result = $this->service->add(2,3);
+    }
+}
+]]></programlisting>
+
+         <para>
+           By setting default property value by type hint, the component which be injected can be specified.
+           A type hint is described like "S2Binding component name".
+           Moreover, two or more components can be packed as array, and DI can be carried out.
+           When DI is carried out by component packed array, a type hint is described like "S2Binding component[]".
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Action {
+
+    /**
+     * @var Service
+     */
+    public $service = 'S2Binding Service';
+
+    /**
+     * action execution method
+     */
+    public function execute() {
+        $result = $this->service->add(2,3);
+    }
+}
+]]></programlisting>
+
+         <para>
+           The following service class is saved at a current directory as "classes/Service.php".
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Service {
+
+    /**
+     * Sums are done.
+     *
+     * @param integer $a
+     * @param integer $b
+     * @return integer
+     */
+    public function add($a, $b) {
+        return $a + $b;
+    }
+}
+]]></programlisting>
+
+         <para>
+           A container is generated using a S2ApplicationContext class and an action component is acquired.
+           By the automatic binding function of S2Container, DI of the service component is carried out to the taken out action component.
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+
+seasar::container::S2ApplicationContext::import(dirname(__FILE__) . '/classes');
+$container = seasar::container::S2ApplicationContext::create();
+$action    = $container->getComponent('Action');
+
+$action->execute();
+
+]]></programlisting>
+
+         <para>
+           When generating a container using a S2ContainerFactory class, the following DICON files are prepared.
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components>
+    <component class="Action"/>
+    <component class="Service"/>
+</components>
+]]></programlisting>
+
+         <para>
+           A container is generated using a S2ContainerFactory class and an action component is acquired.
+           By the automatic binding function of S2Container, DI of the service component is carried out to the taken out action component.
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+
+seasar::util::ClassLoader::import(dirname(__FILE__) . '/classes');
+$container = seasar::container::S2ContainerFactory::create('/path/to/dicon file');
+$action    = $container->getComponent('Action');
+
+$action->execute();
+
+]]></programlisting>
+
+       </blockquote>
+       <note><title>NOTE</title>
+         <para>
+           This Example is located at "example/AutoDI/property", "example/AutoDI/property_array"
+         </para>
+       </note>
+
+       <sbr/>
+       <blockquote id="dicon.di.auto.setter"><formalpara><title>Setter Method Injection</title><sbr/></formalpara>
+         <para>
+           By setter method injection, Dependency Injection is performed to a property using setter method.
+           There is naming convention in a setter method.
+           In the case that a property name is "service", One character of a head is changed into a capital letter, 
+           "set" is added to a head, then "setService" is a setter method name of "service" property.
+         </para>
+
+         <para>
+           As a example, the case where a service class is injected to an action class is shown below.<sbr/>
+           In an action class, a setter method for service component is implemented.
+           The type hint of the argument of a setter method is be a service class.
+           The following action class is saved at a current directory as "classes/Action.php".
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Action {
+
+    /**
+     * @var Service
+     */
+    private $service = null;
+
+    /**
+     * setter method of service property
+     *
+     * @param Service $service
+     */
+    public function setService(Service $service) {
+        $this->service = $service;
+    }
+
+    /**
+     * action execution method
+     */
+    public function execute() {
+        $result = $this->service->add(2,3);
+    }
+}
+]]></programlisting>
+
+         <para>
+           The following service class is saved at a current directory as "classes/Service.php".
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Service {
+
+    /**
+     * Sums are done.
+     *
+     * @param integer $a
+     * @param integer $b
+     * @return integer
+     */
+    public function add($a, $b) {
+        return $a + $b;    
+    }
+}
+]]></programlisting>
+
+         <para>
+           A container is generated using a S2ApplicationContext class and an action component is acquired.
+           By the automatic binding function of S2Container, DI of the service component is carried out to the taken out action component.
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+
+seasar::container::S2ApplicationContext::import(dirname(__FILE__) . '/classes');
+$container = seasar::container::S2ApplicationContext::create();
+$action    = $container->getComponent('Action');
+
+$action->execute();
+
+]]></programlisting>
+
+         <para>
+           When generating a container using a S2ContainerFactory class, the following DICON files are prepared.
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components>
+    <component class="Action"/>
+    <component class="Service"/>
+</components>
+]]></programlisting>
+
+         <para>
+           A container is generated using a S2ContainerFactory class and an action component is acquired.
+           By the automatic binding function of S2Container, DI of the service component is carried out to the taken out action component.
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+
+seasar::util::ClassLoader::import(dirname(__FILE__) . '/classes');
+$container = seasar::container::S2ContainerFactory::create('/path/to/dicon file');
+$action    = $container->getComponent('Action');
+
+$action->execute();
+
+]]></programlisting>
+       </blockquote>
+       <note><title>NOTE</title>
+         <para>
+           This Example is located at "example/AutoDI/setter"
+         </para>
+       </note>
+
+
+       <sbr/>
+       <blockquote id="dicon.di.auto.constructor"><formalpara><title>Constructor Injection</title></formalpara>
+         <para>
+           By constructor injection, Dependency Injection is performed to a property
+           using constructor arguments.
+         </para>
+
+         <para>
+           As a example, the case where a service class is injected to an action class is shown below.<sbr/>
+           In an action class, a constructor argument for service component is implemented.
+           The type hint of the argument is be a service class.
+           The following action class is saved at a current directory as "classes/Action.php".
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Action {
+
+    /**
+     * @var Service
+     */
+    private $service = null;
+
+    /**
+     * construct action class
+     *
+     * @param Service $service
+     */
+    public function __construct(Service $service) {
+        $this->service = $service;
+    }
+
+    /**
+     * action execution method
+     */
+    public function execute() {
+        $result = $this->service->add(2,3);
+    }
+}
+]]></programlisting>
+
+         <para>
+           The following service class is saved at a current directory as "classes/Service.php".
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Service {
+
+    /**
+     * Sums are done.
+     *
+     * @param integer $a
+     * @param integer $b
+     * @return integer
+     */
+    public function add($a, $b) {
+        return $a + $b;    
+    }
+}
+]]></programlisting>
+
+         <para>
+           A container is generated using a S2ApplicationContext class and an action component is acquired.
+           By the automatic binding function of S2Container, DI of the service component is carried out to the taken out action component.
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+
+seasar::container::S2ApplicationContext::import(dirname(__FILE__) . '/classes');
+$container = seasar::container::S2ApplicationContext::create();
+$action    = $container->getComponent('Action');
+
+$action->execute();
+
+]]></programlisting>
+
+         <para>
+           When generating a container using a S2ContainerFactory class, the following DICON files are prepared.
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components>
+    <component class="Action"/>
+    <component class="Service"/>
+</components>
+]]></programlisting>
+
+         <para>
+           A container is generated using a S2ContainerFactory class and an action component is acquired.
+           By the automatic binding function of S2Container, DI of the service component is carried out to the taken out action component.
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+
+seasar::util::ClassLoader::import(dirname(__FILE__) . '/classes');
+$container = seasar::container::S2ContainerFactory::create('/path/to/diconファイル');
+$action    = $container->getComponent('Action');
+
+$action->execute();
+
+]]></programlisting>
+      </blockquote>
+       <note><title>NOTE</title>
+         <para>
+           This Example is located at "example/AutoDI/consructor"
+         </para>
+       </note>
+
+    </sect2>
+  
+    <sbr/>
+    <sect2><title>DI by manual setup</title>
+       <para>
+         There are the following four types of Dependency Injection based on manual setup.
+       </para>
+       <itemizedlist>
+          <listitem>Property Injection</listitem>
+          <listitem>Setter Method Injection</listitem>
+          <listitem>Constructor Injection</listitem>
+          <listitem>InitMethod Injectioin</listitem>
+       </itemizedlist>
+       <blockquote><formalpara><title>Property Injection</title></formalpara>
+         <para>
+            By property injection, Dependency Injection is performed to public property.
+         </para>
+
+         <blockquote><formalpara><title>Setup by comment annotation</title><sbr/></formalpara>
+         <para>
+           The following action class is saved at a current directory as "classes/Action.php".
+           Comment annotation of each property describes the value, Expression or the reference to other component which are injected.
+           When two or more components exist which are injected, components can be packed as array, then DI can be carried out.
+         </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Action {
+
+    /**
+     * @S2Binding('"seasar"')
+     */
+    public $name    = null;     // injected string "seasar"
+
+    /**
+     * @S2Binding('2000 + 8')
+     */
+    public $year    = null;     // injected integer "2008"
+
+    /**
+     * @S2Binding('Service')
+     */
+    public $service = null;     // injected Service component
+}
+]]></programlisting>
+         <para>
+           The following service class is saved at a current directory as "classes/Service.php".
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Service {
+
+    /**
+     * Sums are done.
+     *
+     * @param integer $a
+     * @param integer $b
+     * @return integer
+     */
+    public function add($a, $b) {
+        return $a + $b;
+    }
+}
+]]></programlisting>
+
+         <para>
+           A container is generated using a S2ApplicationContext class and an action component is acquired.
+           DI of the value and service component which were set up by annotation is carried out to the acquired action component.
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+
+seasar::container::S2ApplicationContext::import(dirname(__FILE__) . '/classes');
+$container = seasar::container::S2ApplicationContext::create();
+$action    = $container->getComponent('Action');
+
+var_dump($action);
+
+]]></programlisting>
+         </blockquote>
+
+
+         <sbr/>
+         <blockquote><formalpara><title>Setup by DICON file</title></formalpara>
+         <para>
+           When setting up by a dicon file which is a definition file of S2Container, the following contents are described.
+         </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components>
+    <component class="Action">
+        <property name="name">"seasar"</property>
+        <property name="year">2000 + 8</property>
+        <property name="service">Service</property>
+    </component>
+    <component class="Service" />
+</components>
+]]></programlisting>
+         <para>
+           The property of a component is specified using the property tag which is a child tag of a component tag.
+           A property name is specified with a name attribute.
+           The following item can be set to the body of a property tag.
+           <itemizedlist>
+             <listitem>The value surrounded by the (double) quote</listitem>
+             <listitem>Expression which described PHP</listitem>
+             <listitem>Reference to other components</listitem>
+           </itemizedlist>
+         </para>
+
+         <para>
+           The following action class is saved at a current directory as "classes/Action.php".
+         </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Action {
+    public $name    = null;     // injected string "seasar"
+    public $year    = null;     // injected integer "2008"
+    public $service = null;     // injected Service component
+}
+]]></programlisting>
+
+         <para>
+           The following service class is saved at a current directory as "classes/Service.php".
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Service {
+
+    /**
+     * Sums are done.
+     *
+     * @param integer $a
+     * @param integer $b
+     * @return integer
+     */
+    public function add($a, $b) {
+        return $a + $b;    
+    }
+}
+]]></programlisting>
+
+         <para>
+           A container is generated using a S2ContainerFactory class and an action component is acquired.
+           DI of the value and service component which were set up by the DICON file is carried out to the acquired action component.
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+
+seasar::util::ClassLoader::import(dirname(__FILE__) . '/classes');
+$container = seasar::container::S2ContainerFactory::create('/path/to/dicon file');
+$action    = $container->getComponent('Action');
+
+var_dump($action);
+
+]]></programlisting>
+         </blockquote>
+       </blockquote>
+
+       <note><title>NOTE</title>
+         <para>
+           This Example is located at "example/ManualDI/property" and "example/ManualDI/property_array".
+         </para>
+       </note>
+
+       <sbr/>
+       <blockquote><formalpara><title>Setter Method Injection</title><sbr/></formalpara>
+         <para>
+           By setter method injection, Dependency Injection is performed to a property using setter method.
+         </para>
+
+         <blockquote><formalpara><title>Setup by comment annotation</title><sbr/></formalpara>
+         <para>
+           The following action class is saved at a current directory as "classes/Action.php".
+           The setter method of each property is implemented.
+           Comment annotation of each setter method describes the value, Expression or the reference to other component which are injected.
+           When two or more components referred to exist,  DI can be carried out by specifying array to the type hint of a setter method.
+           When there is no type hint, a throw of the exception "TooManyRegistrationRuntimeException" is carried out.
+         </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Action {
+    private $name    = null;
+    private $year    = null;
+    private $service = null;
+
+    /**
+     * @S2Binding('"seasar"')
+     */
+    public function setName($name) {
+        $this->name = $name;    // injected string "seasar"
+    }
+    
+    /**
+     * @S2Binding('2000 + 8')
+     */
+    public function setYear($year) {
+        $this->year = $year;    // injected integer "2008"
+    }
+    
+    /**
+     * @S2Binding('Service')
+     */
+    public function setService(Service $service) {
+        $this->service  = $service     // injected Service component
+    }
+}
+]]></programlisting>
+         <para>
+           The following service class is saved at a current directory as "classes/Service.php".
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Service {
+
+    /**
+     * Sums are done.
+     *
+     * @param integer $a
+     * @param integer $b
+     * @return integer
+     */
+    public function add($a, $b) {
+        return $a + $b;    
+    }
+}
+]]></programlisting>
+
+         <para>
+           A container is generated using a S2ApplicationContext class and an action component is acquired.
+           DI of the value and service component which were set up by annotation is carried out to the acquired action component.
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+
+seasar::container::S2ApplicationContext::import(dirname(__FILE__) . '/classes');
+$container = seasar::container::S2ApplicationContext::create();
+$action    = $container->getComponent('Action');
+
+var_dump($action);
+
+]]></programlisting>
+         </blockquote>
+
+         <sbr/>
+         <blockquote><formalpara><title>Setup by DICON file</title></formalpara>
+         <para>
+           When setting up by a dicon file which is a definition file of S2Container, the following contents are described.
+         </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components>
+    <component class="Action">
+        <property name="name">"seasar"</property>
+        <property name="year">2000 + 8</property>
+        <property name="service">Service</property>
+    </component>
+    <component class="Service" />
+</components>
+]]></programlisting>
+         <para>
+           The property of a component is specified using the property tag which is a child tag of a component tag.
+           A property name is specified with a name attribute.
+           The following item can be set to the body of a property tag.
+           <itemizedlist>
+             <listitem>The value surrounded by the (double) quote</listitem>
+             <listitem>Expression which described PHP</listitem>
+             <listitem>Reference to other components</listitem>
+           </itemizedlist>
+           When two or more components referred to exist,  DI can be carried out by specifying array to the type hint of a setter method.
+           When there is no type hint, a throw of the exception "TooManyRegistrationRuntimeException" is carried out.
+         </para>
+
+         <para>
+           The following action class is saved at a current directory as "classes/Action.php".
+           The setter method of each property is implemented.
+         </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Action {
+    private $name    = null;
+    private $year    = null;
+    private $service = null;
+
+    public function setName($name) {
+        $this->name = $name;    // injected string "seasar"
+    }
+    
+    public function setYear($year) {
+        $this->year = $year;    // injected integer "2008"
+    }
+    
+    public function setService(Service $service) {
+        $this->service  = $service;     // injected Service component
+    }
+}
+]]></programlisting>
+
+         <para>
+           The following service class is saved at a current directory as "classes/Service.php".
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Service {
+
+    /**
+     * Sums are done.
+     *
+     * @param integer $a
+     * @param integer $b
+     * @return integer
+     */
+    public function add($a, $b) {
+        return $a + $b;    
+    }
+}
+]]></programlisting>
+
+         <para>
+           A container is generated using a S2ContainerFactory class and an action component is acquired.
+           DI of the value and service component which were set up by the DICON file is carried out to the acquired action component.
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+
+seasar::util::ClassLoader::import(dirname(__FILE__) . '/classes');
+$container = seasar::container::S2ContainerFactory::create('/path/to/dicon file');
+$action    = $container->getComponent('Action');
+
+var_dump($action);
+
+]]></programlisting>
+         </blockquote>
+       </blockquote>
+       <note><title>NOTE</title>
+         <para>
+           This Example is located at "example/ManualDI/setter" and "example/ManualDI/setter_array".
+         </para>
+       </note>
+
+
+       <sbr/>
+       <blockquote><formalpara><title>Constructor Injection</title></formalpara>
+       <para>
+           By constructor injection, Dependency Injection is performed to a property using constructor arguments.
+           The following contents are described in the definition file of S2Container.
+       </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components>
+    <component class="Action">
+        <arg>"seasar"</arg>
+        <arg>2000 + 8</arg>
+        <arg>Service</arg>
+    </component>
+    <component class="Service" />
+</components>
+]]></programlisting>
+       <para>
+         The argument of the constructor of a component is specified using the arg tag which is a child tag of a component tag.
+           The following item can be set to the body of a arg tag.
+           <itemizedlist>
+             <listitem>The value surrounded by the (double) quote</listitem>
+             <listitem>Expression which described PHP</listitem>
+             <listitem>Reference to other components</listitem>
+           </itemizedlist>
+           When two or more components referred to exist,  DI can be carried out by specifying array to the type hint of a constructor arugument.
+           When there is no type hint, a throw of the exception "TooManyRegistrationRuntimeException" is carried out.
+       </para>
+       <para>
+         In the constructor of an action class, three arguments are received as follows.
+       </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Action {
+    private $name    = null;
+    private $year    = null;
+    private $service = null;
+
+    public function __construct($name, $year, Service $service) {
+        $this->name    = $name;    // injected string "seasar"
+        $this->year    = $year;    // injected integer "2008"
+        $this->service = $service;     // injected service component
+    }
+}
+]]></programlisting>
+
+         <para>
+           The following service class is saved at a current directory as "classes/Service.php".
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Service {
+
+    /**
+     * Sums are done.
+     *
+     * @param integer $a
+     * @param integer $b
+     * @return integer
+     */
+    public function add($a, $b) {
+        return $a + $b;
+    }
+}
+]]></programlisting>
+
+         <para>
+           A container is generated using a S2ContainerFactory class and an action component is acquired.
+           DI of the value and service component which were set up by the DICON file is carried out to the acquired action component.
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+
+seasar::util::ClassLoader::import(dirname(__FILE__) . '/classes');
+$container = seasar::container::S2ContainerFactory::create('/path/to/dicon file');
+$action    = $container->getComponent('Action');
+
+var_dump($action);
+
+]]></programlisting>
+
+       </blockquote>
+       <note><title>NOTE</title>
+         <para>
+           This Example is located at "example/ManualDI/constructor" and "example/ManualDI/constructor_array".
+         </para>
+       </note>
+
+
+
+      <sbr/>
+      <blockquote id="dicon.di.manual.initmethod"><formalpara><title>InitMethod Injection</title></formalpara>
+       <para>
+        by InitMethod injection, Dependency Injection is carried out using arbitrary public method.<sbr/>
+        The following contents are described in the definition file of S2Container.
+       </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components>
+    <component class="Action">
+        <initMethod name="setName">
+            <arg>"seasar"</arg>
+        </initMethod>
+        <initMethod name="setYear">
+            <arg>2000 + 8</arg>
+        </initMethod>
+        <initMethod>
+            $component->setService('new Service');
+        </initMethod>
+    </component>
+</components>
+]]></programlisting>
+       <para>
+         InitMethod is specified by the initMthode tag which is a child tag of a component tag.
+         The argument of a method is specified using an arg tag.
+         The following item can be set to the body of a arg tag.
+         <itemizedlist>
+           <listitem>The value surrounded by the (double) quote</listitem>
+           <listitem>Expression which described PHP</listitem>
+           <listitem>Reference to other components</listitem>
+         </itemizedlist>
+       </para>
+       <para>
+         The following action class is saved at a current directory as "classes/Action.php".
+         The InitMethods are implemented.
+       </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Action {
+    private $name    = null;
+    private $year    = null;
+    private $service = null;
+
+    public function setName($name) {
+        $this->name = $name;    // injected string "seasar"
+    }
+    
+    public function setYear($year) {
+        $this->year = $year;    // injected integer "2008"
+    }
+    
+    public function setService(Service $service) {
+        $this->service  = $service;     // injected Service component
+    }
+}
+]]></programlisting>
+
+         <para>
+           The following service class is saved at a current directory as "classes/Service.php".
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Service {
+
+    /**
+     * Sums are done.
+     *
+     * @param integer $a
+     * @param integer $b
+     * @return integer
+     */
+    public function add($a, $b) {
+        return $a + $b;    
+    }
+}
+]]></programlisting>
+
+         <para>
+           A container is generated using a S2ContainerFactory class and an action component is acquired.
+           DI of the value and service component which were set up by the DICON file is carried out to the acquired action component.
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+
+seasar::util::ClassLoader::import(dirname(__FILE__) . '/classes');
+$container = seasar::container::S2ContainerFactory::create('/path/to/dicon file');
+$action    = $container->getComponent('Action');
+
+var_dump($action);
+
+]]></programlisting>
+
+       </blockquote>
+       <note><title>NOTE</title>
+         <para>
+           This Example is located at "example/ManualDI/method".
+         </para>
+       </note>
+
+    </sect2>
+  
+    <sbr/>
+    <sect2 id="dicon.binding"><title>Binding type setup</title>
+      <para>
+      In S2Container, a binding type can be specified per component.
+      A binding type has the following two.
+      </para>
+
+      <blockquote>
+      <table frame='all'><title>Binding Type</title>
+        <tgroup cols='2' align='left' colsep='1' rowsep='1'>
+          <colspec colwidth="50" align="center"/>
+          <colspec colwidth="750"/>
+          <thead>
+            <row>
+              <entry align="center">autoBinding</entry>
+              <entry align="center">Explanation</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>auto (default)</entry>
+              <entry>
+                It is followed when the argument of the constructor is specified clearly.<sbr/>
+                When the argument of the constructor is not specified, it binds automatically using type hint information.<sbr/>
+                It is followed when the property is specified clearly.<sbr/>
+                When the property is not specified, it binds automatically using type hint information.
+              </entry>
+            </row>
+            <row>
+              <entry>none</entry>
+              <entry>
+                It is followed when the argument of the constructor is specified clearly.<sbr/>
+                It is followed when the property is specified clearly.
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+      </blockquote>
+
+      <para>
+        It is as follows when specifying a binding type by comment annotation.
+      </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+/**
+ * @S2Compnent('autoBinding' => 'none')
+ */
+class Service {}
+
+]]></programlisting>
+
+      <para>
+        The following contents are described when setting up by the definition file of S2Container.
+      </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components>
+    <component class="Service" autoBinding="none"/>
+</components>
+]]></programlisting>
+
+    </sect2>
+
+    <sbr/>
+    <sect2 id="dicon.instance"><title>Instance type setup</title>
+      <para>
+        In S2Container, instance management can be specified per component.
+      </para>
+
+      <blockquote>
+      <table frame='all'><title>Instance Type</title>
+        <tgroup cols='2' align='left' colsep='1' rowsep='1'>
+          <colspec colwidth="50" align="center"/>
+          <colspec colwidth="750"/>
+          <thead>
+            <row>
+              <entry align="center">instance</entry>
+              <entry align="center">Explanation</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>singleton (default)</entry>
+              <entry>
+                Acquisition of a component by S2Container::getComponent() method will return the always same instance.
+              </entry>
+            </row>
+            <row>
+              <entry>prototype</entry>
+              <entry>
+                A new instance is returned whenever it acquires a component by S2Container::getComponent() method.
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+      </blockquote>
+
+      <para>
+       It is as follows when specifying an instance type by comment annotation.
+      </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+/**
+ * @S2Compnent('instance' => 'prototype')
+ */
+class Service {}
+
+]]></programlisting>
+
+      <para>
+        The following contents are described when setting up by the definition file of S2Container.
+      </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components>
+    <component class="Service" instance="prototype"/>
+</components>
+]]></programlisting>
+    </sect2>
+   
+  </sect1>
+
+
+
+
+
+
+
+
+  <!-- ##################################################################### -->
+  
+  <sect1 id="dicon.application"><title>S2ApplicationContext Reference</title>
+       <para>
+         The main functions of S2ApplicationContext become the next.
+       </para>
+        <itemizedlist>
+          <listitem>Search class file from a file system.</listitem>
+          <listitem>Generate S2Container which contains the searched class as a component</listitem>
+          <listitem>Extraction of the component information by comment annotation</listitem>
+          <listitem>Automatic setup of Aspect</listitem>
+          <listitem>Singleton S2Container instance management</listitem>
+        </itemizedlist>
+        <para>
+         When S2Container is generated using S2ApplicationContext, the component definition by DICON file is not needed.
+         When searching a class from a file system and a DICON file (.dicon) is found, it reads automatically as a candidate for include.
+         A DICON file can be used as a configuration file which packed the component used frequently.
+       </para>
+
+    <sbr/>
+    <sect2 id="dicon.application.import"><title>Import of Component</title>
+       <para>Import of a class is performed by the following method.</para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+S2ApplicationContext::import($path, array $namespace = array(), $strict = false, $pear = false, $recursive = true)
+]]></programlisting>
+      <blockquote>
+        <itemizedlist>
+          <listitem>1st argument : path to direcotry searched</listitem>
+          <listitem>2nd argument : array of namespace</listitem>
+          <listitem>
+            3rd argument : In the case of true, The name space specified by $namespace is used.
+            In the case of false, The searched subdirectory name is added to $namespace array one by one.
+          </listitem>
+          <listitem>
+            4th argument : In the case of true, $namespace is imploded by "_" (underscore).
+            In the case of false, $namespace is imploded by "::"
+          </listitem>
+          <listitem>
+            5th argument : In the case of true, a directory is searched recursively.
+            In the case of false, a subdirectory is not searched.
+          </listitem>
+        </itemizedlist>
+      </blockquote>
+
+       <para>
+              The class file (.php, .class.php) and DICON file (.dicon) in the directory specified by the 1st argument are imported.
+              The path of a class name and a class file is acquired in import.
+              This information is used when a class definition is required in autoload function.
+              A class name becomes a portion except the extension of a class file name.
+              As an example, when a class file name is "S2Container.php" and "S2Container.class.php", "S2Container" becomes a class name.
+       </para>
+   </sect2>
+
+
+    <sbr/>
+    <sect2 id="dicon.application.create"><title>Generation of S2Container</title>
+      <para>Generation of S2Container instance is performed by the following method.</para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+S2ApplicationContext::create($namespace = '')
+]]></programlisting>
+      <para>
+        Generated S2Container has all the classes as a component which are imported by the import method.
+        If the import method has not performed, S2Container instance without any component(empty container) is returned.
+        About the DICON file imported by the import method, S2Container is generated using the DICON file, and it is included as a child container.
+      </para>
+      <para>
+        if a namespace argument is set up, the S2Container instance of specified namespace is returned.
+        As an example, S2Container is generable as follows, if there is Foo class in global namespace (means without namespace) and
+        Bar class in "example" namespace.
+      </para>
+
+      <blockquote>
+        <para>
+          Foo class is created to path/to/classes/Foo.php.
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+/**
+ * @S2Component('name' => 'foo')
+ */
+class Foo {}
+]]></programlisting>
+
+        <para>
+          Bar class is created to /path/to/classes/Bar.php.
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+/**
+ * @S2Component('name' => 'bar', 'namespace' => 'example')
+ */
+class Bar {}
+]]></programlisting>
+
+        <para>
+          An execution script be as follows.
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+seasar::container::S2ApplicationContext::import('/path/to/classes');
+
+// genareting global s2container
+$globalContainer = seasar::container::S2ApplicationContext::create();
+$foo = $globalContainer->getComponent('Foo');
+$bar = $globalContainer->getComponent('example.Bar');
+
+// genarating example namespaced s2container
+$exampleContainer = seasar::container::S2ApplicationContext::create('example');
+$foo = $exampleContainer->getComponent('Foo');          // exception is throwed because Foo component does not exists.
+$bar = $exampleContainer->getComponent('Bar');
+]]></programlisting>
+      </blockquote>
+
+      <caution><title>Caution</title>
+      <para>
+        There is no relation in namespace which manages a child container by S2Container, and namespace of PHP.
+      </para>
+      </caution>
+   </sect2>
+
+
+
+
+
+    <sbr/>
+    <sect2><title>Selection of a component</title>
+       <para>
+         A part can be chosen from the imported classes or a DICON file when generating S2Container by a create method.
+       </para>
+        <itemizedlist>
+          <listitem>default (no setting) : All the imported classes are treated as a component, and all the DICON files are included as a child container.</listitem>
+          <listitem>Include Pattern : Only what matches (preg_match) a pattern to the class file and DICON file which were imported is used.</listitem>
+          <listitem>Exclude Pattern : What matches a pattern to the class file and DICON file which were imported is excepted.</listitem>
+          <listitem>Include &amp; Exclude : If both Include Pattern and Exclude Pattern are set, What matched Exclude Pattern is excepted from what matched Include Pattern.</listitem>
+        </itemizedlist>
+   </sect2>
+
+   <sbr/>
+   <blockquote><formalpara><title>setIncludePattern method definition</title>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+S2ApplicationContext::setIncludePattern($pattern = array())
+]]></programlisting>
+      <blockquote>
+        <itemizedlist>
+          <listitem>The 1st argument : A regular expression string or its array</listitem>
+        </itemizedlist>
+      </blockquote>
+      <para>
+        The regular expression of an argument is used with a preg_match function.
+        If you want to include the class which the name has ended by "Bean", an argument value is "/Bean$/".
+        setIncludePattern method overwrites current patterns.
+      </para>
+   </formalpara></blockquote>
+
+   <sbr/>
+   <blockquote><formalpara><title>addIncludePattern method definition</title>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+S2ApplicationContext::addIncludePattern($pattern)
+]]></programlisting>
+      <blockquote>
+        <itemizedlist>
+          <listitem>The 1st argument : A regular expression string</listitem>
+        </itemizedlist>
+      </blockquote>
+      <para>
+        addIncludePattern method adds a pattern to current value.
+      </para>
+   </formalpara></blockquote>
+
+   <sbr/>
+   <blockquote><formalpara><title>setExcludePattern method definition</title>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+S2ApplicationContext::setExcludePattern($pattern)
+]]></programlisting>
+      <blockquote>
+        <itemizedlist>
+          <listitem>The 1st argument : A regular expression string or its array</listitem>
+        </itemizedlist>
+      </blockquote>
+      <para>
+        The regular expression of an argument is used with a preg_match function.
+        If you want to exclude the class which the name has started by "Abstract", an argument value is "/^Abstract/".クラス名が「 Abstract 」を含むクラスを除外する場合は、引数値は「 /Abstract/ 」となります。
+        setExcludePattern method overwrites current patterns.
+      </para>
+   </formalpara></blockquote>
+
+   <sbr/>
+   <blockquote><formalpara><title>addExcludePattern method definition</title>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+S2ApplicationContext::addEcludePattern($pattern)
+]]></programlisting>
+      <blockquote>
+        <itemizedlist>
+          <listitem>The 1st argument : A regular expression string</listitem>
+        </itemizedlist>
+      </blockquote>
+      <para>
+        addExcludePattern method adds a pattern to current value.
+      </para>
+   </formalpara></blockquote>
+
+   <sbr/>
+   <blockquote><formalpara><title>Emvironment Filter</title>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+S2ApplicationContext::setFilterByEnv($val = true)
+]]></programlisting>
+      <blockquote>
+        <itemizedlist>
+          <listitem>The 1st argument :  boolean</listitem>
+        </itemizedlist>
+      </blockquote>
+      <para>
+            The component to include is chosen by environment configuration.
+            This function is enabled by the default.
+            <!-- If turn off this function, it can set up by the following method.-->
+            As an example, if seasar::container::Config::$ENVIRONMENT is defined as "mock",
+            only a MockHoge class is chosen when a Hoge class and a MockHoge class exist in the imported class.
+      </para>
+   </formalpara></blockquote>
+
+    <sbr/>
+    <sect2 id="dicon.application.autoaspect"><title>Auto Aspect</title>
+       <para>
+         An aspect is automatically applied to the component included by selection of the component.
+       </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+S2ApplicationContext::registerAspect($componentPattern, $interceptor, $pointcut = null)
+]]></programlisting>
+      <blockquote>
+        <itemizedlist>
+          <listitem>The 1st argument : The regular expression string which carries out a pattern match at a component name or a component class name.</listitem>
+          <listitem>The 2nd argument : Interceptor component name, or its Expression</listitem>
+          <listitem>The 3rd argument : Pointcut is specified by comma separated values.</listitem>
+        </itemizedlist>
+      </blockquote>
+      <para>
+        It sets up as follows to carry out the aspect of the "dao.interceptor" to the component which the component class name has ended by "Dao".
+      </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+S2ApplicationContext::registerAspect('/Dao$/', 'dao.interceptor');
+]]></programlisting>
+      <caution><title>Caution</title>
+      <para>
+        An automatic aspect is applied only to the imported component.
+        It is not applied to the component contained in the included DICON file.
+      </para>
+      </caution>
+    </sect2>
+
+
+    <sbr/>
+    <sect2><title>Annotation</title>
+       <para>
+         Annotation is used when performing a detailed setup of a component, Dependency Injection setup or Aspect setup.
+         the form of annotation is "@annotation name[()]". It starts by "@". An end is a space or a new-line.
+         An argument can be described for annotation.。The form of an argument is the same format as PHP Array.
+       </para>
+
+   <sbr/>
+   <blockquote><formalpara><title>Method annotation of a parent class</title></formalpara>
+      <para>
+        By the default, method annotation of a parent class is disabled. 
+        If you enable method annotation of a parent class, it sets up by the following method.
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+S2ApplicationContext::setReadParentAnnotation($val = true)
+]]></programlisting>
+      <blockquote>
+        <itemizedlist>
+          <listitem>The 1st argument : boolean, if setting true, method annotation of a parent class is enabled.</listitem>
+        </itemizedlist>
+      </blockquote>
+   </blockquote>
+
+   <sbr/>
+   <blockquote><formalpara><title>@S2Component annotation</title></formalpara>
+      <para>@S2Component annotation sets up component information.</para>
+      <blockquote>
+        <itemizedlist>
+          <listitem>Notation of annotation : @S2Component</listitem>
+          <listitem>Arguments
+            <itemizedlist>
+               <listitem>name : name of component</listitem>
+               <listitem>instance : <link linkend="dicon.instance">Instance Type</link></listitem>
+               <listitem>autoBinding : <link linkend="dicon.binding">Binding Type</link></listitem>
+               <listitem>available : uses as component or not (boolean default true)</listitem>
+               <listitem>namespace : <link linkend="dicon.tag.components">namespace used in S2Container</link></listitem>
+            </itemizedlist>
+          </listitem>
+          <listitem>Annotation point : class</listitem>
+          <listitem>Example
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+  /**
+   * @S2Component('name' => 'hoge')
+   */
+  class Hoge{} 
+  
+  /**
+   * @S2Component('name' => 'huga',
+   *              'instance' => 'singleton',
+   *              'autoBinding' => 'auto',
+   *              'available' => true,
+   *              'namespace' => 'example.service')
+   */
+  class Huga{} 
+]]></programlisting>         
+          </listitem>
+        </itemizedlist>
+      </blockquote>
+   </blockquote>
+
+   <sbr/>
+   <blockquote><formalpara><title>@S2Binding annotation</title></formalpara>
+      <para>@S2Binding annotation performs a manual injection setup.</para>
+      <blockquote>
+        <itemizedlist>
+          <listitem>Notation of annotation : @S2Binding</listitem>
+          <listitem>Arguments : The component name by which injection is carried out or PHP Expression</listitem>
+          <listitem>Annotation point : pulbic property, setter method</listitem>
+          <listitem>Example
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+class IndexAction {
+    /**
+     * @S2Binding('new HogeService')
+     */
+    public $service;
+ 
+    /**
+     * @S2Binding('Hello World')
+     */
+    public funcion setHello($val) {
+        $this->hello = $val;
+    }
+}
+]]></programlisting>         
+          </listitem>
+        </itemizedlist>
+      </blockquote>
+   </blockquote>
+
+
+   <sbr/>
+   <blockquote><formalpara id="dicon.application.annotation.aspect"><title>@S2Aspect annotation</title></formalpara>
+      <para>@S2Aspect annotation sets up aspect information.</para>
+      <blockquote>
+        <itemizedlist>
+          <listitem>Notation of annotation : @S2Aspect</listitem>
+          <listitem>Arguments
+            <itemizedlist>
+               <listitem>interceptor : Interceptor component name, or PHP Expression</listitem>
+               <listitem>pointcut : A Pointcut is specified by comma separated values.</listitem>
+            </itemizedlist>
+          </listitem>
+          <listitem>Annotation point : class, method</listitem>
+          <listitem>Example
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+  /**
+   * @S2Aspect('interceptor' => 'traceInterceptor',
+   *           'pointcut'    => '.+Action')
+   */
+  class CdController {
+      public function indexAction(){
+          . . .
+      }
+  }
+
+  class DvdController {
+      /**
+       * @S2Aspect('interceptor' => 'new S2Container_TraceInterceptor()')
+       */
+      public funcion indexAction() {
+          . . .
+      }
+  }
+]]></programlisting>         
+          </listitem>
+        </itemizedlist>
+      </blockquote>
+   </blockquote>
+
+   <sbr/>
+   <blockquote><formalpara><title>@S2Meta annotation</title></formalpara>
+      <para>@S2Meta annotation sets up meta information.</para>
+      <blockquote>
+        <itemizedlist>
+          <listitem>Notation of annotation : @S2Meta</listitem>
+          <listitem>Arguments
+            <itemizedlist>
+               <listitem>name : The discernment name of meta-information</listitem>
+               <listitem>value : value or PHP Expression</listitem>
+            </itemizedlist>
+          </listitem>
+          <listitem>Annotation point : class</listitem>
+          <listitem>Example
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+  /**
+   * @S2Meta('nameA' => 'valueA',
+   *         'nameB' => 'valueB')
+   */
+  class CdController {
+      public function indexAction(){
+          ・・・
+      }
+  }
+]]></programlisting>         
+          </listitem>
+        </itemizedlist>
+      </blockquote>
+    </blockquote>
+
+    </sect2>
+
+    <sbr/>
+    <sect2 id="dicon.application.singleton"><title>Management of Singleton S2Container instance</title>
+      <para>
+        S2ApplicationContext generates and manages Singleton S2Container in a namespace unit.
+        Singleton S2Container are held at 2ApplicationContext::$SINGLETON_CONTAINERS.
+        Access to Singleton S2Container is performed by the following method.
+      </para>
+
+      <blockquote><formalpara><title>get method (getComponent method)</title></formalpara>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+S2ApplicationContext::get($key, $namespace = '')
+S2ApplicationContext::getComponent($key, $namespace = '')
+]]></programlisting>
+      <blockquote>
+        <itemizedlist>
+          <listitem>The 1st argument : name of component</listitem>
+          <listitem>the 2nd argument : namespace of S2Container</listitem>
+        </itemizedlist>
+      </blockquote>
+      <para>
+        The get method is Alias of getComponent method.
+        The component specified by the 1st argument is acquired.
+        If Singleton S2Container of namespace specified by the 2nd argument has not been created, 
+        S2Continer is generated using S2ApplicationContext::create method.
+      </para>
+      </blockquote>
+
+      <sbr/>
+      <blockquote><formalpara><title>getComponentDef method</title></formalpara>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+S2ApplicationContext::getComponentDef($key, $namespace = '')
+]]></programlisting>
+      <blockquote>
+        <itemizedlist>
+          <listitem>The 1st argument : name of component</listitem>
+          <listitem>the 2nd argument : namespace of S2Container</listitem>
+        </itemizedlist>
+      </blockquote>
+      <para>
+        The component definition specified by the 1st argument is acquired.
+        If Singleton S2Container of namespace specified by the 2nd argument has not been created, 
+        S2Continer is generated using S2ApplicationContext::create method.
+      </para>
+      </blockquote>
+
+      <para>
+        As an example, a Foo class is in global namespace (without a namespace), and when a Bar class is example namesace,
+        each component can be acquired as follows.
+      </para>
+
+      <blockquote>
+        <para>
+          A Foo class is created to /path/to/classes/Foo.php.
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+/**
+ * @S2Component('name' => 'foo')
+ */
+class Foo {}
+]]></programlisting>
+
+        <para>
+          A Bar class is created to /path/to/classes/Bar.php.
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+/**
+ * @S2Component('name' => 'bar', 'namespace' => 'example')
+ */
+class Bar {}
+]]></programlisting>
+
+        <para>
+          An execution script becomes the next.
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+use seasar::container::S2ApplicationContext as s2app;
+s2app::import('/path/to/classes');
+
+// using global Singleton S2Container
+$globalFoo = s2app::get('Foo');
+$globalBar = s2app::get('example.Bar');
+
+// using example namespace Singleton S2Container
+$exampleFoo = s2app::get('Foo', 'example');          // Since a component does not exist, an exception is thrown.
+$exampleBar = s2app::get('Bar', 'example');
+
+var_dump($globalBar === $exampleBar);                // be false
+]]></programlisting>
+      </blockquote>
+
+      <caution><title>Caution</title>
+      <para>
+        When a global Singleton container is generated, the container of example namespace is also generated, and it is held as a child container, 
+        but it is an instance different from the singleton container of example namespace.
+      </para>
+      </caution>
+
+    </sect2>
+
+    <sbr/>
+  </sect1>
+
+
+
+
+
+<!-- ####################################################################### -->
+
+
+  <sect1 id="dicon.factory"><title>S2ContainerFactory Reference</title>
+
+    <sbr/>
+    <sect2><title>Creation of a DICON file</title>
+       <para>
+         In order to use S2Container, it is necessary to create a definition file called DICON file.
+         DICON file is like the design specifications for assembling a component.
+         The extension of a definition file is .dicon or .xml.
+      </para>
+      <para>The definition of S2Container in a DICON file is as follows.</para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components>
+    <component name="..." class="...">
+            ...
+    </component>
+    <component name="..." class="...">
+            ...
+    </component>
+</components>
+]]></programlisting>
+
+      <para>
+        DOCTYPE is not omissible.
+        When you create a dicon file, please copy &amp; paste the above sample.
+        A root is a <link linkend="dicon.tag.components">components tag.</link>
+        A <link linkend="dicon.tag.component">component tag</link> is defined for every component.
+        For details, please refer to <link linkend="dicon.tag">S2Container definition tag reference</link>.
+      </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components>
+    <component name="action" class="IndexAction"/>
+</components>
+]]></programlisting>
+   </sect2>
+
+
+    <sbr/>
+    <sect2><title>Generation of S2Container</title>
+      <para>
+        S2Container is generated from a DICON file using the create method of S2ContainerFactory.
+      </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+/**
+ * @param string $path
+ */
+S2ContainerFactory::create($path)
+]]></programlisting>
+      <blockquote>
+        <itemizedlist>
+          <listitem>The 1st argument : path to DICON file</listitem>
+        </itemizedlist>
+      </blockquote>
+
+      <para>
+        As follows, the path of a DICON file is specified and S2Container is generated.
+      </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+
+$PATH = "path/to/ccc.dicon";
+$container = S2ContainerFactory::create($PATH);
+. . .
+
+]]></programlisting>
+   </sect2>
+  </sect1>
+
+  <sect1 id="dicon.tag"><title>DICON File Tag Reference</title>
+    <sect2><title>DOCTYPE (required)</title>
+       <para>DOCTYPE is specified as the next of XML declaration. Please specify as follows.</para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components>
+    <component name="hello" class="Hello"/>
+    . . .
+</components>
+]]></programlisting>
+   </sect2>
+
+    <sect2 id="dicon.tag.components"><title>components tag (required)</title>
+       <para>
+         Components tag is a root tag of a DICON file.
+         Namespace can be specified with the namespace attribute of a components tag.
+       </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components namespace="dao">
+    ...
+</components>
+]]></programlisting>
+
+    <para>
+      By specifying name space with a namespace attribute, when the definition of a component is divided,
+      the collision of a component name is avoidable.
+      In the following example, foo.dicon and bar.dicon are included in parent.dicon.
+      The component of a same name called service is defined by each DICON file.
+    </para>
+
+    <itemizedlist>
+      <listitem>parent.dicon
+      </listitem>
+    </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components>
+    <include path="/path/to/foo.dicon"/>
+    <include path="/path/to/bar.dicon"/>
+
+    <component name="service" class="DefaultService"/>
+</components>
+]]></programlisting>
+
+    <itemizedlist>
+      <listitem>foo.dicon
+      </listitem>
+    </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components namespace="foo">
+    <component name="service" class="FooService"/>
+</components>
+]]></programlisting>
+
+    <itemizedlist>
+      <listitem>bar.dicon
+      </listitem>
+    </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components namespace="bar">
+    <component name="service" class="BarService"/>
+</components>
+]]></programlisting>
+
+      <para>
+        The service component defined by parent.dicon can be referred to without specification of name space.
+        If the service component defined by foo.dicon and bar.dicon is referred, it is necessary to specify the name space.
+        The name space is specified with Piriord ".".
+        When the service component of foo.dicon is referred, it becomes the following. 
+      </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+$container  = S2ContainerFactory::create('/path/to/parent.dicon');
+$service    = $container->getComponent('service');
+$fooService = $container->getComponent('foo.service');
+$barService = $container->getComponent('bar.service');
+?>
+]]></programlisting>
+
+   </sect2>
+
+    <!-- ################################################################## -->
+    <sect2 id="dicon.tag.include"><title>include tag</title>
+       <para>
+        include tag is used when taking in the definition of divided S2Container.
+        The path of a DICON file is specified with a path attribute. (required)
+        It is necessary to describe an include tag in front of a component tag.
+        If DICON file specified with the path attribute does not exist,
+        a path attribute value is passed to an eval function as PHP Expression.。
+        Therefore, the constant and class variable which are contained in a path are evaluated.
+       </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components>
+    <include path="path/to/foo.dicon" />
+    <include path="DICON_DIR . '/bar.dicon'" />
+</components>
+]]></programlisting>
+
+      <para>
+        The order of search of a component looks for the component first registered into itself.
+        The case where a component is not found, the component registered into child S2Container is searched with the included turn,
+        and the component found first is returned.
+      </para>
+   </sect2>
+
+
+
+
+    <!-- ################################################################## -->
+    <sect2 id="dicon.tag.component"><title>component tag</title>
+       <para>The component tag defines a component.</para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components>
+    <component name="action" class="IndexAction" instance="singleton" autoBinding="auto"/>
+</components>
+]]></programlisting>
+
+        <blockquote>
+          <para>name attribute</para>
+          <blockquote>
+            A component is named. A default value is the class name specified with the class attribute.
+          </blockquote>
+          <para>class attribute (required)</para>
+          <blockquote>
+            The class name of a component is specified.
+          </blockquote>
+ 
+          <para>instance attribute</para>
+          <blockquote>
+            It is specified how S2Container manages the instance of a component.
+            "singleton (default)", "prototype" can be specified.
+            Please refer to <link linkend="dicon.instance">Instance Type</link> for details.
+          </blockquote>
+
+          <para>autoBinding attribute</para>
+          <blockquote>
+            It is specified how S2Container solves the dependency of a component.
+            "auto (default)", "none" can be specified.
+            Please refer to <link linkend="dicon.binding">Binding Type</link> for details.
+          </blockquote>
+        </blockquote>
+   </sect2>
+
+
+    <!-- ################################################################## -->
+    <sect2 id="dicon.tag.arg"><title>arg tag</title>
+       <para>
+         It becomes an argument of a constructor when it uses as a child tag of an omponent tag.
+         The arg tag is passed to a constructor in the described turn.
+         It becomes an argument of a method when it uses as a child tag of an initMethod tag.
+         The arg tag is passed to a init method in the described turn.
+         The following item can be set to the body of a arg tag.
+         <itemizedlist>
+           <listitem>The value surrounded by the (double) quote</listitem>
+           <listitem>Expression which described PHP</listitem>
+           <listitem>Reference to other components</listitem>
+         </itemizedlist>
+       </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components>
+    <component class="Hoge">
+        <arg>"seasar"</arg>
+        <arg><component class="Foo"/></arg>
+        <initMethod name="addService">
+            <arg>new Bar</arg>
+        </initMethod>
+    </component>
+</components>
+]]></programlisting>
+   </sect2>
+
+
+    <!-- ################################################################## -->
+    <sect2 id="dicon.tag.property"><title>property tag</title>
+      <para>
+         It uses as a child tag of component tag.
+         The following item can be set to the body of a property tag.
+         <itemizedlist>
+           <listitem>The value surrounded by the (double) quote</listitem>
+           <listitem>Expression which described PHP</listitem>
+           <listitem>Reference to other components</listitem>
+         </itemizedlist>
+      </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components>
+    <component class="Hoge">
+        <property name="project">"seasar"</property>
+    </component>
+</components>
+]]></programlisting>
+      <blockquote>
+        <para>name attribute (required)</para>
+        <blockquote>
+          A property name is specified.
+        </blockquote>
+      </blockquote>
+
+   </sect2>
+
+
+    <!-- ################################################################## -->
+    <sect2 id="dicon.tag.method"><title>initMethod tag</title>
+       <para>
+         It uses as a child tag of component tag.
+         A method argument is specified with an arg tag.
+         PHP can be described on a body, without writing a name attribute, 
+         and the method of a component can also be called.
+         "$component" which refers to the component itself with which initMethod tag is defined can be used as an effective object only within initMethod tag.
+       </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components>
+    <component class="HashMap">
+        <initMethod name="put">
+            <arg>"aaa"</arg>
+            <arg>111</arg>
+        </initMethod>
+        <initMethod>$component->put("aaa", 111);</initMethod>
+        <initMethod>print "Hello";</initMethod>
+    </component>
+</components>
+]]></programlisting>
+      <blockquote>
+        <para>name attribute</para>
+        <blockquote>
+          A method name is specified.
+        </blockquote>
+      </blockquote>
+   </sect2>
+
+
+    <!-- ################################################################## -->
+    <sect2 id="dicon.tag.aspect"><title>aspect tag</title>
+       <para>
+         An aspect is applied to a component.
+         The name of Interceptor component is specified with the body of aspect tag.
+       </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components>
+    <component name="trace" class="seasar::aop::interceptor::TraceInterceptor"/>
+    <component class="IndexAction">
+        <aspect pointcut=".*Action">trace</aspect>
+    </component>
+</components>
+]]></programlisting>
+      <blockquote>
+        <para>pointcut attribute</para>
+        <blockquote>
+          The aspect target method name is specified as pointcut attribute by comma separated values.
+          A regular expression can be used for a method name.
+          When not specifying pointcut attribute, the following target method is chosen.
+          <itemizedlist>
+            <listitem>
+              If the class of a component implements abstract method, all the abstract method is applicable
+            </listitem>
+            <listitem>
+              If  the class of a component does not implement abstract method, all the public method implemented in the class is applicable.
+            </listitem>
+          </itemizedlist>
+          <!--
+          <itemizedlist>
+            <listitem>
+              コンポーネントのクラスがabstract methodを実装している場合は、すべてのabstract methodが対象となります。
+            </listitem>
+            <listitem>
+              コンポーネントのクラスがabstract methodを実装していない場合は、そのクラスで実装されているすべてのpublic methodが対象となります。
+            </listitem>
+          </itemizedlist>
+          -->
+        </blockquote>
+      </blockquote>
+   </sect2>
+
+
+    <!-- ################################################################## -->
+    <sect2 id="dicon.tag.meta"><title>meta tag</title>
+       <para>
+         The meta tag can specify as a child tag of components tag, component tag, arg tag, and property tag.
+         The following item can be set to the body of a meta tag.
+         <itemizedlist>
+           <listitem>The value surrounded by the (double) quote</listitem>
+           <listitem>Expression which described PHP</listitem>
+           <listitem>Reference to other components</listitem>
+         </itemizedlist>
+       </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components>
+    <meta name="project">"seasar"</meta>
+    <component class="Hoge">
+        <meta name="service">true</meta>
+    </component>
+</components>
+]]></programlisting>
+      <blockquote>
+        <para>name attribute (required)</para>
+        <blockquote>
+          A meta name is specified.
+        </blockquote>
+      </blockquote>
+
+   </sect2>
+
+    <!-- ################################################################## -->
+    <sect2><title>description tag</title>
+       <para>
+         The description tag can specify as a child tag of components tag, component tag, arg tag, and property tag.
+         Explanation can be described freely.
+       </para>
+   </sect2>
+  </sect1>
+
+
+  <sect1 id="dicon.config"><title>S2Container configuration file</title>
+    <para>
+      Various setup of S2Container is set up as a property of seasar::container::Config class.
+    </para>
+    <blockquote>
+
+        <formalpara><title>DOM_VALIDATE</title></formalpara>
+        <para>
+          When loading DICON file of XML form, it is set up whether DTD verification is performed.
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+seasar::container::Config::$DOM_VALIDATE = false;
+]]></programlisting>
+
+        <formalpara><title>CONTAINER_BUILDERS</title></formalpara>
+        <para>
+          The Parser class of a DICON file is registered for every extension.
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+seasar::container::Config::$CONTAINER_BUILDERS = array(
+                      'dicon' => 'seasar::container::factory::XmlS2ContainerBuilder',
+                      'xml'   => 'seasar::container::factory::XmlS2ContainerBuilder');
+]]></programlisting>
+
+        <formalpara><title>ENVIRONMENT</title></formalpara>
+        <para>
+          Environment is specified.
+          This value is used when generating a container in S2ApplicationContext class or S2ContainerFactory class.
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+seasar::container::Config::$ENVIRONMENT = null;
+]]></programlisting>
+
+    </blockquote>
+  </sect1>
+</chapter>

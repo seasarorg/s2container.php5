@@ -1,3 +1,50 @@
 <sect1 id="misc.zend"><title>Zend_ControllerでS2Containerを使用する</title>
+  <sect2><title>Zend_Controllerのセットアップ</title>
+    <para>
+      Zend_Controllerのモジュラーディレクトリ構造に従ってセットアップを行います。
+    </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+project
+│
+├─application
+│  └─default
+│      ├─controllers
+│      │  ├─ErrorController.php
+│      │  └─IndexController.php
+│      │      
+│      ├─models
+│      │  └─index
+│      │     └─Hoge.php
+│      │          
+│      └─views
+│          ├─filters
+│          ├─helpers
+│          └─scripts
+│             ├─error
+│             │  └─error.phtml
+│             │      
+│             └─index
+│                └─index.phtml
+│                      
+├─cache
+│  └─s2aop
+│          
+├─config
+│  ├─environment.php
+│  └─s2.php
+│      
+├─docroot
+│  ├─.htaccess
+│  └─index.php
+│      
+├─lib
+│  └─S2Container
+│                                  
+└─log
+   └─s2.log
+                
+]]></programlisting>
+    
+  </sect2>
 </sect1>
 

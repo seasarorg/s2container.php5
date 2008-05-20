@@ -1,7 +1,7 @@
 <chapter id="misc"><title>MISC</title>
-  <sect1 id="misc.spec"><title>S2Container-1.2 と S2Container-2.0 機能比較</title>
+  <sect1 id="misc.spec"><title>S2Container-1.2とS2Container-2.0 機能比較</title>
     <blockquote>
-      <table frame='all'><title>S2Container-1.2 と S2Container-2.0 機能比較表</title>
+      <table frame='all'><title>S2Container-1.2とS2Container-2.0 機能比較表</title>
         <tgroup cols='3' align='left' colsep='1' rowsep='1'>
           <colspec colwidth="150" align="center" nowrap="1"/>
           <colspec colwidth="300"/>

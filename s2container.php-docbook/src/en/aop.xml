@@ -1,0 +1,870 @@
+<chapter id="aop"><title>S2AOP.PHP Reference</title>
+  <sect1 id="aop.about"><title>The outline of S2AOP</title>
+    <para>
+      AOP, Aspect Oriented Programming, it is a technique which extracts the common logic distributed
+      in two or more classes, and is woven in from the outside of a class.
+
+    </para>
+    <sect2><title>The Concept of AOP</title>
+      <blockquote>
+        <formalpara><title>Advice(MethodInterceptor)</title></formalpara>
+        <para>
+          Advice expresses the code inserted into a program.
+          Advice may be called Interceptor.
+        </para>
+
+        <formalpara><title>Joinpoint(MethodInvocation)</title></formalpara>
+        <para>
+          Joinpoint expresses the point which combines target class and Advice.
+          Advice can acquire the information on an argument or a method from Joinpoint.
+        </para>
+
+        <formalpara><title>Pointcut</title></formalpara>
+        <para>
+          Pointcut defines where Joinpoint is set up.
+        </para>
+
+        <formalpara><title>Aspect</title></formalpara>
+        <para>
+          Aspect associates Advice and Pointcut.
+        </para>
+      </blockquote>
+    </sect2>
+  </sect1>
+
+  <sect1 id="aop.about"><title>The notes on use of S2AOP</title>
+
+    <itemizedlist>
+      <listitem>
+        The component specified with aspect tag is acquired from a container at the time of initialization of a container.
+        Therefore, even if the instance attribute of the component specified with the aspect tag is prototype", 
+        a new instance is not created whenever an aspected method is called.
+      </listitem>
+      <listitem>
+            <itemizedlist>
+            <listitem>
+              If the class of a component implements abstract method, all the abstract method is applicable
+            </listitem>
+            <listitem>
+              If  the class of a component does not implement abstract method, all the public method implemented in the class is applicable.
+            </listitem>
+          </itemizedlist>
+      </listitem>
+      <listitem>An aspect is applicable only to a public method.</listitem>
+      <listitem>An aspect is inapplicable to an staic method.</listitem>
+      <listitem>An aspect is inapplicable to final class and final method.</listitem>
+      <listitem>An aspect cannot be applied when method name starts with underbar "_".</listitem>
+      <listitem>
+        An aspect cannot be applied when the Array which has a value in the default value of a method argument is set up.
+        ( public function hoge($a = array('year' => 2007)) , etc)
+      </listitem>
+    </itemizedlist>
+  </sect1>
+
+  <sect1 id="aop.aspect"><title>Aspect using S2AopFactory</title>
+    <para>
+      By the create method of S2AopFactory class, the extended class of an aspect target class is generated and
+      the instance which wove in the aspect is acquired.
+    </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+public static function create(ReflectionClass $targetClass, array $aspects, array $args = array(), array $parameters = array()) 
+]]></programlisting>
+    <blockquote>
+    <itemizedlist>
+      <listitem>The 1st argument ： Aspect target class</listitem>
+      <listitem>The 2nd argument ： Aspect woven in</listitem>
+      <listitem>The 3rd argument ： Arguments of constructor method</listitem>
+      <listitem>The 4th argument ： Extended parameter of S2Aop.PHP</listitem>
+    </itemizedlist>
+    </blockquote>
+    <para>
+      As an example, an aspect is applied to the following service classes.
+    </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+class Service {
+    public function add($a, $b) {
+        return $a + $b;
+    }
+}
+]]></programlisting>
+  <para>
+    TraceInterceptor is aspected to add method of Service class as follws.
+  </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+seasar::util::ClassLoader::import(dirname(__FILE__) . '/classes');
+
+$interceptor = new seasar::aop::interceptor::TraceInterceptor;
+$pointcut    = new seasar::aop::Pointcut('^add$');
+$aspect      = new seasar::aop::Aspect($interceptor, $pointcut);
+$service     = S2AopFactory::create(new ReflectionClass('Service'), array($aspect));
+
+print get_class($service) . PHP_EOL;
+$result = $service->add(2, 3);
+]]></programlisting>
+      <blockquote>
+        <formalpara><title>Interceptor</title></formalpara>
+        <para>
+          Interceptor is a class which implements seasar::aop::MethodInterceptor interface.
+          These next interceptors are attached to S2Aop.
+        </para>
+        <itemizedlist>
+          <listitem>seasar::aop::interceptor::TraceInterceptor <sbr/>
+            TraceInterceptor is a interceptor for treating trace processing as "Crosscutting Concern".
+          </listitem>
+          <listitem>seasar::aop::interceptor::MockInterceptor <sbr/>
+            MockInterceptor is a interceptor for doing the test using Mock simply.
+          </listitem>
+          <listitem>seasar::aop::interceptor::InterceptorChain <sbr/>
+            InterceptorChain is a interceptor which makes two or more interceptors a group and
+            thereby, reuse of interceptor is simplified.
+          </listitem>
+          <!--
+          <listitem>seasar::aop::interceptor::AbstractAroundInterceptor <sbr/>
+          </listitem>
+          -->
+        </itemizedlist>
+
+        <formalpara id="aop.aspect.pointcut"><title>Pointcut</title></formalpara>
+        <para>
+        MethodInterceptorがどこに適用されるのかをあらわすクラスです。
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+/**
+ * Pointcutを構築します。
+ * @param mixed $target
+ */
+seasar::aop::Pointcut::__construct($target)
+]]></programlisting>
+        <para>
+                コンストラクタ引数の$targetには、Pointcutを指定する正規表現文字列(配列)、またはReflectionClassを渡します。
+        ReflectionClassの場合は、そのクラスが実装している Abstract Public メソッドがPointcutとなります。
+                インターフェースを実装していない場合は、クラスのすべての Public メソッドで次の条件を除くメソッドが対象になります。
+        </para>
+        <itemizedlist>
+          <listitem>
+                    親クラスが実装しているメソッドは対象外となります。
+          </listitem>
+          <listitem>
+          set、get、is で名前が始まるメソッドは対象外となります。
+          </listitem>
+        </itemizedlist>
+
+        <formalpara><title>Aspect</title></formalpara>
+        <para>
+        MethodInterceptor(Advice)とPointcutを関連付けるクラスです。
+        </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+/**
+ * Aspectを構築します。
+ * @param seasar::aop::MethodInterceptor $methodInterceptor
+ * @param seasar::aop::Pointcut $pointcut
+ */
+seasar::aop::Aspect::__construct(MethodInterceptor $methodInterceptor, Pointcut $pointcut)
+]]></programlisting>
+        <para>
+                コンストラクタ引数で、MethodInterceptorとPointcutを指定します。
+        </para>
+
+      </blockquote>
+  </sect1>
+
+
+  <sect1 id="aop.dicon"><title>S2Containerを用いてAspectする</title>
+    <sect2><title>S2ApplicationContextを使用する</title>
+      <para>
+      S2ApplicationContextを用いてコンポーネントにアスペクトする場合は、自動アスペクトを設定するか、
+            各クラスでコメントアノテーションを設定する方法があります。
+      </para>
+      <blockquote>
+        <formalpara><title>自動アスペクトを設定する</title></formalpara>
+        <para>
+        <link linkend="dicon.application.autoaspect">S2ApplictionContextの自動アスペクト機能</link>を使用する場合は、S2ApplictionContext::registerAspectメソッドでアスペクトを設定します。
+        <sbr/>例として、次のようなサービスクラスにAspectを適用してみます。
+        </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+class Service {
+    public function add($a, $b) {
+        return $a + $b;
+    }
+}
+]]></programlisting>
+        <para>
+        S2ApplicationContext::importメソッドでServiceクラスをインポートします。S2ApplicationContext::createメソッドで
+                コンテナを生成し、getComponentメソッドでServiceコンポーネントを取得します。
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+seasar::container::S2ApplicationContext::import(dirname(__FILE__) . '/classes');
+seasar::container::S2ApplicationContext::registerAspect('/^Service$/', 'new seasar::aop::interceptor::TraceInterceptor', '^add$');
+$container = seasar::container::S2ApplicationContext::create();
+$service   = $container->getComponent('Service');
+
+print get_class($service) . PHP_EOL;
+$result = $service->add(2, 3);
+]]></programlisting>
+        <para>
+        S2ApplicationContext::registerAspectメソッドの引数で、アスペクトを適用するコンポーネント名やInterceptor、Pointcutを設定します。
+        </para>
+
+        <sbr/>
+        <formalpara><title>コメントアノテーションで設定する</title></formalpara>
+        <para>
+               コメントアノテーションでアスペクト設定を記述する場合は、<link linkend="dicon.application.annotation.aspect">@S2Aspectアノテーション</link>を用います。
+        @S2Aspectアノテーションはクラスまたはメソッドに記述することができます。
+        </para>
+
+        <para>
+                例として、サービスクラスにAspectを適用してみます。クラスにアノテーションを記述する場合は次のようになります。
+        </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+/**
+ * @S2Aspect('interceptor' => 'new seasar::aop::interceptor::TraceInterceptor',
+ *           'pointcut'    => '^add$')
+ */
+class Service {
+    public function add($a, $b) {
+        return $a + $b;
+    }
+}
+]]></programlisting>
+
+        <para>
+                メソッドにアノテーションを記述する場合は次のようになります。pointcutは省略できます。
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+class Service {
+    /**
+     * @S2Aspect('interceptor' => 'new seasar::aop::interceptor::TraceInterceptor')
+     */
+    public function add($a, $b) {
+        return $a + $b;
+    }
+}
+]]></programlisting>
+
+  <para>
+  S2ApplicationContext::importメソッドでServiceクラスをインポートします。S2ApplicationContext::createメソッドで
+    コンテナを生成し、getComponentメソッドでServiceコンポーネントを取得します。
+  </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+seasar::container::S2ApplicationContext::import(dirname(__FILE__) . '/classes');
+$container = seasar::container::S2ApplicationContext::create();
+$service   = $container->getComponent('Service');
+
+print get_class($service) . PHP_EOL;
+$result = $service->add(2, 3);
+]]></programlisting>
+
+      </blockquote>
+    </sect2>
+
+    <sbr/>
+    <sect2><title>S2ContainerFactoryを使用する</title>
+      <para>
+      S2ContainerFactoryを使用する場合は、S2Containerの定義ファイルであるダイコンファイルで、<link linkend="dicon.tag.aspect">aspectタグ</link>を用いてアスペクト設定を行います。
+      <sbr/>
+           例として、次のようなサービスクラスにアスペクトを行います。
+      </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+class Service {
+    public function add($a, $b) {
+        return $a + $b;
+    }
+}
+]]></programlisting>
+
+       <para>アスペクトをコンポーネントに組み込みます。aspectタグのボディでInterceptorの名前を指定します。</para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components>
+    <component name="trace" class="seasar::aop::interceptor::TraceInterceptor"/>
+    <component class="Service">
+        <aspect pointcut="^add$">trace</aspect>
+    </component>
+</components>
+]]></programlisting>
+
+       <para>
+       S2ContainerFactoryのcreateメソッドで上記ダイコンファイルを指定して、コンテナを生成します。
+       </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+seasar::util::ClassLoader::import(dirname(__FILE__) . '/classes');
+$container = seasar::container::factory::S2ContainerFactory::create('/path/to/diconファイル');
+$service   = $container->getComponent('Service');
+
+print get_class($service) . PHP_EOL;
+$result = $service->add(2, 3);
+]]></programlisting>
+    </sect2>
+  </sect1>
+
+  <!-- ##################################################################### -->
+  <sect1 id="aop.interceptor"><title>S2AOPで用意されているInterceptor</title>
+    <sect2 id="aop.interceptor.trace"><title>TraceInterceptor</title>   
+      <blockquote>
+        <formalpara><title>S2ApplicationContextを使用する</title></formalpara>
+          <para>
+                     トレース処理を「Crosscutting Concern」として扱うためのInterceptorです。
+          <sbr/>例として、次のようなサービスクラスにアスペクトしてみます。
+          </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+class Service {
+    public function add($a, $b) {
+        print __CLASS__ . ' called.' . PHP_EOL;
+        return $a + $b;
+    }
+}
+]]></programlisting>
+          <para>
+                    次のような実行スクリプトを作成します。
+          </para>
+          <itemizedlist>
+            <listitem>
+            S2ApplicationContext::importメソッドでServiceクラスをインポートします。
+            </listitem>
+            <listitem>
+            S2ApplicationContext::registerAspectメソッドでサービスコンポーネントにTraceInterceptorをアスペクトする設定とします。
+            </listitem>
+            <listitem>
+            S2ApplicationContext::createメソッドでコンテナを生成します。
+            </listitem>
+            <listitem>
+            S2ContainerのgetComponentメソッドでServiceコンポーネントを取得します。
+            </listitem>
+            <listitem>
+            Serviceコンポーネントのaddメソッドを実行します。
+            </listitem>
+          </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+seasar::container::S2ApplicationContext::import(dirname(__FILE__) . '/classes');
+seasar::container::S2ApplicationContext::registerAspect('/^Service$/', 'new seasar::aop::interceptor::TraceInterceptor');
+$container = seasar::container::S2ApplicationContext::create();
+$service   = $container->getComponent('Service');
+
+print get_class($service) . PHP_EOL;
+$result = $service->add(2, 3);
+]]></programlisting>
+
+          <para>
+                    上記スクリプトを実行すると、サービスクラスのaddメソッドの実行時TraceInterceptorがログを出力します。
+          </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+% php context.php
+Service_EnhancedByS2AOP
+[INFO  ] seasar::aop::interceptor::TraceInterceptor::invoke - BEGIN Service->add(2,3)
+Service called.
+[INFO  ] seasar::aop::interceptor::TraceInterceptor::invoke - END   Service->add(2,3) : 5 : 0.0012331008911133
+%
+]]></programlisting>
+      </blockquote>
+
+      <blockquote>
+        <formalpara><title>S2ContainerFactoryを使用する</title></formalpara>
+        <para>
+        S2ContainerFactoryを使用する場合は、次のようなダイコンファイルを作成します。aspectタグを用いてServiceコンポーネントにTraceInterceptorをアスペクトします。       
+        </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components>
+    <component name="trace" class="seasar::aop::interceptor::TraceInterceptor"/>
+    <component class="Service">
+        <aspect>trace</aspect>
+    </component>
+</components>
+]]></programlisting>
+
+          <para>
+                    次のような実行スクリプトを作成します。
+          </para>
+          <itemizedlist>
+            <listitem>
+            ClassLoader::importメソッドでServiceクラスをインポートします。
+            </listitem>
+            <listitem>
+            S2ContainerFactory::createメソッドでdiconファイルを読み込みます。
+            </listitem>
+            <listitem>
+            S2ContainerのgetComponentメソッドでServiceコンポーネントを取得します。
+            </listitem>
+            <listitem>
+            Serviceコンポーネントのaddメソッドを実行します。
+            </listitem>
+          </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+seasar::util::ClassLoader::import(dirname(__FILE__) . '/classes');
+$container = seasar::container::factory::S2ContainerFactory::create(dirname(__FILE__) . '/example.dicon');
+$service = $container->getComponent('Service');
+
+print get_class($service) . PHP_EOL;
+$result = $service->add(2, 3);
+]]></programlisting>
+
+          <para>
+                    上記スクリプトを実行すると、サービスクラスのaddメソッドの実行時TraceInterceptorがログを出力します。
+          </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+% php factory.php
+Service_EnhancedByS2AOP
+[INFO  ] seasar::aop::interceptor::TraceInterceptor::invoke - BEGIN Service->add(2,3)
+Service called.
+[INFO  ] seasar::aop::interceptor::TraceInterceptor::invoke - END   Service->add(2,3) : 5 : 0.0012331008911133
+%
+]]></programlisting>
+      </blockquote>
+      <note><title>NOTE</title>
+        <para>このExampleは examples/aop/interceptor/trace にあります。</para>
+      </note>
+
+    </sect2> 
+
+    <!-- ################################################################### -->
+    <sbr/>
+    <sect2 id="aop.interceptor.mock"><title>MockInterceptor</title>   
+      <blockquote>
+        <formalpara><title>S2ApplicationContextを使用する</title></formalpara>
+          <para>
+          MockInterceptorは、Mockを使ったテストを簡単に行うためのInterceptorです。S2ApplicationContextを使用する場合は、
+                    コメントアノテーションを用いて、メソッドの戻り値やスローする例外を設定します。
+          </para>
+          <itemizedlist>
+            <listitem>アノテーションの表記 : @S2Mock</listitem>
+            <listitem>引数
+              <itemizedlist>
+                <listitem>return : 戻り値を設定します。この値はExpressionとして扱われます。(eval関数で処理されます)</listitem>
+                <listitem>throw : スローする例外を設定します。この値はExpressionとして扱われます。</listitem>
+              </itemizedlist>
+            </listitem>
+            <listitem>注釈ポイント : メソッド</listitem>
+          </itemizedlist>
+
+          <para>
+                    例として、次のようなサービスクラスにアスペクトしてみます。
+          </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+class Service {
+    /**
+     * @S2Mock('return' => '10')
+     */
+    public function add($a, $b) {
+        print __CLASS__ . ' called.' . PHP_EOL;
+        return $a + $b;
+    }
+    /**
+     * @S2Mock('throw' => 'new seasar::exception::NotYetImplementedException("mock exception")')
+     */
+    public function sub($a, $b) {
+        print __CLASS__ . ' called.' . PHP_EOL;
+    }
+}
+]]></programlisting>
+          <para>
+                    次のような実行スクリプトを作成します。
+          </para>
+          <itemizedlist>
+            <listitem>
+            S2ApplicationContext::importメソッドでServiceクラスをインポートします。
+            </listitem>
+            <listitem>
+            S2ApplicationContext::registerAspectメソッドでサービスコンポーネントにMockInterceptorをアスペクトする設定とします。
+            </listitem>
+            <listitem>
+            S2ApplicationContext::createメソッドでコンテナを生成します。
+            </listitem>
+            <listitem>
+            S2ContainerのgetComponentメソッドでServiceコンポーネントを取得します。
+            </listitem>
+            <listitem>
+            Serviceコンポーネントのadd、subメソッドを実行します。
+            </listitem>
+          </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+seasar::container::S2ApplicationContext::import(dirname(__FILE__) . '/classes');
+seasar::container::S2ApplicationContext::registerAspect('/^Service$/', 'new seasar::aop::interceptor::MockInterceptor');
+$container = seasar::container::S2ApplicationContext::create();
+$service = $container->getComponent('Service');
+
+print $service->add(2, 3) . PHP_EOL;
+try {
+    $result = $service->sub(3, 2);
+} catch(Exception $e) {
+    print get_class($e) . ' : ' . $e->getMessage() . PHP_EOL;
+}
+]]></programlisting>
+
+          <para>
+                    上記スクリプトを実行します。サービスクラスのaddメソッドを実行すると、実際の計算結果(5)ではなくMock値として10が返されます。
+          subメソッドを実行すると、NotYetImplementedExceptionがスローされます。
+          </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+% php context.php
+10
+seasar::exception::NotYetImplementedException : mock exception
+%
+]]></programlisting>
+      </blockquote>
+
+      <blockquote>
+        <formalpara><title>S2ContainerFactoryを使用する</title></formalpara>
+        <para>
+        S2ContainerFactoryを使用する場合は、次のようなダイコンファイルを作成します。aspectタグを用いてServiceコンポーネントにMockInterceptorをアスペクトします。       
+        initMethodタグで、addメソッドに対してsetRetrunValueメソッドで戻り値を設定します。また、subメソッドに対してはsetThrowableメソッドでスローする例外を設定します。
+        </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components>
+    <component name="mock" class="seasar::aop::interceptor::MockInterceptor">
+        <initMethod name="setReturnValue">
+            <arg>"add"</arg>
+            <arg>20</arg>
+        </initMethod>
+        <initMethod name="setThrowable">
+            <arg>"sub"</arg>
+            <arg>new seasar::exception::NotYetImplementedException('mock exception')</arg>
+        </initMethod>
+    </component>
+
+    <component class="Service">
+        <aspect>mock</aspect>
+    </component>
+</components>
+]]></programlisting>
+          <para>
+          Mock値の設定が省略された場合は、コメントアノテーションの設定が反映されます。
+          </para>
+
+          <para>
+                    次のような実行スクリプトを作成します。
+          </para>
+          <itemizedlist>
+            <listitem>
+            ClassLoader::importメソッドでServiceクラスをインポートします。
+            </listitem>
+            <listitem>
+            S2ContainerFactory::createメソッドでdiconファイルを読み込みます。
+            </listitem>
+            <listitem>
+            S2ContainerのgetComponentメソッドでServiceコンポーネントを取得します。
+            </listitem>
+            <listitem>
+            Serviceコンポーネントのadd、subメソッドを実行します。
+            </listitem>
+          </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+seasar::util::ClassLoader::import(dirname(__FILE__) . '/classes');
+$container = seasar::container::factory::S2ContainerFactory::create(dirname(__FILE__) . '/example.dicon');
+$service = $container->getComponent('Service');
+
+print $service->add(2, 3) . PHP_EOL;
+try {
+    $result = $service->sub(3, 2);
+} catch(Exception $e) {
+    print get_class($e) . ' : ' . $e->getMessage() . PHP_EOL;
+}
+]]></programlisting>
+
+          <para>
+                    上記スクリプトを実行します。サービスクラスのaddメソッドを実行すると、実際の計算結果(5)ではなくMock値として20が返されます。
+          subメソッドを実行すると、NotYetImplementedExceptionがスローされます。
+          </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+% php factory.php
+20
+seasar::exception::NotYetImplementedException : mock exception
+%
+]]></programlisting>
+      </blockquote>
+      <note><title>NOTE</title>
+        <para>このExampleは examples/aop/interceptor/mock にあります。</para>
+      </note>
+
+    </sect2> 
+
+    <sbr/>
+    <sect2 id="aop.interceptor.chain"><title>InterceptorChain</title>   
+      <para>
+             複数のInterceptorをグルーピング化し再利用しやすくします。
+      <sbr/>例として、次のようなサービスクラスにTraceInterceptorとMockInterceptorをInterceptorChainにまとめてアスペクトしてみます。
+      </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+class Service {
+    public function add($a, $b) {
+        print __CLASS__ . ' called.' . PHP_EOL;
+        return $a + $b;
+    }
+}
+]]></programlisting>
+
+      <para>
+            次のようなダイコンファイルを作成します。aspectタグを用いてServiceコンポーネントにchainコンポーネントをアスペクトします。       
+      chainコンポーネントでは、initMethodタグでtraceコンポーネントとmockコンポーネントをInterceptorChainに登録します。
+            また、traceコンポーネントとmockコンポーネントもそれぞれ登録します。
+      </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components21.dtd">
+<components>
+    <component class="Service">
+        <aspect>chain</aspect>
+    </component>
+
+    <component name="chain" class="seasar::aop::interceptor::InterceptorChain">
+        <initMethod name="add"><arg>trace</arg></initMethod>
+        <initMethod name="add"><arg>mock</arg></initMethod>
+    </component>
+
+    <component name="trace" class="seasar::aop::interceptor::TraceInterceptor"/>
+    <component name="mock" class="seasar::aop::interceptor::MockInterceptor">
+        <initMethod name="setReturnValue">
+            <arg>"add"</arg>
+            <arg>20</arg>
+        </initMethod>
+    </component>
+</components>
+]]></programlisting>
+        <para>
+                次のような実行スクリプトを作成します。
+        </para>
+        <itemizedlist>
+          <listitem>
+          ClassLoader::importメソッドでServiceクラスをインポートします。
+          </listitem>
+          <listitem>
+          S2ContainerFactory::createメソッドでdiconファイルを読み込みます。
+          </listitem>
+          <listitem>
+          S2ContainerのgetComponentメソッドでServiceコンポーネントを取得します。
+          </listitem>
+          <listitem>
+          Serviceコンポーネントのaddメソッドを実行します。
+          </listitem>
+        </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+seasar::util::ClassLoader::import(dirname(__FILE__) . '/classes');
+$container = seasar::container::factory::S2ContainerFactory::create(dirname(__FILE__) . '/example.dicon');
+$service = $container->getComponent('Service');
+
+print $service->add(2, 3) . PHP_EOL;
+]]></programlisting>
+
+        <para>
+                上記スクリプトを実行します。サービスクラスのaddメソッドを実行すると、TraceInterceptorのログが出力されます。
+                また、実際の計算結果(5)ではなくMock値として20が返されます。
+        </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+% php factory.php
+[INFO  ] seasar::aop::interceptor::TraceInterceptor::invoke - BEGIN Service->add(2,3)
+[INFO  ] seasar::aop::interceptor::TraceInterceptor::invoke - END   Service->add(2,3) : 5 : 0.0012331008911133
+20
+%
+]]></programlisting>
+      <note><title>NOTE</title>
+        <para>このExampleは examples/aop/interceptor/chain にあります。</para>
+      </note>
+    </sect2> 
+
+    <sbr/>
+    <sect2 id="aop.interceptor.custom"><title>Interceptorを実装する</title>   
+      <para>
+      Interceptorをカスタム実装する場合は、次のインターフェースを実装するクラスを作成します。
+      </para>
+
+      <itemizedlist>
+        <listitem>seasar::aop::MethodInterceptor
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+namespace seasar::aop;
+interface MethodInterceptor {
+    /**
+     * @param MethodInvocation $invocation
+     */
+    function invoke(MethodInvocation $invocation);
+}
+]]></programlisting>
+        </listitem>
+      </itemizedlist>
+
+      <para>
+            次のようなサンプルインターセプターを作成してみます。
+      </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+class SampleInterceptor implements seasar::aop::MethodInterceptor {
+    public function invoke(seasar::aop::MethodInvocation $invocation){
+
+        print 'Before' . PHP_EOL;            // <-- 次のインターセプターや実際のメソッドを呼び出す前の処理
+
+        $result = $invocation->proceed();
+
+        print 'After' . PHP_EOL;             // <-- 次のインターセプターや実際のメソッドを呼び出した後の処理
+
+        return $result;
+    }
+}
+]]></programlisting>
+      <para>
+      MethodInvocation::proceed()を実行すると、次のインターセプターや実際のメソッドを呼び出します。
+      1つのコンポーネントに複数のアスペクトが定義されている場合は、以下のよう実行されます。
+      </para>
+      <itemizedlist>
+        <listitem>Aspectの登録順にMethodInterceptorのBefore部分が実行されます。</listitem>
+        <listitem>最後のMethodInterceptorのBefore部分を実行した後にコンポーネント自身のメソッドが呼び出されます。</listitem>
+        <listitem>Aspectの登録の逆順にMethodInterceptorのAfter部分が実行されます。</listitem>
+      </itemizedlist>
+
+      <para>
+      MethodInterceptor::invokeメソッドの引数で渡される<link linkend="aop.invocation">MethodInvocation</link>インスタンスを介して、アスペクト対象のインスタンスや、ReflectionMethod、メソッド引数などを取得できます。
+      </para>
+    </sect2> 
+    
+  </sect1>
+  <sect1 id="aop.invocation"><title>MethodInvocation API リファレンス</title>
+    <para>
+    MethodInvocationインスタンスは、MethodInterceptorのinvokeメソッドの引数として渡されます。
+    MethodInvocationはインターセプターの管理を行い、順次実行し、アスペクト対象メソッドの呼び出しを行います。
+    MethodInvocationインスタンスを介して、アスペクト対象のインスタンスや、ReflectionMethod、メソッド引数などを取得できます。
+    </para>
+
+    <blockquote>
+
+      <formalpara><title>MethodInvocation::proceed メソッド</title></formalpara>
+      <para>
+            インターセプターや実際のメソッドを呼び出します。
+      </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+/**
+ * @return mixed
+ */
+public function proceed();
+]]></programlisting>
+
+      <formalpara><title>MethodInvocation::getThis メソッド</title></formalpara>
+      <para>
+            アスペクト対象のインスタンスを返します。
+      </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+/**
+ * @return object
+ */
+public function getThis();
+]]></programlisting>
+
+      <formalpara><title>MethodInvocation::getMethod メソッド</title></formalpara>
+      <para>
+            アスペクト対象となっているメソッドのReflectionMethodを返します。
+      </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+/**
+ * @return ReflectionMethod
+ */
+public function getMethod();
+]]></programlisting>
+
+      <formalpara><title>MethodInvocation::getTargetClass メソッド</title></formalpara>
+      <para>
+            アスペクト対象のクラスのReflectionClassを返します。
+      </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+/**
+ * @return ReflectionClass
+ */
+public function getTargetClass();
+]]></programlisting>
+
+      <formalpara><title>MethodInvocation::getArguments メソッド</title></formalpara>
+      <para>
+            アスペクト対象メソッドの実行時引数を返します。
+      </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+/**
+ * @return array
+ */
+public function getArguments();
+]]></programlisting>
+
+      <formalpara><title>MethodInvocation::getParameter メソッド</title></formalpara>
+      <para>
+      S2Aop.PHP用の拡張パラメータを返します。
+      </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+/**
+ * @param string $name
+ * @return mixed
+ */
+public function getParameter($name);
+]]></programlisting>
+
+    </blockquote>
+  </sect1>
+
+  <sect1 id="aop.config"><title>S2AOP 設定ファイル</title>
+    <para>
+    S2AOPの各種設定は、seasar::aop::Configクラスのプロパティとして設定します。
+    </para>
+    <blockquote>
+
+        <formalpara><title>ENHANCED_CLASS_GENERATOR</title></formalpara>
+        <para>
+                アスペクトを織り込むための拡張クラスを生成するGeneratorクラスを指定します。
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+seasar::aop::Config::$ENHANCED_CLASS_GENERATOR = 'seasar::aop::EnhancedClassGenerator';
+]]></programlisting>
+
+        <formalpara id="aop.config.caching"><title>CACHING</title></formalpara>
+        <para>
+                アスペクトを織り込むために生成した拡張クラスをファイルに出力するかを設定します。
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+seasar::aop::Config::$CACHING = false;
+]]></programlisting>
+
+        <formalpara><title>CACHE_DIR</title></formalpara>
+        <para>
+                アスペクトを織り込むために生成した拡張クラスをファイルに出力する場合の出力先ディレクトリを設定します。
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+seasar::aop::Config::$CACHE_DIR = null;
+]]></programlisting>
+
+    </blockquote>    
+  </sect1>
+</chapter>

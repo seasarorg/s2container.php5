@@ -156,7 +156,26 @@ Printer::printOut : Hello World !
   <sect1 id="quick205"><title>DI ( Dependency Injection )の実行</title>
     <para>
       2つのコンポーネントが作成できたので、Hello コンポーネントに Printer コンポーネントを DI ( Dependency Injection) してみます。
-      Hello クラスに Printer インスタンスを受け取るセッターメソッドを追加します。また、sayHelloメソッドでPrinter クラスを用いて出力するように変更します。
+      Hello クラスに Printer インスタンスを保持するPublicプロパティを実装します。Publicプロパティのデフォルト値に「S2Binding」文字列を設定します。
+            また、sayHelloメソッドでPrinter クラスを用いて出力するように変更します。
+    </para>
+    <itemizedlist>
+      <listitem>classes/Hello.php
+      </listitem>
+    </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Hello {
+    public $printer = 'S2Binding';
+    public function sayHello() {
+        $this->printer->printOut('Hello World ! with DI');
+    }
+}
+]]></programlisting>
+
+    <para>
+      Setter Method インジェクションで DI する場合は、Hello クラスに Printer インスタンスを受け取るセッターメソッドを追加します。
+            また、sayHelloメソッドでPrinter クラスを用いて出力するように変更します。
     </para>
     <itemizedlist>
       <listitem>classes/Hello.php
