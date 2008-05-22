@@ -91,5 +91,25 @@ greeting : <?php echo $greeting; ?> <br>
 
   </sect2>
 
+  <sect2><title>Mockを使用する</title>
+    <para>
+      MockInterceptorをHogeクラスにアスペクトして、greetingメソッドの戻り値を設定します。
+    </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Hoge {
+    /**
+     * @S2Aspect('interceptor' => 'new seasar::aop::interceptor::MockInterceptor')
+     * @S2Mock('return' => 'strval("Bye World !!")')
+     */
+    public function greeting() {
+        return 'Hello World !!';
+    }
+}
+]]></programlisting>
+
+    <para>indexページにアクセスすると、「greeting : Bye World !!」と表示されます。</para>
+  </sect2>
+
 
 </sect1>

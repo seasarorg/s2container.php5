@@ -28,7 +28,7 @@
     </sect2>
   </sect1>
 
-  <sect1 id="aop.about"><title>S2AOP 使用上の注意点</title>
+  <sect1 id="aop.caution"><title>S2AOP 使用上の注意点</title>
 
     <itemizedlist>
       <listitem>

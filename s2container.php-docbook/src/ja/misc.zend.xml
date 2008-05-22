@@ -4,47 +4,170 @@
       Zend_Controllerのモジュラーディレクトリ構造に従ってセットアップを行います。
     </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-project
-│
-├─application
-│  └─default
-│      ├─controllers
-│      │  ├─ErrorController.php
-│      │  └─IndexController.php
-│      │      
-│      ├─models
-│      │  └─index
-│      │     └─Hoge.php
-│      │          
-│      └─views
-│          ├─filters
-│          ├─helpers
-│          └─scripts
-│             ├─error
-│             │  └─error.phtml
-│             │      
-│             └─index
-│                └─index.phtml
-│                      
-├─cache
-│  └─s2aop
-│          
-├─config
-│  ├─environment.php
-│  └─s2.php
-│      
-├─docroot
-│  ├─.htaccess
-│  └─index.php
-│      
-├─lib
-│  └─S2Container
-│                                  
-└─log
-   └─s2.log
-                
+project/
+ +--application/
+ |  +--default/
+ |      +--controllers/
+ |      |  +--ErrorController.php
+ |      |  +--IndexController.php
+ |      +--models/
+ |      |  +--index/
+ |      |     +--Hoge.php
+ |      +--views/
+ |          +--filters/
+ |          +--helpers/
+ |          +--scripts/
+ |             +--error/
+ |             |  +--error.phtml
+ |             +--index/
+ |                +--index.phtml
+ +--cache/
+ |  +--s2aop
+ +--config/
+ |  +--environment.php
+ |  +--s2.php
+ +--docroot/
+ |  +--.htaccess
+ |  +--index.php
+ +--lib/
+ |  +--S2Container/
+ +--log/
+    +--s2.log                
 ]]></programlisting>
+
+    <para>
+      Zend_Controllerのモジューラディレクトリ構造に、config、lib、logディレクトリを追加しています。
+      configディレクトリには、共通設定ファイルとして次のようなenvironment.phpを作成します。
+    </para>
     
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+define('PROJECT_ROOT_DIR', dirname(dirname(__FILE__)));
+
+$packages = array(PROJECT_ROOT_DIR . '/lib');
+ini_set('include_path', implode(PATH_SEPARATOR, $packages) . PATH_SEPARATOR . ini_get('include_path') );
+
+]]></programlisting>
+  </sect2>
+
+  <sect2><title>S2Containerの設定</title>
+    <para>
+      s2Container.phpをPEARでインストールします。フルパッケージでインストールする場合は、
+            プロジェクトディレクトリのlibディレクトリにS2Containerとして解凍します。
+            次のS2Containerの設定ファイルサンプルをプロジェクトディレクトリのconfigディレクトリにs2.phpとして保存します。
+      <itemizedlist>
+        <listitem>config/s2.php</listitem>
+      </itemizedlist>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+
+/** S2Log設定 */
+seasar::Config::$LOG_LEVEL = seasar::log::impl::SimpleLogger::DEBUG;
+seasar::Config::$DEBUG_EVAL = false;
+seasar::Config::$DEBUG_VERBOSE = false;
+seasar::Config::$SIMPLE_LOG_FILE = PROJECT_ROOT_DIR . '/log/s2.log';
+
+/** S2Aop設定 */
+seasar::aop::Config::$CACHING = false;
+seasar::aop::Config::$CACHE_DIR = PROJECT_ROOT_DIR . '/cache/s2aop';
+
+]]></programlisting>
+
+    </para>
+  </sect2>
+
+  <sect2><title>アクションの作成</title>
+    <para>
+      Zend_Controllerのドキュメントに従って、IndexControllerクラスを作成します。
+ 
+      <itemizedlist>
+        <listitem>application/default/controllers/IndexController.php</listitem>
+      </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once PROJECT_ROOT_DIR . '/config/s2.php';
+use seasar::container::S2ApplicationContext as s2app;
+s2app::import(dirname(dirname(__FILE__)) . '/models/index');
+
+require_once 'Zend/Controller/Action.php';
+class IndexController extends Zend_Controller_Action {
+    public function indexAction() {
+       $this->view->greeting = s2app::get('Hoge')->greeting();
+    }
+}
+
+]]></programlisting>
+      <orderedlist>
+        <listitem>s2.php共通設定ファイルを読み込みます。</listitem>
+        <listitem>useを用いてS2ApplicationContextを別名で定義します。 (必須ではありません)</listitem>
+        <listitem>models/indexディレクトリをインポートします。</listitem>
+        <listitem>
+                    アクションメソッドでHogeコンポーネントを使用します。getメソッドでコンポーネントを取得する場合は、
+          S2ApplicationContext内部で管理されるSingleton S2Containerが使用されます。
+        </listitem>
+      </orderedlist>
+
+    </para>
+
+    <para>
+          アクションクラスで使用するHogeクラスをmodels/indexディレクトリに作成します。
+      <itemizedlist>
+        <listitem>application/default/models/index/Hoge.php</listitem>
+      </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Hoge {
+    public function greeting() {
+        return 'Hello World !!';
+    }
+}
+]]></programlisting>
+    </para>
+
+    <para>
+      indexアクションのテンプレートを編集します。
+      <itemizedlist>
+        <listitem>application/default/views/scripts/index/index.phtml</listitem>
+      </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>My first Zend Framework App</title>
+</head>
+<body>
+    greeting : <?php echo $this->greeting; ?><br>
+</body>
+</html>
+]]></programlisting>
+    </para>
+    
+    <para>indexページにアクセスすると、「greeting : Hello World !!」と表示されます。</para>
+  </sect2>
+
+  <sect2><title>Mockを使用する</title>
+    <para>
+      MockInterceptorをHogeクラスにアスペクトして、greetingメソッドの戻り値を設定します。
+    </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Hoge {
+    /**
+     * @S2Aspect('interceptor' => 'new seasar::aop::interceptor::MockInterceptor')
+     * @S2Mock('return' => 'strval("Bye World !!")')
+     */
+    public function greeting() {
+        return 'Hello World !!';
+    }
+}
+]]></programlisting>
+
+    <para>indexページにアクセスすると、「greeting : Bye World !!」と表示されます。</para>
   </sect2>
 </sect1>
 
