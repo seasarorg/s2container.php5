@@ -71,7 +71,7 @@ class BeanDescTest extends ::PHPUnit_Framework_TestCase {
 
     public function testGetPublicPropertyDefaultNull() {
         $propName = 'hogeLogic';
-        BeanDesc::$PROPERTY_ACCEPT_NULL = true;
+        seasar::container::Config::$PROPERTY_TYPEHINT_NULL = true;
         $bean = BeanDescFactory::getBeanDesc('seasar::beans::D_BeanDescTest');
         $this->assertTrue($bean->hasTypehintPropertyDesc($propName));
         $propertyDesc = $bean->getPropertyDesc($propName);
@@ -79,7 +79,7 @@ class BeanDescTest extends ::PHPUnit_Framework_TestCase {
         $this->assertTrue($propertyDesc->getProperty() instanceof ReflectionProperty);
         $this->assertEquals($propertyDesc->getTypehint(), $propName);
         $this->assertFalse($propertyDesc->isArrayAcceptable());
-        BeanDesc::$PROPERTY_ACCEPT_NULL = false;
+        seasar::container::Config::$PROPERTY_TYPEHINT_NULL = false;
     }
 
     public function testGetPublicPropertyException() {

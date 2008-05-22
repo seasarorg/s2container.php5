@@ -26,10 +26,6 @@
 namespace seasar::container::impl;
 class ArgDefTest extends ::PHPUnit_Framework_TestCase {
 
-    public function __construct($name) {
-        parent::__construct($name);
-    }
-
     public function testGetValue() {
         $arg = new ArgDef();
         $this->assertNotNull($arg);

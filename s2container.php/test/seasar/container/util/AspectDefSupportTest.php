@@ -25,9 +25,6 @@
  */
 namespace seasar::container::util;
 class AspectDefSupportTest extends ::PHPUnit_Framework_TestCase {
-    public function __construct($name) {
-        parent::__construct($name);
-    }
 
     public function testAddAspectDef() {
         $support = new AspectDefSupport;
