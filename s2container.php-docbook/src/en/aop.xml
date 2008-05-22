@@ -882,3 +882,4 @@ seasar::aop::Config::$CACHE_DIR = null;
     </blockquote>    
   </sect1>
 </chapter>
+
