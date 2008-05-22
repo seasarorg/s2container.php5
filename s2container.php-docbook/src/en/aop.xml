@@ -879,7 +879,6 @@ seasar::aop::Config::$CACHING = false;
 seasar::aop::Config::$CACHE_DIR = null;
 ]]></programlisting>
 
-    </blockquote>    
+    </blockquote>
   </sect1>
 </chapter>
-
