@@ -32,21 +32,6 @@ namespace seasar::beans;
 class BeanDesc {
 
     /**
-     * 自動Propertyインジェクションのタイプヒントを記述するためのキー文字列
-     *
-     * @var string
-     */
-    public static $PROPERTY_TYPEHINT_KEY = 'S2Binding';
-
-    /**
-     * パブリックPropertyのデフォルト値がnullの場合に、自動Propertyインジェクションを
-     * 実施するかどうかを指定します。
-     *
-     * @boolean
-     */
-    public static $PROPERTY_ACCEPT_NULL = false;
-
-    /**
      * @var ReflectionClass
      */
     private $beanClass = null;
@@ -171,7 +156,7 @@ class BeanDesc {
      */
     private function setupPublicPropertyDescs() {
         $properties = $this->beanClass->getDefaultProperties();
-        $typehintRegexp = '/^' . self::$PROPERTY_TYPEHINT_KEY . '(.*)$/i';
+        $typehintRegexp = '/^' . seasar::container::Config::$PROPERTY_TYPEHINT_KEY . '(.*)$/i';
         foreach($properties as $name => $value) {
             $matches = array();
             if ($this->beanClass->getProperty($name)->isPublic()){
@@ -199,7 +184,7 @@ class BeanDesc {
                         $propertyDesc->setTypehint($typehint);
                     }
                     $this->typehintPropertyDescs[$name] = $propertyDesc;
-                } else if (self::$PROPERTY_ACCEPT_NULL and is_null($value)) {
+                } else if (seasar::container::Config::$PROPERTY_TYPEHINT_NULL and is_null($value)) {
                     $propertyDesc->setArrayAcceptable(false);
                     $propertyDesc->setTypehint($name);
                     $this->typehintPropertyDescs[$name] = $propertyDesc;

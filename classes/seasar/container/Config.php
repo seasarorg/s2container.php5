@@ -70,6 +70,22 @@ abstract class Config {
      * @var boolean
      */
     public static $DOM_VALIDATE = false;
+
+    /**
+     * 自動Propertyインジェクションのタイプヒントを記述するためのキー文字列
+     *
+     * @var string
+     */
+    public static $PROPERTY_TYPEHINT_KEY = 'S2Binding';
+
+    /**
+     * パブリックPropertyのデフォルト値がnullの場合に、自動Propertyインジェクションを
+     * 実施するかどうかを指定します。
+     *
+     * @boolean
+     */
+    public static $PROPERTY_TYPEHINT_NULL = false;
+
 }
 
 /**
