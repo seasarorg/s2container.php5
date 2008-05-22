@@ -25,9 +25,6 @@
  */
 namespace seasar::container::util;
 class ConstructorUtilTest extends ::PHPUnit_Framework_TestCase {
-    public function __construct($name) {
-        parent::__construct($name);
-    }
 
     public function testGetInstanceWithArgs() {
         $componentDef = new seasar::container::impl::ComponentDefImpl('seasar::container::util::A_ConstructorUtilTest');
