@@ -155,12 +155,6 @@ class Action {
 ]]></programlisting>
 
          <para>
-           In Action class shown below, the "$service" property is prepared.
-           In this case, since a property name is treated as a component name, 
-           "service" component is taken out from S2Container and is injected to Action.
-         </para>
-
-         <para>
            The component name of the default value of a property is omissible.
            If a component name is omitted, a property name is treated as a component name.
            In the following example, a component name is "service".
@@ -245,7 +239,7 @@ $action->execute();
 ]]></programlisting>
 
          <para>
-           When generating a container using a S2ContainerFactory class, the following DICON files are prepared.
+           When generating a container using a S2ContainerFactory class, the following DICON file is prepared.
          </para>
 
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
@@ -364,7 +358,7 @@ $action->execute();
 ]]></programlisting>
 
          <para>
-           When generating a container using a S2ContainerFactory class, the following DICON files are prepared.
+           When generating a container using a S2ContainerFactory class, the following DICON file is prepared.
          </para>
 
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
@@ -481,7 +475,7 @@ $action->execute();
 ]]></programlisting>
 
          <para>
-           When generating a container using a S2ContainerFactory class, the following DICON files are prepared.
+           When generating a container using a S2ContainerFactory class, the following DICON file is prepared.
          </para>
 
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
