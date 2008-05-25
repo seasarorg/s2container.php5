@@ -168,6 +168,26 @@ class Hoge {
 ]]></programlisting>
 
     <para>indexページにアクセスすると、「greeting : Bye World !!」と表示されます。</para>
+    <para>
+      @S2Aspectアノテーションは、クラスに注釈することもできます。また、S2ApplicationContextの自動アスペクトを使用しても、
+           同様の結果を得ることができます。自動アスペクトを行う場合は、アクションコントローラクラスのS2ApplicationContext設定部に、
+      registerAspectメソッドを追記します。
+    </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once PROJECT_ROOT_DIR . '/config/s2.php';
+use seasar::container::S2ApplicationContext as s2app;
+s2app::import(dirname(dirname(__FILE__)) . '/models/index');
+s2app::registerAspect('/^Hoge$/', 'new seasar::aop::interceptor::MockInterceptor');
+
+require_once 'Zend/Controller/Action.php';
+class IndexController extends Zend_Controller_Action {
+    public function indexAction() {
+       $this->view->greeting = s2app::get('Hoge')->greeting();
+    }
+}
+]]></programlisting>
   </sect2>
 </sect1>
 
