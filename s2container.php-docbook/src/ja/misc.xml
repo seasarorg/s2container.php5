@@ -3,9 +3,9 @@
     <blockquote>
       <table frame='all'><title>S2Container-1.2とS2Container-2.0 機能比較表</title>
         <tgroup cols='3' align='left' colsep='1' rowsep='1'>
-          <colspec colwidth="150" align="center" nowrap="1"/>
-          <colspec colwidth="300"/>
-          <colspec colwidth="300"/>
+          <colspec colwidth="2*" align="center" nowrap="1"/>
+          <colspec colwidth="4*"/>
+          <colspec colwidth="4*"/>
           <thead>
             <row>
               <entry align="center">機能</entry>

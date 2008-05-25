@@ -1031,8 +1031,8 @@ var_dump($action);
       <blockquote>
       <table frame='all'><title>バインディングタイプ</title>
         <tgroup cols='2' align='left' colsep='1' rowsep='1'>
-          <colspec colwidth="50" align="center"/>
-          <colspec colwidth="750"/>
+          <colspec colwidth="50*" align="center"/>
+          <colspec colwidth="750*"/>
           <thead>
             <row>
               <entry align="center">autoBinding</entry>
@@ -1097,8 +1097,8 @@ class Service {}
       <blockquote>
       <table frame='all'><title>インスタンスタイプ</title>
         <tgroup cols='2' align='left' colsep='1' rowsep='1'>
-          <colspec colwidth="50" align="center"/>
-          <colspec colwidth="750"/>
+          <colspec colwidth="50*" align="center"/>
+          <colspec colwidth="750*"/>
           <thead>
             <row>
               <entry align="center">instance</entry>
