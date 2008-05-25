@@ -129,35 +129,11 @@ $component = $container->getComponent('indexAction');
          <para>
            As a example, the case where a service class is injected to an action class is shown below.<sbr/>
            In an action class, a property for service component is implemented.
-           In Action class shown below, the "$service" property is prepared.
-           In this case, since a property name is treated as a component name, 
-           "service" component is taken out from S2Container and is injected to Action.
-           The following action class is saved at a current directory as "classes/Action.php".
-         </para>
-
-<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-<?php
-class Action {
-
-    /**
-     * @var Service
-     */
-    public $service = null;
-
-    /**
-     * action execution method
-     */
-    public function execute() {
-        $result = $this->service->add(2,3);
-    }
-}
-]]></programlisting>
-
-         <para>
            By setting default property value by type hint, the component which be injected can be specified.
            A type hint is described like "S2Binding component name".
            Moreover, two or more components can be packed as array, and DI can be carried out.
            When DI is carried out by component packed array, a type hint is described like "S2Binding component[]".
+           The following action class is saved at a current directory as "classes/Action.php".
          </para>
 
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
@@ -176,6 +152,58 @@ class Action {
         $result = $this->service->add(2,3);
     }
 }
+]]></programlisting>
+
+         <para>
+           In Action class shown below, the "$service" property is prepared.
+           In this case, since a property name is treated as a component name, 
+           "service" component is taken out from S2Container and is injected to Action.
+         </para>
+
+         <para>
+           The component name of the default value of a property is omissible.
+           If a component name is omitted, a property name is treated as a component name.
+           In the following example, a component name is "service".
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+    /**
+     * @var Service
+     */
+    public $service = 'S2Binding';
+]]></programlisting>
+
+         <para>
+           By setting true to seasar::container::Config::$PROPERTY_TYPEHINT_NULL, 
+           even when the default value of a property is null, automatic injection can be performed.
+           The default value of seasar::container::Config::$PROPERTY_TYPEHINT_NULL is false.
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+seasar::container::Config::$PROPERTY_TYPEHINT_NULL = true;
+]]></programlisting>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+    /**
+     * @var Service
+     */
+    public $service = null;
+]]></programlisting>
+
+         <para>
+           The key of the type hint of a property can be set up by specifying string to seasar::container::Config::$PROPERTY_TYPEHINT_KEY.
+           If seasar::container::Config::$PROPERTY_TYPEHINT_KEY is set as "DI", the default value of a property is set up as follows.
+           The default value of seasar::container::Config::$PROPERTY_TYPEHINT_KEY is "S2Binding".
+         </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+seasar::container::Config::$PROPERTY_TYPEHINT_KEY = 'DI';
+]]></programlisting>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+    /**
+     * @var Service
+     */
+    public $service = 'DI Service';
 ]]></programlisting>
 
          <para>
@@ -1055,8 +1083,8 @@ var_dump($action);
       <blockquote>
       <table frame='all'><title>Binding Type</title>
         <tgroup cols='2' align='left' colsep='1' rowsep='1'>
-          <colspec colwidth="50" align="center"/>
-          <colspec colwidth="750"/>
+          <colspec colwidth="50*" align="center"/>
+          <colspec colwidth="750*"/>
           <thead>
             <row>
               <entry align="center">autoBinding</entry>
@@ -1121,8 +1149,8 @@ class Service {}
       <blockquote>
       <table frame='all'><title>Instance Type</title>
         <tgroup cols='2' align='left' colsep='1' rowsep='1'>
-          <colspec colwidth="50" align="center"/>
-          <colspec colwidth="750"/>
+          <colspec colwidth="50*" align="center"/>
+          <colspec colwidth="750*"/>
           <thead>
             <row>
               <entry align="center">instance</entry>
