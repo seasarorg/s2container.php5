@@ -1,0 +1,134 @@
+  <sect1 id="misc.strict"><title>StrictInterceptor</title>
+    <sect2><title>About Example</title>
+      <para>
+        Example of StrictInterceptor is located in example/misc/stric.
+        Each class file, a configuration file, and directory composition become the next.
+                
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+example/misc/strict/
+ +-- classes/
+ |    +-- sample/
+ |    +-- StrictAnnotationFactory.php
+ |    +-- StrictException.php
+ |    +-- StrictInterceptor.php
+ +-- execute.php
+      
+]]></programlisting>
+        The following three classes located in a clases directory are needed in order to use StrictInterceptor.
+        <itemizedlist>
+          <listitem>StrictAnnotationFactory.php</listitem>
+          <listitem>StrictException.php</listitem>
+          <listitem>StrictInterceptor.php</listitem>
+        </itemizedlist>
+      </para>
+    </sect2>
+
+    <sbr/>
+    <sect2><title>The outline of StrictInterceptor</title>
+      <para>
+        StrictInterceptor is Interceptor which performs a type check about a method argument and a return value at the time of a method call.
+        Specification of the type of a method argument or a return value is set up by Annotation.
+        <itemizedlist>
+          <listitem>@param : The type of the argument of a method is specified</listitem>
+          <listitem>@return : The type of the return value of a method is specified</listitem>
+        </itemizedlist>
+        @param annotation is specified as each one argument.
+        As an example, anotation of add method of Calc class is shown below.
+<blockquote>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Calc {
+    /**
+     * @param numeric $a
+     * @param numeric $b
+     * @return integer
+     */
+    public function add($a, $b) {
+        return $a + $b;
+    }
+}
+]]></programlisting>
+</blockquote>
+      </para>
+      
+      <para>
+        It is checked whether the check of a type is an instance belonging to the class, when the specified type is a class.
+        If the class of the specified model does not exist,
+        It checks by using the function of the name which added the "is_" character string to the specified type.
+        For example, an is_integer function is used when type specification is integer.
+        Moreover, two or more specification of a type can be specified by dividing by "|".
+        OR verification is carried out when two or more types are specified.
+      </para>
+    </sect2>
+
+    <sbr/>
+    <sect2><title>Aspect StrictInterceptor</title>
+      <para>
+        The following Hoge class is created as an example.
+      </para>
+<blockquote>
+        <itemizedlist>
+          <listitem>classes/sample/Hoge.php</listitem>
+        </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+namespace sample;
+class Hoge {
+    /**
+     * @param numeric $a checked with is_numeric function
+     * @param string  $b checked with is_string function
+     * @return object checked with is_object function
+     */
+    public function foo($a, $b) {
+        return new StdClass;
+    }
+
+    /**
+     * @param sample::Huga  $a Huga class or not, or checked with is_subclass_of function
+     * @param mixed $b type check is not performed
+     * @return null|sample::Huga checked with is_null function
+     *                           or Huga class or not, or checked with is_subclass_of function
+     */
+    public function bar(sample::Huga $a, $b) {
+        return null;
+    }
+}
+class Huga{}
+
+]]></programlisting>
+</blockquote>
+
+      <para>
+        An execution script becomes the next.
+        The automatic aspect of StrictInterceptor is carried out to the Hoge class.
+      </para>
+<blockquote>
+        <itemizedlist>
+          <listitem>sample.php</listitem>
+        </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php');
+use seasar::container::S2ApplicationContext as s2app;
+
+s2app::import(dirname(__FILE__) . '/classes');
+s2app::registerAspect('/Hoge/', 'StrictInterceptor');
+$hoge = s2app::get('Hoge');
+
+$obj = $hoge->foo(1, 'abc');
+$obj = $hoge->bar(new sample::Huga, 100);
+
+try {
+    $obj = $hoge->foo(1, 2);
+} catch(StrictException $e) {
+    print $e->getMessage() . PHP_EOL;
+}
+
+]]></programlisting>
+</blockquote>
+      <para>
+        In execution of the 2nd foo method, since the 2nd argument is not a character string, StrictException thrown.
+        A message "argument[1] type unmatch. expected string" will be displayed.
+      </para>
+    </sect2>
+  </sect1>

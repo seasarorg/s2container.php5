@@ -6,7 +6,7 @@
   </sect1>
 
   <sect1 id="quick201"><title>コンテナの生成</title>
-    <para>S2ContainerApplicationContext クラスの <link linkend="dicon.application.create">create メソッド</link>を使ってからっぽのコンテナを作ってみます。</para>
+    <para>S2ApplicationContext クラスの <link linkend="dicon.application.create">create メソッド</link>を使ってからっぽのコンテナを作ってみます。</para>
     <itemizedlist>
       <listitem>quickstart.php
       </listitem>
@@ -243,7 +243,7 @@ END   Printer#printOut(Hello World ! with DI) : null
   <sect1 id="quick207"><title>自動アスペクト</title>
     <para>
       <link linkend="quick206">アスペクトの実行</link>では@Aspectアノテーションを記述し、個別にアスペクトを適用しました。
-            同様のアスペクトをS2ContainerApplicationContext クラスの registerAspect メソッドを用いて自動アスペクトを行うことができます。
+            同様のアスペクトをS2ApplicationContext クラスの registerAspect メソッドを用いて自動アスペクトを行うことができます。
     </para>
     <itemizedlist>
       <listitem>quickstart.php

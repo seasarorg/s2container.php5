@@ -1,0 +1,196 @@
+<sect1 id="misc.zend"><title>Using S2Container with Zend_Controller</title>
+  <sect2><title>Zend_Controller Setup</title>
+    <para>
+      As follows, It sets up according to the modular directory structure of Zend_Controller.
+    </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+project/
+ +--application/
+ |  +--default/
+ |      +--controllers/
+ |      |  +--ErrorController.php
+ |      |  +--IndexController.php
+ |      +--models/
+ |      |  +--index/
+ |      |     +--Hoge.php
+ |      +--views/
+ |          +--filters/
+ |          +--helpers/
+ |          +--scripts/
+ |             +--error/
+ |             |  +--error.phtml
+ |             +--index/
+ |                +--index.phtml
+ +--cache/
+ |  +--s2aop
+ +--config/
+ |  +--environment.php
+ |  +--s2.php
+ +--docroot/
+ |  +--.htaccess
+ |  +--index.php
+ +--lib/
+ |  +--S2Container/
+ +--log/
+    +--s2.log                
+]]></programlisting>
+
+    <para>
+      config, lib, and a log directory are added to the modular directory structure of Zend_Controller.
+      In a config directory, the following environment.php are created as a common setting file.
+    </para>
+    
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+define('PROJECT_ROOT_DIR', dirname(dirname(__FILE__)));
+
+$packages = array(PROJECT_ROOT_DIR . '/lib');
+ini_set('include_path', implode(PATH_SEPARATOR, $packages) . PATH_SEPARATOR . ini_get('include_path') );
+
+]]></programlisting>
+  </sect2>
+
+  <sect2><title>S2Container Setup</title>
+    <para>
+      S2Container.php is installed by PEAR.
+      If installing with a full package, it is unpacked as S2Container to the lib directory of a project directory.
+      The following configuration file sample of S2Container is saved as s2.php to the config directory of a project directory.
+      <itemizedlist>
+        <listitem>config/s2.php</listitem>
+      </itemizedlist>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+
+/** S2Log Setup */
+seasar::Config::$LOG_LEVEL = seasar::log::impl::SimpleLogger::DEBUG;
+seasar::Config::$DEBUG_EVAL = false;
+seasar::Config::$DEBUG_VERBOSE = false;
+seasar::Config::$SIMPLE_LOG_FILE = PROJECT_ROOT_DIR . '/log/s2.log';
+
+/** S2Aop Setup */
+seasar::aop::Config::$CACHING = false;
+seasar::aop::Config::$CACHE_DIR = PROJECT_ROOT_DIR . '/cache/s2aop';
+
+]]></programlisting>
+
+    </para>
+  </sect2>
+
+  <sect2><title>Creation of action</title>
+    <para>
+      IndexController class is created according to the document of Zend_Controller.
+      <itemizedlist>
+        <listitem>application/default/controllers/IndexController.php</listitem>
+      </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once PROJECT_ROOT_DIR . '/config/s2.php';
+use seasar::container::S2ApplicationContext as s2app;
+s2app::import(dirname(dirname(__FILE__)) . '/models/index');
+
+require_once 'Zend/Controller/Action.php';
+class IndexController extends Zend_Controller_Action {
+    public function indexAction() {
+       $this->view->greeting = s2app::get('Hoge')->greeting();
+    }
+}
+
+]]></programlisting>
+      <orderedlist>
+        <listitem>s2.php common setting file is read</listitem>
+        <listitem>An alias defines S2ApplicationContext using use (not required)</listitem>
+        <listitem>Import models/index directory</listitem>
+        <listitem>
+          Hoge component is used in an action method.
+          If acquiring a component by a get method, Singleton S2Container managed inside S2ApplicationContext is used.
+        </listitem>
+      </orderedlist>
+
+    </para>
+
+    <para>
+      Hoge class used in an action class is created in models/index directory.
+      <itemizedlist>
+        <listitem>application/default/models/index/Hoge.php</listitem>
+      </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Hoge {
+    public function greeting() {
+        return 'Hello World !!';
+    }
+}
+]]></programlisting>
+    </para>
+
+    <para>
+      The template of index action is edited.
+      <itemizedlist>
+        <listitem>application/default/views/scripts/index/index.phtml</listitem>
+      </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>My first Zend Framework App</title>
+</head>
+<body>
+    greeting : <?php echo $this->greeting; ?><br>
+</body>
+</html>
+]]></programlisting>
+    </para>
+    <para>
+      If ex page is accessed, it will be displayed as "greeting : Hello World !!".
+    </para>
+  </sect2>
+
+  <sect2><title>Using Mock</title>
+    <para>
+      The aspect of MockInterceptor is carried out to a Hoge class, and the return value of greeting method is set up.
+    </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Hoge {
+    /**
+     * @S2Aspect('interceptor' => 'new seasar::aop::interceptor::MockInterceptor')
+     * @S2Mock('return' => 'strval("Bye World !!")')
+     */
+    public function greeting() {
+        return 'Hello World !!';
+    }
+}
+]]></programlisting>
+
+    <para>
+      If ex page is accessed, it will be displayed as "greeting : Bye World !!".
+    </para>
+
+    <para>
+      @S2Aspect annotation can also annotate on a class.
+      Moreover, the same result can be obtained even if it uses the automatic aspect function of S2ApplicationContext.
+      If using an automatic aspect function, registerAspect method is added to S2ApplicationContext setting part of an action class.
+    </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once PROJECT_ROOT_DIR . '/config/s2.php';
+use seasar::container::S2ApplicationContext as s2app;
+s2app::import(dirname(dirname(__FILE__)) . '/models/index');
+s2app::registerAspect('/^Hoge$/', 'new seasar::aop::interceptor::MockInterceptor');
+
+require_once 'Zend/Controller/Action.php';
+class IndexController extends Zend_Controller_Action {
+    public function indexAction() {
+       $this->view->greeting = s2app::get('Hoge')->greeting();
+    }
+}
+]]></programlisting>
+  </sect2>
+</sect1>
+

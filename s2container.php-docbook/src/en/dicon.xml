@@ -1227,12 +1227,12 @@ class Service {}
     <sect2 id="dicon.application.import"><title>Import of Component</title>
        <para>Import of a class is performed by the following method.</para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-S2ApplicationContext::import($path, array $namespace = array(), $strict = false, $pear = false, $recursive = true)
+S2ApplicationContext::import($path, $namespace = array(), $strict = false, $pear = false, $recursive = true)
 ]]></programlisting>
       <blockquote>
         <itemizedlist>
           <listitem>1st argument : path to direcotry searched</listitem>
-          <listitem>2nd argument : array of namespace</listitem>
+          <listitem>2nd argument : string or array of namespace</listitem>
           <listitem>
             3rd argument : In the case of true, The name space specified by $namespace is used.
             In the case of false, The searched subdirectory name is added to $namespace array one by one.

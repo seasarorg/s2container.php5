@@ -177,10 +177,30 @@ Printer::printOut : Hello World !
 
 
   <!-- ################################################################### -->
-  <sect1 id="quick205"><title>DI ( Dependency Injection )の実行</title>
+  <sect1 id="quick205"><title>Dependency Injection</title>
     <para>
-      2つのコンポーネントが作成できたので、Hello コンポーネントに Printer コンポーネントを DI ( Dependency Injection) してみます。
-      Hello クラスに Printer インスタンスを受け取るセッターメソッドを追加します。また、sayHelloメソッドでPrinter クラスを用いて出力するように変更します。
+      Since two components were created, you can DI ( Dependency Injection) Printer component to Hello component.
+      The public property for holding a Printer instance is implemeted in Hello class.
+      "S2Binding" string is set as the default value of a public property.
+      Moreover, in the sayHello method, it outputs by Printer instance.
+    </para>
+    <itemizedlist>
+      <listitem>classes/Hello.php
+      </listitem>
+    </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Hello {
+    public $printer = 'S2Binding';
+    public function sayHello() {
+        $this->printer->printOut('Hello World ! with DI');
+    }
+}
+]]></programlisting>
+
+    <para>
+      If carrying out DI by Setter Method injection, the setter method which receives a Printer instance is added to a Hello class.
+      Moreover, in the sayHello method, it outputs by Printer instance.
     </para>
     <itemizedlist>
       <listitem>classes/Hello.php
@@ -205,9 +225,7 @@ Printer::printOut : Hello World ! with DI
 %
 ]]></programlisting>
     <note><title>NOTE</title>
-      <para>
-        This Example is located at "examples/quickstart/quickstart5".
-      </para>
+      <para>This Example located in examples/quickstart/quickstart5</para>
     </note>
   </sect1>
 

@@ -18,6 +18,7 @@ example/misc/pdo/
  |    +-- SqliteAPdo.php
  |    +-- SqliteBPdo.php
  +-- db/
+ |    +-- example.sql
  |    +-- sqlite_a.db
  |    +-- sqlite_b.db
  |    +-- sqlite_c.db
@@ -42,11 +43,8 @@ example/misc/pdo/
           <listitem>SqliteBPdo.php : db/sqlite_b.db を使用するDSN設定</listitem>
           <listitem>pdo.dicon : db/sqlite_c.db を使用するDSN設定</listitem>
         </itemizedlist>
+                各データベースはdb/example.sqlで構築しています。
                 また、PDOの設定については、<link linkend="misc.pdo">PDOを用いたデータベースアクセス</link>を参照下さい。
-      </para>
-
-      <para>
-              テーブル設定
       </para>
     </sect2>
 
@@ -68,8 +66,7 @@ example/misc/pdo/
       </para>
 
       <para>
-      PdoInterceptorには、ORマップ機能はありません。
-      PdoInterceptorには、自動SQL構築機能はありません。
+        PdoInterceptorには、O/Rマップ機能や自動SQL構築機能はありません。
       </para>
     </sect2>
 

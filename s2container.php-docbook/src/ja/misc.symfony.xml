@@ -5,7 +5,7 @@
 
   <sect2><title>S2Containerの設定</title>
     <para>
-      s2Container.phpをPEARでインストールします。フルパッケージでインストールする場合は、
+      S2Container.phpをPEARでインストールします。フルパッケージでインストールする場合は、
             プロジェクトディレクトリのlibディレクトリにS2Containerとして解凍します。
             次のS2Containerの設定ファイルサンプルをプロジェクトディレクトリのconfigディレクトリにs2.phpとして保存します。
       <itemizedlist>

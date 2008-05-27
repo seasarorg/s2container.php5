@@ -3,12 +3,12 @@
   <sect1 id="dicon.s2container"><title>S2Container リファレンス</title>
     <sect2><title>S2Containerの生成</title>
        <para>
-         S2Containerの生成は <link linkend="dicon.application">S2ApplicationContext</link> クラス、
-                  または <link linkend="dicon.factory">S2ContainerFactory</link> クラスのcreateメソッドで行います。
+         S2Containerの生成は<link linkend="dicon.application">S2ApplicationContext</link>クラス、
+                  または<link linkend="dicon.factory">S2ContainerFactory</link>クラスのcreateメソッドで行います。
        </para>
 
        <para>
-         <link linkend="dicon.application">S2ApplicationContext</link> クラスを用いる場合は、
+         <link linkend="dicon.application">S2ApplicationContext</link>クラスを用いる場合は、
          importメソッドでファイルシステムからクラス定義ファイルを検索し、検索結果クラスをコンポーネントとして持つS2Containerを
                   生成します。
        </para>
@@ -21,7 +21,7 @@ $container = seasar::container::S2ApplicationContext::create();
 ]]></programlisting>
 
        <para>
-         <link linkend="dicon.factory">S2ContainerFactory</link> クラスを用いる場合は、
+         <link linkend="dicon.factory">S2ContainerFactory</link>クラスを用いる場合は、
                   コンポーネントの定義を記述したダイコンファイルを読み込んでS2Containerを生成します。
        </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
@@ -40,12 +40,12 @@ $container =　seasar::container::S2ContainerFactory::create('/path/to/diconフ�
 S2Container::getComponent($componentKey)
 ]]></programlisting>
     <para>
-          引数にはコンポーネントのクラス名、もしくはコンポーネント名を指定します。<sbr/>
+          引数にはコンポーネントのクラス名、もしくはコンポーネント名を指定します。
      S2Containerの中に指定したクラスを実装しているコンポーネントが複数ある場合、S2Containerは
-          どのコンポーネントを返せばよいのか判断できないため TooManyRegistrationRuntimeExceptionをスローします。
+          どのコンポーネントを返せばよいのか判断できないためTooManyRegistrationRuntimeExceptionをスローします。
           実装コンポーネントがユニークに決まるクラス名を指定してください。<sbr/>
           コンポーネント名で取得する場合も同様に、1つのS2Containerの中でユニークとなるコンポーネント名を指定します。
-          同じ名前をもつコンポーネントが複数登録されている場合は、 TooManyRegistrationRuntimeExceptionが発生します。    
+          同じ名前をもつコンポーネントが複数登録されている場合は、TooManyRegistrationRuntimeExceptionが発生します。    
     </para>
 
     <para>
@@ -111,7 +111,7 @@ $component = $container->getComponent('indexAction');
        <para>
        S2Containerの自動バインディングは、コンポーネント間の依存関係をプロパティやセッターメソッドのタイプヒントで指定される
               クラスやインターフェースの情報で解決します。
-              自動バインディングによる Dependency Injection には次の3つのタイプがあります。
+              自動バインディングによるDependency Injectionには次の3つのタイプがあります。
        </para>
        <itemizedlist>
           <listitem>プロパティ・インジェクション</listitem>
@@ -122,14 +122,13 @@ $component = $container->getComponent('indexAction');
        <sbr/>
        <blockquote id="dicon.di.auto.property"><formalpara><title>プロパティ・インジェクション</title></formalpara>
          <para>
-                  プロパティ・インジェクションでは、アクセス修飾子が public なプロパティに Dependency Injection を行います。
+                  プロパティ・インジェクションでは、アクセス修飾子がpublicなプロパティにDependency Injectionを行います。
          </para>
-
          <para>
                   プロパティのデフォルト値にタイプヒントを設定することで、DIするコンポーネントを指定できます。
                  タイプヒントは「S2Binding コンポーネント名」と記述します。また、複数のコンポーネントをまとめて配列としDIすることができます。
                   配列としてDIする場合は、タイプヒントに「S2Binding コンポーネント名[]」と記述します。
-                 次のようなアクションクラスをカレントディレクトリに classes/Action.php として保存します。
+                 次のようなアクションクラスをカレントディレクトリにclasses/Action.phpとして保存します。
          </para>
 
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
@@ -501,7 +500,7 @@ $action->execute();
   
     <sbr/>
     <sect2><title>マニュアル設定によるDI</title>
-       <para>マニュアル設定による Dependency Injection には次の4つのタイプがあります。</para>
+       <para>マニュアル設定によるDependency Injectionには次の4つのタイプがあります。</para>
        <itemizedlist>
           <listitem>プロパティ・インジェクション</listitem>
           <listitem>セッターメソッド・インジェクション</listitem>
@@ -510,12 +509,12 @@ $action->execute();
        </itemizedlist>
        <blockquote><formalpara><title>プロパティ・インジェクション</title></formalpara>
          <para>
-                  プロパティ・インジェクションとは、アクセス修飾子が public なプロパティに Dependency Injection を行います。<sbr/>
+                  プロパティ・インジェクションとは、アクセス修飾子がpublicなプロパティにDependency Injectionを行います。<sbr/>
          </para>
 
          <blockquote><formalpara><title>コメントアノテーションで設定する</title><sbr/></formalpara>
          <para>
-                    次のようなアクションクラスをカレントディレクトリに classes/Action.php として保存します。
+                    次のようなアクションクラスをカレントディレクトリにclasses/Action.phpとして保存します。
                     各プロパティのコメントアノテーションで、インジェクションを行う値やExpression、他のコンポーネントへの参照を記述します。
          </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
@@ -539,7 +538,7 @@ class Action {
 }
 ]]></programlisting>
          <para>
-                 次のようなサービスクラスをカレントディレクトリに classes/Service.php として保存します。
+                 次のようなサービスクラスをカレントディレクトリにclasses/Service.phpとして保存します。
          </para>
 
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
@@ -599,7 +598,7 @@ var_dump($action);
          <para>
                    コンポーネントのプロパティは、componentタグの子タグであるpropertyタグを使って指定します。
          name属性でプロパティ名を指定します。
-         propertyタグのボディには、クォーテーションで囲まれた値、PHPを記述したExpression、他のコンポーネントへの参照を設定できます。
+         propertyタグのボディには、クォートで囲まれた値、PHPを記述したExpression、他のコンポーネントへの参照を設定できます。
          </para>
 
          <para>
@@ -762,7 +761,7 @@ var_dump($action);
          <para>
                    コンポーネントのプロパティは、componentタグの子タグであるpropertyタグを使って指定します。
          name属性でプロパティ名を指定します。
-         propertyタグのボディには、クォーテーションで囲まれた値、PHPを記述したExpression、他のコンポーネントへの参照を設定できます。
+         propertyタグのボディには、クォートで囲まれた値、PHPを記述したExpression、他のコンポーネントへの参照を設定できます。
                     参照しているコンポーネントが複数の場合はセッターメソッドのタイプヒントに array を指定することで配列としてDIすることができます。
           (array タイプヒントが成されていない場合は、TooManyRegistrationRuntimeException がスローされます。)
          </para>
@@ -857,7 +856,7 @@ var_dump($action);
 ]]></programlisting>
        <para>
               コンポーネントのコンストラクタの引数はcomponentタグの子タグであるargタグを使って指定します。
-       argタグのボディには、クォーテーションで囲まれた値、PHPを記述したExpression、他のコンポーネントへの参照を設定できます。
+       argタグのボディには、クォートで囲まれた値、PHPを記述したExpression、他のコンポーネントへの参照を設定できます。
                     参照しているコンポーネントが複数の場合はコンストラクタ引数のタイプヒントに array を指定することで配列としてDIすることができます。
           (array タイプヒントが成されていない場合は、TooManyRegistrationRuntimeException がスローされます。)
        </para>
@@ -874,7 +873,7 @@ class Action {
     public function __construct($name, $year, Service $service) {
         $this->name    = $name;    // 文字列 seasar がインジェクションされます。
         $this->year    = $year;    // 数値 2008 がインジェクションされます。
-        $this->service = $service;     // service コンポーネントがインジェクションされます。
+        $this->service = $service; // service コンポーネントがインジェクションされます。
     }
 }
 ]]></programlisting>
@@ -927,7 +926,7 @@ var_dump($action);
       <sbr/>
       <blockquote id="dicon.di.manual.initmethod"><formalpara><title>InitMethod・インジェクション</title></formalpara>
        <para>
-        InitMethod・インジェクションとは、アクセス修飾子が public な任意のメソッドで Dependency Injection を実施します。<sbr/>
+        InitMethod・インジェクションとは、アクセス修飾子がpublicな任意のメソッドでDependency Injectionを実施します。<sbr/>
         S2Containerの定義ファイルには、次のような内容を記述します。
        </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
@@ -950,7 +949,7 @@ var_dump($action);
 ]]></programlisting>
        <para>
        InitMethodは、componentタグの子タグであるinitMthodeタグでメソッドを指定します。
-              メソッドの引数はargタグを使って指定します。argタグのボディには、クォーテーションで囲まれた値、PHPを記述したExpression、他のコンポーネントへの参照を設定できます。
+              メソッドの引数はargタグを使って指定します。argタグのボディには、クォートで囲まれた値、PHPを記述したExpression、他のコンポーネントへの参照を設定できます。
        </para>
        <para>
               次のようなアクションクラスをカレントディレクトリに classes/Action.php として保存します。
@@ -978,7 +977,7 @@ class Action {
 ]]></programlisting>
 
          <para>
-                 次のようなサービスクラスをカレントディレクトリに classes/Service.php として保存します。
+                 次のようなサービスクラスをカレントディレクトリにclasses/Service.phpとして保存します。
          </para>
 
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
@@ -1169,8 +1168,8 @@ class Service {}
           <listitem>検索されたクラスをコンポーネントとしてS2Containerの生成</listitem>
           <listitem>コメントアノテーションによるコンポーネント情報の抽出</listitem>
           <listitem>アスペクトの自動設定</listitem>
-          <listitem>S2Container 内における名前空間(namespace)単位でのコンポーネント登録</listitem>
-          <listitem>名前空間(namespace)単位でのにSingleton S2Container インスタンス管理</listitem>
+          <listitem>S2Container内における名前空間(namespace)単位でのコンポーネント登録</listitem>
+          <listitem>名前空間(namespace)単位でのにSingleton S2Containerインスタンス管理</listitem>
         </itemizedlist>
         <para>
          S2ApplicationContextを用いてS2Containerを生成する場合は、ダイコンファイルによるコンポーネント定義は必要としません。
@@ -1182,12 +1181,12 @@ class Service {}
     <sect2 id="dicon.application.import"><title>コンポーネントのインポート</title>
        <para>クラスのインポートは次のメソッドで行います。</para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-S2ApplicationContext::import($path, array $namespace = array(), $strict = false, $pear = false, $recursive = true)
+S2ApplicationContext::import($path, $namespace = array(), $strict = false, $pear = false, $recursive = true)
 ]]></programlisting>
       <blockquote>
         <itemizedlist>
           <listitem>第1引数 : 検索するディレクトリへのパス</listitem>
-          <listitem>第2引数 : namespaceの配列</listitem>
+          <listitem>第2引数 : namespaceの文字列または配列</listitem>
           <listitem>第3引数 : trueの場合、$namespaceで指定されたネームスペースが使用されます。falseの場合は、検索したサブディレクトリが$namespaceに順次追加されます。</listitem>
           <listitem>第4引数 : trueの場合は、$namespaceが「_」で展開されます。falseの場合は、$namespaceが「::」で展開されます</listitem>
           <listitem>第5引数 : trueの場合は、再帰的にディレクトリを検索します。falseの場合は、サブディレクトリを検索しません。</listitem>
@@ -1196,28 +1195,28 @@ S2ApplicationContext::import($path, array $namespace = array(), $strict = false,
 
        <para>
               　第1引数で指定したディレクトリにあるクラスファイル( .php、.class.php など)、ダイコンファイル( .dicon )をインポートします。
-              インポートではクラス名とクラスファイルのパスを取得します。この情報は autoload 関数でクラス定義が require される際に使用されます。
-              クラス名はクラスファイル名の拡張子を除く部分になります。クラスファイル名が S2Container.php や S2Container.class.php の場合、
-              「 S2Container 」がクラス名になります。
+              インポートではクラス名とクラスファイルのパスを取得します。この情報はautoload関数でクラス定義がrequireされる際に使用されます。
+              クラス名はクラスファイル名の拡張子を除く部分になります。クラスファイル名がS2Container.phpやS2Container.class.phpの場合、
+              「S2Container」がクラス名になります。
        </para>
    </sect2>
 
 
     <sbr/>
     <sect2 id="dicon.application.create"><title>S2Containerの生成</title>
-      <para>S2Container インスタンスの生成は次のメソッドで行います。</para>
+      <para>S2Containerインスタンスの生成は次のメソッドで行います。</para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 S2ApplicationContext::create($namespace = '')
 ]]></programlisting>
       <para>
-              生成される S2Container は、import メソッドでインポートされた全クラスをコンポーネントとして持ちます。
-       import メソッドが実行されていない場合は、コンポーネントを持たない空の S2Container インスタンスが戻ります。
-       import メソッドで取得されたダイコンファイルについては、そのダイコンファイルを用いて S2Container を生成し、子コンテナとして include します。
+              生成されるS2Containerは、importメソッドでインポートされた全クラスをコンポーネントとして持ちます。
+       importメソッドが実行されていない場合は、コンポーネントを持たない空のS2Containerインスタンスが戻ります。
+       importメソッドで取得されたダイコンファイルについては、そのダイコンファイルを用いてS2Containerを生成し、子コンテナとしてincludeします。
       </para>
       <para>
-       namespace 引数を設定した場合は、指定された namespace の S2Container インスタンスが返されます。
-              例として、グローバル(namespace指定無し)に Foo クラスがあり、example namespace に Bar クラスが
-              ある場合は、次のように S2Container を生成できます。
+       namespace引数を設定した場合は、指定されたnamespaceのS2Containerインスタンスが返されます。
+              例として、グローバル(namespace指定無し)にFooクラスがあり、example namespaceにBarクラスが
+              ある場合は、次のようにS2Containerを生成できます。
       </para>
 
       <blockquote>
@@ -1265,7 +1264,7 @@ $bar = $exampleContainer->getComponent('Bar');
 
       <caution><title>注意</title>
       <para>
-      S2Container 内で子コンテナを管理する ”namespace” と、PHP の ”namespace” には関連はありません。
+      S2Container内で子コンテナを管理する ”namespace” と、PHPの ”namespace” には関連はありません。
       </para>
       </caution>
    </sect2>
@@ -1276,12 +1275,12 @@ $bar = $exampleContainer->getComponent('Bar');
 
     <sbr/>
     <sect2><title>コンポーネントの選択</title>
-       <para>create メソッドで S2Container を生成する際に、インポートされたクラスやダイコンファイルから一部を選択することができます。</para>
+       <para>createメソッドでS2Containerを生成する際に、インポートされたクラスやダイコンファイルから一部を選択することができます。</para>
         <itemizedlist>
-          <listitem>default (パターン設定無し) : インポートされた全てのクラスをコンポーネントとして扱い、全てのダイコンファイルを子コンテナとして include します。</listitem>
+          <listitem>default (パターン設定無し) : インポートされた全てのクラスをコンポーネントとして扱い、全てのダイコンファイルを子コンテナとしてincludeします。</listitem>
           <listitem>Include Pattern : インポートされたクラスファイルとダイコンファイルに対してパターンにマッチ( preg_match )するもののみを使用します。</listitem>
           <listitem>Exclude Pattern : インポートされたクラスファイルとダイコンファイルに対してパターンにマッチ( preg_match )するものは除外します。</listitem>
-          <listitem>Include &amp; Exclude : Include Pattern と Exclude Pattern が両方設定されている場合は、Include Pattern にマッチしたものから Exclude Pattern にマッチしたものが除外されます。</listitem>
+          <listitem>Include &amp; Exclude : Include PatternとExclude Patternが両方設定されている場合は、Include PatternにマッチしたものからExclude Patternにマッチしたものが除外されます。</listitem>
         </itemizedlist>
    </sect2>
 
@@ -1296,13 +1295,13 @@ S2ApplicationContext::setIncludePattern($pattern = array())
         </itemizedlist>
       </blockquote>
       <para>
-            引数の正規表現は preg_match 関数で使用されます。クラス名が「 Bean 」で終わっているクラスを含めたい場合は、引数値は「 /Bean$/ 」となります。
-          　setIncludePattern メソッドは、現在設定されている Include Pattern を上書きします。 
+            引数の正規表現はpreg_match関数で使用されます。クラス名が「 Bean 」で終わっているクラスを含めたい場合は、引数値は「 /Bean$/ 」となります。
+          　setIncludePatternメソッドは、現在設定されているInclude Patternを上書きします。 
       </para>
    </formalpara></blockquote>
 
    <sbr/>
-   <blockquote><formalpara><title>addIncludePattern メソッド</title>
+   <blockquote><formalpara><title>addIncludePatternメソッド</title>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 S2ApplicationContext::addIncludePattern($pattern)
 ]]></programlisting>
@@ -1312,12 +1311,12 @@ S2ApplicationContext::addIncludePattern($pattern)
         </itemizedlist>
       </blockquote>
       <para>
-         　addIncludePattern メソッドは、現在設定されている Include Pattern にパターンを追加します。
+         　addIncludePatternメソッドは、現在設定されているInclude Patternにパターンを追加します。
       </para>
    </formalpara></blockquote>
 
    <sbr/>
-   <blockquote><formalpara><title>setExcludePattern メソッド</title>
+   <blockquote><formalpara><title>setExcludePatternメソッド</title>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 S2ApplicationContext::setExcludePattern($pattern)
 ]]></programlisting>
@@ -1327,13 +1326,13 @@ S2ApplicationContext::setExcludePattern($pattern)
         </itemizedlist>
       </blockquote>
       <para>
-                引数の正規表現は preg_match 関数で使用されます。クラス名が「 Abstract 」を含むクラスを除外する場合は、引数値は「 /Abstract/ 」となります。
-        setExcludePattern メソッドは、現在設定されている Exclude Pattern を上書きします。 
+                引数の正規表現はpreg_match関数で使用されます。クラス名が「 Abstract 」を含むクラスを除外する場合は、引数値は「 /Abstract/ 」となります。
+        setExcludePatternメソッドは、現在設定されているExclude Patternを上書きします。 
       </para>
    </formalpara></blockquote>
 
    <sbr/>
-   <blockquote><formalpara><title>addExcludePattern メソッド</title>
+   <blockquote><formalpara><title>addExcludePatternメソッド</title>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 S2ApplicationContext::addEcludePattern($pattern)
 ]]></programlisting>
@@ -1343,7 +1342,7 @@ S2ApplicationContext::addEcludePattern($pattern)
         </itemizedlist>
       </blockquote>
       <para>
-        addExcludePattern メソッドは、現在設定されている Exclude Pattern にパターンを追加します。
+        addExcludePatternメソッドは、現在設定されているExclude Patternにパターンを追加します。
       </para>
    </formalpara></blockquote>
 
@@ -1354,13 +1353,13 @@ S2ApplicationContext::setFilterByEnv($val = true)
 ]]></programlisting>
       <blockquote>
         <itemizedlist>
-          <listitem>第1引数 : bool 値</listitem>
+          <listitem>第1引数 : bool値</listitem>
         </itemizedlist>
       </blockquote>
       <para>
             環境設定によりインクルードするコンポーネントを選択します。この機能はデフォルトで有効化されています。この機能を無効化する場合は、次のメソッドで設定できます。
-             例として、seasar::container::Config::$ENVIRONMENT が "mock" と定義されている場合、インポートされたクラスに、Hoge クラスと
-      MockHoge クラスが存在すると、MockHoge クラスのみ選択します。
+             例として、seasar::container::Config::$ENVIRONMENTが"mock"と定義されている場合、インポートされたクラスに、Hogeクラスと
+      MockHogeクラスが存在すると、MockHogeクラスのみ選択します。
       </para>
    </formalpara></blockquote>
 
@@ -1373,12 +1372,12 @@ S2ApplicationContext::registerAspect($componentPattern, $interceptor, $pointcut 
       <blockquote>
         <itemizedlist>
           <listitem>第1引数 : コンポーネント名またはコンポーネントクラス名にパターンマッチする正規表現文字列</listitem>
-          <listitem>第2引数 : Interceptorコンポーネント名、または Expression</listitem>
+          <listitem>第2引数 : Interceptorコンポーネント名、またはExpression</listitem>
           <listitem>第3引数 : ポイントカットをカンマ区切りで指定</listitem>
         </itemizedlist>
       </blockquote>
       <para>
-             コンポーネントクラス名が「Dao」で終わっているコンポーネントに、dao.interceptorをアスペクトしたい場合は、次のように設定します。
+             コンポーネントクラス名が「Dao」で終わっているコンポーネントに、dao.interceptorをアスペクトしたい場合は次のように設定します。
       </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 S2ApplicationContext::registerAspect('/Dao$/', 'dao.interceptor');
@@ -1394,20 +1393,20 @@ S2ApplicationContext::registerAspect('/Dao$/', 'dao.interceptor');
     <sbr/>
     <sect2><title>アノテーション</title>
        <para>
-                コンポーネントの細かい設定や、Dependency Injection 設定、Aspect の適用を行う場合はアノテーションを用います。
+                コンポーネントの細かい設定や、Dependency Injection設定、Aspectの適用を行う場合はアノテーションを用います。
                 アノテーションの形式は、@アノテーション名[()] です。アットマーク(@)で開始します。末尾はスペース、または改行となります。
-                アノテーションでは引数を記述することができます。引数の形式は、PHP 配列と同じフォーマットです。
+                アノテーションでは引数を記述することができます。引数の形式は、PHP配列と同じフォーマットです。
        </para>
 
    <sbr/>
    <blockquote><formalpara><title>親クラスのメソッドアノテーション</title></formalpara>
-      <para>デフォルトでは親クラスのメソッドアノテーションは無効となります。親クラスのメソッドアノテーションを有効とする場合は、次のメソッドで設定します。</para>
+      <para>デフォルトでは親クラスのメソッドアノテーションは無効となります。親クラスのメソッドアノテーションを有効とする場合は次のメソッドで設定します。</para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 S2ApplicationContext::setReadParentAnnotation($val = true)
 ]]></programlisting>
       <blockquote>
         <itemizedlist>
-          <listitem>第1引数 : bool 値、trueを設定すると親クラスのメソッドアノテーションが有効となります。</listitem>
+          <listitem>第1引数 : bool値、trueを設定すると親クラスのメソッドアノテーションが有効となります。</listitem>
         </itemizedlist>
       </blockquote>
    </blockquote>
@@ -1424,7 +1423,7 @@ S2ApplicationContext::setReadParentAnnotation($val = true)
                <listitem>instance : <link linkend="dicon.instance">インスタンスモードタイプ</link></listitem>
                <listitem>autoBinding : <link linkend="dicon.binding">バインディングモードタイプ</link></listitem>
                <listitem>available : コンポーネントとして使用するかどうか (boolean default true)</listitem>
-               <listitem>namespace : <link linkend="dicon.tag.components">S2Container 内の名前空間</link></listitem>
+               <listitem>namespace : <link linkend="dicon.tag.components">S2Container内の名前空間</link></listitem>
             </itemizedlist>
           </listitem>
           <listitem>注釈ポイント : クラス</listitem>
@@ -1436,11 +1435,11 @@ S2ApplicationContext::setReadParentAnnotation($val = true)
   class Hoge{} 
   
   /**
-   * @S2Component('name' => 'huga',
-   *              'instance' => 'singleton',
+   * @S2Component('name'        => 'huga',
+   *              'instance'    => 'singleton',
    *              'autoBinding' => 'auto',
-   *              'available' => true,
-   *              'namespace' => 'example.service')
+   *              'available'   => true,
+   *              'namespace'   => 'example.service')
    */
   class Huga{} 
 ]]></programlisting>         
@@ -1455,7 +1454,7 @@ S2ApplicationContext::setReadParentAnnotation($val = true)
       <blockquote>
         <itemizedlist>
           <listitem>アノテーションの表記 : @S2Binding</listitem>
-          <listitem>引数 : インジェクションするコンポーネント名、または Expression</listitem>
+          <listitem>引数 : インジェクションするコンポーネント名、またはExpression</listitem>
           <listitem>注釈ポイント : pulbicプロパティ、セッターメソッド</listitem>
           <listitem>サンプル
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
@@ -1487,7 +1486,7 @@ class IndexAction {
           <listitem>アノテーションの表記 : @S2Aspect</listitem>
           <listitem>引数
             <itemizedlist>
-               <listitem>interceptor : Interceptorコンポーネント名、または Expression</listitem>
+               <listitem>interceptor : Interceptorコンポーネント名、またはExpression</listitem>
                <listitem>pointcut : ポイントカットをカンマ区切りで指定</listitem>
             </itemizedlist>
           </listitem>
@@ -1527,7 +1526,7 @@ class IndexAction {
           <listitem>引数
             <itemizedlist>
                <listitem>name : メタ情報の識別名</listitem>
-               <listitem>value : 値、または Expression</listitem>
+               <listitem>value : 値、またはExpression</listitem>
             </itemizedlist>
           </listitem>
           <listitem>注釈ポイント : クラス</listitem>
@@ -1553,12 +1552,12 @@ class IndexAction {
     <sbr/>
     <sect2 id="dicon.application.singleton"><title>Singleton S2Container インスタンスの管理</title>
       <para>
-      S2ApplicationContext は、namespace 単位で Singleton S2Container を生成、管理します。
-      Singleton S2Container は S2ApplicationContext::$SINGLETON_CONTAINERS に保存されます。
-      Singleton S2Container へのアクセスは次のメソッドで行います。
+      S2ApplicationContextは、namespace単位でSingleton S2Containerを生成、管理します。
+      Singleton S2ContainerはS2ApplicationContext::$SINGLETON_CONTAINERSに保存されます。
+      Singleton S2Containerへのアクセスは次のメソッドで行います。
       </para>
 
-      <blockquote><formalpara><title>get メソッド (getComponent メソッド)</title></formalpara>
+      <blockquote><formalpara><title>getメソッド (getComponentメソッド)</title></formalpara>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 S2ApplicationContext::get($key, $namespace = '')
 S2ApplicationContext::getComponent($key, $namespace = '')
@@ -1566,36 +1565,36 @@ S2ApplicationContext::getComponent($key, $namespace = '')
       <blockquote>
         <itemizedlist>
           <listitem>第1引数 : コンポーネントのキー名</listitem>
-          <listitem>第2引数 : S2Container を管理する namespace</listitem>
+          <listitem>第2引数 : S2Containerを管理するnamespace</listitem>
         </itemizedlist>
       </blockquote>
       <para>
-        get メソッドは getComponent メソッドの　Alias　です。第1引数で指定されたコンポーネントを取得します。
-                第2引数で指定された namespace の Singleton S2Container が未作成の場合は、S2ApplicationContext::create メソッド
+        getメソッドは getComponentメソッドのAliasです。第1引数で指定されたコンポーネントを取得します。
+                第2引数で指定されたnamespaceのSingleton S2Containerが未作成の場合は、S2ApplicationContext::createメソッド
                 を用いてコンテナを生成します。
       </para>
       </blockquote>
 
       <sbr/>
-      <blockquote><formalpara><title>getComponentDef メソッド</title></formalpara>
+      <blockquote><formalpara><title>getComponentDefメソッド</title></formalpara>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 S2ApplicationContext::getComponentDef($key, $namespace = '')
 ]]></programlisting>
       <blockquote>
         <itemizedlist>
           <listitem>第1引数 : コンポーネントのキー名</listitem>
-          <listitem>第2引数 : S2Container を管理する namespace</listitem>
+          <listitem>第2引数 : S2Containerを管理するnamespace</listitem>
         </itemizedlist>
       </blockquote>
       <para>
                 第1引数で指定されたコンポーネント定義を取得します。
-                第2引数で指定された namespace の Singleton S2Container が未作成の場合は、S2ApplicationContext::create メソッド
+                第2引数で指定されたnamespaceのSingleton S2Containerが未作成の場合は、S2ApplicationContext::createメソッド
                 を用いてコンテナを生成します。
       </para>
       </blockquote>
 
       <para>
-              例として、グローバル(namespace指定無し)に Foo クラスがあり、example namespace に Bar クラスが
+              例として、グローバル(namespace指定無し)にFooクラスがあり、example namespaceにBarクラスが
               ある場合は、次のように 各コンポーネントを取得できます。
       </para>
 
@@ -1645,8 +1644,8 @@ var_dump($globalBar === $exampleBar);                // false となります。
 
       <caution><title>注意</title>
       <para>
-            グローバルの Singleton コンテナが生成される際に example namespace のコンテナも生成され、子コンテナとして保持されていますが、
-      example namespace の Singleton コンテナとは別インスタンスとなります。
+            グローバルのSingletonコンテナが生成される際にexample namespaceのコンテナも生成され、子コンテナとして保持されていますが、
+      example namespaceのSingletonコンテナとは別インスタンスとなります。
       </para>
       </caution>
 
@@ -1895,7 +1894,7 @@ $barService = $container->getComponent('bar.service');
        <para>
          componentタグの子タグとして使った場合は、コンストラクタの引数になります。記述した順番でコンストラクタに渡されます。
          initMethodタグの子タグとして使った場合は、メソッドの引数になります。記述した順番でメソッドに渡されます。
-                   引数値として、ダブルクォーテーションで括った値、componentタグでコンポーネントを指定、ボディに記述したPHPの結果を設定できます。
+                   引数値として、ダブルクォートで括った値、componentタグでコンポーネントを指定、ボディに記述したPHPの結果を設定できます。
        </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
@@ -1917,7 +1916,7 @@ $barService = $container->getComponent('bar.service');
     <!-- ################################################################## -->
     <sect2 id="dicon.tag.property"><title>propertyタグ (任意)</title>
       <para>componentタグの子タグとして使います。
-                プロパティ値として、ダブルクォーテーションで括った値、componentタグでコンポーネントを指定、ボディに記述したPHPの結果を設定できます。
+                プロパティ値として、ダブルクォートで括った値、componentタグでコンポーネントを指定、ボディに記述したPHPの結果を設定できます。
       </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
@@ -1996,7 +1995,7 @@ $barService = $container->getComponent('bar.service');
     <!-- ################################################################## -->
     <sect2 id="dicon.tag.meta"><title>metaタグ (任意)</title>
        <para>componentsタグ、componentタグ、argタグ、propertyタグの子タグとして使います。
-                メタデータ値として、ダブルクォーテーションで括った値、componentタグでコンポーネントを指定、ボディに記述したPHPの結果を設定できます。
+                メタデータ値として、ダブルクォートで括った値、componentタグでコンポーネントを指定、ボディに記述したPHPの結果を設定できます。
        </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>

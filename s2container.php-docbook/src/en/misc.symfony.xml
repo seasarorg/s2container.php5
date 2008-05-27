@@ -1,0 +1,140 @@
+<sect1 id="misc.symfony"><title>Using S2Container with Symfony</title>
+  <sect2><title>Startup of Smfony</title>
+    <para>
+      Arbitrary projects, application, and a module are created by Symfony.
+    </para>
+  </sect2>
+
+  <sect2><title>S2Container Setup</title>
+    <para>
+      S2Container.php is installed by PEAR.
+      If installing with a full package, it is unpacked as S2Container to the lib directory of a project directory.
+      The following configuration file sample of S2Container is saved as s2.php to the config directory of a project directory.
+      <itemizedlist>
+        <listitem>config/s2.php</listitem>
+      </itemizedlist>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container/S2Container.php');
+
+/** S2Log setup */
+seasar::Config::$LOG_LEVEL = seasar::log::impl::SimpleLogger::DEBUG;
+seasar::Config::$DEBUG_EVAL = false;
+seasar::Config::$DEBUG_VERBOSE = false;
+seasar::Config::$SIMPLE_LOG_FILE = SF_ROOT_DIR . '/log/s2.log';
+
+/** S2Aop setup */
+seasar::aop::Config::$CACHING = false;
+seasar::aop::Config::$CACHE_DIR = SF_ROOT_DIR . '/cache/s2aop';
+
+]]></programlisting>
+
+    </para>
+  </sect2>
+
+  <sect2><title>Creation of action</title>
+    <para>
+      actions.class.php generated at the time of modular creation is edited as follows.
+      <itemizedlist>
+        <listitem>module/actions/actions.class.php</listitem>
+      </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once(SF_ROOT_DIR . '/config/s2.php');
+use seasar::container::S2ApplicationContext as s2app;
+s2app::import(dirname(dirname(__FILE__)) . '/lib/logic');
+
+class defaultActions extends sfActions {
+    public function executeIndex() {
+      $this->greeting = s2app::get('Hoge')->greeting();
+    }
+}
+]]></programlisting>
+      <orderedlist>
+        <listitem>s2.php common setting file is read</listitem>
+        <listitem>An alias defines S2ApplicationContext using use (not required)</listitem>
+        <listitem>Import Logic directory</listitem>
+        <listitem>
+          Hoge component is used in an action method.
+          If acquiring a component by a get method, Singleton S2Container managed inside S2ApplicationContext is used.
+        </listitem>
+      </orderedlist>
+
+    </para>
+
+    <para>
+      Hoge class used in an action class is created in lib/logic directory of a module directory.
+      <itemizedlist>
+        <listitem>module/lib/logic/Hoge.php</listitem>
+      </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Hoge {
+    public function greeting() {
+        return 'Hello World !!';
+    }
+}
+]]></programlisting>
+    </para>
+
+    <para>
+      The template of index action is edited.
+      <itemizedlist>
+        <listitem>module/template/indexSuccess.php</listitem>
+      </itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+greeting : <?php echo $greeting; ?> <br>
+]]></programlisting>
+    </para>
+    
+    <para>
+      If ex page is accessed, it will be displayed as "greeting : Hello World !!".
+    </para>
+
+  </sect2>
+
+  <sect2><title>Using Mock</title>
+    <para>
+      The aspect of MockInterceptor is carried out to a Hoge class, and the return value of greeting method is set up.
+    </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Hoge {
+    /**
+     * @S2Aspect('interceptor' => 'new seasar::aop::interceptor::MockInterceptor')
+     * @S2Mock('return' => 'strval("Bye World !!")')
+     */
+    public function greeting() {
+        return 'Hello World !!';
+    }
+}
+]]></programlisting>
+
+    <para>
+      If ex page is accessed, it will be displayed as "greeting : Bye World !!".
+    </para>
+
+    <para>
+      @S2Aspect annotation can also annotate on a class.
+      Moreover, the same result can be obtained even if it uses the automatic aspect function of S2ApplicationContext.
+      If using an automatic aspect function,  registerAspect method is added to S2ApplicationContext setting part of an action class.
+    </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once(SF_ROOT_DIR . '/config/s2.php');
+use seasar::container::S2ApplicationContext as s2app;
+s2app::import(dirname(dirname(__FILE__)) . '/lib/logic');
+s2app::registerAspect('/^Hoge$/', 'new seasar::aop::interceptor::MockInterceptor');
+
+class defaultActions extends sfActions {
+    public function executeIndex() {
+      $this->greeting = s2app::get('Hoge')->greeting();
+    }
+}
+]]></programlisting>
+  </sect2>
+
+
+</sect1>
