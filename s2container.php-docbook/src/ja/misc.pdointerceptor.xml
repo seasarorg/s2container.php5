@@ -61,7 +61,7 @@ example/misc/pdo/
       <para>
         SQLクエリが取得できた場合は、データベースに発行して結果を メソッドの戻り値として return します。
                 利用可能なPDO設定が複数ある場合、どのDSNを使用するかを@S2Pdoアノテーションで指定します。
-                データーベースへのSQLクエリの発行は、PDOのPrepared Statementが使用されます。 Prepared Statementにバインド
+                データベースへのSQLクエリの発行は、PDOのPrepared Statementが使用されます。 Prepared Statementにバインド
                 されるvalueは、メソッド引数が使用されます。メソッドの戻り値が配列の場合は、2番目の値がバインドvalueとして扱われます。       
       </para>
 

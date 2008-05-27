@@ -89,7 +89,7 @@ greeting : <?php echo $greeting; ?> <br>
     </para>
     
     <para>
-      If ex page is accessed, it will be displayed as "greeting : Hello World !!".
+      If index page is accessed, it will be displayed as "greeting : Hello World !!".
     </para>
 
   </sect2>
@@ -112,7 +112,7 @@ class Hoge {
 ]]></programlisting>
 
     <para>
-      If ex page is accessed, it will be displayed as "greeting : Bye World !!".
+      If index page is accessed, it will be displayed as "greeting : Bye World !!".
     </para>
 
     <para>
