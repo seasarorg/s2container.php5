@@ -1798,7 +1798,7 @@ S2ContainerFactory::create($path)
 require_once('S2Container/S2Container.php');
 
 $PATH = "path/to/ccc.dicon";
-$container = S2ContainerFactory::create($PATH);
+$container = seasar::container::factory::S2ContainerFactory::create($PATH);
 . . .
 
 ]]></programlisting>
@@ -1890,7 +1890,9 @@ $container = S2ContainerFactory::create($PATH);
       </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
-$container  = S2ContainerFactory::create('/path/to/parent.dicon');
+require_once('S2Container/S2Container.php');
+
+$container  = seasar:container::factory::S2ContainerFactory::create('/path/to/parent.dicon');
 $service    = $container->getComponent('service');
 $fooService = $container->getComponent('foo.service');
 $barService = $container->getComponent('bar.service');
@@ -2182,6 +2184,22 @@ seasar::container::Config::$CONTAINER_BUILDERS = array(
         </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 seasar::container::Config::$ENVIRONMENT = null;
+]]></programlisting>
+
+        <formalpara><title>PROPERTY_TYPEHINT_NULL</title></formalpara>
+        <para>
+          Even when the default value of a property is null, it is set up whether automatic injection is performed.
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+seasar::container::Config::$PROPERTY_TYPEHINT_NULL = false;
+]]></programlisting>
+
+        <formalpara><title>PROPERTY_TYPEHINT_KEY</title></formalpara>
+        <para>
+          The type hint key of the property by which automatic injection is carried out is set up.
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+seasar::container::Config::$PROPERTY_TYPEHINT_KEY = 'S2Binding';
 ]]></programlisting>
 
     </blockquote>

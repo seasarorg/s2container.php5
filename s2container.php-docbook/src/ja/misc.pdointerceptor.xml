@@ -52,8 +52,8 @@ example/misc/pdo/
     <sect2><title>PdoInterceptorの概要</title>
       <para>
         PdoInterceptorのアスペクト対象は、クラスとインターフェースです。クラスにアスペクトした場合は、Pointcutに
-                適合したメソッドが実行されます。PdoInterceptorは、メソッドの戻り値が null または配列でなければ、SQLクエリ
-                として扱います。メソッドの戻り値が配列の場合は、1番目の値をSQLクエリ、2番目の値をSQL発行時のコンテキストとして
+                適合したメソッドが実行されます。PdoInterceptorは、メソッドの戻り値が文字列の場合は、SQLクエリとして扱います。
+                メソッドの戻り値が配列の場合は、1番目の値をSQLクエリ、2番目の値をSQL発行時のコンテキストとして
                 扱います。メソッドの戻り値が null の場合は、SQLファイルを探してSQLクエリを取得します。PdoIterceptorがインターフェースに
                 アスペクトされている場合は、メソッドの呼び出しを行いません。メソッドの戻り値が null の場合と同様に、SQLファイルを探してSQLクエリを取得します。
       </para>
@@ -66,7 +66,7 @@ example/misc/pdo/
       </para>
 
       <para>
-        PdoInterceptorには、O/Rマップ機能や自動SQL構築機能はありません。
+        PdoInterceptorには、O/Rマップ機能や自動SQL構築機能は実装されていません。
       </para>
     </sect2>
 
@@ -714,6 +714,152 @@ final public function find($dao, $methodName, $totalMethodName = null);
               第3引数が省略された場合は、第2引数の値に "Total" を追記した文字列をメソッド名とします。上記例の場合は、
               データ取得メソッド名が "findAll" なので、 データ件数取得メソッド名は "findAllTotal" となります。
       </para>
-  -->      
+  -->     
+   
+    <sbr/>
+      <sect3><title>Paginate API リファレンス</title>
+        <blockquote>
+
+        <formalpara><title>Paginate::getTotalPage メソッド</title></formalpara>
+        <para>
+                  全件数を件数/ページ(limit)で割った全ページ数を返します。
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+    /**
+     * @return integer
+     */
+    final public function getTotalPage();
+]]></programlisting>
+
+        <formalpara><title>Paginate::getPage メソッド</title></formalpara>
+        <para>
+                  現在のページ番号を返します。
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+    /**
+     * @return integer
+     */
+    final public function getPage();
+]]></programlisting>
+
+        <formalpara><title>Paginate::setPage メソッド</title></formalpara>
+        <para>
+                  ページ番号を設定します。
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+    /**
+     * @param integer $page
+     * @throw Exception
+     */
+    final public function setPage($page);
+]]></programlisting>
+
+        <formalpara><title>Paginate::getOffset メソッド</title></formalpara>
+        <para>
+                  現在のoffset位置を返します。
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+    /**
+     * @return integer
+     */
+    final public function getOffset();
+]]></programlisting>
+
+        <formalpara><title>Paginate::setLimit メソッド</title></formalpara>
+        <para>
+         1ページあたりの件数を設定します。
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+    /**
+     * @prama integer $limit
+     */
+    final public function setLimit($limit);
+]]></programlisting>
+
+        <formalpara><title>Paginate::getTotal メソッド</title></formalpara>
+        <para>
+                  全件数を返します。
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+    /**
+     * @return integer
+     * @throw Exception 全件数が未設定の場合にスローされます。
+     */
+    final public function getTotal();
+]]></programlisting>
+
+        <formalpara><title>Paginate::setTotal メソッド</title></formalpara>
+        <para>
+                  全件数を設定します。
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+    /**
+     * @param integer $total
+     */
+    final public function setTotal($total);
+]]></programlisting>
+
+        <formalpara><title>Paginate::setWindow メソッド</title></formalpara>
+        <para>
+                  ページウィンドウに表示するページ数を設定します。
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+    /**
+     * @param integer $window
+     */
+    final public function setWindow($window);
+]]></programlisting>
+
+        <formalpara><title>Paginate::next メソッド</title></formalpara>
+        <para>
+          1ページ進めます。
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+    final public function next();
+]]></programlisting>
+
+        <formalpara><title>Paginate::isNext メソッド</title></formalpara>
+        <para>
+                  次のページがあるかどうかを返します。
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+    /**
+     * @return boolean
+     */
+    final public function isNext();
+]]></programlisting>
+
+        <formalpara><title>Paginate::prev メソッド</title></formalpara>
+        <para>
+          1ページ戻ります。
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+    final public function prev();
+]]></programlisting>
+
+        <formalpara><title>Paginate::isPrev メソッド</title></formalpara>
+        <para>
+                  前のページがあるかどうかを返します。
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+    /**
+     * @return boolean
+     */
+    final public function isPrev();
+]]></programlisting>
+
+        <formalpara><title>Paginate::pages メソッド</title></formalpara>
+        <para>
+         window内に収まるページ番号を列挙します。
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+    /**
+     * @return array
+     */
+    final public function pages() {
+]]></programlisting>
+
+        </blockquote>
+      </sect3>
     </sect2>    
   </sect1>

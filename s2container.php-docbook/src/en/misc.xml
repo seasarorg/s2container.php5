@@ -137,7 +137,6 @@
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 class Service {
     public $container = 'S2Binding container';
-    //public $container = 'S2Binding seasar::container::S2Container';
 
     public function add($a, $b) {
         return $a + $b;
@@ -215,6 +214,15 @@ seasar::Config::$LOG_LEVEL = seasar::log::impl::SimpleLogger::DEBUG;
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 seasar::Config::$DEBUG_EVAL = false;
 ]]></programlisting>
+        <formalpara><title>DEBUG_VERBOSE</title></formalpara>
+        <para>
+          If a log output level is DEBUG setup, the log output of the detail information is carried out.
+        </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+seasar::Config::$DEBUG_VERBOSE = false;
+]]></programlisting>
+
       </blockquote>
     </sect2>
 
@@ -380,12 +388,12 @@ publi static function has($reflection, $annotation)
        Import of a class is performed by the following method.
      </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-seasar::util::ClassLoader::import($path, array $namespace = array(), $strict = false, $pear = false, $recursive = true)
+seasar::util::ClassLoader::import($path, $namespace = array(), $strict = false, $pear = false, $recursive = true)
 ]]></programlisting>
     <blockquote>
         <itemizedlist>
           <listitem>1st argument : path to direcotry searched</listitem>
-          <listitem>2nd argument : array of namespace</listitem>
+          <listitem>2nd argument : string or array of namespace</listitem>
           <listitem>
             3rd argument : In the case of true, The name space specified by $namespace is used.
             In the case of false, The searched subdirectory name is added to $namespace array one by one.
@@ -402,11 +410,15 @@ seasar::util::ClassLoader::import($path, array $namespace = array(), $strict = f
     </blockquote>
 
      <para>
-              The class file (.php, .class.php) and DICON file (.dicon) in the directory specified by the 1st argument are imported.
-              The path of a class name and a class file is acquired in import.
-              This information is used when a class definition is required in autoload function.
-              A class name becomes a portion except the extension of a class file name.
-              As an example, when a class file name is "S2Container.php" and "S2Container.class.php", "S2Container" becomes a class name.
+       The class file (.php, .class.php) and DICON file (.dicon) in the directory specified by the 1st argument are imported.
+       The path of a class name and a class file is acquired in import.
+       This information is used when a class definition is required in autoload function.
+       A class name becomes a portion except the extension of a class file name.
+       As an example, when a class file name is "S2Container.php" and "S2Container.class.php", "S2Container" becomes a class name.
+     </para>
+     <para>
+       If specifying namespace by a character string by the 2nd argument, it specifies like "example::logic."
+       When specifying in array, it becomes like "array('example', 'logic')".
      </para>
   </sect1>
 
@@ -431,7 +443,7 @@ class SqlitePdo extends ::PDO {
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
 class CdDao {
-    public $sqlitePdo = null;
+    public $sqlitePdo = 's2binding';
     public function findAll() {
         $stmt = $sqlitePdo->prepare('select * from CD');
         $stmt->setFetchMode(PDO::FETCH_OBJ);

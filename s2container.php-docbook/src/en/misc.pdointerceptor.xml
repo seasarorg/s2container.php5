@@ -53,7 +53,7 @@ example/misc/pdo/
         The aspect target of PdoInterceptor is a class and an interface.
         If an aspect is carried out to a class, the method which suited Pointcut is performed.
         PdoInterceptor will treat the return value of a method as an SQL query, 
-        if the return value of a method is not null or array.
+        if the return value of a method is string.
         If the return value of a method is Array, the 1st value is treated as an SQL query,
         the 2nd value is treated as a context at the time of SQL execution.
         If the return value of a method is null, an SQL file is searched, and an SQL query is acquired when found.
@@ -723,5 +723,151 @@ var_dump($rows);
 
 ]]></programlisting>
       </blockquote>
+      
+    <sbr/>
+      <sect3><title>Paginate API Reference</title>
+        <blockquote>
+
+        <formalpara><title>Paginate::getTotalPage method</title></formalpara>
+        <para>
+          All the number of pages is returned. (total records / page limit)
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+    /**
+     * @return integer
+     */
+    final public function getTotalPage();
+]]></programlisting>
+
+        <formalpara><title>Paginate::getPage method</title></formalpara>
+        <para>
+          Current page number is returned.
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+    /**
+     * @return integer
+     */
+    final public function getPage();
+]]></programlisting>
+
+        <formalpara><title>Paginate::setPage method</title></formalpara>
+        <para>
+          Page number is set up.
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+    /**
+     * @param integer $page
+     * @throw Exception
+     */
+    final public function setPage($page);
+]]></programlisting>
+
+        <formalpara><title>Paginate::getOffset method</title></formalpara>
+        <para>
+          Current offset position is returned.
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+    /**
+     * @return integer
+     */
+    final public function getOffset();
+]]></programlisting>
+
+        <formalpara><title>Paginate::setLimit method</title></formalpara>
+        <para>
+          The number of cases per 1 Paige is set up.
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+    /**
+     * @prama integer $limit
+     */
+    final public function setLimit($limit);
+]]></programlisting>
+
+        <formalpara><title>Paginate::getTotal method</title></formalpara>
+        <para>
+          The total number is returned.
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+    /**
+     * @return integer
+     * @throw Exception 全件数が未設定の場合にスローされます。
+     */
+    final public function getTotal();
+]]></programlisting>
+
+        <formalpara><title>Paginate::setTotal method</title></formalpara>
+        <para>
+          The total number is set up.
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+    /**
+     * @param integer $total
+     */
+    final public function setTotal($total);
+]]></programlisting>
+
+        <formalpara><title>Paginate::setWindow method</title></formalpara>
+        <para>
+          The number of Paige displayed on a window is set up.。
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+    /**
+     * @param integer $window
+     */
+    final public function setWindow($window);
+]]></programlisting>
+
+        <formalpara><title>Paginate::next method</title></formalpara>
+        <para>
+          1 page is advanced.
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+    final public function next();
+]]></programlisting>
+
+        <formalpara><title>Paginate::isNext method</title></formalpara>
+        <para>
+          It is returned whether there is any next page.
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+    /**
+     * @return boolean
+     */
+    final public function isNext();
+]]></programlisting>
+
+        <formalpara><title>Paginate::prev method</title></formalpara>
+        <para>
+          1 page returns.
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+    final public function prev();
+]]></programlisting>
+
+        <formalpara><title>Paginate::isPrev method</title></formalpara>
+        <para>
+          It is returned whether there is any previous page.
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+    /**
+     * @return boolean
+     */
+    final public function isPrev();
+]]></programlisting>
+
+        <formalpara><title>Paginate::pages method</title></formalpara>
+        <para>
+         The page number settled in window is enumerated.
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+    /**
+     * @return array
+     */
+    final public function pages() {
+]]></programlisting>
+
+        </blockquote>
+      </sect3>
     </sect2>
   </sect1>

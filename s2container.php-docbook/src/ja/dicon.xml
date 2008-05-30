@@ -1724,7 +1724,7 @@ S2ContainerFactory::create($path)
 require_once('S2Container/S2Container.php');
 
 $PATH = "path/to/ccc.dicon";
-$container = S2ContainerFactory::create($PATH);
+$container = seasar::container::factory::S2ContainerFactory::create($PATH);
 ・・・
 
 ]]></programlisting>
@@ -1759,8 +1759,8 @@ $container = S2ContainerFactory::create($PATH);
     <para>
       namespace属性で名前空間を指定することで、コンポーネントの定義を分割した場合に、
             複数のコンポーネント定義間で名前が衝突することを避けることができます。
-          次の例では、parent.diconの中で、foo.dicon と bar.dicon が include されています。
-          それぞれのダイコンファイルで service という同名のコンポーネントが定義されています。
+          次の例では、parent.diconの中で、foo.diconとbar.diconがincludeされています。
+          それぞれのダイコンファイルでserviceという同名のコンポーネントが定義されています。
     </para>
 
     <itemizedlist>
@@ -1806,14 +1806,16 @@ $container = S2ContainerFactory::create($PATH);
 ]]></programlisting>
 
       <para>
-        parent.diconで定義されている service コンポーネントは名前空間の指定無しで参照することができます。
-        foo.diconと bar.dicon で定義されている service コンポーネントを参照する場合は、名前空間を指定する
-                必要があります。名前空間の指定は、「.」 ピリオードで行います。foo.dicon の service コンポーネントを参照する場合は
+        parent.diconで定義されているserviceコンポーネントは名前空間の指定無しで参照することができます。
+        foo.diconとbar.diconで定義されているserviceコンポーネントを参照する場合は、名前空間を指定する
+                必要があります。名前空間の指定は、「.」 ピリオードで行います。foo.diconのserviceコンポーネントを参照する場合は
                 次のようになります。
       </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
-$container  = S2ContainerFactory::create('/path/to/parent.dicon');
+require_once('S2Container/S2Container.php');
+
+$container  = seasar:container::factory::S2ContainerFactory::create('/path/to/parent.dicon');
 $service    = $container->getComponent('service');
 $fooService = $container->getComponent('foo.service');
 $barService = $container->getComponent('bar.service');
@@ -1826,8 +1828,8 @@ $barService = $container->getComponent('bar.service');
     <sect2 id="dicon.tag.include"><title>includeタグ (任意)</title>
        <para>
                 分割されたS2Containerの定義を取り込む場合に使います。
-        path属性でダイコンファイルのパスを指定します。(必須) includeタグは componentタグの前に記述する必要があります。
-        path属性で指定されたダイコンファイルが存在しない場合は、expression としてeval関数に渡されます。
+        path属性でダイコンファイルのパスを指定します。includeタグはcomponentタグの前に記述する必要があります。
+        path属性で指定されたダイコンファイルが存在しない場合は、expressionとしてeval関数に渡されます。
                 そのため、パスに含まれる定数やクラス変数は展開されます。
        </para>
 
@@ -1843,7 +1845,7 @@ $barService = $container->getComponent('bar.service');
 
       <para>
               コンポーネントの検索順は、先ず自分自身に登録されているコンポーネントを探します。
-              見つからない場合は、 include されている順に子供の S2Container に登録されているコンポーネントを検索し、
+              見つからない場合は、includeされている順に子供のS2Containerに登録されているコンポーネントを検索し、
               最初に見つかったコンポーネントが返されます。
       </para>
    </sect2>
@@ -1985,8 +1987,10 @@ $barService = $container->getComponent('bar.service');
       <blockquote>
         <para>pointcut属性 (任意)</para>
         <blockquote>
-          pointcut属性にカンマ区切りで対象となるメソッド名を指定することができます。pointcut属性を指定しない場合は、
-                    コンポーネントが実装しているインターフェースのすべてのメソッドが対象になります。メソッド名には正規表現が使用可能です。
+          pointcut属性にカンマ区切りで対象となるメソッド名を指定することができます。メソッド名には正規表現が使用可能です。
+          pointcut属性を指定しない場合は、コンポーネントがインターフェースを実装している場合は、すべてのabstractメソッドが対象となります。
+                    コンポーネントがインターフェースを一つも実装していない場合は、そのクラスが実装しているすべてのpublicメソッドが対象となります。
+                    コンポーネントが実装しているインターフェースのすべてのメソッドが対象になります。
         </blockquote>
       </blockquote>
    </sect2>
@@ -2057,6 +2061,22 @@ seasar::container::Config::$CONTAINER_BUILDERS = array(
         </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 seasar::container::Config::$ENVIRONMENT = null;
+]]></programlisting>
+
+        <formalpara><title>PROPERTY_TYPEHINT_NULL</title></formalpara>
+        <para>
+                プロパティのデフォルト値がnullの場合でも自動インジェクションを行うかどうかを設定します。
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+seasar::container::Config::$PROPERTY_TYPEHINT_NULL = false;
+]]></programlisting>
+
+        <formalpara><title>PROPERTY_TYPEHINT_KEY</title></formalpara>
+        <para>
+                自動インジェクションを行うプロパティのタイプヒントキーを設定します。
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+seasar::container::Config::$PROPERTY_TYPEHINT_KEY = 'S2Binding';
 ]]></programlisting>
 
     </blockquote>    
