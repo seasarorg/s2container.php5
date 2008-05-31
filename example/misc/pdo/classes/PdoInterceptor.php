@@ -234,6 +234,10 @@ class PdoInterceptor implements seasar::aop::MethodInterceptor {
         if ($query === null) {
             throw new Exception('none sql found.');
         }
+        if (!is_string($query)) {
+            throw new Exception('invalid sql found. [' . $query . ']');
+        }
+
         list($query, $placeHolders) = $this->setupQuery($query);
 
         $pdo = $this->getPdo($invocation->getTargetClass(), $invocation->getMethod());
