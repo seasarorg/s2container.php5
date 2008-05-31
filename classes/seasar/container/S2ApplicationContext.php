@@ -119,7 +119,7 @@ class S2ApplicationContext {
      * ファイルシステムからクラス定義ファイルとダイコンファイルを検索します。
      *
      * @param string $path
-     * @param array $namespace
+     * @param string|array $namespace
      * @param boolean $strict
      *                trueの場合、$namespaceで指定されたネームスペースが使用されます。
      *                falseの場合は、検索したサブディレクトリが$namespaceに順次追加されます。
@@ -130,7 +130,15 @@ class S2ApplicationContext {
      *                trueの場合は、再起的にディレクトリを検索します。
      *                falseの場合は、サブディレクトリを検索しません。
      */
-    public static function import($path, array $namespace = array(), $strict = false, $pear = false, $recursive = true) {
+    public static function import($path, $namespace = array(), $strict = false, $pear = false, $recursive = true) {
+        if (is_string($namespace)) {
+            if ($pear) {
+                $namespace = explode('_', $namespace);
+            } else {
+                $namespace = explode('::', $namespace);
+            }
+        }
+
         if (is_dir($path)) {
             self::scanDir($path, $namespace, $strict, $pear, $recursive);
         } else if (is_file($path)) {
@@ -141,7 +149,7 @@ class S2ApplicationContext {
     }
 
     /**
-     * ファイルシステムを再起的に検索します。
+     * ファイルシステムを再帰的に検索します。
      *
      * @see seasar::container::S2ApplicationContext::import()
      */
