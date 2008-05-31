@@ -49,6 +49,17 @@ class Annotation {
     private static $spool = array();
 
     /**
+     * アノテーションデータをスプールに登録します。
+     *
+     * @param string $annoKey
+     * @param array  $annoArray
+     * @return array
+     */
+    public static function put($annoKey, array $annoArray) {
+        self::$spool[$annoKey] = $annoArray;
+    }
+
+    /**
      * アノテーションを取得します。
      *
      * @param ReflectionClass|ReflectionMethod|ReflectionProperty $reflection
@@ -124,6 +135,11 @@ class Annotation {
      * @return boolean
      */
     public static function has($reflection, $annotation) {
+        $annoKey = self::constructKey($reflection, $annotation);
+        if (isset(self::$spool[$annoKey])) {
+            return true;
+        }
+
         $has = false;
         if (self::$CONSTANT) {
             $has = self::hasConstantAnnotation($reflection, $annotation);
@@ -186,7 +202,7 @@ class Annotation {
      * @param strint $annotation
      * @return string
      */
-    protected static function constructKey($reflection, $annotation) {
+    public static function constructKey($reflection, $annotation) {
         if ($reflection instanceof ReflectionClass) {
             return $reflection->getName() . '::CLASS_' . $annotation;
         } else if ($reflection instanceof ReflectionMethod) {

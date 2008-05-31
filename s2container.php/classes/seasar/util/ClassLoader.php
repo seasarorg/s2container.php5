@@ -49,7 +49,7 @@ class ClassLoader {
      * クラス定義ファイルをファイルシステムから検索します。
      *
      * @param string $dirPath
-     * @param array $namespace
+     * @param string|array $namespace
      * @param boolean $strict
      *                trueの場合、$namespaceで指定されたネームスペースが使用されます。
      *                falseの場合は、検索したサブディレクトリが$namespaceに順次追加されます。
@@ -60,7 +60,14 @@ class ClassLoader {
      *                trueの場合は、再起的にディレクトリを検索します。
      *                falseの場合は、サブディレクトリを検索しません。
      */
-    public static function import($dirPath, array $namespace = array(), $strict = false, $pear = false, $recursive = true) {
+    public static function import($dirPath, $namespace = array(), $strict = false, $pear = false, $recursive = true) {
+        if (is_string($namespace)) {
+            if ($pear) {
+                $namespace = explode('_', $namespace);
+            } else {
+                $namespace = explode('::', $namespace);
+            }
+        }
         $iterator = new DirectoryIterator($dirPath);
         while($iterator->valid()) {
             if (preg_match('/^\./', $iterator->getFilename())) {
