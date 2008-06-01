@@ -39,7 +39,7 @@ foreach ($r_ite as $ite) {
 $stub = <<< EOSTUB
 <?php
     Phar::mapPhar('$PHAR_NAME');
-    define("S2CONTAINER_PHAR", true);
+    define('S2CONTAINER_ROOT_DIR', 'phar://S2Container');
     require_once("phar://$PHAR_NAME/S2Container.php");
     __HALT_COMPILER();
 EOSTUB;
