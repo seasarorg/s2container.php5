@@ -25,7 +25,10 @@
  * @package   ::
  * @author    klove
  */
-define('S2CONTAINER_ROOT_DIR', dirname(__FILE__));
+
+if (!defined('S2CONTAINER_ROOT_DIR')) {
+    define('S2CONTAINER_ROOT_DIR', dirname(__FILE__));
+}
 
 require_once(S2CONTAINER_ROOT_DIR . '/S2ContainerCore.php');
 
