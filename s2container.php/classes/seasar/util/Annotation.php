@@ -186,8 +186,8 @@ class Annotation {
         $comments = preg_split('/[\n\r]/', $commentLine);
         $comment = ' ';
         $o = count($comments);
-        for ($i=0; $i<$o; $i++) {
-            $line = preg_replace('/^\/\*+/', '', trim($comments[$i]));
+        foreach ($comments as $line) {
+            $line = preg_replace('/^\/\*+/', '', trim($line));
             $line = preg_replace('/\*+\/$/', '', trim($line));
             $line = preg_replace('/^\**/',   '', trim($line));
             $comment .= $line . ' ';

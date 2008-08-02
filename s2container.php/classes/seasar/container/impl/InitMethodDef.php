@@ -87,6 +87,15 @@ class InitMethodDef implements seasar::container::MethodDef {
     }
 
     /**
+     * 登録されているすべての引数定義を返します。
+     *
+     * @return array
+     */
+    public function getArgDefs() {
+        return $this->argDefSupport->getArgDefs();
+    }
+
+    /**
      * 指定されたインデックス番号indexの引数定義を返します。
      * インデックス番号は、 登録した順番に 0,1,2,… となります。
      *

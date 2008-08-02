@@ -57,21 +57,21 @@ final class PropertyDefSupport {
     }
 
     /**
-     *  PropertyDefの数を返します。
-     *
-     * @return integer
-     */
-    public function getPropertyDefSize() {
-        return count($this->propertyDefs);
-    }
-
-    /**
      * すべてのPropertyDefを返します。
      *
      * @return array
      */
     public function getPropertyDefs() {
         return $this->propertyDefs;
+    }
+
+    /**
+     *  PropertyDefの数を返します。
+     *
+     * @return integer
+     */
+    public function getPropertyDefSize() {
+        return count($this->propertyDefs);
     }
 
     /**

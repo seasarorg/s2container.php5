@@ -305,11 +305,10 @@ class S2ApplicationContext {
             seasar::log::S2Logger::getLogger(__CLASS__)->debug("include dicon : $dicon", __METHOD__);
         }
 
-        $o = count($classes);
         $importedClasses = array();
         $registeredComponentDefs = array();
-        for($i=0; $i<$o; $i++) {
-            list($cd, $namespace) = self::createComponentDef($classes[$i]);
+        foreach($classes as $clazz) {
+            list($cd, $namespace) = self::createComponentDef($clazz);
             if ($cd === null) {
                 continue;
             }
@@ -318,15 +317,14 @@ class S2ApplicationContext {
                 preg_match("/^$namespaceArg(.*)$/", $namespace, $matches)) {
                 $namespace = preg_replace('/^\./', '', $matches[1]);
             }
-            $importedClasses[] = $classes[$i];
+            $importedClasses[] = $clazz;
             $registeredComponentDefs[] = $cd;
             self::registerComponentDef($container, $cd, $namespace);
-            seasar::log::S2Logger::getLogger(__CLASS__)->debug("import component : {$classes[$i]}", __METHOD__);
+            seasar::log::S2Logger::getLogger(__CLASS__)->debug("import component : $clazz", __METHOD__);
         }
 
-        $o = count($registeredComponentDefs);
-        for($i=0; $i<$o; $i++) {
-            self::setupComponentDef($registeredComponentDefs[$i], $classes[$i]);
+        foreach($registeredComponentDefs as $cd) {
+            self::setupComponentDef($cd);
         }
 
         return $container;
@@ -401,10 +399,9 @@ class S2ApplicationContext {
      *   - 自動アスペクトのセットアップを行います。
      *
      * @param seasar::container::ComponentDef $cd
-     * @param string $className
      * @return seasar::container::ComponentDef
      */
-    public static function setupComponentDef(seasar::container::ComponentDef $cd, $className) {
+    public static function setupComponentDef(seasar::container::ComponentDef $cd) {
         $classRef = $cd->getComponentClass();
         $beanDesc = seasar::beans::BeanDescFactory::getBeanDesc($classRef);
         $propDescs = $beanDesc->getPropertyDescs();
@@ -559,14 +556,17 @@ class S2ApplicationContext {
 
     /**
      * 環境変数によってフィルタします。
+     * 環境変数が「test」の場合に、クラス群のなかに、TestHogeクラスと、Hogeクラスが存在した場合、
+     * TestHogeクラスのみを抽出します。
      *
-     * @param array $items
+     * @param array $items コンポーネントとして取り込まれるクラス群
      * @return array
      */
     public static function envFilter(array $items) {
         $envPrefix = null;
         if (self::$filterByEnv and seasar::container::Config::$ENVIRONMENT !== null) {
             if (self::$envPrefix === null) {
+                # 環境変数が「test」の場合、「Test」をプレフィックス値とする
                 $envPrefix = ucfirst(strtolower(seasar::container::Config::$ENVIRONMENT));
             } else {
                 $envPrefix = ucfirst(strtolower(self::$envPrefix));
@@ -575,13 +575,12 @@ class S2ApplicationContext {
             return $items;
         }
         $classes = array();
-        $c = count($items);
-        for ($i=0; $i<$c; $i++) {
-            $envClassName = $envPrefix . $items[$i];
+        foreach ($items as $item) {
+            $envClassName = $envPrefix . $item;
             if (in_array($envClassName, $items)) {
                 continue;
             } else {
-                $classes[] = $items[$i];
+                $classes[] = $item;
             }
         }
         return $classes;
@@ -594,14 +593,12 @@ class S2ApplicationContext {
      * @return array
      */
     public static function filter($items) {
-        $includePatternCount = count(self::$includePattern);
-        if ($includePatternCount > 0) {
+        if (0 < count(self::$includePattern)) {
             $includes = array();
-            $o = count($items);
-            for($i=0; $i<$o; $i++) {
-                for($j=0; $j<$includePatternCount; $j++){
-                    if (preg_match(self::$includePattern[$j], $items[$i])) {
-                        $includes[] = $items[$i];
+            foreach($items as $item) {
+                foreach(self::$includePattern as $pattern){
+                    if (preg_match($pattern, $item)) {
+                        $includes[] = $item;
                         break;
                     }
                 }
@@ -609,23 +606,22 @@ class S2ApplicationContext {
             $items = $includes;
         }
 
-        $excludePatternCount = count(self::$excludePattern);
-        if ($excludePatternCount === 0) {
+        if (0 == count(self::$excludePattern)) {
             return $items;
         }
 
         $includes = array();
         $o = count($items);
-        for($i=0; $i<$o; $i++) {
+        foreach($items as $item) {
             $matched = false;
-            for($j=0; $j<$excludePatternCount; $j++){
-                if (preg_match(self::$excludePattern[$j], $items[$i])) {
+            foreach(self::$excludePattern as $pattern){
+                if (preg_match($pattern, $item)) {
                     $matched = true;
                     break;
                 }
             }
             if (!$matched) {
-                $includes[] = $items[$i];
+                $includes[] = $item;
             }
         }
         return $includes;

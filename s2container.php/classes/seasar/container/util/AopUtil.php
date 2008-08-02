@@ -53,10 +53,10 @@ class AopUtil {
      * @return array
      */
     private static function getAspects(seasar::container::ComponentDef $componentDef) {
-        $size = $componentDef->getAspectDefSize();
+        $aspectDefs = $componentDef->getAspectDefs();
         $aspects = array();
-        for ($i = 0; $i < $size; ++$i) {
-            $aspects[] = $componentDef->getAspectDef($i)->getAspect();
+        foreach($aspectDefs as $aspectDef) {
+            $aspects[] = $aspectDef->getAspect();
         }
         return $aspects;
     }

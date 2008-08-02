@@ -150,17 +150,16 @@ class S2ContainerImpl implements seasar::container::S2Container {
      */
     private function registerByClass(seasar::container::ComponentDef $componentDef) {
         $classes = $this->getAssignableClasses($componentDef->getComponentClass());
-        $o = count($classes);
         $componentName = $componentDef->getComponentName();
-        for ($i = 0; $i < $o; ++$i) {
-            if ($classes[$i] !== $componentName) {
-                $this->registerMap($classes[$i], $componentDef);
-                $className = seasar::util::ClassUtil::getClassName($classes[$i]);
-                if ($className !== $classes[$i] and $className !== $componentName) {
+        foreach ($classes as $namespacedClassName) {
+            if ($namespacedClassName !== $componentName) {
+                $this->registerMap($namespacedClassName, $componentDef);
+                $className = seasar::util::ClassUtil::getClassName($namespacedClassName);
+                if ($className !== $namespacedClassName and $className !== $componentName) {
                     $this->registerMap($className, $componentDef);
                 }
                 $lcClassName = seasar::util::StringUtil::lcfirst($className);
-                if ($lcClassName !== $className and $lcClassName !== $classes[$i] and $lcClassName !== $componentName) {
+                if ($lcClassName !== $className and $lcClassName !== $namespacedClassName and $lcClassName !== $componentName) {
                     $this->registerMap($lcClassName, $componentDef);
                 }
             }
@@ -255,9 +254,7 @@ class S2ContainerImpl implements seasar::container::S2Container {
                 }
             }
         }
-        $o = $this->getChildSize();
-        for ($i = 0; $i < $o; $i++) {
-            $childContainer = $this->getChild($i);
+        foreach ($this->children as $childContainer) {
             if ($childContainer->hasComponentDef($key)) {
                 return $childContainer->getComponentDef($key);
             }
@@ -408,8 +405,8 @@ class S2ContainerImpl implements seasar::container::S2Container {
         $classes = array();
         $interfaces = seasar::util::ClassUtil::getInterfaces($componentClass);
         $o = count($interfaces);
-        for ($i = 0; $i < $o; $i++) {
-            $classes[] = $interfaces[$i]->getName();
+        foreach ($interfaces as $interface) {
+            $classes[] = $interface->getName();
         }
 
         $reflection = $componentClass;

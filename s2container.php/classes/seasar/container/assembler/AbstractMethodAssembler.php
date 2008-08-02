@@ -50,14 +50,14 @@ abstract class AbstractMethodAssembler extends AbstractAssembler {
             $refMethod = $this->getComponentDef()->getComponentClass()->getMethod($methodDef->getMethodName());
             $refParams = $refMethod->getParameters();
             $args = array();
-            if ($methodDef->getArgDefSize() > 0) {
-                $o = $methodDef->getArgDefSize();
+            $argDefs = $methodDef->getArgDefs();
+            $o = count($argDefs);
+            if (0 < $o) {
                 for ($i = 0; $i < $o; ++$i) {
-                    $argDef = $methodDef->getArgDef($i);
                     if (isset($refParams[$i]) and $refParams[$i]->isArray()) {
-                        $args[] = $this->getArgument($argDef, true);
+                        $args[] = $this->getArgument($argDefs[$i], true);
                     } else {
-                        $args[] = $this->getArgument($argDef, false);
+                        $args[] = $this->getArgument($argDefs[$i], false);
                     }
                 }
             } else {
