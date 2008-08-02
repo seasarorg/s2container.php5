@@ -60,6 +60,15 @@ final class ArgDefSupport {
     }
 
     /**
+     * すべてのArgDefを返します。
+     *
+     * @return array
+     */
+    public function getArgDefs() {
+        return $this->argDefs;
+    }
+
+    /**
      * ArgDefを返します。
      *
      * @param integer

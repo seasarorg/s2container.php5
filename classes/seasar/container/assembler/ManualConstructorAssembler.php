@@ -48,13 +48,13 @@ class ManualConstructorAssembler extends AbstractAssembler {
         if ($refConstructor instanceof ReflectionMethod) {
             $refParams = $refConstructor->getParameters();
         }
-        $o = $componentDef->getArgDefSize();
+        $argDefs = $componentDef->getArgDefs();
+        $o = count($argDefs);
         for ($i = 0; $i < $o; ++$i) {
-            $argDef = $componentDef->getArgDef($i);
             if (isset($refParams[$i]) and $refParams[$i]->isArray()) {
-                $args[] = $this->getArgument($argDef, true);
+                $args[] = $this->getArgument($argDefs[$i], true);
             } else {
-                $args[] = $this->getArgument($argDef, false);
+                $args[] = $this->getArgument($argDefs[$i], false);
             }
         }
         return seasar::container::util::ConstructorUtil::newInstance($componentDef, $args);

@@ -44,10 +44,8 @@ class ManualPropertyAssembler extends AbstractAssembler {
         $componentDef = $this->getComponentDef();
         $beanDesc = seasar::beans::BeanDescFactory::getBeanDesc($componentDef->getComponentClass());
         $propDescs = $beanDesc->getTypehintPropertyDescs();
-        $o = $componentDef->getPropertyDefSize();
-        for ($i = 0; $i < $o; ++$i) {
-            $propertyDef  = $componentDef->getPropertyDef($i);
-            $propertyName = $propertyDef->getPropertyName();
+        $propertyDefs = $componentDef->getPropertyDefs();
+        foreach ($propertyDefs as $propertyName => $propertyDef) {
             $value = null;
             if ($beanDesc->hasPropertyDesc($propertyName)) {
                 $propDesc = $beanDesc->getPropertyDesc($propertyName);

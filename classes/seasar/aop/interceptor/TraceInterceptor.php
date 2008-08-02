@@ -34,10 +34,9 @@ class TraceInterceptor implements seasar::aop::MethodInterceptor {
              . '->' . $invocation->getMethod()->getName() . '(';
         $args = $invocation->getArguments();
         if (is_array($args)) {
-           $argsTmp = array();
-            $c = count($args);
-            for ($i = 0; $i < $c; $i++) {
-                $argsTmp[] = seasar::util::StringUtil::mixToString($args[$i]);
+            $argsTmp = array();
+            foreach ($args as $arg) {
+                $argsTmp[] = seasar::util::StringUtil::mixToString($arg);
             }
             $buf .= implode(',',$argsTmp);
         }

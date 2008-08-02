@@ -185,6 +185,13 @@ class ComponentDefImpl implements seasar::container::ComponentDef {
     }
 
     /**
+     * @see seasar::container::util::ArgDefSupport::getArgDefs()
+     */
+    public function getArgDefs() {
+        return $this->argDefSupport->getArgDefs();
+    }
+
+    /**
      * @see seasar::container::util::ArgDefSupport::getArgDef()
      */
     public function getArgDef($index) {
@@ -206,10 +213,10 @@ class ComponentDefImpl implements seasar::container::ComponentDef {
     }
 
     /**
-     * @see seasar::container::util::PropertyDefSupport::addPropertyDef()
+     * @see seasar::container::util::PropertyDefSupport::getPropertyDefs()
      */
-    public function addPropertyDef(seasar::container::impl::PropertyDef $propertyDef) {
-        $this->propertyDefSupport->addPropertyDef($propertyDef);
+    public function getPropertyDefs() {
+        return $this->propertyDefSupport->getPropertyDefs();
     }
 
     /**
@@ -227,10 +234,24 @@ class ComponentDefImpl implements seasar::container::ComponentDef {
     }
 
     /**
+     * @see seasar::container::util::PropertyDefSupport::addPropertyDef()
+     */
+    public function addPropertyDef(seasar::container::impl::PropertyDef $propertyDef) {
+        $this->propertyDefSupport->addPropertyDef($propertyDef);
+    }
+
+    /**
      * @see seasar::container::util::PropertyDefSupport::getPropertyDefSize()
      */
     public function getPropertyDefSize() {
         return $this->propertyDefSupport->getPropertyDefSize();
+    }
+
+    /**
+     * @see seasar::container::util::InitMethodDefSupport::getInitMethodDefs()
+     */
+    public function getInitMethodDefs() {
+        return $this->initMethodDefSupport->getInitMethodDefs();
     }
 
     /**
@@ -255,6 +276,13 @@ class ComponentDefImpl implements seasar::container::ComponentDef {
     }
 
     /**
+     * @see seasar::container::util::AspectDefSupport::getAspectDefs()
+     */
+    public function getAspectDefs() {
+        return $this->aspectDefSupport->getAspectDefs();
+    }
+
+    /**
      * @see seasar::container::util::AspectDefSupport::getAspectDef()
      */
     public function getAspectDef($index) {
@@ -276,13 +304,6 @@ class ComponentDefImpl implements seasar::container::ComponentDef {
     }
 
     /**
-     * @see seasar::container::util::MetaDefSupport::addMetaDef()
-     */
-    public function addMetaDef(seasar::container::impl::MetaDef $metaDef) {
-        $this->metaDefSupport->addMetaDef($metaDef);
-    }
-
-    /**
      * @see seasar::container::util::MetaDefSupport::getMetaDef()
      */
     public function getMetaDef($index) {
@@ -294,6 +315,13 @@ class ComponentDefImpl implements seasar::container::ComponentDef {
      */
     public function getMetaDefs($name) {
         return $this->metaDefSupport->getMetaDefs($name);
+    }
+
+    /**
+     * @see seasar::container::util::MetaDefSupport::addMetaDef()
+     */
+    public function addMetaDef(seasar::container::impl::MetaDef $metaDef) {
+        $this->metaDefSupport->addMetaDef($metaDef);
     }
 
     /**

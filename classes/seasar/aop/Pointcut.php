@@ -54,9 +54,8 @@ final class Pointcut {
            }
         }
         if (is_array($this->methodNamePatterns)) {
-            $o = count($this->methodNamePatterns);
-            for ($i = 0; $i < $o; ++$i) {
-                if (preg_match('/' . $this->methodNamePatterns[$i] . '/', $methodName)) {
+            foreach ($this->methodNamePatterns as $pattern) {
+                if (preg_match('/' . $pattern . '/', $methodName)) {
                     return true;
                 }
             }
@@ -80,17 +79,16 @@ final class Pointcut {
         } else {
             $methods = seasar::util::ClassUtil::getImplementMethods($targetClass);
         }
-        $o = count($methods);
-        if ($o > 0) {
+        if (0 < count($methods)) {
             $this->methodNames = array();
-        }
-        for ($i = 0; $i < $o; ++$i) {
-            $methodName = $methods[$i]->getName();
-            if (preg_match('/^(set|get|is)[A-Z].*$/', $methodName)) {
-                seasar::log::S2Logger::getInstance(__NAMESPACE__)->debug('ignore method [' . $methodName . ']', __METHOD__);
-                continue;
+            foreach($methods as $method) {
+                $methodName = $method->getName();
+                if (preg_match('/^(set|get|is)[A-Z].*$/', $methodName)) {
+                    seasar::log::S2Logger::getInstance(__NAMESPACE__)->debug('ignore method [' . $methodName . ']', __METHOD__);
+                    continue;
+                }
+                $this->methodNames[] = $methodName;
             }
-            $this->methodNames[] = $methodName;
         }
     }
 }

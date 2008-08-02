@@ -60,13 +60,12 @@ final class ClassUtil {
         }
 
         $implMethods = $clazz->getMethods();
-        $o = count($implMethods);
         $methods = array();
         $className = $clazz->getName();
-        for ($i=0; $i<$o; $i++) {
-            if (!$implMethods[$i]->isConstructor() and
-                $implMethods[$i]->getDeclaringClass()->getName() === $className) {
-                $methods[] = $implMethods[$i];
+        foreach($implMethods as $implMethod) {
+            if (!$implMethod->isConstructor() and
+                $implMethod->getDeclaringClass()->getName() === $className) {
+                $methods[] = $implMethod;
             }
         }
         return $methods;
@@ -86,17 +85,15 @@ final class ClassUtil {
         $methods = array();
         if ($clazz->isAbstract()) {
             $methodRefs = $clazz->getMethods();
-            $o = count($methodRefs);
-            for ($j = 0; $j < $o; $j++) {
-                if($methodRefs[$j]->isAbstract()){
-                    $methods[] = $methodRefs[$j];
+            foreach ($methodRefs as $methodRef) {
+                if($methodRef->isAbstract()){
+                    $methods[] = $methodRef;
                 }
             }
         }
         $interfaces = self::getInterfaces($clazz);
-        $o = count($interfaces);
-        for ($i = 0; $i < $o; $i++) {
-            $methods = array_merge($methods, $interfaces[$i]->getMethods());
+        foreach ($interfaces as $interface) {
+            $methods = array_merge($methods, $interface->getMethods());
         }
         return $methods;
     }
@@ -115,10 +112,9 @@ final class ClassUtil {
         $methods = array();
         if ($clazz->isAbstract()) {
             $methodRefs = $clazz->getMethods();
-            $o = count($methodRefs);
-            for ($j = 0; $j < $o; $j++) {
-                if($methodRefs[$j]->isAbstract()){
-                    $methods[] = $methodRefs[$j];
+            foreach ($methodRefs as $methodRef) {
+                if($methodRef->isAbstract()){
+                    $methods[] = $methodRef;
                 }
             }
         }

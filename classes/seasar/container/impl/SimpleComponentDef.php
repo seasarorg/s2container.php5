@@ -172,6 +172,34 @@ class SimpleComponentDef implements seasar::container::ComponentDef {
     }
 
     /**
+     * @see seasar::container::util::ArgDefAware::getArgDefs()
+     */
+    public function getArgDefs() {
+        throw new seasar::exception::UnsupportedOperationException(__METHOD__);
+    }
+
+    /**
+     * @see seasar::container::util::PropertyDefAware::getPropertyDefs()
+     */
+    public function getPropertyDefs() {
+        throw new seasar::exception::UnsupportedOperationException(__METHOD__);
+    }
+
+    /**
+     * @see seasar::container::util::InitMethodDefAware::getInitMethodDefs()
+     */
+    public function getInitMethodDefs() {
+        throw new seasar::exception::UnsupportedOperationException(__METHOD__);
+    }
+
+    /**
+     * @see seasar::container::util::AspectDefAware::getAspectDefs()
+     */
+    public function getAspectDefs() {
+        throw new seasar::exception::UnsupportedOperationException(__METHOD__);
+    }
+
+    /**
      * @see seasar::container::util::ArgDefAware::getArgDef()
      */
     public function getArgDef($index) {

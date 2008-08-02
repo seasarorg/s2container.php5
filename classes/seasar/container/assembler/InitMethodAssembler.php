@@ -41,9 +41,9 @@ class InitMethodAssembler extends AbstractMethodAssembler {
      * @param object $component
      */
     public function assemble($component) {
-        $size = $this->getComponentDef()->getInitMethodDefSize();
-        for ($i = 0; $i < $size; $i++) {
-            $this->invoke($component, $this->getComponentDef()->getInitMethodDef($i));
+        $initMethodDefs = $this->getComponentDef()->getInitMethodDefs();
+        foreach ($initMethodDefs as $initMethodDef) {
+            $this->invoke($component, $initMethodDef);
         }
     }
 }

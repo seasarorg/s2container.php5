@@ -73,15 +73,13 @@ class S2AopFactory {
      * @return array
      */
     private static function creatMethodInterceptorsMap(ReflectionClass $targetClass, $aspects = null, $applicableMethods = array()) {
-        $aspectCount = count($aspects);
         $methodInterceptorsMap = array();
         foreach ($applicableMethods as $method) {
             $methodName = $method->getName();
             $interceptorList = array();
-            for ($j = 0; $j < $aspectCount; ++$j) {
-                $aspect = $aspects[$j];
-                if ($aspects[$j]->getPointcut()->isApplied($methodName)) {
-                    $interceptorList[] = $aspects[$j]->getMethodInterceptor();
+            foreach($aspects as $aspect) {
+                if ($aspect->getPointcut()->isApplied($methodName)) {
+                    $interceptorList[] = $aspect->getMethodInterceptor();
                 }
             }
 
@@ -101,15 +99,15 @@ class S2AopFactory {
         $methods = $targetClass->getMethods();
         $applicableMethods = array();
         $o = count($methods);
-        for ($i = 0; $i < $o; ++$i) {
-            if (!$methods[$i]->isPublic() or
-                preg_match('/^_/', $methods[$i]->getName()) or
-                $methods[$i]->isStatic() or
-                $methods[$i]->isFinal() or
-                $methods[$i]->isConstructor() ) {
+        foreach($methods as $method) {
+            if (!$method->isPublic() or
+                preg_match('/^_/', $method->getName()) or
+                $method->isStatic() or
+                $method->isFinal() or
+                $method->isConstructor() ) {
                     continue;
             }
-            $applicableMethods[] = $methods[$i];
+            $applicableMethods[] = $method;
         }
         return $applicableMethods;
     }

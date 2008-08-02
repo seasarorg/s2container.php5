@@ -60,6 +60,15 @@ final class AspectDefSupport {
     }
 
     /**
+     * すべてのAspectDefを返します。
+     *
+     * @return array
+     */
+    public function getAspectDefs() {
+        return $this->aspectDefs;
+    }
+
+    /**
      * AspectDefを返します。
      *
      * @param integer

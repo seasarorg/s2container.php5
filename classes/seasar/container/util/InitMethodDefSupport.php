@@ -70,6 +70,15 @@ class InitMethodDefSupport {
     }
 
     /**
+     * すべてのInitMethodDefを返します。
+     *
+     * @return array
+     */
+    public function getInitMethodDefs() {
+        return $this->methodDefs;
+    }
+
+    /**
      * S2Containerを設定します。
      *
      * @param seasar::container::S2Container $container
@@ -77,8 +86,8 @@ class InitMethodDefSupport {
     public function setContainer(seasar::container::S2Container $container) {
         $this->container = $container;
         $o = $this->getInitMethodDefSize();
-        for ($i = 0; $i < $o; $i++) {
-            $this->getInitMethodDef($i)->setContainer($container);
+        foreach ($this->methodDefs as $methodDef) {
+            $methodDef->setContainer($container);
         }
     }
 }
