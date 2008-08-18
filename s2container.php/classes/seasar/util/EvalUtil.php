@@ -70,10 +70,10 @@ class EvalUtil {
      */
     public static function formatExpression($src) {
         $src = trim($src);
-        if (!preg_match('/^return\s/i', $src)) {
+        if (0 !== stripos($src, 'return ')) {
             $src = 'return ' . $src;
         }
-        if (!preg_match('/;$/i', $src)) {
+        if (0 !== strpos(strrev($src), ';')) {
             $src .= ';';
         }
         return $src;
@@ -86,7 +86,7 @@ class EvalUtil {
      * @return string
      */
     public static function formatArrayExpression($src) {
-        if (!preg_match('/^array/', $src)) {
+        if (0 !== stripos($src, 'array')) {
             $src = 'array(' . $src . ')';
         }
         return self::formatExpression($src);

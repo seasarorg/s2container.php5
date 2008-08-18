@@ -156,20 +156,20 @@ class BeanDesc {
      */
     private function setupPublicPropertyDescs() {
         $properties = $this->beanClass->getDefaultProperties();
-        $typehintRegexp = '/^' . seasar::container::Config::$PROPERTY_TYPEHINT_KEY . '(.*)$/i';
+        $propTypehintKey = seasar::container::Config::$PROPERTY_TYPEHINT_KEY;
+        $propTypehintKeyLen = strlen($propTypehintKey);
         foreach($properties as $name => $value) {
-            $matches = array();
             if ($this->beanClass->getProperty($name)->isPublic()){
                 $propertyDesc = new PublicPropertyDesc($this->beanClass, $name);
                 $this->propertyDescs[$name] = $propertyDesc;
-                if (is_string($value) and preg_match($typehintRegexp, trim($value), $matches)){
-                    $typehint = trim($matches[1]);
+                if (is_string($value) and 
+                    0 === stripos($value, $propTypehintKey)) {
+                    $typehint = trim(substr($value, $propTypehintKeyLen));
                     if ($typehint === '') {
                         $typehint = $name;
                     }
-                    $matches = array();
-                    if (preg_match('/^(.*)\[\]\s*$/', $typehint, $matches)) {
-                        $typehint = trim($matches[1]);
+                    if (0 === strpos(strrev($typehint), '][')) {
+                        $typehint = substr($typehint, 0, -2);
                         if ($typehint === '') {
                             $typehint = $name;
                         }
@@ -200,12 +200,12 @@ class BeanDesc {
     private function setupAccessorMethodPropertyDescs() {
         $methods = $this->beanClass->getMethods();
         foreach($methods as $method) {
-            $matches = array();
             $params = $method->getParameters();
+            $methodName = $method->getName();
             if ($method->isPublic() and
                 count($params) === 1 and 
-                preg_match('/^set(.+)$/', $method->getName(), $matches)) {
-                $propName = seasar::util::StringUtil::lcfirst($matches[1]);
+                0 === strpos($methodName, 'set')) {
+                $propName = seasar::util::StringUtil::lcfirst(substr($methodName, 3));
                 $propertyDesc = new AccessorMethodPropertyDesc($this->beanClass, $propName);
                 $this->propertyDescs[$propName] = $propertyDesc;
 

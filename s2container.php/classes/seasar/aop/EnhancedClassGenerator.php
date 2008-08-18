@@ -226,7 +226,7 @@ class EnhancedClassGenerator {
      * @return string メソッドのソース
      */
     public static function getMethodSrc(ReflectionClass $targetClass, ReflectionMethod $refMethod, $methodDef) {
-        //$methodDef = preg_replace("/protected\s/i", 'public ', $methodDef, 1);
+        //$methodDef = str_ireplace('protected', 'public ', $methodDef);
         $params = $refMethod->getParameters();
         $args = array();
         foreach ($params as $param) {
@@ -238,7 +238,7 @@ class EnhancedClassGenerator {
         if ($targetClass->hasMethod($parentMethodName)) {
             throw new seasar::aop::exception::EnhancedClassGenerationRuntimeException($targetClass->getName(), (array)$parentMethodName);
         }
-        $parentMethodDef  = preg_replace("/{$refMethod->getName()}/", $parentMethodName, $methodDef, 1) . PHP_EOL;
+        $parentMethodDef  = str_replace($refMethod->getName(), $parentMethodName, $methodDef) . PHP_EOL;
         $parentMethodContent ='        return $this->__invokeParentMethod_EnhancedByS2AOP(' . $args . ');' . PHP_EOL;
 
         $methodContent = '    ' . $methodDef;
@@ -248,7 +248,7 @@ class EnhancedClassGenerator {
         }
         return $this->__invokeParentMethod_EnhancedByS2AOP(' . $args . ');
     }' . PHP_EOL;
-        $methodContent  = preg_replace('/@@METHOD_NAME@@/', $refMethod->getName(), $methodContent);
+        $methodContent  = str_replace('@@METHOD_NAME@@', $refMethod->getName(), $methodContent);
         return $methodContent;
     }
 

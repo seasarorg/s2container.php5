@@ -259,8 +259,7 @@ final class XmlS2ContainerBuilder implements S2ContainerBuilder {
         if ($pointcut === '') {
             $pointcut = new seasar::aop::Pointcut(new ReflectionClass($targetClassName));
         } else {
-            $pointcuts = split(",", $pointcut);
-            $pointcut = new seasar::aop::Pointcut($pointcuts);
+            $pointcut = new seasar::aop::Pointcut($pointcut);
         }
 
         $aspectDef = new seasar::container::impl::AspectDef($pointcut);
@@ -315,9 +314,8 @@ final class XmlS2ContainerBuilder implements S2ContainerBuilder {
      */
     private function getInjectValue($value) {
         $matches = array();
-        if (preg_match("/^\"(.*)\"$/", $value, $matches) or
-            preg_match("/^\'(.*)\'$/", $value, $matches)) {
-            return $matches[1];
+        if (0 === strpos($value, '"') or 0 === strpos($value, '\'')) {
+            return substr($value, 1, -1);
         }
         return null;
     }

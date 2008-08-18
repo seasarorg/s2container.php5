@@ -404,7 +404,6 @@ class S2ContainerImpl implements seasar::container::S2Container {
     private function getAssignableClasses(ReflectionClass $componentClass) {
         $classes = array();
         $interfaces = seasar::util::ClassUtil::getInterfaces($componentClass);
-        $o = count($interfaces);
         foreach ($interfaces as $interface) {
             $classes[] = $interface->getName();
         }

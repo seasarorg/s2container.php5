@@ -156,7 +156,7 @@ class S2ApplicationContext {
     private static function scanDir($parentPath, $namespace, $strict, $pear, $recursive) {
         $iterator = new DirectoryIterator($parentPath);
         while($iterator->valid()) {
-            if (preg_match('/^\./', $iterator->getFilename())) {
+            if (strpos($iterator->getFilename(), '.') === 0) {
                 $iterator->next();
                 continue;
             }
@@ -182,8 +182,9 @@ class S2ApplicationContext {
      */
     public static function importInternal($filePath, array $namespace = array(), $pear = false){
         $fileName = basename($filePath);
-        if (preg_match("/([^\.]+).+php$/", $fileName, $matches)) {
-            $namespace[] = $matches[1];
+        $fileNameRev = strrev($fileName);
+        if (stripos($fileNameRev, 'php.') === 0) {
+            $namespace[] = substr($fileName, 0, strpos($fileName, '.'));
             if ($pear) {
                 $className = implode('_' , $namespace);
             } else {
@@ -192,7 +193,7 @@ class S2ApplicationContext {
             self::$CLASSES[$className] = $filePath;
             seasar::util::ClassLoader::$CLASSES[$className] = $filePath;
             seasar::log::S2Logger::getLogger(__CLASS__)->debug("find class $className : $filePath", __METHOD__);
-        } else if (preg_match('/\.dicon$/', $fileName)) {
+        } else if (stripos($fileNameRev, 'nocid.') === 0) {
             self::$DICONS[$fileName] = $filePath;
             seasar::log::S2Logger::getLogger(__CLASS__)->debug("find dicon $fileName : $filePath", __METHOD__);
         } else {
@@ -307,18 +308,27 @@ class S2ApplicationContext {
 
         $importedClasses = array();
         $registeredComponentDefs = array();
+        $namespaceArgDot = $namespaceArg . '.';
         foreach($classes as $clazz) {
             list($cd, $namespace) = self::createComponentDef($clazz);
             if ($cd === null) {
                 continue;
             }
-            $matches = array();
-            if ($namespaceArg !== '' and
-                preg_match("/^$namespaceArg(.*)$/", $namespace, $matches)) {
-                $namespace = preg_replace('/^\./', '', $matches[1]);
-            }
             $importedClasses[] = $clazz;
             $registeredComponentDefs[] = $cd;
+
+            if ($namespaceArg !== '') {
+                if ($namespace === $namespaceArg) {
+                    $namespace = '';
+                } else {
+                    if (strpos($namespace, $namespaceArgDot) === 0) {
+                        $namespace = substr($namespace, strlen($namespaceArgDot));
+                    } else {
+                        seasar::log::S2Logger::getLogger(__CLASS__)->debug("ignored by namespace : $namespace not in $namespaceArg", __METHOD__);
+                        continue;
+                    }
+                }
+            }
             self::registerComponentDef($container, $cd, $namespace);
             seasar::log::S2Logger::getLogger(__CLASS__)->debug("import component : $clazz", __METHOD__);
         }
@@ -330,8 +340,16 @@ class S2ApplicationContext {
         return $container;
     }
 
+    /**
+     * 渡されたnamespaceをドットで区切って、それぞれについてコンテナを取得または生成します。
+     * namespaceが空文字の場合に、渡されたコンテナにコンポーネントを登録します。
+     *
+     * @param seasar::container::S2Container $container
+     * @param seasar::container::ComponentDef $cd
+     * @param string|null $namespace
+     */
     public static function registerComponentDef(seasar::container::S2Container $container, seasar::container::ComponentDef $cd, $namespace = '') {
-        if ($namespace == '') {
+        if ($namespace == '') { // 文字列一致、またはnull一致
             $container->register($cd);
         } else {
             $names = preg_split('/\./', $namespace, 2);
@@ -345,11 +363,11 @@ class S2ApplicationContext {
                 $childContainer->setNamespace($names[0]);
                 $container->includeChild($childContainer);
             }
-            $restName = '';
-            if (isset($names[1])) {
-                $restName = $names[1];
+            $restNamespace = '';
+            if (count($names) == 2) {
+                $restNamespace = $names[1];
             }
-            self::registerComponentDef($childContainer, $cd, $restName);
+            self::registerComponentDef($childContainer, $cd, $restNamespace);
         }
     }
 
@@ -424,7 +442,7 @@ class S2ApplicationContext {
             }
             if (!$methodRef->isPublic() or 
                 $methodRef->isConstructor() or
-                preg_match('/^_/', $methodRef->getName()) ) {
+                strpos($methodRef->getName(), '_') === 0 ) {
                 continue;
             }
             if (!$methodRef->isStatic() and 
@@ -514,7 +532,7 @@ class S2ApplicationContext {
     private static function setupAspectDef(ComponentDef $cd, array $annoInfo) {
         if (isset($annoInfo['interceptor'])) {
             if (isset($annoInfo['pointcut'])) {
-                $pointcut = new seasar::aop::Pointcut(preg_split('/,/', $annoInfo['pointcut']));
+                $pointcut = new seasar::aop::Pointcut($annoInfo['pointcut']);
             } else {
                 $pointcut = new seasar::aop::Pointcut($cd->getComponentClass());
             }
@@ -611,7 +629,6 @@ class S2ApplicationContext {
         }
 
         $includes = array();
-        $o = count($items);
         foreach($items as $item) {
             $matched = false;
             foreach(self::$excludePattern as $pattern){
@@ -630,10 +647,18 @@ class S2ApplicationContext {
     /**
      * includeパターンを追加します。
      *
-     * @param mixed $pattern
+     * @param string $pattern
      */
     public static function addIncludePattern($pattern) {
-        self::$includePattern = array_merge(self::$includePattern, (array)$pattern);
+        if (is_string($pattern)) {
+            if (0 === strpos($pattern, '/')) {
+                self::$includePattern[] = $pattern;
+            } else {
+                self::$includePattern[] = "/$pattern/";
+            }
+        } else {
+            throw new ::InvalidArgumentException('expected string.');
+        }
     }
 
     /**
@@ -648,19 +673,37 @@ class S2ApplicationContext {
     /**
      * includeパターンをセットします。
      *
-     * @param array $pattern
+     * @param array|string $pattern
      */
     public static function setIncludePattern($pattern = array()) {
-        self::$includePattern = (array)$pattern;
+        if (is_string($pattern)) {
+            if (0 === strpos($pattern, '/')) {
+                self::$includePattern = array($pattern);
+            } else {
+                self::$includePattern = array("/$pattern/");
+            }
+        } else if (is_array($pattern)) {
+            self::$includePattern = $pattern;
+        } else {
+            throw new ::InvalidArgumentException('expected array|string.');
+        }
     }
 
     /**
      * excludeパターンを追加します。
      *
-     * @param mixed $pattern
+     * @param string $pattern
      */
     public static function addExcludePattern($pattern) {
-        self::$excludePattern = array_merge(self::$excludePattern, (array)$pattern);
+        if (is_string($pattern)) {
+            if (0 === strpos($pattern, '/')) {
+                self::$excludePattern[] = $pattern;
+            } else {
+                self::$excludePattern[] = "/$pattern/";
+            }
+        } else {
+            throw new ::InvalidArgumentException('expected string.');
+        }
     }
 
     /**
@@ -678,7 +721,17 @@ class S2ApplicationContext {
      * @param array $pattern
      */
     public static function setExcludePattern($pattern = array()) {
-        self::$excludePattern = (array)$pattern;
+        if (is_string($pattern)) {
+            if (0 === strpos($pattern, '/')) {
+                self::$excludePattern = array($pattern);
+            } else {
+                self::$excludePattern = array("/$pattern/");
+            }
+        } else if (is_array($pattern)) {
+            self::$excludePattern = $pattern;
+        } else {
+            throw new ::InvalidArgumentException('expected array|string.');
+        }
     }
 
     /**
@@ -710,6 +763,7 @@ class S2ApplicationContext {
 
     /**
      * 自動アスペクト情報を登録します。
+     * aspectInfoは、@S2Aspectアノテーション結果に合わせます。
      *
      * @param string $componentPattern
      * @param string $interceptor
