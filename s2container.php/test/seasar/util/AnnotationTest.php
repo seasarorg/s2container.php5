@@ -50,6 +50,16 @@ class AnnotationTest extends ::PHPUnit_Framework_TestCase {
         $this->assertTrue($ret);
     }
 
+    public function testHasCommentAnnotation(){
+        $clazz = new ReflectionClass(__NAMESPACE__ . '::A_AnnotationTest');
+        $ret = Annotation::has($clazz->getMethod('hoge'), seasar::container::S2ApplicationContext::ASPECT_ANNOTATION);
+        $this->assertTrue($ret);
+        $ret = Annotation::has($clazz->getMethod('huga'), seasar::container::S2ApplicationContext::ASPECT_ANNOTATION);
+        $this->assertFalse($ret);
+        $ret = Annotation::has($clazz->getMethod('bar'), seasar::container::S2ApplicationContext::ASPECT_ANNOTATION);
+        $this->assertFalse($ret);
+    }
+
     public function testGetAnnotation(){
         $clazzB = new ReflectionClass(__NAMESPACE__ . '::AnnoTestB_AnnotationTest');
         try{
@@ -99,8 +109,11 @@ class AnnotationTest extends ::PHPUnit_Framework_TestCase {
         $comment = ' /**
                       * abc **/ ';
         $format = Annotation::formatCommentLine($comment);
-        $this->assertEquals(trim($format), 'abc');
+        $this->assertEquals(trim($format), 'abc *');
 
+        //$clazzB = new ReflectionClass(__NAMESPACE__ . '::B_AnnotationTest');
+        //print_r($clazzB->getDocComment());
+        //print_r($clazzB->getMethod('bar')->getDocComment());
     }
 
     public function setUp(){
@@ -182,4 +195,32 @@ interface IAnnoTestF_AnnotationTest{
  */
 class AnnoTestF_AnnotationTest implements IAnnoTestF_AnnotationTest {
     public function hoge(){}
+}
+
+class A_AnnotationTest {
+    /**
+     * @S2Aspect()
+     */
+    public function hoge(){}
+
+    /**
+     * @S2Aspect(
+     */
+    public function huga(){}
+
+    /**
+     * @S2Aspect
+     */
+    public function bar(){}
+}
+
+
+/**
+ * @S2Aspect
+ */
+class B_AnnotationTest {
+    /**
+     *@S2Aspect
+     */   
+    public function bar(){}
 }
