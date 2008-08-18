@@ -29,11 +29,6 @@ namespace seasar::util;
 class Annotation {
 
     /**
-     * アノテーションの終点を判別します。
-     */
-    const END_DELIMITER = '\s';
-
-    /**
      * @var boolean
      */
     public static $CONSTANT = false;
@@ -118,7 +113,7 @@ class Annotation {
             return null;
         }
         $matches = array();
-        $regex = "/$annotation\s*\((.*?)\)" . self::END_DELIMITER . '/iu';
+        $regex = "/$annotation\((.*?)\)/siu";
         $comment = self::formatCommentLine($reflection->getDocComment());
         if (preg_match($regex, $comment, $matches)) {
             $value = EvalUtil::formatArrayExpression(trim($matches[1]));
@@ -173,7 +168,7 @@ class Annotation {
      * @return boolean
      */
     public static function hasCommentAnnotation($reflection, $annotation) {
-        return preg_match("/$annotation\s*[\(]/siu", $reflection->getDocComment()) === 0 ? false : true;
+        return preg_match("/$annotation\(.*?\)/siu", $reflection->getDocComment()) === 0 ? false : true;
     }
 
     /**
@@ -183,14 +178,20 @@ class Annotation {
      * @return string
      */
     public static function formatCommentLine($commentLine) {
-        $comments = preg_split('/[\n\r]/', $commentLine);
+        $comments = preg_split('/[\n\r]/', $commentLine, -1, PREG_SPLIT_NO_EMPTY);
         $comment = ' ';
-        $o = count($comments);
-        foreach ($comments as $line) {
-            $line = preg_replace('/^\/\*+/', '', trim($line));
-            $line = preg_replace('/\*+\/$/', '', trim($line));
-            $line = preg_replace('/^\**/',   '', trim($line));
-            $comment .= $line . ' ';
+        $lineCount = count($comments);
+        if ($lineCount == 1) {
+            $comment = substr(trim($comments[0]), 3, -2);
+        } else {
+            $comment .= substr(trim($comments[0]), 3) . ' ';
+            for($i=1; $i<$lineCount-1 ; $i++) {
+                $comment .= substr(trim($comments[$i]), 1) . ' ';
+            }
+            $last = substr(trim($comments[$lineCount-1]), 0, -2);
+            if (0 < strlen($last)) {
+                $comment .= substr($last, 1);
+            }
         }
         return $comment;
     }

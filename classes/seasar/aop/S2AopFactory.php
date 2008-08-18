@@ -98,10 +98,9 @@ class S2AopFactory {
     public static function getApplicableMethods(ReflectionClass $targetClass) {
         $methods = $targetClass->getMethods();
         $applicableMethods = array();
-        $o = count($methods);
         foreach($methods as $method) {
             if (!$method->isPublic() or
-                preg_match('/^_/', $method->getName()) or
+                0 === strpos($method->getName(), '_') or
                 $method->isStatic() or
                 $method->isFinal() or
                 $method->isConstructor() ) {

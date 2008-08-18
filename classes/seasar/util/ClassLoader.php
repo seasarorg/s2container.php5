@@ -61,26 +61,24 @@ class ClassLoader {
      *                falseの場合は、サブディレクトリを検索しません。
      */
     public static function import($dirPath, $namespace = array(), $strict = false, $pear = false, $recursive = true) {
+        $separator = $pear ? '_' : '::';
         if (is_string($namespace)) {
-            if ($pear) {
-                $namespace = explode('_', $namespace);
-            } else {
-                $namespace = explode('::', $namespace);
-            }
+            $namespace = explode($separator, $namespace);
         }
+
         $iterator = new DirectoryIterator($dirPath);
         while($iterator->valid()) {
-            if (preg_match('/^\./', $iterator->getFilename())) {
+            if (strpos($iterator->getFilename(), '.') === 0) {
                 $iterator->next();
                 continue;
             }
             if ($iterator->isFile()) {
-                $matches = array();
-                if (preg_match('/^([^\.]+?)\..*php$/', $iterator->getFileName(), $matches)) {
-                    if ($pear) {
-                        $className = implode('_', array_merge($namespace, (array)$matches[1]));
-                    } else {
-                        $className = implode('::', array_merge($namespace, (array)$matches[1]));
+                $fileName = $iterator->getFileName();
+                $fileNameRev = strrev($fileName);
+                if (stripos($fileNameRev, 'php.') === 0) {
+                    $className = substr($fileName, 0, strpos($fileName, '.'));
+                    if (0 < count($namespace)) {
+                        $className = implode($separator, $namespace) . $separator . $className;
                     }
                     self::$CLASSES[$className]= $iterator->getRealPath();
                 }

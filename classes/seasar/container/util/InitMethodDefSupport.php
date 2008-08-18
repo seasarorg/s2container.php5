@@ -85,7 +85,6 @@ class InitMethodDefSupport {
      */
     public function setContainer(seasar::container::S2Container $container) {
         $this->container = $container;
-        $o = $this->getInitMethodDefSize();
         foreach ($this->methodDefs as $methodDef) {
             $methodDef->setContainer($container);
         }

@@ -168,9 +168,13 @@ final class ClassUtil {
      * @return boolean
      */
     public static function isGlobalClass(ReflectionClass $clazz) {
-        if (preg_match('/[^:]+::/', $clazz->getName())) {
+        $pos = strpos($clazz->getName(), '::');
+        if ($pos === false) {
+            return true;
+        } else if ($pos === 0) {
+            return true;
+        } else {
             return false;
         }
-        return true;
     }
 }
