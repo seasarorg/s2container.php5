@@ -98,7 +98,8 @@ class S2ApplicationContextTest extends ::PHPUnit_Framework_TestCase {
 
         S2ApplicationContext::$CLASSES = array();
         S2ApplicationContext::import($this->sampleDir);
-        S2ApplicationContext::addIncludePattern(array('/Bar_/','/Hoge_/'));
+        S2ApplicationContext::addIncludePattern('/Bar_/');
+        S2ApplicationContext::addIncludePattern('/Hoge_/');
         $container = S2ApplicationContext::create();
         $this->assertTrue($container instanceof S2Container);
         $this->assertTrue($container->getComponentDefSize() == 2);
@@ -113,8 +114,9 @@ class S2ApplicationContextTest extends ::PHPUnit_Framework_TestCase {
 
         S2ApplicationContext::$CLASSES = array();
         S2ApplicationContext::import($this->sampleDir);
-        S2ApplicationContext::addIncludePattern(array('/Bar_/','/Hoge_/'));
-        S2ApplicationContext::addExcludePattern(array('/Hoge_/'));
+        S2ApplicationContext::addIncludePattern('/Bar_/');
+        S2ApplicationContext::addIncludePattern('/Hoge_/');
+        S2ApplicationContext::addExcludePattern('/Hoge_/');
         $container = S2ApplicationContext::create();
         $this->assertTrue($container instanceof S2Container);
         $this->assertTrue($container->getComponentDefSize() == 1);

@@ -26,14 +26,7 @@
 namespace seasar::aop;
 class PointcutTest extends ::PHPUnit_Framework_TestCase {
 
-    public function testIsApplied() {
-        $pc = new Pointcut(array('pm1','pm2','om1','om2'));
-        $this->assertTrue($pc->isApplied('pm1'));
-        $this->assertTrue($pc->isApplied('pm2'));
-        $this->assertTrue($pc->isApplied('om1'));
-        $this->assertTrue($pc->isApplied('om2'));
-        $this->assertFalse($pc->isApplied('om3'));
-
+    public function testIsAppliedReflection() {
         $pc = new Pointcut(new ReflectionClass('seasar::aop::AW_Pointcut'));
         $this->assertTrue($pc->isApplied('awm1'));
 
@@ -44,25 +37,38 @@ class PointcutTest extends ::PHPUnit_Framework_TestCase {
         $this->assertTrue($pc->isApplied('say') === false);
         $this->assertTrue($pc->isApplied('hello') === true);
 
-        $pc = new Pointcut(array('^a','b$'));
-        $this->assertTrue($pc->isApplied('abs'));
-        $this->assertTrue($pc->isApplied('deb'));
-        $this->assertTrue($pc->isApplied('om') === false);
-
-        $pc = new Pointcut(array('^(!?a)'));
-        $this->assertTrue($pc->isApplied('abs'));
-        $this->assertFalse($pc->isApplied('deb'));
-        $this->assertFalse($pc->isApplied('om'));
-
-        $pc = new Pointcut(array('(!?a)$'));
-        $this->assertFalse($pc->isApplied('abs'));
-        $this->assertTrue($pc->isApplied('aba'));
-
         $pc = new Pointcut(new ReflectionClass('seasar::aop::E_Pointcut'));
         $this->assertFalse($pc->isApplied('setHoge'));
         $this->assertFalse($pc->isApplied('getHoge'));
         $this->assertFalse($pc->isApplied('isHoge'));
         $this->assertTrue($pc->isApplied('setupHoge'));
+    }
+
+    public function testIsAppliedRegext() {
+        $pc = new Pointcut('pm1');
+        $this->assertTrue($pc->isApplied('pm1'));
+        $this->assertFalse($pc->isApplied('pm2'));
+
+        $pc = new Pointcut('/^pm1$/');
+        $this->assertTrue($pc->isApplied('pm1'));
+        $this->assertFalse($pc->isApplied('pm2'));
+
+        $pc = new Pointcut('^a');
+        $this->assertTrue($pc->isApplied('abs'));
+        $this->assertFalse($pc->isApplied('deb'));
+
+        $pc = new Pointcut('b$');
+        $this->assertFalse($pc->isApplied('abs'));
+        $this->assertTrue($pc->isApplied('deb'));
+
+        $pc = new Pointcut('^(!?a)');
+        $this->assertTrue($pc->isApplied('abs'));
+        $this->assertFalse($pc->isApplied('deb'));
+        $this->assertFalse($pc->isApplied('om'));
+
+        $pc = new Pointcut('(!?a)$');
+        $this->assertFalse($pc->isApplied('abs'));
+        $this->assertTrue($pc->isApplied('aba'));
     }
 
     public function setUp(){
