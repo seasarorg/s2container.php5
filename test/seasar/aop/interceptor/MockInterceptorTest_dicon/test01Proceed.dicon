@@ -3,7 +3,7 @@
 "components21.dtd">
 <components>
     <component name="a" class="seasar::aop::interceptor::A_MockInterceptorTest">
-        <aspect pointcut=".+">mock</aspect>
+        <aspect pointcut="/.+/">mock</aspect>
     </component>
     <component name="mock" class="seasar::aop::interceptor::MockInterceptor">
         <initMethod name="setReturnValue">

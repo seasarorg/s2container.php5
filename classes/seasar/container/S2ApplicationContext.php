@@ -59,24 +59,9 @@ class S2ApplicationContext {
     public static $READ_PARENT_ANNOTATION = false;
 
     /**
-     * @var boolean
-     */
-    public static $INCLUDE_DECLARED_CLASS = false;
-
-    /**
      * @var array
      */
     public static $SINGLETON_CONTAINERS = array();
-
-    /**
-     * @var string
-     */
-    private static $envPrefix = null;
-
-    /**
-     * @var boolean
-     */
-    private static $filterByEnv = true;
 
     /**
      * @var array
@@ -248,16 +233,7 @@ class S2ApplicationContext {
         if (count($classes) > 0) {
             $classes = self::filter($classes);
         }
-        if (count($classes) > 0) {
-            $classes = self::envFilter($classes);
-        }
-        if (self::$INCLUDE_DECLARED_CLASS) {
-            $declaredClasses = array_merge(get_declared_interfaces(), get_declared_classes());
-            $declaredClasses = self::filter($declaredClasses);
-            $declaredClasses = self::envFilter($declaredClasses);
-            $declaredClasses = self::componentAnnotationFilter($declaredClasses);
-            $classes = array_values(array_unique(array_merge($classes, $declaredClasses)));
-        }
+
         if (count($dicons) == 0 and count($classes) == 0) {
             seasar::log::S2Logger::getLogger(__CLASS__)->info("dicon, class not found at all. create empty container.", __METHOD__);
             return new seasar::container::impl::S2ContainerImpl();
@@ -573,38 +549,6 @@ class S2ApplicationContext {
     }
 
     /**
-     * 環境変数によってフィルタします。
-     * 環境変数が「test」の場合に、クラス群のなかに、TestHogeクラスと、Hogeクラスが存在した場合、
-     * TestHogeクラスのみを抽出します。
-     *
-     * @param array $items コンポーネントとして取り込まれるクラス群
-     * @return array
-     */
-    public static function envFilter(array $items) {
-        $envPrefix = null;
-        if (self::$filterByEnv and seasar::container::Config::$ENVIRONMENT !== null) {
-            if (self::$envPrefix === null) {
-                # 環境変数が「test」の場合、「Test」をプレフィックス値とする
-                $envPrefix = ucfirst(strtolower(seasar::container::Config::$ENVIRONMENT));
-            } else {
-                $envPrefix = ucfirst(strtolower(self::$envPrefix));
-            }
-        } else {
-            return $items;
-        }
-        $classes = array();
-        foreach ($items as $item) {
-            $envClassName = $envPrefix . $item;
-            if (in_array($envClassName, $items)) {
-                continue;
-            } else {
-                $classes[] = $item;
-            }
-        }
-        return $classes;
-    }
-
-    /**
      * includeパターン、excludeパターンによってフィルタします。
      *
      * @param array $items
@@ -645,23 +589,6 @@ class S2ApplicationContext {
     }
 
     /**
-     * includeパターンを追加します。
-     *
-     * @param string $pattern
-     */
-    public static function addIncludePattern($pattern) {
-        if (is_string($pattern)) {
-            if (0 === strpos($pattern, '/')) {
-                self::$includePattern[] = $pattern;
-            } else {
-                self::$includePattern[] = "/$pattern/";
-            }
-        } else {
-            throw new ::InvalidArgumentException('expected string.');
-        }
-    }
-
-    /**
      * includeパターンを返します。
      *
      * @return array
@@ -673,36 +600,28 @@ class S2ApplicationContext {
     /**
      * includeパターンをセットします。
      *
-     * @param array|string $pattern
+     * @param string|array $pattern
      */
-    public static function setIncludePattern($pattern = array()) {
-        if (is_string($pattern)) {
-            if (0 === strpos($pattern, '/')) {
-                self::$includePattern = array($pattern);
-            } else {
-                self::$includePattern = array("/$pattern/");
-            }
-        } else if (is_array($pattern)) {
-            self::$includePattern = $pattern;
+    public static function setIncludePattern($pattern) {
+        $delimiter = seasar::Config::$PREG_DELIMITER;
+        if (0 === strpos($pattern, $delimiter)) {
+            self::$includePattern = array($pattern);
         } else {
-            throw new ::InvalidArgumentException('expected array|string.');
+            self::$includePattern = array($delimiter . $pattern . $delimiter);
         }
     }
 
     /**
-     * excludeパターンを追加します。
+     * includeパターンを追加します。
      *
      * @param string $pattern
      */
-    public static function addExcludePattern($pattern) {
-        if (is_string($pattern)) {
-            if (0 === strpos($pattern, '/')) {
-                self::$excludePattern[] = $pattern;
-            } else {
-                self::$excludePattern[] = "/$pattern/";
-            }
+    public static function addIncludePattern($pattern) {
+        $delimiter = seasar::Config::$PREG_DELIMITER;
+        if (0 === strpos($pattern, $delimiter)) {
+            self::$includePattern[] = $pattern;
         } else {
-            throw new ::InvalidArgumentException('expected string.');
+            self::$includePattern[] = $delimiter . $pattern . $delimiter;
         }
     }
 
@@ -718,38 +637,29 @@ class S2ApplicationContext {
     /**
      * excludeパターンをセットします。
      *
-     * @param array $pattern
+     * @param string $pattern
      */
-    public static function setExcludePattern($pattern = array()) {
-        if (is_string($pattern)) {
-            if (0 === strpos($pattern, '/')) {
-                self::$excludePattern = array($pattern);
-            } else {
-                self::$excludePattern = array("/$pattern/");
-            }
-        } else if (is_array($pattern)) {
-            self::$excludePattern = $pattern;
+    public static function setExcludePattern($pattern) {
+        $delimiter = seasar::Config::$PREG_DELIMITER;
+        if (0 === strpos($pattern, $delimiter)) {
+            self::$excludePattern = array($pattern);
         } else {
-            throw new ::InvalidArgumentException('expected array|string.');
+            self::$excludePattern = array($delimiter . $pattern . $delimiter);
         }
     }
 
     /**
-     * 環境フィルタを適用するかどうかを設定します。
+     * excludeパターンを追加します。
      *
-     * @param boolean $val
+     * @param string $pattern
      */
-    public static function setFilterByEnv($val = true) {
-        self::$filterByEnv = $val;
-    }
-
-    /**
-     * 環境フィルタを適用した場合のクラスプレフィックス名を設定します。
-     *
-     * @param string $val
-     */
-    public static function setEnvPrefix($val = null) {
-        self::$envPrefix = $val;
+    public static function addExcludePattern($pattern) {
+        $delimiter = seasar::Config::$PREG_DELIMITER;
+        if (0 === strpos($pattern, $delimiter)) {
+            self::$excludePattern[] = $pattern;
+        } else {
+            self::$excludePattern[] = $delimiter . $pattern . $delimiter;
+        }
     }
 
     /**

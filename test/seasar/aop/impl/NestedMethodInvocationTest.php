@@ -29,7 +29,7 @@ class NestedMethodInvocationTest extends ::PHPUnit_Framework_TestCase {
     public function testChainInvocation() {
         $targetRef = new ReflectionClass('seasar::aop::impl::A_NestedMethodInvocation');
         $interceptor = new seasar::aop::interceptor::InterceptorChain;
-        $pointcut = new seasar::aop::Pointcut('.+');
+        $pointcut = new seasar::aop::Pointcut('/.+/');
         $aspects = array(new seasar::aop::Aspect($interceptor, $pointcut));
         $targetOjb = seasar::aop::S2AopFactory::create($targetRef, $aspects, array());
         $targetOjb->service();
@@ -42,7 +42,7 @@ class NestedMethodInvocationTest extends ::PHPUnit_Framework_TestCase {
     public function testPrameter() {
         $targetRef = new ReflectionClass('seasar::aop::impl::A_NestedMethodInvocation');
         $interceptor = new B_NestedMethodInvocation;
-        $pointcut = new seasar::aop::Pointcut('.+');
+        $pointcut = new seasar::aop::Pointcut('/.+/');
         $aspects = array(new seasar::aop::Aspect($interceptor, $pointcut));
         $targetOjb = seasar::aop::S2AopFactory::create($targetRef, $aspects, array(), array('name' => 'hoge'));
         $targetOjb->service();

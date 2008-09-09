@@ -4,7 +4,6 @@ define('S2CONTAINER_ROOT_DIR', ROOT_DIR);
 require_once(ROOT_DIR . '/classes/seasar/util/ClassLoader.php');
 seasar::util::ClassLoader::$CLASSES = array();
 seasar::util::ClassLoader::import(ROOT_DIR . DIRECTORY_SEPARATOR . 'classes' . DIRECTORY_SEPARATOR . 'seasar', $namespace = array('seasar'));
-seasar::util::ClassLoader::import(ROOT_DIR . DIRECTORY_SEPARATOR . 'classes' . DIRECTORY_SEPARATOR . 'legacy', $namespace = array(), true);
 $coreClasses = getCoreClasses();
 genCoreFile($coreClasses);
 setupClassLoader($coreClasses);

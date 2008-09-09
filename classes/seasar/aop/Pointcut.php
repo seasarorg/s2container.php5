@@ -36,13 +36,14 @@ final class Pointcut {
      *                      ReflectionClassの場合は、そのクラスが実装しているインターフェースのメソッドがPointcutとなります。
      */
     public function __construct($target) {
+        $delimiter = seasar::Config::$PREG_DELIMITER;
         if ($target instanceof ReflectionClass) {
             $this->setupMethodNames($target);
         } else if (is_string($target)) {
-            if (0 === strpos($target, '/')) {
+            if (0 === strpos($target, $delimiter)) {
                 $this->methodNamePattern = $target;
             } else {
-                $this->methodNamePattern = "/$target/";
+                $this->methodNamePattern = $delimiter . $target . $delimiter;
             }
             $this->isRegex = true;
         } else {

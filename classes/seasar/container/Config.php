@@ -49,13 +49,6 @@ abstract class Config {
     const NS_SEP = '\.';
 
     /**
-     * 環境を指定します。
-     *
-     * @var string
-     */
-    public static $ENVIRONMENT = null;
-
-    /**
      * S2ContainerBuilderをファイルの拡張子ごとに設定します。
      *
      * @var array

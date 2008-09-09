@@ -57,10 +57,6 @@ class S2ContainerFactory {
      * @see seasar::conatiner::factory::S2ContainerFactory::create()
      */
     private static function createInternal($path) {
-        if (seasar::container::Config::$ENVIRONMENT !== null) {
-             $path = self::getEnvDicon($path);
-        }
-
         self::enter($path);
         $ext = pathinfo($path, PATHINFO_EXTENSION);
         $container = null;
@@ -82,10 +78,6 @@ class S2ContainerFactory {
      * @param string $path ダイコンファイルのパス
      */
     public static function includeChild(seasar::container::S2Container $parent, $path) {
-        if (seasar::container::Config::$ENVIRONMENT !== null) {
-             $path = self::getEnvDicon($path);
-        }
-
         self::enter($path);
         $root = $parent->getRoot();
         $child = null;
@@ -150,21 +142,5 @@ class S2ContainerFactory {
      */
     private static function leave($path) {
         array_pop(self::$processingPaths);
-    }
-
-    /**
-     * 環境情報をダイコンファイルに適用したダイコンファイルを返します。
-     *
-     * @param string $path
-     * @return string
-     */
-    private static function getEnvDicon($path) {
-        $pattern = '/\./';
-        $replacement = '_' . seasar::container::Config::$ENVIRONMENT . '.';
-        $envDicon = dirname($path) . DIRECTORY_SEPARATOR . preg_replace($pattern, $replacement, basename($path), 1);
-        if (is_readable($envDicon)) {
-            return $envDicon;
-        }
-        return $path;
     }
 }

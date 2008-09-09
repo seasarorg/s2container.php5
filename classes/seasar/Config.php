@@ -33,4 +33,7 @@ abstract class Config {
     public static $DEBUG_VERBOSE   = false;
     public static $SIMPLE_LOG_FILE = null;
     public static $LOGGER_FACTORY  = 'seasar::log::impl::SimpleLoggerFactory';
+
+    /** preg関数で使用する正規表現の区切り文字を指定します。*/
+    public static $PREG_DELIMITER  = '/';
 }
