@@ -1287,11 +1287,11 @@ $bar = $exampleContainer->getComponent('Bar');
    <sbr/>
    <blockquote><formalpara><title>setIncludePattern メソッド</title>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-S2ApplicationContext::setIncludePattern($pattern = array())
+S2ApplicationContext::setIncludePattern($pattern)
 ]]></programlisting>
       <blockquote>
         <itemizedlist>
-          <listitem>第1引数 : 正規表現文字列、またはその配列</listitem>
+          <listitem>第1引数 : 正規表現文字列</listitem>
         </itemizedlist>
       </blockquote>
       <para>
@@ -1322,7 +1322,7 @@ S2ApplicationContext::setExcludePattern($pattern)
 ]]></programlisting>
       <blockquote>
         <itemizedlist>
-          <listitem>第1引数 : 正規表現文字列、またはその配列</listitem>
+          <listitem>第1引数 : 正規表現文字列</listitem>
         </itemizedlist>
       </blockquote>
       <para>
@@ -1346,23 +1346,6 @@ S2ApplicationContext::addEcludePattern($pattern)
       </para>
    </formalpara></blockquote>
 
-   <sbr/>
-   <blockquote><formalpara><title>Emvironment Filter</title>
-<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-S2ApplicationContext::setFilterByEnv($val = true)
-]]></programlisting>
-      <blockquote>
-        <itemizedlist>
-          <listitem>第1引数 : bool値</listitem>
-        </itemizedlist>
-      </blockquote>
-      <para>
-            環境設定によりインクルードするコンポーネントを選択します。この機能はデフォルトで有効化されています。この機能を無効化する場合は、次のメソッドで設定できます。
-             例として、seasar::container::Config::$ENVIRONMENTが"mock"と定義されている場合、インポートされたクラスに、Hogeクラスと
-      MockHogeクラスが存在すると、MockHogeクラスのみ選択します。
-      </para>
-   </formalpara></blockquote>
-
     <sbr/>
     <sect2 id="dicon.application.autoaspect"><title>自動アスペクト</title>
        <para>コンポーネントの選択でインクルードされたコンポーネントに対して、自動的にアスペクトを適用します。</para>
@@ -1373,7 +1356,7 @@ S2ApplicationContext::registerAspect($componentPattern, $interceptor, $pointcut 
         <itemizedlist>
           <listitem>第1引数 : コンポーネント名またはコンポーネントクラス名にパターンマッチする正規表現文字列</listitem>
           <listitem>第2引数 : Interceptorコンポーネント名、またはExpression</listitem>
-          <listitem>第3引数 : ポイントカットをカンマ区切りで指定</listitem>
+          <listitem>第3引数 : ポイントカットを正規表現文字列で指定</listitem>
         </itemizedlist>
       </blockquote>
       <para>
@@ -1487,7 +1470,7 @@ class IndexAction {
           <listitem>引数
             <itemizedlist>
                <listitem>interceptor : Interceptorコンポーネント名、またはExpression</listitem>
-               <listitem>pointcut : ポイントカットをカンマ区切りで指定</listitem>
+               <listitem>pointcut : ポイントカットを正規表現文字列で指定</listitem>
             </itemizedlist>
           </listitem>
           <listitem>注釈ポイント : クラス、メソッド</listitem>
@@ -1987,7 +1970,7 @@ $barService = $container->getComponent('bar.service');
       <blockquote>
         <para>pointcut属性 (任意)</para>
         <blockquote>
-          pointcut属性にカンマ区切りで対象となるメソッド名を指定することができます。メソッド名には正規表現が使用可能です。
+          pointcut属性にアスペクト対象となるメソッド名を指定することができます。メソッド名には正規表現が使用可能です。
           pointcut属性を指定しない場合は、コンポーネントがインターフェースを実装している場合は、すべてのabstractメソッドが対象となります。
                     コンポーネントがインターフェースを一つも実装していない場合は、そのクラスが実装しているすべてのpublicメソッドが対象となります。
                     コンポーネントが実装しているインターフェースのすべてのメソッドが対象になります。
@@ -2053,14 +2036,6 @@ seasar::container::Config::$DOM_VALIDATE = false;
 seasar::container::Config::$CONTAINER_BUILDERS = array(
                       'dicon' => 'seasar::container::factory::XmlS2ContainerBuilder',
                       'xml'   => 'seasar::container::factory::XmlS2ContainerBuilder');
-]]></programlisting>
-
-        <formalpara><title>ENVIRONMENT</title></formalpara>
-        <para>
-                環境を指定します。この値はS2ApplicationContextやS2ContainerFactoryクラスでコンテナを生成する際に使用されます。
-        </para>
-<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-seasar::container::Config::$ENVIRONMENT = null;
 ]]></programlisting>
 
         <formalpara><title>PROPERTY_TYPEHINT_NULL</title></formalpara>

@@ -140,7 +140,7 @@ $result = $service->add(2, 3);
 seasar::aop::Pointcut::__construct($target)
 ]]></programlisting>
         <para>
-          The regular expression character string which specifies Pointcut (or its Array),
+          The regular expression character string which specifies Pointcut,
           or ReflectionClass is passed to $target of a constructor argument.
           If ReflectionClass is passed, and if the class implements abstract method, all the abstract method is be Pointcut.
           If the class does not implement abstract method at all, all the public method implemented in the class except the following conditions is be Pointcut.

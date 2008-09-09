@@ -1345,11 +1345,11 @@ $bar = $exampleContainer->getComponent('Bar');
    <sbr/>
    <blockquote><formalpara><title>setIncludePattern method definition</title>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-S2ApplicationContext::setIncludePattern($pattern = array())
+S2ApplicationContext::setIncludePattern($pattern)
 ]]></programlisting>
       <blockquote>
         <itemizedlist>
-          <listitem>The 1st argument : A regular expression string or its array</listitem>
+          <listitem>The 1st argument : A regular expression string</listitem>
         </itemizedlist>
       </blockquote>
       <para>
@@ -1381,7 +1381,7 @@ S2ApplicationContext::setExcludePattern($pattern)
 ]]></programlisting>
       <blockquote>
         <itemizedlist>
-          <listitem>The 1st argument : A regular expression string or its array</listitem>
+          <listitem>The 1st argument : A regular expression string</listitem>
         </itemizedlist>
       </blockquote>
       <para>
@@ -1406,25 +1406,6 @@ S2ApplicationContext::addEcludePattern($pattern)
       </para>
    </formalpara></blockquote>
 
-   <sbr/>
-   <blockquote><formalpara><title>Emvironment Filter</title>
-<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-S2ApplicationContext::setFilterByEnv($val = true)
-]]></programlisting>
-      <blockquote>
-        <itemizedlist>
-          <listitem>The 1st argument :  boolean</listitem>
-        </itemizedlist>
-      </blockquote>
-      <para>
-            The component to include is chosen by environment configuration.
-            This function is enabled by the default.
-            <!-- If turn off this function, it can set up by the following method.-->
-            As an example, if seasar::container::Config::$ENVIRONMENT is defined as "mock",
-            only a MockHoge class is chosen when a Hoge class and a MockHoge class exist in the imported class.
-      </para>
-   </formalpara></blockquote>
-
     <sbr/>
     <sect2 id="dicon.application.autoaspect"><title>Auto Aspect</title>
        <para>
@@ -1437,7 +1418,7 @@ S2ApplicationContext::registerAspect($componentPattern, $interceptor, $pointcut 
         <itemizedlist>
           <listitem>The 1st argument : The regular expression string which carries out a pattern match at a component name or a component class name.</listitem>
           <listitem>The 2nd argument : Interceptor component name, or its Expression</listitem>
-          <listitem>The 3rd argument : Pointcut is specified by comma separated values.</listitem>
+          <listitem>The 3rd argument : Pointcut is specified by a regular expression character string.</listitem>
         </itemizedlist>
       </blockquote>
       <para>
@@ -1555,7 +1536,7 @@ class IndexAction {
           <listitem>Arguments
             <itemizedlist>
                <listitem>interceptor : Interceptor component name, or PHP Expression</listitem>
-               <listitem>pointcut : A Pointcut is specified by comma separated values.</listitem>
+               <listitem>pointcut : A Pointcut is specified by a regular expression character string.</listitem>
             </itemizedlist>
           </listitem>
           <listitem>Annotation point : class, method</listitem>
@@ -2086,7 +2067,7 @@ $barService = $container->getComponent('bar.service');
       <blockquote>
         <para>pointcut attribute</para>
         <blockquote>
-          The aspect target method name is specified as pointcut attribute by comma separated values.
+          The aspect target method name is specified as pointcut attribute.
           A regular expression can be used for a method name.
           When not specifying pointcut attribute, the following target method is chosen.
           <itemizedlist>
@@ -2175,15 +2156,6 @@ seasar::container::Config::$DOM_VALIDATE = false;
 seasar::container::Config::$CONTAINER_BUILDERS = array(
                       'dicon' => 'seasar::container::factory::XmlS2ContainerBuilder',
                       'xml'   => 'seasar::container::factory::XmlS2ContainerBuilder');
-]]></programlisting>
-
-        <formalpara><title>ENVIRONMENT</title></formalpara>
-        <para>
-          Environment is specified.
-          This value is used when generating a container in S2ApplicationContext class or S2ContainerFactory class.
-        </para>
-<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-seasar::container::Config::$ENVIRONMENT = null;
 ]]></programlisting>
 
         <formalpara><title>PROPERTY_TYPEHINT_NULL</title></formalpara>

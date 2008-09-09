@@ -127,7 +127,7 @@ $result = $service->add(2, 3);
 seasar::aop::Pointcut::__construct($target)
 ]]></programlisting>
         <para>
-                コンストラクタ引数の$targetには、Pointcutを指定する正規表現文字列(配列)、またはReflectionClassを渡します。
+                コンストラクタ引数の$targetには、Pointcutを指定する正規表現文字列、またはReflectionClassを渡します。
         ReflectionClassの場合は、そのクラスが実装している Abstract Public メソッドがPointcutとなります。
                 インターフェースを実装していない場合は、クラスのすべての Public メソッドで次の条件を除くメソッドが対象になります。
         </para>

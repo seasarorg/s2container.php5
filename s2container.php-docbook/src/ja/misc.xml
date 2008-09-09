@@ -76,6 +76,15 @@
               </entry>
             </row>
             <row>
+              <entry>Pointcut の指定</entry>
+              <entry>
+                              カンマ区切りで複数指定可 (例 .+Dao,.+Service)
+              </entry>
+              <entry>
+                              単一指定 (例 /.+Dao$/ )
+              </entry>
+            </row>
+            <row>
               <entry>ClassLoader</entry>
               <entry>S2ContainerClassLoader、S2ContainerApplicationContext クラス</entry>
               <entry><link linkend="misc.classloader">seasar::util::ClassLoader クラス</link></entry>
@@ -114,6 +123,11 @@
               <entry>コンポーネントの登録名</entry>
               <entry>コンポーネント名、クラス名</entry>
               <entry><link linkend="dicon.s2container.component">コンポーネント名、namespace付きクラス名、クラス名、先頭が小文字のクラス名</link></entry>
+            </row>
+            <row>
+              <entry>環境指定</entry>
+              <entry>有り</entry>
+              <entry>無し</entry>
             </row>
           </tbody>
         </tgroup>

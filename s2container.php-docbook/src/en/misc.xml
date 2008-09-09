@@ -50,7 +50,7 @@
               <entry><link linkend="misc.annotation">unifies to seasar::util:Annotation class</link></entry>
             </row>
             <row>
-              <entry>バンドル Interceptor</entry>
+              <entry>Attached Interceptor</entry>
               <entry>
                 S2Container_TraceInterceptor <sbr/>
                 S2Container_MockInterceptor <sbr/>
@@ -67,7 +67,7 @@
               </entry>
             </row>
             <row>
-              <entry>default Pointcut</entry>
+              <entry>Default Pointcut</entry>
               <entry>
                 All the public methods of implemented Interface. Nothing when Interceptor is not implemented at all.
               </entry>
@@ -75,6 +75,15 @@
                 All the public methods of implemented Interface.
                 If Interface is not implemented at all, they are all the methods which the class implements.
                 However, the method from which a name begins in set, get, and is is excepted.
+              </entry>
+            </row>
+            <row>
+              <entry>Setup of Pointcut</entry>
+              <entry>
+                More than one can be specified by comma separated values. (example .+Dao,.+Service)
+              </entry>
+              <entry>
+                Single specification (example /.+Dao$/ )
               </entry>
             </row>
             <row>
@@ -120,6 +129,11 @@
               <entry>The registration name of component</entry>
               <entry>component name, class name</entry>
               <entry><link linkend="dicon.s2container.component">component name, class name with namespace, class name, class name which first letter is lowercased</link></entry>
+            </row>
+            <row>
+              <entry>Setup of Environment</entry>
+              <entry>availavle</entry>
+              <entry>none</entry>
             </row>
           </tbody>
         </tgroup>
