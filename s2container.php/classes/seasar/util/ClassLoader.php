@@ -138,6 +138,4 @@ seasar::util::ClassLoader::$CLASSES = array(
     'seasar::exception::PropertyNotFoundRuntimeException' => S2CONTAINER_ROOT_DIR . '/classes/seasar/exception/PropertyNotFoundRuntimeException.php',
     'seasar::exception::UnsupportedOperationException' => S2CONTAINER_ROOT_DIR . '/classes/seasar/exception/UnsupportedOperationException.php',
     'seasar::util::ClassLoader' => S2CONTAINER_ROOT_DIR . '/classes/seasar/util/ClassLoader.php',
-    'seasar::util::MethodUtil' => S2CONTAINER_ROOT_DIR . '/classes/seasar/util/MethodUtil.php',
-    'S2ContainerApplicationContext' => S2CONTAINER_ROOT_DIR . '/classes/legacy/S2ContainerApplicationContext.php',
-    'S2ContainerFactory' => S2CONTAINER_ROOT_DIR . '/classes/legacy/S2ContainerFactory.php');
+    'seasar::util::MethodUtil' => S2CONTAINER_ROOT_DIR . '/classes/seasar/util/MethodUtil.php');

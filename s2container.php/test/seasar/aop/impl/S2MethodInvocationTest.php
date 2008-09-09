@@ -29,7 +29,7 @@ class S2MethodInvocationTest extends ::PHPUnit_Framework_TestCase {
     public function testPrameter() {
         $targetRef = new ReflectionClass('seasar::aop::impl::A_S2MethodInvocation');
         $interceptor = new B_S2MethodInvocation;
-        $pointcut = new seasar::aop::Pointcut('.+');
+        $pointcut = new seasar::aop::Pointcut('/.+/');
         $aspects = array(new seasar::aop::Aspect($interceptor, $pointcut));
         $targetOjb = seasar::aop::S2AopFactory::create($targetRef, $aspects, array(), array('name' => 'hoge'));
         $targetOjb->service();

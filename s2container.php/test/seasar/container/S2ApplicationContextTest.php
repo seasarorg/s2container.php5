@@ -106,7 +106,8 @@ class S2ApplicationContextTest extends ::PHPUnit_Framework_TestCase {
 
         S2ApplicationContext::$CLASSES = array();
         S2ApplicationContext::import($this->sampleDir);
-        S2ApplicationContext::setIncludePattern(array());
+        S2ApplicationContext::$includePattern = array();
+        //S2ApplicationContext::setIncludePattern(array());
         S2ApplicationContext::addExcludePattern('/Hoge_/');
         $container = S2ApplicationContext::create();
         $this->assertTrue($container instanceof S2Container);
@@ -122,8 +123,10 @@ class S2ApplicationContextTest extends ::PHPUnit_Framework_TestCase {
         $this->assertTrue($container->getComponentDefSize() == 1);
 
         S2ApplicationContext::$CLASSES = array();
-        S2ApplicationContext::setIncludePattern();
-        S2ApplicationContext::setExcludePattern();
+        S2ApplicationContext::$includePattern = array();
+        S2ApplicationContext::$excludePattern = array();
+        //S2ApplicationContext::setIncludePattern();
+        //S2ApplicationContext::setExcludePattern();
         S2ApplicationContext::import($this->sampleDir);
         $container = S2ApplicationContext::create();
         $this->assertTrue($container instanceof S2Container);
@@ -147,8 +150,10 @@ class S2ApplicationContextTest extends ::PHPUnit_Framework_TestCase {
     }
 
     public function testFilter(){
-        S2ApplicationContext::setIncludePattern(array());
-        S2ApplicationContext::setExcludePattern(array());
+        S2ApplicationContext::$includePattern = array();
+        S2ApplicationContext::$excludePattern = array();
+        //S2ApplicationContext::setIncludePattern(array());
+        //S2ApplicationContext::setExcludePattern(array());
 
         $items = array('A', 'B', 'C');
         $filtered = S2ApplicationContext::filter($items);
@@ -164,32 +169,11 @@ class S2ApplicationContextTest extends ::PHPUnit_Framework_TestCase {
         $filtered = S2ApplicationContext::filter($items);
         $this->assertEquals(array('A'), $filtered);
 
-        S2ApplicationContext::setIncludePattern(array());
+        //S2ApplicationContext::setIncludePattern(array());
+        S2ApplicationContext::$includePattern = array();
         S2ApplicationContext::setExcludePattern('/B/');
         $filtered = S2ApplicationContext::filter($items);
         $this->assertEquals(array('A', 'C'), $filtered);
-    }
-
-    public function testEnvFilter(){
-        $items = array('A', 'B', 'C');
-        $filtered = S2ApplicationContext::envFilter($items);
-        $this->assertEquals($items, $filtered);
-        
-        seasar::container::Config::$ENVIRONMENT = 'mock';
-        $items = array('MockA', 'A', 'B', 'C');
-        $filtered = S2ApplicationContext::envFilter($items);
-        $this->assertEquals(array('MockA', 'B', 'C'), $filtered);
-
-        S2ApplicationContext::setEnvPrefix('test');
-        $items = array('TestA', 'A', 'MockB', 'B', 'C');
-        $filtered = S2ApplicationContext::envFilter($items);
-        $this->assertEquals(array('TestA', 'MockB', 'B', 'C'), $filtered);
-
-        S2ApplicationContext::setFilterByEnv(false);
-        $filtered = S2ApplicationContext::envFilter($items);
-        $this->assertEquals(array('TestA', 'A', 'MockB', 'B', 'C'), $filtered);
-
-        seasar::container::Config::$ENVIRONMENT = null;
     }
 
     public function testReadParentAnnotation(){

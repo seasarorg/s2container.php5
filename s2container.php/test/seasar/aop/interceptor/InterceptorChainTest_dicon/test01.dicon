@@ -3,7 +3,7 @@
 "components21.dtd">
 <components>
     <component name="a" class="seasar::aop::interceptor::A_InterceptorChainTest">
-        <aspect pointcut=".+">chain</aspect>
+        <aspect pointcut="/.+/">chain</aspect>
     </component>
     <component name="chain" class="seasar::aop::interceptor::InterceptorChain">
         <initMethod name="add"><arg>trace</arg></initMethod>
