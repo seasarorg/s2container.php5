@@ -193,14 +193,14 @@ class S2ApplicationContextTest extends ::PHPUnit_Framework_TestCase {
     public function testRegisterAspect(){
         S2ApplicationContext::init();
         S2ApplicationContext::$CLASSES[__NAMESPACE__ . '::AppTestE_S2ApplicationContextTest'] = '';
-        S2ApplicationContext::registerAspect('/AppTestE_/', 'new seasar::aop::interceptor::TraceInterceptor', 'hoge');
+        S2ApplicationContext::registerAspect('/AppTestE_/', 'new seasar::aop::interceptor::TraceInterceptor', '/^hoge$/');
         $container = S2ApplicationContext::create();
         $e = $container->getComponent(__NAMESPACE__ . '::AppTestE_S2ApplicationContextTest');
         $this->assertTrue($e instanceof seasar::container::AppTestE_S2ApplicationContextTest_EnhancedByS2AOP);
 
         S2ApplicationContext::$CLASSES[__NAMESPACE__ . '::AppTestE_S2ApplicationContextTest'] = '';
         S2ApplicationContext::$CLASSES[__NAMESPACE__ . '::AppTestF_S2ApplicationContextTest'] = '';
-        S2ApplicationContext::registerAspect('/AppTestE_/', 'new seasar::aop::interceptor::TraceInterceptor', 'hoge');
+        S2ApplicationContext::registerAspect('/AppTestE_/', 'new seasar::aop::interceptor::TraceInterceptor', '/^hoge$/');
         $container = S2ApplicationContext::create();
         $e = $container->getComponent(__NAMESPACE__ . '::AppTestE_S2ApplicationContextTest');
         $f = $container->getComponent('annoTestF');
@@ -210,7 +210,7 @@ class S2ApplicationContextTest extends ::PHPUnit_Framework_TestCase {
         S2ApplicationContext::init();
         S2ApplicationContext::$CLASSES[__NAMESPACE__ . '::AppTestE_S2ApplicationContextTest'] = '';
         S2ApplicationContext::$CLASSES[__NAMESPACE__ . '::AppTestF_S2ApplicationContextTest'] = '';
-        S2ApplicationContext::registerAspect('/AppTestE_/', 'new seasar::aop::interceptor::TraceInterceptor', 'hoge');
+        S2ApplicationContext::registerAspect('/AppTestE_/', 'new seasar::aop::interceptor::TraceInterceptor', '/^hoge$/');
         S2ApplicationContext::registerAspect('/annoTestF/', 'new seasar::aop::interceptor::TraceInterceptor');
         $container = S2ApplicationContext::create();
         $e = $container->getComponent(__NAMESPACE__ . '::AppTestE_S2ApplicationContextTest');

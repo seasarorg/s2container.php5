@@ -37,7 +37,7 @@ class S2AopFactoryTest extends ::PHPUnit_Framework_TestCase {
     public function testB() {
         $targetRef = new ReflectionClass('seasar::aop::B_S2AopFactory');
         $interceptor = new seasar::aop::interceptor::TraceInterceptor;
-        $pointcut = new Pointcut('^service$');
+        $pointcut = new Pointcut('/^service$/');
         $aspects = array(new Aspect($interceptor, $pointcut));
         $targetObj = S2AopFactory::create($targetRef, $aspects, array());
         $targetObj->service();
