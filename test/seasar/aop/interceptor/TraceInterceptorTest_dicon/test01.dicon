@@ -3,6 +3,6 @@
 "components21.dtd">
 <components>
     <component name="a" class="seasar::aop::interceptor::A_TraceInterceptorTest">
-        <aspect pointcut=".+"><component class="seasar::aop::interceptor::TraceInterceptor"/></aspect>
+        <aspect pointcut="/.+/"><component class="seasar::aop::interceptor::TraceInterceptor"/></aspect>
     </component>
 </components>

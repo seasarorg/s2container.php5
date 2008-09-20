@@ -45,7 +45,7 @@ class PointcutTest extends ::PHPUnit_Framework_TestCase {
     }
 
     public function testIsAppliedRegext() {
-        $pc = new Pointcut('pm1');
+        $pc = new Pointcut('/pm1/');
         $this->assertTrue($pc->isApplied('pm1'));
         $this->assertFalse($pc->isApplied('pm2'));
 
@@ -53,20 +53,20 @@ class PointcutTest extends ::PHPUnit_Framework_TestCase {
         $this->assertTrue($pc->isApplied('pm1'));
         $this->assertFalse($pc->isApplied('pm2'));
 
-        $pc = new Pointcut('^a');
+        $pc = new Pointcut('/^a/');
         $this->assertTrue($pc->isApplied('abs'));
         $this->assertFalse($pc->isApplied('deb'));
 
-        $pc = new Pointcut('b$');
+        $pc = new Pointcut('/b$/');
         $this->assertFalse($pc->isApplied('abs'));
         $this->assertTrue($pc->isApplied('deb'));
 
-        $pc = new Pointcut('^(!?a)');
+        $pc = new Pointcut('/^(!?a)/');
         $this->assertTrue($pc->isApplied('abs'));
         $this->assertFalse($pc->isApplied('deb'));
         $this->assertFalse($pc->isApplied('om'));
 
-        $pc = new Pointcut('(!?a)$');
+        $pc = new Pointcut('/(!?a)$/');
         $this->assertFalse($pc->isApplied('abs'));
         $this->assertTrue($pc->isApplied('aba'));
     }

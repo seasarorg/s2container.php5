@@ -495,7 +495,7 @@ class S2ApplicationContext {
             seasar::log::S2Logger::getLogger(__CLASS__)->debug("method aspect annotation found. cannot get values.", __METHOD__);
             return;
         }
-        $annoInfo['pointcut'] = '^' . $methodRef->getName() . '$';
+        $annoInfo['pointcut'] = '/^' . $methodRef->getName() . '$/';
         self::setupAspectDef($cd, $annoInfo);
     }
 
@@ -602,13 +602,8 @@ class S2ApplicationContext {
      *
      * @param string|array $pattern
      */
-    public static function setIncludePattern($pattern) {
-        $delimiter = seasar::Config::$PREG_DELIMITER;
-        if (0 === strpos($pattern, $delimiter)) {
-            self::$includePattern = array($pattern);
-        } else {
-            self::$includePattern = array($delimiter . $pattern . $delimiter);
-        }
+    public static function setIncludePattern($pattern = array()) {
+        self::$includePattern = array($pattern);
     }
 
     /**
@@ -617,12 +612,7 @@ class S2ApplicationContext {
      * @param string $pattern
      */
     public static function addIncludePattern($pattern) {
-        $delimiter = seasar::Config::$PREG_DELIMITER;
-        if (0 === strpos($pattern, $delimiter)) {
-            self::$includePattern[] = $pattern;
-        } else {
-            self::$includePattern[] = $delimiter . $pattern . $delimiter;
-        }
+        self::$includePattern[] = $pattern;
     }
 
     /**
@@ -639,13 +629,8 @@ class S2ApplicationContext {
      *
      * @param string $pattern
      */
-    public static function setExcludePattern($pattern) {
-        $delimiter = seasar::Config::$PREG_DELIMITER;
-        if (0 === strpos($pattern, $delimiter)) {
-            self::$excludePattern = array($pattern);
-        } else {
-            self::$excludePattern = array($delimiter . $pattern . $delimiter);
-        }
+    public static function setExcludePattern($pattern = array()) {
+        self::$excludePattern = array($pattern);
     }
 
     /**
@@ -654,12 +639,7 @@ class S2ApplicationContext {
      * @param string $pattern
      */
     public static function addExcludePattern($pattern) {
-        $delimiter = seasar::Config::$PREG_DELIMITER;
-        if (0 === strpos($pattern, $delimiter)) {
-            self::$excludePattern[] = $pattern;
-        } else {
-            self::$excludePattern[] = $delimiter . $pattern . $delimiter;
-        }
+        self::$excludePattern[] = $pattern;
     }
 
     /**
