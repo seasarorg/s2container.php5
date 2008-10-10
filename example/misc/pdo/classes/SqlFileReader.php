@@ -1,6 +1,6 @@
 <?php
 /**
- * @S2Component('available' => false)
+ * @S2Component('available' => false);
  */
 class SqlFileReader {
     /**

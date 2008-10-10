@@ -1,7 +1,7 @@
 <?php
 /**
  * @S2Component('name'      => 'interceptor',
- *              'namespace' => 'pdo')
+ *              'namespace' => 'pdo');
  */
 class PdoInterceptor implements seasar::aop::MethodInterceptor {
 
@@ -11,8 +11,7 @@ class PdoInterceptor implements seasar::aop::MethodInterceptor {
     public $container = 's2binding';
 
     /**
-     * @S2Pdo('pdo'       => 'PDOコンポーネントの名前',
-     *        'available' => 'DAOメソッドとして使用するかどうか(boolean)')
+     * @S2Pdo('pdo' => 'PDOコンポーネントの名前');
      */
     const ANNOTATION = '@S2Pdo';
 
@@ -25,33 +24,12 @@ class PdoInterceptor implements seasar::aop::MethodInterceptor {
      * @see seasar::aop::MethodInterceptor::invoke()
      */
     public function invoke(seasar::aop::MethodInvocation $invocation) {
-        if ($this->isAvailable($invocation->getMethod())) {
-            if ($invocation->getMethod()->isAbstract()) {
-                $result = null;
-            } else {
-                $result = $invocation->proceed();
-            }
-            return $this->execute($result, $invocation);
+        if ($invocation->getMethod()->isAbstract()) {
+            $result = null;
         } else {
-            return $invocation->proceed();
+            $result = $invocation->proceed();
         }
-    }
-
-    /**
-     * ターゲットメソッドがDaoメソッドとして使用可能かどうかを確認します。
-     * ターゲットメソッドの@S2Pdoアノテーションのavailable属性を調査します。
-     *
-     * @param ReflectionMethod $method
-     * @return boolean
-     */
-    public function isAvailable(ReflectionMethod $method) {
-        if (seasar::util::Annotation::has($method, self::ANNOTATION)) {
-            $pdoInfo = seasar::util::Annotation::get($method, self::ANNOTATION);
-            if (isset($pdoInfo['available']) and $pdoInfo['available'] === false) {
-                return false;
-            }
-        }
-        return true;
+        return $this->execute($result, $invocation);
     }
 
     /**
@@ -315,7 +293,7 @@ class PdoInterceptor implements seasar::aop::MethodInterceptor {
      */
     private function queryToString($query) {
         $query = preg_replace('/\/\*\s*?\*\//s', '', $query);
-        $query = preg_replace('/[\n|\r]+/s', ' ', trim($query));
+        $query = preg_replace('/[\r|\n]+/s', ' ', trim($query));
         $query = preg_replace('/\s+/', ' ', $query);
         return $query;
     }
@@ -333,5 +311,4 @@ class PdoInterceptor implements seasar::aop::MethodInterceptor {
         }
         return 'bindValues(' . implode(', ', $items) . ')';
     }
-
 }

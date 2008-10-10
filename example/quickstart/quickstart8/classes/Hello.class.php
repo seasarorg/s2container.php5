@@ -2,7 +2,7 @@
 class Hello {
     private $printer;
     /**
-     * @S2Binding('console')
+     * @S2Binding('console');
      */
     public function setPrinter($printer) {
         $this->printer = $printer;

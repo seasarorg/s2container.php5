@@ -86,17 +86,17 @@ class B_MockInterceptorTest{
 
 abstract class C_MockInterceptorTest{
     /**
-     * @S2Mock('return' => 2007)
+     * @S2Mock('return' => 2007);
      */
     abstract public function getName();
 
     /**
-     * @S2Mock('exception' => new ::Exception('annotation exception'))
+     * @S2Mock('exception' => new ::Exception('annotation exception'));
      */
     abstract public function getYear();
 
     /**
-     * @S2Mock('val' => 4321)
+     * @S2Mock('val' => 4321);
      */
     public function getValue() {
         return 1234;

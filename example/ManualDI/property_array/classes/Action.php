@@ -1,21 +1,21 @@
 <?php
 /**
- * @S2Component('autoBinding' => 'none')
+ * @S2Component('autoBinding' => 'none');
  */
 class Action {
 
     /**
-     * @S2Binding('"seasar"')
+     * @S2Binding('strval("seasar")');
      */
     public $name = null;
 
     /**
-     * @S2Binding('2000 + 8')
+     * @S2Binding('2000 + 8');
      */
     public $year = null;
 
     /**
-     * @S2Binding('ServiceA')
+     * @S2Binding('ServiceA');
      */
     public $service = 'S2Binding ServiceA[]';
 

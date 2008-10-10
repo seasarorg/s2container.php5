@@ -1,7 +1,7 @@
 <?php
 namespace sample::pdo;
 /**
- * @S2Pdo('pdo' => 'SqliteAPdo')
+ * @S2Pdo('pdo' => 'SqliteAPdo');
  */
 class CdDao {
 
@@ -20,7 +20,7 @@ class CdDao {
     }
 
     /**
-     * @S2Pdo('pdo' => 'sqliteBPdo')
+     * @S2Pdo('pdo' => 'sqliteBPdo');
      */
     public function findAllFromB() {
         return "select * from CD";
@@ -31,9 +31,6 @@ class CdDao {
     public function findBySqlFile3($condition){}
     public function findBySqlFile4($condition){}
 
-    /**
-     * @S2Pdo('available' => false)
-     */
     public function transactionalInsert() {
         try {
             $this->sqliteBPdo->beginTransaction();
@@ -45,9 +42,6 @@ class CdDao {
         }
     }
 
-    /**
-     * @S2Pdo('available' => false)
-     */
     public function sampleTransaction() {
         try {
             seasar::log::S2Logger::getInstance(__NAMESPACE__)->info('start transaction.', __METHOD__);
@@ -64,9 +58,6 @@ class CdDao {
         }
     }
 
-    /**
-     * @S2Pdo('available' => false)
-     */
     public function errorTransaction() {
         try {
             seasar::log::S2Logger::getInstance(__NAMESPACE__)->info('start transaction.', __METHOD__);
@@ -83,21 +74,21 @@ class CdDao {
     }
 
     /**
-     * @S2Pdo('pdo' => 'SqliteBPdo')
+     * @S2Pdo('pdo' => 'SqliteBPdo');
      */
     public function insert($id, $title, $content) {
         return "insert into CD values(/*:id*/5, /*:title*/'a,a a', /*:content*/'b,b b' )";
     }
 
     /**
-     * @S2Pdo('pdo' => 'SqliteBPdo')
+     * @S2Pdo('pdo' => 'SqliteBPdo');
      */
     public function updateTitle($id, $title) {
         return "update CD set title = /*:title*/'xxx' where id = /*:id*/5";
     }
 
     /**
-     * @S2Pdo('pdo' => 'SqliteBPdo')
+     * @S2Pdo('pdo' => 'SqliteBPdo');
      */
     public function delete($id) {
         return "delete from CD where id = /*:id*/5";
