@@ -50,16 +50,6 @@ class AnnotationTest extends ::PHPUnit_Framework_TestCase {
         $this->assertTrue($ret);
     }
 
-    public function testHasCommentAnnotation(){
-        $clazz = new ReflectionClass(__NAMESPACE__ . '::A_AnnotationTest');
-        $ret = Annotation::has($clazz->getMethod('hoge'), seasar::container::S2ApplicationContext::ASPECT_ANNOTATION);
-        $this->assertTrue($ret);
-        $ret = Annotation::has($clazz->getMethod('huga'), seasar::container::S2ApplicationContext::ASPECT_ANNOTATION);
-        $this->assertFalse($ret);
-        $ret = Annotation::has($clazz->getMethod('bar'), seasar::container::S2ApplicationContext::ASPECT_ANNOTATION);
-        $this->assertFalse($ret);
-    }
-
     public function testGetAnnotation(){
         $clazzB = new ReflectionClass(__NAMESPACE__ . '::AnnoTestB_AnnotationTest');
         try{
@@ -110,10 +100,84 @@ class AnnotationTest extends ::PHPUnit_Framework_TestCase {
                       * abc **/ ';
         $format = Annotation::formatCommentLine($comment);
         $this->assertEquals(trim($format), 'abc *');
+    }
 
-        //$clazzB = new ReflectionClass(__NAMESPACE__ . '::B_AnnotationTest');
-        //print_r($clazzB->getDocComment());
-        //print_r($clazzB->getMethod('bar')->getDocComment());
+    public function testGetCommentAnnotation(){
+        $clazz = new ReflectionClass(__NAMESPACE__ . '::C_AnnotationTest');
+
+        $ret = Annotation::getCommentAnnotation($clazz, seasar::container::S2ApplicationContext::ASPECT_ANNOTATION);
+        $this->assertEquals($ret['val'], 100);
+
+        $propRef = $clazz->getProperty('foo');
+        $ret = Annotation::getCommentAnnotation($propRef, seasar::container::S2ApplicationContext::ASPECT_ANNOTATION);
+        $this->assertEquals($ret['val'], 200);
+
+        $propRef = $clazz->getMethod('bar');
+        $ret = Annotation::getCommentAnnotation($propRef, seasar::container::S2ApplicationContext::ASPECT_ANNOTATION);
+        $this->assertEquals($ret['val'], 300);
+
+        try{
+            $ret = Annotation::getCommentAnnotation($clazz, seasar::container::S2ApplicationContext::BINDING_ANNOTATION);
+            $this->fail();
+        } catch(Exception $e) {
+            print $e->getMessage() . PHP_EOL;
+        }
+    }
+
+    public function testHasCommentAnnotation(){
+        $clazz = new ReflectionClass(__NAMESPACE__ . '::C_AnnotationTest');
+
+        $this->assertTrue(Annotation::hasCommentAnnotation($clazz, seasar::container::S2ApplicationContext::ASPECT_ANNOTATION));
+        $this->assertFalse(Annotation::hasCommentAnnotation($clazz, seasar::container::S2ApplicationContext::BINDING_ANNOTATION));
+
+        $this->assertTrue(Annotation::hasCommentAnnotation($clazz->getProperty('foo'), seasar::container::S2ApplicationContext::ASPECT_ANNOTATION));
+        $this->assertFalse(Annotation::hasCommentAnnotation($clazz->getProperty('foo'), seasar::container::S2ApplicationContext::BINDING_ANNOTATION));
+
+        $this->assertTrue(Annotation::hasCommentAnnotation($clazz->getMethod('bar'), seasar::container::S2ApplicationContext::ASPECT_ANNOTATION));
+        $this->assertFalse(Annotation::hasCommentAnnotation($clazz->getMethod('bar'), seasar::container::S2ApplicationContext::BINDING_ANNOTATION));
+    }
+
+    public function testGetConstantAnnotation(){
+        $clazz = new ReflectionClass(__NAMESPACE__ . '::D_AnnotationTest');
+
+        $ret = Annotation::getConstantAnnotation($clazz, 'Aspect');
+        $this->assertEquals($ret['val'], 100);
+
+        $propRef = $clazz->getProperty('foo');
+        $ret = Annotation::getConstantAnnotation($propRef, 'Aspect');
+        $this->assertEquals($ret['val'], 200);
+
+        $propRef = $clazz->getMethod('bar');
+        $ret = Annotation::getConstantAnnotation($propRef, 'Aspect');
+        $this->assertEquals($ret['val'], 300);
+
+        try{
+            $ret = Annotation::getConstantAnnotation($clazz, 'Binding');
+            $this->fail();
+        } catch(Exception $e) {
+            print $e->getMessage() . PHP_EOL;
+        }
+    }
+
+    public function testHasConstantAnnotation(){
+        $clazz = new ReflectionClass(__NAMESPACE__ . '::D_AnnotationTest');
+
+        $this->assertTrue(Annotation::hasConstantAnnotation($clazz, 'Aspect'));
+        $this->assertFalse(Annotation::hasConstantAnnotation($clazz, 'Binding'));
+
+        $this->assertTrue(Annotation::hasConstantAnnotation($clazz->getProperty('foo'), 'Aspect'));
+        $this->assertFalse(Annotation::hasConstantAnnotation($clazz->getProperty('foo'), 'Binding'));
+
+        $this->assertTrue(Annotation::hasConstantAnnotation($clazz->getMethod('bar'), 'Aspect'));
+        $this->assertFalse(Annotation::hasConstantAnnotation($clazz->getMethod('bar'), 'Binding'));
+    }
+
+    public function testDelmita(){
+        $clazz = new ReflectionClass(__NAMESPACE__ . '::E_AnnotationTest');
+
+        $this->assertEquals(array(100), Annotation::getCommentAnnotation($clazz, '@Hoge'));
+        $this->assertEquals(array(200), Annotation::getCommentAnnotation($clazz, '@Huga'));
+        $this->assertEquals(array(1, 2, 'a'), Annotation::getCommentAnnotation($clazz, '@Bar'));
     }
 
     public function setUp(){
@@ -125,7 +189,7 @@ class AnnotationTest extends ::PHPUnit_Framework_TestCase {
 }
 
 /**
- * @huga('year' => 2008)
+ * @huga('year' => 2008);
  */
 class Hoge_CommentAnnotationTest {
     const hoge = "'year' => 2007";
@@ -138,47 +202,47 @@ class AnnoTestA_AnnotationTest {
 }
 
 /**
- * @S2Component('name' => 'b')
+ * @S2Component('name' => 'b');
  */
 class AnnoTestB_AnnotationTest {
 
     public $year = null;
 
     /**
-     * @S2Binding('hoge')
+     * @S2Binding('hoge');
      */
     public $name = null;
 
     /**
-     * @S2Binding('しーさ')
+     * @S2Binding('しーさ');
      */
     public $seasar = null;
 
     /**
-     * @S2Binding('1000')
+     * @S2Binding('1000');
      */
     public static function setSetB($b){}
 
     /**
-     * @S2Binding('abc')
+     * @S2Binding('abc');
      */
     public static function a(){}
 
     /**
-     * @S2Aspect('dao.interceptor')
+     * @S2Aspect('dao.interceptor');
      */
     public static function b(){}
 }
 
 class AnnoTestC_AnnotationTest {
     /**
-     * @S2Aspect('interceptor' => 'new seasar::aop::interceptor::TraceInterceptor')
+     * @S2Aspect('interceptor' => 'new seasar::aop::interceptor::TraceInterceptor');
      */
     public function hoge(){}
 }
 
 /**
- * @S2Component('name' => 'd')
+ * @S2Component('name' => 'd');
  */
 class AnnoTestD_AnnotationTest extends AnnoTestC_AnnotationTest{}
 
@@ -191,7 +255,7 @@ interface IAnnoTestF_AnnotationTest{
 }
 
 /**
- * @S2Component('name' => 'annoTestF')
+ * @S2Component('name' => 'annoTestF');
  */
 class AnnoTestF_AnnotationTest implements IAnnoTestF_AnnotationTest {
     public function hoge(){}
@@ -199,7 +263,7 @@ class AnnoTestF_AnnotationTest implements IAnnoTestF_AnnotationTest {
 
 class A_AnnotationTest {
     /**
-     * @S2Aspect()
+     * @S2Aspect();
      */
     public function hoge(){}
 
@@ -224,3 +288,36 @@ class B_AnnotationTest {
      */   
     public function bar(){}
 }
+
+/**
+ * @S2Aspect('val' => 100);
+ */
+class C_AnnotationTest {
+
+    /**
+     * @S2Aspect('val' => 200);
+     */
+    private $foo;
+
+    /**
+     * @S2Aspect('val' => 300);
+     */   
+    public function bar(){}
+}
+
+class D_AnnotationTest {
+    const Aspect = '"val" => 100';
+
+    const foo_Aspect = '"val" => 200';
+    private $foo;
+
+    const bar_Aspect = '"val" => 300';
+    public function bar(){}
+}
+
+/**
+ * @Hoge(100 );
+ * @Huga(200)
+ * @Bar (1, 2, 'a')
+ */
+class E_AnnotationTest {}

@@ -1,6 +1,6 @@
 <?php
 /**
- * @S2Component('namespace' => 'pdo')
+ * @S2Component('namespace' => 'pdo');
  */
 class SqliteAPdo extends ::PDO {
     public function __construct() {

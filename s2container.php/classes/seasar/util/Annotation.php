@@ -62,25 +62,13 @@ class Annotation {
      * @return array
      */
     public static function get($reflection, $annotation) {
-        self::validateReflection($reflection);
-        $annoKey = self::constructKey($reflection, $annotation);
-        if (isset(self::$spool[$annoKey])) {
-            return self::$spool[$annoKey];
+        if (self::$CONSTANT and self::hasConstantAnnotation($reflection, $annotation)) {
+            return self::getConstantAnnotation($reflection, $annotation);
         }
-
-        $annoArray = null;
-        if (self::$CONSTANT) {
-            $annoArray = self::getConstantAnnotation($reflection, $annotation);
+        if (self::$COMMENT) {
+            return self::getCommentAnnotation($reflection, $annotation);
         }
-        if (self::$COMMENT and $annoArray === null) {
-            $annoArray = self::getCommentAnnotation($reflection, $annotation);
-        }
-        if (is_array($annoArray)) {
-            self::$spool[$annoKey] = $annoArray;
-        } else {
-            throw new seasar::exception::AnnotationNotFoundException($reflection, $annotation);
-        }
-        return self::$spool[$annoKey];
+        throw new seasar::exception::AnnotationNotFoundException($reflection, $annotation);
     }
 
     /**
@@ -91,35 +79,73 @@ class Annotation {
      * @return array
      */
     public static function getConstantAnnotation($reflection, $annotation) {
-        if (!$reflection instanceof ReflectionClass) {
+        self::validateReflection($reflection);
+        $annoKey = self::constructKey($reflection, $annotation);
+        if (isset(self::$spool[$annoKey])) {
+            return self::$spool[$annoKey];
+        }
+
+        if ($reflection instanceof ReflectionProperty or
+            $reflection instanceof ReflectionMethod) {
+            $annotation = $reflection->getName() . '_' . $annotation;
             $reflection = $reflection->getDeclaringClass();
         }
+
+        $annoArray = null;
         if ($reflection->hasConstant($annotation)) {
             $value = EvalUtil::formatArrayExpression(trim($reflection->getConstant($annotation)));
-            return EvalUtil::execute($value);
+            $annoArray = EvalUtil::execute($value);
         }
-        return null;
+
+        if (is_array($annoArray)) {
+            self::$spool[$annoKey] = $annoArray;
+        } else {
+            throw new seasar::exception::AnnotationNotFoundException($reflection, $annotation);
+        }
+        return self::$spool[$annoKey];
     }
 
     /**
      * コメントアノテーションを取得します。
+     * コメントアノテーションのフォーマットは、次の2つなります。
+     *   (アノテーション名)(0個以上の空白)(PHP配列フォーマット値);
+     *   (アノテーション名)(0個以上の空白)(PHP配列フォーマット値)(スペース)
+     *   サンプル
+     *     @Hoge(1, 2, 3);                 => array(1, 2, 3)
+     *     @Huga ('a' => 1, 'b' => 2);     => array('a' => 1, 'b' => 2)
+     *     @Foo(100)                       => array(100)
+     *     @Bar ('a' => 1, 'b' => 2)       => array('a' => 1, 'b' => 2)
+     *  次のケースでは、パースに失敗します。
+     *    @Hoge("new Pdo() ")
+     *    最後尾にセミコロンがないため、先頭から最短マッチで「) 」までが処置されます。
+     *    閉じ括弧の後ろのスペースを削除するか、最後尾にセミコロンを付ける必要があります。
      *
      * @param ReflectionClass|ReflectionMethod|ReflectionProperty $reflection
      * @param strint $annotation
      * @return array
      */
     public static function getCommentAnnotation($reflection, $annotation) {
-        if (!self::hasCommentAnnotation($reflection, $annotation)) {
-            return null;
+        self::validateReflection($reflection);
+        $annoKey = self::constructKey($reflection, $annotation);
+        if (isset(self::$spool[$annoKey])) {
+            return self::$spool[$annoKey];
         }
-        $matches = array();
-        $regex = "/$annotation\((.*?)\)/siu";
+
         $comment = self::formatCommentLine($reflection->getDocComment());
-        if (preg_match($regex, $comment, $matches)) {
+        $annoArray = null;
+        $matches = array();
+        if (preg_match("/$annotation\s*\((.*?)\);/iu", $comment, $matches) or
+            preg_match("/$annotation\s*\((.*?)\)\s/iu", $comment, $matches)) {
             $value = EvalUtil::formatArrayExpression(trim($matches[1]));
-            return EvalUtil::execute($value);
+            $annoArray = EvalUtil::execute($value);
         }
-        return null;
+
+        if (is_array($annoArray)) {
+            self::$spool[$annoKey] = $annoArray;
+        } else {
+            throw new seasar::exception::AnnotationNotFoundException($reflection, $annotation);
+        }
+        return self::$spool[$annoKey];
     }
 
     /**
@@ -130,19 +156,18 @@ class Annotation {
      * @return boolean
      */
     public static function has($reflection, $annotation) {
-        $annoKey = self::constructKey($reflection, $annotation);
-        if (isset(self::$spool[$annoKey])) {
-            return true;
-        }
-
-        $has = false;
         if (self::$CONSTANT) {
-            $has = self::hasConstantAnnotation($reflection, $annotation);
+            $ret = self::hasConstantAnnotation($reflection, $annotation);
+            if ($ret === true) {
+                return true;
+            } else if ($ret === false and self::$COMMENT === false) {
+                return false;
+            }
         }
         if (self::$COMMENT) {
-            $has = self::hasCommentAnnotation($reflection, $annotation);
+            return self::hasCommentAnnotation($reflection, $annotation);
         }
-        return $has;
+        return false;
     }
 
     /**
@@ -153,10 +178,11 @@ class Annotation {
      * @return boolean
      */
     public static function hasConstantAnnotation($reflection, $annotation) {
-        if ($reflection instanceof ReflectionClass) {
-            return $reflection->hasConstant($annotation);
-        } else {
-            return $reflection->getDeclaringClass()->hasConstant($annotation);
+        try {
+            self::getConstantAnnotation($reflection, $annotation);
+            return true;
+        } catch (seasar::exception::AnnotationNotFoundException $e) {
+            return false;
         }
     }
 
@@ -168,7 +194,12 @@ class Annotation {
      * @return boolean
      */
     public static function hasCommentAnnotation($reflection, $annotation) {
-        return preg_match("/$annotation\(.*?\)/siu", $reflection->getDocComment()) === 0 ? false : true;
+        try {
+            self::getCommentAnnotation($reflection, $annotation);
+            return true;
+        } catch (seasar::exception::AnnotationNotFoundException $e) {
+            return false;
+        }
     }
 
     /**
@@ -181,7 +212,9 @@ class Annotation {
         $comments = preg_split('/[\n\r]/', $commentLine, -1, PREG_SPLIT_NO_EMPTY);
         $comment = ' ';
         $lineCount = count($comments);
-        if ($lineCount == 1) {
+        if ($lineCount == 0) {
+            return '';
+        } else if ($lineCount == 1) {
             $comment = substr(trim($comments[0]), 3, -2);
         } else {
             $comment .= substr(trim($comments[0]), 3) . ' ';

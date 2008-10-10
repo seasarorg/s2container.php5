@@ -1,14 +1,6 @@
 <?php
 class PdoInterceptorTest extends ::PHPUnit_Framework_TestCase {
 
-    public function testIsAvailable() {
-        $refClass = new ReflectionClass('A_PdoInterceptor');
-        $interceptor = new PdoInterceptor;
-        $this->assertTrue($interceptor->isAvailable($refClass->getMethod('findA')));
-        $this->assertTrue($interceptor->isAvailable($refClass->getMethod('findB')));
-        $this->assertfalse($interceptor->isAvailable($refClass->getMethod('findC')));
-    }
-
     public function testGetQueryFromSqlFile() {
         $refClass = new ReflectionClass('B_PdoInterceptor');
         $interceptor = new PdoInterceptor;
@@ -43,13 +35,7 @@ class PdoInterceptorTest extends ::PHPUnit_Framework_TestCase {
 
 class A_PdoInterceptor {
     public function findA() {}
-    /**
-     * @S2Pdo('available' => true)
-     */
     public function findB() {}
-    /**
-     * @S2Pdo('available' => false)
-     */
     public function findC() {}
 }
 

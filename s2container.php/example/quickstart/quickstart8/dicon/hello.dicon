@@ -5,6 +5,6 @@
         <property name="printer">Printer</property>
     </component>
     <component class="Printer">
-        <aspect pointcut="printOut">new seasar::aop::interceptor::TraceInterceptor</aspect>
+        <aspect pointcut="/printOut/">new seasar::aop::interceptor::TraceInterceptor</aspect>
     </component>
 </components>

@@ -5,7 +5,7 @@ require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php');
 use seasar::container::S2ApplicationContext as s2app;
 s2app::import(ROOT_DIR . DIRECTORY_SEPARATOR . 'classes');
 s2app::import(ROOT_DIR . DIRECTORY_SEPARATOR . 'config');
-s2app::registerAspect('/Dao$/', 'pdo.interceptor');
+s2app::registerAspect('/Dao$/', 'pdo.interceptor', '/^(find|insert|update|delete)/');
 
 /**
  * SqliteDB : sqlite_a.db
@@ -67,5 +67,5 @@ $paginate->setLimit(3);
 $rows = $paginate->find($dao, 'findAll');
 
 $paginate->next();
-$rows = $dao->findByPaginate($paginate);
+$rows = $dao->byPaginate($paginate);
 

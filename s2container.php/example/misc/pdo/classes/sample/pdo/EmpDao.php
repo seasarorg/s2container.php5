@@ -1,14 +1,11 @@
 <?php
 namespace sample::pdo;
 /**
- * @S2Pdo('pdo' => 'sqliteC')
+ * @S2Pdo('pdo' => 'sqliteC');
  */
 class EmpDao {
 
-    /**
-     * @S2Pdo('available' => false)
-     */
-    public function findByPaginate(::Paginate $paginate) {
+    public function byPaginate(::Paginate $paginate) {
         try {
             $paginate->getTotal();
         } catch (Exception $e) {

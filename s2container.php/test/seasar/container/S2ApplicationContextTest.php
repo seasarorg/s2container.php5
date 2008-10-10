@@ -289,35 +289,35 @@ class AppTestA_S2ApplicationContextTest {
 }
 
 /**
- * @S2Component('name' => 'b')
+ * @S2Component('name' => 'b');
  */
 class AppTestB_S2ApplicationContextTest {
 
     /**
-     * @S2Binding('1000')
+     * @S2Binding('1000');
      */
     public static function setSetB($b){}
 
     /**
-     * @S2Binding('abc')
+     * @S2Binding('abc');
      */
     public static function a(){}
 
     /**
-     * @S2Aspect('dao.interceptor')
+     * @S2Aspect('dao.interceptor');
      */
     public static function b(){}
 }
 
 class AppTestC_S2ApplicationContextTest {
     /**
-     * @S2Aspect('interceptor' => 'new seasar::aop::interceptor::TraceInterceptor')
+     * @S2Aspect('interceptor' => 'new seasar::aop::interceptor::TraceInterceptor');
      */
     public function hoge(){}
 }
 
 /**
- * @S2Component('name' => 'd')
+ * @S2Component('name' => 'd');
  */
 class AppTestD_S2ApplicationContextTest extends AppTestC_S2ApplicationContextTest{}
 
@@ -330,7 +330,7 @@ interface IAppTestF_S2ApplicationContextTest{
 }
 
 /**
- * @S2Component('name' => 'annoTestF')
+ * @S2Component('name' => 'annoTestF');
  */
 class AppTestF_S2ApplicationContextTest implements IAppTestF_S2ApplicationContextTest {
     public function hoge(){}
@@ -338,19 +338,19 @@ class AppTestF_S2ApplicationContextTest implements IAppTestF_S2ApplicationContex
 
 
 /**
- * @S2Component('name' => 'a', 'namespace' => 'foo')
+ * @S2Component('name' => 'a', 'namespace' => 'foo');
  */
 class A_S2ApplicationContextTest {
 }
 
 /**
- * @S2Component('name' => 'b', 'namespace' => 'foo.bar')
+ * @S2Component('name' => 'b', 'namespace' => 'foo.bar');
  */
 class B_S2ApplicationContextTest {
 }
 
 /**
- * @S2Component('name' => 'foo')
+ * @S2Component('name' => 'foo');
  */
 class C_S2ApplicationContextTest {
 }

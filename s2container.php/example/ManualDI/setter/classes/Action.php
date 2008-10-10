@@ -5,21 +5,21 @@ class Action {
     private $service = null;
 
     /**
-     * @S2Binding('"seasar"')
+     * @S2Binding('strval("seasar")');
      */
     public function setYear($year) {
         $this->year = $year;
     }
 
     /**
-     * @S2Binding('2000 + 8')
+     * @S2Binding('2000 + 8');
      */
     public function setName($name) {
         $this->name = $name;
     }
 
     /**
-     * @S2Binding('Service')
+     * @S2Binding('Service');
      */
     public function setService(Service $service) {
         $this->service = $service;
