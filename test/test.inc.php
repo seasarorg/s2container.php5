@@ -9,3 +9,5 @@ seasar::Config::$DEBUG_EVAL = true;
 
 seasar::aop::Config::$CACHING = false;
 seasar::aop::Config::$CACHE_DIR = dirname(__FILE__) . '/cache';
+
+echo PHP_EOL . 's2container root dir : ' . S2CONTAINER_ROOT_DIR . PHP_EOL . PHP_EOL;
