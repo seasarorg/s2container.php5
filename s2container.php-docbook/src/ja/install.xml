@@ -2,10 +2,11 @@
   <sect1 id="install.environment"><title>動作環境</title>
     <itemizedlist>
       <listitem>
-        <para>PHP-6.0, PHP-5.3</para>
+        <para>PHP-5.3</para>
       </listitem>
     </itemizedlist>
   </sect1>
+
   <sect1 id="install.pear"><title>PEARパッケージでインストールする</title>
     <para>S2Container-version.tgzをダウンロードし、pear install を実行します。</para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
@@ -35,15 +36,18 @@ uninstall ok: channel://pear.php.net/S2Container-version
 ]]></programlisting>
 
   </sect1>
+
   <sect1 id="install.full"><title>フルパッケージでインストールする</title>
     <para>s2container.php-version.zipを取得し解凍します。次のディレクトリが展開されます。</para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 s2container.php/
   +-- classes/
-  +-- docs/
+  +-- example/
+  +-- sbin/
   +-- test/
   +-- Apache_Software_License_2.0.txt
   +-- S2Container.php
+  +-- S2ContainerCore.php
 ]]></programlisting>
   <para>S2Container.php を require します。S2Container.PHPが使用可能となります。</para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
@@ -51,5 +55,15 @@ s2container.php/
 require_once('/path/to/s2container.php/S2Container.php');
 ?>
 ]]></programlisting>
+  </sect1>
+
+  <sect1 id="install.phar"><title>Pharパッケージでインストールする</title>
+    <para>S2Container.php-version.pahrを取得し require します。S2Container.PHPが使用可能となります。</para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('/path/to/S2Container.php-version.phar');
+?>
+]]></programlisting>
+    <para>Pharエイリアス名は「seasar.s2container」です。</para>
   </sect1>
 </chapter>

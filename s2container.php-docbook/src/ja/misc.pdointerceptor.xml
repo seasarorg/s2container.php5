@@ -460,7 +460,6 @@ var_dump($rows);
         @S2Pdoアノテーションは、クラスまたはメソッドに注釈します。次の2つを設定できます。
         <itemizedlist>
           <listitem>複数のデータソースを使用する場合に、どのPDOコンポーネントを使用するかを指定します。</listitem>
-          <listitem>PdoInterceptor処理を実施するかどうかを指定します。(メソッドに注釈付けした場合)</listitem>
         </itemizedlist>
       </para>
       <para>
@@ -468,8 +467,7 @@ var_dump($rows);
       </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 /**
- * @S2Pdo('pdo'       => PDOコンポーネント名,
- *        'available' => true)
+ * @S2Pdo('pdo' => PDOコンポーネント名)
  */
 ]]></programlisting>
 
@@ -548,9 +546,6 @@ namespace sample::pdo;
 class CdDao {
     public $sqliteBPdo = 's2binding';
 
-    /**
-     * @S2Pdo('available' => false)
-     */
     public function transactionalInsert() {
         try {
             $this->sqliteBPdo->beginTransaction();
@@ -594,7 +589,7 @@ define('ROOT_DIR', dirname(__FILE__));
 require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php');
 
 use seasar::container::S2ApplicationContext as s2app;
-s2app::registerAspect('/Dao$/', 'pdo.interceptor');
+s2app::registerAspect('/Dao$/', 'pdo.interceptor', '/^(find|insert|update|delete)/');
 s2app::import(ROOT_DIR . '/classes');
 s2app::import(ROOT_DIR . '/config');
 
@@ -625,9 +620,6 @@ namespace sample::pdo;
  */
 class EmpDao {
 
-    /**
-     * @S2Pdo('available' => false)
-     */
     public function findByPaginate(::Paginate $paginate) {
         list($row) = $this->findAllTotal($paginate);
         $paginate->setTotal($row->total);
@@ -679,7 +671,7 @@ define('ROOT_DIR', dirname(__FILE__));
 require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php');
 
 use seasar::container::S2ApplicationContext as s2app;
-s2app::registerAspect('/Dao$/', 'pdo.interceptor');
+s2app::registerAspect('/Dao$/', 'pdo.interceptor', '/^find/');
 s2app::import(ROOT_DIR . '/classes');
 s2app::import(ROOT_DIR . '/config');
 

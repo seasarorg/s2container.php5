@@ -2,7 +2,7 @@
   <sect1 id="install.environment"><title>Requirement</title>
     <itemizedlist>
       <listitem>
-        <para>PHP-6.0, PHP-5.3</para>
+        <para>PHP-5.3</para>
       </listitem>
     </itemizedlist>
   </sect1>
@@ -47,16 +47,29 @@ uninstall ok: channel://pear.php.net/S2Container-version
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 s2container.php/
   +-- classes/
-  +-- docs/
+  +-- example/
+  +-- sbin/
   +-- test/
   +-- Apache_Software_License_2.0.txt
   +-- S2Container.php
+  +-- S2ContainerCore.php
 ]]></programlisting>
-  <para>Please require "S2Container.php", then S2Container.PHP becomes usable</para>
+  <para>Please require "S2Container.php", then S2Container.PHP becomes usable.</para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
 require_once('/path/to/s2container.php/S2Container.php');
 ?>
 ]]></programlisting>
   </sect1>
+
+  <sect1 id="install.phar"><title>Installation with Phar Package</title>
+    <para>Please download S2Container-version.phar and require it. Then S2Container.PHP becomes usable.</para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('/path/to/S2Container.php-version.phar');
+?>
+]]></programlisting>
+    <para>Phar alias is set as "seasar.s2container".</para>
+  </sect1>
+
 </chapter>
