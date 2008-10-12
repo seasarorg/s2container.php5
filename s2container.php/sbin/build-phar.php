@@ -1,9 +1,9 @@
 <?php
 $ROOT_DIR   = dirname(dirname(__FILE__));
 $PHAR_NAME  = 'S2Container';
+$PHAR_ALIAS = 'seasar.s2container';
 $VERSION    = '2.0.0RC1';
 $PHAR_FILE  = dirname(dirname(__FILE__)) . "/$PHAR_NAME-$VERSION.phar";
-$PHAR_ALIAS = $PHAR_NAME;
 
 if (file_exists($PHAR_FILE)) {
     unlink($PHAR_FILE);
@@ -38,9 +38,9 @@ foreach ($r_ite as $ite) {
 
 $stub = <<< EOSTUB
 <?php
-    Phar::mapPhar('$PHAR_NAME');
-    define('S2CONTAINER_ROOT_DIR', 'phar://S2Container');
-    require_once("phar://$PHAR_NAME/S2Container.php");
+    Phar::mapPhar('$PHAR_ALIAS');
+    define('S2CONTAINER_ROOT_DIR', 'phar://$PHAR_ALIAS');
+    require_once("phar://$PHAR_ALIAS/S2Container.php");
     __HALT_COMPILER();
 EOSTUB;
 //print $stub;
