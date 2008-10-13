@@ -9,7 +9,7 @@ class PdoStandardModel {
      *
      * @var array
      */
-    private $__columns__ = array();
+    protected $__columns__ = array();
 
     /**
      * Proxyメソッド
@@ -36,7 +36,7 @@ class PdoStandardModel {
      * @param string $key
      * @return string
      */
-    private final function __getColName($key) {
+    protected function __getColName($key) {
         if (array_key_exists($key, $this->__columns__)) {
             return $this->__columns__[$key];
         }

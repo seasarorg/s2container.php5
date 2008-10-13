@@ -209,6 +209,26 @@ class PaginateTest extends ::PHPUnit_Framework_TestCase {
         $this->assertEquals($paginate->pages(), array(16,17));
     }
 
+    public function testGetData() {
+        $paginate = new Paginate;
+        $data = array('a', 'b', 'c', 'd', 'e', 'f', 'g');
+        $paginate->setLimit(3);
+        $paginate->setData($data);
+        $this->assertEquals($paginate->getData(), array('a', 'b', 'c'));
+        $paginate->next();
+        $this->assertEquals($paginate->getData(), array('d', 'e', 'f'));
+        $paginate->next();
+        $this->assertEquals($paginate->getData(), array('g'));
+        $paginate->next();
+        $this->assertEquals($paginate->getData(), array('g'));
+        $paginate->prev();
+        $this->assertEquals($paginate->getData(), array('d', 'e', 'f'));
+        $paginate->prev();
+        $this->assertEquals($paginate->getData(), array('a', 'b', 'c'));
+        $paginate->prev();
+        $this->assertEquals($paginate->getData(), array('a', 'b', 'c'));
+    }
+
     public function setUp(){
         print PHP_EOL . __CLASS__ . '->' . $this->getName() . '()' . PHP_EOL;
     }
