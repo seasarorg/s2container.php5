@@ -26,6 +26,14 @@ class CdDao {
         return "select * from CD";
     }
 
+    /**
+     * @S2Pdo('pdo' => 'sqliteBPdo',
+     *        'model' => 'sample::pdo::ModelA');
+     */
+    public function findAllFromBwithModelA() {
+        return "select * from CD";
+    }
+
     public function findBySqlFile1($condition){}
     public function findBySqlFile2($condition){}
     public function findBySqlFile3($condition){}
@@ -93,4 +101,7 @@ class CdDao {
     public function delete($id) {
         return "delete from CD where id = /*:id*/5";
     }
+}
+
+class ModelA extends ::PdoStandardModel {
 }

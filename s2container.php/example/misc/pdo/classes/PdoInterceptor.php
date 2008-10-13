@@ -4,6 +4,10 @@
  *              'namespace' => 'pdo');
  */
 class PdoInterceptor implements seasar::aop::MethodInterceptor {
+    /**
+     * @var string
+     */
+     public static $MODEL_CLASS = 'PdoStandardModel';
 
     /**
      * @var seasar::container::S2Container
@@ -221,7 +225,7 @@ class PdoInterceptor implements seasar::aop::MethodInterceptor {
         $pdo = $this->getPdo($invocation->getTargetClass(), $invocation->getMethod());
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $stmt = $pdo->prepare($query);
-        $stmt->setFetchMode(PDO::FETCH_OBJ);
+        $stmt->setFetchMode(PDO::FETCH_CLASS, $this->getModelClass($invocation->getMethod()));
         $this->setupBindValue($stmt, $placeHolders, $context);
         $stmt->execute();
         $rows = $stmt->fetchAll();
@@ -310,5 +314,22 @@ class PdoInterceptor implements seasar::aop::MethodInterceptor {
             $items[] = $ph . ' => ' . seasar::util::StringUtil::mixToString($value);
         }
         return 'bindValues(' . implode(', ', $items) . ')';
+    }
+
+    /**
+     * メソッドについている@S2Pdoアノテーションから戻り値に使用するモデルクラスを取得する。
+     * アノテーションが付いていなければ、デフォルトのPdoStandardModelクラス名を返す。
+     *
+     * @param ReflectionMethod $method
+     * @return string
+     */
+    private function getModelClass(ReflectionMethod $method) {
+        if (seasar::util::Annotation::has($method, self::ANNOTATION)) {
+            $pdoInfo = seasar::util::Annotation::get($method, self::ANNOTATION);
+            if (isset($pdoInfo['model'])) {
+                return $pdoInfo['model'];
+            }
+        }
+        return self::$MODEL_CLASS;
     }
 }
