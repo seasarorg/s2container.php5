@@ -10,3 +10,10 @@ s2app::import(ROOT_DIR . '/config');
 $dao = s2app::get('sample::pdo::CdDao');
 $rows = $dao->findAllFromB();
 var_dump($rows);
+
+$rows = $dao->findAllFromBwithModelA();
+var_dump($rows);
+echo 'id      = ' . $rows[0]->getId() . PHP_EOL;
+echo 'title   = ' . $rows[0]->getTitle() . PHP_EOL;
+echo 'content = ' . $rows[0]->getContent() . PHP_EOL;
+
