@@ -329,6 +329,12 @@ class PdoInterceptor implements seasar::aop::MethodInterceptor {
             if (isset($pdoInfo['model'])) {
                 return $pdoInfo['model'];
             }
+            if (isset($pdoInfo['entity'])) {
+                return $pdoInfo['entity'];
+            }
+            if (isset($pdoInfo['dto'])) {
+                return $pdoInfo['dto'];
+            }
         }
         return self::$MODEL_CLASS;
     }

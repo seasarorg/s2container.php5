@@ -29,6 +29,33 @@ class Paginate {
     protected $total  = null;
 
     /**
+     * @var array
+     */
+    protected $data = null;
+
+    /**
+     * @param array $data
+     * @return integer
+     */
+    final public function setData(array $data) {
+        $this->total = count($data);
+        $this->data = $data;
+        return $this->total;
+    }
+
+    /**
+     * @return array
+     */
+    final public function getData() {
+        if ($this->offset + $this->limit < $this->total) {
+            $len = $this->limit;
+        } else {
+            $len = $this->total - $this->offset;
+        }
+        return array_slice($this->data, $this->offset, $len);
+    }
+
+    /**
      * 全ページ数を返します。
      * @return integer
      */
