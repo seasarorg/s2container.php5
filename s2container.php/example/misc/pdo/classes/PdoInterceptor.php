@@ -7,7 +7,7 @@ class PdoInterceptor implements seasar::aop::MethodInterceptor {
     /**
      * @var string
      */
-     public static $MODEL_CLASS = 'PdoStandardDto';
+     public static $MODEL_CLASS = 'StandardDto';
 
     /**
      * @var seasar::container::S2Container

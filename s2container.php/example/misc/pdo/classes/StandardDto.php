@@ -2,7 +2,7 @@
 /**
  * @S2Component('available' => false);
  */
-class PdoStandardDto {
+class StandardDto {
 
     /**
      * アクセッサメソッド名とカラム名の対応を保持するスプール

@@ -103,5 +103,5 @@ class CdDao {
     }
 }
 
-class ModelA extends ::PdoStandardDto {
+class ModelA extends ::StandardDto {
 }
