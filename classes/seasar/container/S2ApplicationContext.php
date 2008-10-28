@@ -64,11 +64,6 @@ class S2ApplicationContext {
     public static $SINGLETON_CONTAINERS = array();
 
     /**
-     * @var array
-     */
-    private static $commentCache = array();
-
-    /**
      * コンポーネント定義を行うコメントアノテーションです。
      */
     const COMPONENT_ANNOTATION = '@S2Component';
@@ -128,6 +123,8 @@ class S2ApplicationContext {
             self::scanDir($path, $namespace, $strict, $pear, $recursive);
         } else if (is_file($path)) {
             self::importInternal($path, $namespace, $pear);
+        } else if (class_exists($path) or interface_exists($path)) {
+            self::$CLASSES[$path] = null;
         } else {
             trigger_error(__CLASS__ . " : invalid args. [$path]", E_USER_WARNING);
         }
@@ -244,23 +241,6 @@ class S2ApplicationContext {
         $container = self::createInternal($dicons, $classes, $namespace);
         seasar::util::Annotation::$CONSTANT = $const;
         return $container;
-    }
-
-    /**
-     * @S2Componentアノテーションが付いているクラスのみを抽出します。
-     *
-     * @param array $classes
-     * @return array
-     */
-    private static function componentAnnotationFilter($classes) {
-        $filterdClasses = array();
-        foreach($classes as $className) {
-            $refClass = new ReflectionClass($className);
-            if (seasar::util::Annotation::has($refClass, self::COMPONENT_ANNOTATION)) {
-                $filterdClasses[] = $className;
-            }
-        }
-        return $filterdClasses;
     }
 
     /**

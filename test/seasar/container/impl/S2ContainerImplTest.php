@@ -43,6 +43,11 @@ class S2ContainerImplTest extends ::PHPUnit_Framework_TestCase {
         $container->register($componentDef);
         $hoge = $container->getComponent('hoge');
         $this->assertTrue($hoge instanceof seasar::container::impl::A_S2ContainerImplTest);
+
+        $container = new S2ContainerImpl();
+        $container->register('seasar::container::impl::A_S2ContainerImplTest', 'hoge');
+        $hoge = $container->getComponent('hoge');
+        $this->assertTrue($hoge instanceof seasar::container::impl::A_S2ContainerImplTest);
     }
 
     public function testFindComponents() {
