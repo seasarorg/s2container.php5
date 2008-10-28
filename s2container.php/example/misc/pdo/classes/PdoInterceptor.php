@@ -7,7 +7,7 @@ class PdoInterceptor implements seasar::aop::MethodInterceptor {
     /**
      * @var string
      */
-     public static $MODEL_CLASS = 'PdoStandardModel';
+     public static $MODEL_CLASS = 'PdoStandardDto';
 
     /**
      * @var seasar::container::S2Container
@@ -326,12 +326,6 @@ class PdoInterceptor implements seasar::aop::MethodInterceptor {
     private function getModelClass(ReflectionMethod $method) {
         if (seasar::util::Annotation::has($method, self::ANNOTATION)) {
             $pdoInfo = seasar::util::Annotation::get($method, self::ANNOTATION);
-            if (isset($pdoInfo['model'])) {
-                return $pdoInfo['model'];
-            }
-            if (isset($pdoInfo['entity'])) {
-                return $pdoInfo['entity'];
-            }
             if (isset($pdoInfo['dto'])) {
                 return $pdoInfo['dto'];
             }

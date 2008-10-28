@@ -28,7 +28,7 @@ class CdDao {
 
     /**
      * @S2Pdo('pdo' => 'sqliteBPdo',
-     *        'model' => 'sample::pdo::ModelA');
+     *        'dto' => 'sample::pdo::ModelA');
      */
     public function findAllFromBwithModelA() {
         return "select * from CD";
@@ -103,5 +103,5 @@ class CdDao {
     }
 }
 
-class ModelA extends ::PdoStandardModel {
+class ModelA extends ::PdoStandardDto {
 }

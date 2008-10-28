@@ -126,7 +126,7 @@ class S2ContainerImpl implements seasar::container::S2Container {
         } else if (is_object($component)) {
             $this->register(new SimpleComponentDef($component, $componentName));
         } else {
-            $this->register(new ComponentDef($component, $componentName));
+            $this->register(new ComponentDefImpl($component, $componentName));
         }
     }
 
@@ -241,8 +241,7 @@ class S2ContainerImpl implements seasar::container::S2Container {
      */
     private function getComponentDefInternal($key) {
         if (array_key_exists($key, $this->componentDefMap)) {
-            $componentDef = $this->componentDefMap[$key];
-            return $componentDef;
+            return $this->componentDefMap[$key];
         }
 
         $matches = array();

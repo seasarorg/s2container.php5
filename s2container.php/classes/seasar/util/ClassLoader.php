@@ -124,7 +124,6 @@ seasar::util::ClassLoader::$CLASSES = array(
     'seasar::container::factory::S2ContainerBuilder' => S2CONTAINER_ROOT_DIR . '/classes/seasar/container/factory/S2ContainerBuilder.php',
     'seasar::container::factory::S2ContainerFactory' => S2CONTAINER_ROOT_DIR . '/classes/seasar/container/factory/S2ContainerFactory.php',
     'seasar::container::factory::XmlS2ContainerBuilder' => S2CONTAINER_ROOT_DIR . '/classes/seasar/container/factory/XmlS2ContainerBuilder.php',
-    'seasar::container::impl::AbstractTypehintPropertyDef' => S2CONTAINER_ROOT_DIR . '/classes/seasar/container/impl/AbstractTypehintPropertyDef.php',
     'seasar::container::impl::InitMethodDef' => S2CONTAINER_ROOT_DIR . '/classes/seasar/container/impl/InitMethodDef.php',
     'seasar::container::impl::MetaDef' => S2CONTAINER_ROOT_DIR . '/classes/seasar/container/impl/MetaDef.php',
     'seasar::container::impl::PropertyDef' => S2CONTAINER_ROOT_DIR . '/classes/seasar/container/impl/PropertyDef.php',
