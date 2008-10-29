@@ -217,9 +217,20 @@ class Annotation {
         } else if ($lineCount == 1) {
             $comment = substr(trim($comments[0]), 3, -2);
         } else {
+            $atFound = false;
             $comment .= substr(trim($comments[0]), 3) . ' ';
-            for($i=1; $i<$lineCount-1 ; $i++) {
-                $comment .= substr(trim($comments[$i]), 1) . ' ';
+            if (0 < strpos($comment, '@')) {
+                $atFound = true;
+            }
+            for($i=1; $i<$lineCount-1; $i++) {
+                if ($atFound === false) {
+                    if (0 < strpos($comments[$i], '@')) {
+                        $atFound = true;
+                    }
+                }
+                if ($atFound === true) {
+                    $comment .= substr(trim($comments[$i]), 1) . ' ';
+                }
             }
             $last = substr(trim($comments[$lineCount-1]), 0, -2);
             if (0 < strlen($last)) {

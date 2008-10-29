@@ -80,23 +80,78 @@ class AnnotationTest extends ::PHPUnit_Framework_TestCase {
         $this->assertEquals($ret[0], 'しーさ');
     }
 
-    public function testFormatCommentLine(){
+    public function testFormatCommentLine1(){
         $comment = ' /** abc  */ ';
         $format = Annotation::formatCommentLine($comment);
         $this->assertEquals(trim($format), 'abc');
 
+        $comment = ' /** abc@def
+                      * ghi
+                      *
+                      * jkl
+                      */ ';
+        $format = Annotation::formatCommentLine($comment);
+        $this->assertEquals(trim($format), 'abc@def  ghi   jkl');
+    }
+
+    public function testFormatCommentLine2(){
         $comment = ' /**
                       * abc
                       */ ';
         $format = Annotation::formatCommentLine($comment);
-        $this->assertEquals(trim($format), 'abc');
+        $this->assertEquals(trim($format), '');
 
+        $comment = ' /**
+                      *
+                      * abc
+                      *
+                      * def
+                      */ ';
+        $format = Annotation::formatCommentLine($comment);
+        $this->assertEquals(trim($format), '');
+
+        $comment = ' /**
+                      * @abc
+                      */ ';
+        $format = Annotation::formatCommentLine($comment);
+        $this->assertEquals(trim($format), '@abc');
+
+        $comment = ' /**
+                      * abc
+                      * def
+                      *
+                      * @abc
+                      * def
+                      */ ';
+        $format = Annotation::formatCommentLine($comment);
+        $this->assertEquals(trim($format), '@abc  def');
+
+        $comment = ' /**
+                      * zzz
+                      *
+                      * abc@
+                      * @abc
+                      * def
+                      */ ';
+        $format = Annotation::formatCommentLine($comment);
+        $this->assertEquals(trim($format), 'abc@  @abc  def');
+    }
+
+    public function testFormatCommentLine3(){
         $comment = ' /**
                       * abc */ ';
         $format = Annotation::formatCommentLine($comment);
         $this->assertEquals(trim($format), 'abc');
 
         $comment = ' /**
+                      * abc **/ ';
+        $format = Annotation::formatCommentLine($comment);
+        $this->assertEquals(trim($format), 'abc *');
+
+        $comment = ' /**
+                      * aaa
+                      * bbb
+                      *
                       * abc **/ ';
         $format = Annotation::formatCommentLine($comment);
         $this->assertEquals(trim($format), 'abc *');

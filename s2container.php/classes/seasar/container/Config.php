@@ -77,7 +77,7 @@ abstract class Config {
      *
      * @boolean
      */
-    public static $PROPERTY_TYPEHINT_NULL = false;
+    public static $PROPERTY_TYPEHINT_NULL = true;
 
 }
 
