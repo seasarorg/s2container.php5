@@ -162,7 +162,12 @@ class BeanDesc {
             if ($this->beanClass->getProperty($name)->isPublic()){
                 $propertyDesc = new PublicPropertyDesc($this->beanClass, $name);
                 $this->propertyDescs[$name] = $propertyDesc;
-                if (is_string($value) and 
+                if (true === seasar::container::Config::$PROPERTY_TYPEHINT_NULL and
+                    $value == null) {
+                    $propertyDesc->setArrayAcceptable(false);
+                    $propertyDesc->setTypehint($name);
+                    $this->typehintPropertyDescs[$name] = $propertyDesc;
+                } else if (is_string($value) and 
                     0 === stripos($value, $propTypehintKey)) {
                     $typehint = trim(substr($value, $propTypehintKeyLen));
                     if ($typehint === '') {
@@ -183,10 +188,6 @@ class BeanDesc {
                     } else {
                         $propertyDesc->setTypehint($typehint);
                     }
-                    $this->typehintPropertyDescs[$name] = $propertyDesc;
-                } else if (seasar::container::Config::$PROPERTY_TYPEHINT_NULL and is_null($value)) {
-                    $propertyDesc->setArrayAcceptable(false);
-                    $propertyDesc->setTypehint($name);
                     $this->typehintPropertyDescs[$name] = $propertyDesc;
                 }
             }
