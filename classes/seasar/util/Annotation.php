@@ -44,6 +44,11 @@ class Annotation {
     private static $spool = array();
 
     /**
+     * @var array
+     */
+    private static $formattedComments = array();
+
+    /**
      * アノテーションデータをスプールに登録します。
      *
      * @param string $annoKey
@@ -80,7 +85,7 @@ class Annotation {
      */
     public static function getConstantAnnotation($reflection, $annotation) {
         self::validateReflection($reflection);
-        $annoKey = self::constructKey($reflection, $annotation);
+        $annoKey = self::constructKey($reflection) . '_' . $annotation;
         if (isset(self::$spool[$annoKey])) {
             return self::$spool[$annoKey];
         }
@@ -126,12 +131,16 @@ class Annotation {
      */
     public static function getCommentAnnotation($reflection, $annotation) {
         self::validateReflection($reflection);
-        $annoKey = self::constructKey($reflection, $annotation);
+        $refKey  = self::constructKey($reflection);
+        $annoKey = $refKey . '_' . $annotation;
         if (isset(self::$spool[$annoKey])) {
             return self::$spool[$annoKey];
         }
 
-        $comment = self::formatCommentLine($reflection->getDocComment());
+        if (!isset(self::$formattedComments[$refKey])) {
+            self::$formattedComments[$refKey] = self::formatCommentLine($reflection->getDocComment());
+        }
+        $comment = self::$formattedComments[$refKey];
         $annoArray = null;
         $matches = array();
         if (preg_match("/$annotation\s*\((.*?)\);/iu", $comment, $matches) or
@@ -247,13 +256,13 @@ class Annotation {
      * @param strint $annotation
      * @return string
      */
-    public static function constructKey($reflection, $annotation) {
+    public static function constructKey($reflection) {
         if ($reflection instanceof ReflectionClass) {
-            return $reflection->getName() . '::CLASS_' . $annotation;
+            return $reflection->getName() . '::CLASS';
         } else if ($reflection instanceof ReflectionMethod) {
-            return $reflection->getDeclaringClass()->getName() . '::' . $reflection->getName() . '::METHOD_' . $annotation;
+            return $reflection->getDeclaringClass()->getName() . '::' . $reflection->getName() . '::METHOD';
         } else {
-            return $reflection->getDeclaringClass()->getName() . '::' . $reflection->getName() . '::PROPERTY_' . $annotation;
+            return $reflection->getDeclaringClass()->getName() . '::' . $reflection->getName() . '::PROPERTY';
         }
     }
 
