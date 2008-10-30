@@ -87,6 +87,26 @@ class AutoPropertyAssemblerTest extends ::PHPUnit_Framework_TestCase {
         $this->assertEquals(get_class($e[0]), __NAMESPACE__ . '::E_AutoPropertyAssemblerTest');
     }
 
+    public function testPublicPropertyComponentNotFound() {
+        $container = new seasar::container::impl::S2ContainerImpl();
+        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::F_AutoPropertyAssemblerTest');
+        $container->register($componentDef);
+        $assembler = new AutoPropertyAssembler($componentDef);
+        $component = new seasar::container::assembler::F_AutoPropertyAssemblerTest;
+        $assembler->assemble($component);
+    }
+
+    public function testPublicPropertyTooManyRegistration() {
+        $container = new seasar::container::impl::S2ContainerImpl();
+        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::F_AutoPropertyAssemblerTest');
+        $container->register($componentDef);
+        $container->register(new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::E_AutoPropertyAssemblerTest', 'huga'));
+        $container->register(new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::E_AutoPropertyAssemblerTest', 'huga'));
+        $assembler = new AutoPropertyAssembler($componentDef);
+        $component = new seasar::container::assembler::F_AutoPropertyAssemblerTest;
+        $assembler->assemble($component);
+    }
+
     public function setUp(){
         print PHP_EOL . __CLASS__ . '->' . $this->getName() . '()' . PHP_EOL;
     }
@@ -118,3 +138,6 @@ class D_AutoPropertyAssemblerTest {
 
 class E_AutoPropertyAssemblerTest {}
 
+class F_AutoPropertyAssemblerTest {
+    public $huga;
+}
