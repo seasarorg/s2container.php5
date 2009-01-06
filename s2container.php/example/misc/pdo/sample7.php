@@ -11,7 +11,7 @@ $dao = s2app::get('sample::pdo::CdDao');
 $rows = $dao->findAllFromB();
 var_dump($rows);
 
-$rows = $dao->findAllFromBwithModelA();
+$rows = $dao->findAllFromBwithSampleDto();
 var_dump($rows);
 echo 'id      = ' . $rows[0]->getId() . PHP_EOL;
 echo 'title   = ' . $rows[0]->getTitle() . PHP_EOL;
