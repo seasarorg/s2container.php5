@@ -1,6 +1,6 @@
 <?php
 // +----------------------------------------------------------------------+
-// | Copyright 2005-2008 the Seasar Foundation and the Others.            |
+// | Copyright 2005-2009 the Seasar Foundation and the Others.            |
 // +----------------------------------------------------------------------+
 // | Licensed under the Apache License, Version 2.0 (the "License");      |
 // | you may not use this file except in compliance with the License.     |
@@ -23,7 +23,7 @@
  * 
  * @see TooManyRegistrationComponentDefImpl::getComponent()
  * 
- * @copyright 2005-2008 the Seasar Foundation and the Others.
+ * @copyright 2005-2009 the Seasar Foundation and the Others.
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  * @link      http://s2container.php5.seasar.org/
  * @version   SVN: $Id:$
