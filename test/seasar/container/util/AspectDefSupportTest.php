@@ -15,7 +15,7 @@
 // | governing permissions and limitations under the License.             |
 // +----------------------------------------------------------------------+
 /**
- * @copyright 2005-2008 the Seasar Foundation and the Others.
+ * @copyright 2005-2009 the Seasar Foundation and the Others.
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  * @link      http://s2container.php5.seasar.org/
  * @version   SVN: $Id:$
