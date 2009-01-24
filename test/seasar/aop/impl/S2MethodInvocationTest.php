@@ -23,24 +23,24 @@
  * @package   seasar.aop.impl
  * @author    klove
  */
-namespace seasar::aop::impl;
-class S2MethodInvocationTest extends ::PHPUnit_Framework_TestCase {
+namespace seasar\aop\impl;
+class S2MethodInvocationTest extends \PHPUnit_Framework_TestCase {
 
     public function testPrameter() {
-        $targetRef = new ReflectionClass('seasar::aop::impl::A_S2MethodInvocation');
+        $targetRef = new \ReflectionClass('\seasar\aop\impl\A_S2MethodInvocation');
         $interceptor = new B_S2MethodInvocation;
-        $pointcut = new seasar::aop::Pointcut('/.+/');
-        $aspects = array(new seasar::aop::Aspect($interceptor, $pointcut));
-        $targetOjb = seasar::aop::S2AopFactory::create($targetRef, $aspects, array(), array('name' => 'hoge'));
+        $pointcut = new \seasar\aop\Pointcut('/.+/');
+        $aspects = array(new \seasar\aop\Aspect($interceptor, $pointcut));
+        $targetOjb = \seasar\aop\S2AopFactory::create($targetRef, $aspects, array(), array('name' => 'hoge'));
         $targetOjb->service();
 
         $invocation = $interceptor->getInvocation();
-        $this->assertTrue($invocation instanceof seasar::aop::MethodInvocation);
-        $this->assertTrue($invocation->getThis() instanceof seasar::aop::impl::A_S2MethodInvocation);
+        $this->assertTrue($invocation instanceof \seasar\aop\MethodInvocation);
+        $this->assertTrue($invocation->getThis() instanceof \seasar\aop\impl\A_S2MethodInvocation);
         $this->assertTrue($invocation->getArguments() === array());
         $this->assertTrue($invocation->getMethod()->getName() === 'service');
-        $this->assertTrue($invocation->getTargetClass()->getName() === 'seasar::aop::impl::A_S2MethodInvocation');
-        $this->assertTrue($invocation->getConcreteClass()->getName() === 'seasar::aop::impl::A_S2MethodInvocation' .  seasar::aop::EnhancedClassGenerator::CLASS_NAME_POSTFIX);
+        $this->assertTrue($invocation->getTargetClass()->getName() === 'seasar\aop\impl\A_S2MethodInvocation');
+        $this->assertTrue($invocation->getConcreteClass()->getName() === 'seasar\aop\impl\A_S2MethodInvocation' .  \seasar\aop\EnhancedClassGenerator::CLASS_NAME_POSTFIX);
         $this->assertTrue($invocation->getParameter('name') === 'hoge');
     }
 
@@ -58,9 +58,9 @@ class A_S2MethodInvocation {
     }
 }
 
-class B_S2MethodInvocation implements seasar::aop::MethodInterceptor {
+class B_S2MethodInvocation implements \seasar\aop\MethodInterceptor {
     private $invocation = null;
-    public function invoke(seasar::aop::MethodInvocation $invocation) {
+    public function invoke(\seasar\aop\MethodInvocation $invocation) {
         $this->invocation = $invocation;
         return $this->invocation->proceed();
     }

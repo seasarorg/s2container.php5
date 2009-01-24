@@ -23,8 +23,8 @@
  * @package   seasar.container.impl
  * @author    klove
  */
-namespace seasar::container::impl;
-class S2ContainerImplTest extends ::PHPUnit_Framework_TestCase {
+namespace seasar\container\impl;
+class S2ContainerImplTest extends \PHPUnit_Framework_TestCase {
 
     public function testGetRoot() {
         $container = new S2ContainerImpl();
@@ -33,50 +33,50 @@ class S2ContainerImplTest extends ::PHPUnit_Framework_TestCase {
 
     public function testGetComponent() {
         $container = new S2ContainerImpl();
-        $this->assertTrue($container->getComponent('seasar::container::S2Container') === $container);
+        $this->assertTrue($container->getComponent('\seasar\container\S2Container') === $container);
         $this->assertTrue($container->getComponent('container') === $container);
     }
 
     public function testRegister() {
-        $componentDef = new ComponentDefImpl('seasar::container::impl::A_S2ContainerImplTest', 'hoge');
+        $componentDef = new ComponentDefImpl('\seasar\container\impl\A_S2ContainerImplTest', 'hoge');
         $container = new S2ContainerImpl();
         $container->register($componentDef);
         $hoge = $container->getComponent('hoge');
-        $this->assertTrue($hoge instanceof seasar::container::impl::A_S2ContainerImplTest);
+        $this->assertTrue($hoge instanceof \seasar\container\impl\A_S2ContainerImplTest);
 
         $container = new S2ContainerImpl();
-        $container->register('seasar::container::impl::A_S2ContainerImplTest', 'hoge');
+        $container->register('\seasar\container\impl\A_S2ContainerImplTest', 'hoge');
         $hoge = $container->getComponent('hoge');
-        $this->assertTrue($hoge instanceof seasar::container::impl::A_S2ContainerImplTest);
+        $this->assertTrue($hoge instanceof \seasar\container\impl\A_S2ContainerImplTest);
     }
 
     public function testFindComponents() {
         $container = new S2ContainerImpl();
-        $componentDef = new ComponentDefImpl('seasar::container::impl::A_S2ContainerImplTest', 'hoge');
+        $componentDef = new ComponentDefImpl('\seasar\container\impl\A_S2ContainerImplTest', 'hoge');
         $container->register($componentDef);
-        $componentDef = new ComponentDefImpl('seasar::container::impl::B_S2ContainerImplTest', 'hoge');
+        $componentDef = new ComponentDefImpl('\seasar\container\impl\B_S2ContainerImplTest', 'hoge');
         $container->register($componentDef);
         $components = $container->findComponents('hoge');
-        $this->assertTrue($components[0] instanceof seasar::container::impl::A_S2ContainerImplTest);
-        $this->assertTrue($components[1] instanceof seasar::container::impl::B_S2ContainerImplTest);
+        $this->assertTrue($components[0] instanceof \seasar\container\impl\A_S2ContainerImplTest);
+        $this->assertTrue($components[1] instanceof \seasar\container\impl\B_S2ContainerImplTest);
 
-        $componentDef = new ComponentDefImpl('seasar::container::impl::C_S2ContainerImplTest', 'hoge');
+        $componentDef = new ComponentDefImpl('\seasar\container\impl\C_S2ContainerImplTest', 'hoge');
         $container->register($componentDef);
         $components = $container->findComponents('hoge');
-        $this->assertTrue($components[0] instanceof seasar::container::impl::A_S2ContainerImplTest);
-        $this->assertTrue($components[1] instanceof seasar::container::impl::B_S2ContainerImplTest);
-        $this->assertTrue($components[2] instanceof seasar::container::impl::C_S2ContainerImplTest);
+        $this->assertTrue($components[0] instanceof \seasar\container\impl\A_S2ContainerImplTest);
+        $this->assertTrue($components[1] instanceof \seasar\container\impl\B_S2ContainerImplTest);
+        $this->assertTrue($components[2] instanceof \seasar\container\impl\C_S2ContainerImplTest);
     }
 
     public function testGetComponentDefSize() {
         $container = new S2ContainerImpl();
         $this->assertEquals($container->getComponentDefSize() , 0);
 
-        $componentDef = new ComponentDefImpl('seasar::container::impl::A_S2ContainerImplTest', 'a');
+        $componentDef = new ComponentDefImpl('\seasar\container\impl\A_S2ContainerImplTest', 'a');
         $container->register($componentDef);
         $this->assertEquals($container->getComponentDefSize() , 1);
 
-        $componentDef = new ComponentDefImpl('seasar::container::impl::B_S2ContainerImplTest', 'b');
+        $componentDef = new ComponentDefImpl('\seasar\container\impl\B_S2ContainerImplTest', 'b');
         $container->register($componentDef);
         $this->assertEquals($container->getComponentDefSize() , 2);
     }
@@ -115,7 +115,7 @@ class S2ContainerImplTest extends ::PHPUnit_Framework_TestCase {
         try {
             $container->getComponentDef('xxx');
             $this->fail();
-        } catch(seasar::container::exception::ComponentNotFoundRuntimeException $e) {
+        } catch(\seasar\container\exception\ComponentNotFoundRuntimeException $e) {
             print $e->getMessage() . PHP_EOL;
         }
     }
@@ -125,21 +125,21 @@ class S2ContainerImplTest extends ::PHPUnit_Framework_TestCase {
         try {
             $container->getDescendant('/path/to/xxx');
             $this->fail();
-        } catch(seasar::container::exception::ContainerNotRegisteredRuntimeException $e) {
+        } catch(\seasar\container\exception\ContainerNotRegisteredRuntimeException $e) {
             print $e->getMessage() . PHP_EOL;
         }
 
         try {
             $container->getChild(5);
             $this->fail();
-        } catch(seasar::container::exception::ContainerNotRegisteredRuntimeException $e) {
+        } catch(\seasar\container\exception\ContainerNotRegisteredRuntimeException $e) {
             print $e->getMessage() . PHP_EOL;
         }
     }
 
     public function testComponentNames() {
         $container = new S2ContainerImpl();
-        $componentDef = new ComponentDefImpl('seasar::container::impl::A_S2ContainerImplTest', 'hoge');
+        $componentDef = new ComponentDefImpl('\seasar\container\impl\A_S2ContainerImplTest', 'hoge');
         $container->register($componentDef);
         $components = $container->findComponents('hoge');
         $this->assertTrue($container->hasComponentDef('hoge'));
@@ -149,12 +149,12 @@ class S2ContainerImplTest extends ::PHPUnit_Framework_TestCase {
 
     public function testPropertyBinding() {
         $container = new S2ContainerImpl();
-        $componentDef = new ComponentDefImpl('seasar::container::impl::A_S2ContainerImplTest');
+        $componentDef = new ComponentDefImpl('\seasar\container\impl\A_S2ContainerImplTest');
         $container->register($componentDef);
-        $componentDef = new ComponentDefImpl('seasar::container::impl::D_S2ContainerImplTest', 'd');
+        $componentDef = new ComponentDefImpl('\seasar\container\impl\D_S2ContainerImplTest', 'd');
         $container->register($componentDef);
         $component = $container->getComponent('d');
-        $this->assertTrue($component->a_S2ContainerImplTest instanceof seasar::container::impl::A_S2ContainerImplTest);
+        $this->assertTrue($component->a_S2ContainerImplTest instanceof \seasar\container\impl\A_S2ContainerImplTest);
     }
 
     public function setUp(){

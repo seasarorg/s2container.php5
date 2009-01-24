@@ -25,7 +25,7 @@
  * @package   seasar.aop
  * @author    klove
  */
-namespace seasar::aop;
+namespace seasar\aop;
 class EnhancedClassGenerator {
     /**
      * Enhancedクラスのプロパティやメソッド名に付加します。
@@ -40,25 +40,25 @@ class EnhancedClassGenerator {
     /**
      * Enhancedクラスのソースを生成し、eval関数でクラスを定義します。戻り値として、Enhancedクラス名を返します。
      *
-     * @param ReflectionClass $targetClass Enhance対象のクラス
+     * @param \ReflectionClass $targetClass Enhance対象のクラス
      * @param array $applicableMethods Enhance対象のクラスのメソッドのうち、アスペクト対象となるメソッドのReflectionの配列
      * @return string Enhancedクラス名
      */
-    public static function generate(ReflectionClass $targetClass, array $applicableMethods) {
+    public static function generate(\ReflectionClass $targetClass, array $applicableMethods) {
         $concreteClassName = $targetClass->getName() . self::CLASS_NAME_POSTFIX;
         if (class_exists($concreteClassName, false)) {
             return $concreteClassName;
         }
 
-        if (true === seasar::aop::Config::$CACHING and
+        if (true === \seasar\aop\Config::$CACHING and
             true === self::loadCache($targetClass)) {
             return $concreteClassName;
         }
 
         $concreteClassSrc = self::generateInternal($concreteClassName, $targetClass, $applicableMethods);
-        seasar::util::EvalUtil::execute($concreteClassSrc);
+        \seasar\util\EvalUtil::execute($concreteClassSrc);
 
-        if (true === seasar::aop::Config::$CACHING) {
+        if (true === \seasar\aop\Config::$CACHING) {
             self::saveCache($targetClass, $concreteClassSrc);
         }
         return $concreteClassName;
@@ -67,23 +67,23 @@ class EnhancedClassGenerator {
     /**
      * Enhancedクラスのソースを生成します。戻り値としてEnhancedクラスのソース文字列を返します。
      * @param string $concreteClassName Enhancedクラスの名前
-     * @param ReflectionClass Enhance対象のクラス
+     * @param \ReflectionClass Enhance対象のクラス
      * @param array $applicableMethods Enhance対象のクラスのメソッドのうち、アスペクト対象となるメソッドのReflectionの配列
      * @return string Enhancedクラスのソース
      */
-    public static function generateInternal($concreteClassName, ReflectionClass $targetClass, array $applicableMethods) {
+    public static function generateInternal($concreteClassName, \ReflectionClass $targetClass, array $applicableMethods) {
         self::validateTargetClass($targetClass);
-        $className = seasar::util::ClassUtil::getClassName($concreteClassName);
-        $packageName = seasar::util::ClassUtil::getNamespace($concreteClassName);
+        $className = \seasar\util\ClassUtil::getClassName($concreteClassName);
+        $packageName = \seasar\util\ClassUtil::getNamespace($concreteClassName);
         $srcLine = '';
-        if ($packageName != '::') {
+        if ($packageName != '\\') {
             $srcLine = 'namespace ' . $packageName . ';' . PHP_EOL;
         }
         $srcLine .= 'class ' . $className . ' ';
         if ($targetClass->isInterface()) {
-            $srcLine .= 'implements ' . $targetClass->getName() . ' { ';
+            $srcLine .= 'implements \\' . $targetClass->getName() . ' { ';
         } else {
-            $srcLine .= 'extends ' . $targetClass->getName() . ' { ';
+            $srcLine .= 'extends \\' . $targetClass->getName() . ' { ';
         }
         $srcLine .= PHP_EOL;
         $srcLine .= '    public $class_EnhancedByS2AOP = null;
@@ -94,7 +94,7 @@ class EnhancedClassGenerator {
         foreach ($applicableMethods as $methodRef) {
             $methodDef = self::getMethodDefSrc($methodRef);
             if ($methodDef === false) {
-                seasar::log::S2Logger::getLogger(__CLASS__)->info("cannot parse param [{$methodRef->getDeclaringClass()->getName()}::{$methodRef->getName()}()]",__METHOD__);
+                \seasar\log\S2Logger::getLogger(__CLASS__)->info("cannot parse param [{$methodRef->getDeclaringClass()->getName()}::{$methodRef->getName()}()]",__METHOD__);
                 continue;
             }
             if ($methodRef->isAbstract()) {
@@ -109,7 +109,7 @@ class EnhancedClassGenerator {
         $srcLine .= '    private function __invokeMethodInvocationProceed_EnhancedByS2AOP() {
         $args = func_get_args();
         $methodName = array_pop($args);
-        $methodInvocation = new seasar::aop::impl::S2MethodInvocationImpl($this,
+        $methodInvocation = new \seasar\aop\impl\S2MethodInvocationImpl($this,
             $this->class_EnhancedByS2AOP,
             $this->class_EnhancedByS2AOP->getMethod($methodName),
             $this->concreteClass_EnhancedByS2AOP,
@@ -124,10 +124,10 @@ class EnhancedClassGenerator {
 
     /**
      * メソッドの定義部分のソースを生成します。
-     * @param ReflectionMethod $method
+     * @param \ReflectionMethod $method
      * @return string
      */
-    public static function getMethodDefSrc(ReflectionMethod $method) {
+    public static function getMethodDefSrc(\ReflectionMethod $method) {
         $src = 'public function ' . $method->getName() . '(';
         $params = $method->getParameters();
         $paramSrcs = array();
@@ -137,10 +137,7 @@ class EnhancedClassGenerator {
                 $paramSrc .= 'array ';
             } else if ($param->getClass() !== null) {
                 $clazz = $param->getClass();
-                $className = $clazz->getName();
-                if (seasar::util::ClassUtil::isGlobalClass($clazz)) {
-                    $className = '::' . $className;
-                }
+                $className = '\\' . $clazz->getName();
                 $paramSrc .= $className . ' ';
             }
             if ($param->isPassedByReference()) {
@@ -183,7 +180,7 @@ class EnhancedClassGenerator {
      *     $args = func_get_args();
      *     $methodName = array_pop($args);
      *     if (in_array($methodName, $this->abstractMethods_EnhancedByS2AOP)) {
-     *         throw new seasar::aop::exception::AbstractMethodInvocationRuntimeException(
+     *         throw new \seasar\aop\exception\AbstractMethodInvocationRuntimeException(
      *                               $this->class_EnhancedByS2AOP->getName(), $methodName);
      *     }
      *     return call_user_func_array(array($this, 'parent::' . $methodName), $args);
@@ -201,7 +198,7 @@ class EnhancedClassGenerator {
         $args = func_get_args();
         $methodName = array_pop($args);
         if (in_array($methodName, $this->abstractMethods_EnhancedByS2AOP)) {
-            throw new seasar::aop::exception::AbstractMethodInvocationRuntimeException($this->class_EnhancedByS2AOP->getName(), $methodName);
+            throw new \seasar\aop\exception\AbstractMethodInvocationRuntimeException($this->class_EnhancedByS2AOP->getName(), $methodName);
         }
         return call_user_func_array(array($this, \'parent::\' . $methodName), $args);
     }';
@@ -220,12 +217,12 @@ class EnhancedClassGenerator {
      *     return $this->__invokeParentMethod_EnhancedByS2AOP('sample');
      * }
      *
-     * @param ReflectionClass Enhance対象のクラス
-     * @param ReflectionMethod アスペクトを適用するメソッドのReflectionMethod
+     * @param \ReflectionClass Enhance対象のクラス
+     * @param \ReflectionMethod アスペクトを適用するメソッドのReflectionMethod
      * @param string $methodDef アスペクトを適用するメソッドのメソッド定義部分のソース
      * @return string メソッドのソース
      */
-    public static function getMethodSrc(ReflectionClass $targetClass, ReflectionMethod $refMethod, $methodDef) {
+    public static function getMethodSrc(\ReflectionClass $targetClass, \ReflectionMethod $refMethod, $methodDef) {
         //$methodDef = str_ireplace('protected', 'public ', $methodDef);
         $params = $refMethod->getParameters();
         $args = array();
@@ -236,7 +233,7 @@ class EnhancedClassGenerator {
         $args = implode(', ', $args);
         $parentMethodName = $refMethod->getName() . self::CLASS_NAME_POSTFIX;
         if ($targetClass->hasMethod($parentMethodName)) {
-            throw new seasar::aop::exception::EnhancedClassGenerationRuntimeException($targetClass->getName(), (array)$parentMethodName);
+            throw new \seasar\aop\exception\EnhancedClassGenerationRuntimeException($targetClass->getName(), (array)$parentMethodName);
         }
         $parentMethodDef  = str_replace($refMethod->getName(), $parentMethodName, $methodDef) . PHP_EOL;
         $parentMethodContent ='        return $this->__invokeParentMethod_EnhancedByS2AOP(' . $args . ');' . PHP_EOL;
@@ -255,11 +252,11 @@ class EnhancedClassGenerator {
     /**
      * Enhancedクラスのソースをキャッシュとして保存するファイル名を返します。
      *
-     * @param ReflectionClass $targetClass
+     * @param \ReflectionClass $targetClass
      * @return string
      */
-    protected static function getCacheFile(ReflectionClass $targetClass) {
-        return seasar::aop::Config::$CACHE_DIR . DIRECTORY_SEPARATOR
+    protected static function getCacheFile(\ReflectionClass $targetClass) {
+        return \seasar\aop\Config::$CACHE_DIR . DIRECTORY_SEPARATOR
              . sha1($targetClass->getFileName() . '$$' . $targetClass->getName()) . '.php';
     }
 
@@ -268,21 +265,21 @@ class EnhancedClassGenerator {
      * キャッシュファイルのタイムスタンプが対象クラスのファイルより古い場合は使用しません。
      * キャッシュファイルが再作成されます。
      *
-     * @param ReflectionClass $targetClass
+     * @param \ReflectionClass $targetClass
      * @return boolean
      */
-    protected static function loadCache(ReflectionClass $targetClass) {
+    protected static function loadCache(\ReflectionClass $targetClass) {
         $cacheFile = self::getCacheFile($targetClass);
         if (is_file($cacheFile)) {
             if (filemtime($cacheFile) > filemtime($targetClass->getFileName())) {
                 require_once($cacheFile);
-                seasar::log::S2Logger::getInstance()->debug('load aop cache of ' . $targetClass->getName(), __METHOD__);
+                \seasar\log\S2Logger::getInstance()->debug('load aop cache of ' . $targetClass->getName(), __METHOD__);
                 return true;
             } else {
-                seasar::log::S2Logger::getInstance()->debug('old aop cache of ' . $targetClass->getName() . ' found. regenerate.', __METHOD__);
+                \seasar\log\S2Logger::getInstance()->debug('old aop cache of ' . $targetClass->getName() . ' found. regenerate.', __METHOD__);
             }
         } else {
-            seasar::log::S2Logger::getInstance()->debug('aop cache of ' . $targetClass->getName() . ' not found.', __METHOD__);
+            \seasar\log\S2Logger::getInstance()->debug('aop cache of ' . $targetClass->getName() . ' not found.', __METHOD__);
         }
         return false;
     }
@@ -290,34 +287,34 @@ class EnhancedClassGenerator {
     /**
      * Enhancedクラスのソースをキャッシュとして保存します。
      *
-     * @param ReflectionClass $targetClass
+     * @param \ReflectionClass $targetClass
      * @param string $concreteClassSrc
-     * @throw seasar::aop::exception::CacheDirectoryUnwritableException
+     * @throw \seasar\aop\exception\CacheDirectoryUnwritableException
      */
-    protected static function saveCache(ReflectionClass $targetClass, $concreteClassSrc) {
+    protected static function saveCache(\ReflectionClass $targetClass, $concreteClassSrc) {
         $cacheFile = self::getCacheFile($targetClass);
-        if (is_writeable(seasar::aop::Config::$CACHE_DIR)) {
-            seasar::log::S2Logger::getInstance()->debug('write aop cache of ' . $targetClass->getName(), __METHOD__);
+        if (is_writeable(\seasar\aop\Config::$CACHE_DIR)) {
+            \seasar\log\S2Logger::getInstance()->debug('write aop cache of ' . $targetClass->getName(), __METHOD__);
             file_put_contents($cacheFile, '<?php' . PHP_EOL . $concreteClassSrc, LOCK_EX);
         } else {
-            throw new seasar::aop::exception::CacheDirectoryUnwritableException(seasar::aop::Config::$CACHE_DIR);
+            throw new \seasar\aop\exception\CacheDirectoryUnwritableException(\seasar\aop\Config::$CACHE_DIR);
         }
     }
 
     /**
      * Enhanceする対象クラスがS2Aop.PHPが使用するプロパティやメソッドを実装していないことを確認します。
      *
-     * @param ReflectionClass $targetClass
-     * @throw seasar::aop::exception::EnhancedClassGenerationRuntimeException
+     * @param \ReflectionClass $targetClass
+     * @throw \seasar\aop\exception\EnhancedClassGenerationRuntimeException
      */
-    private static function validateTargetClass(ReflectionClass $targetClass) {
+    private static function validateTargetClass(\ReflectionClass $targetClass) {
         if ($targetClass->hasProperty('class_EnhancedByS2AOP') or
             $targetClass->hasProperty('concreteClass_EnhancedByS2AOP') or
             $targetClass->hasProperty('methodInterceptorsMap_EnhancedByS2AOP') or
             $targetClass->hasProperty('parameters_EnhancedByS2AOP') or
             $targetClass->hasMethod('__invokeParentMethod_EnhancedByS2AOP') or
             $targetClass->hasMethod('__invokeMethodInvocationProceed_EnhancedByS2AOP')) {
-            throw new seasar::aop::exception::EnhancedClassGenerationRuntimeException($targetClass->getName(), array('clazz_EnhancedByS2AOP', 'concreteClass_EnhancedByS2AOP', 'methodInterceptorsMap_EnhancedByS2AOP', 'parameters_EnhancedByS2AOP'));
+            throw new \seasar\aop\exception\EnhancedClassGenerationRuntimeException($targetClass->getName(), array('clazz_EnhancedByS2AOP', 'concreteClass_EnhancedByS2AOP', 'methodInterceptorsMap_EnhancedByS2AOP', 'parameters_EnhancedByS2AOP'));
         }
     }
 }

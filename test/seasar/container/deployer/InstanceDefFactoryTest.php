@@ -23,14 +23,14 @@
  * @package   seasar.container.deployer
  * @author    klove
  */
-namespace seasar::container::deployer;
-class InstanceDefFactoryTest extends ::PHPUnit_Framework_TestCase {
+namespace seasar\container\deployer;
+class InstanceDefFactoryTest extends \PHPUnit_Framework_TestCase {
 
     public function testGetInstanceDef() {
         try {
             InstanceDefFactory::getInstanceDef('xxx');
             $this->fail();
-        } catch(seasar::container::exception::IllegalInstanceDefRuntimeException $e) {
+        } catch(\seasar\container\exception\IllegalInstanceDefRuntimeException $e) {
             print $e->getMessage() . PHP_EOL;
         } catch(Exception $e) {
             print $e->getMessage() . PHP_EOL;

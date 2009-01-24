@@ -25,25 +25,25 @@
  * @package   seasar.beans
  * @author    klove
  */
-namespace seasar::beans;
+namespace seasar\beans;
 class AccessorMethodPropertyDesc extends AbstractPropertyDesc {
 
     /**
-     * @var ReflectionMethod
+     * @var \ReflectionMethod
      */
     private $writeMethod = null;
 
     /**
-     * @var ReflectionMethod
+     * @var \ReflectionMethod
      */
     private $readMethod = null;
 
     /**
      * AccessorMethodPropertyDescを構築します。
      *
-     * @see seasar::beans::AbstractPropertyDesc::_construct()
+     * @see \seasar\beans\AbstractPropertyDesc::_construct()
      */
-    public function __construct(ReflectionClass $beanClass, $propName) {
+    public function __construct(\ReflectionClass $beanClass, $propName) {
         parent::__construct($beanClass, $propName);
         $methodName = self::getWriteMethodName($propName);
         if ($beanClass->hasMethod($methodName)) {
@@ -61,7 +61,7 @@ class AccessorMethodPropertyDesc extends AbstractPropertyDesc {
         }
 
         if ($this->writeMethod === null and $this->readMethod === null) {
-            throw new seasar::exception::IllegalPropertyRuntimeException($propName);
+            throw new \seasar\exception\IllegalPropertyRuntimeException($propName);
         }
     }
 
@@ -87,7 +87,7 @@ class AccessorMethodPropertyDesc extends AbstractPropertyDesc {
 
     /**
      * セッター用のReflectionMethodを返します。
-     * @return ReflectionMethod
+     * @return \ReflectionMethod
      */
     public function getWriteMethod() {
         return $this->writeMethod;
@@ -95,15 +95,15 @@ class AccessorMethodPropertyDesc extends AbstractPropertyDesc {
 
     /**
      * セッター用のReflectionMethodを設定します。
-     * @param ReflectionMethod $method
+     * @param \ReflectionMethod $method
      */
-    public function setWriteMethod(ReflectionMethod $method) {
+    public function setWriteMethod(\ReflectionMethod $method) {
         $this->writeMethod = $method;
     }
 
     /**
      * ゲッター用のReflectionMethodを返します。
-     * @return ReflectionMethod
+     * @return \ReflectionMethod
      */
     public function getReadMethod() {
         return $this->readMethod;
@@ -111,62 +111,62 @@ class AccessorMethodPropertyDesc extends AbstractPropertyDesc {
 
     /**
      * ゲッター用のReflectionMethodを設定します。
-     * @param ReflectionMethod $method
+     * @param \ReflectionMethod $method
      */
-    public function setReadMethod(ReflectionMethod $method) {
+    public function setReadMethod(\ReflectionMethod $method) {
         $this->readMethod = $method;
     }
 
     /**
-     * @see seasar::beans::PropertyDesc::hasReadMethod()
+     * @see \seasar\beans\PropertyDesc::hasReadMethod()
      */
     public function hasReadMethod() {
-        return $this->readMethod instanceof ReflectionMethod;
+        return $this->readMethod instanceof \ReflectionMethod;
     }
 
     /**
-     * @see seasar::beans::PropertyDesc::hasWriteMethod()
+     * @see \seasar\beans\PropertyDesc::hasWriteMethod()
      */
     public function hasWriteMethod() {
-        return $this->writeMethod instanceof ReflectionMethod;
+        return $this->writeMethod instanceof \ReflectionMethod;
     }
 
     /**
-     * @see seasar::beans::PropertyDesc::isReadable()
+     * @see \seasar\beans\PropertyDesc::isReadable()
      */
     public function isReadable() {
-        return $this->readMethod instanceof ReflectionMethod;
+        return $this->readMethod instanceof \ReflectionMethod;
     }
 
     /**
-     * @see seasar::beans::PropertyDesc::isWritable()
+     * @see \seasar\beans\PropertyDesc::isWritable()
      */
     public function isWritable() {
-        return $this->writeMethod instanceof ReflectionMethod;
+        return $this->writeMethod instanceof \ReflectionMethod;
     }
 
     /**
-     * @see seasar::beans::AbstractPropertyDesc::setValue()
+     * @see \seasar\beans\AbstractPropertyDesc::setValue()
      */
     public function setValue($instance, $value) {
         if ($this->writeMethod === null) {
-            throw new seasar::exception::MethodNotFoundRuntimeException(self::getWriteMethodName($this->propertyName));
+            throw new \seasar\exception\MethodNotFoundRuntimeException(self::getWriteMethodName($this->propertyName));
         }
         $this->writeMethod->invoke($instance, $value);
     }
 
     /**
-     * @see seasar::beans::AbstractPropertyDesc::getValue()
+     * @see \seasar\beans\AbstractPropertyDesc::getValue()
      */
     public function getValue($instance) {
         if ($this->readMethod === null) {
-            throw new seasar::exception::MethodNotFoundRuntimeException(self::getReadMethodName($this->propertyName));
+            throw new \seasar\exception\MethodNotFoundRuntimeException(self::getReadMethodName($this->propertyName));
         }
         return $this->readMethod->invoke($instance);
     }
 
     /**
-     * @see seasar::beans::AbstractPropertyDesc::getReflection()
+     * @see \seasar\beans\AbstractPropertyDesc::getReflection()
      */
     public function getReflection() {
         return $this->writeMethod;

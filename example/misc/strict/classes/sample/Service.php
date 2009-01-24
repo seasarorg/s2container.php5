@@ -55,7 +55,7 @@ class Service {
      * @return DateTime|Hoge
      */
     public function g(array $a) {
-        return new DateTime;
+        return new \DateTime;
     }
 
 }

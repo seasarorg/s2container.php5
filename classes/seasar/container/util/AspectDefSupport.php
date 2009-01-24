@@ -25,7 +25,7 @@
  * @package   seasar.container.util
  * @author    klove
  */
-namespace seasar::container::util;
+namespace seasar\container\util;
 final class AspectDefSupport {
 
     /**
@@ -34,16 +34,16 @@ final class AspectDefSupport {
     private $aspectDefs = array();
 
     /**
-     * @var seasar::container::S2Container
+     * @var \seasar\container\S2Container
      */
     private $container;
 
     /**
      * AspectDefを追加します。
      *
-     * @param seasar::container::impl::AspectDef
+     * @param \seasar\container\impl\AspectDef
      */
-    public function addAspectDef(seasar::container::impl::AspectDef $aspectDef) {
+    public function addAspectDef(\seasar\container\impl\AspectDef $aspectDef) {
         if ($this->container !== null) {
             $aspectDef->setContainer($this->container);
         }
@@ -72,11 +72,11 @@ final class AspectDefSupport {
      * AspectDefを返します。
      *
      * @param integer
-     * @return seasar::container::impl::AspectDef
+     * @return \seasar\container\impl\AspectDef
      */
     public function getAspectDef($index) {
         if (!isset($this->aspectDefs[$index])) {
-            throw new OutOfRangeException($index);
+            throw new \OutOfRangeException($index);
         }
         return $this->aspectDefs[$index];
     }
@@ -84,9 +84,9 @@ final class AspectDefSupport {
     /**
      * S2Containerを設定します。
      *
-     * @param seasar::container::S2Container $container
+     * @param \seasar\container\S2Container $container
      */
-    public function setContainer(seasar::container::S2Container $container) {
+    public function setContainer(\seasar\container\S2Container $container) {
         $this->container = $container;
         foreach ($this->aspectDefs as $def) {
             $def->setContainer($container);

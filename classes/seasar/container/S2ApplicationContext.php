@@ -26,7 +26,7 @@
  * @package   seasar.container
  * @author    klove
  */
-namespace seasar::container;
+namespace seasar\container;
 class S2ApplicationContext {
     /**
      * @var array
@@ -115,7 +115,7 @@ class S2ApplicationContext {
             if ($pear) {
                 $namespace = explode('_', $namespace);
             } else {
-                $namespace = explode('::', $namespace);
+                $namespace = explode('\\', $namespace);
             }
         }
 
@@ -133,10 +133,10 @@ class S2ApplicationContext {
     /**
      * ファイルシステムを再帰的に検索します。
      *
-     * @see seasar::container::S2ApplicationContext::import()
+     * @see \seasar\container\S2ApplicationContext::import()
      */
     private static function scanDir($parentPath, $namespace, $strict, $pear, $recursive) {
-        $iterator = new DirectoryIterator($parentPath);
+        $iterator = new \DirectoryIterator($parentPath);
         while($iterator->valid()) {
             if (strpos($iterator->getFilename(), '.') === 0) {
                 $iterator->next();
@@ -170,16 +170,16 @@ class S2ApplicationContext {
             if ($pear) {
                 $className = implode('_' , $namespace);
             } else {
-                $className = implode('::' , $namespace);
+                $className = implode('\\' , $namespace);
             }
             self::$CLASSES[$className] = $filePath;
-            seasar::util::ClassLoader::$CLASSES[$className] = $filePath;
-            seasar::log::S2Logger::getLogger(__CLASS__)->debug("find class $className : $filePath", __METHOD__);
+            \seasar\util\ClassLoader::$CLASSES[$className] = $filePath;
+            \seasar\log\S2Logger::getLogger(__CLASS__)->debug("find class $className : $filePath", __METHOD__);
         } else if (stripos($fileNameRev, 'nocid.') === 0) {
             self::$DICONS[$fileName] = $filePath;
-            seasar::log::S2Logger::getLogger(__CLASS__)->debug("find dicon $fileName : $filePath", __METHOD__);
+            \seasar\log\S2Logger::getLogger(__CLASS__)->debug("find dicon $fileName : $filePath", __METHOD__);
         } else {
-            seasar::log::S2Logger::getLogger(__CLASS__)->debug("ignore file $fileName : $filePath", __METHOD__);
+            \seasar\log\S2Logger::getLogger(__CLASS__)->debug("ignore file $fileName : $filePath", __METHOD__);
         }
     }
 
@@ -195,7 +195,7 @@ class S2ApplicationContext {
     }
 
     /**
-     * @see seasar::container::S2ApplicationContext::getComponent()
+     * @see \seasar\container\S2ApplicationContext::getComponent()
      */
     public static function get($key, $namespace = '') {
         return self::getComponent($key, $namespace);
@@ -206,7 +206,7 @@ class S2ApplicationContext {
      *
      * @param string  $key
      * @param string  $namespace
-     * @return seasar::container::ComponentDef
+     * @return \seasar\container\ComponentDef
      */
     public static function getComponentDef($key, $namespace = '') {
         if (!array_key_exists($namespace, self::$SINGLETON_CONTAINERS)) {
@@ -219,7 +219,7 @@ class S2ApplicationContext {
      * importされたクラスとダイコンファイルからS2Containerを生成します。
      *
      * @param string $namespace
-     * @return seasar::container::S2Container
+     * @return \seasar\container\S2Container
      */
     public static function create($namespace = '') {
         $dicons = array_values(self::$DICONS);
@@ -232,14 +232,14 @@ class S2ApplicationContext {
         }
 
         if (count($dicons) == 0 and count($classes) == 0) {
-            seasar::log::S2Logger::getLogger(__CLASS__)->info("dicon, class not found at all. create empty container.", __METHOD__);
-            return new seasar::container::impl::S2ContainerImpl();
+            \seasar\log\S2Logger::getLogger(__CLASS__)->info("dicon, class not found at all. create empty container.", __METHOD__);
+            return new \seasar\container\impl\S2ContainerImpl();
         }
 
-        $const = seasar::util::Annotation::$CONSTANT;
-        seasar::util::Annotation::$CONSTANT = false;
+        $const = \seasar\util\Annotation::$CONSTANT;
+        \seasar\util\Annotation::$CONSTANT = false;
         $container = self::createInternal($dicons, $classes, $namespace);
-        seasar::util::Annotation::$CONSTANT = $const;
+        \seasar\util\Annotation::$CONSTANT = $const;
         return $container;
     }
 
@@ -252,14 +252,14 @@ class S2ApplicationContext {
      *
      * @param array $dicons
      * @param array $classes
-     * @return seasar::container::S2Container
+     * @return \seasar\container\S2Container
      */
     public static function createInternal($dicons, $classes, $namespaceArg = '') {
-        $container = new seasar::container::impl::S2ContainerImpl();
+        $container = new \seasar\container\impl\S2ContainerImpl();
         foreach ($dicons as $dicon) {
-            $child = seasar::container::factory::S2ContainerFactory::includeChild($container, $dicon);
+            $child = \seasar\container\factory\S2ContainerFactory::includeChild($container, $dicon);
             $child->setRoot($container->getRoot());
-            seasar::log::S2Logger::getLogger(__CLASS__)->debug("include dicon : $dicon", __METHOD__);
+            \seasar\log\S2Logger::getLogger(__CLASS__)->debug("include dicon : $dicon", __METHOD__);
         }
 
         $importedClasses = array();
@@ -280,13 +280,13 @@ class S2ApplicationContext {
                     if (strpos($namespace, $namespaceArgDot) === 0) {
                         $namespace = substr($namespace, strlen($namespaceArgDot));
                     } else {
-                        seasar::log::S2Logger::getLogger(__CLASS__)->debug("ignored by namespace : $namespace not in $namespaceArg", __METHOD__);
+                        \seasar\log\S2Logger::getLogger(__CLASS__)->debug("ignored by namespace : $namespace not in $namespaceArg", __METHOD__);
                         continue;
                     }
                 }
             }
             self::registerComponentDef($container, $cd, $namespace);
-            seasar::log::S2Logger::getLogger(__CLASS__)->debug("import component : $clazz", __METHOD__);
+            \seasar\log\S2Logger::getLogger(__CLASS__)->debug("import component : $clazz", __METHOD__);
         }
 
         foreach($registeredComponentDefs as $cd) {
@@ -300,22 +300,22 @@ class S2ApplicationContext {
      * 渡されたnamespaceをドットで区切って、それぞれについてコンテナを取得または生成します。
      * namespaceが空文字の場合に、渡されたコンテナにコンポーネントを登録します。
      *
-     * @param seasar::container::S2Container $container
-     * @param seasar::container::ComponentDef $cd
+     * @param \seasar\container\S2Container $container
+     * @param \seasar\container\ComponentDef $cd
      * @param string|null $namespace
      */
-    public static function registerComponentDef(seasar::container::S2Container $container, seasar::container::ComponentDef $cd, $namespace = '') {
+    public static function registerComponentDef(\seasar\container\S2Container $container, \seasar\container\ComponentDef $cd, $namespace = '') {
         if ($namespace == '') { // 文字列一致、またはnull一致
             $container->register($cd);
         } else {
             $names = preg_split('/\./', $namespace, 2);
             if ($container->hasComponentDef($names[0])) {
                 $childContainer = $container->getComponent($names[0]);
-                if (!$childContainer instanceof seasar::container::S2Container) {
-                    throw new seasar::container::exception::TooManyRegistrationRuntimeException($names[0], array($container->getComponentDef($names[0])->getComponentClass(), new ReflectionClass('seasar::container::impl::S2ContainerImpl')));
+                if (!$childContainer instanceof \seasar\container\S2Container) {
+                    throw new \seasar\container\exception\TooManyRegistrationRuntimeException($names[0], array($container->getComponentDef($names[0])->getComponentClass(), new \ReflectionClass('\seasar\container\impl\S2ContainerImpl')));
                 }
             } else {
-                $childContainer = new seasar::container::impl::S2ContainerImpl();
+                $childContainer = new \seasar\container\impl\S2ContainerImpl();
                 $childContainer->setNamespace($names[0]);
                 $container->includeChild($childContainer);
             }
@@ -332,28 +332,28 @@ class S2ApplicationContext {
      * コンポーネント情報はコメントアノテーションで取得します。
      *
      * @param string $className
-     * @return seasar::container::ComponentDef
+     * @return \seasar\container\ComponentDef
      */
     public static function createComponentDef($className) {
-        $refClass = new ReflectionClass($className);
-        if (!seasar::util::Annotation::has($refClass, self::COMPONENT_ANNOTATION)) {
-            return array(new seasar::container::impl::ComponentDefImpl($refClass) , null);
+        $refClass = new \ReflectionClass($className);
+        if (!\seasar\util\Annotation::has($refClass, self::COMPONENT_ANNOTATION)) {
+            return array(new \seasar\container\impl\ComponentDefImpl($refClass) , null);
         }
 
-        $componentInfo = seasar::util::Annotation::get($refClass, self::COMPONENT_ANNOTATION);
+        $componentInfo = \seasar\util\Annotation::get($refClass, self::COMPONENT_ANNOTATION);
         if (isset($componentInfo['available']) and (boolean)$componentInfo['available'] === false) {
             return null;
         }
         if (isset($componentInfo['name'])) {
-            $cd = new seasar::container::impl::ComponentDefImpl($refClass, $componentInfo['name']);
+            $cd = new \seasar\container\impl\ComponentDefImpl($refClass, $componentInfo['name']);
         } else {
-            $cd = new seasar::container::impl::ComponentDefImpl($refClass);
+            $cd = new \seasar\container\impl\ComponentDefImpl($refClass);
         }
         if (isset($componentInfo['instance'])) {
-            $cd->setInstanceDef(seasar::container::deployer::InstanceDefFactory::getInstanceDef($componentInfo['instance']));
+            $cd->setInstanceDef(\seasar\container\deployer\InstanceDefFactory::getInstanceDef($componentInfo['instance']));
         }
         if (isset($componentInfo['autoBinding'])) {
-            $cd->setAutoBindingDef(seasar::container::assembler::AutoBindingDefFactory::getAutoBindingDef($componentInfo['autoBinding']));
+            $cd->setAutoBindingDef(\seasar\container\assembler\AutoBindingDefFactory::getAutoBindingDef($componentInfo['autoBinding']));
         }
         $namespace = '';
         if (isset($componentInfo['namespace'])) {
@@ -372,12 +372,12 @@ class S2ApplicationContext {
      *   - クラスについてMetaDefをセットアップします。
      *   - 自動アスペクトのセットアップを行います。
      *
-     * @param seasar::container::ComponentDef $cd
-     * @return seasar::container::ComponentDef
+     * @param \seasar\container\ComponentDef $cd
+     * @return \seasar\container\ComponentDef
      */
-    public static function setupComponentDef(seasar::container::ComponentDef $cd) {
+    public static function setupComponentDef(\seasar\container\ComponentDef $cd) {
         $classRef = $cd->getComponentClass();
-        $beanDesc = seasar::beans::BeanDescFactory::getBeanDesc($classRef);
+        $beanDesc = \seasar\beans\BeanDescFactory::getBeanDesc($classRef);
         $propDescs = $beanDesc->getPropertyDescs();
         foreach ($propDescs as $propDesc) {
             $ref = $propDesc->getReflection();
@@ -385,7 +385,7 @@ class S2ApplicationContext {
                 $ref->getDeclaringClass()->getName() !== $classRef->getName()) {
                 continue;
             }
-            if (seasar::util::Annotation::has($ref, self::BINDING_ANNOTATION)) {
+            if (\seasar\util\Annotation::has($ref, self::BINDING_ANNOTATION)) {
                 self::setupPropertyDef($cd, $ref, $propDesc->getPropertyName());
             }
         }
@@ -403,16 +403,16 @@ class S2ApplicationContext {
             }
             if (!$methodRef->isStatic() and 
                 !$methodRef->isFinal() and
-                seasar::util::Annotation::has($methodRef, self::ASPECT_ANNOTATION)) {
+                \seasar\util\Annotation::has($methodRef, self::ASPECT_ANNOTATION)) {
                 self::setupMethodAspectDef($cd, $methodRef);
             }
         }
         if (!$classRef->isFinal() and
-            seasar::util::Annotation::has($classRef, self::ASPECT_ANNOTATION)) {
+            \seasar\util\Annotation::has($classRef, self::ASPECT_ANNOTATION)) {
             self::setupClassAspectDef($cd, $classRef);
         }
 
-        if (seasar::util::Annotation::has($cd->getComponentClass(), self::META_ANNOTATION)) {
+        if (\seasar\util\Annotation::has($cd->getComponentClass(), self::META_ANNOTATION)) {
             self::setupClassMetaDef($cd, $classRef);
         }
 
@@ -429,14 +429,14 @@ class S2ApplicationContext {
     /**
      * PropertyDefをセットアップします。
      *
-     * @param seasar::container::ComponentDef $cd
-     * @param ReflectionClass $reflection
+     * @param \seasar\container\ComponentDef $cd
+     * @param \ReflectionClass $reflection
      * @param string $propName
      */
     private static function setupPropertyDef(ComponentDef $cd, $reflection, $propName) {
-        $propInfo = seasar::util::Annotation::get($reflection, self::BINDING_ANNOTATION);
+        $propInfo = \seasar\util\Annotation::get($reflection, self::BINDING_ANNOTATION);
         if (isset($propInfo[0])) {
-            $propertyDef = new seasar::container::impl::PropertyDef($propName);
+            $propertyDef = new \seasar\container\impl\PropertyDef($propName);
             $cd->addPropertyDef($propertyDef);
             if ($cd->getContainer()->hasComponentDef($propInfo[0])) {
                 $propertyDef->setChildComponentDef($cd->getContainer()->getComponentDef($propInfo[0]));
@@ -444,20 +444,20 @@ class S2ApplicationContext {
                 $propertyDef->setExpression($propInfo[0]);
             }
         } else {
-            seasar::log::S2Logger::getLogger(__CLASS__)->debug("binding annotation found. cannot get values.", __METHOD__);
+            \seasar\log\S2Logger::getLogger(__CLASS__)->debug("binding annotation found. cannot get values.", __METHOD__);
         }
     }
 
     /**
      * クラスに指定されているAspectをセットアップします。
      *
-     * @param seasar::container::ComponentDef $cd
-     * @param ReflectionClass $reflection
+     * @param \seasar\container\ComponentDef $cd
+     * @param \ReflectionClass $reflection
      */
-    private static function setupClassAspectDef(ComponentDef $cd, ReflectionClass $classRef) {
-        $annoInfo = seasar::util::Annotation::get($classRef, self::ASPECT_ANNOTATION);
+    private static function setupClassAspectDef(ComponentDef $cd, \ReflectionClass $classRef) {
+        $annoInfo = \seasar\util\Annotation::get($classRef, self::ASPECT_ANNOTATION);
         if (count($annoInfo) === 0) {
-            seasar::log::S2Logger::getLogger(__CLASS__)->debug("class aspect annotation found. cannot get values.", __METHOD__);
+            \seasar\log\S2Logger::getLogger(__CLASS__)->debug("class aspect annotation found. cannot get values.", __METHOD__);
             return;
         }
         self::setupAspectDef($cd, $annoInfo);
@@ -466,13 +466,13 @@ class S2ApplicationContext {
     /**
      * メソッドに指定されているAspectをセットアップします。
      *
-     * @param seasar::container::ComponentDef $cd
-     * @param ReflectionMethod $methodRef
+     * @param \seasar\container\ComponentDef $cd
+     * @param \ReflectionMethod $methodRef
      */
-    private static function setupMethodAspectDef(ComponentDef $cd, ReflectionMethod $methodRef) {
-        $annoInfo = seasar::util::Annotation::get($methodRef, self::ASPECT_ANNOTATION);
+    private static function setupMethodAspectDef(ComponentDef $cd, \ReflectionMethod $methodRef) {
+        $annoInfo = \seasar\util\Annotation::get($methodRef, self::ASPECT_ANNOTATION);
         if (count($annoInfo) === 0) {
-            seasar::log::S2Logger::getLogger(__CLASS__)->debug("method aspect annotation found. cannot get values.", __METHOD__);
+            \seasar\log\S2Logger::getLogger(__CLASS__)->debug("method aspect annotation found. cannot get values.", __METHOD__);
             return;
         }
         $annoInfo['pointcut'] = '/^' . $methodRef->getName() . '$/';
@@ -482,17 +482,17 @@ class S2ApplicationContext {
     /**
      * AspectDefをセットアップします。
      *
-     * @param seasar::container::ComponentDef $cd
+     * @param \seasar\container\ComponentDef $cd
      * @param array $annoInfo
      */
     private static function setupAspectDef(ComponentDef $cd, array $annoInfo) {
         if (isset($annoInfo['interceptor'])) {
             if (isset($annoInfo['pointcut'])) {
-                $pointcut = new seasar::aop::Pointcut($annoInfo['pointcut']);
+                $pointcut = new \seasar\aop\Pointcut($annoInfo['pointcut']);
             } else {
-                $pointcut = new seasar::aop::Pointcut($cd->getComponentClass());
+                $pointcut = new \seasar\aop\Pointcut($cd->getComponentClass());
             }
-            $aspectDef = new seasar::container::impl::AspectDef($pointcut);
+            $aspectDef = new \seasar\container\impl\AspectDef($pointcut);
             $cd->addAspectDef($aspectDef);
             if ($cd->getContainer()->hasComponentDef($annoInfo['interceptor'])) {
                 $aspectDef->setChildComponentDef($cd->getContainer()->getComponentDef($annoInfo['interceptor']));
@@ -500,24 +500,24 @@ class S2ApplicationContext {
                 $aspectDef->setExpression($annoInfo['interceptor']);
             }
         } else {
-            seasar::log::S2Logger::getLogger(__CLASS__)->debug("invalid aspect info. cannot get interceptor value.", __METHOD__);
+            \seasar\log\S2Logger::getLogger(__CLASS__)->debug("invalid aspect info. cannot get interceptor value.", __METHOD__);
         }
     }
 
     /**
      * MetaDefをセットアップします。
      *
-     * @param seasar::container::ComponentDef $cd
-     * @param ReflectionClass $classRef
+     * @param \seasar\container\ComponentDef $cd
+     * @param \ReflectionClass $classRef
      */
-    private static function setupClassMetaDef(ComponentDef $cd, ReflectionClass $classRef) {
-        $annoInfo = seasar::util::Annotation::get($classRef, self::META_ANNOTATION);
+    private static function setupClassMetaDef(ComponentDef $cd, \ReflectionClass $classRef) {
+        $annoInfo = \seasar\util\Annotation::get($classRef, self::META_ANNOTATION);
         if (count($annoInfo) === 0) {
-            seasar::log::S2Logger::getLogger(__CLASS__)->debug("class aspect annotation found. cannot get values.", __METHOD__);
+            \seasar\log\S2Logger::getLogger(__CLASS__)->debug("class aspect annotation found. cannot get values.", __METHOD__);
             return;
         }
         foreach($annoInfo as $key => $val) {
-            $metaDef = new seasar::container::impl::MetaDef($key);
+            $metaDef = new \seasar\container\impl\MetaDef($key);
             $cd->addMetaDef($metaDef);
             $metaDef->setExpression($val);
             if ($cd->getContainer()->hasComponentDef($val)) {

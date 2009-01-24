@@ -23,13 +23,13 @@
  * @package   seasar.container.factory
  * @author    klove
  */
-namespace seasar::container::factory;
-class XmlS2ContainerBuilderTest extends ::PHPUnit_Framework_TestCase {
+namespace seasar\container\factory;
+class XmlS2ContainerBuilderTest extends \PHPUnit_Framework_TestCase {
 
     public function test01Build() {
         $builder = new XmlS2ContainerBuilder();
         $container = $builder->build(dirname(__FILE__) . '/XmlS2ContainerBuilderTest_dicon/test01Build.dicon');
-        $this->assertTrue($container instanceof seasar::container::S2Container);
+        $this->assertTrue($container instanceof \seasar\container\S2Container);
     }
 
     public function test02Namespace() {
@@ -69,8 +69,8 @@ class XmlS2ContainerBuilderTest extends ::PHPUnit_Framework_TestCase {
         $componentDef = $container->getComponentDef('a');
         $aspectDef = $componentDef->getAspectDef(0);
         $pointcut = $aspectDef->getPointcut();
-        $this->assertTrue($pointcut instanceof seasar::aop::Pointcut);
-        $this->assertTrue($aspectDef->getValue() instanceof seasar::aop::interceptor::TraceInterceptor);
+        $this->assertTrue($pointcut instanceof \seasar\aop\Pointcut);
+        $this->assertTrue($aspectDef->getValue() instanceof \seasar\aop\interceptor\TraceInterceptor);
     }
 
     public function test07ComponentMetaDef() {
@@ -89,7 +89,7 @@ class XmlS2ContainerBuilderTest extends ::PHPUnit_Framework_TestCase {
         $argDef = $componentDef->getArgDef(0);
         $childComponentDef = $argDef->getChildComponentDef();
         $this->assertTrue($childComponentDef->getComponentName() === 'b');
-        $this->assertTrue($childComponentDef->getComponentClass()->getName() === 'seasar::container::factory::B_XmlS2ContainerBuilderTest');
+        $this->assertTrue($childComponentDef->getComponentClass()->getName() === 'seasar\container\factory\B_XmlS2ContainerBuilderTest');
     }
 
     public function test09ChildComponentDefProperty() {
@@ -99,7 +99,7 @@ class XmlS2ContainerBuilderTest extends ::PHPUnit_Framework_TestCase {
         $propertyDef = $componentDef->getPropertyDef('b');
         $childComponentDef = $propertyDef->getChildComponentDef();
         $this->assertTrue($childComponentDef->getComponentName() === 'b');
-        $this->assertTrue($childComponentDef->getComponentClass()->getName() === 'seasar::container::factory::B_XmlS2ContainerBuilderTest');
+        $this->assertTrue($childComponentDef->getComponentClass()->getName() === 'seasar\container\factory\B_XmlS2ContainerBuilderTest');
     }
 
     public function test10ChildComponentDefAspect() {
@@ -109,7 +109,7 @@ class XmlS2ContainerBuilderTest extends ::PHPUnit_Framework_TestCase {
         $aspectDef = $componentDef->getAspectDef(0);
         $childComponentDef = $aspectDef->getChildComponentDef();
         $this->assertTrue($childComponentDef->getComponentName() === 'b');
-        $this->assertTrue($childComponentDef->getComponentClass()->getName() === 'seasar::container::factory::B_XmlS2ContainerBuilderTest');
+        $this->assertTrue($childComponentDef->getComponentClass()->getName() === 'seasar\container\factory\B_XmlS2ContainerBuilderTest');
     }
 
     public function test11FileNotFound() {
@@ -117,7 +117,7 @@ class XmlS2ContainerBuilderTest extends ::PHPUnit_Framework_TestCase {
         try {
             $container = $builder->build(dirname(__FILE__) . '/xxx');
             $this->fail();
-        } catch (seasar::exception::FileNotFoundException $e) {
+        } catch (\seasar\exception\FileNotFoundException $e) {
             print $e->getMessage() . PHP_EOL;
         }
     }
@@ -125,13 +125,13 @@ class XmlS2ContainerBuilderTest extends ::PHPUnit_Framework_TestCase {
     public function test12DomValidate() {
         $builder = new XmlS2ContainerBuilder();
         try {
-            seasar::container::Config::$DOM_VALIDATE = true;
+            \seasar\container\Config::$DOM_VALIDATE = true;
             $container = $builder->build(dirname(__FILE__) . '/XmlS2ContainerBuilderTest_dicon/test12DomValidate.dicon');
             $this->fail();
-        } catch (seasar::exception::DOMException $e) {
+        } catch (\seasar\exception\DOMException $e) {
             print $e->getMessage() . PHP_EOL;
         }
-        seasar::container::Config::$DOM_VALIDATE = false;
+        \seasar\container\Config::$DOM_VALIDATE = false;
     }
 
     public function test13InitMethod() {

@@ -25,7 +25,7 @@
  * @package   seasar.container.util
  * @author    klove
  */
-namespace seasar::container::util;
+namespace seasar\container\util;
 final class ConstructorUtil {
 
     /**
@@ -36,19 +36,19 @@ final class ConstructorUtil {
     /**
      * 新しいインスタンスを作成します。
      *
-     * @param seasar::container::ComponentDef $componentDef
+     * @param \seasar\container\ComponentDef $componentDef
      * @param array $args
      */
-    public static function newInstance(seasar::container::ComponentDef $componentDef, array $args = array()) {
+    public static function newInstance(\seasar\container\ComponentDef $componentDef, array $args = array()) {
         if ($componentDef->getAspectDefSize() > 0) {
-            return seasar::container::util::AopUtil::getInstance($componentDef, $args);
+            return \seasar\container\util\AopUtil::getInstance($componentDef, $args);
         }
         $reflection = $componentDef->getComponentClass();
-        if ($reflection->getConstructor() instanceof ReflectionMethod) {
+        if ($reflection->getConstructor() instanceof \ReflectionMethod) {
             return $reflection->newInstanceArgs($args);
         }
         if (count($args) > 0) {
-            throw new seasar::container::exception::IllegalConstructorRuntimeException($reflection);
+            throw new \seasar\container\exception\IllegalConstructorRuntimeException($reflection);
         }
         return $reflection->newInstance();
     }
@@ -56,11 +56,11 @@ final class ConstructorUtil {
     /**
      * 新しいインスタンスを作成します。
      *
-     * @see seasar::container::util::ConstructorUtil::newInstance()
-     * @param seasar::container::ComponentDef $componentDef
+     * @see \seasar\container\util\ConstructorUtil::newInstance()
+     * @param \seasar\container\ComponentDef $componentDef
      * @param array $args
      */
-    public static function getInstance(seasar::container::ComponentDef $componentDef, array $args = array()) {
+    public static function getInstance(\seasar\container\ComponentDef $componentDef, array $args = array()) {
         return self::newInstance($componentDef, $args);
     }
 }

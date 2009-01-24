@@ -23,14 +23,14 @@
  * @package   seasar.container.assembler
  * @author    klove
  */
-namespace seasar::container::assembler;
-class AutoBindingDefFactoryTest extends ::PHPUnit_Framework_TestCase {
+namespace seasar\container\assembler;
+class AutoBindingDefFactoryTest extends \PHPUnit_Framework_TestCase {
 
     public function testGetAutoBindingDef() {
         try {
             AutoBindingDefFactory::getAutoBindingDef('xxx');
             $this->fail();
-        } catch(seasar::container::exception::IllegalAutoBindingDefRuntimeException $e) {
+        } catch(\seasar\container\exception\IllegalAutoBindingDefRuntimeException $e) {
             print $e->getMessage() . PHP_EOL;
         } catch(Exception $e) {
             print $e->getMessage() . PHP_EOL;

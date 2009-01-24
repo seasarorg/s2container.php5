@@ -23,41 +23,41 @@
  * @package   seasar.aop.interceptor
  * @author    klove
  */
-namespace seasar::aop::interceptor;
-class MockInterceptorTest extends ::PHPUnit_Framework_TestCase {
+namespace seasar\aop\interceptor;
+class MockInterceptorTest extends \PHPUnit_Framework_TestCase {
 
     public function test01Proceed() {
-        $container = seasar::container::factory::S2ContainerFactory::create(dirname(__FILE__) . '/MockInterceptorTest_dicon/test01Proceed.dicon');
+        $container = \seasar\container\factory\S2ContainerFactory::create(dirname(__FILE__) . '/MockInterceptorTest_dicon/test01Proceed.dicon');
         $a = $container->getComponent('a');
         $a->hoge();
     }
 
     public function test02ReturnValue() {
-        $container = seasar::container::factory::S2ContainerFactory::create(dirname(__FILE__) . '/MockInterceptorTest_dicon/test02ReturnValue.dicon');
+        $container = \seasar\container\factory\S2ContainerFactory::create(dirname(__FILE__) . '/MockInterceptorTest_dicon/test02ReturnValue.dicon');
         $b = $container->getComponent('b');
         $this->assertEquals($b->getName(), 'abc');
     }
 
     public function test03Exception() {
-        $container = seasar::container::factory::S2ContainerFactory::create(dirname(__FILE__) . '/MockInterceptorTest_dicon/test03Exception.dicon');
+        $container = \seasar\container\factory\S2ContainerFactory::create(dirname(__FILE__) . '/MockInterceptorTest_dicon/test03Exception.dicon');
         $b = $container->getComponent('b');
         try {
             $b->getName();
             $this->fail();
-        } catch(Exception $e) {
+        } catch(\Exception $e) {
             print $e->getMessage() . PHP_EOL;
         }
     }
 
     public function test04Annotation() {
-        $container = seasar::container::factory::S2ContainerFactory::create(dirname(__FILE__) . '/MockInterceptorTest_dicon/test04Annotation.dicon');
+        $container = \seasar\container\factory\S2ContainerFactory::create(dirname(__FILE__) . '/MockInterceptorTest_dicon/test04Annotation.dicon');
         $c = $container->getComponent('c');
         $this->assertEquals($c->getName(), 2007);
 
         try {
             $c->getYear();
             $this->fail();
-        } catch(Exception $e) {
+        } catch(\Exception $e) {
             print $e->getMessage() . PHP_EOL;
         }
 
@@ -91,7 +91,7 @@ abstract class C_MockInterceptorTest{
     abstract public function getName();
 
     /**
-     * @S2Mock('exception' => new ::Exception('annotation exception'));
+     * @S2Mock('exception' => new \Exception('annotation exception'));
      */
     abstract public function getYear();
 

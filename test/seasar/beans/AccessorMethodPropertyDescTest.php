@@ -23,11 +23,11 @@
  * @package   seasar.beans
  * @author    klove
  */
-namespace seasar::beans;
-class AccessorMethodPropertyDescTest extends ::PHPUnit_Framework_TestCase {
+namespace seasar\beans;
+class AccessorMethodPropertyDescTest extends \PHPUnit_Framework_TestCase {
 
     public function testSetter() {
-        $ref = new ReflectionClass(__NAMESPACE__ . '::A_AccessorMethodPropertyDescTest');
+        $ref = new \ReflectionClass(__NAMESPACE__ . '\A_AccessorMethodPropertyDescTest');
         $desc = new AccessorMethodPropertyDesc($ref, 'name');
         $obj = new A_AccessorMethodPropertyDescTest;
         $desc->setValue($obj, 'seasar');
@@ -36,14 +36,14 @@ class AccessorMethodPropertyDescTest extends ::PHPUnit_Framework_TestCase {
     }
 
     public function testGetter() {
-        $ref = new ReflectionClass(__NAMESPACE__ . '::A_AccessorMethodPropertyDescTest');
+        $ref = new \ReflectionClass(__NAMESPACE__ . '\A_AccessorMethodPropertyDescTest');
         $desc = new AccessorMethodPropertyDesc($ref, 'zzz');
         $obj = new A_AccessorMethodPropertyDescTest;
         $this->assertEquals($desc->getValue($obj), 'hoge');
     }
 
     public function testAccessor() {
-        $ref = new ReflectionClass(__NAMESPACE__ . '::A_AccessorMethodPropertyDescTest');
+        $ref = new \ReflectionClass(__NAMESPACE__ . '\A_AccessorMethodPropertyDescTest');
         $desc = new AccessorMethodPropertyDesc($ref, 'yyy');
         $obj = new A_AccessorMethodPropertyDescTest;
         $desc->setValue($obj, 'seasar');
@@ -51,11 +51,11 @@ class AccessorMethodPropertyDescTest extends ::PHPUnit_Framework_TestCase {
     }
 
     public function testIllegalPropertFound() {
-        $ref = new ReflectionClass(__NAMESPACE__ . '::A_AccessorMethodPropertyDescTest');
+        $ref = new \ReflectionClass(__NAMESPACE__ . '\A_AccessorMethodPropertyDescTest');
         try {
             $desc = new AccessorMethodPropertyDesc($ref, 'xxx');
             $this->fail();
-        } catch (seasar::exception::IllegalPropertyRuntimeException $e) {
+        } catch (\seasar\exception\IllegalPropertyRuntimeException $e) {
             print $e->getMessage() . PHP_EOL;
         } catch (Exception $e) {
             $this->fail($e->getMessage());
@@ -63,13 +63,13 @@ class AccessorMethodPropertyDescTest extends ::PHPUnit_Framework_TestCase {
     }
 
     public function testSetterNotFound() {
-        $ref = new ReflectionClass(__NAMESPACE__ . '::A_AccessorMethodPropertyDescTest');
+        $ref = new \ReflectionClass(__NAMESPACE__ . '\A_AccessorMethodPropertyDescTest');
         $desc = new AccessorMethodPropertyDesc($ref, 'zzz');
         $obj = new A_AccessorMethodPropertyDescTest;
         try {
             $desc->setValue($obj, 'hoge');
             $this->fail();
-        } catch (seasar::exception::MethodNotFoundRuntimeException $e) {
+        } catch (\seasar\exception\MethodNotFoundRuntimeException $e) {
             print $e->getMessage() . PHP_EOL;
         } catch (Exception $e) {
             $this->fail($e->getMessage());
@@ -77,13 +77,13 @@ class AccessorMethodPropertyDescTest extends ::PHPUnit_Framework_TestCase {
     }
 
     public function testGetterNotFound() {
-        $ref = new ReflectionClass(__NAMESPACE__ . '::A_AccessorMethodPropertyDescTest');
+        $ref = new \ReflectionClass(__NAMESPACE__ . '\A_AccessorMethodPropertyDescTest');
         $desc = new AccessorMethodPropertyDesc($ref, 'name');
         $obj = new A_AccessorMethodPropertyDescTest;
         try {
             $desc->getValue($obj);
             $this->fail();
-        } catch (seasar::exception::MethodNotFoundRuntimeException $e) {
+        } catch (\seasar\exception\MethodNotFoundRuntimeException $e) {
             print $e->getMessage() . PHP_EOL;
         } catch (Exception $e) {
             $this->fail($e->getMessage());

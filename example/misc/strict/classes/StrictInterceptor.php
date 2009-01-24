@@ -2,7 +2,7 @@
 /**
  * メソッド実行に際し、引数と戻り値の型チェックを行うインターセプター。
  */
-class StrictInterceptor implements seasar::aop::MethodInterceptor {
+class StrictInterceptor implements \seasar\aop\MethodInterceptor {
 
     /**
      * @var boolean
@@ -10,9 +10,9 @@ class StrictInterceptor implements seasar::aop::MethodInterceptor {
     public static $MUST = false;
 
     /**
-     * @see seasar::aop::MethodInterceptor::invoke()
+     * @see \seasar\aop\MethodInterceptor::invoke()
      */
-    public function invoke(seasar::aop::MethodInvocation $invocation) {
+    public function invoke(\seasar\aop\MethodInvocation $invocation) {
         $this->strictArguments($invocation->getMethod(), $invocation->getArguments());
         $result = $invocation->proceed();
         $this->strictReturnValue($invocation->getMethod(), $result);
@@ -22,11 +22,11 @@ class StrictInterceptor implements seasar::aop::MethodInterceptor {
     /**
      * メソッド引数値についてタイプ検証を行います。
      *
-     * @param ReflectionMethod $method
+     * @param \ReflectionMethod $method
      * @param array $arguments
      * @throw StrictException タイプ検証に失敗した場合にスローされます。
      */
-    private function strictArguments(ReflectionMethod $method, array $arguments) {
+    private function strictArguments(\ReflectionMethod $method, array $arguments) {
         $annoInfo = StrictAnnotationFactory::create($method);
         if (isset($annoInfo['param'])) {
             $o = count($annoInfo['param']);
@@ -47,12 +47,12 @@ class StrictInterceptor implements seasar::aop::MethodInterceptor {
     /**
      * メソッド実行結果についてタイプ検証を行います。
      *
-     * @param ReflectionMethod $method
+     * @param \ReflectionMethod $method
      * @param mixed $result
      * @throw StrictException タイプ検証に失敗した場合にスローされます。
      *
      */
-    private function strictReturnValue(ReflectionMethod $method, $result) {
+    private function strictReturnValue(\ReflectionMethod $method, $result) {
         $annoInfo = StrictAnnotationFactory::create($method);
         if (isset($annoInfo['return'])) {
             if (false == $this->validate($annoInfo['return'], $result)) {

@@ -23,11 +23,11 @@
  * @package   seasar.container.impl
  * @author    klove
  */
-namespace seasar::container::impl;
-class ComponentDefImplTest extends ::PHPUnit_Framework_TestCase {
+namespace seasar\container\impl;
+class ComponentDefImplTest extends \PHPUnit_Framework_TestCase {
 
     public function testA() {
-        $def = new ComponentDefImpl('seasar::container::impl::A_ComponentDefTest');
+        $def = new ComponentDefImpl('\seasar\container\impl\A_ComponentDefTest');
     }
 
     public function setUp(){

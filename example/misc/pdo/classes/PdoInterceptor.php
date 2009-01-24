@@ -3,14 +3,14 @@
  * @S2Component('name'      => 'interceptor',
  *              'namespace' => 'pdo');
  */
-class PdoInterceptor implements seasar::aop::MethodInterceptor {
+class PdoInterceptor implements \seasar\aop\MethodInterceptor {
     /**
      * @var string
      */
      public static $MODEL_CLASS = 'StandardDto';
 
     /**
-     * @var seasar::container::S2Container
+     * @var \seasar\container\S2Container
      */
     public $container = 's2binding';
 
@@ -25,9 +25,9 @@ class PdoInterceptor implements seasar::aop::MethodInterceptor {
     private $pdo = null;
 
     /**
-     * @see seasar::aop::MethodInterceptor::invoke()
+     * @see \seasar\aop\MethodInterceptor::invoke()
      */
-    public function invoke(seasar::aop::MethodInvocation $invocation) {
+    public function invoke(\seasar\aop\MethodInvocation $invocation) {
         if ($invocation->getMethod()->isAbstract()) {
             $result = null;
         } else {
@@ -41,15 +41,15 @@ class PdoInterceptor implements seasar::aop::MethodInterceptor {
      * HogeDao->findById() の呼び出しの場合、SQLファイ名は、
      * /path/to/Hogeクラスファイルの場所/HogeDao_findById.sql
      *
-     * @param ReflectionClass $targetClass
-     * @param ReflectionMethod $method
+     * @param \ReflectionClass $targetClass
+     * @param \ReflectionMethod $method
      * @param array $context
      * @return string
      */
-    public function getQueryFromSqlFile(ReflectionClass $targetClass, ReflectionMethod $method, array $context) {
+    public function getQueryFromSqlFile(\ReflectionClass $targetClass, \ReflectionMethod $method, array $context) {
         $sqlFile = dirname($targetClass->getFileName())
                  . DIRECTORY_SEPARATOR
-                 . seasar::util::ClassUtil::getClassName($targetClass->getName())
+                 . \seasar\util\ClassUtil::getClassName($targetClass->getName())
                  . '_' . $method->getName() . '.sql';
         $query = null;
         if (is_file($sqlFile) and is_readable($sqlFile)) {
@@ -113,13 +113,13 @@ class PdoInterceptor implements seasar::aop::MethodInterceptor {
     }
 
     /**
-     * ReflectionMethodから引数の名前を取得し$argsを割り当てます。
+     * \ReflectionMethodから引数の名前を取得し$argsを割り当てます。
      *
-     * @param ReflectionMethod $method
+     * @param \ReflectionMethod $method
      * @param array $args
      * @return array
      */
-    public function getContext(ReflectionMethod $method, array $args) {
+    public function getContext(\ReflectionMethod $method, array $args) {
         $context = array();
         $refParames = $method->getParameters();
         $o = count($args);
@@ -134,30 +134,30 @@ class PdoInterceptor implements seasar::aop::MethodInterceptor {
      * そのインスタンスを$this->pdoに保持します。コンテナに複数のPDOコンポーネントが存在する場合は、
      * クラスとメソッドに付いている@S2Pdoアノテーションのpdo属性値をキーとしてコンテナから取得します。
      *
-     * @param ReflectionClass $targetClass
-     * @param ReflectionMethod $method
+     * @param \ReflectionClass $targetClass
+     * @param \ReflectionMethod $method
      * @return PDO
      * @throw Exception PDOコンポーネントが存在しなかった場合にスローされます。
      */
-    public function getPdo(ReflectionClass $targetClass, ReflectionMethod $method) {
+    public function getPdo(\ReflectionClass $targetClass, \ReflectionMethod $method) {
         if ($this->pdo instanceof PDO) {
             return $this->pdo;
         }
 
         $cd = $this->container->getComponentDef('PDO');
-        if (! $cd instanceof seasar::container::impl::TooManyRegistrationComponentDef) {
+        if (! $cd instanceof seasar\container\impl\TooManyRegistrationComponentDef) {
             $this->pdo = $cd->getComponent();
             return $this->pdo;
         }
 
-        if (seasar::util::Annotation::has($method, self::ANNOTATION)) {
-            $pdoInfo = seasar::util::Annotation::get($method, self::ANNOTATION);
+        if (\seasar\util\Annotation::has($method, self::ANNOTATION)) {
+            $pdoInfo = \seasar\util\Annotation::get($method, self::ANNOTATION);
             if (isset($pdoInfo['pdo'])) {
                 return $this->container->getComponent($pdoInfo['pdo']);
             }
         }
-        if (seasar::util::Annotation::has($targetClass, self::ANNOTATION)) {
-            $pdoInfo = seasar::util::Annotation::get($targetClass, self::ANNOTATION);
+        if (\seasar\util\Annotation::has($targetClass, self::ANNOTATION)) {
+            $pdoInfo = \seasar\util\Annotation::get($targetClass, self::ANNOTATION);
             if (isset($pdoInfo['pdo'])) {
                 return $this->container->getComponent($pdoInfo['pdo']);
             }
@@ -182,8 +182,8 @@ class PdoInterceptor implements seasar::aop::MethodInterceptor {
             $placeHolders = $matches[1];
         }
         $query = preg_replace($reg, ':\1\2', $query);
-        if (seasar::Config::$DEBUG_VERBOSE) {
-            seasar::log::S2Logger::getInstance(__NAMESPACE__)->debug($this->queryToString($query), __METHOD__);
+        if (\seasar\Config::$DEBUG_VERBOSE) {
+            \seasar\log\S2Logger::getInstance(__NAMESPACE__)->debug($this->queryToString($query), __METHOD__);
         }
         return array($query, $placeHolders);
     }
@@ -195,14 +195,14 @@ class PdoInterceptor implements seasar::aop::MethodInterceptor {
      * @param mixed $result 配列の場合は、1番目の値がSQLクエリ、2番目の値がbind値の配列になります。
      *                      文字列の場合は、SQLクエリとして扱われます。この場合、bind値の配列にはメソッド引数が使用されます。
      *                      null値の場合は、SQLファイルを検索してクエリを取得します。
-     * @param seasar::aop::MethodInvocation $invocation
+     * @param \seasar\aop\MethodInvocation $invocation
      * @resutl array 発行されたSQLクエリがselect文の場合は、PDOStatement->fetchAll()結果配列を返します。
      *               それ以外のSQLクエリが発行された場合は次の配列を返します。
      *               array('last_insert_id' => $pdo->lastInsertId(),
      *                     'affected_rows'  => $stmt->rowCount());
      * @throw Exception SQLクエリがnullの場合にスローされます。
      */
-    protected function execute($result, seasar::aop::MethodInvocation $invocation) {
+    protected function execute($result, \seasar\aop\MethodInvocation $invocation) {
         if (is_array($result)) {
             $query   = $result[0];
             $context = $result[1];
@@ -263,10 +263,10 @@ class PdoInterceptor implements seasar::aop::MethodInterceptor {
                     continue;
                 }
             }
-            seasar::log::S2Logger::getInstance(__NAMESPACE__)->info("$ph defined. value not found.", __METHOD__);
+            \seasar\log\S2Logger::getInstance(__NAMESPACE__)->info("$ph defined. value not found.", __METHOD__);
         }
-        if (seasar::Config::$DEBUG_VERBOSE) {
-            seasar::log::S2Logger::getInstance(__NAMESPACE__)->debug($this->bindValuesToString($bindValues), __METHOD__);
+        if (\seasar\Config::$DEBUG_VERBOSE) {
+            \seasar\log\S2Logger::getInstance(__NAMESPACE__)->debug($this->bindValuesToString($bindValues), __METHOD__);
         }
     }
 
@@ -311,7 +311,7 @@ class PdoInterceptor implements seasar::aop::MethodInterceptor {
     private function bindValuesToString(array $bindValues) {
         $items = array();
         foreach($bindValues as $ph => $value) {
-            $items[] = $ph . ' => ' . seasar::util::StringUtil::mixToString($value);
+            $items[] = $ph . ' => ' . \seasar\util\StringUtil::mixToString($value);
         }
         return 'bindValues(' . implode(', ', $items) . ')';
     }
@@ -320,12 +320,12 @@ class PdoInterceptor implements seasar::aop::MethodInterceptor {
      * メソッドについている@S2Pdoアノテーションから戻り値に使用するモデルクラスを取得する。
      * アノテーションが付いていなければ、デフォルトのPdoStandardModelクラス名を返す。
      *
-     * @param ReflectionMethod $method
+     * @param \ReflectionMethod $method
      * @return string
      */
-    private function getModelClass(ReflectionMethod $method) {
-        if (seasar::util::Annotation::has($method, self::ANNOTATION)) {
-            $pdoInfo = seasar::util::Annotation::get($method, self::ANNOTATION);
+    private function getModelClass(\ReflectionMethod $method) {
+        if (\seasar\util\Annotation::has($method, self::ANNOTATION)) {
+            $pdoInfo = \seasar\util\Annotation::get($method, self::ANNOTATION);
             if (isset($pdoInfo['dto'])) {
                 return $pdoInfo['dto'];
             }

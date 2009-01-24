@@ -23,35 +23,35 @@
  * @package   seasar.container.assembler
  * @author    klove
  */
-namespace seasar::container::assembler;
-class ManualConstructorAssemblerTest extends ::PHPUnit_Framework_TestCase {
+namespace seasar\container\assembler;
+class ManualConstructorAssemblerTest extends \PHPUnit_Framework_TestCase {
 
     public function testAssembleWithoutArgs() {
-        $container = new seasar::container::impl::S2ContainerImpl();
-        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::A_ManualConstructorAssemblerTest');
+        $container = new \seasar\container\impl\S2ContainerImpl();
+        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\A_ManualConstructorAssemblerTest');
         $assembler = new ManualConstructorAssembler($componentDef);
-        $this->assertTrue($assembler->assemble() instanceof seasar::container::assembler::A_ManualConstructorAssemblerTest);
+        $this->assertTrue($assembler->assemble() instanceof \seasar\container\assembler\A_ManualConstructorAssemblerTest);
     }
 
     public function testAssembleWithArgs() {
-        $container = new seasar::container::impl::S2ContainerImpl();
-        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::A_ManualConstructorAssemblerTest');
+        $container = new \seasar\container\impl\S2ContainerImpl();
+        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\A_ManualConstructorAssemblerTest');
         $container->register($componentDef);
         $assembler = new ManualConstructorAssembler($componentDef);
-        $componentDef->addArgDef(new seasar::container::impl::ArgDef(2007));
+        $componentDef->addArgDef(new \seasar\container\impl\ArgDef(2007));
         try {
             $assembler->assemble();
             $this->fail();
-        } catch (seasar::container::exception::IllegalConstructorRuntimeException $e) {
+        } catch (\seasar\container\exception\IllegalConstructorRuntimeException $e) {
             print $e->getMessage() . PHP_EOL;
         }
 
-        $container = new seasar::container::impl::S2ContainerImpl();
-        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::B_ManualConstructorAssemblerTest');
+        $container = new \seasar\container\impl\S2ContainerImpl();
+        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\B_ManualConstructorAssemblerTest');
         $container->register($componentDef);
         $assembler = new ManualConstructorAssembler($componentDef);
-        $componentDef->addArgDef(new seasar::container::impl::ArgDef('huga'));
-        $componentDef->addArgDef(new seasar::container::impl::ArgDef(2007));
+        $componentDef->addArgDef(new \seasar\container\impl\ArgDef('huga'));
+        $componentDef->addArgDef(new \seasar\container\impl\ArgDef(2007));
         
         $component = $assembler->assemble();
         $this->assertEquals($component->getName(), 'huga');
@@ -59,31 +59,31 @@ class ManualConstructorAssemblerTest extends ::PHPUnit_Framework_TestCase {
     }
 
     public function testAssembleManual() {
-        $container = new seasar::container::impl::S2ContainerImpl();
-        $componentDefC = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::C_ManualConstructorAssemblerTest');
-        $componentDefD = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::D_ManualConstructorAssemblerTest');
+        $container = new \seasar\container\impl\S2ContainerImpl();
+        $componentDefC = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\C_ManualConstructorAssemblerTest');
+        $componentDefD = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\D_ManualConstructorAssemblerTest');
         $container->register($componentDefC);
         $container->register($componentDefD);
 
-        $argDef = new seasar::container::impl::ArgDef();
-        $argDef->setChildComponentDef($container->getComponentDef(__NAMESPACE__ . '::D_ManualConstructorAssemblerTest'));
+        $argDef = new \seasar\container\impl\ArgDef();
+        $argDef->setChildComponentDef($container->getComponentDef(__NAMESPACE__ . '\D_ManualConstructorAssemblerTest'));
         $componentDefC->addArgDef($argDef);
 
         $assembler = new ManualConstructorAssembler($componentDefC);
 
         $component = $assembler->assemble();
-        $this->assertTrue($component->getD() instanceof seasar::container::assembler::D_ManualConstructorAssemblerTest);
+        $this->assertTrue($component->getD() instanceof \seasar\container\assembler\D_ManualConstructorAssemblerTest);
     }
 
     public function testTooManyArrayInjection() {
-        $container = new seasar::container::impl::S2ContainerImpl();
-        $componentDefD1 = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::D_ManualConstructorAssemblerTest', 'd');
+        $container = new \seasar\container\impl\S2ContainerImpl();
+        $componentDefD1 = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\D_ManualConstructorAssemblerTest', 'd');
         $container->register($componentDefD1);
-        $componentDefD2 = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::D_ManualConstructorAssemblerTest', 'd');
+        $componentDefD2 = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\D_ManualConstructorAssemblerTest', 'd');
         $container->register($componentDefD2);
 
-        $componentDefE = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::E_ManualConstructorAssemblerTest', 'e');
-        $argDef = new seasar::container::impl::ArgDef();
+        $componentDefE = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\E_ManualConstructorAssemblerTest', 'e');
+        $argDef = new \seasar\container\impl\ArgDef();
         $argDef->setChildComponentDef($container->getComponentDef('d'));
         $componentDefE->addArgDef($argDef);
         $container->register($componentDefE);
@@ -95,12 +95,12 @@ class ManualConstructorAssemblerTest extends ::PHPUnit_Framework_TestCase {
     }
 
     public function testOneArrayInjection() {
-        $container = new seasar::container::impl::S2ContainerImpl();
-        $componentDefD2 = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::D_ManualConstructorAssemblerTest', 'd');
+        $container = new \seasar\container\impl\S2ContainerImpl();
+        $componentDefD2 = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\D_ManualConstructorAssemblerTest', 'd');
         $container->register($componentDefD2);
 
-        $componentDefE = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::E_ManualConstructorAssemblerTest', 'e');
-        $argDef = new seasar::container::impl::ArgDef();
+        $componentDefE = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\E_ManualConstructorAssemblerTest', 'e');
+        $argDef = new \seasar\container\impl\ArgDef();
         $argDef->setChildComponentDef($container->getComponentDef('d'));
         $componentDefE->addArgDef($argDef);
         $container->register($componentDefE);
@@ -138,7 +138,7 @@ class B_ManualConstructorAssemblerTest {
 
 class C_ManualConstructorAssemblerTest {
     private $d;
-    public function __construct(seasar::container::assembler::D_ManualConstructorAssemblerTest $d) {
+    public function __construct(\seasar\container\assembler\D_ManualConstructorAssemblerTest $d) {
         $this->d = $d;
     }
     public function getD() {

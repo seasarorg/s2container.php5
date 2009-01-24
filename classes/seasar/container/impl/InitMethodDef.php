@@ -25,8 +25,8 @@
  * @package   seasar.container.impl
  * @author    klove
  */
-namespace seasar::container::impl;
-class InitMethodDef implements seasar::container::MethodDef {
+namespace seasar\container\impl;
+class InitMethodDef implements \seasar\container\MethodDef {
 
     /**
      * @var string
@@ -34,12 +34,12 @@ class InitMethodDef implements seasar::container::MethodDef {
     private $methodName = null;
 
     /**
-     * @var seasar::container::util::ArgDefSupport
+     * @var \seasar\container\util\ArgDefSupport
      */
     private $argDefSupport = null;
 
     /**
-     * @var seasar::container::S2Container
+     * @var \seasar\container\S2Container
      */
     private $container = null;
 
@@ -54,7 +54,7 @@ class InitMethodDef implements seasar::container::MethodDef {
      * @param stirng method name
      */
     public function __construct($methodName = null) {
-        $this->argDefSupport = new Seasar::Container::Util::ArgDefSupport();
+        $this->argDefSupport = new \seasar\container\util\ArgDefSupport();
         $this->methodName = $methodName;
     }
 
@@ -70,7 +70,7 @@ class InitMethodDef implements seasar::container::MethodDef {
     /**
      * 引数定義を追加します。
      *
-     * @param seasar::container::impl::ArgDef $argDef
+     * @param \seasar\container\impl\ArgDef $argDef
      */
     public function addArgDef(ArgDef $argDef) {
         $this->argDefSupport->addArgDef($argDef);
@@ -79,7 +79,7 @@ class InitMethodDef implements seasar::container::MethodDef {
     /**
      * 登録されている引数定義の数を返します。
      *
-     * @see seasar::container::util::ArgDefAware::getArgDefSize()
+     * @see \seasar\container\util\ArgDefAware::getArgDefSize()
      * @return integer
      */
     public function getArgDefSize() {
@@ -99,9 +99,9 @@ class InitMethodDef implements seasar::container::MethodDef {
      * 指定されたインデックス番号indexの引数定義を返します。
      * インデックス番号は、 登録した順番に 0,1,2,… となります。
      *
-     * @see seasar::container::util::ArgDefAware::getArgDef()
+     * @see \seasar\container\util\ArgDefAware::getArgDef()
      * @param integer $index
-     * @return seasar::container::impl::ArgDef
+     * @return \seasar\container\impl\ArgDef
      */
     public function getArgDef($index) {
         return $this->argDefSupport->getArgDef($index);
@@ -110,7 +110,7 @@ class InitMethodDef implements seasar::container::MethodDef {
     /**
      * 引数および式を評価するコンテキストとなるS2コンテナを返します。
      *
-     * @return seasar::container::S2Container
+     * @return \seasar\container\S2Container
      */
     public function getContainer() {
         return $this->container;
@@ -119,9 +119,9 @@ class InitMethodDef implements seasar::container::MethodDef {
     /**
      * 引数および式を評価するコンテキストとなるS2コンテナを設定します。
      *
-     * @param seasar::container::S2Container $container
+     * @param \seasar\container\S2Container $container
      */
-    public function setContainer(seasar::container::S2Container $container) {
+    public function setContainer(\seasar\container\S2Container $container) {
         $this->container = $container;
         $this->argDefSupport->setContainer($container);
     }

@@ -25,8 +25,8 @@
  * @package   seasar.exception
  * @author    klove
  */
-namespace seasar::exception;
-class FileNotFoundException extends ::Exception {
+namespace seasar\exception;
+class FileNotFoundException extends \Exception {
 
     /**
      * FileNotFoundExceptionを構築します。

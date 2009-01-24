@@ -24,7 +24,7 @@
  * @package   seasar.aop
  * @author    klove
  */
-namespace seasar::aop;
+namespace seasar\aop;
 final class Pointcut {
     private $methodNames = null;
     private $methodNamePattern = null;
@@ -33,16 +33,16 @@ final class Pointcut {
     /**
      * Pointcutを構築します。
      * @param mixed $target Pointcutを指定する正規表現文字列の配列、またはReflectionClass。
-     *                      ReflectionClassの場合は、そのクラスが実装しているインターフェースのメソッドがPointcutとなります。
+     *                      \ReflectionClassの場合は、そのクラスが実装しているインターフェースのメソッドがPointcutとなります。
      */
     public function __construct($target) {
-        if ($target instanceof ReflectionClass) {
+        if ($target instanceof \ReflectionClass) {
             $this->setupMethodNames($target);
         } else if (is_string($target)) {
             $this->methodNamePattern = $target;
             $this->isRegex = true;
         } else {
-            throw new ::InvalidArgumentException('expected ReflectionClass|string.');
+            throw new \InvalidArgumentException('expected \ReflectionClass|string.');
         }
     }
 
@@ -69,22 +69,22 @@ final class Pointcut {
      * ターゲットクラスがAbstractメソッドをもっていなかった場合は、そのクラスの実装メソッドをPointcutとします。
      * set、get、isで名前が始まるメソッドはPointcutに含まれません。
      *
-     * @param ReflectionClass $targetClass
+     * @param \ReflectionClass $targetClass
      * @return array
      */
-    private function setupMethodNames(ReflectionClass $targetClass) {
+    private function setupMethodNames(\ReflectionClass $targetClass) {
         if (!$targetClass->isAbstract() and
             !$targetClass->isInterface() and
             count($targetClass->getInterfaces()) === 0) {
-            $methods = seasar::util::ClassUtil::getDeclaringMethods($targetClass);
+            $methods = \seasar\util\ClassUtil::getDeclaringMethods($targetClass);
         } else {
-            $methods = seasar::util::ClassUtil::getImplementMethods($targetClass);
+            $methods = \seasar\util\ClassUtil::getImplementMethods($targetClass);
         }
         $this->methodNames = array();
         foreach($methods as $method) {
             $methodName = $method->getName();
             if (preg_match('/^(set|get|is)[A-Z].*$/', $methodName)) {
-                seasar::log::S2Logger::getInstance(__NAMESPACE__)->debug('ignore method [' . $methodName . ']', __METHOD__);
+                \seasar\log\S2Logger::getInstance(__NAMESPACE__)->debug('ignore method [' . $methodName . ']', __METHOD__);
                 continue;
             }
             $this->methodNames[] = $methodName;

@@ -25,11 +25,11 @@
  * @package   seasar.aop.impl
  * @author    klove
  */
-namespace seasar::aop::impl;
-class NestedMethodInvocation implements seasar::aop::MethodInvocation {
+namespace seasar\aop\impl;
+class NestedMethodInvocation implements \seasar\aop\MethodInvocation {
 
     /**
-     * @var seasar::aop::MethodInvocation $parent 親となるinvocationインスタンス
+     * @var \seasar\aop\MethodInvocation $parent 親となるinvocationインスタンス
      */
     private $parent = null;
 
@@ -44,16 +44,16 @@ class NestedMethodInvocation implements seasar::aop::MethodInvocation {
     private $interceptorsIndex = 0;
 
     /**
-     * @param seasar::aop::MethodInvocation 親となるinvocationインスタンス
+     * @param \seasar\aop\MethodInvocation 親となるinvocationインスタンス
      * @param array 管理するインターセプター群
      */
-    public function __construct(seasar::aop::MethodInvocation $parent, array $interceptors) {
+    public function __construct(\seasar\aop\MethodInvocation $parent, array $interceptors) {
         $this->parent = $parent;
         $this->interceptors = $interceptors;
     }
 
     /**
-     * @see seasar::aop::MethodInvocation::proceed()
+     * @see \seasar\aop\MethodInvocation::proceed()
      */
     public function proceed() {
         if ($this->interceptorsIndex < count($this->interceptors)) {
@@ -63,21 +63,21 @@ class NestedMethodInvocation implements seasar::aop::MethodInvocation {
     }
 
     /**
-     * @see seasar::aop::MethodInvocation::getThis()
+     * @see \seasar\aop\MethodInvocation::getThis()
      */
     public function getThis() {
         return $this->parent->getThis();
     }
 
     /**
-     * @see seasar::aop::MethodInvocation::getArguments()
+     * @see \seasar\aop\MethodInvocation::getArguments()
      */
     public function getArguments() {
         return $this->parent->getArguments();
     }
 
     /**
-     * @see seasar::aop::MethodInvocation::getMethod()
+     * @see \seasar\aop\MethodInvocation::getMethod()
      */
     public function getMethod() {
         return $this->parent->getMethod();
@@ -85,7 +85,7 @@ class NestedMethodInvocation implements seasar::aop::MethodInvocation {
 
     /**
      * アスペクト対象のクラスを返します。
-     * @return ReflectionClass
+     * @return \ReflectionClass
      */
     public function getTargetClass() {
         return $this->parent->getTargetClass();
@@ -93,7 +93,7 @@ class NestedMethodInvocation implements seasar::aop::MethodInvocation {
 
     /**
      * Enhancedクラスに実装されているメソッドのReflectionMethodを返します。
-     * @return ReflectionMethod
+     * @return \ReflectionMethod
      */
     public function getConcreteClass() {
         return $this->parent->getConcreteClass();

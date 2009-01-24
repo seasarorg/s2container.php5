@@ -25,8 +25,8 @@
  * @package   seasar.exception
  * @author    klove
  */
-namespace seasar::exception;
-class PropertyNotFoundRuntimeException extends ::Exception {
+namespace seasar\exception;
+class PropertyNotFoundRuntimeException extends \Exception {
 
     /**
      * PropertyNotFoundRuntimeExceptionを構築します。

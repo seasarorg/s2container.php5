@@ -2,5 +2,5 @@
 <!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
 "components21.dtd">
 <components namespace="child">
-    <component name="a" class="seasar::container::factory::A_S2ContainerFactoryTest"/>
+    <component name="a" class="\seasar\container\factory\A_S2ContainerFactoryTest"/>
 </components>

@@ -25,8 +25,8 @@
  * @package   seasar.exception
  * @author    klove
  */
-namespace seasar::exception;
-class MethodNotFoundRuntimeException extends ::Exception {
+namespace seasar\exception;
+class MethodNotFoundRuntimeException extends \Exception {
 
     /**
      * MethodNotFoundRuntimeExceptionを構築します。

@@ -31,21 +31,21 @@
  * @package   seasar.container.impl
  * @author    klove
  */
-namespace seasar::container::impl;
+namespace seasar\container\impl;
 class AspectDef extends ArgDef {
 
     /**
-     * @var seasar::aop::Pointcut
+     * @var \seasar\aop\Pointcut
      */
     private $pointcut = null;
 
     /**
      * AspectDef を構築します。
      *
-     * @param seasar::aop::Pointcut $pointcut
-     * @param seasar::aop::MethodInterceptor $interceptor
+     * @param \seasar\aop\Pointcut $pointcut
+     * @param \seasar\aop\MethodInterceptor $interceptor
      */
-    public function __construct(seasar::aop::Pointcut $pointcut = null, seasar::aop::MethodInterceptor $interceptor = null) {
+    public function __construct(\seasar\aop\Pointcut $pointcut = null, \seasar\aop\MethodInterceptor $interceptor = null) {
         parent::__construct($interceptor);
         $this->pointcut = $pointcut;
     }
@@ -53,7 +53,7 @@ class AspectDef extends ArgDef {
     /**
      * ポイントカットを返します。
      *
-     * @return seasar::aop::Pointcut
+     * @return \seasar\aop\Pointcut
      */
     public function getPointcut() {
         return $this->pointcut;
@@ -62,18 +62,18 @@ class AspectDef extends ArgDef {
     /**
      * ポイントカットを返します。
      *
-     * @param seasar::aop::Pointcut $pointcut
+     * @param \seasar\aop\Pointcut $pointcut
      */
-    public function setPointcut(seasar::aop::Pointcut $pointcut) {
+    public function setPointcut(\seasar\aop\Pointcut $pointcut) {
         $this->pointcut = $pointcut;
     }
 
     /**
      * アスペクトを返します。
      *
-     * @return seasar::aop::Aspect
+     * @return \seasar\aop\Aspect
      */
     public function getAspect() {
-        return new seasar::aop::Aspect($this->getValue(), $this->pointcut);
+        return new \seasar\aop\Aspect($this->getValue(), $this->pointcut);
     }
 }

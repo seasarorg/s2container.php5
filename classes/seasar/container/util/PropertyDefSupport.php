@@ -25,7 +25,7 @@
  * @package   seasar.container.util
  * @author    klove
  */
-namespace seasar::container::util;
+namespace seasar\container\util;
 final class PropertyDefSupport {
 
     /**
@@ -39,16 +39,16 @@ final class PropertyDefSupport {
     private $propertyDefList = array();
 
     /**
-     * @var seasar::container::S2Container
+     * @var \seasar\container\S2Container
      */
     private $container       = null;
 
     /**
      * PropertyDefを追加します。
      *
-     * @param seasar::container::impl::PropertyDef
+     * @param \seasar\container\impl\PropertyDef
      */
-    public function addPropertyDef(seasar::container::impl::PropertyDef $propertyDef) {
+    public function addPropertyDef(\seasar\container\impl\PropertyDef $propertyDef) {
         if ($this->container != null) {
             $propertyDef->setContainer($this->container);
         }
@@ -78,18 +78,18 @@ final class PropertyDefSupport {
      * PropertyDefを返します。
      *
      * @param string|integer $value
-     * @return seasar::container::impl::PropertyDef
+     * @return \seasar\container\impl\PropertyDef
      */
     public function getPropertyDef($value) {
         if (is_integer($value)) {
             if (isset($this->propertyDefList[$value])) {
                 return $this->propertyDefs[$this->propertyDefList[$value]];
             } else {
-                throw new OutOfRangeException($value);
+                throw new \OutOfRangeException($value);
             }
         }
         if (!$this->hasPropertyDef($value)) {
-            throw new OutOfRangeException($value);
+            throw new \OutOfRangeException($value);
         }
         return $this->propertyDefs[$value];
     }
@@ -107,9 +107,9 @@ final class PropertyDefSupport {
     /**
      * S2Containerを設定します。
      *
-     * @param seasar::container::S2Container $container
+     * @param \seasar\container\S2Container $container
      */
-    public function setContainer(seasar::container::S2Container $container) {
+    public function setContainer(\seasar\container\S2Container $container) {
         $this->container = $container;
         foreach ($this->propertyDefs as $name => $def) {
             $def->setContainer($container);

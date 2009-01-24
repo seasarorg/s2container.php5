@@ -25,8 +25,8 @@
  * @package   seasar.aop.exception
  * @author    klove
  */
-namespace seasar::aop::exception;
-class CacheDirectoryUnwritableException extends seasar::exception::S2RuntimeException {
+namespace seasar\aop\exception;
+class CacheDirectoryUnwritableException extends \seasar\exception\S2RuntimeException {
 
     /**
      * @var string

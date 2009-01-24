@@ -23,8 +23,8 @@
  * @package   seasar.util
  * @author    klove
  */
-namespace seasar::util;
-class ClassLoaderTest extends ::PHPUnit_Framework_TestCase {
+namespace seasar\util;
+class ClassLoaderTest extends \PHPUnit_Framework_TestCase {
 
     public function testImport() {
         ClassLoader::$CLASSES = array();
@@ -33,7 +33,7 @@ class ClassLoaderTest extends ::PHPUnit_Framework_TestCase {
                . 'ClassLoaderTest' . DIRECTORY_SEPARATOR
                . 'a' . DIRECTORY_SEPARATOR
                . 'b' . DIRECTORY_SEPARATOR . 'C.php';
-        $this->assertEquals(ClassLoader::$CLASSES, array('a::b::C' => $cPath));
+        $this->assertEquals(ClassLoader::$CLASSES, array('a\b\C' => $cPath));
     }
 
     public function testImportStrict() {
@@ -51,7 +51,7 @@ class ClassLoaderTest extends ::PHPUnit_Framework_TestCase {
                . 'ClassLoaderTest' . DIRECTORY_SEPARATOR
                . 'a' . DIRECTORY_SEPARATOR
                . 'b' . DIRECTORY_SEPARATOR . 'C.php';
-        $this->assertEquals(ClassLoader::$CLASSES, array('hoge::C' => $cPath));
+        $this->assertEquals(ClassLoader::$CLASSES, array('hoge\C' => $cPath));
     }
 
     public function testImportPear() {

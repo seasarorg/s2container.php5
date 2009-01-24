@@ -25,7 +25,7 @@
  * @package   seasar.container.assembler
  * @author    klove
  */
-namespace seasar::container::assembler;
+namespace seasar\container\assembler;
 class AutoBindingDefFactory {
 
     /**
@@ -41,9 +41,9 @@ class AutoBindingDefFactory {
     /**
      * 自動バインディング定義を追加します。
      *
-     * @param seasar::container::AutoBindingDef $autoBindingDef
+     * @param \seasar\container\AutoBindingDef $autoBindingDef
      */
-    public static function addAutoBindingDef(seasar::container::AutoBindingDef $autoBindingDef) {
+    public static function addAutoBindingDef(\seasar\container\AutoBindingDef $autoBindingDef) {
         self::$autoBindingDefs[$autoBindingDef->getName()] = $autoBindingDef;
     }
 
@@ -65,7 +65,7 @@ class AutoBindingDefFactory {
      */
     public static function getAutoBindingDef($name) {
         if (!self::existAutoBindingDef($name)) {
-            throw new seasar::container::exception::IllegalAutoBindingDefRuntimeException($name);
+            throw new \seasar\container\exception\IllegalAutoBindingDefRuntimeException($name);
         }
         return self::$autoBindingDefs[$name];
     }
@@ -74,5 +74,5 @@ class AutoBindingDefFactory {
 /**
  * デフォルトの自動バインディング定義の追加を行います。
  */
-seasar::container::assembler::AutoBindingDefFactory::addAutoBindingDef(new AutoBindingAutoDef(seasar::container::AutoBindingDef::AUTO_NAME));
-seasar::container::assembler::AutoBindingDefFactory::addAutoBindingDef(new AutoBindingNoneDef(seasar::container::AutoBindingDef::NONE_NAME));
+\seasar\container\assembler\AutoBindingDefFactory::addAutoBindingDef(new AutoBindingAutoDef(\seasar\container\AutoBindingDef::AUTO_NAME));
+\seasar\container\assembler\AutoBindingDefFactory::addAutoBindingDef(new AutoBindingNoneDef(\seasar\container\AutoBindingDef::NONE_NAME));

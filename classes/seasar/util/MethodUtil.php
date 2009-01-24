@@ -25,7 +25,7 @@
  * @package   seasar.util
  * @author    klove
  */
-namespace seasar::util;
+namespace seasar\util;
 final class MethodUtil {
 
     /**
@@ -36,11 +36,11 @@ final class MethodUtil {
     /**
      * メソッド呼び出しを実行します。
      *
-     * @param ReflectionMethod $reflection
+     * @param \ReflectionMethod $reflection
      * @param array $args
      * @return mixed
      */
-    public static function invoke(ReflectionMethod $reflection, $target, array $args) {
+    public static function invoke(\ReflectionMethod $reflection, $target, array $args) {
         if (count($args) === 0) {
             return $reflection->invoke($target);
         } else {

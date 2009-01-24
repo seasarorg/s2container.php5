@@ -23,8 +23,8 @@
  * @package   seasar.util
  * @author    klove
  */
-namespace seasar::util;
-class StringUtilTest extends ::PHPUnit_Framework_TestCase {
+namespace seasar\util;
+class StringUtilTest extends \PHPUnit_Framework_TestCase {
 
     public function testLcFirst() {
         $this->assertEquals(StringUtil::lcfirst('Hoge'), 'hoge');
@@ -34,8 +34,8 @@ class StringUtilTest extends ::PHPUnit_Framework_TestCase {
     public function testMixToString() {
         $this->assertEquals(StringUtil::mixToString('hoge'), 'hoge');
         $this->assertEquals(StringUtil::mixToString(array('hoge','huga')), 'array(2)');
-        $this->assertEquals(1, preg_match('/^object\[stdClass#/', StringUtil::mixToString(new stdClass)));
-        print StringUtil::mixToString(new stdClass) . PHP_EOL;
+        $this->assertEquals(1, preg_match('/^object\[stdClass#/', StringUtil::mixToString(new \stdClass)));
+        print StringUtil::mixToString(new \stdClass) . PHP_EOL;
         $this->assertEquals(StringUtil::mixToString(false), 'false');
         $this->assertEquals(StringUtil::mixToString(null), 'null');
         $this->assertEquals(StringUtil::mixToString(1), '1');

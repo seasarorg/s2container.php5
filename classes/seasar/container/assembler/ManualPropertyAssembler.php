@@ -25,13 +25,13 @@
  * @package   seasar.container.assembler
  * @author    klove
  */
-namespace seasar::container::assembler;
+namespace seasar\container\assembler;
 class ManualPropertyAssembler extends AbstractAssembler {
 
     /**
-     * @see seasar::container::assembler::AbstractAssembler::__construct()
+     * @see \seasar\container\assembler\AbstractAssembler::__construct()
      */
-    public function __construct(seasar::container::ComponentDef $componentDef) {
+    public function __construct(\seasar\container\ComponentDef $componentDef) {
         parent::__construct($componentDef);
     }
 
@@ -42,7 +42,7 @@ class ManualPropertyAssembler extends AbstractAssembler {
      */
     public function assemble($component) {
         $componentDef = $this->getComponentDef();
-        $beanDesc = seasar::beans::BeanDescFactory::getBeanDesc($componentDef->getComponentClass());
+        $beanDesc = \seasar\beans\BeanDescFactory::getBeanDesc($componentDef->getComponentClass());
         $propDescs = $beanDesc->getTypehintPropertyDescs();
         $propertyDefs = $componentDef->getPropertyDefs();
         foreach ($propertyDefs as $propertyName => $propertyDef) {
@@ -54,7 +54,7 @@ class ManualPropertyAssembler extends AbstractAssembler {
                     if ($propDesc->isArrayAcceptable() and !is_array($value)) {
                         $value = array($value);
                     }
-                } catch(seasar::container::exception::TooManyRegistrationRuntimeException $e) {
+                } catch(\seasar\container\exception\TooManyRegistrationRuntimeException $e) {
                     if ($propDesc->isArrayAcceptable()) {
                         $childComponentDefs = $propertyDef->getChildComponentDef()->getComponentDefs();
                         $value = array();
@@ -67,7 +67,7 @@ class ManualPropertyAssembler extends AbstractAssembler {
                 }
                 $propDesc->setValue($component, $value);
             } else {
-                throw new seasar::container::exception::PropertyNotFoundRuntimeException($componentDef->getComponentClass(), $propertyName);
+                throw new \seasar\container\exception\PropertyNotFoundRuntimeException($componentDef->getComponentClass(), $propertyName);
             }
         }
     }

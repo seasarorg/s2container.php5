@@ -12,10 +12,10 @@ class StrictAnnotationFactory {
      * メソッドに付いているコメントアノテーションを読み込みます。
      * アノテーション情報はシングルトンとして扱います。
      *
-     * @param ReflectionMethod $method
+     * @param \ReflectionMethod $method
      * @return array
      */
-    public static function create(ReflectionMethod $method) {
+    public static function create(\ReflectionMethod $method) {
         $key =self::getKey($method);
         if (!isset(self::$spool[$key])) {
             self::$spool[$key] = self::read($method);
@@ -31,10 +31,10 @@ class StrictAnnotationFactory {
      *    @param int $valB    =>         'return', 'string')
      *    @return string
      *
-     * @param ReflectionMethod $method
+     * @param \ReflectionMethod $method
      * @return array
      */
-    public static function read(ReflectionMethod $method) {
+    public static function read(\ReflectionMethod $method) {
         $comment = $method->getDocComment();
         $annoInfo = array();
         $matches = array();
@@ -51,10 +51,10 @@ class StrictAnnotationFactory {
     /**
      * メソッドごとの一意のキーを返します。
      *
-     * @param ReflectionMethod $method
+     * @param \ReflectionMethod $method
      * @return string
      */
-    private static function getKey(ReflectionMethod $method) {
-        return $method->getDeclaringClass()->getName() . '::' . $method->getName();
+    private static function getKey(\ReflectionMethod $method) {
+        return $method->getDeclaringClass()->getName() . '\\' . $method->getName();
     }
 }

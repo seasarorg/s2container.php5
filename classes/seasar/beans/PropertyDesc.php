@@ -25,7 +25,7 @@
  * @package   seasar.beans
  * @author    klove
  */
-namespace seasar::beans;
+namespace seasar\beans;
 interface PropertyDesc {
 
     /**
@@ -46,7 +46,7 @@ interface PropertyDesc {
      * プロパティのReflectionClassを返します。
      *  - PublicPropertyDescの場合は、プロパティのReflectionProperty
      *  - AccessorMethodPropertyDescの場合は、セッターメソッドのReflectionMethod
-     * @return ReflectionClass|ReflectionProperty|ReflectionMethod
+     * @return \ReflectionClass|ReflectionProperty|ReflectionMethod
      */
     public function getReflection();
 
@@ -75,8 +75,8 @@ interface PropertyDesc {
     public function isWritable();
 
     /**
-     * ReflectionClassインスタンスを返します。
-     * @return ReflectionClass
+     * \ReflectionClassインスタンスを返します。
+     * @return \ReflectionClass
      */
     public function getBeanClass();
 
@@ -100,15 +100,15 @@ interface PropertyDesc {
 
     /**
      * タイプヒントを返します。
-     * @return ReflectionClass
+     * @return \ReflectionClass
      */
     public function getTypehintClass();
 
     /**
      * タイプヒントを返します。
-     * @return ReflectionClass
+     * @return \ReflectionClass
      */
-    public function setTypehintClass(ReflectionClass $clazz);
+    public function setTypehintClass(\ReflectionClass $clazz);
 
     /**
      * 配列が指定されているかどうかを返します。

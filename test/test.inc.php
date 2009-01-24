@@ -5,9 +5,9 @@ date_default_timezone_set('Asia/Tokyo');
 require_once(dirname(dirname(__FILE__)) . '/S2Container.php');
 //require_once('S2Container/S2Container.php');
 //require_once(dirname(dirname(__FILE__)) . '/S2Container-2.0.0.phar');
-seasar::Config::$DEBUG_EVAL = true;
+seasar\Config::$DEBUG_EVAL = true;
 
-seasar::aop::Config::$CACHING = false;
-seasar::aop::Config::$CACHE_DIR = dirname(__FILE__) . '/cache';
+\seasar\aop\Config::$CACHING = false;
+\seasar\aop\Config::$CACHE_DIR = dirname(__FILE__) . '/cache';
 
 echo PHP_EOL . 's2container root dir : ' . S2CONTAINER_ROOT_DIR . PHP_EOL . PHP_EOL;

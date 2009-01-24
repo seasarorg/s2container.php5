@@ -2,7 +2,7 @@
 <!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
 "components21.dtd">
 <components>
-    <component name="d" class="seasar::container::factory::D_XmlS2ContainerBuilderTest">
+    <component name="d" class="\seasar\container\factory\D_XmlS2ContainerBuilderTest">
         <initMethod name="init"/>
         <initMethod name="hoge"><arg>200</arg></initMethod>
         <initMethod><![CDATA[

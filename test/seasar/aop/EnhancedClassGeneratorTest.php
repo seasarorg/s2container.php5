@@ -23,146 +23,139 @@
  * @package   seasar.aop
  * @author    klove
  */
-namespace seasar::aop;
-class EnhancedClassGeneratorTest extends ::PHPUnit_Framework_TestCase {
+namespace seasar\aop;
+class EnhancedClassGeneratorTest extends \PHPUnit_Framework_TestCase {
 
     public function testGenerateException() {
-        $targetRef = new ReflectionClass('seasar::aop::L_EnhancedClassGenerator');
-        $interceptor = new seasar::aop::interceptor::TraceInterceptor;
+        $targetRef = new \ReflectionClass('\seasar\aop\L_EnhancedClassGenerator');
+        $interceptor = new \seasar\aop\interceptor\TraceInterceptor;
         $pointcut = new Pointcut($targetRef);
         $aspects = array(new Aspect($interceptor, $pointcut));
         try{
             $targetObj = S2AopFactory::create($targetRef, $aspects, array());
             $this->fail();
-        } catch(seasar::aop::exception::EnhancedClassGenerationRuntimeException $e) {
+        } catch(\seasar\aop\exception\EnhancedClassGenerationRuntimeException $e) {
             print $e->getMessage() . PHP_EOL;
-        } catch(Exception $e) {
+        } catch(\Exception $e) {
             print $e->getMessage() . PHP_EOL;
             $this->fail();
         }
 
-        $targetRef = new ReflectionClass('seasar::aop::M_EnhancedClassGenerator');
-        $interceptor = new seasar::aop::interceptor::TraceInterceptor;
+        $targetRef = new \ReflectionClass('\seasar\aop\M_EnhancedClassGenerator');
+        $interceptor = new \seasar\aop\interceptor\TraceInterceptor;
         $pointcut = new Pointcut($targetRef);
         $aspects = array(new Aspect($interceptor, $pointcut));
         try{
             $targetObj = S2AopFactory::create($targetRef, $aspects, array());
             $this->fail();
-        } catch(seasar::aop::exception::EnhancedClassGenerationRuntimeException $e) {
+        } catch(\seasar\aop\exception\EnhancedClassGenerationRuntimeException $e) {
             print $e->getMessage() . PHP_EOL;
-        } catch(Exception $e) {
+        } catch(\Exception $e) {
             print $e->getMessage() . PHP_EOL;
             $this->fail();
         }
     }
 
     public function testInterface() {
-        $targetClass = new ReflectionClass('seasar::aop::A_EnhancedClassGeneratorTest');
+        $targetClass = new \ReflectionClass('\seasar\aop\A_EnhancedClassGeneratorTest');
         $applicableMethods = S2AopFactory::getApplicableMethods($targetClass);
         $className = $targetClass->getName() . EnhancedClassGenerator::CLASS_NAME_POSTFIX;
         $concreteClassName = EnhancedClassGenerator::generate($targetClass, $applicableMethods, array());
         $this->assertEquals($concreteClassName, $className);
         $obj = new $concreteClassName;
         $this->assertTrue(is_object($obj));
-        $ref = new ReflectionClass($concreteClassName);
+        $ref = new \ReflectionClass($concreteClassName);
         $this->assertTrue($ref->hasMethod('__invokeParentMethod_EnhancedByS2AOP'));
         $this->assertTrue($ref->hasMethod('__invokeMethodInvocationProceed_EnhancedByS2AOP'));
 
         try {
-            $targetClass = new ReflectionClass('seasar::aop::D_EnhancedClassGeneratorTest');
+            $targetClass = new \ReflectionClass('\seasar\aop\D_EnhancedClassGeneratorTest');
             $applicableMethods = S2AopFactory::getApplicableMethods($targetClass);
             $concreteClassName = EnhancedClassGenerator::generate($targetClass, $applicableMethods, array());
-            $this->fail();
-        } catch(Exception $e) {
-            print $e->getMessage();
+        } catch(\Exception $e) {
+            $this->fail($e->getMessage());
         }
     }
 
     public function testClass() {
-        $targetClass = new ReflectionClass('seasar::aop::B_EnhancedClassGeneratorTest');
+        $targetClass = new \ReflectionClass('\seasar\aop\B_EnhancedClassGeneratorTest');
         $applicableMethods = S2AopFactory::getApplicableMethods($targetClass);
         $className = $targetClass->getName() . EnhancedClassGenerator::CLASS_NAME_POSTFIX;
         $concreteClassName = EnhancedClassGenerator::generate($targetClass, $applicableMethods, array());
         $this->assertEquals($concreteClassName, $className);
         $obj = new $concreteClassName;
         $this->assertTrue(is_object($obj));
-        $ref = new ReflectionClass($concreteClassName);
+        $ref = new \ReflectionClass($concreteClassName);
         $this->assertTrue($ref->hasMethod('__invokeParentMethod_EnhancedByS2AOP'));
         $this->assertTrue($ref->hasMethod('__invokeMethodInvocationProceed_EnhancedByS2AOP'));
 
         try {
-            $targetClass = new ReflectionClass('seasar::aop::E_EnhancedClassGeneratorTest');
+            $targetClass = new \ReflectionClass('\seasar\aop\E_EnhancedClassGeneratorTest');
             $applicableMethods = S2AopFactory::getApplicableMethods($targetClass);
             $concreteClassName = EnhancedClassGenerator::generate($targetClass, $applicableMethods, array());
-            $this->fail();
-        } catch(Exception $e) {
-            print $e->getMessage();
+        } catch(\Exception $e) {
+            $this->fail($e->getMessage());
         }
     }
 
     public function testAbstractClass() {
-        $targetClass = new ReflectionClass('seasar::aop::C_EnhancedClassGeneratorTest');
+        $targetClass = new \ReflectionClass('\seasar\aop\C_EnhancedClassGeneratorTest');
         $applicableMethods = S2AopFactory::getApplicableMethods($targetClass);
         $className = $targetClass->getName() . EnhancedClassGenerator::CLASS_NAME_POSTFIX;
         $concreteClassName = EnhancedClassGenerator::generate($targetClass, $applicableMethods, array());
         $this->assertEquals($concreteClassName, $className);
         $obj = new $concreteClassName;
         $this->assertTrue(is_object($obj));
-        $ref = new ReflectionClass($concreteClassName);
+        $ref = new \ReflectionClass($concreteClassName);
         $this->assertTrue($ref->hasMethod('__invokeParentMethod_EnhancedByS2AOP'));
         $this->assertTrue($ref->hasMethod('__invokeMethodInvocationProceed_EnhancedByS2AOP'));
 
         try {
-            $targetClass = new ReflectionClass('seasar::aop::F_EnhancedClassGeneratorTest');
+            $targetClass = new \ReflectionClass('\seasar\aop\F_EnhancedClassGeneratorTest');
             $applicableMethods = S2AopFactory::getApplicableMethods($targetClass);
             $concreteClassName = EnhancedClassGenerator::generate($targetClass, $applicableMethods, array());
-            $this->fail();
-        } catch(Exception $e) {
-            print $e->getMessage();
+        } catch(\Exception $e) {
+            $this->fail($e->getMessage());
         }
     }
 
     public function testHasProperty() {
         try {
-            $targetClass = new ReflectionClass('seasar::aop::G_EnhancedClassGeneratorTest');
+            $targetClass = new \ReflectionClass('\seasar\aop\G_EnhancedClassGeneratorTest');
             $applicableMethods = S2AopFactory::getApplicableMethods($targetClass);
             $concreteClassName = EnhancedClassGenerator::generate($targetClass, $applicableMethods, array());
-            $this->fail();
-        } catch(Exception $e) {
-            print $e->getMessage();
+        } catch(\Exception $e) {
+            $this->assertEquals(1, preg_match("/already has property or method/", $e->getMessage()));
         }
         try {
-            $targetClass = new ReflectionClass('seasar::aop::H_EnhancedClassGeneratorTest');
+            $targetClass = new \ReflectionClass('\seasar\aop\H_EnhancedClassGeneratorTest');
             $applicableMethods = S2AopFactory::getApplicableMethods($targetClass);
             $concreteClassName = EnhancedClassGenerator::generate($targetClass, $applicableMethods, array());
-            $this->fail();
-        } catch(Exception $e) {
-            print $e->getMessage();
+        } catch(\Exception $e) {
+            $this->assertEquals(1, preg_match("/already has property or method/", $e->getMessage()));
         }
     }
 
     public function testHasMethod() {
         try {
-            $targetClass = new ReflectionClass('seasar::aop::I_EnhancedClassGeneratorTest');
+            $targetClass = new \ReflectionClass('\seasar\aop\I_EnhancedClassGeneratorTest');
             $applicableMethods = S2AopFactory::getApplicableMethods($targetClass);
             $concreteClassName = EnhancedClassGenerator::generate($targetClass, $applicableMethods, array());
-            $this->fail();
-        } catch(Exception $e) {
-            print $e->getMessage();
+        } catch(\Exception $e) {
+            $this->assertEquals(1, preg_match("/already has property or method/", $e->getMessage()));
         }
 
         try {
-            $targetClass = new ReflectionClass('seasar::aop::J_EnhancedClassGeneratorTest');
+            $targetClass = new \ReflectionClass('\seasar\aop\J_EnhancedClassGeneratorTest');
             $applicableMethods = S2AopFactory::getApplicableMethods($targetClass);
             $concreteClassName = EnhancedClassGenerator::generate($targetClass, $applicableMethods, array());
-            $this->fail();
-        } catch(Exception $e) {
-            print $e->getMessage();
+        } catch(\Exception $e) {
+            $this->assertEquals(1, preg_match("/already has property or method/", $e->getMessage()));
         }
     }
 
     public function testGetMethodDefSrc() {
-        $targetClass = new ReflectionClass('seasar::aop::K_EnhancedClassGeneratorTest');
+        $targetClass = new \ReflectionClass('\seasar\aop\K_EnhancedClassGeneratorTest');
         $methodDef = EnhancedClassGenerator::getMethodDefSrc($targetClass->getMethod('a'));
         $this->assertEquals($methodDef,'public function a() {');
         $methodDef = EnhancedClassGenerator::getMethodDefSrc($targetClass->getMethod('b'));
@@ -172,7 +165,7 @@ class EnhancedClassGeneratorTest extends ::PHPUnit_Framework_TestCase {
         $methodDef = EnhancedClassGenerator::getMethodDefSrc($targetClass->getMethod('d'));
         $this->assertEquals($methodDef,'public function d(array &$d) {');
         $methodDef = EnhancedClassGenerator::getMethodDefSrc($targetClass->getMethod('e'));
-        $this->assertEquals($methodDef,'public function e(seasar::aop::Foo_EnhancedClassGeneratorTest $d) {');
+        $this->assertEquals($methodDef,'public function e(\seasar\aop\Foo_EnhancedClassGeneratorTest $d) {');
         $methodDef = EnhancedClassGenerator::getMethodDefSrc($targetClass->getMethod('f'));
         $this->assertEquals($methodDef,'public function f($f = \'abc\') {');
         $methodDef = EnhancedClassGenerator::getMethodDefSrc($targetClass->getMethod('g'));
@@ -180,7 +173,7 @@ class EnhancedClassGeneratorTest extends ::PHPUnit_Framework_TestCase {
         $methodDef = EnhancedClassGenerator::getMethodDefSrc($targetClass->getMethod('h'));
         $this->assertFalse($methodDef);
         $methodDef = EnhancedClassGenerator::getMethodDefSrc($targetClass->getMethod('i'));
-        $this->assertEquals($methodDef,'public function i(seasar::aop::Foo_EnhancedClassGeneratorTest $d, $i = null) {');
+        $this->assertEquals($methodDef,'public function i(\seasar\aop\Foo_EnhancedClassGeneratorTest $d, $i = null) {');
         $methodDef = EnhancedClassGenerator::getMethodDefSrc($targetClass->getMethod('j'));
         $this->assertEquals($methodDef,'public function j($g = array(), $j = null) {');
         $methodDef = EnhancedClassGenerator::getMethodDefSrc($targetClass->getMethod('k'));
@@ -196,7 +189,7 @@ class EnhancedClassGeneratorTest extends ::PHPUnit_Framework_TestCase {
         $methodDef = EnhancedClassGenerator::getMethodDefSrc($targetClass->getMethod('p'));
         $this->assertEquals($methodDef,'public function p($p = 0) {');
         $methodDef = EnhancedClassGenerator::getMethodDefSrc($targetClass->getMethod('q'));
-        $this->assertEquals($methodDef,'public function q(::Sample_EnhancedClassGenerator $sample = null) {');
+        $this->assertEquals($methodDef,'public function q(\Sample_EnhancedClassGenerator $sample = null) {');
     }
 
     public function setUp(){
@@ -243,7 +236,7 @@ interface A_EnhancedClassGeneratorTest {
 
     public function aa_bb11($a="abc",$b = "te\"st");
     public function aa_bb12($a="abc",$b = array());
-    public function aa_bb14(seasar::container::S2Container $a);
+    public function aa_bb14(\seasar\container\S2Container $a);
 }
 
 class B_EnhancedClassGeneratorTest {
@@ -282,7 +275,7 @@ class B_EnhancedClassGeneratorTest {
     public function aa_bb13($a="abc",$b = array(1,
                                                 2,
                                                 3)){}
-    public function aa_bb14(seasar::container::S2Container $a){}
+    public function aa_bb14(\seasar\container\S2Container $a){}
 }
 
 abstract class C_EnhancedClassGeneratorTest {
@@ -321,7 +314,7 @@ abstract class C_EnhancedClassGeneratorTest {
     public function aa_bb13($a="abc",$b = array(1,
                                                 2,
                                                 3)){}
-    abstract public function aa_bb14(seasar::container::S2Container $a)
+    abstract public function aa_bb14(\seasar\container\S2Container $a)
     
     ;
 }
@@ -381,7 +374,7 @@ class K_EnhancedClassGeneratorTest {
     public function n($n = false){}
     public function o($o = 100){}
     public function p($p = 0){}
-    public function q(::Sample_EnhancedClassGenerator $sample = null){}
+    public function q(\Sample_EnhancedClassGenerator $sample = null){}
 }
 
 class Foo_EnhancedClassGeneratorTest {}

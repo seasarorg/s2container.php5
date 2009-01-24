@@ -36,90 +36,90 @@
  * @package   seasar.beans
  * @author    klove
  */
-namespace seasar::beans;
+namespace seasar\beans;
 class PublicPropertyDesc extends AbstractPropertyDesc {
 
     /**
-     * @var ReflectionProperty
+     * @var \ReflectionProperty
      */
     private $property = null;
 
     /**
      * PublicPropertyDescを構築します。
      *
-     * @see seasar::beans::AbstractPropertyDesc::_construct()
+     * @see \seasar\beans\AbstractPropertyDesc::_construct()
      */
-    public function __construct(ReflectionClass $beanClass, $propName) {
+    public function __construct(\ReflectionClass $beanClass, $propName) {
         parent::__construct($beanClass, $propName);
         if (!$beanClass->hasProperty($propName)) {
-            throw new seasar::exception::PropertyNotFoundRuntimeException($propName);
+            throw new \seasar\exception\PropertyNotFoundRuntimeException($propName);
         }
         $this->property = $beanClass->getProperty($propName);
         if (!$this->property->isPublic()) {
-            throw new seasar::exception::IllegalPropertyRuntimeException($propName);
+            throw new \seasar\exception\IllegalPropertyRuntimeException($propName);
         }
     }
 
     /**
-     * ReflectionPropertyインスタンスを返します。
-     * @return ReflectionProperty
+     * \ReflectionPropertyインスタンスを返します。
+     * @return \ReflectionProperty
      */
     public function getProperty() {
         return $this->property;
     }
 
     /**
-     * ReflectionPropertyインスタンスを設定します。
-     * @param ReflectionProperty $property
+     * \ReflectionPropertyインスタンスを設定します。
+     * @param \ReflectionProperty $property
      */
-    public function setProperty(ReflectionProperty $property) {
+    public function setProperty(\ReflectionProperty $property) {
         $this->property = $property;
     }
 
     /**
-     * @see seasar::beans::PropertyDesc::hasReadMethod()
+     * @see \seasar\beans\PropertyDesc::hasReadMethod()
      */
     public function hasReadMethod() {
         return true;
     }
 
     /**
-     * @see seasar::beans::PropertyDesc::hasWriteMethod()
+     * @see \seasar\beans\PropertyDesc::hasWriteMethod()
      */
     public function hasWriteMethod() {
         return true;
     }
 
     /**
-     * @see seasar::beans::PropertyDesc::isReadable()
+     * @see \seasar\beans\PropertyDesc::isReadable()
      */
     public function isReadable() {
         return true;
     }
 
     /**
-     * @see seasar::beans::PropertyDesc::isWritable()
+     * @see \seasar\beans\PropertyDesc::isWritable()
      */
     public function isWritable() {
         return true;
     }
 
     /**
-     * @see seasar::beans::PropertyDesc::setValue()
+     * @see \seasar\beans\PropertyDesc::setValue()
      */
     public function setValue($instance, $value) {
         $this->property->setValue($instance, $value);
     }
 
     /**
-     * @see seasar::beans::AbstractPropertyDesc::getValue()
+     * @see \seasar\beans\AbstractPropertyDesc::getValue()
      */
     public function getValue($instance) {
         return $this->property->getValue($instance);
     }
 
     /**
-     * @see seasar::beans::AbstractPropertyDesc::getReflection()
+     * @see \seasar\beans\AbstractPropertyDesc::getReflection()
      */
     public function getReflection() {
         return $this->property;

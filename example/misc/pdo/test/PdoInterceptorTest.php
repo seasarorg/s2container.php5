@@ -1,8 +1,8 @@
 <?php
-class PdoInterceptorTest extends ::PHPUnit_Framework_TestCase {
+class PdoInterceptorTest extends \PHPUnit_Framework_TestCase {
 
     public function testGetQueryFromSqlFile() {
-        $refClass = new ReflectionClass('B_PdoInterceptor');
+        $refClass = new \ReflectionClass('B_PdoInterceptor');
         $interceptor = new PdoInterceptor;
         $sql = $interceptor->getQueryFromSqlFile($refClass, $refClass->getMethod('a'), array());
         $this->assertEquals(trim($sql), 'select * from CD;');

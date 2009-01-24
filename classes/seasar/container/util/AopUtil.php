@@ -25,7 +25,7 @@
  * @package   seasar.container.util
  * @author    klove
  */
-namespace seasar::container::util;
+namespace seasar\container\util;
 class AopUtil {
 
     /**
@@ -36,23 +36,23 @@ class AopUtil {
     /**
      * アスペクトを織り込んだクラスを生成し、そのオブジェクトを返します。
      *
-     * @param seasar::container::ComponentDef $componentDef
+     * @param \seasar\container\ComponentDef $componentDef
      * @param array $args
      * @return object
      */
-    public static function getInstance(seasar::container::ComponentDef $componentDef, $args) {
+    public static function getInstance(\seasar\container\ComponentDef $componentDef, $args) {
         $parameters = array();
-        $parameters[seasar::container::Config::COMPONENT_DEF_NAME] = $componentDef;
-        return seasar::aop::S2AopFactory::create($componentDef->getComponentClass(), self::getAspects($componentDef), $args, $parameters);
+        $parameters[\seasar\container\Config::COMPONENT_DEF_NAME] = $componentDef;
+        return \seasar\aop\S2AopFactory::create($componentDef->getComponentClass(), self::getAspects($componentDef), $args, $parameters);
     }
 
     /**
      * ComponentDefに登録されているAspectDefを取得します。
      *
-     * @param seasar::container::ComponentDef $componentDef
+     * @param \seasar\container\ComponentDef $componentDef
      * @return array
      */
-    private static function getAspects(seasar::container::ComponentDef $componentDef) {
+    private static function getAspects(\seasar\container\ComponentDef $componentDef) {
         $aspectDefs = $componentDef->getAspectDefs();
         $aspects = array();
         foreach($aspectDefs as $aspectDef) {

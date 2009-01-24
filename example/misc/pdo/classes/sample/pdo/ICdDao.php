@@ -1,5 +1,5 @@
 <?php
-namespace sample::pdo;
+namespace sample\pdo;
 interface ICdDao {
     public function findAll();
 }

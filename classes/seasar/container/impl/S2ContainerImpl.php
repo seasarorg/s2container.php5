@@ -25,8 +25,8 @@
  * @package   seasar.container.impl
  * @author    klove
  */
-namespace seasar::container::impl;
-class S2ContainerImpl implements seasar::container::S2Container {
+namespace seasar\container\impl;
+class S2ContainerImpl implements \seasar\container\S2Container {
     /**
      * @var array
      */
@@ -53,7 +53,7 @@ class S2ContainerImpl implements seasar::container::S2Container {
     private $namespace      = null;
 
     /**
-     * @var seasar::container::util::MetaDefSupport
+     * @var \seasar\container\util\MetaDefSupport
      */
     private $metaDefSupport = null;
 
@@ -63,7 +63,7 @@ class S2ContainerImpl implements seasar::container::S2Container {
     private $path      = null;
 
     /**
-     * @var seasar::container::S2Container
+     * @var \seasar\container\S2Container
      */
     private $root      = null;
 
@@ -71,12 +71,12 @@ class S2ContainerImpl implements seasar::container::S2Container {
      * S2ContainerImpl を構築します。
      */
     public function __construct() {
-        $this->metaDefSupport = new seasar::container::util::MetaDefSupport();
+        $this->metaDefSupport = new \seasar\container\util\MetaDefSupport();
         $this->root = $this;
 
-        $componentDef = new SimpleComponentDef($this, seasar::container::Config::CONTAINER_NAME);
-        $this->componentDefMap[seasar::container::Config::CONTAINER_NAME] = $componentDef;
-        $this->componentDefMap['seasar::container::S2Container'] = $componentDef;
+        $componentDef = new SimpleComponentDef($this, \seasar\container\Config::CONTAINER_NAME);
+        $this->componentDefMap[\seasar\container\Config::CONTAINER_NAME] = $componentDef;
+        $this->componentDefMap['\seasar\container\S2Container'] = $componentDef;
     }
 
     /**
@@ -93,7 +93,7 @@ class S2ContainerImpl implements seasar::container::S2Container {
      *
      * @param seasar::contaienr::S2Container $root
      */
-    public function setRoot(seasar::container::S2Container $root) {
+    public function setRoot(\seasar\container\S2Container $root) {
         $this->root = $root;
     }
         
@@ -120,7 +120,7 @@ class S2ContainerImpl implements seasar::container::S2Container {
      * @see seasar::contaienr::S2Container::register()
      */
     public function register($component, $componentName = '') {
-        if ($component instanceof seasar::container::ComponentDef) {
+        if ($component instanceof \seasar\container\ComponentDef) {
             $this->registerInternal($component);
             $this->componentDefList[] = $component;
         } else if (is_object($component)) {
@@ -133,9 +133,9 @@ class S2ContainerImpl implements seasar::container::S2Container {
     /**
      * ComponentDefを登録します。
      *
-     * @param seasar::contaienr::ComponentDef
+     * @param seasar::contaienr\ComponentDef
      */
-    private function registerInternal(seasar::container::ComponentDef $componentDef) {
+    private function registerInternal(\seasar\container\ComponentDef $componentDef) {
         if ($componentDef->getContainer() === null) {
             $componentDef->setContainer($this);
         }
@@ -146,19 +146,19 @@ class S2ContainerImpl implements seasar::container::S2Container {
     /**
      * クラス名をキーにして ComponentDefを登録します。
      *
-     * @param seasar::contaienr::ComponentDef
+     * @param seasar::contaienr\ComponentDef
      */
-    private function registerByClass(seasar::container::ComponentDef $componentDef) {
+    private function registerByClass(\seasar\container\ComponentDef $componentDef) {
         $classes = $this->getAssignableClasses($componentDef->getComponentClass());
         $componentName = $componentDef->getComponentName();
         foreach ($classes as $namespacedClassName) {
             if ($namespacedClassName !== $componentName) {
                 $this->registerMap($namespacedClassName, $componentDef);
-                $className = seasar::util::ClassUtil::getClassName($namespacedClassName);
+                $className = \seasar\util\ClassUtil::getClassName($namespacedClassName);
                 if ($className !== $namespacedClassName and $className !== $componentName) {
                     $this->registerMap($className, $componentDef);
                 }
-                $lcClassName = seasar::util::StringUtil::lcfirst($className);
+                $lcClassName = \seasar\util\StringUtil::lcfirst($className);
                 if ($lcClassName !== $className and $lcClassName !== $namespacedClassName and $lcClassName !== $componentName) {
                     $this->registerMap($lcClassName, $componentDef);
                 }
@@ -169,9 +169,9 @@ class S2ContainerImpl implements seasar::container::S2Container {
     /**
      * 名前をキーにして ComponentDefを登録します。
      *
-     * @param seasar::contaienr::ComponentDef
+     * @param seasar::contaienr\ComponentDef
      */
-    private function registerByName(seasar::container::ComponentDef $componentDef) {
+    private function registerByName(\seasar\container\ComponentDef $componentDef) {
         $componentName = $componentDef->getComponentName();
         if ($componentName !== null) {
             $this->registerMap($componentName, $componentDef);
@@ -182,9 +182,9 @@ class S2ContainerImpl implements seasar::container::S2Container {
      * キャッシュに ComponentDefを登録します。
      *
      * @param string $key
-     * @param seasar::container::ComponentDef
+     * @param \seasar\container\ComponentDef
      */
-    private function registerMap($key, seasar::container::ComponentDef $componentDef) {
+    private function registerMap($key, \seasar\container\ComponentDef $componentDef) {
         if (array_key_exists($key, $this->componentDefMap)) {
             $this->processTooManyRegistration($key, $componentDef);
         } else {
@@ -193,19 +193,19 @@ class S2ContainerImpl implements seasar::container::S2Container {
     }
 
     /**
-     * @see seasar::container::S2Container::getComponentDefSize()
+     * @see \seasar\container\S2Container::getComponentDefSize()
      */
     public function getComponentDefSize() {
         return count($this->componentDefList);
     }
 
     /**
-     * @see seasar::container::S2Container::getComponentDef()
+     * @see \seasar\container\S2Container::getComponentDef()
      */
     public function getComponentDef($key) {
         if (is_int($key)) {
             if (!isset($this->componentDefList[$key])) {
-                throw new seasar::container::exception::ComponentNotFoundRuntimeException($key);
+                throw new \seasar\container\exception\ComponentNotFoundRuntimeException($key);
             }
             return $this->componentDefList[$key];
         }
@@ -215,13 +215,13 @@ class S2ContainerImpl implements seasar::container::S2Container {
 
         $componentDef = $this->getComponentDefInternal($key);
         if ($componentDef === null) {
-            throw new seasar::container::exception::ComponentNotFoundRuntimeException($key);
+            throw new \seasar\container\exception\ComponentNotFoundRuntimeException($key);
         }
         return $componentDef;
     }
 
     /**
-     * @see seasar::container::S2Container::findComponentDefs()
+     * @see \seasar\container\S2Container::findComponentDefs()
      */
     public function findComponentDefs($key)
     {
@@ -245,31 +245,32 @@ class S2ContainerImpl implements seasar::container::S2Container {
         }
 
         $matches = array();
-        if (preg_match('/(.+?)' . seasar::container::Config::NS_SEP . '(.+)/', $key, $matches)) {
+        if (preg_match('/(.+?)' . \seasar\container\Config::NS_SEP . '(.+)/', $key, $matches)) {
             if ($this->hasComponentDef($matches[1])) {
                 $childContainer = $this->getComponent($matches[1]);
                 if ($childContainer->hasComponentDef($matches[2])) {
                     return $childContainer->getComponentDef($matches[2]);
                 }
             }
-        }
-        foreach ($this->children as $childContainer) {
-            if ($childContainer->hasComponentDef($key)) {
-                return $childContainer->getComponentDef($key);
+        } else {
+            foreach ($this->children as $childContainer) {
+                if ($childContainer->hasComponentDef($key)) {
+                    return $childContainer->getComponentDef($key);
+                }
             }
         }
         return null;
     }
 
     /**
-     * @see seasar::container::S2Container::hasComponentDef()
+     * @see \seasar\container\S2Container::hasComponentDef()
      */
     public function hasComponentDef($componentKey) {
         return $this->getComponentDefInternal($componentKey) !== null;
     }
 
     /**
-     * @see seasar::container::S2Container::hasDescendant()
+     * @see \seasar\container\S2Container::hasDescendant()
      */
     public function hasDescendant($path) {
         return array_key_exists($path, $this->descendants);
@@ -279,13 +280,13 @@ class S2ContainerImpl implements seasar::container::S2Container {
      * pathを読み込んだS2コンテナを返します。
      *
      * @param string path
-     * @return seasar::container::S2Container
+     * @return \seasar\container\S2Container
      */
     public function getDescendant($path) {
         if ($this->hasDescendant($path)) {
             return $this->descendants[$path];
         } else {
-            throw new seasar::container::exception::ContainerNotRegisteredRuntimeException($path);
+            throw new \seasar\container\exception\ContainerNotRegisteredRuntimeException($path);
         }
     }
 
@@ -293,18 +294,18 @@ class S2ContainerImpl implements seasar::container::S2Container {
      * descendantを子孫コンテナとして登録します。
      * 子孫コンテナとは、このコンテナに属する子のコンテナや、その子であるコンテナです。 
      *
-     * @param seasar::container::S2Container $descendant
+     * @param \seasar\container\S2Container $descendant
      */
-    public function registerDescendant(seasar::container::S2Container $descendant) {
+    public function registerDescendant(\seasar\container\S2Container $descendant) {
         $this->descendants[$descendant->getPath()] = $descendant;
     }
 
     /**
      * コンテナを子としてインクルードします。
      *
-     * @see seasar::container::S2Container::includeChild()
+     * @see \seasar\container\S2Container::includeChild()
      */
-    public function includeChild(seasar::container::S2Container $childContainer) {
+    public function includeChild(\seasar\container\S2Container $childContainer) {
         $childContainer->setRoot($this->getRoot());
         $this->children[] = $childContainer;
         $this->registerDescendant($childContainer);
@@ -317,31 +318,31 @@ class S2ContainerImpl implements seasar::container::S2Container {
     /**
      * インクルードしている子コンテナの数を返します。
      *
-     * @see seasar::container::S2Container::getChildSize()
+     * @see \seasar\container\S2Container::getChildSize()
      */
     public function getChildSize() {
         return count($this->children);
     }
 
     /**
-     * @see seasar::container::S2Container::getChild()
+     * @see \seasar\container\S2Container::getChild()
      */
     public function getChild($index) {
         if (!isset($this->children[$index])) {
-            throw new seasar::container::exception::ContainerNotRegisteredRuntimeException("Child:" . $index);
+            throw new \seasar\container\exception\ContainerNotRegisteredRuntimeException("Child:" . $index);
         }
         return $this->children[$index];
     }
 
     /**
-     * @see seasar::container::S2Container::getNamespace()
+     * @see \seasar\container\S2Container::getNamespace()
      */
     public function getNamespace() {
         return $this->namespace;
     }
 
     /**
-     * @see seasar::container::S2Container::setNamespace()
+     * @see \seasar\container\S2Container::setNamespace()
      */
     public function setNamespace($namespace) {
         $this->namespace = $namespace;
@@ -367,28 +368,28 @@ class S2ContainerImpl implements seasar::container::S2Container {
     }
 
     /**
-     * @see seasar::container::util::MetaDefAware::addMetaDef()
+     * @see \seasar\container\util\MetaDefAware::addMetaDef()
      */
     public function addMetaDef(MetaDef $metaDef) {
         $this->metaDefSupport->addMetaDef($metaDef);
     }
     
     /**
-     * @see seasar::container::util::MetaDefAware::getMetaDef()
+     * @see \seasar\container\util\MetaDefAware::getMetaDef()
      */
     public function getMetaDef($name) {
         return $this->metaDefSupport->getMetaDef($name);
     }
     
     /**
-     * @see seasar::container::util::MetaDefAware::getMetaDefs()
+     * @see \seasar\container\util\MetaDefAware::getMetaDefs()
      */
     public function getMetaDefs($name) {
         return $this->metaDefSupport->getMetaDefs($name);
     }
     
     /**
-     * @see seasar::container::util::MetaDefAware::getMetaDefSize()
+     * @see \seasar\container\util\MetaDefAware::getMetaDefSize()
      */
     public function getMetaDefSize() {
         return $this->metaDefSupport->getMetaDefSize();
@@ -397,19 +398,19 @@ class S2ContainerImpl implements seasar::container::S2Container {
     /**
      * すべての親クラスと実装しているすべてのインターフェースを返します。
      *
-     * @param ReflectionClass $componentClass
+     * @param \ReflectionClass $componentClass
      * @param array 
      */
-    private function getAssignableClasses(ReflectionClass $componentClass) {
+    private function getAssignableClasses(\ReflectionClass $componentClass) {
         $classes = array();
-        $interfaces = seasar::util::ClassUtil::getInterfaces($componentClass);
+        $interfaces = \seasar\util\ClassUtil::getInterfaces($componentClass);
         foreach ($interfaces as $interface) {
             $classes[] = $interface->getName();
         }
 
         $reflection = $componentClass;
         if(!$reflection->isInterface()){
-            while ($reflection instanceof ReflectionClass) {
+            while ($reflection instanceof \ReflectionClass) {
                 $classes[] = $reflection->getName();
                 $reflection = $reflection->getParentClass();
             }
@@ -420,14 +421,14 @@ class S2ContainerImpl implements seasar::container::S2Container {
     /**
      * 登録済みのキーに対してコンポーネントを登録した際に、TooManyRegistrationComponentDefを構築します。
      * @param string $key
-     * @param seasar::container::ComponentDef $newComponentDef
+     * @param \seasar\container\ComponentDef $newComponentDef
      */
-    private function processTooManyRegistration($key, seasar::container::ComponentDef $newComponentDef) {
+    private function processTooManyRegistration($key, \seasar\container\ComponentDef $newComponentDef) {
         $componentDef = $this->componentDefMap[$key];
-        if ($componentDef instanceof seasar::container::impl::TooManyRegistrationComponentDef) {
+        if ($componentDef instanceof \seasar\container\impl\TooManyRegistrationComponentDef) {
             $componentDef->addComponentDef($newComponentDef);
         } else {
-            $tmrcf = new seasar::container::impl::TooManyRegistrationComponentDef($key);
+            $tmrcf = new \seasar\container\impl\TooManyRegistrationComponentDef($key);
             $tmrcf->addComponentDef($componentDef);
             $tmrcf->addComponentDef($newComponentDef);
             $this->componentDefMap[$key] = $tmrcf;

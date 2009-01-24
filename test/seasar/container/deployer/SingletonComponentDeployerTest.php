@@ -23,32 +23,32 @@
  * @package   seasar.container.deployer
  * @author    klove
  */
-namespace seasar::container::deployer;
-class SingletonComponentDeployerTest extends ::PHPUnit_Framework_TestCase {
+namespace seasar\container\deployer;
+class SingletonComponentDeployerTest extends \PHPUnit_Framework_TestCase {
 
     public function testAssembleWithoutArgs() {
-        $container = new seasar::container::impl::S2ContainerImpl();
-        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::A_SingletonComponentDeployerTest');
+        $container = new \seasar\container\impl\S2ContainerImpl();
+        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\A_SingletonComponentDeployerTest');
         $deployer = new SingletonComponentDeployer($componentDef);
-        $this->assertTrue($deployer->deploy() instanceof seasar::container::deployer::A_SingletonComponentDeployerTest);
+        $this->assertTrue($deployer->deploy() instanceof \seasar\container\deployer\A_SingletonComponentDeployerTest);
     }
 
     public function testSingleton() {
-        $container = new seasar::container::impl::S2ContainerImpl();
-        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::A_SingletonComponentDeployerTest');
+        $container = new \seasar\container\impl\S2ContainerImpl();
+        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\A_SingletonComponentDeployerTest');
         $deployer = new SingletonComponentDeployer($componentDef);
         $this->assertTrue($deployer->deploy() === $deployer->deploy());
     }
 
     public function testCyclicReference1Step() {
-        $container = new seasar::container::impl::S2ContainerImpl();
-        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::B_SingletonComponentDeployerTest');
+        $container = new \seasar\container\impl\S2ContainerImpl();
+        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\B_SingletonComponentDeployerTest');
         $container->register($componentDef);
         $deployer = new SingletonComponentDeployer($componentDef);
         try {
             $deployer->deploy();
             $this->fail();
-        } catch(seasar::container::exception::CyclicReferenceRuntimeException $e) {
+        } catch(\seasar\container\exception\CyclicReferenceRuntimeException $e) {
             print $e->getMessage() .PHP_EOL;
         } catch(Exception $e) {
             print $e->getMessage() .PHP_EOL;
@@ -57,16 +57,16 @@ class SingletonComponentDeployerTest extends ::PHPUnit_Framework_TestCase {
     }
 
     public function testCyclicReference2Step() {
-        $container = new seasar::container::impl::S2ContainerImpl();
-        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::C_SingletonComponentDeployerTest');
+        $container = new \seasar\container\impl\S2ContainerImpl();
+        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\C_SingletonComponentDeployerTest');
         $container->register($componentDef);
-        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::D_SingletonComponentDeployerTest');
+        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\D_SingletonComponentDeployerTest');
         $container->register($componentDef);
         $deployer = new SingletonComponentDeployer($componentDef);
         try {
             $deployer->deploy();
             $this->fail();
-        } catch(seasar::container::exception::CyclicReferenceRuntimeException $e) {
+        } catch(\seasar\container\exception\CyclicReferenceRuntimeException $e) {
             print $e->getMessage() .PHP_EOL;
         } catch(Exception $e) {
             print $e->getMessage() .PHP_EOL;

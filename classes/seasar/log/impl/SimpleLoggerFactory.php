@@ -25,8 +25,8 @@
  * @package   seasar.log.impl
  * @author    klove
  */
-namespace seasar::log::impl;
-class SimpleLoggerFactory implements seasar::log::LoggerFactory {
+namespace seasar\log\impl;
+class SimpleLoggerFactory implements \seasar\log\LoggerFactory {
 
     /**
      * @var object
@@ -34,7 +34,7 @@ class SimpleLoggerFactory implements seasar::log::LoggerFactory {
     private $logger = null;
 
     /**
-     * @see seasar::log::LoggerFactory::getInstance()
+     * @see \seasar\log\LoggerFactory::getInstance()
      */
     public function getInstance($className) {
         if ($this->logger === null) {

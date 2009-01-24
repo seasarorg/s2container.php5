@@ -2,7 +2,7 @@
 /**
  * @S2Component('namespace' => 'pdo');
  */
-class StandardPdo extends ::PDO {
+class StandardPdo extends \PDO {
     public static $DSN = null;
     public static $USERNAME = null;
     public static $PASSWORD = null;

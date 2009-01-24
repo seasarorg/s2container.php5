@@ -25,7 +25,7 @@
  * @package   seasar.util
  * @author    klove
  */
-namespace seasar::util;
+namespace seasar\util;
 class StringUtil {
 
     /**

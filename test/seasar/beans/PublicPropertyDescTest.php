@@ -23,11 +23,11 @@
  * @package   seasar.beans
  * @author    klove
  */
-namespace seasar::beans;
-class PublicPropertyDescTest extends ::PHPUnit_Framework_TestCase {
+namespace seasar\beans;
+class PublicPropertyDescTest extends \PHPUnit_Framework_TestCase {
 
     public function testSetValue() {
-        $ref = new ReflectionClass(__NAMESPACE__ . '::A_PublicPropertyDescTest');
+        $ref = new \ReflectionClass(__NAMESPACE__ . '\A_PublicPropertyDescTest');
         $desc = new PublicPropertyDesc($ref, 'name');
         $obj = new A_PublicPropertyDescTest;
         $desc->setValue($obj, 'seasar');
@@ -36,11 +36,11 @@ class PublicPropertyDescTest extends ::PHPUnit_Framework_TestCase {
     }
 
     public function testPropertNotFound() {
-        $ref = new ReflectionClass(__NAMESPACE__ . '::A_PublicPropertyDescTest');
+        $ref = new \ReflectionClass(__NAMESPACE__ . '\A_PublicPropertyDescTest');
         try {
             $desc = new PublicPropertyDesc($ref, 'xxx');
             $this->fail();
-        } catch (seasar::exception::PropertyNotFoundRuntimeException $e) {
+        } catch (\seasar\exception\PropertyNotFoundRuntimeException $e) {
             print $e->getMessage() . PHP_EOL;
         } catch (Exception $e) {
             $this->fail($e->getMessage());
@@ -48,11 +48,11 @@ class PublicPropertyDescTest extends ::PHPUnit_Framework_TestCase {
     }
 
     public function testIllegalPropertFound() {
-        $ref = new ReflectionClass(__NAMESPACE__ . '::A_PublicPropertyDescTest');
+        $ref = new \ReflectionClass(__NAMESPACE__ . '\A_PublicPropertyDescTest');
         try {
             $desc = new PublicPropertyDesc($ref, 'yyy');
             $this->fail();
-        } catch (seasar::exception::IllegalPropertyRuntimeException $e) {
+        } catch (\seasar\exception\IllegalPropertyRuntimeException $e) {
             print $e->getMessage() . PHP_EOL;
         } catch (Exception $e) {
             $this->fail($e->getMessage());

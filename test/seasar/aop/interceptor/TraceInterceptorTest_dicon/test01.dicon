@@ -2,7 +2,7 @@
 <!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
 "components21.dtd">
 <components>
-    <component name="a" class="seasar::aop::interceptor::A_TraceInterceptorTest">
-        <aspect pointcut="/.+/"><component class="seasar::aop::interceptor::TraceInterceptor"/></aspect>
+    <component name="a" class="seasar\aop\interceptor\A_TraceInterceptorTest">
+        <aspect pointcut="/.+/"><component class="seasar\aop\interceptor\TraceInterceptor"/></aspect>
     </component>
 </components>

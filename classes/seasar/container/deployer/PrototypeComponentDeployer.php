@@ -25,7 +25,7 @@
  * @package   seasar.container.deployer
  * @author    klove
  */
-namespace seasar::container::deployer;
+namespace seasar\container\deployer;
 class PrototypeComponentDeployer extends AbstractComponentDeployer {
 
     /**
@@ -36,18 +36,18 @@ class PrototypeComponentDeployer extends AbstractComponentDeployer {
     /**
      * PrototypeComponentDeployerを構築します。
      *
-     * @param seasar::container::ComponentDef $componentDef
+     * @param \seasar\container\ComponentDef $componentDef
      */
-    public function __construct(seasar::container::ComponentDef $componentDef) {
+    public function __construct(\seasar\container\ComponentDef $componentDef) {
         parent::__construct($componentDef);
     }
 
     /**
-     * @see seasar::container::deployer::AbstractComponentDeployer::deploy()
+     * @see \seasar\container\deployer\AbstractComponentDeployer::deploy()
      */
     public function deploy() {
         if ($this->instantiating) {
-            throw new seasar::container::exception::CyclicInstantiationRuntimeException($this->getComponentDef()->getComponentClass());
+            throw new \seasar\container\exception\CyclicInstantiationRuntimeException($this->getComponentDef()->getComponentClass());
         }
         $this->instantiating = true;
         $component = $this->getConstructorAssembler()->assemble();

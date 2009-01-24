@@ -25,8 +25,8 @@
  * @package   seasar.exception
  * @author    klove
  */
-namespace seasar::exception;
-class UnsupportedOperationException extends ::Exception {
+namespace seasar\exception;
+class UnsupportedOperationException extends \Exception {
 
     /**
      * UnsupportedOperationExceptionを構築します。

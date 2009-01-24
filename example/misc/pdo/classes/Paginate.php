@@ -77,8 +77,8 @@ class Paginate {
      * @throw Exception
      */
     final public function setPage($page) {
-        if ($page < 0 or $this->getTotalPage() < $page) {
-            throw new Exception("$page is out of range 0-{$this->getTotalPage()}");
+        if ($page < 1 or $this->getTotalPage() < $page) {
+            throw new Exception("$page is out of range 1-{$this->getTotalPage()}");
         }
         if ($this->page < $page) {
             $this->offset = $this->offset + $this->limit * ($page - $this->page);

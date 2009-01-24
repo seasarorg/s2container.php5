@@ -25,7 +25,7 @@
  * @package   seasar.container.util
  * @author    klove
  */
-namespace seasar::container::util;
+namespace seasar\container\util;
 final class ArgDefSupport {
 
     /**
@@ -34,16 +34,16 @@ final class ArgDefSupport {
     private $argDefs = array();
 
     /**
-     * @var seasar::container::S2Container
+     * @var \seasar\container\S2Container
      */
     private $container = null;
 
     /**
      * ArgDefを追加します。
      *
-     * @param seasar::container::impl::ArgDef
+     * @param \seasar\container\impl\ArgDef
      */
-    public function addArgDef(seasar::container::impl::ArgDef $argDef) {
+    public function addArgDef(\seasar\container\impl\ArgDef $argDef) {
         if ($this->container != null) {
             $argDef->setContainer($this->container);
         }
@@ -72,11 +72,11 @@ final class ArgDefSupport {
      * ArgDefを返します。
      *
      * @param integer
-     * @return seasar::container::impl::ArgDef
+     * @return \seasar\container\impl\ArgDef
      */
     public function getArgDef($index) {
         if (!isset($this->argDefs[$index])) {
-            throw new OutOfRangeException($index);
+            throw new \OutOfRangeException($index);
         }
         return $this->argDefs[$index];
     }
@@ -84,9 +84,9 @@ final class ArgDefSupport {
     /**
      * S2Containerを設定します。
      *
-     * @param seasar::container::S2Container $container
+     * @param \seasar\container\S2Container $container
      */
-    public function setContainer(seasar::container::S2Container $container) {
+    public function setContainer(\seasar\container\S2Container $container) {
         $this->container = $container;
         foreach ($this->argDefs as $argDef) {
             $argDef->setContainer($container);

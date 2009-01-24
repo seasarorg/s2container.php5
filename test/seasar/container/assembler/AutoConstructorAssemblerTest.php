@@ -23,35 +23,35 @@
  * @package   seasar.container.assembler
  * @author    klove
  */
-namespace seasar::container::assembler;
-class AutoConstructorAssemblerTest extends ::PHPUnit_Framework_TestCase {
+namespace seasar\container\assembler;
+class AutoConstructorAssemblerTest extends \PHPUnit_Framework_TestCase {
 
     public function testAssembleWithoutArgs() {
-        $container = new seasar::container::impl::S2ContainerImpl();
-        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::A_AutoConstructorAssemblerTest');
+        $container = new \seasar\container\impl\S2ContainerImpl();
+        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\A_AutoConstructorAssemblerTest');
         $assembler = new AutoConstructorAssembler($componentDef);
-        $this->assertTrue($assembler->assemble() instanceof seasar::container::assembler::A_AutoConstructorAssemblerTest);
+        $this->assertTrue($assembler->assemble() instanceof \seasar\container\assembler\A_AutoConstructorAssemblerTest);
     }
 
     public function testAssembleWithArgs() {
-        $container = new seasar::container::impl::S2ContainerImpl();
-        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::A_AutoConstructorAssemblerTest');
+        $container = new \seasar\container\impl\S2ContainerImpl();
+        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\A_AutoConstructorAssemblerTest');
         $container->register($componentDef);
         $assembler = new AutoConstructorAssembler($componentDef);
-        $componentDef->addArgDef(new seasar::container::impl::ArgDef(2007));
+        $componentDef->addArgDef(new \seasar\container\impl\ArgDef(2007));
         try {
             $assembler->assemble();
             $this->fail();
-        } catch (seasar::container::exception::IllegalConstructorRuntimeException $e) {
+        } catch (\seasar\container\exception\IllegalConstructorRuntimeException $e) {
             print $e->getMessage() . PHP_EOL;
         }
 
-        $container = new seasar::container::impl::S2ContainerImpl();
-        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::B_AutoConstructorAssemblerTest');
+        $container = new \seasar\container\impl\S2ContainerImpl();
+        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\B_AutoConstructorAssemblerTest');
         $container->register($componentDef);
         $assembler = new AutoConstructorAssembler($componentDef);
-        $componentDef->addArgDef(new seasar::container::impl::ArgDef('huga'));
-        $componentDef->addArgDef(new seasar::container::impl::ArgDef(2007));
+        $componentDef->addArgDef(new \seasar\container\impl\ArgDef('huga'));
+        $componentDef->addArgDef(new \seasar\container\impl\ArgDef(2007));
         
         $component = $assembler->assemble();
         $this->assertEquals($component->getName(), 'huga');
@@ -59,26 +59,26 @@ class AutoConstructorAssemblerTest extends ::PHPUnit_Framework_TestCase {
     }
 
     public function testAssembleAuto() {
-        $container = new seasar::container::impl::S2ContainerImpl();
-        $componentDefC = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::C_AutoConstructorAssemblerTest');
-        $componentDefD = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::D_AutoConstructorAssemblerTest');
+        $container = new \seasar\container\impl\S2ContainerImpl();
+        $componentDefC = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\C_AutoConstructorAssemblerTest');
+        $componentDefD = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\D_AutoConstructorAssemblerTest');
         $container->register($componentDefC);
         $container->register($componentDefD);
         $assembler = new AutoConstructorAssembler($componentDefC);
 
         $component = $assembler->assemble();
-        $this->assertTrue($component->getD() instanceof seasar::container::assembler::D_AutoConstructorAssemblerTest);
+        $this->assertTrue($component->getD() instanceof \seasar\container\assembler\D_AutoConstructorAssemblerTest);
     }
 
     public function testTooManyArrayInjection() {
-        $container = new seasar::container::impl::S2ContainerImpl();
-        $componentDefD1 = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::D_AutoConstructorAssemblerTest', 'd');
+        $container = new \seasar\container\impl\S2ContainerImpl();
+        $componentDefD1 = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\D_AutoConstructorAssemblerTest', 'd');
         $container->register($componentDefD1);
-        $componentDefD2 = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::D_AutoConstructorAssemblerTest', 'd');
+        $componentDefD2 = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\D_AutoConstructorAssemblerTest', 'd');
         $container->register($componentDefD2);
 
-        $componentDefE = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::E_AutoConstructorAssemblerTest', 'e');
-        $argDef = new seasar::container::impl::ArgDef();
+        $componentDefE = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\E_AutoConstructorAssemblerTest', 'e');
+        $argDef = new \seasar\container\impl\ArgDef();
         $argDef->setChildComponentDef($container->getComponentDef('d'));
         $componentDefE->addArgDef($argDef);
         $container->register($componentDefE);
@@ -90,31 +90,31 @@ class AutoConstructorAssemblerTest extends ::PHPUnit_Framework_TestCase {
     }
 
     public function testAssembleMix() {
-        $container = new seasar::container::impl::S2ContainerImpl();
-        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::F_AutoConstructorAssemblerTest');
-        $container->register(new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::A_AutoConstructorAssemblerTest'));
-        $container->register(new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::D_AutoConstructorAssemblerTest'));
+        $container = new \seasar\container\impl\S2ContainerImpl();
+        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\F_AutoConstructorAssemblerTest');
+        $container->register(new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\A_AutoConstructorAssemblerTest'));
+        $container->register(new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\D_AutoConstructorAssemblerTest'));
         $container->register($componentDef);
         $assembler = new AutoConstructorAssembler($componentDef);
 
         $component = $assembler->assemble();
-        $this->assertTrue($component->getA() instanceof seasar::container::assembler::A_AutoConstructorAssemblerTest);
+        $this->assertTrue($component->getA() instanceof \seasar\container\assembler\A_AutoConstructorAssemblerTest);
         $this->assertTrue($component->getB() !== 2007); // this is not optional. can not get default value.
         $this->assertTrue($component->getC() === null);
-        $this->assertTrue($component->getD() instanceof seasar::container::assembler::D_AutoConstructorAssemblerTest);
+        $this->assertTrue($component->getD() instanceof \seasar\container\assembler\D_AutoConstructorAssemblerTest);
     }
 
     public function testAssembleMix2() {
-        $container = new seasar::container::impl::S2ContainerImpl();
-        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::G_AutoConstructorAssemblerTest');
-        $container->register(new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::A_AutoConstructorAssemblerTest'));
-        $container->register(new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::D_AutoConstructorAssemblerTest'));
+        $container = new \seasar\container\impl\S2ContainerImpl();
+        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\G_AutoConstructorAssemblerTest');
+        $container->register(new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\A_AutoConstructorAssemblerTest'));
+        $container->register(new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\D_AutoConstructorAssemblerTest'));
         $container->register($componentDef);
         $assembler = new AutoConstructorAssembler($componentDef);
 
         $component = $assembler->assemble();
-        $this->assertTrue($component->getA() instanceof seasar::container::assembler::A_AutoConstructorAssemblerTest);
-        $this->assertTrue($component->getB() instanceof seasar::container::assembler::D_AutoConstructorAssemblerTest);
+        $this->assertTrue($component->getA() instanceof \seasar\container\assembler\A_AutoConstructorAssemblerTest);
+        $this->assertTrue($component->getB() instanceof \seasar\container\assembler\D_AutoConstructorAssemblerTest);
         $this->assertTrue($component->getC() === 2007); // this is optional. can not get default value.
         $this->assertTrue($component->getD() === 'hoge');
     }
@@ -146,7 +146,7 @@ class B_AutoConstructorAssemblerTest {
 
 class C_AutoConstructorAssemblerTest {
     private $d;
-    public function __construct(seasar::container::assembler::D_AutoConstructorAssemblerTest $d) {
+    public function __construct(\seasar\container\assembler\D_AutoConstructorAssemblerTest $d) {
         $this->d = $d;
     }
     public function getD() {

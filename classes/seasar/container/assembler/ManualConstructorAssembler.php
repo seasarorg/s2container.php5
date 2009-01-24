@@ -25,13 +25,13 @@
  * @package   seasar.container.assembler
  * @author    klove
  */
-namespace seasar::container::assembler;
+namespace seasar\container\assembler;
 class ManualConstructorAssembler extends AbstractAssembler {
 
     /**
-     * @see seasar::container::assembler::AbstractAssembler::__construct()
+     * @see \seasar\container\assembler\AbstractAssembler::__construct()
      */
-    public function __construct(seasar::container::ComponentDef $componentDef) {
+    public function __construct(\seasar\container\ComponentDef $componentDef) {
         parent::__construct($componentDef);
     }
 
@@ -45,7 +45,7 @@ class ManualConstructorAssembler extends AbstractAssembler {
         $refParams      = array();
         $componentDef   = $this->getComponentDef();
         $refConstructor = $componentDef->getComponentClass()->getConstructor();
-        if ($refConstructor instanceof ReflectionMethod) {
+        if ($refConstructor instanceof \ReflectionMethod) {
             $refParams = $refConstructor->getParameters();
         }
         $argDefs = $componentDef->getArgDefs();
@@ -57,6 +57,6 @@ class ManualConstructorAssembler extends AbstractAssembler {
                 $args[] = $this->getArgument($argDefs[$i], false);
             }
         }
-        return seasar::container::util::ConstructorUtil::newInstance($componentDef, $args);
+        return \seasar\container\util\ConstructorUtil::newInstance($componentDef, $args);
     }
 }

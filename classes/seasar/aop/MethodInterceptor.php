@@ -25,7 +25,7 @@
  * @package   seasar.aop
  * @author    klove
  */
-namespace seasar::aop;
+namespace seasar\aop;
 interface MethodInterceptor {
     /**
      * @param MethodInvocation $invocation

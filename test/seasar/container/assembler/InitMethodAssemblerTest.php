@@ -23,40 +23,40 @@
  * @package   seasar.container.assembler
  * @author    klove
  */
-namespace seasar::container::assembler;
-class InitMethodAssemblerTest extends ::PHPUnit_Framework_TestCase {
+namespace seasar\container\assembler;
+class InitMethodAssemblerTest extends \PHPUnit_Framework_TestCase {
 
     public function testInitMethodAssemble() {
-        $container = new seasar::container::impl::S2ContainerImpl();
-        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::A_InitMethodAssemblerTest');
+        $container = new \seasar\container\impl\S2ContainerImpl();
+        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\A_InitMethodAssemblerTest');
         $container->register($componentDef);
-        $methodDef = new seasar::container::impl::InitMethodDef('hoge');
+        $methodDef = new \seasar\container\impl\InitMethodDef('hoge');
         $componentDef->addInitMethodDef($methodDef);
-        $component = new seasar::container::assembler::A_InitMethodAssemblerTest;
+        $component = new \seasar\container\assembler\A_InitMethodAssemblerTest;
         $assembler = new InitMethodAssembler($componentDef);
         $assembler->assemble($component);
     }
 
     public function testManualArgAssemble() {
-        $container = new seasar::container::impl::S2ContainerImpl();
-        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::A_InitMethodAssemblerTest');
+        $container = new \seasar\container\impl\S2ContainerImpl();
+        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\A_InitMethodAssemblerTest');
         $container->register($componentDef);
 
-        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::B_InitMethodAssemblerTest');
+        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\B_InitMethodAssemblerTest');
         $container->register($componentDef);
 
-        $methodDef = new seasar::container::impl::InitMethodDef('hoge');
+        $methodDef = new \seasar\container\impl\InitMethodDef('hoge');
         $componentDef->addInitMethodDef($methodDef);
-        $argDef = new seasar::container::impl::ArgDef;
-        $argDef->setChildComponentDef($container->getComponentDef(__NAMESPACE__ . '::A_InitMethodAssemblerTest'));
+        $argDef = new \seasar\container\impl\ArgDef;
+        $argDef->setChildComponentDef($container->getComponentDef(__NAMESPACE__ . '\A_InitMethodAssemblerTest'));
         $methodDef->addArgDef($argDef);
 
-        $methodDef = new seasar::container::impl::InitMethodDef('huga');
+        $methodDef = new \seasar\container\impl\InitMethodDef('huga');
         $componentDef->addInitMethodDef($methodDef);
-        $argDef = new seasar::container::impl::ArgDef(2007);
+        $argDef = new \seasar\container\impl\ArgDef(2007);
         $methodDef->addArgDef($argDef);
 
-        $component = new seasar::container::assembler::B_InitMethodAssemblerTest;
+        $component = new \seasar\container\assembler\B_InitMethodAssemblerTest;
         $assembler = new InitMethodAssembler($componentDef);
         $assembler->assemble($component);
 
@@ -65,22 +65,22 @@ class InitMethodAssemblerTest extends ::PHPUnit_Framework_TestCase {
     }
 
     public function testManualArgsAssemble() {
-        $container = new seasar::container::impl::S2ContainerImpl();
-        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::A_InitMethodAssemblerTest');
+        $container = new \seasar\container\impl\S2ContainerImpl();
+        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\A_InitMethodAssemblerTest');
         $container->register($componentDef);
 
-        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::B_InitMethodAssemblerTest');
+        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\B_InitMethodAssemblerTest');
         $container->register($componentDef);
 
-        $methodDef = new seasar::container::impl::InitMethodDef('foo');
+        $methodDef = new \seasar\container\impl\InitMethodDef('foo');
         $componentDef->addInitMethodDef($methodDef);
-        $argDef = new seasar::container::impl::ArgDef;
-        $argDef->setChildComponentDef($container->getComponentDef(__NAMESPACE__ . '::A_InitMethodAssemblerTest'));
+        $argDef = new \seasar\container\impl\ArgDef;
+        $argDef->setChildComponentDef($container->getComponentDef(__NAMESPACE__ . '\A_InitMethodAssemblerTest'));
         $methodDef->addArgDef($argDef);
-        $argDef = new seasar::container::impl::ArgDef(2007);
+        $argDef = new \seasar\container\impl\ArgDef(2007);
         $methodDef->addArgDef($argDef);
 
-        $component = new seasar::container::assembler::B_InitMethodAssemblerTest;
+        $component = new \seasar\container\assembler\B_InitMethodAssemblerTest;
         $assembler = new InitMethodAssembler($componentDef);
         $assembler->assemble($component);
 
@@ -89,17 +89,17 @@ class InitMethodAssemblerTest extends ::PHPUnit_Framework_TestCase {
     }
 
     public function testAutoArgAssemble() {
-        $container = new seasar::container::impl::S2ContainerImpl();
-        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::A_InitMethodAssemblerTest');
+        $container = new \seasar\container\impl\S2ContainerImpl();
+        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\A_InitMethodAssemblerTest');
         $container->register($componentDef);
 
-        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::B_InitMethodAssemblerTest');
+        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\B_InitMethodAssemblerTest');
         $container->register($componentDef);
 
-        $methodDef = new seasar::container::impl::InitMethodDef('hoge');
+        $methodDef = new \seasar\container\impl\InitMethodDef('hoge');
         $componentDef->addInitMethodDef($methodDef);
 
-        $component = new seasar::container::assembler::B_InitMethodAssemblerTest;
+        $component = new \seasar\container\assembler\B_InitMethodAssemblerTest;
         $assembler = new InitMethodAssembler($componentDef);
         $assembler->assemble($component);
 
@@ -107,14 +107,14 @@ class InitMethodAssemblerTest extends ::PHPUnit_Framework_TestCase {
     }
 
     public function testExpressionAssemble() {
-        $container = new seasar::container::impl::S2ContainerImpl();
-        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::B_InitMethodAssemblerTest');
+        $container = new \seasar\container\impl\S2ContainerImpl();
+        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\B_InitMethodAssemblerTest');
         $container->register($componentDef);
 
-        $methodDef = new seasar::container::impl::InitMethodDef();
+        $methodDef = new \seasar\container\impl\InitMethodDef();
         $componentDef->addInitMethodDef($methodDef);
         $methodDef->setExpression('$component->a = "abcd"; $component->b = 2007;');
-        $component = new seasar::container::assembler::B_InitMethodAssemblerTest;
+        $component = new \seasar\container\assembler\B_InitMethodAssemblerTest;
         $assembler = new InitMethodAssembler($componentDef);
         $assembler->assemble($component);
 
@@ -123,56 +123,56 @@ class InitMethodAssemblerTest extends ::PHPUnit_Framework_TestCase {
     }
 
     public function testManualArrayAssemble() {
-        $container = new seasar::container::impl::S2ContainerImpl();
-        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::E_InitMethodAssemblerTest', 'e');
+        $container = new \seasar\container\impl\S2ContainerImpl();
+        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\E_InitMethodAssemblerTest', 'e');
         $container->register($componentDef);
-        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::E_InitMethodAssemblerTest', 'e');
-        $container->register($componentDef);
-
-        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::D_InitMethodAssemblerTest');
+        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\E_InitMethodAssemblerTest', 'e');
         $container->register($componentDef);
 
-        $methodDef = new seasar::container::impl::InitMethodDef('foo');
+        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\D_InitMethodAssemblerTest');
+        $container->register($componentDef);
+
+        $methodDef = new \seasar\container\impl\InitMethodDef('foo');
         $componentDef->addInitMethodDef($methodDef);
-        $argDef = new seasar::container::impl::ArgDef;
+        $argDef = new \seasar\container\impl\ArgDef;
         $argDef->setChildComponentDef($container->getComponentDef('e'));
         $methodDef->addArgDef($argDef);
-        $argDef = new seasar::container::impl::ArgDef(2007);
+        $argDef = new \seasar\container\impl\ArgDef(2007);
         $methodDef->addArgDef($argDef);
 
-        $component = new seasar::container::assembler::D_InitMethodAssemblerTest;
+        $component = new \seasar\container\assembler\D_InitMethodAssemblerTest;
         $assembler = new InitMethodAssembler($componentDef);
         $assembler->assemble($component);
 
         $this->assertTrue(is_array($component->e));
         $this->assertTrue(count($component->e) == 2);
-        $this->assertTrue(get_class($component->e[1]) == __NAMESPACE__ . '::E_InitMethodAssemblerTest');
+        $this->assertTrue(get_class($component->e[1]) == __NAMESPACE__ . '\E_InitMethodAssemblerTest');
         $this->assertEquals($component->a, 2007);
     }
 
     public function testManualOneArrayAssemble() {
-        $container = new seasar::container::impl::S2ContainerImpl();
-        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::E_InitMethodAssemblerTest', 'e');
+        $container = new \seasar\container\impl\S2ContainerImpl();
+        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\E_InitMethodAssemblerTest', 'e');
         $container->register($componentDef);
 
-        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::D_InitMethodAssemblerTest');
+        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\D_InitMethodAssemblerTest');
         $container->register($componentDef);
 
-        $methodDef = new seasar::container::impl::InitMethodDef('foo');
+        $methodDef = new \seasar\container\impl\InitMethodDef('foo');
         $componentDef->addInitMethodDef($methodDef);
-        $argDef = new seasar::container::impl::ArgDef;
+        $argDef = new \seasar\container\impl\ArgDef;
         $argDef->setChildComponentDef($container->getComponentDef('e'));
         $methodDef->addArgDef($argDef);
-        $argDef = new seasar::container::impl::ArgDef(2007);
+        $argDef = new \seasar\container\impl\ArgDef(2007);
         $methodDef->addArgDef($argDef);
 
-        $component = new seasar::container::assembler::D_InitMethodAssemblerTest;
+        $component = new \seasar\container\assembler\D_InitMethodAssemblerTest;
         $assembler = new InitMethodAssembler($componentDef);
         $assembler->assemble($component);
 
         $this->assertTrue(is_array($component->e));
         $this->assertTrue(count($component->e) == 1);
-        $this->assertTrue(get_class($component->e[0]) == __NAMESPACE__ . '::E_InitMethodAssemblerTest');
+        $this->assertTrue(get_class($component->e[0]) == __NAMESPACE__ . '\E_InitMethodAssemblerTest');
         $this->assertEquals($component->a, 2007);
     }
 
@@ -208,7 +208,7 @@ class B_InitMethodAssemblerTest {
 }
 
 class C_InitMethodAssemblerTest {
-    public $a = 's2binding seasar::container::assembler::A_InitMethodAssemblerTest';
+    public $a = 's2binding \seasar\container\assembler\A_InitMethodAssemblerTest';
 }
 
 class D_InitMethodAssemblerTest {

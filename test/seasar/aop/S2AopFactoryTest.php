@@ -23,20 +23,20 @@
  * @package   seasar.aop
  * @author    klove
  */
-namespace seasar::aop;
-class S2AopFactoryTest extends ::PHPUnit_Framework_TestCase {
+namespace seasar\aop;
+class S2AopFactoryTest extends \PHPUnit_Framework_TestCase {
 
     public function testA() {
-        $targetRef = new ReflectionClass('seasar::aop::A_S2AopFactory');
-        $interceptor = new seasar::aop::interceptor::TraceInterceptor;
+        $targetRef = new \ReflectionClass('\seasar\aop\A_S2AopFactory');
+        $interceptor = new \seasar\aop\interceptor\TraceInterceptor;
         $pointcut = new Pointcut($targetRef);
         $aspects = array(new Aspect($interceptor, $pointcut));
         $targetOjb = S2AopFactory::create($targetRef, $aspects, array());
     }
 
     public function testB() {
-        $targetRef = new ReflectionClass('seasar::aop::B_S2AopFactory');
-        $interceptor = new seasar::aop::interceptor::TraceInterceptor;
+        $targetRef = new \ReflectionClass('\seasar\aop\B_S2AopFactory');
+        $interceptor = new \seasar\aop\interceptor\TraceInterceptor;
         $pointcut = new Pointcut('/^service$/');
         $aspects = array(new Aspect($interceptor, $pointcut));
         $targetObj = S2AopFactory::create($targetRef, $aspects, array());
@@ -44,15 +44,15 @@ class S2AopFactoryTest extends ::PHPUnit_Framework_TestCase {
     }
 
     public function testInvokeAbstractMethod() {
-        $targetRef = new ReflectionClass('seasar::aop::F_S2AopFactory');
-        $interceptor = new seasar::aop::interceptor::TraceInterceptor;
+        $targetRef = new \ReflectionClass('\seasar\aop\F_S2AopFactory');
+        $interceptor = new \seasar\aop\interceptor\TraceInterceptor;
         $pointcut = new Pointcut($targetRef);
         $aspects = array(new Aspect($interceptor, $pointcut));
         $targetObj = S2AopFactory::create($targetRef, $aspects, array());
         try{
             $targetObj->service();
             $this->fail();
-        } catch(seasar::aop::exception::AbstractMethodInvocationRuntimeException $e) {
+        } catch(\seasar\aop\exception\AbstractMethodInvocationRuntimeException $e) {
             print $e->getMessage() . PHP_EOL;
         } catch(Exception $e) {
             print $e->getMessage() . PHP_EOL;

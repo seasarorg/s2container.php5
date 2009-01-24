@@ -25,8 +25,8 @@
  * @package   seasar.exception
  * @author    klove
  */
-namespace seasar::exception;
-class DOMException extends ::RuntimeException {
+namespace seasar\exception;
+class DOMException extends \RuntimeException {
 
     /**
      * DOMExceptionを構築します。

@@ -25,8 +25,8 @@
  * @package   seasar.container.exception
  * @author    klove
  */
-namespace seasar::container::exception;
-class ContainerNotRegisteredRuntimeException extends seasar::exception::S2RuntimeException {
+namespace seasar\container\exception;
+class ContainerNotRegisteredRuntimeException extends \seasar\exception\S2RuntimeException {
 
     /**
      * @var string

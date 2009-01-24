@@ -25,23 +25,23 @@
  * @package   seasar.container.impl
  * @author    klove
  */
-namespace seasar::container::impl;
+namespace seasar\container\impl;
 class S2ContainerComponentDef extends SimpleComponentDef {
 
     /**
      * S2ContainerComponentDefを構築します。
      *
-     * @param seasar::container::S2Container $container
+     * @param \seasar\container\S2Container $container
      * @param string $name
      */
-    public function __construct(seasar::container::S2Container $container, $name) {
+    public function __construct(\seasar\container\S2Container $container, $name) {
         parent::__construct($container, $name);
     }
 
     /**
      * このコンポーネント定義を含むS2コンテナを返します。
      *
-     * @return seasar::container::S2Container
+     * @return \seasar\container\S2Container
      */
     public function getContainer() {
         return parent::getComponent();
@@ -50,8 +50,8 @@ class S2ContainerComponentDef extends SimpleComponentDef {
     /**
      * 定義に基づいてコンポーネントを返します。
      *
-     * @see seasar::container::ComponentDef::getComponent()
-     * @return seasar::container::S2Container
+     * @see \seasar\container\ComponentDef::getComponent()
+     * @return \seasar\container\S2Container
      */
     public function getComponent() {
         return $this->getContainer();

@@ -25,11 +25,11 @@
  * @package   seasar.log
  * @author    klove
  */
-namespace seasar::log;
+namespace seasar\log;
 class S2Logger {
 
     /**
-     * @var seasar::log::LoggerFactory
+     * @var \seasar\log\LoggerFactory
      */
     private static $loggerFactory = null;
 
@@ -40,14 +40,14 @@ class S2Logger {
 
     /**
      * Loggerのファクトリクラスを設定します。
-     * @param seasar::log::LoggerFactory $factory
+     * @param \seasar\log\LoggerFactory $factory
      */
-    public static function setLoggerFactory(seasar::log::LoggerFactory $factory) {
+    public static function setLoggerFactory(\seasar\log\LoggerFactory $factory) {
         self::$loggerFactory = $factory;
     }
 
     /**
-     * @see seasar::log::S2Logger::getLogger()
+     * @see \seasar\log\S2Logger::getLogger()
      */
     public static function getInstance($className = null) {
         return self::getLogger($className);
@@ -66,11 +66,11 @@ class S2Logger {
     /**
      * SingletonなLoggerFactoryを返します。
      *
-     * @return seasar::log::LoggerFactory
+     * @return \seasar\log\LoggerFactory
      */
     public static function getLoggerFactory() {
         if (self::$loggerFactory === null) {
-            self::$loggerFactory = new seasar::Config::$LOGGER_FACTORY;
+            self::$loggerFactory = new \seasar\Config::$LOGGER_FACTORY;
         }
         return self::$loggerFactory;
     }

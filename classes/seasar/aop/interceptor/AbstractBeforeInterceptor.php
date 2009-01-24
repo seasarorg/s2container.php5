@@ -25,25 +25,25 @@
  * @package   seasar.aop.interceptor
  * @author    klove
  */
-namespace seasar::aop::interceptor;
+namespace seasar\aop\interceptor;
 abstract class AbstractBeforeInterceptor extends AbstractAroundInterceptor {
 
     /**
-     * @see seasar::aop::interceptor::AbstractAroundInterceptor::before()
+     * @see \seasar\aop\interceptor\AbstractAroundInterceptor::before()
      */
-    abstract public function execute(seasar::aop::MethodInvocation $invocation);
+    abstract public function execute(\seasar\aop\MethodInvocation $invocation);
 
     /**
-     * @see seasar::aop::interceptor::AbstractAroundInterceptor::before()
+     * @see \seasar\aop\interceptor\AbstractAroundInterceptor::before()
      */
-    protected function before(seasar::aop::MethodInvocation $invocation){
+    protected function before(\seasar\aop\MethodInvocation $invocation){
         return $this->execute($invocation);
     }
 
     /**
-     * @see seasar::aop::interceptor::AbstractAroundInterceptor::after()
+     * @see \seasar\aop\interceptor\AbstractAroundInterceptor::after()
      */
-    protected function after(seasar::aop::MethodInvocation $invocation, $result){
+    protected function after(\seasar\aop\MethodInvocation $invocation, $result){
         return $result;
     }
 }

@@ -25,12 +25,12 @@
  * @package   seasar.aop
  * @author    klove
  */
-namespace seasar::aop;
+namespace seasar\aop;
 interface MethodInvocation {
 
     /**
      * @see http://aopalliance.sourceforge.net/doc/org/aopalliance/intercept/MethodInvocation.html#getMethod()
-     * @return ReflectionMethod
+     * @return \ReflectionMethod
      */
     public function getMethod();
 

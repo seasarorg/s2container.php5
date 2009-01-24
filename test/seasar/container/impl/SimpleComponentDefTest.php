@@ -23,15 +23,15 @@
  * @package   seasar.container.impl
  * @author    klove
  */
-namespace seasar::container::impl;
-class SimpleComponentDefTest extends ::PHPUnit_Framework_TestCase {
+namespace seasar\container\impl;
+class SimpleComponentDefTest extends \PHPUnit_Framework_TestCase {
 
     public function testA() {
-        $def = new SimpleComponentDef(new seasar::container::impl::A_SimpleComponentDefTest);
+        $def = new SimpleComponentDef(new \seasar\container\impl\A_SimpleComponentDefTest);
         try {
             $def->addArgDef(new ArgDef());
             $this->fail();
-        } catch(seasar::exception::UnsupportedOperationException $e) {
+        } catch(\seasar\exception\UnsupportedOperationException $e) {
             print $e->getMessage() . PHP_EOL;
         }    }
 

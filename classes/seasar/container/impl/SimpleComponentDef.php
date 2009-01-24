@@ -25,8 +25,8 @@
  * @package   seasar.container
  * @author    klove
  */
-namespace seasar::container::impl;
-class SimpleComponentDef implements seasar::container::ComponentDef {
+namespace seasar\container\impl;
+class SimpleComponentDef implements \seasar\container\ComponentDef {
 
     /**
      * @var object
@@ -34,7 +34,7 @@ class SimpleComponentDef implements seasar::container::ComponentDef {
     private $component;
 
     /**
-     * @var ReflectionClass
+     * @var \ReflectionClass
      */
     private $componentClass;
 
@@ -49,7 +49,7 @@ class SimpleComponentDef implements seasar::container::ComponentDef {
     private $componentName;
 
     /**
-     * @var seasar::container::S2Container
+     * @var \seasar\container\S2Container
      */
     private $container;
 
@@ -61,232 +61,232 @@ class SimpleComponentDef implements seasar::container::ComponentDef {
      */
     public function __construct($component, $componentName = '') {
         $this->component = $component;
-        $this->componentClass = new ReflectionClass($component);
+        $this->componentClass = new \ReflectionClass($component);
         $this->componentClassName = $this->componentClass->getName();
         $this->componentName = $componentName;
     }
 
     /**
-     * @see seasar::container::ComponentDef::getComponent()
+     * @see \seasar\container\ComponentDef::getComponent()
      */
     public function getComponent() {
         return $this->component;
     }
 
     /**
-     * @see seasar::container::ComponentDef::getContainer()
+     * @see \seasar\container\ComponentDef::getContainer()
      */
     public function getContainer() {
         return $this->container;
     }
 
     /**
-     * @see seasar::container::ComponentDef::setContainer()
+     * @see \seasar\container\ComponentDef::setContainer()
      */
-    public function setContainer(seasar::container::S2Container $container) {
+    public function setContainer(\seasar\container\S2Container $container) {
         $this->container = $container;
     }
 
     /**
-     * @see seasar::container::ComponentDef::getComponentClass()
+     * @see \seasar\container\ComponentDef::getComponentClass()
      */
     public function getComponentClass() {
         return $this->componentClass;
     }
 
     /**
-     * @see seasar::container::ComponentDef::getComponentName()
+     * @see \seasar\container\ComponentDef::getComponentName()
      */
     public function getComponentName() {
         return $this->componentName;
     }
 
     /**
-     * @see seasar::container::ComponentDef::setComponentName()
+     * @see \seasar\container\ComponentDef::setComponentName()
      */
     public final function setComponentName($name) {
         $this->componentName = $name;
     }
 
     /**
-     * @see seasar::container::ComponentDef::getConcreteClass()
+     * @see \seasar\container\ComponentDef::getConcreteClass()
      */
     public function getConcreteClass() {
         return $this->componentClass;
     }
 
     /**
-     * @see seasar::container::ComponentDef::addArgDef()
+     * @see \seasar\container\ComponentDef::addArgDef()
      */
-    public function addArgDef(seasar::container::impl::ArgDef $argDef) {
-        throw new seasar::exception::UnsupportedOperationException(__METHOD__);
+    public function addArgDef(\seasar\container\impl\ArgDef $argDef) {
+        throw new \seasar\exception\UnsupportedOperationException(__METHOD__);
     }
 
     /**
-     * @see seasar::container::ComponentDef::addPropertyDef()
+     * @see \seasar\container\ComponentDef::addPropertyDef()
      */
-    public function addPropertyDef(seasar::container::impl::PropertyDef $propertyDef) {
-        throw new seasar::exception::UnsupportedOperationException(__METHOD__);
+    public function addPropertyDef(\seasar\container\impl\PropertyDef $propertyDef) {
+        throw new \seasar\exception\UnsupportedOperationException(__METHOD__);
     }
 
     /**
-     * @see seasar::container::ComponentDef::addInitMethodDef()
+     * @see \seasar\container\ComponentDef::addInitMethodDef()
      */
-    public function addInitMethodDef(seasar::container::impl::InitMethodDef $methodDef) {
-        throw new seasar::exception::UnsupportedOperationException(__METHOD__);
+    public function addInitMethodDef(\seasar\container\impl\InitMethodDef $methodDef) {
+        throw new \seasar\exception\UnsupportedOperationException(__METHOD__);
     }
 
     /**
-     * @see seasar::container::ComponentDef::addAspectDef()
+     * @see \seasar\container\ComponentDef::addAspectDef()
      */
-    public function addAspectDef(seasar::container::impl::AspectDef $aspectDef) {
-        throw new seasar::exception::UnsupportedOperationException(__METHOD__);
+    public function addAspectDef(\seasar\container\impl\AspectDef $aspectDef) {
+        throw new \seasar\exception\UnsupportedOperationException(__METHOD__);
     }
 
     /**
-     * @see seasar::container::util::ArgDefAware::getArgDefSize()
+     * @see \seasar\container\util\ArgDefAware::getArgDefSize()
      */
     public function getArgDefSize() {
-        throw new seasar::exception::UnsupportedOperationException(__METHOD__);
+        throw new \seasar\exception\UnsupportedOperationException(__METHOD__);
     }
 
     /**
-     * @see seasar::container::util::PropertyDefAware::getPropertyDefSize()
+     * @see \seasar\container\util\PropertyDefAware::getPropertyDefSize()
      */
     public function getPropertyDefSize() {
-        throw new seasar::exception::UnsupportedOperationException(__METHOD__);
+        throw new \seasar\exception\UnsupportedOperationException(__METHOD__);
     }
 
     /**
-     * @see seasar::container::util::InitMethodDefAware::getInitMethodDefSize()
+     * @see \seasar\container\util\InitMethodDefAware::getInitMethodDefSize()
      */
     public function getInitMethodDefSize() {
-        throw new seasar::exception::UnsupportedOperationException(__METHOD__);
+        throw new \seasar\exception\UnsupportedOperationException(__METHOD__);
     }
 
     /**
-     * @see seasar::container::util::AspectDefAware::getAspectDefSize()
+     * @see \seasar\container\util\AspectDefAware::getAspectDefSize()
      */
     public function getAspectDefSize() {
-        throw new seasar::exception::UnsupportedOperationException(__METHOD__);
+        throw new \seasar\exception\UnsupportedOperationException(__METHOD__);
     }
 
     /**
-     * @see seasar::container::util::ArgDefAware::getArgDefs()
+     * @see \seasar\container\util\ArgDefAware::getArgDefs()
      */
     public function getArgDefs() {
-        throw new seasar::exception::UnsupportedOperationException(__METHOD__);
+        throw new \seasar\exception\UnsupportedOperationException(__METHOD__);
     }
 
     /**
-     * @see seasar::container::util::PropertyDefAware::getPropertyDefs()
+     * @see \seasar\container\util\PropertyDefAware::getPropertyDefs()
      */
     public function getPropertyDefs() {
-        throw new seasar::exception::UnsupportedOperationException(__METHOD__);
+        throw new \seasar\exception\UnsupportedOperationException(__METHOD__);
     }
 
     /**
-     * @see seasar::container::util::InitMethodDefAware::getInitMethodDefs()
+     * @see \seasar\container\util\InitMethodDefAware::getInitMethodDefs()
      */
     public function getInitMethodDefs() {
-        throw new seasar::exception::UnsupportedOperationException(__METHOD__);
+        throw new \seasar\exception\UnsupportedOperationException(__METHOD__);
     }
 
     /**
-     * @see seasar::container::util::AspectDefAware::getAspectDefs()
+     * @see \seasar\container\util\AspectDefAware::getAspectDefs()
      */
     public function getAspectDefs() {
-        throw new seasar::exception::UnsupportedOperationException(__METHOD__);
+        throw new \seasar\exception\UnsupportedOperationException(__METHOD__);
     }
 
     /**
-     * @see seasar::container::util::ArgDefAware::getArgDef()
+     * @see \seasar\container\util\ArgDefAware::getArgDef()
      */
     public function getArgDef($index) {
-        throw new seasar::exception::UnsupportedOperationException(__METHOD__);
+        throw new \seasar\exception\UnsupportedOperationException(__METHOD__);
     }
 
     /**
-     * @see seasar::container::util::PropertyDefAware::getPropertyDef()
+     * @see \seasar\container\util\PropertyDefAware::getPropertyDef()
      */
     public function getPropertyDef($index) {
-        throw new seasar::exception::UnsupportedOperationException(__METHOD__);
+        throw new \seasar\exception\UnsupportedOperationException(__METHOD__);
     }
 
     /**
-     * @see seasar::container::util::PropertyDefAware::hasPropertyDef()
+     * @see \seasar\container\util\PropertyDefAware::hasPropertyDef()
      */
     public function hasPropertyDef($propertyName) {
-        throw new seasar::exception::UnsupportedOperationException(__METHOD__);
+        throw new \seasar\exception\UnsupportedOperationException(__METHOD__);
     }
 
     /**
-     * @see seasar::container::util::InitMethodDefAware::getInitMethodDef()
+     * @see \seasar\container\util\InitMethodDefAware::getInitMethodDef()
      */
     public function getInitMethodDef($index) {
-        throw new seasar::exception::UnsupportedOperationException(__METHOD__);
+        throw new \seasar\exception\UnsupportedOperationException(__METHOD__);
     }
 
     /**
-     * @see seasar::container::util::AspectDefAware::getAspectDef()
+     * @see \seasar\container\util\AspectDefAware::getAspectDef()
      */
     public function getAspectDef($index) {
-        throw new seasar::exception::UnsupportedOperationException(__METHOD__);
+        throw new \seasar\exception\UnsupportedOperationException(__METHOD__);
     }
     
     /**
-     * @see seasar::container::util::MetaDefAware::addMetaDef()
+     * @see \seasar\container\util\MetaDefAware::addMetaDef()
      */
-    public function addMetaDef(seasar::container::impl::MetaDef $metaDef) {
-        throw new seasar::exception::UnsupportedOperationException(__METHOD__);
+    public function addMetaDef(\seasar\container\impl\MetaDef $metaDef) {
+        throw new \seasar\exception\UnsupportedOperationException(__METHOD__);
     }
     
     /**
-     * @see seasar::container::util::MetaDefAware::getMetaDef()
+     * @see \seasar\container\util\MetaDefAware::getMetaDef()
      */
     public function getMetaDef($index) {
-        throw new seasar::exception::UnsupportedOperationException(__METHOD__);
+        throw new \seasar\exception\UnsupportedOperationException(__METHOD__);
     }
 
     /**
-     * @see seasar::container::util::MetaDefAware::getMetaDefs()
+     * @see \seasar\container\util\MetaDefAware::getMetaDefs()
      */
     public function getMetaDefs($name) {
-        throw new seasar::exception::UnsupportedOperationException(__METHOD__);
+        throw new \seasar\exception\UnsupportedOperationException(__METHOD__);
     }
     
     /**
-     * @see seasar::container::util::MetaDefAware::getMetaDefSize()
+     * @see \seasar\container\util\MetaDefAware::getMetaDefSize()
      */
     public function getMetaDefSize() {
-        throw new seasar::exception::UnsupportedOperationException(__METHOD__);
+        throw new \seasar\exception\UnsupportedOperationException(__METHOD__);
     }
 
     /**
-     * @see seasar::container::ComponentDef::getInstanceDef()
+     * @see \seasar\container\ComponentDef::getInstanceDef()
      */
     public function getInstanceDef() {
-        throw new seasar::exception::UnsupportedOperationException(__METHOD__);
+        throw new \seasar\exception\UnsupportedOperationException(__METHOD__);
     }
 
     /**
-     * @see seasar::container::ComponentDef::setInstanceDef()
+     * @see \seasar\container\ComponentDef::setInstanceDef()
      */
-    public function setInstanceDef(seasar::container::InstanceDef $instanceDef) {
-        throw new seasar::exception::UnsupportedOperationException(__METHOD__);
+    public function setInstanceDef(\seasar\container\InstanceDef $instanceDef) {
+        throw new \seasar\exception\UnsupportedOperationException(__METHOD__);
     }
 
     /**
-     * @see seasar::container::ComponentDef::getAutoBindingDef()
+     * @see \seasar\container\ComponentDef::getAutoBindingDef()
      */
     public function getAutoBindingDef() {
-        throw new seasar::exception::UnsupportedOperationException(__METHOD__);
+        throw new \seasar\exception\UnsupportedOperationException(__METHOD__);
     }
 
     /**
-     * @see seasar::container::ComponentDef::setAutoBindingDef()
+     * @see \seasar\container\ComponentDef::setAutoBindingDef()
      */
-    public function setAutoBindingDef(seasar::container::AutoBindingDef $autoBindingDef) {
-        throw new seasar::exception::UnsupportedOperationException(__METHOD__);
+    public function setAutoBindingDef(\seasar\container\AutoBindingDef $autoBindingDef) {
+        throw new \seasar\exception\UnsupportedOperationException(__METHOD__);
     }
 }

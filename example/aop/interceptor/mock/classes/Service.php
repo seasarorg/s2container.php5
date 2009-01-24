@@ -9,7 +9,7 @@ class Service {
     }
 
     /**
-     * @S2Mock('throw' => 'new seasar::exception::NotYetImplementedException("mock exception")');
+     * @S2Mock('throw' => 'new \seasar\exception\NotYetImplementedException("mock exception")');
      */
     public function sub($a, $b) {
         print __CLASS__ . ' called.' . PHP_EOL;

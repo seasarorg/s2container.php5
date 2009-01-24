@@ -2,6 +2,6 @@
 <!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
 "components21.dtd">
 <components namespace="parent">
-    <include path="seasar::container::factory::S2ContainerFactoryTest::$DICON_DIR . '/test02IncludeChild.dicon'"/>
-    <component name="a" class="seasar::container::factory::A_S2ContainerFactoryTest"/>
+    <include path="\seasar\container\factory\S2ContainerFactoryTest::$DICON_DIR . '/test02IncludeChild.dicon'"/>
+    <component name="a" class="\seasar\container\factory\A_S2ContainerFactoryTest"/>
 </components>

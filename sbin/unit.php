@@ -19,10 +19,10 @@ foreach($testClasses as $testFile => $testClass) {
         continue;
     }
     require_once($testFile);
-    $classRef = new ReflectionClass($testClass);
+    $classRef = new \ReflectionClass($testClass);
     if ($classRef->isAbstract() or 
         $classRef->isInterface() or 
-        !$classRef->isSubclassOf(new ReflectionClass('PHPUnit_Framework_TestCase'))) {
+        !$classRef->isSubclassOf(new \ReflectionClass('PHPUnit_Framework_TestCase'))) {
         continue;
     }
     $suite->addTest(new PHPUnit_Framework_TestSuite($classRef));
@@ -30,7 +30,7 @@ foreach($testClasses as $testFile => $testClass) {
 PHPUnit_TextUI_TestRunner::run($suite);
 
 function find_test($dirPath, &$spool, $namespace) {
-    $iterator = new DirectoryIterator($dirPath);
+    $iterator = new \DirectoryIterator($dirPath);
     while($iterator->valid()) {
         if ($iterator->isDot()) {
             $iterator->next();
@@ -39,7 +39,7 @@ function find_test($dirPath, &$spool, $namespace) {
         if ($iterator->isFile()) {
             $matches = array();
             if (preg_match('/^([^\.]+?Test)\..*php$/', $iterator->getFileName(), $matches)) {
-                $className = implode('::', array_merge($namespace, (array)$matches[1]));
+                $className = implode('\\', array_merge($namespace, (array)$matches[1]));
                 $spool[$iterator->getRealPath()] = $className;
             }
         } else if ($iterator->isDir()) {

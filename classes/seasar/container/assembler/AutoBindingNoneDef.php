@@ -25,12 +25,12 @@
  * @package   seasar.container.assembler
  * @author    klove
  */
-namespace seasar::container::assembler;
-class AutoBindingNoneDef implements seasar::container::AutoBindingDef {
+namespace seasar\container\assembler;
+class AutoBindingNoneDef implements \seasar\container\AutoBindingDef {
 
     /**
      * 自動バインディング定義名
-     * seasar::container::AutoBindingDef::AUTO_NAME
+     * \seasar\container\AutoBindingDef::AUTO_NAME
      *
      * @var string 
      */
@@ -39,30 +39,30 @@ class AutoBindingNoneDef implements seasar::container::AutoBindingDef {
     /**
      * AutoBindingNoneoDefを作成します。
      *
-     * @param string $name seasar::container::AutoBindingDef::NONE_NAME
+     * @param string $name \seasar\container\AutoBindingDef::NONE_NAME
      */
     public function __construct($name) {
         $this->name = $name;
     }
 
     /**
-     * @see seasar::container::AutoBindingDef::getName()
+     * @see \seasar\container\AutoBindingDef::getName()
      */
     public function getName() {
         return $this->name;
     }
 
     /**
-     * @see seasar::container::AutoBindingDef::createConstructorAssembler()
+     * @see \seasar\container\AutoBindingDef::createConstructorAssembler()
      */
-    public function createConstructorAssembler(seasar::container::ComponentDef $componentDef) {
+    public function createConstructorAssembler(\seasar\container\ComponentDef $componentDef) {
         return new ManualConstructorAssembler($componentDef);
     }
 
     /**
-     * @see seasar::container::AutoBindingDef::createPropertyAssembler()
+     * @see \seasar\container\AutoBindingDef::createPropertyAssembler()
      */
-    public function createPropertyAssembler(seasar::container::ComponentDef $componentDef) {
+    public function createPropertyAssembler(\seasar\container\ComponentDef $componentDef) {
         return new ManualPropertyAssembler($componentDef);
     }
 }

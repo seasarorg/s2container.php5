@@ -23,92 +23,92 @@
  * @package   seasar.container.assembler
  * @author    klove
  */
-namespace seasar::container::assembler;
-class ManualPropertyAssemblerTest extends ::PHPUnit_Framework_TestCase {
+namespace seasar\container\assembler;
+class ManualPropertyAssemblerTest extends \PHPUnit_Framework_TestCase {
 
     public function testAssembleWithoutProperty() {
-        $container = new seasar::container::impl::S2ContainerImpl();
-        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::A_ManualPropertyAssemblerTest');
-        $component = new seasar::container::assembler::A_ManualPropertyAssemblerTest;
+        $container = new \seasar\container\impl\S2ContainerImpl();
+        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\A_ManualPropertyAssemblerTest');
+        $component = new \seasar\container\assembler\A_ManualPropertyAssemblerTest;
         $assembler = new ManualPropertyAssembler($componentDef);
         $assembler->assemble($component);
     }
 
     public function testManualAssembleWithSetterMethod() {
-        $container = new seasar::container::impl::S2ContainerImpl();
-        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::B_ManualPropertyAssemblerTest');
-        $componentDef->addPropertyDef(new seasar::container::impl::PropertyDef('name', 'hoge'));
-        $component = new seasar::container::assembler::B_ManualPropertyAssemblerTest;
+        $container = new \seasar\container\impl\S2ContainerImpl();
+        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\B_ManualPropertyAssemblerTest');
+        $componentDef->addPropertyDef(new \seasar\container\impl\PropertyDef('name', 'hoge'));
+        $component = new \seasar\container\assembler\B_ManualPropertyAssemblerTest;
         $assembler = new ManualPropertyAssembler($componentDef);
         $assembler->assemble($component);
         $this->assertEquals($component->getName(), 'hoge');
     }
 
     public function testManualAssembleWithPublicProperty() {
-        $container = new seasar::container::impl::S2ContainerImpl();
-        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::C_ManualPropertyAssemblerTest');
-        $componentDef->addPropertyDef(new seasar::container::impl::PropertyDef('name', 'hoge'));
-        $component = new seasar::container::assembler::C_ManualPropertyAssemblerTest;
+        $container = new \seasar\container\impl\S2ContainerImpl();
+        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\C_ManualPropertyAssemblerTest');
+        $componentDef->addPropertyDef(new \seasar\container\impl\PropertyDef('name', 'hoge'));
+        $component = new \seasar\container\assembler\C_ManualPropertyAssemblerTest;
         $assembler = new ManualPropertyAssembler($componentDef);
         $assembler->assemble($component);
         $this->assertEquals($component->name, 'hoge');
     }
 
     public function testManualAssembleWithPublicPropertyArray() {
-        $container = new seasar::container::impl::S2ContainerImpl();
-        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::D_ManualPropertyAssemblerTest', 'd');
+        $container = new \seasar\container\impl\S2ContainerImpl();
+        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\D_ManualPropertyAssemblerTest', 'd');
         $container->register($componentDef);
-        $container->register(new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::E_ManualPropertyAssemblerTest', 'hoge'));
-        $container->register(new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::E_ManualPropertyAssemblerTest', 'hoge'));
-        $propDef = new seasar::container::impl::PropertyDef('name');
+        $container->register(new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\E_ManualPropertyAssemblerTest', 'hoge'));
+        $container->register(new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\E_ManualPropertyAssemblerTest', 'hoge'));
+        $propDef = new \seasar\container\impl\PropertyDef('name');
         $propDef->setChildComponentDef($container->getComponentDef('hoge'));
         $componentDef->addPropertyDef($propDef);
-        $component = new seasar::container::assembler::D_ManualPropertyAssemblerTest;
+        $component = new \seasar\container\assembler\D_ManualPropertyAssemblerTest;
         $assembler = new ManualPropertyAssembler($componentDef);
         $assembler->assemble($component);
         $this->assertEquals(count($component->name), 2);
     }
 
     public function testManualAssembleWithSetterMethodArray() {
-        $container = new seasar::container::impl::S2ContainerImpl();
-        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::D_ManualPropertyAssemblerTest', 'd');
+        $container = new \seasar\container\impl\S2ContainerImpl();
+        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\D_ManualPropertyAssemblerTest', 'd');
         $container->register($componentDef);
-        $container->register(new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::E_ManualPropertyAssemblerTest', 'hoge'));
-        $container->register(new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::E_ManualPropertyAssemblerTest', 'hoge'));
-        $propDef = new seasar::container::impl::PropertyDef('year');
+        $container->register(new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\E_ManualPropertyAssemblerTest', 'hoge'));
+        $container->register(new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\E_ManualPropertyAssemblerTest', 'hoge'));
+        $propDef = new \seasar\container\impl\PropertyDef('year');
         $propDef->setChildComponentDef($container->getComponentDef('hoge'));
         $componentDef->addPropertyDef($propDef);
-        $component = new seasar::container::assembler::D_ManualPropertyAssemblerTest;
+        $component = new \seasar\container\assembler\D_ManualPropertyAssemblerTest;
         $assembler = new ManualPropertyAssembler($componentDef);
         $assembler->assemble($component);
         $this->assertEquals(count($component->getYear()), 2);
     }
 
     public function testManualNoProperty() {
-        $container = new seasar::container::impl::S2ContainerImpl();
-        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::E_ManualPropertyAssemblerTest', 'e');
+        $container = new \seasar\container\impl\S2ContainerImpl();
+        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\E_ManualPropertyAssemblerTest', 'e');
         $container->register($componentDef);
-        $propDef = new seasar::container::impl::PropertyDef('year');
+        $propDef = new \seasar\container\impl\PropertyDef('year');
         $componentDef->addPropertyDef($propDef);
-        $component = new seasar::container::assembler::E_ManualPropertyAssemblerTest;
+        $component = new \seasar\container\assembler\E_ManualPropertyAssemblerTest;
         $assembler = new ManualPropertyAssembler($componentDef);
         try {
             $assembler->assemble($component);
             $this->fail();
-        } catch(seasar::container::exception::PropertyNotFoundRuntimeException $e) {
+        } catch(\seasar\container\exception\PropertyNotFoundRuntimeException $e) {
             print $e->getMessage() . PHP_EOL;
         }
     }
 
     public function testManualAssembleWithPublicPropertyArrayOne() {
-        $container = new seasar::container::impl::S2ContainerImpl();
-        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::D_ManualPropertyAssemblerTest', 'd');
+        $container = new \seasar\container\impl\S2ContainerImpl();
+        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\D_ManualPropertyAssemblerTest', 'd');
         $container->register($componentDef);
-        $container->register(new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::E_ManualPropertyAssemblerTest', 'hoge'));
-        $propDef = new seasar::container::impl::PropertyDef('name');
+        $container->register(new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\E_ManualPropertyAssemblerTest', 'hoge'));
+        $propDef = new \seasar\container\impl\PropertyDef('name');
         $propDef->setChildComponentDef($container->getComponentDef('hoge'));
         $componentDef->addPropertyDef($propDef);
-        $component = new seasar::container::assembler::D_ManualPropertyAssemblerTest;
+        $component = new \seasar\container\assembler\D_ManualPropertyAssemblerTest;
         $assembler = new ManualPropertyAssembler($componentDef);
         $assembler->assemble($component);
         $this->assertTrue(is_array($component->name));

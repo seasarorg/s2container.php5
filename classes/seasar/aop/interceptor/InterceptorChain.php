@@ -25,8 +25,8 @@
  * @package   seasar.aop.interceptor
  * @author    klove
  */
-namespace seasar::aop::interceptor;
-class InterceptorChain implements seasar::aop::MethodInterceptor {
+namespace seasar\aop\interceptor;
+class InterceptorChain implements \seasar\aop\MethodInterceptor {
 
     /**
      * @var array 複数のMethodInterceptorを保存する配列
@@ -36,7 +36,7 @@ class InterceptorChain implements seasar::aop::MethodInterceptor {
     /**
      * @param MethodInterceptor $interceptor MethodInterceptorを追加します。
      */
-    public function add(seasar::aop::MethodInterceptor $interceptor) {
+    public function add(\seasar\aop\MethodInterceptor $interceptor) {
         $this->interceptors[] = $interceptor;
     }
 
@@ -50,8 +50,8 @@ class InterceptorChain implements seasar::aop::MethodInterceptor {
     /**
      * @see MethodInterceptor::invoke()
      */
-    public function invoke(seasar::aop::MethodInvocation $invocation) {
-        $nestInvocation = new seasar::aop::impl::NestedMethodInvocation($invocation, $this->interceptors);
+    public function invoke(\seasar\aop\MethodInvocation $invocation) {
+        $nestInvocation = new \seasar\aop\impl\NestedMethodInvocation($invocation, $this->interceptors);
         return $nestInvocation->proceed();
     }
 }

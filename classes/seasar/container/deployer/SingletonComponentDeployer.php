@@ -25,7 +25,7 @@
  * @package   seasar.container.deployer
  * @author    klove
  */
-namespace seasar::container::deployer;
+namespace seasar\container\deployer;
 class SingletonComponentDeployer extends AbstractComponentDeployer {
 
     /**
@@ -41,19 +41,19 @@ class SingletonComponentDeployer extends AbstractComponentDeployer {
     /**
      * SingletonComponentDeployerを構築します。
      *
-     * @param seasar::container::ComponentDef $componentDef
+     * @param \seasar\container\ComponentDef $componentDef
      */
-    public function __construct(seasar::container::ComponentDef $componentDef) {
+    public function __construct(\seasar\container\ComponentDef $componentDef) {
         parent::__construct($componentDef);
     }
 
     /**
-     * @see seasar::container::deployer::AbstractComponentDeployer::deploy()
+     * @see \seasar\container\deployer\AbstractComponentDeployer::deploy()
      */
     public function deploy() {
         if ($this->component === null) {
             if ($this->instantiating) {
-                throw new seasar::container::exception::CyclicReferenceRuntimeException($this->getComponentDef()->getComponentClass());
+                throw new \seasar\container\exception\CyclicReferenceRuntimeException($this->getComponentDef()->getComponentClass());
             }
             $this->instantiating = true;
             $this->component     = $this->getConstructorAssembler()->assemble();

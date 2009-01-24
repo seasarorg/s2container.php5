@@ -22,7 +22,7 @@
  * @link      http://s2container.php5.seasar.org/
  * @version   SVN: $Id:$
  * @since     Class available since Release 2.0.0
- * @package   ::
+ * @package   \
  * @author    klove
  */
 
@@ -38,6 +38,6 @@ require_once(S2CONTAINER_ROOT_DIR . '/classes/seasar/aop/Config.php');
 require_once(S2CONTAINER_ROOT_DIR . '/classes/seasar/util/ClassLoader.php');
 
 if (function_exists('spl_autoload_register')) {
-    spl_autoload_register(array('seasar::util::ClassLoader', 'load'));
+    spl_autoload_register(array('\seasar\util\ClassLoader', 'load'));
 }
 

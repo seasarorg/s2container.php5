@@ -15,7 +15,7 @@
 // | governing permissions and limitations under the License.             |
 // +----------------------------------------------------------------------+
 /**
- * ReflectionClass用のユーティリティクラスです。
+ * \ReflectionClass用のユーティリティクラスです。
  *
  * @copyright 2005-2008 the Seasar Foundation and the Others.
  * @license   http://www.apache.org/licenses/LICENSE-2.0
@@ -25,7 +25,7 @@
  * @package   seasar.util
  * @author    klove
  */
-namespace seasar::util;
+namespace seasar\util;
 final class ClassUtil {
 
     /**
@@ -36,10 +36,10 @@ final class ClassUtil {
     /**
      * クラスが実装しているすべてのインターフェースを返します。
      *
-     * @param ReflectionClass $clazz
+     * @param \ReflectionClass $clazz
      * @return array
      */
-    public static function getInterfaces(ReflectionClass $clazz) {
+    public static function getInterfaces(\ReflectionClass $clazz) {
         $interfaces = array_values($clazz->getInterfaces());
         if ($clazz->isInterface()) {
             $interfaces[] = $clazz;
@@ -51,10 +51,10 @@ final class ClassUtil {
      * クラスが実装しているメソッドを返します。
      * 親クラスで実装されているメソッドは含まれません。
      *
-     * @param ReflectionClass $clazz
+     * @param \ReflectionClass $clazz
      * @return array
      */
-    public static function getDeclaringMethods(ReflectionClass $clazz) {
+    public static function getDeclaringMethods(\ReflectionClass $clazz) {
         if ($clazz->getParentClass() === null) {
             return $clazz->getMethods();
         }
@@ -74,10 +74,10 @@ final class ClassUtil {
     /**
      * クラスが実装しているすべてのAbstractメソッドを返します。
      *
-     * @param ReflectionClass $clazz
+     * @param \ReflectionClass $clazz
      * @return array
      */
-    public static function getImplementMethods(ReflectionClass $clazz) {
+    public static function getImplementMethods(\ReflectionClass $clazz) {
         if ($clazz->isInterface()) {
             return $clazz->getMethods();
         }
@@ -101,10 +101,10 @@ final class ClassUtil {
     /**
      * すべてのAbstractメソッドを返します。
      *
-     * @param ReflectionClass $clazz
+     * @param \ReflectionClass $clazz
      * @return array
      */
-    public static function getAbstractMethods(ReflectionClass $clazz) {
+    public static function getAbstractMethods(\ReflectionClass $clazz) {
         if ($clazz->isInterface()) {
             return $clazz->getMethods();
         }
@@ -122,13 +122,13 @@ final class ClassUtil {
     }
 
     /**
-     * ReflectionClassからインスタンスを生成します。
+     * \ReflectionClassからインスタンスを生成します。
      *
-     * @param ReflectionClass $reflection
+     * @param \ReflectionClass $reflection
      * @param array $args
      * @return object
      */
-    public static function newInstance(ReflectionClass $reflection, array $args) {
+    public static function newInstance(\ReflectionClass $reflection, array $args) {
         if (count($args) > 0) {
             return $reflection->newInstanceArgs($args);
         }
@@ -142,7 +142,7 @@ final class ClassUtil {
      * @return string
      */
     public static function getClassName($className) {
-        $items = explode('::', $className);
+        $items = explode('\\', $className);
         return array_pop($items);
     }
 
@@ -153,22 +153,22 @@ final class ClassUtil {
      * @return string
      */
     public static function getNamespace($className) {
-        $items = explode('::', $className);
+        $items = explode('\\', $className);
         array_pop($items);
         if (count($items) == 0) {
-            return '::';
+            return '\\';
         }
-        return implode('::', $items);
+        return implode('\\', $items);
     }
 
     /**
      * グローバルクラスかどうかを返します。
      *
-     * @param ReflectionClass $clazz
+     * @param \ReflectionClass $clazz
      * @return boolean
      */
-    public static function isGlobalClass(ReflectionClass $clazz) {
-        $pos = strpos($clazz->getName(), '::');
+    public static function isGlobalClass(\ReflectionClass $clazz) {
+        $pos = strpos($clazz->getName(), '\\');
         if ($pos === false) {
             return true;
         } else if ($pos === 0) {

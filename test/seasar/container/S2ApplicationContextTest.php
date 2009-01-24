@@ -23,8 +23,8 @@
  * @package   seasar.container
  * @author    klove
  */
-namespace seasar::container;
-class S2ApplicationContextTest extends ::PHPUnit_Framework_TestCase {
+namespace seasar\container;
+class S2ApplicationContextTest extends \PHPUnit_Framework_TestCase {
 
     public function testRegisterException(){
         S2ApplicationContext::$CLASSES = array();
@@ -34,21 +34,21 @@ class S2ApplicationContextTest extends ::PHPUnit_Framework_TestCase {
 
     public function testRegisterClass(){
         S2ApplicationContext::import($this->sampleDir);
-        $this->assertTrue(isset(S2ApplicationContext::$CLASSES['sample::aaa::Bar_S2ApplicationContext']));
-        $this->assertTrue(isset(S2ApplicationContext::$CLASSES['sample::bbb::Hoge_S2ApplicationContext']));
-        $this->assertTrue(isset(S2ApplicationContext::$CLASSES['sample::ccc::ddd::Huga_S2ApplicationContext']));
+        $this->assertTrue(isset(S2ApplicationContext::$CLASSES['sample\aaa\Bar_S2ApplicationContext']));
+        $this->assertTrue(isset(S2ApplicationContext::$CLASSES['sample\bbb\Hoge_S2ApplicationContext']));
+        $this->assertTrue(isset(S2ApplicationContext::$CLASSES['sample\ccc\ddd\Huga_S2ApplicationContext']));
 
         S2ApplicationContext::$CLASSES = array();
         S2ApplicationContext::import($this->sampleDir, array('xxx','yyy'), true);
-        $this->assertTrue(isset(S2ApplicationContext::$CLASSES['xxx::yyy::Bar_S2ApplicationContext']));
-        $this->assertTrue(isset(S2ApplicationContext::$CLASSES['xxx::yyy::Hoge_S2ApplicationContext']));
-        $this->assertTrue(isset(S2ApplicationContext::$CLASSES['xxx::yyy::Huga_S2ApplicationContext']));
+        $this->assertTrue(isset(S2ApplicationContext::$CLASSES['xxx\yyy\Bar_S2ApplicationContext']));
+        $this->assertTrue(isset(S2ApplicationContext::$CLASSES['xxx\yyy\Hoge_S2ApplicationContext']));
+        $this->assertTrue(isset(S2ApplicationContext::$CLASSES['xxx\yyy\Huga_S2ApplicationContext']));
 
         S2ApplicationContext::$CLASSES = array();
         S2ApplicationContext::import($this->sampleDir, array('xxx'));
-        $this->assertTrue(isset(S2ApplicationContext::$CLASSES['xxx::sample::aaa::Bar_S2ApplicationContext']));
-        $this->assertTrue(isset(S2ApplicationContext::$CLASSES['xxx::sample::bbb::Hoge_S2ApplicationContext']));
-        $this->assertTrue(isset(S2ApplicationContext::$CLASSES['xxx::sample::ccc::ddd::Huga_S2ApplicationContext']));
+        $this->assertTrue(isset(S2ApplicationContext::$CLASSES['xxx\sample\aaa\Bar_S2ApplicationContext']));
+        $this->assertTrue(isset(S2ApplicationContext::$CLASSES['xxx\sample\bbb\Hoge_S2ApplicationContext']));
+        $this->assertTrue(isset(S2ApplicationContext::$CLASSES['xxx\sample\ccc\ddd\Huga_S2ApplicationContext']));
 
         S2ApplicationContext::$CLASSES = array();
         S2ApplicationContext::import($this->sampleDir, array(), true);
@@ -71,7 +71,7 @@ class S2ApplicationContextTest extends ::PHPUnit_Framework_TestCase {
 
         S2ApplicationContext::$CLASSES = array();
         S2ApplicationContext::importInternal('/A/B/C/D.php', array('B','C'));
-        $this->assertEquals(S2ApplicationContext::$CLASSES, array('B::C::D' => '/A/B/C/D.php'));
+        $this->assertEquals(S2ApplicationContext::$CLASSES, array('B\C\D' => '/A/B/C/D.php'));
 
         S2ApplicationContext::$DICONS = array();
         S2ApplicationContext::importInternal('/A/B/C/D.dicon', array('C'), true);
@@ -130,8 +130,8 @@ class S2ApplicationContextTest extends ::PHPUnit_Framework_TestCase {
         S2ApplicationContext::import($this->sampleDir);
         $container = S2ApplicationContext::create();
         $this->assertTrue($container instanceof S2Container);
-        $this->assertTrue($container->hasComponentDef('sample::aaa::Foo_S2ApplicationContext'));
-        $cd = $container->getComponentDef('sample::aaa::Foo_S2ApplicationContext');
+        $this->assertTrue($container->hasComponentDef('sample\aaa\Foo_S2ApplicationContext'));
+        $cd = $container->getComponentDef('sample\aaa\Foo_S2ApplicationContext');
         $c = $cd->getMetaDefSize();
         $this->assertEquals($c, 3);
         $this->assertEquals($cd->getMetaDef('name')->getValue(), 'xyz');
@@ -140,11 +140,11 @@ class S2ApplicationContextTest extends ::PHPUnit_Framework_TestCase {
     }
 
     public function testCreateComponentDef(){
-        list($cd, $namespace) = S2ApplicationContext::createComponentDef(__NAMESPACE__ . '::AppTestA_S2ApplicationContextTest');
+        list($cd, $namespace) = S2ApplicationContext::createComponentDef(__NAMESPACE__ . '\AppTestA_S2ApplicationContextTest');
         $this->assertTrue($cd instanceof ComponentDef);
         $this->assertTrue($cd->getComponentName() == '');
 
-        list($cd, $namespace) = S2ApplicationContext::createComponentDef(__NAMESPACE__ . '::AppTestB_S2ApplicationContextTest');
+        list($cd, $namespace) = S2ApplicationContext::createComponentDef(__NAMESPACE__ . '\AppTestB_S2ApplicationContextTest');
         $this->assertTrue($cd instanceof ComponentDef);
         $this->assertEquals($cd->getComponentName(), 'b');
     }
@@ -178,69 +178,69 @@ class S2ApplicationContextTest extends ::PHPUnit_Framework_TestCase {
 
     public function testReadParentAnnotation(){
         S2ApplicationContext::init();
-        S2ApplicationContext::$CLASSES[__NAMESPACE__ . '::AppTestD_S2ApplicationContextTest'] = '';
+        S2ApplicationContext::$CLASSES[__NAMESPACE__ . '\AppTestD_S2ApplicationContextTest'] = '';
         $container = S2ApplicationContext::create();
         $d = $container->getComponent('d');
-        $this->assertTrue($d instanceof seasar::container::AppTestD_S2ApplicationContextTest);
+        $this->assertTrue($d instanceof \seasar\container\AppTestD_S2ApplicationContextTest);
 
         S2ApplicationContext::setReadParentAnnotation();
         $container = S2ApplicationContext::create();
         $d = $container->getComponent('d');
-        $this->assertTrue($d instanceof seasar::container::AppTestD_S2ApplicationContextTest_EnhancedByS2AOP);
+        $this->assertTrue($d instanceof \seasar\container\AppTestD_S2ApplicationContextTest_EnhancedByS2AOP);
         S2ApplicationContext::setReadParentAnnotation(false);
     }
 
     public function testRegisterAspect(){
         S2ApplicationContext::init();
-        S2ApplicationContext::$CLASSES[__NAMESPACE__ . '::AppTestE_S2ApplicationContextTest'] = '';
-        S2ApplicationContext::registerAspect('/AppTestE_/', 'new seasar::aop::interceptor::TraceInterceptor', '/^hoge$/');
+        S2ApplicationContext::$CLASSES[__NAMESPACE__ . '\AppTestE_S2ApplicationContextTest'] = '';
+        S2ApplicationContext::registerAspect('/AppTestE_/', 'new \seasar\aop\interceptor\TraceInterceptor', '/^hoge$/');
         $container = S2ApplicationContext::create();
-        $e = $container->getComponent(__NAMESPACE__ . '::AppTestE_S2ApplicationContextTest');
-        $this->assertTrue($e instanceof seasar::container::AppTestE_S2ApplicationContextTest_EnhancedByS2AOP);
+        $e = $container->getComponent(__NAMESPACE__ . '\AppTestE_S2ApplicationContextTest');
+        $this->assertTrue($e instanceof \seasar\container\AppTestE_S2ApplicationContextTest_EnhancedByS2AOP);
 
-        S2ApplicationContext::$CLASSES[__NAMESPACE__ . '::AppTestE_S2ApplicationContextTest'] = '';
-        S2ApplicationContext::$CLASSES[__NAMESPACE__ . '::AppTestF_S2ApplicationContextTest'] = '';
-        S2ApplicationContext::registerAspect('/AppTestE_/', 'new seasar::aop::interceptor::TraceInterceptor', '/^hoge$/');
+        S2ApplicationContext::$CLASSES[__NAMESPACE__ . '\AppTestE_S2ApplicationContextTest'] = '';
+        S2ApplicationContext::$CLASSES[__NAMESPACE__ . '\AppTestF_S2ApplicationContextTest'] = '';
+        S2ApplicationContext::registerAspect('/AppTestE_/', 'new \seasar\aop\interceptor\TraceInterceptor', '/^hoge$/');
         $container = S2ApplicationContext::create();
-        $e = $container->getComponent(__NAMESPACE__ . '::AppTestE_S2ApplicationContextTest');
+        $e = $container->getComponent(__NAMESPACE__ . '\AppTestE_S2ApplicationContextTest');
         $f = $container->getComponent('annoTestF');
-        $this->assertTrue($e instanceof seasar::container::AppTestE_S2ApplicationContextTest_EnhancedByS2AOP);
-        $this->assertTrue($f instanceof seasar::container::AppTestF_S2ApplicationContextTest);
+        $this->assertTrue($e instanceof \seasar\container\AppTestE_S2ApplicationContextTest_EnhancedByS2AOP);
+        $this->assertTrue($f instanceof \seasar\container\AppTestF_S2ApplicationContextTest);
 
         S2ApplicationContext::init();
-        S2ApplicationContext::$CLASSES[__NAMESPACE__ . '::AppTestE_S2ApplicationContextTest'] = '';
-        S2ApplicationContext::$CLASSES[__NAMESPACE__ . '::AppTestF_S2ApplicationContextTest'] = '';
-        S2ApplicationContext::registerAspect('/AppTestE_/', 'new seasar::aop::interceptor::TraceInterceptor', '/^hoge$/');
-        S2ApplicationContext::registerAspect('/annoTestF/', 'new seasar::aop::interceptor::TraceInterceptor');
+        S2ApplicationContext::$CLASSES[__NAMESPACE__ . '\AppTestE_S2ApplicationContextTest'] = '';
+        S2ApplicationContext::$CLASSES[__NAMESPACE__ . '\AppTestF_S2ApplicationContextTest'] = '';
+        S2ApplicationContext::registerAspect('/AppTestE_/', 'new \seasar\aop\interceptor\TraceInterceptor', '/^hoge$/');
+        S2ApplicationContext::registerAspect('/annoTestF/', 'new \seasar\aop\interceptor\TraceInterceptor');
         $container = S2ApplicationContext::create();
-        $e = $container->getComponent(__NAMESPACE__ . '::AppTestE_S2ApplicationContextTest');
+        $e = $container->getComponent(__NAMESPACE__ . '\AppTestE_S2ApplicationContextTest');
         $f = $container->getComponent('annoTestF');
-        $this->assertTrue($e instanceof seasar::container::AppTestE_S2ApplicationContextTest_EnhancedByS2AOP);
-        $this->assertTrue($f instanceof seasar::container::AppTestF_S2ApplicationContextTest_EnhancedByS2AOP);
+        $this->assertTrue($e instanceof \seasar\container\AppTestE_S2ApplicationContextTest_EnhancedByS2AOP);
+        $this->assertTrue($f instanceof \seasar\container\AppTestF_S2ApplicationContextTest_EnhancedByS2AOP);
         $f->hoge();
     }
 
     public function testNamespacedComponent(){
         S2ApplicationContext::init();
-        S2ApplicationContext::$CLASSES[__NAMESPACE__ . '::A_S2ApplicationContextTest'] = '';
+        S2ApplicationContext::$CLASSES[__NAMESPACE__ . '\A_S2ApplicationContextTest'] = '';
         $container = S2ApplicationContext::create();
         $this->assertTrue($container->hasComponentDef('foo'));
         $this->assertTrue($container->getComponent('foo')->hasComponentDef('a'));
 
         S2ApplicationContext::init();
-        S2ApplicationContext::$CLASSES[__NAMESPACE__ . '::B_S2ApplicationContextTest'] = '';
+        S2ApplicationContext::$CLASSES[__NAMESPACE__ . '\B_S2ApplicationContextTest'] = '';
         $container = S2ApplicationContext::create();
         $this->assertTrue($container->hasComponentDef('foo'));
         $this->assertTrue($container->getComponent('foo')->hasComponentDef('bar'));
         $this->assertTrue($container->getComponent('foo')->getComponent('bar')->hasComponentDef('b'));
 
         S2ApplicationContext::init();
-        S2ApplicationContext::$CLASSES[__NAMESPACE__ . '::C_S2ApplicationContextTest'] = '';
-        S2ApplicationContext::$CLASSES[__NAMESPACE__ . '::A_S2ApplicationContextTest'] = '';
+        S2ApplicationContext::$CLASSES[__NAMESPACE__ . '\C_S2ApplicationContextTest'] = '';
+        S2ApplicationContext::$CLASSES[__NAMESPACE__ . '\A_S2ApplicationContextTest'] = '';
         try {
             $container = S2ApplicationContext::create();
             $this->fail();
-        } catch(seasar::container::exception::TooManyRegistrationRuntimeException $e) {
+        } catch(\seasar\container\exception\TooManyRegistrationRuntimeException $e) {
             print $e->getMessage() . PHP_EOL;
         } catch(Exception $e) {
             $this->fail();
@@ -249,13 +249,13 @@ class S2ApplicationContextTest extends ::PHPUnit_Framework_TestCase {
 
     public function testCreateWithNamespace(){
         S2ApplicationContext::init();
-        S2ApplicationContext::$CLASSES[__NAMESPACE__ . '::A_S2ApplicationContextTest'] = '';
+        S2ApplicationContext::$CLASSES[__NAMESPACE__ . '\A_S2ApplicationContextTest'] = '';
         $container = S2ApplicationContext::create('foo');
         $this->assertFalse($container->hasComponentDef('foo'));
         $this->assertTrue($container->hasComponentDef('a'));
 
         S2ApplicationContext::init();
-        S2ApplicationContext::$CLASSES[__NAMESPACE__ . '::B_S2ApplicationContextTest'] = '';
+        S2ApplicationContext::$CLASSES[__NAMESPACE__ . '\B_S2ApplicationContextTest'] = '';
         $container = S2ApplicationContext::create('foo');
         $this->assertFalse($container->hasComponentDef('foo'));
         $this->assertTrue($container->hasComponentDef('bar'));
@@ -264,10 +264,10 @@ class S2ApplicationContextTest extends ::PHPUnit_Framework_TestCase {
 
     public function testGetComponentDef(){
         S2ApplicationContext::init();
-        S2ApplicationContext::$CLASSES[__NAMESPACE__ . '::A_S2ApplicationContextTest'] = '';
-        $cd = S2ApplicationContext::getComponentDef(__NAMESPACE__ . '::A_S2ApplicationContextTest');
-        $this->assertTrue($cd instanceof seasar::container::ComponentDef);
-        $cd2 = S2ApplicationContext::getComponentDef(__NAMESPACE__ . '::A_S2ApplicationContextTest');
+        S2ApplicationContext::$CLASSES[__NAMESPACE__ . '\A_S2ApplicationContextTest'] = '';
+        $cd = S2ApplicationContext::getComponentDef(__NAMESPACE__ . '\A_S2ApplicationContextTest');
+        $this->assertTrue($cd instanceof \seasar\container\ComponentDef);
+        $cd2 = S2ApplicationContext::getComponentDef(__NAMESPACE__ . '\A_S2ApplicationContextTest');
         $this->assertTrue($cd === $cd2);
     }
 
@@ -311,7 +311,7 @@ class AppTestB_S2ApplicationContextTest {
 
 class AppTestC_S2ApplicationContextTest {
     /**
-     * @S2Aspect('interceptor' => 'new seasar::aop::interceptor::TraceInterceptor');
+     * @S2Aspect('interceptor' => 'new \seasar\aop\interceptor\TraceInterceptor');
      */
     public function hoge(){}
 }

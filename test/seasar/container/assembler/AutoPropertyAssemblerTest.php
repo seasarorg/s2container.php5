@@ -23,87 +23,87 @@
  * @package   seasar.container.assembler
  * @author    klove
  */
-namespace seasar::container::assembler;
-class AutoPropertyAssemblerTest extends ::PHPUnit_Framework_TestCase {
+namespace seasar\container\assembler;
+class AutoPropertyAssemblerTest extends \PHPUnit_Framework_TestCase {
 
     public function testAssembleWithoutProperty() {
-        $container = new seasar::container::impl::S2ContainerImpl();
-        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::A_AutoPropertyAssemblerTest');
-        $component = new seasar::container::assembler::A_AutoPropertyAssemblerTest;
+        $container = new \seasar\container\impl\S2ContainerImpl();
+        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\A_AutoPropertyAssemblerTest');
+        $component = new \seasar\container\assembler\A_AutoPropertyAssemblerTest;
         $assembler = new AutoPropertyAssembler($componentDef);
         $assembler->assemble($component);
     }
 
     public function testSetterMethod() {
-        $container = new seasar::container::impl::S2ContainerImpl();
-        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::A_AutoPropertyAssemblerTest');
+        $container = new \seasar\container\impl\S2ContainerImpl();
+        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\A_AutoPropertyAssemblerTest');
         $container->register($componentDef);
-        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::B_AutoPropertyAssemblerTest');
+        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\B_AutoPropertyAssemblerTest');
         $container->register($componentDef);
-        $component = new seasar::container::assembler::B_AutoPropertyAssemblerTest;
+        $component = new \seasar\container\assembler\B_AutoPropertyAssemblerTest;
         $assembler = new AutoPropertyAssembler($componentDef);
         $assembler->assemble($component);
-        $this->assertEquals(get_class($component->getA()), __NAMESPACE__ . '::A_AutoPropertyAssemblerTest');
+        $this->assertEquals(get_class($component->getA()), __NAMESPACE__ . '\A_AutoPropertyAssemblerTest');
     }
 
     public function testPublicProperty() {
-        $container = new seasar::container::impl::S2ContainerImpl();
-        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::A_AutoPropertyAssemblerTest');
+        $container = new \seasar\container\impl\S2ContainerImpl();
+        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\A_AutoPropertyAssemblerTest');
         $container->register($componentDef);
-        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::C_AutoPropertyAssemblerTest');
+        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\C_AutoPropertyAssemblerTest');
         $container->register($componentDef);
-        $component = new seasar::container::assembler::C_AutoPropertyAssemblerTest;
+        $component = new \seasar\container\assembler\C_AutoPropertyAssemblerTest;
         $assembler = new AutoPropertyAssembler($componentDef);
         $assembler->assemble($component);
-        $this->assertEquals(get_class($component->a), __NAMESPACE__ . '::A_AutoPropertyAssemblerTest');
+        $this->assertEquals(get_class($component->a), __NAMESPACE__ . '\A_AutoPropertyAssemblerTest');
     }
 
     public function testPublicPropertyArray() {
-        $container = new seasar::container::impl::S2ContainerImpl();
-        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::D_AutoPropertyAssemblerTest', 'd');
+        $container = new \seasar\container\impl\S2ContainerImpl();
+        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\D_AutoPropertyAssemblerTest', 'd');
         $container->register($componentDef);
-        $container->register(new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::E_AutoPropertyAssemblerTest', 'hoge'));
-        $container->register(new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::E_AutoPropertyAssemblerTest', 'hoge'));
-        $component = new seasar::container::assembler::D_AutoPropertyAssemblerTest;
+        $container->register(new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\E_AutoPropertyAssemblerTest', 'hoge'));
+        $container->register(new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\E_AutoPropertyAssemblerTest', 'hoge'));
+        $component = new \seasar\container\assembler\D_AutoPropertyAssemblerTest;
         $assembler = new AutoPropertyAssembler($componentDef);
         $assembler->assemble($component);
         $this->assertEquals(count($component->name), 2);
         $e = $component->name;
-        $this->assertEquals(get_class($e[0]), __NAMESPACE__ . '::E_AutoPropertyAssemblerTest');
-        $this->assertEquals(get_class($e[1]), __NAMESPACE__ . '::E_AutoPropertyAssemblerTest');
+        $this->assertEquals(get_class($e[0]), __NAMESPACE__ . '\E_AutoPropertyAssemblerTest');
+        $this->assertEquals(get_class($e[1]), __NAMESPACE__ . '\E_AutoPropertyAssemblerTest');
     }
 
     public function testPublicPropertyArrayOne() {
-        $container = new seasar::container::impl::S2ContainerImpl();
-        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::D_AutoPropertyAssemblerTest', 'd');
+        $container = new \seasar\container\impl\S2ContainerImpl();
+        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\D_AutoPropertyAssemblerTest', 'd');
         $container->register($componentDef);
-        $container->register(new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::E_AutoPropertyAssemblerTest', 'hoge'));
-        $component = new seasar::container::assembler::D_AutoPropertyAssemblerTest;
+        $container->register(new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\E_AutoPropertyAssemblerTest', 'hoge'));
+        $component = new \seasar\container\assembler\D_AutoPropertyAssemblerTest;
         $assembler = new AutoPropertyAssembler($componentDef);
         $assembler->assemble($component);
         $this->assertEquals(count($component->name), 1);
         $e = $component->name;
         $this->assertTrue(is_array($e));
-        $this->assertEquals(get_class($e[0]), __NAMESPACE__ . '::E_AutoPropertyAssemblerTest');
+        $this->assertEquals(get_class($e[0]), __NAMESPACE__ . '\E_AutoPropertyAssemblerTest');
     }
 
     public function testPublicPropertyComponentNotFound() {
-        $container = new seasar::container::impl::S2ContainerImpl();
-        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::F_AutoPropertyAssemblerTest');
+        $container = new \seasar\container\impl\S2ContainerImpl();
+        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\F_AutoPropertyAssemblerTest');
         $container->register($componentDef);
         $assembler = new AutoPropertyAssembler($componentDef);
-        $component = new seasar::container::assembler::F_AutoPropertyAssemblerTest;
+        $component = new \seasar\container\assembler\F_AutoPropertyAssemblerTest;
         $assembler->assemble($component);
     }
 
     public function testPublicPropertyTooManyRegistration() {
-        $container = new seasar::container::impl::S2ContainerImpl();
-        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::F_AutoPropertyAssemblerTest');
+        $container = new \seasar\container\impl\S2ContainerImpl();
+        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\F_AutoPropertyAssemblerTest');
         $container->register($componentDef);
-        $container->register(new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::E_AutoPropertyAssemblerTest', 'huga'));
-        $container->register(new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::E_AutoPropertyAssemblerTest', 'huga'));
+        $container->register(new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\E_AutoPropertyAssemblerTest', 'huga'));
+        $container->register(new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\E_AutoPropertyAssemblerTest', 'huga'));
         $assembler = new AutoPropertyAssembler($componentDef);
-        $component = new seasar::container::assembler::F_AutoPropertyAssemblerTest;
+        $component = new \seasar\container\assembler\F_AutoPropertyAssemblerTest;
         $assembler->assemble($component);
     }
 
@@ -129,7 +129,7 @@ class B_AutoPropertyAssemblerTest {
 }
 
 class C_AutoPropertyAssemblerTest {
-    public $a = 's2binding seasar::container::assembler::A_AutoPropertyAssemblerTest';
+    public $a = 's2binding seasar\container\assembler\A_AutoPropertyAssemblerTest';
 }
 
 class D_AutoPropertyAssemblerTest {

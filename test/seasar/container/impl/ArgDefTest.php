@@ -23,8 +23,8 @@
  * @package   seasar.container.impl
  * @author    klove
  */
-namespace seasar::container::impl;
-class ArgDefTest extends ::PHPUnit_Framework_TestCase {
+namespace seasar\container\impl;
+class ArgDefTest extends \PHPUnit_Framework_TestCase {
 
     public function testGetValue() {
         $arg = new ArgDef();
@@ -39,9 +39,9 @@ class ArgDefTest extends ::PHPUnit_Framework_TestCase {
         $arg = new ArgDef();
         $this->assertNotNull($arg);
 
-        $cd = new ComponentDefImpl('seasar::container::impl::A_ArgDef','a');
+        $cd = new ComponentDefImpl('\seasar\container\impl\A_ArgDef','a');
         $arg->setChildComponentDef($cd);
-        $this->assertTrue($arg->getValue() instanceof seasar::container::impl::A_ArgDef);
+        $this->assertTrue($arg->getValue() instanceof \seasar\container\impl\A_ArgDef);
     } 
 
     public function testMetaDef(){
