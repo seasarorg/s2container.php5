@@ -1,5 +1,5 @@
 <?php
-namespace sample::bbb;
+namespace sample\bbb;
 class Hoge_S2ApplicationContext {
 
     public function say(){

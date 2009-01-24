@@ -23,31 +23,31 @@
  * @package   seasar.container.util
  * @author    klove
  */
-namespace seasar::container::util;
-class AspectDefSupportTest extends ::PHPUnit_Framework_TestCase {
+namespace seasar\container\util;
+class AspectDefSupportTest extends \PHPUnit_Framework_TestCase {
 
     public function testAddAspectDef() {
         $support = new AspectDefSupport;
         $this->assertEquals($support->getAspectDefSize() , 0);
 
-        $support->addAspectDef(new seasar::container::impl::AspectDef);
-        $support->addAspectDef(new seasar::container::impl::AspectDef);
+        $support->addAspectDef(new \seasar\container\impl\AspectDef);
+        $support->addAspectDef(new \seasar\container\impl\AspectDef);
         $this->assertEquals($support->getAspectDefSize() , 2);
     }
 
     public function testGetAspectDef() {
         $support = new AspectDefSupport;
-        $support->addAspectDef(new seasar::container::impl::AspectDef);
-        $this->assertTrue($support->getAspectDef(0) instanceof seasar::container::impl::AspectDef);
+        $support->addAspectDef(new \seasar\container\impl\AspectDef);
+        $this->assertTrue($support->getAspectDef(0) instanceof \seasar\container\impl\AspectDef);
     }
 
     public function testOutOfRange() {
         $support = new AspectDefSupport;
-        $support->addAspectDef(new seasar::container::impl::AspectDef);
+        $support->addAspectDef(new \seasar\container\impl\AspectDef);
         try {
             $support->getAspectDef(1);
             $this->fail();
-        } catch(OutOfRangeException $e) {
+        } catch(\OutOfRangeException $e) {
             print $e->getMessage();
         } catch (Exception $e) {
             print $e->getMessage();
@@ -92,7 +92,7 @@ class AnnoTestB_AspectDefSupportTestTest {
 
 class AnnoTestC_AspectDefSupportTestTest {
     /**
-     * @S2Aspect('interceptor' => 'new seasar::aop::interceptor::TraceInterceptor')
+     * @S2Aspect('interceptor' => 'new \seasar\aop\interceptor\TraceInterceptor')
      */
     public function hoge(){}
 }

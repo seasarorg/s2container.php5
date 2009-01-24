@@ -48,7 +48,7 @@
  * @package   seasar.container
  * @author    klove
  */
-namespace seasar::container;
+namespace seasar\container;
 interface ComponentDef {
     /**
      * 定義に基づいてコンポーネントを返します。
@@ -75,14 +75,14 @@ interface ComponentDef {
      * 
      * @param S2Container $container S2コンテナ
      */
-    public function setContainer(seasar::container::S2Container $container);
+    public function setContainer(\seasar\container\S2Container $container);
 
     /**
      * 定義上のクラスを返します。 diconファイルの<b><component/></b>タグにおける、
      * <b>class</b>属性で指定されたクラスを表します。 自動バインディングされる際には、
      * このクラス(インターフェース)が使用されます。
      * 
-     * @return ReflectionClass 定義上のクラス
+     * @return \ReflectionClass 定義上のクラス
      */
     public function getComponentClass();
 
@@ -112,7 +112,7 @@ interface ComponentDef {
      * 
      * @param AutoBindingDef $def 自動バインディングモード
      */
-    public function setAutoBindingDef(seasar::container::AutoBindingDef $def);
+    public function setAutoBindingDef(\seasar\container\AutoBindingDef $def);
 
     /**
      * インスタンスモードを返します。
@@ -126,7 +126,7 @@ interface ComponentDef {
      * 
      * @param InstanceDef $def インスタンスモード
      */
-    public function setInstanceDef(seasar::container::InstanceDef $def);
+    public function setInstanceDef(\seasar\container\InstanceDef $def);
 
     /**
      * すべてのArgDefを返します。
@@ -139,7 +139,7 @@ interface ComponentDef {
      * インデックスで指定されたArgDefを返します。
      *
      * @param integer $index
-     * @return seasar::container::impl::ArgDef
+     * @return \seasar\container\impl\ArgDef
      */
     public function getArgDef($index);
 
@@ -153,9 +153,9 @@ interface ComponentDef {
     /**
      * ArgDefを追加します。
      *
-     * @param seasar::container::impl::ArgDef $argDef
+     * @param \seasar\container\impl\ArgDef $argDef
      */
-    public function addArgDef(seasar::container::impl::ArgDef $argDef);
+    public function addArgDef(\seasar\container\impl\ArgDef $argDef);
 
     /**
      * すべてのProperetyDefを返します。
@@ -168,7 +168,7 @@ interface ComponentDef {
      * インデックスで指定されたPropertyDefを返します。
      *
      * @param integer $index
-     * @return seasar::container::impl::PropertyDef
+     * @return \seasar\container\impl\PropertyDef
      */
     public function getPropertyDef($index);
 
@@ -183,9 +183,9 @@ interface ComponentDef {
     /**
      * PropertyDefを追加します。
      *
-     * @param seasar::container::impl::PropertyDef $propertyDef
+     * @param \seasar\container\impl\PropertyDef $propertyDef
      */
-    public function addPropertyDef(seasar::container::impl::PropertyDef $propertyDef);
+    public function addPropertyDef(\seasar\container\impl\PropertyDef $propertyDef);
 
     /**
      * PropertyDef数を返します。
@@ -205,7 +205,7 @@ interface ComponentDef {
      * インデックスで指定されたInitMethodDefを返します。
      *
      * @param integer $index
-     * @return seasar::container::impl::InitMethodDef
+     * @return \seasar\container\impl\InitMethodDef
      */
     public function getInitMethodDef($index);
 
@@ -219,9 +219,9 @@ interface ComponentDef {
     /**
      * InitMethodDefを追加します。
      *
-     * @param seasar::container::impl::InitMethodDef $methodDef
+     * @param \seasar\container\impl\InitMethodDef $methodDef
      */
-    public function addInitMethodDef(seasar::container::impl::InitMethodDef $methodDef);
+    public function addInitMethodDef(\seasar\container\impl\InitMethodDef $methodDef);
 
     /**
      * すべてのAspectDefを返します。
@@ -234,7 +234,7 @@ interface ComponentDef {
      * インデックスで指定されたAspectDefを返します。
      *
      * @param integer $index
-     * @return seasar::container::impl::AspectDef
+     * @return \seasar\container\impl\AspectDef
      */
     public function getAspectDef($index);
 
@@ -248,15 +248,15 @@ interface ComponentDef {
     /**
      * AspectDefを追加します。
      *
-     * @param seasar::container::impl::AspectDef $aspectDef
+     * @param \seasar\container\impl\AspectDef $aspectDef
      */
-    public function addAspectDef(seasar::container::impl::AspectDef $aspectDef);
+    public function addAspectDef(\seasar\container\impl\AspectDef $aspectDef);
 
     /**
      * インデックスで指定されたMetaDefを返します。
      *
      * @param integer $index
-     * @return seasar::container::impl::MetaDef
+     * @return \seasar\container\impl\MetaDef
      */
     public function getMetaDef($index);
 
@@ -271,9 +271,9 @@ interface ComponentDef {
     /**
      * MetaDefを追加します。
      *
-     * @param seasar::container::impl::MetaDef $metaDef
+     * @param \seasar\container\impl\MetaDef $metaDef
      */
-    public function addMetaDef(seasar::container::impl::MetaDef $metaDef);
+    public function addMetaDef(\seasar\container\impl\MetaDef $metaDef);
 
     /**
      * MetaDefの数を返します。

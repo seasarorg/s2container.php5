@@ -23,43 +23,43 @@
  * @package   seasar.container.util
  * @author    klove
  */
-namespace seasar::container::util;
-class MetaDefSupportTest extends ::PHPUnit_Framework_TestCase {
+namespace seasar\container\util;
+class MetaDefSupportTest extends \PHPUnit_Framework_TestCase {
 
     public function testAddMetaDef() {
         $support = new MetaDefSupport;
         $this->assertEquals($support->getMetaDefSize() , 0);
 
-        $support->addMetaDef(new seasar::container::impl::MetaDef('name'));
-        $support->addMetaDef(new seasar::container::impl::MetaDef('year'));
+        $support->addMetaDef(new \seasar\container\impl\MetaDef('name'));
+        $support->addMetaDef(new \seasar\container\impl\MetaDef('year'));
         $this->assertEquals($support->getMetaDefSize() , 2);
     }
 
     public function testGetMetaDef() {
         $support = new MetaDefSupport;
-        $support->addMetaDef(new seasar::container::impl::MetaDef('name'));
-        $this->assertTrue($support->getMetaDef(0) instanceof seasar::container::impl::MetaDef);
+        $support->addMetaDef(new \seasar\container\impl\MetaDef('name'));
+        $this->assertTrue($support->getMetaDef(0) instanceof \seasar\container\impl\MetaDef);
 
         $support = new MetaDefSupport;
-        $support->addMetaDef(new seasar::container::impl::MetaDef('name', 'hoge'));
-        $support->addMetaDef(new seasar::container::impl::MetaDef('name', 'foo'));
+        $support->addMetaDef(new \seasar\container\impl\MetaDef('name', 'hoge'));
+        $support->addMetaDef(new \seasar\container\impl\MetaDef('name', 'foo'));
         $this->assertTrue($support->getMetaDef('name')->getvalue() === 'hoge');
     }
 
     public function testGetMetaDefs() {
         $support = new MetaDefSupport;
-        $support->addMetaDef(new seasar::container::impl::MetaDef('name', 'hoge'));
-        $support->addMetaDef(new seasar::container::impl::MetaDef('name', 'foo'));
+        $support->addMetaDef(new \seasar\container\impl\MetaDef('name', 'hoge'));
+        $support->addMetaDef(new \seasar\container\impl\MetaDef('name', 'foo'));
         $this->assertTrue(count($support->getMetaDefs('name')) === 2);
     }
 
     public function testOutOfRange() {
         $support = new MetaDefSupport;
-        $support->addMetaDef(new seasar::container::impl::MetaDef('name'));
+        $support->addMetaDef(new \seasar\container\impl\MetaDef('name'));
         try {
             $support->getMetaDef(1);
             $this->fail();
-        } catch(OutOfRangeException $e) {
+        } catch(\OutOfRangeException $e) {
             print $e->getMessage();
         } catch (Exception $e) {
             print $e->getMessage();
@@ -104,7 +104,7 @@ class AnnoTestB_MetaDefSupportTestTest {
 
 class AnnoTestC_MetaDefSupportTestTest {
     /**
-     * @S2Meta('interceptor' => 'new seasar::aop::interceptor::TraceInterceptor')
+     * @S2Meta('interceptor' => 'new \seasar\aop\interceptor\TraceInterceptor')
      */
     public function hoge(){}
 }

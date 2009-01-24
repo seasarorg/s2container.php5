@@ -25,25 +25,25 @@
  * @package   seasar.container.factory
  * @author    klove
  */
-namespace seasar::container::factory;
+namespace seasar\container\factory;
 final class XmlS2ContainerBuilder implements S2ContainerBuilder {
 
     /**
-     * @see seasar::container::factory::S2ContainerBuilder::includeChild()
+     * @see \seasar\container\factory\S2ContainerBuilder::includeChild()
      */
-    public function includeChild(seasar::container::S2Container $parent, $path) {
+    public function includeChild(\seasar\container\S2Container $parent, $path) {
         $child = $this->build($path);
         $parent->includeChild($child);
         return $child;
     }
 
     /**
-     * @see seasar::container::factory::S2ContainerBuilder::build()
+     * @see \seasar\container\factory\S2ContainerBuilder::build()
      */
     public function build($path) {
         $rootNode = $this->loadDicon($path);
 
-        $container = new seasar::container::impl::S2ContainerImpl();
+        $container = new \seasar\container\impl\S2ContainerImpl();
         $container->setPath($path);
 
         $namespace = trim((string)$rootNode['namespace']);
@@ -62,19 +62,19 @@ final class XmlS2ContainerBuilder implements S2ContainerBuilder {
      * ダイコンファイルをSimpleXmlオブジェクトとして読み込みます。
      *
      * @param string $path ダイコンファイルのパス
-     * @throw seasar::exception::FileNotFoundException
-     * @throw seasar::exception::DOMException
+     * @throw \seasar\exception\FileNotFoundException
+     * @throw \seasar\exception\DOMException
      * @return SimpleXMLElement
      */
     private function loadDicon($path) {
         if (!is_file($path)) {
-            throw new seasar::exception::FileNotFoundException($path);
+            throw new \seasar\exception\FileNotFoundException($path);
         }
-        if (seasar::container::Config::$DOM_VALIDATE) {
-            $dom = new DomDocument();
+        if (\seasar\container\Config::$DOM_VALIDATE) {
+            $dom = new \DomDocument();
             $dom->validateOnParse = true;
             if (!$dom->load($path)) {
-                throw new seasar::exception::DOMException($path);
+                throw new \seasar\exception\DOMException($path);
             }
             $root = simplexml_import_dom($dom);
         } else {
@@ -87,14 +87,14 @@ final class XmlS2ContainerBuilder implements S2ContainerBuilder {
      * ダイコンファイルのincludeタグについてセットアップを実施します。
      * includeタグのpath属性で指定されたファイルが存在しない場合は、expressionとして処理します。
      *
-     * @param seasar::container::S2Container $container
+     * @param \seasar\container\S2Container $container
      * @param SimpleXMLElement $root
      */
-    private function setupInclude(seasar::container::S2Container $container, SimpleXMLElement $root){
+    private function setupInclude(\seasar\container\S2Container $container, \SimpleXMLElement $root){
         foreach ($root->include as $index => $val) {
             $path = trim((string)$val['path']);
             if (!is_file($path)) {
-                $path = seasar::util::EvalUtil::formatExecute($path);
+                $path = \seasar\util\EvalUtil::formatExecute($path);
             }
             $child = S2ContainerFactory::includeChild($container, $path);
             $child->setRoot($container->getRoot());
@@ -104,24 +104,24 @@ final class XmlS2ContainerBuilder implements S2ContainerBuilder {
     /**
      * ダイコンファイルで定義されているすべてのcomponentタグについてComponentDefを生成します。
      *
-     * @param seasar::container::S2Container $container
+     * @param \seasar\container\S2Container $container
      * @param SimpleXMLElement $root
      * @return array
      */
-    private function createComponentDef(seasar::container::S2Container $container, SimpleXMLElement $root) {
+    private function createComponentDef(\seasar\container\S2Container $container, \SimpleXMLElement $root) {
         $componentNodes = $root->xpath('//component');
         foreach ($componentNodes as $index => $componentNode) {
             $className       = trim((string)$componentNode['class']);
             $name            = trim((string)$componentNode['name']);
-            $componentDef = new seasar::container::impl::ComponentDefImpl($className, $name);
+            $componentDef = new \seasar\container\impl\ComponentDefImpl($className, $name);
             $container->register($componentDef);
             $instanceMode    = trim((string)$componentNode['instance']);
             $autoBindingMode = trim((string)$componentNode['autoBinding']);
             if ($instanceMode !== '') {
-                $componentDef->setInstanceDef(seasar::container::deployer::InstanceDefFactory::getInstanceDef($instanceMode));
+                $componentDef->setInstanceDef(\seasar\container\deployer\InstanceDefFactory::getInstanceDef($instanceMode));
             }
             if ($autoBindingMode !== '') {
-                $componentDef->setAutoBindingDef(seasar::container::assembler::AutoBindingDefFactory::getAutoBindingDef($autoBindingMode));
+                $componentDef->setAutoBindingDef(\seasar\container\assembler\AutoBindingDefFactory::getAutoBindingDef($autoBindingMode));
             }
         }
         return $componentNodes;
@@ -130,10 +130,10 @@ final class XmlS2ContainerBuilder implements S2ContainerBuilder {
     /**
      * 各コンポーネントについて、セットアップを実施します。
      *
-     * @param seasar::container::S2Container $container
+     * @param \seasar\container\S2Container $container
      * @param SimpleXMLElement $root
      */
-    private function setupComponentDef(seasar::container::S2Container $container, $root) {
+    private function setupComponentDef(\seasar\container\S2Container $container, $root) {
         $componentNodes = $this->createComponentDef($container, $root);
 
         $o = count($componentNodes);
@@ -159,11 +159,11 @@ final class XmlS2ContainerBuilder implements S2ContainerBuilder {
     /**
      * 各コンポーネントのArgDef、MetaDefについてセットアップを実施します。
      *
-     * @param seasar::container::S2Container $container
+     * @param \seasar\container\S2Container $container
      * @param SimpleXMLElement $argNode
      */
-    private function setupArgDef(seasar::container::S2Container $container, SimpleXMLElement $argNode) {
-        $argDef = new seasar::container::impl::ArgDef();
+    private function setupArgDef(\seasar\container\S2Container $container, \SimpleXMLElement $argNode) {
+        $argDef = new \seasar\container\impl\ArgDef();
         $this->setupArgDefInternal($container, $argDef, $argNode);
         $this->setupMetaDef($container, $argDef, $argNode);
         return $argDef;
@@ -172,11 +172,11 @@ final class XmlS2ContainerBuilder implements S2ContainerBuilder {
     /**
      * 各コンポーネントのArgDefについてセットアップを実施します。
      *
-     * @param seasar::container::S2Container $container
-     * @param seasar::container::impl::ArgDef $argDef
+     * @param \seasar\container\S2Container $container
+     * @param \seasar\container\impl\ArgDef $argDef
      * @param SimpleXMLElement $argNode
      */
-    private function setupArgDefInternal(seasar::container::S2Container $container, seasar::container::impl::ArgDef $argDef, SimpleXMLElement $argNode) {
+    private function setupArgDefInternal(\seasar\container\S2Container $container, \seasar\container\impl\ArgDef $argDef, \SimpleXMLElement $argNode) {
         if (isset($argNode->component[0])) {
             $componentNode = $argNode->component[0];
             $name            = trim((string)$componentNode['name']);
@@ -205,12 +205,12 @@ final class XmlS2ContainerBuilder implements S2ContainerBuilder {
     /**
      * コンポーネントのPropertyDefについてセットアップを実施します。
      *
-     * @param seasar::container::S2Container $container
+     * @param \seasar\container\S2Container $container
      * @param SimpleXMLElement $propertNode
      */
-    private function setupPropertyDef(seasar::container::S2Container $container, SimpleXMLElement $propertyNode) {
+    private function setupPropertyDef(\seasar\container\S2Container $container, \SimpleXMLElement $propertyNode) {
         $name = (string)$propertyNode['name'];
-        $propertyDef = new seasar::container::impl::PropertyDef($name);
+        $propertyDef = new \seasar\container\impl\PropertyDef($name);
         $this->setupArgDefInternal($container, $propertyDef, $propertyNode);
         $this->setupMetaDef($container, $propertyDef, $propertyNode);
         return $propertyDef;
@@ -219,12 +219,12 @@ final class XmlS2ContainerBuilder implements S2ContainerBuilder {
     /**
      * コンポーネントのInitMethodDefについてセットアップを実施します。
      *
-     * @param seasar::container::S2Container $container
+     * @param \seasar\container\S2Container $container
      * @param SimpleXMLElement $initMethod
      */
-    private function setupInitMethodDef(seasar::container::S2Container $container, SimpleXMLElement $initMethod) {
+    private function setupInitMethodDef(\seasar\container\S2Container $container, \SimpleXMLElement $initMethod) {
         $name = (string)$initMethod['name'];
-        $initMethodDef = new seasar::container::impl::InitMethodDef($name);
+        $initMethodDef = new \seasar\container\impl\InitMethodDef($name);
         $this->setupMethodDef($container, $initMethod, $initMethodDef);
         return $initMethodDef;
     }
@@ -232,11 +232,11 @@ final class XmlS2ContainerBuilder implements S2ContainerBuilder {
     /**
      * コンポーネントのMethodDefについてセットアップを実施します。
      *
-     * @param seasar::container::S2Container $container
+     * @param \seasar\container\S2Container $container
      * @param SimpleXMLElement $method
-     * @param seasar::container::MethodDef $methodDef
+     * @param \seasar\container\MethodDef $methodDef
      */
-    private function setupMethodDef(seasar::container::S2Container $container, SimpleXMLElement $method, seasar::container::MethodDef $methodDef) {
+    private function setupMethodDef(\seasar\container\S2Container $container, \SimpleXMLElement $method, \seasar\container\MethodDef $methodDef) {
         $expression = trim((string)$method);
         if ($expression !== '') {
             $methodDef->setExpression($expression);
@@ -249,20 +249,20 @@ final class XmlS2ContainerBuilder implements S2ContainerBuilder {
     /**
      * コンポーネントのAspectDefについてセットアップを実施します。
      *
-     * @param seasar::container::S2Container $container
+     * @param \seasar\container\S2Container $container
      * @param SimpleXMLElement $aspectNode
      * @param string $targetClassName
      */
-    private function setupAspectDef(seasar::container::S2Container $container, SimpleXMLElement $aspectNode, $targetClassName) {
+    private function setupAspectDef(\seasar\container\S2Container $container, \SimpleXMLElement $aspectNode, $targetClassName) {
         $pointcut = trim((string)$aspectNode['pointcut']);
 
         if ($pointcut === '') {
-            $pointcut = new seasar::aop::Pointcut(new ReflectionClass($targetClassName));
+            $pointcut = new \seasar\aop\Pointcut(new \ReflectionClass($targetClassName));
         } else {
-            $pointcut = new seasar::aop::Pointcut($pointcut);
+            $pointcut = new \seasar\aop\Pointcut($pointcut);
         }
 
-        $aspectDef = new seasar::container::impl::AspectDef($pointcut);
+        $aspectDef = new \seasar\container\impl\AspectDef($pointcut);
         if (isset($aspectNode->component[0])) {
             $componentNode = $aspectNode->component[0];
             $name            = trim((string)$componentNode['name']);
@@ -291,14 +291,14 @@ final class XmlS2ContainerBuilder implements S2ContainerBuilder {
     /**
      * コンポーネントのMetaDefについてセットアップを実施します。
      *
-     * @param seasar::container::S2Container $container
+     * @param \seasar\container\S2Container $container
      * @param object $parentDef
      * @param SimpleXMLElement $parentNode
      */
-    private function setupMetaDef(seasar::container::S2Container $container, $parentDef, SimpleXMLElement $parentNode) {
+    private function setupMetaDef(\seasar\container\S2Container $container, $parentDef, \SimpleXMLElement $parentNode) {
         foreach ($parentNode->meta as $index => $val) {
             $name = trim((string)$val['name']);
-            $metaDef = new seasar::container::impl::MetaDef($name);
+            $metaDef = new \seasar\container\impl\MetaDef($name);
             $this->setupArgDefInternal($container, $metaDef, $val);
             $parentDef->addMetaDef($metaDef);
         }

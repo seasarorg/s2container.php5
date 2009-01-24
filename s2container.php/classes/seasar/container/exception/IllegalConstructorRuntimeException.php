@@ -28,21 +28,21 @@
  * @package   seasar.container.exception
  * @author    klove
  */
-namespace seasar::container::exception;
-class IllegalConstructorRuntimeException extends seasar::exception::S2RuntimeException {
+namespace seasar\container\exception;
+class IllegalConstructorRuntimeException extends \seasar\exception\S2RuntimeException {
 
     /**
-     * @var ReflectionClass
+     * @var \ReflectionClass
      */
     private $componentClass;
 
     /**
      * <b>S2Container_IllegalConstructorRuntimeException</b>を構築します。
      * 
-     * @param ReflectionClass $componentClass 構築に失敗したコンポーネントのクラス
+     * @param \ReflectionClass $componentClass 構築に失敗したコンポーネントのクラス
      * @param Exception       $cause コンポーネントの構築に失敗した原因を表すエラーまたは例外
      */
-    public function __construct(ReflectionClass $componentClass) {
+    public function __construct(\ReflectionClass $componentClass) {
         $this->componentClass = $componentClass;
         parent::__construct(111, (array)$componentClass->getName());
     }
@@ -50,7 +50,7 @@ class IllegalConstructorRuntimeException extends seasar::exception::S2RuntimeExc
     /**
      * 構築に失敗したコンポーネントのクラスを返します。
      * 
-     * @return ReflectionClass 構築に失敗したコンポーネントのクラス
+     * @return \ReflectionClass 構築に失敗したコンポーネントのクラス
      */
     public function getComponentClass() {
         return $this->componentClass;

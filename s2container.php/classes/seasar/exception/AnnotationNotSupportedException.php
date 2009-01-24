@@ -25,8 +25,8 @@
  * @package   seasar.exception
  * @author    klove
  */
-namespace seasar::exception;
-class AnnotationNotSupportedException extends ::Exception {
+namespace seasar\exception;
+class AnnotationNotSupportedException extends \Exception {
 
     /**
      * AnnotationNotSupportedExceptionを構築します。

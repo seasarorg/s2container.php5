@@ -29,7 +29,7 @@
  * @package   seasar.container
  * @author    klove
  */
-namespace seasar::container;
+namespace seasar\container;
 interface AutoBindingDef {
 
     /**
@@ -52,16 +52,16 @@ interface AutoBindingDef {
     /**
      * 自動バインディング定義に基づき、 componentDefに対するConstructorAssemblerを返します。
      *
-     * @param seasar::container::ComponentDef $componentDef
-     * @return seasar::container::assembler::ConstructorAssembler
+     * @param \seasar\container\ComponentDef $componentDef
+     * @return \seasar\container\assembler\ConstructorAssembler
      */
-    public function createConstructorAssembler(seasar::container::ComponentDef $componentDef);
+    public function createConstructorAssembler(\seasar\container\ComponentDef $componentDef);
 
     /**
      * 自動バインディング定義に基づき、 componentDefに対するPropertyAssemblerを返します。
      *
-     * @param seasar::container::ComponentDef $componentDef
-     * @return seasar::container::assembler::PropertyAssembler
+     * @param \seasar\container\ComponentDef $componentDef
+     * @return \seasar\container\assembler\PropertyAssembler
      */
-    public function createPropertyAssembler(seasar::container::ComponentDef $componentDef);
+    public function createPropertyAssembler(\seasar\container\ComponentDef $componentDef);
 }

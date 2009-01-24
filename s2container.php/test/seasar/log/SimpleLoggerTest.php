@@ -23,8 +23,8 @@
  * @package   seasar.log
  * @author    klove
  */
-namespace seasar::log;
-class SimpleLoggerTest extends ::PHPUnit_Framework_TestCase {
+namespace seasar\log;
+class SimpleLoggerTest extends \PHPUnit_Framework_TestCase {
 
     public function testStdout() {
         S2Logger::getInstance(__CLASS__)->debug('called.', __METHOD__);
@@ -36,15 +36,15 @@ class SimpleLoggerTest extends ::PHPUnit_Framework_TestCase {
     }
 
     public function testFile() {
-        seasar::Config::$SIMPLE_LOG_FILE = dirname(__FILE__) . DIRECTORY_SEPARATOR . 's2.log';
+        \seasar\Config::$SIMPLE_LOG_FILE = dirname(__FILE__) . DIRECTORY_SEPARATOR . 's2.log';
         S2Logger::getInstance(__CLASS__)->debug('called.', __METHOD__);
         S2Logger::getInstance(__CLASS__)->info('called.', __METHOD__);
         S2Logger::getInstance(__CLASS__)->notice('called.', __METHOD__);
         S2Logger::getInstance(__CLASS__)->warn('called.', __METHOD__);
         S2Logger::getInstance(__CLASS__)->error('called.', __METHOD__);
         S2Logger::getInstance(__CLASS__)->fatal('called.', __METHOD__);
-        unlink(seasar::Config::$SIMPLE_LOG_FILE);
-        seasar::Config::$SIMPLE_LOG_FILE = null;
+        unlink(\seasar\Config::$SIMPLE_LOG_FILE);
+        \seasar\Config::$SIMPLE_LOG_FILE = null;
     }
 
     public function testWothoutMethodName() {

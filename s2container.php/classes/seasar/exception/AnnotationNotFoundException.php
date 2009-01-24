@@ -25,17 +25,17 @@
  * @package   seasar.exception
  * @author    klove
  */
-namespace seasar::exception;
-class AnnotationNotFoundException extends ::Exception {
+namespace seasar\exception;
+class AnnotationNotFoundException extends \Exception {
 
     /**
      * AnnotationNotFoundException を構築します。
      *
-     * @param ReflectionClass|ReflectionMethod|ReflectionProperty $target
+     * @param \ReflectionClass|ReflectionMethod|ReflectionProperty $target
      * @param string message
      */
     public function __construct($reflection, $annotation) {
-        if ($reflection instanceof ReflectionClass) {
+        if ($reflection instanceof \ReflectionClass) {
             $target = 'class ' . $reflection->getName();
         } else {
             $target = $reflection->getDeclaringClass()->getName() . '->' . $reflection->getName();

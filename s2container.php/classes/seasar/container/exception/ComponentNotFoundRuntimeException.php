@@ -29,8 +29,8 @@
  * @package   seasar.container.exception
  * @author    klove
  */
-namespace seasar::container::exception;
-class ComponentNotFoundRuntimeException extends seasar::exception::S2RuntimeException {
+namespace seasar\container\exception;
+class ComponentNotFoundRuntimeException extends \seasar\exception\S2RuntimeException {
 
     /**
      * @var string

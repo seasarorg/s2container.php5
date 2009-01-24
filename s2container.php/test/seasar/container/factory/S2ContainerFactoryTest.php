@@ -23,26 +23,26 @@
  * @package   seasar.container.factory
  * @author    klove
  */
-namespace seasar::container::factory;
-class S2ContainerFactoryTest extends ::PHPUnit_Framework_TestCase {
+namespace seasar\container\factory;
+class S2ContainerFactoryTest extends \PHPUnit_Framework_TestCase {
     public static $DICON_DIR = null;
 
     public function test01Build() {
         $container = S2ContainerFactory::create(dirname(__FILE__) . '/S2ContainerFactoryTest_dicon/test01Build.dicon');
-        $this->assertTrue($container instanceof seasar::container::S2Container);
+        $this->assertTrue($container instanceof \seasar\container\S2Container);
     }
 
     public function test02Include() {
         self::$DICON_DIR = dirname(__FILE__) . '/S2ContainerFactoryTest_dicon';
         $container = S2ContainerFactory::create(dirname(__FILE__) . '/S2ContainerFactoryTest_dicon/test02Include.dicon');
-        $this->assertTrue($container instanceof seasar::container::S2Container);
+        $this->assertTrue($container instanceof \seasar\container\S2Container);
         $a = $container->getComponentDef('a');
         $parentA = $container->getComponentDef('parent.a');
         $childA = $container->getComponentDef('child.a');
         $this->assertTrue($parentA === $a);
         $this->assertFalse($parentA === $childA);
-        $this->assertTrue($parentA->getComponentClass()->getName() === 'seasar::container::factory::A_S2ContainerFactoryTest');
-        $this->assertTrue($childA->getComponentClass()->getName() === 'seasar::container::factory::A_S2ContainerFactoryTest');
+        $this->assertTrue($parentA->getComponentClass()->getName() === 'seasar\container\factory\A_S2ContainerFactoryTest');
+        $this->assertTrue($childA->getComponentClass()->getName() === 'seasar\container\factory\A_S2ContainerFactoryTest');
     }
 
     public function test03CycleInclude() {
@@ -50,7 +50,7 @@ class S2ContainerFactoryTest extends ::PHPUnit_Framework_TestCase {
         try {
             $container = S2ContainerFactory::create(dirname(__FILE__) . '/S2ContainerFactoryTest_dicon/test03CycleInclude.dicon');
             $this->fail();
-        } catch(seasar::container::exception::CircularIncludeRuntimeException $e) {
+        } catch(\seasar\container\exception\CircularIncludeRuntimeException $e) {
             print $e->getMessage() . PHP_EOL;
         }
     }
@@ -59,7 +59,7 @@ class S2ContainerFactoryTest extends ::PHPUnit_Framework_TestCase {
         try {
             $container = S2ContainerFactory::create(__FILE__);
             $this->fail();
-        } catch(seasar::container::exception::IllegalContainerBuilderRuntimeException $e) {
+        } catch(\seasar\container\exception\IllegalContainerBuilderRuntimeException $e) {
             print $e->getMessage() . PHP_EOL;
         }
     }

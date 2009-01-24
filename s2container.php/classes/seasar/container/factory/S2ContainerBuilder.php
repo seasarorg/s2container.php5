@@ -25,7 +25,7 @@
  * @package   seasar.container.factory
  * @author    klove
  */
-namespace seasar::container::factory;
+namespace seasar\container\factory;
 interface S2ContainerBuilder {
 
     /**
@@ -41,5 +41,5 @@ interface S2ContainerBuilder {
      * @param S2Container
      * @param string dicon path
      */   
-    public function includeChild(seasar::container::S2Container $parent, $path);
+    public function includeChild(\seasar\container\S2Container $parent, $path);
 }

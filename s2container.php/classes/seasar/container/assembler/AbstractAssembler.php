@@ -24,25 +24,25 @@
  * @package   seasar.container.assembler
  * @author    klove
  */
-namespace seasar::container::assembler;
+namespace seasar\container\assembler;
 abstract class AbstractAssembler {
 
     /**
-     * @var seasar::container::ComponentDef
+     * @var \seasar\container\ComponentDef
      */
     private $componentDef;
 
     /**
      * AbstractAssemblerのコンストラクタです。
-     * @param seasar::container::ComponentDef $componentDef
+     * @param \seasar\container\ComponentDef $componentDef
      */
-    public function __construct(seasar::container::ComponentDef $componentDef) {
+    public function __construct(\seasar\container\ComponentDef $componentDef) {
         $this->componentDef = $componentDef;
     }
 
     /**
      * ComponentDefを返します。
-     * @return seasar::container::ComponentDef
+     * @return \seasar\container\ComponentDef
      */
     protected final function getComponentDef() {
         return $this->componentDef;
@@ -76,18 +76,18 @@ abstract class AbstractAssembler {
      * コンストラクタ、メソッドの引数値を取得します。
      * 配列のタイプヒントがされている場合に、TooManyRegistrationRuntimeExceptionが発生した場合は、
      * すべてのコンポーネントを配列に格納して返します。
-     * @param seasar::container::impl::ArgDef $argDef
+     * @param \seasar\container\impl\ArgDef $argDef
      * @param boolean $isArrayAcceptable
      * @return mixed
      */
-    protected function getArgument(seasar::container::impl::ArgDef $argDef, $isArrayAcceptable = false) {
+    protected function getArgument(\seasar\container\impl\ArgDef $argDef, $isArrayAcceptable = false) {
         $value  = null;
         try {
             $value = $argDef->getValue();
             if ($isArrayAcceptable and !is_array($value)) {
                 $value = array($value);
             }
-        } catch(seasar::container::exception::TooManyRegistrationRuntimeException $e) {
+        } catch(\seasar\container\exception\TooManyRegistrationRuntimeException $e) {
             if ($isArrayAcceptable) {
                 $childComponentDefs = $argDef->getChildComponentDef()->getComponentDefs();
                 $value = array();

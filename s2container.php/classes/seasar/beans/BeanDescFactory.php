@@ -25,7 +25,7 @@
  * @package   seasar.beans
  * @author    klove
  */
-namespace seasar::beans;
+namespace seasar\beans;
 class BeanDescFactory {
 
     /**
@@ -42,17 +42,17 @@ class BeanDescFactory {
      * BeanDescを生成します。
      *
      * @param string|object|ReflectionClass $obj
-     * @return seasar::beans::BeanDesc
+     * @return \seasar\beans\BeanDesc
      */
     public static function create($obj) {
-        if ($obj instanceof ReflectionClass) {
+        if ($obj instanceof \ReflectionClass) {
             $clazz = $obj;
             $className = $clazz->getName();
         } else if (is_object($obj)) {
-            $clazz = new ReflectionClass($obj);
+            $clazz = new \ReflectionClass($obj);
             $className = $clazz->getName();
         } else {
-            $clazz = new ReflectionClass($obj);
+            $clazz = new \ReflectionClass($obj);
             $className = $obj;
         }
 
@@ -63,7 +63,7 @@ class BeanDescFactory {
     }
 
     /**
-     * @see seasar::beans::BeanDescFactory::create()
+     * @see \seasar\beans\BeanDescFactory::create()
      */
     public static function getBeanDesc($value) {
         return self::create($value);

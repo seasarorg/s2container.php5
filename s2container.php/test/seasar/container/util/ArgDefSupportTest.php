@@ -23,31 +23,31 @@
  * @package   seasar.container.util
  * @author    klove
  */
-namespace seasar::container::util;
-class ArgDefSupportTest extends ::PHPUnit_Framework_TestCase {
+namespace seasar\container\util;
+class ArgDefSupportTest extends \PHPUnit_Framework_TestCase {
 
     public function testAddArgDef() {
         $support = new ArgDefSupport;
         $this->assertEquals($support->getArgDefSize() , 0);
 
-        $support->addArgDef(new seasar::container::impl::ArgDef);
-        $support->addArgDef(new seasar::container::impl::ArgDef);
+        $support->addArgDef(new \seasar\container\impl\ArgDef);
+        $support->addArgDef(new \seasar\container\impl\ArgDef);
         $this->assertEquals($support->getArgDefSize() , 2);
     }
 
     public function testGetArgDef() {
         $support = new ArgDefSupport;
-        $support->addArgDef(new seasar::container::impl::ArgDef);
-        $this->assertTrue($support->getArgDef(0) instanceof seasar::container::impl::ArgDef);
+        $support->addArgDef(new \seasar\container\impl\ArgDef);
+        $this->assertTrue($support->getArgDef(0) instanceof \seasar\container\impl\ArgDef);
     }
 
     public function testOutOfRange() {
         $support = new ArgDefSupport;
-        $support->addArgDef(new seasar::container::impl::ArgDef);
+        $support->addArgDef(new \seasar\container\impl\ArgDef);
         try {
             $support->getArgDef(1);
             $this->fail();
-        } catch(OutOfRangeException $e) {
+        } catch(\OutOfRangeException $e) {
             print $e->getMessage();
         } catch (Exception $e) {
             print $e->getMessage();
@@ -92,7 +92,7 @@ class AnnoTestB_ArgDefSupportTestTest {
 
 class AnnoTestC_ArgDefSupportTestTest {
     /**
-     * @S2Aspect('interceptor' => 'new seasar::aop::interceptor::TraceInterceptor')
+     * @S2Aspect('interceptor' => 'new \seasar\aop\interceptor\TraceInterceptor')
      */
     public function hoge(){}
 }

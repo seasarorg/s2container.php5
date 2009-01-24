@@ -23,11 +23,11 @@
  * @package   seasar.aop.interceptor
  * @author    klove
  */
-namespace seasar::aop::interceptor;
-class TraceInterceptorTest extends ::PHPUnit_Framework_TestCase {
+namespace seasar\aop\interceptor;
+class TraceInterceptorTest extends \PHPUnit_Framework_TestCase {
 
     public function test01() {
-        $container = seasar::container::factory::S2ContainerFactory::create(dirname(__FILE__) . '/TraceInterceptorTest_dicon/test01.dicon');
+        $container = \seasar\container\factory\S2ContainerFactory::create(dirname(__FILE__) . '/TraceInterceptorTest_dicon/test01.dicon');
         $a = $container->getComponent('a');
         $a->hoge();
     }

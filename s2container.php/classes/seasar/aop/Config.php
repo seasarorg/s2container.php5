@@ -15,7 +15,7 @@
 // | governing permissions and limitations under the License.             |
 // +----------------------------------------------------------------------+
 /**
- * seasar::aopの設定を行うクラスです。
+ * \seasar\aopの設定を行うクラスです。
  *
  * @copyright 2005-2008 the Seasar Foundation and the Others.
  * @license   http://www.apache.org/licenses/LICENSE-2.0
@@ -25,13 +25,13 @@
  * @package   seasar.aop
  * @author    klove
  */
-namespace seasar::aop;
+namespace seasar\aop;
 abstract class Config {
     /**
      * アスペクト対象クラスのEnhanceクラスを生成するクラスを指定します。
-     * @var seasar::aop::EnhancedClassGenerator
+     * @var \seasar\aop\EnhancedClassGenerator
      */
-    public static $ENHANCED_CLASS_GENERATOR = 'seasar::aop::EnhancedClassGenerator';
+    public static $ENHANCED_CLASS_GENERATOR = 'seasar\aop\EnhancedClassGenerator';
 
     /**
      * @var boolean
@@ -47,7 +47,7 @@ abstract class Config {
 /**
  * S2RuntimeExceptionへの例外メッセージの登録
  */
-seasar::exception::S2RuntimeException::$MESSAGES[202] = '"cannot invoke abstract method. [$args[0]->$args[1]()]"';
-seasar::exception::S2RuntimeException::$MESSAGES[203] = '"class $args[0] already has property or method. [$args[1]]"';
-seasar::exception::S2RuntimeException::$MESSAGES[204] = '"cache directory : $args[0]"';
+\seasar\exception\S2RuntimeException::$MESSAGES[202] = '"cannot invoke abstract method. [$args[0]->$args[1]()]"';
+\seasar\exception\S2RuntimeException::$MESSAGES[203] = '"class $args[0] already has property or method. [$args[1]]"';
+\seasar\exception\S2RuntimeException::$MESSAGES[204] = '"cache directory : $args[0]"';
 

@@ -25,7 +25,7 @@
  * @package   seasar.container.util
  * @author    klove
  */
-namespace seasar::container::util;
+namespace seasar\container\util;
 final class MetaDefSupport {
 
     /**
@@ -34,25 +34,25 @@ final class MetaDefSupport {
     private $metaDefs = array();
 
     /**
-     * @var seasar::container::S2Container
+     * @var \seasar\container\S2Container
      */
     private $container;
 
     /**
      * MetaDefSupportを構築します。
      *
-     * @param seasar::container::S2Container $container
+     * @param \seasar\container\S2Container $container
      */
-    public function __construct(seasar::container::S2Container $container = null) {
+    public function __construct(\seasar\container\S2Container $container = null) {
         $this->coontainer_ = $container;
     }
 
     /**
      * MetaDefを追加します。
      *
-     * @param seasar::container::impl::MetaDef
+     * @param \seasar\container\impl\MetaDef
      */
-    public function addMetaDef(seasar::container::impl::MetaDef $metaDef) {
+    public function addMetaDef(\seasar\container\impl\MetaDef $metaDef) {
         if ($this->container != null) {
             $metaDef->setContainer($this->container);
         }
@@ -73,12 +73,12 @@ final class MetaDefSupport {
      * インデックス番号は、追加した順に0, 1, 2…となります。 MetaDefを返します。
      *
      * @param integer
-     * @return seasar::container::impl::MetaDef
+     * @return \seasar\container\impl\MetaDef
      */
     public function getMetaDef($index) {
         if (is_integer($index)) {
             if (!isset($this->metaDefs[$index])) {
-                throw new OutOfRangeException($index);
+                throw new \OutOfRangeException($index);
             }
             return $this->metaDefs[$index];
         }
@@ -111,9 +111,9 @@ final class MetaDefSupport {
     /**
      * S2Containerを設定します。
      *
-     * @param seasar::container::S2Container $container
+     * @param \seasar\container\S2Container $container
      */
-    public function setContainer(seasar::container::S2Container $container) {
+    public function setContainer(\seasar\container\S2Container $container) {
         $this->container = $container;
         foreach ($this->metaDefs as $def) {
             $def->setContainer($container);

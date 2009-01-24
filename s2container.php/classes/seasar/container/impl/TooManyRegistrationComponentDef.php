@@ -25,7 +25,7 @@
  * @package   seasar.container.impl
  * @author    klove
  */
-namespace seasar::container::impl;
+namespace seasar\container\impl;
 class TooManyRegistrationComponentDef extends SimpleComponentDef {
 
     /**
@@ -59,9 +59,9 @@ class TooManyRegistrationComponentDef extends SimpleComponentDef {
     /**
      * 同じキーで登録されたコンポーネント定義を追加します。
      *
-     * @param seasar::container::ComponentDef $componentDef
+     * @param \seasar\container\ComponentDef $componentDef
      */
-    public function addComponentDef(seasar::container::ComponentDef $componentDef) {
+    public function addComponentDef(\seasar\container\ComponentDef $componentDef) {
         $this->componentDefs[] = $componentDef;
     }
 
@@ -75,10 +75,10 @@ class TooManyRegistrationComponentDef extends SimpleComponentDef {
     }
     
     /**
-     * @see seasar::container::ComponentDef::getComponent()
+     * @see \seasar\container\ComponentDef::getComponent()
      */
     public function getComponent() {
-        throw new seasar::container::exception::TooManyRegistrationRuntimeException($this->key, $this->getComponentClasses());
+        throw new \seasar\container\exception\TooManyRegistrationRuntimeException($this->key, $this->getComponentClasses());
     }
 
     /**

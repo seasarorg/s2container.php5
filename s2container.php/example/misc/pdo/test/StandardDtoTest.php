@@ -1,5 +1,5 @@
 <?php
-class StandardDtoTest extends ::PHPUnit_Framework_TestCase {
+class StandardDtoTest extends \PHPUnit_Framework_TestCase {
 
     public function testCall1() {
         $dto = new StandardDto();

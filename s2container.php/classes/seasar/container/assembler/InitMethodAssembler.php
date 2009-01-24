@@ -25,13 +25,13 @@
  * @package   seasar.container.assembler
  * @author    klove
  */
-namespace seasar::container::assembler;
+namespace seasar\container\assembler;
 class InitMethodAssembler extends AbstractMethodAssembler {
 
     /**
-     * @see seasar::container::assembler::AbstractMethodAssembler::__construct()
+     * @see \seasar\container\assembler\AbstractMethodAssembler::__construct()
      */
-    public function __construct(seasar::container::ComponentDef $componentDef) {
+    public function __construct(\seasar\container\ComponentDef $componentDef) {
         parent::__construct($componentDef);
     }
 

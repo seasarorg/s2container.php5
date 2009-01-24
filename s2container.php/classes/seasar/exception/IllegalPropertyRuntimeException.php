@@ -25,8 +25,8 @@
  * @package   seasar.exception
  * @author    klove
  */
-namespace seasar::exception;
-class IllegalPropertyRuntimeException extends ::Exception {
+namespace seasar\exception;
+class IllegalPropertyRuntimeException extends \Exception {
 
     /**
      * IllegalPropertyRuntimeExceptionを構築します。

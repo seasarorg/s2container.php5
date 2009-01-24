@@ -1,5 +1,5 @@
 <?php
-namespace sample::bbb;
+namespace sample\bbb;
 /**
  * @S2Component('name' => 'hoge',
  *              'instance' => 'singleton',

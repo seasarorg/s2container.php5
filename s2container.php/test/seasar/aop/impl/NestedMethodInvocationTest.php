@@ -23,37 +23,37 @@
  * @package   seasar.aop.impl
  * @author    klove
  */
-namespace seasar::aop::impl;
-class NestedMethodInvocationTest extends ::PHPUnit_Framework_TestCase {
+namespace seasar\aop\impl;
+class NestedMethodInvocationTest extends \PHPUnit_Framework_TestCase {
 
     public function testChainInvocation() {
-        $targetRef = new ReflectionClass('seasar::aop::impl::A_NestedMethodInvocation');
-        $interceptor = new seasar::aop::interceptor::InterceptorChain;
-        $pointcut = new seasar::aop::Pointcut('/.+/');
-        $aspects = array(new seasar::aop::Aspect($interceptor, $pointcut));
-        $targetOjb = seasar::aop::S2AopFactory::create($targetRef, $aspects, array());
+        $targetRef = new \ReflectionClass('\seasar\aop\impl\A_NestedMethodInvocation');
+        $interceptor = new \seasar\aop\interceptor\InterceptorChain;
+        $pointcut = new \seasar\aop\Pointcut('/.+/');
+        $aspects = array(new \seasar\aop\Aspect($interceptor, $pointcut));
+        $targetOjb = \seasar\aop\S2AopFactory::create($targetRef, $aspects, array());
         $targetOjb->service();
 
-        $interceptor->add(new seasar::aop::interceptor::TraceInterceptor);
-        $interceptor->add(new seasar::aop::interceptor::TraceInterceptor);
+        $interceptor->add(new \seasar\aop\interceptor\TraceInterceptor);
+        $interceptor->add(new \seasar\aop\interceptor\TraceInterceptor);
         $targetOjb->service();
     }
 
     public function testPrameter() {
-        $targetRef = new ReflectionClass('seasar::aop::impl::A_NestedMethodInvocation');
+        $targetRef = new \ReflectionClass('\seasar\aop\impl\A_NestedMethodInvocation');
         $interceptor = new B_NestedMethodInvocation;
-        $pointcut = new seasar::aop::Pointcut('/.+/');
-        $aspects = array(new seasar::aop::Aspect($interceptor, $pointcut));
-        $targetOjb = seasar::aop::S2AopFactory::create($targetRef, $aspects, array(), array('name' => 'hoge'));
+        $pointcut = new \seasar\aop\Pointcut('/.+/');
+        $aspects = array(new \seasar\aop\Aspect($interceptor, $pointcut));
+        $targetOjb = \seasar\aop\S2AopFactory::create($targetRef, $aspects, array(), array('name' => 'hoge'));
         $targetOjb->service();
 
         $invocation = $interceptor->getNestInvocation();
-        $this->assertTrue($invocation instanceof seasar::aop::MethodInvocation);
-        $this->assertTrue($invocation->getThis() instanceof seasar::aop::impl::A_NestedMethodInvocation);
+        $this->assertTrue($invocation instanceof \seasar\aop\MethodInvocation);
+        $this->assertTrue($invocation->getThis() instanceof \seasar\aop\impl\A_NestedMethodInvocation);
         $this->assertTrue($invocation->getArguments() === array());
         $this->assertTrue($invocation->getMethod()->getName() === 'service');
-        $this->assertTrue($invocation->getTargetClass()->getName() === 'seasar::aop::impl::A_NestedMethodInvocation');
-        $this->assertTrue($invocation->getConcreteClass()->getName() === 'seasar::aop::impl::A_NestedMethodInvocation' .  seasar::aop::EnhancedClassGenerator::CLASS_NAME_POSTFIX);
+        $this->assertTrue($invocation->getTargetClass()->getName() === 'seasar\aop\impl\A_NestedMethodInvocation');
+        $this->assertTrue($invocation->getConcreteClass()->getName() === 'seasar\aop\impl\A_NestedMethodInvocation' .  \seasar\aop\EnhancedClassGenerator::CLASS_NAME_POSTFIX);
         $this->assertTrue($invocation->getParameter('name') === 'hoge');
     }
 
@@ -71,10 +71,10 @@ class A_NestedMethodInvocation {
     }
 }
 
-class B_NestedMethodInvocation implements seasar::aop::MethodInterceptor {
+class B_NestedMethodInvocation implements \seasar\aop\MethodInterceptor {
     private $nestInvocation = null;
-    public function invoke(seasar::aop::MethodInvocation $invocation) {
-        $this->nestInvocation = new seasar::aop::impl::NestedMethodInvocation($invocation, array());
+    public function invoke(\seasar\aop\MethodInvocation $invocation) {
+        $this->nestInvocation = new \seasar\aop\impl\NestedMethodInvocation($invocation, array());
         
         return $this->nestInvocation->proceed();
     }

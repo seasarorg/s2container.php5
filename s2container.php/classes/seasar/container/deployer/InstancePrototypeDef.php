@@ -25,17 +25,17 @@
  * @package   seasar.container.deployer
  * @author    klove
  */
-namespace seasar::container::deployer;
-class InstancePrototypeDef implements seasar::container::InstanceDef {
+namespace seasar\container\deployer;
+class InstancePrototypeDef implements \seasar\container\InstanceDef {
     /**
-     * @var string seasar::container::InstanceDef::PROTOTYPE_NAME
+     * @var string \seasar\container\InstanceDef::PROTOTYPE_NAME
      */
     private $name;
 
     /**
      * InstancePrototypeDef を構築します。
      *
-     * @param string $name seasar::container::InstanceDef::PROTOTYPE_NAME
+     * @param string $name \seasar\container\InstanceDef::PROTOTYPE_NAME
      */
     public function __construct($name) {
         $this->name = $name;
@@ -44,7 +44,7 @@ class InstancePrototypeDef implements seasar::container::InstanceDef {
     /**
      * インスタンス定義の文字列表現を返します。
      *
-     * @return string seasar::container::InstanceDef::PROTOTYPE_NAME
+     * @return string \seasar\container\InstanceDef::PROTOTYPE_NAME
      */
     public function getName() {
         return $this->name;
@@ -53,10 +53,10 @@ class InstancePrototypeDef implements seasar::container::InstanceDef {
     /**
      * インスタンス定義に基づいた、コンポーネント定義componentDefのComponentDeployerを返します。
      *
-     * @param seasar::container::ComponentDef $componentDef
+     * @param \seasar\container\ComponentDef $componentDef
      * @return object
      */
-    public function createComponentDeployer(seasar::container::ComponentDef $componentDef) {
+    public function createComponentDeployer(\seasar\container\ComponentDef $componentDef) {
         return new PrototypeComponentDeployer($componentDef);
     }
 }

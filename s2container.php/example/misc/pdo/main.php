@@ -2,7 +2,7 @@
 define('ROOT_DIR', dirname(__FILE__));
 require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php');
 
-use seasar::container::S2ApplicationContext as s2app;
+use \seasar\container\S2ApplicationContext as s2app;
 s2app::import(ROOT_DIR . DIRECTORY_SEPARATOR . 'classes');
 s2app::import(ROOT_DIR . DIRECTORY_SEPARATOR . 'config');
 s2app::registerAspect('/Dao$/', 'pdo.interceptor', '/^(find|insert|update|delete)/');
@@ -10,7 +10,7 @@ s2app::registerAspect('/Dao$/', 'pdo.interceptor', '/^(find|insert|update|delete
 /**
  * SqliteDB : sqlite_a.db
  */
-$dao = s2app::get('sample::pdo::CdDao');
+$dao = s2app::get('sample::pdo\CdDao');
 $rows = $dao->findAll();
 $rows = $dao->findById(1);
 $rows = $dao->findByTitle();
@@ -61,7 +61,7 @@ $dao->errorTransaction();
  * EMPテーブルに対してページング
  * SqliteDB : sqlite_c.db
  */
-$dao = s2app::get('sample::pdo::EmpDao');
+$dao = s2app::get('sample::pdo\EmpDao');
 $paginate = new Paginate;
 $paginate->setLimit(3);
 $rows = $paginate->find($dao, 'findAll');

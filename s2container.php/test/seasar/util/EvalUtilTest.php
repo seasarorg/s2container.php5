@@ -23,8 +23,8 @@
  * @package   seasar.util
  * @author    klove
  */
-namespace seasar::util;
-class EvalUtilTest extends ::PHPUnit_Framework_TestCase {
+namespace seasar\util;
+class EvalUtilTest extends \PHPUnit_Framework_TestCase {
 
     public function testA() {
         $src = ' 1 + 1';

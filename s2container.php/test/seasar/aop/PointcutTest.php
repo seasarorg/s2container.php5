@@ -23,21 +23,21 @@
  * @package   seasar.aop
  * @author    klove
  */
-namespace seasar::aop;
-class PointcutTest extends ::PHPUnit_Framework_TestCase {
+namespace seasar\aop;
+class PointcutTest extends \PHPUnit_Framework_TestCase {
 
     public function testIsAppliedReflection() {
-        $pc = new Pointcut(new ReflectionClass('seasar::aop::AW_Pointcut'));
+        $pc = new Pointcut(new \ReflectionClass('\seasar\aop\AW_Pointcut'));
         $this->assertTrue($pc->isApplied('awm1'));
 
-        $pc = new Pointcut(new ReflectionClass('seasar::aop::C_Pointcut'));
+        $pc = new Pointcut(new \ReflectionClass('\seasar\aop\C_Pointcut'));
         $this->assertTrue($pc->isApplied('say') === true);
 
-        $pc = new Pointcut(new ReflectionClass('seasar::aop::D_Pointcut'));
+        $pc = new Pointcut(new \ReflectionClass('\seasar\aop\D_Pointcut'));
         $this->assertTrue($pc->isApplied('say') === false);
         $this->assertTrue($pc->isApplied('hello') === true);
 
-        $pc = new Pointcut(new ReflectionClass('seasar::aop::E_Pointcut'));
+        $pc = new Pointcut(new \ReflectionClass('\seasar\aop\E_Pointcut'));
         $this->assertFalse($pc->isApplied('setHoge'));
         $this->assertFalse($pc->isApplied('getHoge'));
         $this->assertFalse($pc->isApplied('isHoge'));

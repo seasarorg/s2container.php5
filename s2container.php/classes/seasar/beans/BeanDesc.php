@@ -28,11 +28,11 @@
  * @package   seasar.beans
  * @author    klove
  */
-namespace seasar::beans;
+namespace seasar\beans;
 class BeanDesc {
 
     /**
-     * @var ReflectionClass
+     * @var \ReflectionClass
      */
     private $beanClass = null;
 
@@ -51,7 +51,7 @@ class BeanDesc {
      *
      * @param string $className
      */
-    public function __construct(ReflectionClass $clazz) {
+    public function __construct(\ReflectionClass $clazz) {
         $this->beanClass = $clazz;
         $this->setupPublicPropertyDescs();
         $this->setupAccessorMethodPropertyDescs();
@@ -60,7 +60,7 @@ class BeanDesc {
     /**
      * BeanクラスのReflectionClassを返します。
      *
-     * @return ReflectionClass
+     * @return \ReflectionClass
      */
     public function getBeanClass(){
         return $this->beanClass;
@@ -98,14 +98,14 @@ class BeanDesc {
      * 指定されたプロパティ名についてPropertyDescを返します。
      *
      * @param string $name
-     * @return seasar::beans::AbstractPropertyDesc
-     * @throw seasar::exception::PropertyNotFoundRuntimenException
+     * @return \seasar\beans\AbstractPropertyDesc
+     * @throw \seasar\exception\PropertyNotFoundRuntimenException
      */
     public function getPropertyDesc($name) {
         if ($this->hasPropertyDesc($name)) {
             return $this->propertyDescs[$name];
         }
-        throw new seasar::exception::PropertyNotFoundRuntimeException('class ' . $this->beanClass->getName() . " dose not have public property [$name].");
+        throw new \seasar\exception\PropertyNotFoundRuntimeException('class ' . $this->beanClass->getName() . " dose not have public property [$name].");
     }
 
     /**
@@ -140,14 +140,14 @@ class BeanDesc {
      * 指定されたプロパティ名について、タイプヒントされたPropertyDescを返します。
      *
      * @param string $name
-     * @return seasar::beans::AbstractPropertyDesc
-     * @throw seasar::exception::PropertyNotFoundRuntimenException
+     * @return \seasar\beans\AbstractPropertyDesc
+     * @throw \seasar\exception\PropertyNotFoundRuntimenException
      */
     public function getTypehintPropertyDesc($name) {
         if ($this->hasTypehintPropertyDesc($name)) {
             return $this->typehintPropertyDescs[$name];
         }
-        throw new seasar::exception::PropertyNotFoundRuntimeException('class ' . $this->beanClass->getName() . " dose not have typehint public property [$name].");
+        throw new \seasar\exception\PropertyNotFoundRuntimeException('class ' . $this->beanClass->getName() . " dose not have typehint public property [$name].");
     }
 
     /**
@@ -156,13 +156,13 @@ class BeanDesc {
      */
     private function setupPublicPropertyDescs() {
         $properties = $this->beanClass->getDefaultProperties();
-        $propTypehintKey = seasar::container::Config::$PROPERTY_TYPEHINT_KEY;
+        $propTypehintKey = \seasar\container\Config::$PROPERTY_TYPEHINT_KEY;
         $propTypehintKeyLen = strlen($propTypehintKey);
         foreach($properties as $name => $value) {
             if ($this->beanClass->getProperty($name)->isPublic()){
                 $propertyDesc = new PublicPropertyDesc($this->beanClass, $name);
                 $this->propertyDescs[$name] = $propertyDesc;
-                if (true === seasar::container::Config::$PROPERTY_TYPEHINT_NULL and
+                if (true === \seasar\container\Config::$PROPERTY_TYPEHINT_NULL and
                     $value == null) {
                     $propertyDesc->setArrayAcceptable(false);
                     $propertyDesc->setTypehint($name);
@@ -184,7 +184,7 @@ class BeanDesc {
                     }
                     if (class_exists($typehint)) {
                         $propertyDesc->setTypehint($typehint);
-                        $propertyDesc->setTypehintClass(new ReflectionClass($typehint));
+                        $propertyDesc->setTypehintClass(new \ReflectionClass($typehint));
                     } else {
                         $propertyDesc->setTypehint($typehint);
                     }
@@ -206,7 +206,7 @@ class BeanDesc {
             if ($method->isPublic() and
                 count($params) === 1 and 
                 0 === strpos($methodName, 'set')) {
-                $propName = seasar::util::StringUtil::lcfirst(substr($methodName, 3));
+                $propName = \seasar\util\StringUtil::lcfirst(substr($methodName, 3));
                 $propertyDesc = new AccessorMethodPropertyDesc($this->beanClass, $propName);
                 $this->propertyDescs[$propName] = $propertyDesc;
 

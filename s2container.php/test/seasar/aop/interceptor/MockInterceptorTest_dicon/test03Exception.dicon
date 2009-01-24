@@ -2,13 +2,13 @@
 <!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
 "components21.dtd">
 <components>
-    <component name="b" class="seasar::aop::interceptor::B_MockInterceptorTest">
+    <component name="b" class="seasar\aop\interceptor\B_MockInterceptorTest">
         <aspect pointcut="/.+/">mock</aspect>
     </component>
-    <component name="mock" class="seasar::aop::interceptor::MockInterceptor">
+    <component name="mock" class="seasar\aop\interceptor\MockInterceptor">
         <initMethod name="setThrowable">
             <arg>"getName"</arg>
-            <arg>new Exception('exception throw abcde')</arg>
+            <arg>new \Exception('exception throw abcde')</arg>
         </initMethod>
     </component>
 </components>

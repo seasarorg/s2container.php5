@@ -23,34 +23,34 @@
  * @package   seasar.container.util
  * @author    klove
  */
-namespace seasar::container::util;
-class ConstructorUtilTest extends ::PHPUnit_Framework_TestCase {
+namespace seasar\container\util;
+class ConstructorUtilTest extends \PHPUnit_Framework_TestCase {
 
     public function testGetInstanceWithArgs() {
-        $componentDef = new seasar::container::impl::ComponentDefImpl('seasar::container::util::A_ConstructorUtilTest');
+        $componentDef = new \seasar\container\impl\ComponentDefImpl('\seasar\container\util\A_ConstructorUtilTest');
         $obj = ConstructorUtil::getInstance($componentDef);
-        $this->assertTrue($obj instanceof seasar::container::util::A_ConstructorUtilTest);
+        $this->assertTrue($obj instanceof \seasar\container\util\A_ConstructorUtilTest);
     }
 
     public function testGetInstanceWithoutArgs() {
-        $componentDef = new seasar::container::impl::ComponentDefImpl('seasar::container::util::B_ConstructorUtilTest');
+        $componentDef = new \seasar\container\impl\ComponentDefImpl('\seasar\container\util\B_ConstructorUtilTest');
         $obj = ConstructorUtil::newInstance($componentDef, array('hoge', 2007));
         $this->assertEquals($obj->name, 'hoge');
         $this->assertEquals($obj->year, 2007);
     }
 
     public function testGetInstanceNoConstructor() {
-        $componentDef = new seasar::container::impl::ComponentDefImpl('seasar::container::util::C_ConstructorUtilTest');
+        $componentDef = new \seasar\container\impl\ComponentDefImpl('\seasar\container\util\C_ConstructorUtilTest');
         $obj = ConstructorUtil::newInstance($componentDef);
-        $this->assertTrue($obj instanceof seasar::container::util::C_ConstructorUtilTest);
+        $this->assertTrue($obj instanceof \seasar\container\util\C_ConstructorUtilTest);
     }
 
     public function testIllegalConstructor() {
-        $componentDef = new seasar::container::impl::ComponentDefImpl('seasar::container::util::C_ConstructorUtilTest');
+        $componentDef = new \seasar\container\impl\ComponentDefImpl('\seasar\container\util\C_ConstructorUtilTest');
         try {
             ConstructorUtil::newInstance($componentDef, array('hoge', 2007));
             $this->fail();
-        } catch (seasar::container::exception::IllegalConstructorRuntimeException $e) {
+        } catch (\seasar\container\exception\IllegalConstructorRuntimeException $e) {
             print $e->getMessage() . PHP_EOL;
         } catch (Exception $e) {
             print $e->getMessage() . PHP_EOL;

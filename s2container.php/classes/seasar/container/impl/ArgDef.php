@@ -25,7 +25,7 @@
  * @package   seasar.container.impl
  * @author    klove
  */
-namespace seasar::container::impl;
+namespace seasar\container\impl;
 class ArgDef {
 
     /**
@@ -34,7 +34,7 @@ class ArgDef {
     private $value      = null;
 
     /**
-     * @var seasar::container::S2Container
+     * @var \seasar\container\S2Container
      */
     private $container  = null;
 
@@ -44,12 +44,12 @@ class ArgDef {
     private $expression = null;
 
     /**
-     * @var seasar::container::ComponentDef
+     * @var \seasar\container\ComponentDef
      */
     private $childComponentDef = null;
 
     /**
-     * @var seasar::container::util::MetaDefSupport
+     * @var \seasar\container\util\MetaDefSupport
      */
     private $metaDefSupport    = null;
 
@@ -59,7 +59,7 @@ class ArgDef {
      * @param mixed $value
      */
     public function __construct($value = null) {
-        $this->metaDefSupport= new seasar::container::util::MetaDefSupport();
+        $this->metaDefSupport= new \seasar\container\util\MetaDefSupport();
         $this->value= $value;
     }
 
@@ -70,9 +70,9 @@ class ArgDef {
      */
     public final function getValue() {
         if ($this->expression !== null) {
-            return seasar::util::EvalUtil::execute(seasar::util::EvalUtil::formatExpression($this->expression));
+            return \seasar\util\EvalUtil::execute(\seasar\util\EvalUtil::formatExpression($this->expression));
         }
-        if ($this->childComponentDef instanceof seasar::container::ComponentDef) {
+        if ($this->childComponentDef instanceof \seasar\container\ComponentDef) {
             return $this->childComponentDef->getComponent();
         }
         return $this->value;
@@ -90,7 +90,7 @@ class ArgDef {
     /**
      * 引数を評価するコンテキストとなるS2コンテナを返します。
      *
-     * @return seasar::container::S2Container
+     * @return \seasar\container\S2Container
      */
     public final function getContainer() {
         return $this->container;
@@ -99,9 +99,9 @@ class ArgDef {
     /**
      * 引数を評価するコンテキストとなるS2コンテナを設定します。
      *
-     * @param seasar::container::S2Container $container
+     * @param \seasar\container\S2Container $container
      */
-    public final function setContainer(seasar::container::S2Container $container) {
+    public final function setContainer(\seasar\container\S2Container $container) {
         $this->container = $container;
         if ($this->childComponentDef instanceof ComponentDef) {
             $this->childComponentDef->setContainer($container);
@@ -130,9 +130,9 @@ class ArgDef {
     /**
      * 引数定義の値となるコンポーネント定義を設定します。
      *
-     * @param seasar::container::ComponentDef $componentDef
+     * @param \seasar\container\ComponentDef $componentDef
      */
-    public final function setChildComponentDef(seasar::container::ComponentDef $componentDef) {
+    public final function setChildComponentDef(\seasar\container\ComponentDef $componentDef) {
         if ($this->container != null) {
             $componentDef->setContainer($this->container);
         }
@@ -142,7 +142,7 @@ class ArgDef {
     /**
      * 引数定義の値となるコンポーネント定義を返します。
      *
-     * @return seasar::container::ComponentDef
+     * @return \seasar\container\ComponentDef
      */
     public final function getChildComponentDef() {
          return $this->childComponentDef;
@@ -151,7 +151,7 @@ class ArgDef {
     /**
      * メタデータ定義を追加します。
      *
-     * @param seasar::container::impl::MetaDef $metaDef
+     * @param \seasar\container\impl\MetaDef $metaDef
      */
     public function addMetaDef(MetaDef $metaDef) {
         $this->metaDefSupport->addMetaDef($metaDef);
@@ -160,7 +160,7 @@ class ArgDef {
     /**
      * インデックス番号indexで指定されたメタデータ定義を返します。
      *
-     * @return seasar::container::impl::MetaDef
+     * @return \seasar\container\impl\MetaDef
      */
     public function getMetaDef($index) {
         return $this->metaDefSupport->getMetaDef($index);
@@ -170,7 +170,7 @@ class ArgDef {
      * 指定したメタデータ定義名で登録されているメタデータ定義を取得します。
      * メタデータ定義が登録されていない場合、要素数0の配列を返します。
      *
-     * @return seasar::container::impl::MetaDef
+     * @return \seasar\container\impl\MetaDef
      */
     public function getMetaDefs($name) {
         return $this->metaDefSupport->getMetaDefs($name);

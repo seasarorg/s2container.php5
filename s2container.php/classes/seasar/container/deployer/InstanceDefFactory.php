@@ -25,7 +25,7 @@
  * @package   seasar.container.deployer
  * @author    klove
  */
-namespace seasar::container::deployer;
+namespace seasar\container\deployer;
 class InstanceDefFactory {
 
     /**
@@ -41,9 +41,9 @@ class InstanceDefFactory {
     /**
      * InstanceDefを作成するためのクラスです。
      *
-     * @param seasar::container::InstanceDef $instanceDef
+     * @param \seasar\container\InstanceDef $instanceDef
      */
-    public static function addInstanceDef(seasar::container::InstanceDef $instanceDef) {
+    public static function addInstanceDef(\seasar\container\InstanceDef $instanceDef) {
         self::$instanceDefs[$instanceDef->getName()] = $instanceDef;
     }
 
@@ -63,7 +63,7 @@ class InstanceDefFactory {
      */
     public static function getInstanceDef($name) {
         if (!self::existInstanceDef($name)) {
-            throw new seasar::container::exception::IllegalInstanceDefRuntimeException($name);
+            throw new \seasar\container\exception\IllegalInstanceDefRuntimeException($name);
         }
         return self::$instanceDefs[$name];
     }
@@ -72,5 +72,5 @@ class InstanceDefFactory {
 /**
  * デフォルトのInstanceDefを登録します。
  */
-seasar::container::deployer::InstanceDefFactory::addInstanceDef(new InstanceSingletonDef(seasar::container::InstanceDef::SINGLETON_NAME));
-seasar::container::deployer::InstanceDefFactory::addInstanceDef(new InstancePrototypeDef(seasar::container::InstanceDef::PROTOTYPE_NAME));
+\seasar\container\deployer\InstanceDefFactory::addInstanceDef(new InstanceSingletonDef(\seasar\container\InstanceDef::SINGLETON_NAME));
+\seasar\container\deployer\InstanceDefFactory::addInstanceDef(new InstancePrototypeDef(\seasar\container\InstanceDef::PROTOTYPE_NAME));

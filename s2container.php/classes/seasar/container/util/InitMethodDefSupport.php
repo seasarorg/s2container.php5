@@ -25,7 +25,7 @@
  * @package   seasar.container.util
  * @author    klove
  */
-namespace seasar::container::util;
+namespace seasar\container\util;
 class InitMethodDefSupport {
 
     /**
@@ -34,16 +34,16 @@ class InitMethodDefSupport {
     private $methodDefs = array();
 
     /**
-     * @var seasar::container::S2Container
+     * @var \seasar\container\S2Container
      */
     private $container  = null;
 
     /**
      * InitMethodDefを追加します。
      *
-     * @param seasar::container::impl::InitMethodDef $methodDef
+     * @param \seasar\container\impl\InitMethodDef $methodDef
      */
-    public function addInitMethodDef(seasar::container::impl::InitMethodDef $methodDef) {
+    public function addInitMethodDef(\seasar\container\impl\InitMethodDef $methodDef) {
         if ($this->container !== null) {
             $methodDef->setContainer($this->container);
         }
@@ -63,7 +63,7 @@ class InitMethodDefSupport {
      * InitMethodDefを返します。
      *
      * @param integer
-     * @return seasar::container::impl::InitMethodDef
+     * @return \seasar\container\impl\InitMethodDef
      */
     public function getInitMethodDef($index) {
         return $this->methodDefs[$index];
@@ -81,9 +81,9 @@ class InitMethodDefSupport {
     /**
      * S2Containerを設定します。
      *
-     * @param seasar::container::S2Container $container
+     * @param \seasar\container\S2Container $container
      */
-    public function setContainer(seasar::container::S2Container $container) {
+    public function setContainer(\seasar\container\S2Container $container) {
         $this->container = $container;
         foreach ($this->methodDefs as $methodDef) {
             $methodDef->setContainer($container);

@@ -25,8 +25,8 @@
  * @package   seasar.exception
  * @author    klove
  */
-namespace seasar::exception;
-class S2RuntimeException extends ::RuntimeException {
+namespace seasar\exception;
+class S2RuntimeException extends \RuntimeException {
 
     /**
      * @var array
@@ -60,11 +60,11 @@ class S2RuntimeException extends ::RuntimeException {
         $this->args  = $args;
         $this->couse = $couse;
         if (isset(self::$MESSAGES[$code])) {
-            $msg = seasar::util::EvalUtil::formatExecute(self::$MESSAGES[$code], array('args' => $args));
+            $msg = \seasar\util\EvalUtil::formatExecute(self::$MESSAGES[$code], array('args' => $args));
         } else {
             $msgTmp = array();
             foreach ($args as $arg) {
-                $msgTmp[] = seasar::util::StringUtil::mixToString($arg);
+                $msgTmp[] = \seasar\util\StringUtil::mixToString($arg);
             }
             $msg = '[' . implode(', ', $msgTmp) . ']';
         }

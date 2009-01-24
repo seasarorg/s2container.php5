@@ -2,7 +2,7 @@
 <!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
 "components21.dtd">
 <components>
-    <component name="a" class="seasar::container::factory::A_XmlS2ContainerBuilderTest">
+    <component name="a" class="\seasar\container\factory\A_XmlS2ContainerBuilderTest">
         <property name="year">2007</property>
     </component>
 </components>

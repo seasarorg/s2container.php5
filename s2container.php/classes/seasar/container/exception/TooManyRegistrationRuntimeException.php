@@ -31,8 +31,8 @@
  * @package   seasar.container.exception
  * @author    klove
  */
-namespace seasar::container::exception;
-class TooManyRegistrationRuntimeException extends seasar::exception::S2RuntimeException {
+namespace seasar\container\exception;
+class TooManyRegistrationRuntimeException extends \seasar\exception\S2RuntimeException {
 
     /**
      * @var string
@@ -83,7 +83,7 @@ class TooManyRegistrationRuntimeException extends seasar::exception::S2RuntimeEx
     private static function getClassNames($componentClasses) {
         $buf = array();
         foreach ($componentClasses as $clazz) {
-            if($clazz instanceof ReflectionClass){
+            if($clazz instanceof \ReflectionClass){
                 $buf[] = $clazz->getName();
             }else{
                 $buf[] = 'class n/a';

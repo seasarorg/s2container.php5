@@ -26,8 +26,8 @@
  * @package   seasar.aop.exception
  * @author    klove
  */
-namespace seasar::aop::exception;
-class AbstractMethodInvocationRuntimeException extends seasar::exception::S2RuntimeException {
+namespace seasar\aop\exception;
+class AbstractMethodInvocationRuntimeException extends \seasar\exception\S2RuntimeException {
     /**
      * @var string 実行対象となったメソッド名
      */

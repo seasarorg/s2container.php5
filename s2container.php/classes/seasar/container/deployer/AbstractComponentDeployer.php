@@ -25,35 +25,35 @@
  * @package   seasar.container.deployer
  * @author    klove
  */
-namespace seasar::container::deployer;
+namespace seasar\container\deployer;
 abstract class AbstractComponentDeployer {
 
     /**
-     * @var seasar::container::ComponentDef
+     * @var \seasar\container\ComponentDef
      */
     private $componentDef         = null;
 
     /**
-     * @var seasar::container::assembler::AbstractAssembler
+     * @var \seasar\container\assembler\AbstractAssembler
      */
     private $constructorAssembler = null;
 
     /**
-     * @var seasar::container::assembler::AbstractAssembler
+     * @var \seasar\container\assembler\AbstractAssembler
      */
     private $propertyAssembler    = null;
 
     /**
-     * @var seasar::container::assembler::AbstractAssembler
+     * @var \seasar\container\assembler\AbstractAssembler
      */
     private $initMethodAssembler  = null;
 
     /**
      * ComponentDefployer を構築します。
      *
-     * @param seasar::container::ComponentDef $componentDef
+     * @param \seasar\container\ComponentDef $componentDef
      */
-    public function __construct(seasar::container::ComponentDef $componentDef) {
+    public function __construct(\seasar\container\ComponentDef $componentDef) {
         $this->componentDef = $componentDef;
         $this->setupAssembler();
     }
@@ -69,7 +69,7 @@ abstract class AbstractComponentDeployer {
     /**
      * ComponentDefを返します。
      *
-     * @return seasar::container::ComponentDef
+     * @return \seasar\container\ComponentDef
      */
     protected final function getComponentDef() {
         return $this->componentDef;
@@ -78,7 +78,7 @@ abstract class AbstractComponentDeployer {
     /**
      * ConstructorAssemblerを返します。
      *
-     * @return seasar::container::assembler::AbstractAssembler
+     * @return \seasar\container\assembler\AbstractAssembler
      */
     protected final function getConstructorAssembler() {
         return $this->constructorAssembler;
@@ -87,7 +87,7 @@ abstract class AbstractComponentDeployer {
     /**
      * PropertyAssemblerを返します。
      *
-     * @return seasar::container::assembler::AbstractAssembler
+     * @return \seasar\container\assembler\AbstractAssembler
      */
     protected final function getPropertyAssembler() {
         return $this->propertyAssembler;
@@ -96,7 +96,7 @@ abstract class AbstractComponentDeployer {
     /**
      * MethodAssemblerを返します。
      *
-     * @return seasar::container::assembler::AbstractAssembler
+     * @return \seasar\container\assembler\AbstractAssembler
      */
     protected final function getInitMethodAssembler() {
         return $this->initMethodAssembler;
@@ -108,6 +108,6 @@ abstract class AbstractComponentDeployer {
     protected function setupAssembler() {
         $this->constructorAssembler = $this->componentDef->getAutoBindingDef()->createConstructorAssembler($this->componentDef);
         $this->propertyAssembler    = $this->componentDef->getAutoBindingDef()->createPropertyAssembler($this->componentDef);
-        $this->initMethodAssembler  = new seasar::container::assembler::InitMethodAssembler($this->componentDef);
+        $this->initMethodAssembler  = new \seasar\container\assembler\InitMethodAssembler($this->componentDef);
     }
 }

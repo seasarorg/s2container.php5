@@ -25,7 +25,7 @@
  * @package   seasar.beans
  * @author    klove
  */
-namespace seasar::beans;
+namespace seasar\beans;
 abstract class AbstractPropertyDesc implements PropertyDesc {
 
     /**
@@ -34,7 +34,7 @@ abstract class AbstractPropertyDesc implements PropertyDesc {
     protected $typehint = null;
 
     /**
-     * @var ReflectionClass
+     * @var \ReflectionClass
      */
     protected $typehintClass = null;
 
@@ -44,7 +44,7 @@ abstract class AbstractPropertyDesc implements PropertyDesc {
     protected $isArrayAcceptable = false;
 
     /**
-     * @var ReflectionClass
+     * @var \ReflectionClass
      */
     protected $beanClass = null;
 
@@ -56,65 +56,65 @@ abstract class AbstractPropertyDesc implements PropertyDesc {
     /**
      * PropertyDescを構築します。
      *
-     * @param ReflectionClass $beanClass
+     * @param \ReflectionClass $beanClass
      * @param string $propName
      */
-    public function __construct(ReflectionClass $beanClass, $propName) {
+    public function __construct(\ReflectionClass $beanClass, $propName) {
         $this->beanClass = $beanClass;
         $this->propertyName = $propName;
     }
 
     /**
-     * @see seasar::beans::PropertyDesc::getBeanClass()
+     * @see \seasar\beans\PropertyDesc::getBeanClass()
      */
     public function getBeanClass() {
         return $this->beanClass;
     }
 
     /**
-     * @see seasar::beans::PropertyDesc::getPropertyName()
+     * @see \seasar\beans\PropertyDesc::getPropertyName()
      */
     public function getPropertyName() {
         return $this->propertyName;
     }
 
     /**
-     * @see seasar::beans::PropertyDesc::getTypehint()
+     * @see \seasar\beans\PropertyDesc::getTypehint()
      */
     public function getTypehint() {
         return $this->typehint;
     }
 
     /**
-     * @see seasar::beans::PropertyDesc::setTypehint()
+     * @see \seasar\beans\PropertyDesc::setTypehint()
      */
     public function setTypehint($value) {
         $this->typehint = $value;
     }
 
     /**
-     * @see seasar::beans::PropertyDesc::getTypehintClass()
+     * @see \seasar\beans\PropertyDesc::getTypehintClass()
      */
     public function getTypehintClass() {
         return $this->typehintClass;
     }
 
     /**
-     * @see seasar::beans::PropertyDesc::setTypehintClass()
+     * @see \seasar\beans\PropertyDesc::setTypehintClass()
      */
-    public function setTypehintClass(ReflectionClass $clazz) {
+    public function setTypehintClass(\ReflectionClass $clazz) {
         $this->typehintClass = $clazz;
     }
 
     /**
-     * @see seasar::beans::PropertyDesc::isArrayAcceptable()
+     * @see \seasar\beans\PropertyDesc::isArrayAcceptable()
      */
     public function isArrayAcceptable() {
         return $this->isArrayAcceptable;
     }
 
     /**
-     * @see seasar::beans::PropertyDesc::setArrayAcceptable()
+     * @see \seasar\beans\PropertyDesc::setArrayAcceptable()
      */
     public function setArrayAcceptable($value = true) {
         $this->isArrayAcceptable = $value;

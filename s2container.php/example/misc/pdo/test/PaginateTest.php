@@ -1,6 +1,6 @@
 <?php
 require_once(ROOT_DIR . '/classes/Paginate.php');
-class PaginateTest extends ::PHPUnit_Framework_TestCase {
+class PaginateTest extends \PHPUnit_Framework_TestCase {
 
     public function testGetTotal() {
         $paginate = new Paginate;

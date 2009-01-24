@@ -37,7 +37,7 @@
  * @package   seasar.container
  * @author    klove
  */
-namespace seasar::container;
+namespace seasar\container;
 interface InstanceDef {
     /**
      * インスタンス定義「singleton」を表す定数です。
@@ -59,8 +59,8 @@ interface InstanceDef {
     /**
      * インスタンス定義に基づいた、コンポーネント定義componentDefのComponentDeployerを返します。
      *
-     * @param seasar::container::ComponentDef $componentDef
-     * @return seasar::container::deployer::ComponentDeployer
+     * @param \seasar\container\ComponentDef $componentDef
+     * @return \seasar\container\deployer\ComponentDeployer
      */
-    public function createComponentDeployer(seasar::container::ComponentDef $componentDef);
+    public function createComponentDeployer(\seasar\container\ComponentDef $componentDef);
 }

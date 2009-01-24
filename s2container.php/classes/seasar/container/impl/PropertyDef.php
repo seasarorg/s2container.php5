@@ -25,7 +25,7 @@
  * @package   seasar.container.impl
  * @author    klove
  */
-namespace seasar::container::impl;
+namespace seasar\container\impl;
 class PropertyDef extends ArgDef {
 
     /**

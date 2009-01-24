@@ -25,23 +25,23 @@
  * @package   seasar.aop
  * @author    klove
  */
-namespace seasar::aop;
+namespace seasar\aop;
 class Aspect {
 
     /**
-     * @var seasar::aop::MethodInterceptor
+     * @var \seasar\aop\MethodInterceptor
      */
     private $methodInterceptor;
 
     /**
-     * @var seasar::aop::Pointcut
+     * @var \seasar\aop\Pointcut
      */
     private $pointcut;
 
     /**
      * Aspectを構築します。
-     * @param seasar::aop::MethodInterceptor $methodInterceptor
-     * @param seasar::aop::Pointcut $pointcut
+     * @param \seasar\aop\MethodInterceptor $methodInterceptor
+     * @param \seasar\aop\Pointcut $pointcut
      */
     public function __construct(MethodInterceptor $methodInterceptor, Pointcut $pointcut) {
         $this->methodInterceptor = $methodInterceptor;
@@ -50,7 +50,7 @@ class Aspect {
 
     /**
      * MethodInterceptorを返します。
-     * @return seasar::aop::MethodInterceptor
+     * @return \seasar\aop\MethodInterceptor
      */
     public function getMethodInterceptor() {
         return $this->methodInterceptor;
@@ -58,7 +58,7 @@ class Aspect {
 
     /**
      * Pointcutを返します。
-     * @return seasar::aop::Pointcut
+     * @return \seasar\aop\Pointcut
      */
     public function getPointcut() {
         return $this->pointcut;
@@ -66,7 +66,7 @@ class Aspect {
 
     /**
      * Pointcutを設定します。
-     * @param seasar::aop::Pointcut $pointcut
+     * @param \seasar\aop\Pointcut $pointcut
      */
     public function setPointcut(Pointcut $pointcut) {
         $this->pointcut = $pointcut;

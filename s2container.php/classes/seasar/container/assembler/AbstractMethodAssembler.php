@@ -25,13 +25,13 @@
  * @package   seasar.container.assembler
  * @author    klove
  */
-namespace seasar::container::assembler;
+namespace seasar\container\assembler;
 abstract class AbstractMethodAssembler extends AbstractAssembler {
 
     /**
-     * @see seasar::container::assembler::AbstractAssembler::__construct()
+     * @see \seasar\container\assembler\AbstractAssembler::__construct()
      */
-    public function __construct(seasar::container::ComponentDef $componentDef) {
+    public function __construct(\seasar\container\ComponentDef $componentDef) {
         parent::__construct($componentDef);
     }
 
@@ -41,11 +41,11 @@ abstract class AbstractMethodAssembler extends AbstractAssembler {
      * eval関数を実行します。
      *
      * @param object $component
-     * @param seasar::container::MethodDef $methodDef
+     * @param \seasar\container\MethodDef $methodDef
      */
-    protected function invoke($component, seasar::container::MethodDef $methodDef) {
+    protected function invoke($component, \seasar\container\MethodDef $methodDef) {
         if ($methodDef->getMethodName() == null) {
-            seasar::util::EvalUtil::execute($methodDef->getExpression(), array('component' => $component));
+            \seasar\util\EvalUtil::execute($methodDef->getExpression(), array('component' => $component));
         } else {
             $refMethod = $this->getComponentDef()->getComponentClass()->getMethod($methodDef->getMethodName());
             $refParams = $refMethod->getParameters();
@@ -63,7 +63,7 @@ abstract class AbstractMethodAssembler extends AbstractAssembler {
             } else {
                 $args = $this->getArgs($refParams);
             }
-            seasar::util::MethodUtil::invoke($refMethod, $component, $args);
+            \seasar\util\MethodUtil::invoke($refMethod, $component, $args);
         }
     }
 }

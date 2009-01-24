@@ -6,13 +6,13 @@
         <aspect>chain</aspect>
     </component>
 
-    <component name="chain" class="seasar::aop::interceptor::InterceptorChain">
+    <component name="chain" class="seasar\aop\interceptor\InterceptorChain">
         <initMethod name="add"><arg>trace</arg></initMethod>
         <initMethod name="add"><arg>mock</arg></initMethod>
     </component>
 
-    <component name="trace" class="seasar::aop::interceptor::TraceInterceptor"/>
-    <component name="mock" class="seasar::aop::interceptor::MockInterceptor">
+    <component name="trace" class="seasar\aop\interceptor\TraceInterceptor"/>
+    <component name="mock" class="seasar\aop\interceptor\MockInterceptor">
         <initMethod name="setReturnValue">
             <arg>"add"</arg>
             <arg>20</arg>

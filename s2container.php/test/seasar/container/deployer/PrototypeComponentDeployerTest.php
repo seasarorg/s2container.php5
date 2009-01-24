@@ -23,35 +23,35 @@
  * @package   seasar.container.deployer
  * @author    klove
  */
-namespace seasar::container::deployer;
-class PrototypeComponentDeployerTest extends ::PHPUnit_Framework_TestCase {
+namespace seasar\container\deployer;
+class PrototypeComponentDeployerTest extends \PHPUnit_Framework_TestCase {
 
     public function testAssembleWithoutArgs() {
-        $container = new seasar::container::impl::S2ContainerImpl();
-        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::A_PrototypeComponentDeployerTest');
-        $componentDef->setInstanceDef(InstanceDefFactory::getInstanceDef(seasar::container::InstanceDef::PROTOTYPE_NAME));
+        $container = new \seasar\container\impl\S2ContainerImpl();
+        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\A_PrototypeComponentDeployerTest');
+        $componentDef->setInstanceDef(InstanceDefFactory::getInstanceDef(\seasar\container\InstanceDef::PROTOTYPE_NAME));
         $deployer = new PrototypeComponentDeployer($componentDef);
-        $this->assertTrue($deployer->deploy() instanceof seasar::container::deployer::A_PrototypeComponentDeployerTest);
+        $this->assertTrue($deployer->deploy() instanceof \seasar\container\deployer\A_PrototypeComponentDeployerTest);
     }
 
     public function testPrototype() {
-        $container = new seasar::container::impl::S2ContainerImpl();
-        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::A_PrototypeComponentDeployerTest');
-        $componentDef->setInstanceDef(InstanceDefFactory::getInstanceDef(seasar::container::InstanceDef::PROTOTYPE_NAME));
+        $container = new \seasar\container\impl\S2ContainerImpl();
+        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\A_PrototypeComponentDeployerTest');
+        $componentDef->setInstanceDef(InstanceDefFactory::getInstanceDef(\seasar\container\InstanceDef::PROTOTYPE_NAME));
         $deployer = new PrototypeComponentDeployer($componentDef);
         $this->assertTrue($deployer->deploy() !== $deployer->deploy());
     }
 
     public function testCyclicInstantiation1Step() {
-        $container = new seasar::container::impl::S2ContainerImpl();
-        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::B_PrototypeComponentDeployerTest');
-        $componentDef->setInstanceDef(InstanceDefFactory::getInstanceDef(seasar::container::InstanceDef::PROTOTYPE_NAME));
+        $container = new \seasar\container\impl\S2ContainerImpl();
+        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\B_PrototypeComponentDeployerTest');
+        $componentDef->setInstanceDef(InstanceDefFactory::getInstanceDef(\seasar\container\InstanceDef::PROTOTYPE_NAME));
         $container->register($componentDef);
         $deployer = new PrototypeComponentDeployer($componentDef);
         try {
             $deployer->deploy();
             $this->fail();
-        } catch(seasar::container::exception::CyclicInstantiationRuntimeException $e) {
+        } catch(\seasar\container\exception\CyclicInstantiationRuntimeException $e) {
             print $e->getMessage() .PHP_EOL;
         } catch(Exception $e) {
             print $e->getMessage() .PHP_EOL;
@@ -60,17 +60,17 @@ class PrototypeComponentDeployerTest extends ::PHPUnit_Framework_TestCase {
     }
 
     public function testCyclicInstantiation2Step() {
-        $container = new seasar::container::impl::S2ContainerImpl();
-        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::C_PrototypeComponentDeployerTest');
-        $componentDef->setInstanceDef(InstanceDefFactory::getInstanceDef(seasar::container::InstanceDef::PROTOTYPE_NAME));
+        $container = new \seasar\container\impl\S2ContainerImpl();
+        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\C_PrototypeComponentDeployerTest');
+        $componentDef->setInstanceDef(InstanceDefFactory::getInstanceDef(\seasar\container\InstanceDef::PROTOTYPE_NAME));
         $container->register($componentDef);
-        $componentDef = new seasar::container::impl::ComponentDefImpl(__NAMESPACE__ . '::D_PrototypeComponentDeployerTest');
+        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\D_PrototypeComponentDeployerTest');
         $container->register($componentDef);
         $deployer = new PrototypeComponentDeployer($componentDef);
         try {
             $deployer->deploy();
             $this->fail();
-        } catch(seasar::container::exception::CyclicInstantiationRuntimeException $e) {
+        } catch(\seasar\container\exception\CyclicInstantiationRuntimeException $e) {
             print $e->getMessage() .PHP_EOL;
         } catch(Exception $e) {
             print $e->getMessage() .PHP_EOL;

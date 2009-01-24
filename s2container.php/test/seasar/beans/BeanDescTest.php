@@ -23,12 +23,12 @@
  * @package   seasar.beans
  * @author    klove
  */
-namespace seasar::beans;
-class BeanDescTest extends ::PHPUnit_Framework_TestCase {
+namespace seasar\beans;
+class BeanDescTest extends \PHPUnit_Framework_TestCase {
 
     public function testHasPublicProperty() {
-        $bean = BeanDescFactory::getBeanDesc(new ReflectionClass('seasar::beans::A_BeanDescTest'));
-        $this->assertEquals($bean->getBeanClass()->getName(), 'seasar::beans::A_BeanDescTest');
+        $bean = BeanDescFactory::getBeanDesc(new \ReflectionClass('\seasar\beans\A_BeanDescTest'));
+        $this->assertEquals($bean->getBeanClass()->getName(), 'seasar\beans\A_BeanDescTest');
         $this->assertTrue ($bean->hasPropertyDesc('name'));
         $this->assertFalse($bean->hasPropertyDesc('nameB'));
         $this->assertFalse($bean->hasPropertyDesc('value'));
@@ -36,8 +36,8 @@ class BeanDescTest extends ::PHPUnit_Framework_TestCase {
     }
 
     public function testHasTypehintPublicProperty() {
-        $bean = BeanDescFactory::getBeanDesc('seasar::beans::A_BeanDescTest');
-        $this->assertEquals($bean->getBeanClass()->getName(), 'seasar::beans::A_BeanDescTest');
+        $bean = BeanDescFactory::getBeanDesc('\seasar\beans\A_BeanDescTest');
+        $this->assertEquals($bean->getBeanClass()->getName(), 'seasar\beans\A_BeanDescTest');
         $this->assertTrue ($bean->hasTypehintPropertyDesc('name'));
         $this->assertFalse($bean->hasTypehintPropertyDesc('nameB'));
         $this->assertFalse($bean->hasTypehintPropertyDesc('value'));
@@ -45,56 +45,56 @@ class BeanDescTest extends ::PHPUnit_Framework_TestCase {
     }
 
     public function testGetPublicProperty() {
-        $bean = BeanDescFactory::getBeanDesc('seasar::beans::A_BeanDescTest');
+        $bean = BeanDescFactory::getBeanDesc('\seasar\beans\A_BeanDescTest');
         $propertyDesc = $bean->getPropertyDesc('name');
         $this->assertTrue($propertyDesc instanceof PublicPropertyDesc);
-        $this->assertTrue($propertyDesc->getProperty() instanceof ReflectionProperty);
-        $this->assertEquals($propertyDesc->getTypehint(), 'seasar::beans::B_BeanDescTest');
+        $this->assertTrue($propertyDesc->getProperty() instanceof \ReflectionProperty);
+        $this->assertEquals($propertyDesc->getTypehint(), '\seasar\beans\B_BeanDescTest');
         $this->assertFalse($propertyDesc->isArrayAcceptable());
 
-        $bean = BeanDescFactory::getBeanDesc('seasar::beans::A_BeanDescTest');
+        $bean = BeanDescFactory::getBeanDesc('\seasar\beans\A_BeanDescTest');
         $propertyDesc = $bean->getPropertyDesc('service');
         $this->assertTrue($propertyDesc instanceof PublicPropertyDesc);
-        $this->assertTrue($propertyDesc->getProperty() instanceof ReflectionProperty);
-        $this->assertEquals($propertyDesc->getTypehint(), 'seasar::beans::B_BeanDescTest');
+        $this->assertTrue($propertyDesc->getProperty() instanceof \ReflectionProperty);
+        $this->assertEquals($propertyDesc->getTypehint(), '\seasar\beans\B_BeanDescTest');
         $this->assertTrue($propertyDesc->isArrayAcceptable());
     }
 
     public function testGetPublicPropertyDefault() {
-        $bean = BeanDescFactory::getBeanDesc('seasar::beans::C_BeanDescTest');
+        $bean = BeanDescFactory::getBeanDesc('\seasar\beans\C_BeanDescTest');
         $propertyDesc = $bean->getPropertyDesc('hogeLogic');
         $this->assertTrue($propertyDesc instanceof PublicPropertyDesc);
-        $this->assertTrue($propertyDesc->getProperty() instanceof ReflectionProperty);
+        $this->assertTrue($propertyDesc->getProperty() instanceof \ReflectionProperty);
         $this->assertEquals($propertyDesc->getTypehint(), 'hogeLogic');
         $this->assertFalse($propertyDesc->isArrayAcceptable());
     }
 
     public function testGetPublicPropertyDefaultNull() {
         $propName = 'hogeLogic';
-        $bean = BeanDescFactory::getBeanDesc('seasar::beans::D_BeanDescTest');
+        $bean = BeanDescFactory::getBeanDesc('\seasar\beans\D_BeanDescTest');
         $this->assertTrue($bean->hasTypehintPropertyDesc($propName));
         $this->assertTrue($bean->hasTypehintPropertyDesc('hugaLogic'));
         $this->assertTrue($bean->hasTypehintPropertyDesc('barLogic'));
         $propertyDesc = $bean->getPropertyDesc($propName);
         $this->assertTrue($propertyDesc instanceof PublicPropertyDesc);
-        $this->assertTrue($propertyDesc->getProperty() instanceof ReflectionProperty);
+        $this->assertTrue($propertyDesc->getProperty() instanceof \ReflectionProperty);
         $this->assertEquals($propertyDesc->getTypehint(), $propName);
         $this->assertFalse($propertyDesc->isArrayAcceptable());
 
-        seasar::container::Config::$PROPERTY_TYPEHINT_NULL = false;
+        \seasar\container\Config::$PROPERTY_TYPEHINT_NULL = false;
 
-        $bean = BeanDescFactory::getBeanDesc('seasar::beans::E_BeanDescTest');
+        $bean = BeanDescFactory::getBeanDesc('\seasar\beans\E_BeanDescTest');
         $this->assertFalse($bean->hasTypehintPropertyDesc($propName));
 
-        seasar::container::Config::$PROPERTY_TYPEHINT_NULL = true;
+        \seasar\container\Config::$PROPERTY_TYPEHINT_NULL = true;
     }
 
     public function testGetPublicPropertyException() {
         try {
-            $bean = BeanDescFactory::getBeanDesc('seasar::beans::A_BeanDescTest');
+            $bean = BeanDescFactory::getBeanDesc('\seasar\beans\A_BeanDescTest');
             $propertyDesc = $bean->getPropertyDesc('xxx');
             $this->fail();
-        } catch (seasar::exception::PropertyNotFoundRuntimeException $e) {
+        } catch (\seasar\exception\PropertyNotFoundRuntimeException $e) {
             print $e->getMessage() . PHP_EOL;
         } catch (Exception $e) {
             $this->fail($e->getMessage());
@@ -102,26 +102,26 @@ class BeanDescTest extends ::PHPUnit_Framework_TestCase {
     }
 
     public function testGetTypehintPublicProperty() {
-        $bean = BeanDescFactory::getBeanDesc('seasar::beans::A_BeanDescTest');
+        $bean = BeanDescFactory::getBeanDesc('\seasar\beans\A_BeanDescTest');
         $propertyDesc = $bean->getTypehintPropertyDesc('name');
-        $this->assertTrue($propertyDesc->getProperty() instanceof ReflectionProperty);
-        $this->assertEquals($propertyDesc->getTypehint(), 'seasar::beans::B_BeanDescTest');
+        $this->assertTrue($propertyDesc->getProperty() instanceof \ReflectionProperty);
+        $this->assertEquals($propertyDesc->getTypehint(), '\seasar\beans\B_BeanDescTest');
         $this->assertFalse($propertyDesc->isArrayAcceptable());
 
-        $bean = BeanDescFactory::getBeanDesc('seasar::beans::A_BeanDescTest');
+        $bean = BeanDescFactory::getBeanDesc('\seasar\beans\A_BeanDescTest');
         $propertyDesc = $bean->getTypehintPropertyDesc('service');
-        $this->assertTrue($propertyDesc->getProperty() instanceof ReflectionProperty);
-        $this->assertEquals($propertyDesc->getTypehint(), 'seasar::beans::B_BeanDescTest');
-        $this->assertEquals($propertyDesc->getTypehintClass()->getName(), 'seasar::beans::B_BeanDescTest');
+        $this->assertTrue($propertyDesc->getProperty() instanceof \ReflectionProperty);
+        $this->assertEquals($propertyDesc->getTypehint(), '\seasar\beans\B_BeanDescTest');
+        $this->assertEquals($propertyDesc->getTypehintClass()->getName(), 'seasar\beans\B_BeanDescTest');
         $this->assertTrue($propertyDesc->isArrayAcceptable());
     }
 
     public function testGetTypehintPublicPropertyException() {
         try {
-            $bean = BeanDescFactory::getBeanDesc('seasar::beans::A_BeanDescTest');
+            $bean = BeanDescFactory::getBeanDesc('\seasar\beans\A_BeanDescTest');
             $propertyDesc = $bean->getTypehintPropertyDesc('xxx');
             $this->fail();
-        } catch (seasar::exception::PropertyNotFoundRuntimeException $e) {
+        } catch (\seasar\exception\PropertyNotFoundRuntimeException $e) {
             print $e->getMessage() . PHP_EOL;
         } catch (Exception $e) {
             $this->fail($e->getMessage());
@@ -129,7 +129,7 @@ class BeanDescTest extends ::PHPUnit_Framework_TestCase {
     }
 
     public function testHasSetterMethod() {
-        $bean = BeanDescFactory::getBeanDesc('seasar::beans::A_BeanDescTest');
+        $bean = BeanDescFactory::getBeanDesc('\seasar\beans\A_BeanDescTest');
         $this->assertTrue($bean->hasPropertyDesc('dao1'));
         $this->assertFalse($bean->hasPropertyDesc('dao2'));
         $this->assertTrue($bean->hasPropertyDesc('dao3'));
@@ -138,7 +138,7 @@ class BeanDescTest extends ::PHPUnit_Framework_TestCase {
     }
 
     public function testHasTypehintSetterMethod() {
-        $bean = BeanDescFactory::getBeanDesc('seasar::beans::A_BeanDescTest');
+        $bean = BeanDescFactory::getBeanDesc('\seasar\beans\A_BeanDescTest');
         $this->assertFalse($bean->hasTypehintPropertyDesc('dao1'));
         $this->assertFalse($bean->hasTypehintPropertyDesc('dao2'));
         $this->assertTrue($bean->hasTypehintPropertyDesc('dao3'));
@@ -147,27 +147,27 @@ class BeanDescTest extends ::PHPUnit_Framework_TestCase {
     }
 
     public function testGetSetterMethod() {
-        $bean = BeanDescFactory::getBeanDesc('seasar::beans::A_BeanDescTest');
+        $bean = BeanDescFactory::getBeanDesc('\seasar\beans\A_BeanDescTest');
         $propertyDesc = $bean->getPropertyDesc('dao1');
         $this->assertTrue($propertyDesc instanceof AccessorMethodPropertyDesc);
-        $this->assertTrue($propertyDesc->getWriteMethod() instanceof ReflectionMethod);
+        $this->assertTrue($propertyDesc->getWriteMethod() instanceof \ReflectionMethod);
         $this->assertEquals($propertyDesc->getTypehint(), null);
         $this->assertFalse($propertyDesc->isArrayAcceptable());
 
-        $bean = BeanDescFactory::getBeanDesc('seasar::beans::A_BeanDescTest');
+        $bean = BeanDescFactory::getBeanDesc('\seasar\beans\A_BeanDescTest');
         $propertyDesc = $bean->getPropertyDesc('dao5');
         $this->assertTrue($propertyDesc instanceof AccessorMethodPropertyDesc);
-        $this->assertTrue($propertyDesc->getWriteMethod() instanceof ReflectionMethod);
+        $this->assertTrue($propertyDesc->getWriteMethod() instanceof \ReflectionMethod);
         $this->assertEquals($propertyDesc->getTypehint(), null);
         $this->assertTrue($propertyDesc->isArrayAcceptable());
     }
 
     public function testGetSetterMethodException() {
         try {
-            $bean = BeanDescFactory::getBeanDesc('seasar::beans::A_BeanDescTest');
+            $bean = BeanDescFactory::getBeanDesc('\seasar\beans\A_BeanDescTest');
             $propertyDesc = $bean->getPropertyDesc('xxx');
             $this->fail();
-        } catch (seasar::exception::PropertyNotFoundRuntimeException $e) {
+        } catch (\seasar\exception\PropertyNotFoundRuntimeException $e) {
             print $e->getMessage() . PHP_EOL;
         } catch (Exception $e) {
             $this->fail($e->getMessage());
@@ -175,21 +175,21 @@ class BeanDescTest extends ::PHPUnit_Framework_TestCase {
     }
 
     public function testGetTyphintSetterMethod() {
-        $bean = BeanDescFactory::getBeanDesc('seasar::beans::A_BeanDescTest');
+        $bean = BeanDescFactory::getBeanDesc('\seasar\beans\A_BeanDescTest');
         $propertyDesc = $bean->getTypehintPropertyDesc('dao3');
         $this->assertTrue($propertyDesc instanceof AccessorMethodPropertyDesc);
-        $this->assertTrue($propertyDesc->getWriteMethod() instanceof ReflectionMethod);
-        $this->assertTrue($propertyDesc->getTypehintClass() instanceof ReflectionClass);
-        $this->assertTrue($propertyDesc->getTypehintClass()->getName() === __NAMESPACE__ . '::B_BeanDescTest');
+        $this->assertTrue($propertyDesc->getWriteMethod() instanceof \ReflectionMethod);
+        $this->assertTrue($propertyDesc->getTypehintClass() instanceof \ReflectionClass);
+        $this->assertTrue($propertyDesc->getTypehintClass()->getName() === __NAMESPACE__ . '\B_BeanDescTest');
         $this->assertFalse($propertyDesc->isArrayAcceptable());
     }
 
     public function testGetTyphintSetterMethodException() {
         try {
-            $bean = BeanDescFactory::getBeanDesc('seasar::beans::A_BeanDescTest');
+            $bean = BeanDescFactory::getBeanDesc('\seasar\beans\A_BeanDescTest');
             $propertyDesc = $bean->getTypehintPropertyDesc('xxx');
             $this->fail();
-        } catch (seasar::exception::PropertyNotFoundRuntimeException $e) {
+        } catch (\seasar\exception\PropertyNotFoundRuntimeException $e) {
             print $e->getMessage() . PHP_EOL;
         } catch (Exception $e) {
             $this->fail($e->getMessage());
@@ -205,9 +205,9 @@ class BeanDescTest extends ::PHPUnit_Framework_TestCase {
 }
 
 class A_BeanDescTest {
-    public $name = 'S2Binding seasar::beans::B_BeanDescTest';
+    public $name = 'S2Binding \seasar\beans\B_BeanDescTest';
     public $year = 2007;
-    public $service = 'S2Binding seasar::beans::B_BeanDescTest[]';
+    public $service = 'S2Binding \seasar\beans\B_BeanDescTest[]';
     private $value = 'aaa';
 
     public function setDao1($dao) {

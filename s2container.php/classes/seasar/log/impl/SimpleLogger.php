@@ -25,7 +25,7 @@
  * @package   seasar.log.impl
  * @author    klove
  */
-namespace seasar::log::impl;
+namespace seasar\log\impl;
 class SimpleLogger {
     const DEBUG  = 1;
     const INFO   = 2;
@@ -107,17 +107,17 @@ class SimpleLogger {
 
     /**
      * ログを標準出力します。
-     * seasar::Config::$SIMPLE_LOG_FILE が設定されている場合は、ファイル出力を行います。
+     * \seasar\Config::$SIMPLE_LOG_FILE が設定されている場合は、ファイル出力を行います。
      *
      * @param integer log level
      * @param string log message
      * @param string method name
      */
     private function logging($level, $msg, $methodName) {
-        if (seasar::Config::$LOG_LEVEL <= $level) {
+        if (\seasar\Config::$LOG_LEVEL <= $level) {
             $logMag = sprintf('%s [%-6s] %s - %s' . PHP_EOL, date('Y-m-d H:i:s'), $this->labels[$level], $methodName, $msg);
-            if (seasar::Config::$SIMPLE_LOG_FILE !== null) {
-                file_put_contents(seasar::Config::$SIMPLE_LOG_FILE, $logMag, FILE_APPEND | LOCK_EX);
+            if (\seasar\Config::$SIMPLE_LOG_FILE !== null) {
+                file_put_contents(\seasar\Config::$SIMPLE_LOG_FILE, $logMag, FILE_APPEND | LOCK_EX);
             } else {
                 print $logMag;
             }

@@ -24,37 +24,37 @@
  * @package   seasar.aop.interceptor
  * @author    klove
  */
-namespace seasar::aop::interceptor;
-class TraceInterceptor implements seasar::aop::MethodInterceptor {
+namespace seasar\aop\interceptor;
+class TraceInterceptor implements \seasar\aop\MethodInterceptor {
     /**
      * @see MethodInterceptor::invoke()
      */
-    public function invoke(seasar::aop::MethodInvocation $invocation) {
+    public function invoke(\seasar\aop\MethodInvocation $invocation) {
         $buf = $invocation->getTargetClass($invocation)->getName()
              . '->' . $invocation->getMethod()->getName() . '(';
         $args = $invocation->getArguments();
         if (is_array($args)) {
             $argsTmp = array();
             foreach ($args as $arg) {
-                $argsTmp[] = seasar::util::StringUtil::mixToString($arg);
+                $argsTmp[] = \seasar\util\StringUtil::mixToString($arg);
             }
             $buf .= implode(',',$argsTmp);
         }
         $buf .= ')';
         $ret = null;
         $cause = null;
-        seasar::log::S2Logger::getInstance(__CLASS__)->info('BEGIN ' . $buf, __METHOD__);
+        \seasar\log\S2Logger::getInstance(__CLASS__)->info('BEGIN ' . $buf, __METHOD__);
         try {
             $startTime = microtime(true);
             $ret = $invocation->proceed();
             $stopTime = microtime(true);
             $execTime = $stopTime - $startTime;
-            $buf .= ' : ' . seasar::util::StringUtil::mixToString($ret) . ' : ' . $execTime;
-        } catch (Exception $t) {
+            $buf .= ' : ' . \seasar\util\StringUtil::mixToString($ret) . ' : ' . $execTime;
+        } catch (\Exception $t) {
             $buf .= ' Exception : ' . get_class($t) . ' : ' . $t->getMessage();
             $cause = $t;
         }
-        seasar::log::S2Logger::getInstance(__CLASS__)->info('END   ' . $buf, __METHOD__);
+        \seasar\log\S2Logger::getInstance(__CLASS__)->info('END   ' . $buf, __METHOD__);
         if ($cause == null) {
             return $ret;
         } else {

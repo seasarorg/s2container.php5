@@ -1,5 +1,5 @@
 <?php
-namespace sample::aaa;
+namespace sample\aaa;
 /**
  * @S2Meta('name' => '"xyz"',
  *         'year' => '2007',

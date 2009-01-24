@@ -2,9 +2,9 @@
 <!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
 "components21.dtd">
 <components>
-    <component name="c" class="seasar::aop::interceptor::C_MockInterceptorTest">
+    <component name="c" class="seasar\aop\interceptor\C_MockInterceptorTest">
         <aspect pointcut="/.+/">mock</aspect>
     </component>
-    <component name="mock" class="seasar::aop::interceptor::MockInterceptor">
+    <component name="mock" class="seasar\aop\interceptor\MockInterceptor">
     </component>
 </components>

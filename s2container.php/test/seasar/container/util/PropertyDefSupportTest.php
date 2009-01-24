@@ -23,34 +23,34 @@
  * @package   seasar.container.util
  * @author    klove
  */
-namespace seasar::container::util;
-class PropertyDefSupportTest extends ::PHPUnit_Framework_TestCase {
+namespace seasar\container\util;
+class PropertyDefSupportTest extends \PHPUnit_Framework_TestCase {
 
     public function testAddPropertyDef() {
         $support = new PropertyDefSupport;
         $this->assertEquals($support->getPropertyDefSize() , 0);
 
-        $support->addPropertyDef(new seasar::container::impl::PropertyDef('name', 'hoge'));
-        $support->addPropertyDef(new seasar::container::impl::PropertyDef('year', 2007));
+        $support->addPropertyDef(new \seasar\container\impl\PropertyDef('name', 'hoge'));
+        $support->addPropertyDef(new \seasar\container\impl\PropertyDef('year', 2007));
         $this->assertEquals($support->getPropertyDefSize() , 2);
     }
 
     public function testGetPropertyDef() {
         $support = new PropertyDefSupport;
-        $support->addPropertyDef(new seasar::container::impl::PropertyDef('name'));
-        $this->assertTrue($support->getPropertyDef(0) instanceof seasar::container::impl::PropertyDef);
+        $support->addPropertyDef(new \seasar\container\impl\PropertyDef('name'));
+        $this->assertTrue($support->getPropertyDef(0) instanceof \seasar\container\impl\PropertyDef);
 
-        $support->addPropertyDef(new seasar::container::impl::PropertyDef('year', 2007));
+        $support->addPropertyDef(new \seasar\container\impl\PropertyDef('year', 2007));
         $this->assertTrue($support->getPropertyDef('year')->getValue() == 2007);
     }
 
     public function testOutOfRange() {
         $support = new PropertyDefSupport;
-        $support->addPropertyDef(new seasar::container::impl::PropertyDef('name'));
+        $support->addPropertyDef(new \seasar\container\impl\PropertyDef('name'));
         try {
             $support->getPropertyDef(1);
             $this->fail();
-        } catch(OutOfRangeException $e) {
+        } catch(\OutOfRangeException $e) {
             print $e->getMessage();
         } catch (Exception $e) {
             print $e->getMessage();
@@ -95,7 +95,7 @@ class AnnoTestB_PropertyDefSupportTestTest {
 
 class AnnoTestC_PropertyDefSupportTestTest {
     /**
-     * @S2Property('interceptor' => 'new seasar::aop::interceptor::TraceInterceptor')
+     * @S2Property('interceptor' => 'new \seasar\aop\interceptor\TraceInterceptor')
      */
     public function hoge(){}
 }

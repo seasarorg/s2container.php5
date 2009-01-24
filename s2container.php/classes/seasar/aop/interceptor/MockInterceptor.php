@@ -25,8 +25,8 @@
  * @package   seasar.aop.interceptor
  * @author    klove
  */
-namespace seasar::aop::interceptor;
-class MockInterceptor implements seasar::aop::MethodInterceptor {
+namespace seasar\aop\interceptor;
+class MockInterceptor implements \seasar\aop\MethodInterceptor {
 
     /**
      * コメントアノテーションで使用されるタグ名です。
@@ -67,14 +67,14 @@ class MockInterceptor implements seasar::aop::MethodInterceptor {
      * @param string method name
      * @param Exception 
      */
-    public function setThrowable($methodName, ::Exception $throwable) {
+    public function setThrowable($methodName, \Exception $throwable) {
         $this->throwableMap[$methodName] = $throwable;
     }
 
     /**
      * @see MethodInterceptor::invoke()
      */
-    public function invoke(seasar::aop::MethodInvocation $invocation) {
+    public function invoke(\seasar\aop\MethodInvocation $invocation) {
         $methodName = $invocation->getMethod()->getName(); 
 
         if (array_key_exists($methodName, $this->throwableMap)) {
@@ -83,19 +83,19 @@ class MockInterceptor implements seasar::aop::MethodInterceptor {
         else if (array_key_exists($methodName, $this->returnValueMap)) {
             return $this->returnValueMap[$methodName];
         }
-        else if (seasar::util::Annotation::has($invocation->getMethod(), self::ANNOTATION)) {
-            $annoValue = seasar::util::Annotation::get($invocation->getMethod(), self::ANNOTATION);
+        else if (\seasar\util\Annotation::has($invocation->getMethod(), self::ANNOTATION)) {
+            $annoValue = \seasar\util\Annotation::get($invocation->getMethod(), self::ANNOTATION);
             if (isset($annoValue[self::ANNOTATION_RETURN])) {
-                return seasar::util::EvalUtil::formatExecute($annoValue[self::ANNOTATION_RETURN]);
+                return \seasar\util\EvalUtil::formatExecute($annoValue[self::ANNOTATION_RETURN]);
             } else if (isset($annoValue[self::ANNOTATION_THROWABLE])) {
-                throw seasar::util::EvalUtil::formatExecute($annoValue[self::ANNOTATION_THROWABLE]);
+                throw \seasar\util\EvalUtil::formatExecute($annoValue[self::ANNOTATION_THROWABLE]);
             } else {
-                seasar::log::S2Logger::getInstance(__CLASS__)->info('proceed though mock aspect found.', __METHOD__);
+                \seasar\log\S2Logger::getInstance(__CLASS__)->info('proceed though mock aspect found.', __METHOD__);
                 return $invocation->proceed();
             }
         }
         else {
-            seasar::log::S2Logger::getInstance(__CLASS__)->info('proceed though mock interceptor aspected.', __METHOD__);
+            \seasar\log\S2Logger::getInstance(__CLASS__)->info('proceed though mock interceptor aspected.', __METHOD__);
             return $invocation->proceed();
         }
     }

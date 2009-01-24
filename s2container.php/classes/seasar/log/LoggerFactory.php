@@ -25,7 +25,7 @@
  * @package   seasar.log
  * @author    klove
  */
-namespace seasar::log;
+namespace seasar\log;
 interface LoggerFactory {
 
     /**

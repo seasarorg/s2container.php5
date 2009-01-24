@@ -25,8 +25,8 @@
  * @package   seasar.exception
  * @author    klove
  */
-namespace seasar::exception;
-class NotYetImplementedException extends ::Exception {
+namespace seasar\exception;
+class NotYetImplementedException extends \Exception {
 
     /**
      * NotYetImplementedExceptionを構築します。

@@ -25,13 +25,13 @@
  * @package   seasar.container.assembler
  * @author    klove
  */
-namespace seasar::container::assembler;
+namespace seasar\container\assembler;
 class AutoConstructorAssembler extends ManualConstructorAssembler {
 
     /**
-     * @see seasar::container::assembler::ManualConstructorAssembler::__construct()
+     * @see \seasar\container\assembler\ManualConstructorAssembler::__construct()
      */
-    public function __construct(seasar::container::ComponentDef $componentDef) {
+    public function __construct(\seasar\container\ComponentDef $componentDef) {
         parent::__construct($componentDef);
     }
 
@@ -47,9 +47,9 @@ class AutoConstructorAssembler extends ManualConstructorAssembler {
         $args = array();
         $componentDef = $this->getComponentDef();
         $refMethod = $componentDef->getComponentClass()->getConstructor();
-        if ($refMethod instanceof ReflectionMethod) {
+        if ($refMethod instanceof \ReflectionMethod) {
             $args = $this->getArgs($refMethod->getParameters());
         }
-        return seasar::container::util::ConstructorUtil::newInstance($componentDef, $args);
+        return \seasar\container\util\ConstructorUtil::newInstance($componentDef, $args);
     }
 }

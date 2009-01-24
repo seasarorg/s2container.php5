@@ -25,13 +25,13 @@
  * @package   seasar.container.assembler
  * @author    klove
  */
-namespace seasar::container::assembler;
+namespace seasar\container\assembler;
 class AutoPropertyAssembler extends ManualPropertyAssembler {
 
     /**
-     * @see seasar::container::assembler::ManualPropertyAssembler::__construct()
+     * @see \seasar\container\assembler\ManualPropertyAssembler::__construct()
      */
-    public function __construct(seasar::container::ComponentDef $componentDef) {
+    public function __construct(\seasar\container\ComponentDef $componentDef) {
         parent::__construct($componentDef);
     }
 
@@ -44,7 +44,7 @@ class AutoPropertyAssembler extends ManualPropertyAssembler {
         parent::assemble($component);
         $componentDef = $this->getComponentDef();
         $container    = $componentDef->getContainer();
-        $beanDesc = seasar::beans::BeanDescFactory::getBeanDesc($componentDef->getComponentClass());
+        $beanDesc = \seasar\beans\BeanDescFactory::getBeanDesc($componentDef->getComponentClass());
         $propDescs = $beanDesc->getTypehintPropertyDescs();
         foreach ($propDescs as $propDesc) {
             if ($componentDef->hasPropertyDef($propDesc->getPropertyName())) {
@@ -57,11 +57,11 @@ class AutoPropertyAssembler extends ManualPropertyAssembler {
                 } else {
                     $value = $container->getComponent($propDesc->getTypehint());
                 }
-            } catch (seasar::container::exception::ComponentNotFoundRuntimeException $e) {
-                seasar::log::S2Logger::getInstance(__CLASS__)->info("no component found for typehint property. [{$componentDef->getComponentClass()->getName()}::\${$propDesc->getPropertyName()}]", __METHOD__);
+            } catch (\seasar\container\exception\ComponentNotFoundRuntimeException $e) {
+                \seasar\log\S2Logger::getInstance(__CLASS__)->info("no component found for typehint property. [{$componentDef->getComponentClass()->getName()}::\${$propDesc->getPropertyName()}]", __METHOD__);
                 continue;
-            } catch (seasar::container::exception::TooManyRegistrationRuntimeException $e) {
-                seasar::log::S2Logger::getInstance(__CLASS__)->info("too many component found for typehint property. ignored. [{$componentDef->getComponentClass()->getName()}::\${$propDesc->getPropertyName()}]", __METHOD__);
+            } catch (\seasar\container\exception\TooManyRegistrationRuntimeException $e) {
+                \seasar\log\S2Logger::getInstance(__CLASS__)->info("too many component found for typehint property. ignored. [{$componentDef->getComponentClass()->getName()}::\${$propDesc->getPropertyName()}]", __METHOD__);
                 continue;
             }
             $propDesc->setValue($component, $value);

@@ -25,7 +25,7 @@
  * @package   seasar.container.factory
  * @author    klove
  */
-namespace seasar::container::factory;
+namespace seasar\container\factory;
 class S2ContainerFactory {
 
     /**
@@ -63,7 +63,7 @@ class S2ContainerFactory {
         try {
             $container = self::getBuilder($ext)->build($path);
             self::leave($path);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             self::leave($path);
             throw $e;
         }
@@ -74,10 +74,10 @@ class S2ContainerFactory {
     /**
      * 指定された設定ファイルからS2コンテナを構築し、 親S2コンテナに対してインクルードします。
      *
-     * @param seasar::container::S2Container $parent 親となるS2コンテナインスタンス
+     * @param \seasar\container\S2Container $parent 親となるS2コンテナインスタンス
      * @param string $path ダイコンファイルのパス
      */
-    public static function includeChild(seasar::container::S2Container $parent, $path) {
+    public static function includeChild(\seasar\container\S2Container $parent, $path) {
         self::enter($path);
         $root = $parent->getRoot();
         $child = null;
@@ -92,7 +92,7 @@ class S2ContainerFactory {
                 $root->registerDescendant($child);
             }
             self::leave($path);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             self::leave($path);
             throw $e;
         }
@@ -111,10 +111,10 @@ class S2ContainerFactory {
             return self::$builders[$ext];
         }
 
-        if (array_key_exists($ext, seasar::container::Config::$CONTAINER_BUILDERS)) {
-            $builderClassName = seasar::container::Config::$CONTAINER_BUILDERS[$ext];
+        if (array_key_exists($ext, \seasar\container\Config::$CONTAINER_BUILDERS)) {
+            $builderClassName = \seasar\container\Config::$CONTAINER_BUILDERS[$ext];
         } else {
-            throw new seasar::container::exception::IllegalContainerBuilderRuntimeException($ext);
+            throw new \seasar\container\exception\IllegalContainerBuilderRuntimeException($ext);
         }
         self::$builders[$ext] = new $builderClassName;
         return self::$builders[$ext];
@@ -125,11 +125,11 @@ class S2ContainerFactory {
      * ダイコンファイルのパスが既にスタックに存在する場合は、CircularIncludeRuntimeExceptionをスローします。
      *
      * @param string $path
-     * @throw seasar::container::exception::CircularIncludeRuntimeException
+     * @throw \seasar\container\exception\CircularIncludeRuntimeException
      */
     private static function enter($path) {
         if (in_array($path,self::$processingPaths)) {
-            throw new seasar::container::exception::CircularIncludeRuntimeException($path, self::$processingPaths);
+            throw new \seasar\container\exception\CircularIncludeRuntimeException($path, self::$processingPaths);
         }
         array_push(self::$processingPaths,$path);
     }
@@ -138,7 +138,7 @@ class S2ContainerFactory {
      * ダイコンファイルからS2Containerを生成した後にダイコンファイルのパスをスタックから取り除きます。
      *
      * @param string $path
-     * @throw seasar::container::exception::CircularIncludeRuntimeException
+     * @throw \seasar\container\exception\CircularIncludeRuntimeException
      */
     private static function leave($path) {
         array_pop(self::$processingPaths);

@@ -25,7 +25,7 @@
  * @package   seasar.util
  * @author    klove
  */
-namespace seasar::util;
+namespace seasar\util;
 class Annotation {
 
     /**
@@ -62,7 +62,7 @@ class Annotation {
     /**
      * アノテーションを取得します。
      *
-     * @param ReflectionClass|ReflectionMethod|ReflectionProperty $reflection
+     * @param \ReflectionClass|ReflectionMethod|ReflectionProperty $reflection
      * @param strint $annotation
      * @return array
      */
@@ -73,13 +73,13 @@ class Annotation {
         if (self::$COMMENT) {
             return self::getCommentAnnotation($reflection, $annotation);
         }
-        throw new seasar::exception::AnnotationNotFoundException($reflection, $annotation);
+        throw new \seasar\exception\AnnotationNotFoundException($reflection, $annotation);
     }
 
     /**
      * 定数アノテーションを取得します。
      *
-     * @param ReflectionClass|ReflectionMethod|ReflectionProperty $reflection
+     * @param \ReflectionClass|ReflectionMethod|ReflectionProperty $reflection
      * @param strint $annotation
      * @return array
      */
@@ -90,8 +90,8 @@ class Annotation {
             return self::$spool[$annoKey];
         }
 
-        if ($reflection instanceof ReflectionProperty or
-            $reflection instanceof ReflectionMethod) {
+        if ($reflection instanceof \ReflectionProperty or
+            $reflection instanceof \ReflectionMethod) {
             $annotation = $reflection->getName() . '_' . $annotation;
             $reflection = $reflection->getDeclaringClass();
         }
@@ -105,7 +105,7 @@ class Annotation {
         if (is_array($annoArray)) {
             self::$spool[$annoKey] = $annoArray;
         } else {
-            throw new seasar::exception::AnnotationNotFoundException($reflection, $annotation);
+            throw new \seasar\exception\AnnotationNotFoundException($reflection, $annotation);
         }
         return self::$spool[$annoKey];
     }
@@ -125,7 +125,7 @@ class Annotation {
      *    最後尾にセミコロンがないため、先頭から最短マッチで「) 」までが処置されます。
      *    閉じ括弧の後ろのスペースを削除するか、最後尾にセミコロンを付ける必要があります。
      *
-     * @param ReflectionClass|ReflectionMethod|ReflectionProperty $reflection
+     * @param \ReflectionClass|ReflectionMethod|ReflectionProperty $reflection
      * @param strint $annotation
      * @return array
      */
@@ -152,7 +152,7 @@ class Annotation {
         if (is_array($annoArray)) {
             self::$spool[$annoKey] = $annoArray;
         } else {
-            throw new seasar::exception::AnnotationNotFoundException($reflection, $annotation);
+            throw new \seasar\exception\AnnotationNotFoundException($reflection, $annotation);
         }
         return self::$spool[$annoKey];
     }
@@ -160,7 +160,7 @@ class Annotation {
     /**
      * アノテーションが存在するかどうかを返します。
      *
-     * @param ReflectionClass|ReflectionMethod|ReflectionProperty $reflection
+     * @param \ReflectionClass|ReflectionMethod|ReflectionProperty $reflection
      * @param strint $annotation
      * @return boolean
      */
@@ -182,7 +182,7 @@ class Annotation {
     /**
      * 定数アノテーションが存在するかどうかを返します。
      *
-     * @param ReflectionClass|ReflectionMethod|ReflectionProperty $reflection
+     * @param \ReflectionClass|ReflectionMethod|ReflectionProperty $reflection
      * @param strint $annotation
      * @return boolean
      */
@@ -190,7 +190,7 @@ class Annotation {
         try {
             self::getConstantAnnotation($reflection, $annotation);
             return true;
-        } catch (seasar::exception::AnnotationNotFoundException $e) {
+        } catch (\seasar\exception\AnnotationNotFoundException $e) {
             return false;
         }
     }
@@ -198,7 +198,7 @@ class Annotation {
     /**
      * コメントアノテーションが存在するかどうかを返します。
      *
-     * @param ReflectionClass|ReflectionMethod|ReflectionProperty $reflection
+     * @param \ReflectionClass|ReflectionMethod|ReflectionProperty $reflection
      * @param strint $annotation
      * @return boolean
      */
@@ -206,7 +206,7 @@ class Annotation {
         try {
             self::getCommentAnnotation($reflection, $annotation);
             return true;
-        } catch (seasar::exception::AnnotationNotFoundException $e) {
+        } catch (\seasar\exception\AnnotationNotFoundException $e) {
             return false;
         }
     }
@@ -252,17 +252,17 @@ class Annotation {
     /**
      * spoolに保存するための一意のキーを作成します。
      *
-     * @param ReflectionClass|ReflectionMethod|ReflectionProperty $reflection
+     * @param \ReflectionClass|ReflectionMethod|ReflectionProperty $reflection
      * @param strint $annotation
      * @return string
      */
     public static function constructKey($reflection) {
-        if ($reflection instanceof ReflectionClass) {
+        if ($reflection instanceof \ReflectionClass) {
             return $reflection->getName() . '::CLASS';
-        } else if ($reflection instanceof ReflectionMethod) {
-            return $reflection->getDeclaringClass()->getName() . '::' . $reflection->getName() . '::METHOD';
+        } else if ($reflection instanceof \ReflectionMethod) {
+            return $reflection->getDeclaringClass()->getName() . '\\' . $reflection->getName() . '::METHOD';
         } else {
-            return $reflection->getDeclaringClass()->getName() . '::' . $reflection->getName() . '::PROPERTY';
+            return $reflection->getDeclaringClass()->getName() . '\\' . $reflection->getName() . '::PROPERTY';
         }
     }
 
@@ -270,13 +270,13 @@ class Annotation {
      * 対応しているReflectionクラスかどうかを検証します。
      *
      * @param mixed
-     * @throw seasar::exception::AnnotationNotSupportedException
+     * @throw \seasar\exception\AnnotationNotSupportedException
      */
     protected static function validateReflection($reflection) {
-        if (!$reflection instanceof ReflectionClass and
-            !$reflection instanceof ReflectionMethod and
-            !$reflection instanceof ReflectionProperty) {
-            throw new seasar::exception::AnnotationNotSupportedException('unsupported reflection.');
+        if (!$reflection instanceof \ReflectionClass and
+            !$reflection instanceof \ReflectionMethod and
+            !$reflection instanceof \ReflectionProperty) {
+            throw new \seasar\exception\AnnotationNotSupportedException('unsupported reflection.');
         }
     }
 }

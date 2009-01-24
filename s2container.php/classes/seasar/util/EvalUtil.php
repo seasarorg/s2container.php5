@@ -25,7 +25,7 @@
  * @package   seasar.util
  * @author    klove
  */
-namespace seasar::util;
+namespace seasar\util;
 class EvalUtil {
 
     /**
@@ -56,8 +56,8 @@ class EvalUtil {
             $$key = $val;
         }
 
-        if (seasar::Config::$DEBUG_EVAL) {
-            seasar::log::S2Logger::getInstance(__CLASS__)->debug($src, __METHOD__);
+        if (\seasar\Config::$DEBUG_EVAL) {
+            \seasar\log\S2Logger::getInstance(__CLASS__)->debug($src, __METHOD__);
         }
         return eval($src);
     }

@@ -1,5 +1,5 @@
 <?php
-namespace sample::pdo;
+namespace sample\pdo;
 /**
  * @S2Pdo('pdo' => 'SqliteAPdo');
  */
@@ -28,7 +28,7 @@ class CdDao {
 
     /**
      * @S2Pdo('pdo' => 'sqliteBPdo',
-     *        'dto' => 'sample::pdo::SampleDto');
+     *        'dto' => 'sample\pdo\SampleDto');
      */
     public function findAllFromBwithSampleDto() {
         return "select * from CD";
@@ -45,38 +45,38 @@ class CdDao {
             $this->insert(10, 'aaa', 'bbb');
             $this->sqliteBPdo->commit();
         } catch (Exception $e) {
-            seasar::log::S2Logger::getInstance(__NAMESPACE__)->warn($e->getMessage(), __METHOD__);
+            \seasar\log\S2Logger::getInstance(__NAMESPACE__)->warn($e->getMessage(), __METHOD__);
             $this->sqliteBPdo->rollBack();
         }
     }
 
     public function sampleTransaction() {
         try {
-            seasar::log::S2Logger::getInstance(__NAMESPACE__)->info('start transaction.', __METHOD__);
+            \seasar\log\S2Logger::getInstance(__NAMESPACE__)->info('start transaction.', __METHOD__);
             $this->sqliteBPdo->beginTransaction();
             $this->insert(10, 'aaa', 'bbb');
             $this->updateTitle(10, 'AAA');
             $this->delete(10);
-            seasar::log::S2Logger::getInstance(__NAMESPACE__)->info('commit transaction.', __METHOD__);
+            \seasar\log\S2Logger::getInstance(__NAMESPACE__)->info('commit transaction.', __METHOD__);
             $this->sqliteBPdo->commit();
         } catch (Exception $e) {
-            seasar::log::S2Logger::getInstance(__NAMESPACE__)->info($e->getMessage(), __METHOD__);
-            seasar::log::S2Logger::getInstance(__NAMESPACE__)->info('rollback transaction.', __METHOD__);
+            \seasar\log\S2Logger::getInstance(__NAMESPACE__)->info($e->getMessage(), __METHOD__);
+            \seasar\log\S2Logger::getInstance(__NAMESPACE__)->info('rollback transaction.', __METHOD__);
             $this->sqliteBPdo->rollBack();
         }
     }
 
     public function errorTransaction() {
         try {
-            seasar::log::S2Logger::getInstance(__NAMESPACE__)->info('start transaction.', __METHOD__);
+            \seasar\log\S2Logger::getInstance(__NAMESPACE__)->info('start transaction.', __METHOD__);
             $this->sqliteBPdo->beginTransaction();
             $this->insert(10, 'aaa', 'bbb');
             $this->insert(10, 'AAA', 'BBB');
-            seasar::log::S2Logger::getInstance(__NAMESPACE__)->info('commit transaction.', __METHOD__);
+            \seasar\log\S2Logger::getInstance(__NAMESPACE__)->info('commit transaction.', __METHOD__);
             $this->sqliteBPdo->commit();
         } catch (Exception $e) {
-            seasar::log::S2Logger::getInstance(__NAMESPACE__)->info($e->getMessage(), __METHOD__);
-            seasar::log::S2Logger::getInstance(__NAMESPACE__)->info('rollback transaction.', __METHOD__);
+            \seasar\log\S2Logger::getInstance(__NAMESPACE__)->info($e->getMessage(), __METHOD__);
+            \seasar\log\S2Logger::getInstance(__NAMESPACE__)->info('rollback transaction.', __METHOD__);
             $this->sqliteBPdo->rollBack();
         }
     }
@@ -103,5 +103,5 @@ class CdDao {
     }
 }
 
-class SampleDto extends ::StandardDto {
+class SampleDto extends \StandardDto {
 }

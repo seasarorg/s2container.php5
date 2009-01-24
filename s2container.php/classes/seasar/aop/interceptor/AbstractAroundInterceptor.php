@@ -25,15 +25,15 @@
  * @package   seasar.aop.interceptor
  * @author    klove
  */
-namespace seasar::aop::interceptor;
-abstract class AbstractAroundInterceptor implements seasar::aop::MethodInterceptor {
+namespace seasar\aop\interceptor;
+abstract class AbstractAroundInterceptor implements \seasar\aop\MethodInterceptor {
     /**
      * @see MethodInterceptor::invoke()
      */
-    public function invoke(seasar::aop::MethodInvocation $invocation) {
+    public function invoke(\seasar\aop\MethodInvocation $invocation) {
         $result = $this->before($invocation);
         if ($result === false) { 
-            seasar::log::S2Logger::getInstance(__CLASS__)->info('before method returned false. will not proceed.', __METHOD__);
+            \seasar\log\S2Logger::getInstance(__CLASS__)->info('before method returned false. will not proceed.', __METHOD__);
         } else {
             $result = $invocation->proceed();
         }
@@ -47,7 +47,7 @@ abstract class AbstractAroundInterceptor implements seasar::aop::MethodIntercept
      * @param MethodInvocation
      * @return boolean
      */
-    abstract protected function before(seasar::aop::MethodInvocation $invocation);
+    abstract protected function before(\seasar\aop\MethodInvocation $invocation);
 
     /**
      * MethodInvocation::proceedメソッドの実行後に実行するafterメソッド
@@ -57,5 +57,5 @@ abstract class AbstractAroundInterceptor implements seasar::aop::MethodIntercept
      * @param mixed $result
      * @return mixed $result
      */
-    abstract protected function after(seasar::aop::MethodInvocation $invocation, $result);
+    abstract protected function after(\seasar\aop\MethodInvocation $invocation, $result);
 }

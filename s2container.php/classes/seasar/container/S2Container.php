@@ -92,7 +92,7 @@
  * @package   seasar.container
  * @author    klove
  */
-namespace seasar::container;
+namespace seasar\container;
 interface S2Container {
     /**
      * 指定されたキーに対応するコンポーネントを返します。

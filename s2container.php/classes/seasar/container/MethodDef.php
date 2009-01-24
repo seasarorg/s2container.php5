@@ -35,7 +35,7 @@
  * @package   seasar.container
  * @author    klove
  */
-namespace seasar::container;
+namespace seasar\container;
 interface MethodDef {
     /**
      * メソッド名を返します。
@@ -47,14 +47,14 @@ interface MethodDef {
     /**
      * 引数および式を評価するコンテキストとなるS2コンテナを返します。
      * 
-     * @return seasar::container::S2Container 引数および式を評価するコンテキストとなるS2コンテナ
+     * @return \seasar\container\S2Container 引数および式を評価するコンテキストとなるS2コンテナ
      */
     public function getContainer();
     
     /**
      * 引数および式を評価するコンテキストとなるS2コンテナを設定します。
      * 
-     * @param seasar::container::S2Container $container
+     * @param \seasar\container\S2Container $container
      *            引数および式を評価するコンテキストとなるS2コンテナ
      */
     public function setContainer(S2Container $container);

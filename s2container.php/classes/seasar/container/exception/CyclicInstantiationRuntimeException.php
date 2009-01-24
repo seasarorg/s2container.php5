@@ -29,21 +29,21 @@
  * @package   seasar.container.exception
  * @author    klove
  */
-namespace seasar::container::exception;
-class CyclicInstantiationRuntimeException extends seasar::exception::S2RuntimeException {
+namespace seasar\container\exception;
+class CyclicInstantiationRuntimeException extends \seasar\exception\S2RuntimeException {
 
     /**
-     * @var ReflectionClass
+     * @var \ReflectionClass
      */
     private $componentClass;
 
     /**
      * 循環参照を引き起こしたコンポーネントのクラスを指定して、 <d>CyclicInstantiationRuntimeException</d>を構築します。
      * 
-     * @param ReflectionClass $componentClass
+     * @param \ReflectionClass $componentClass
      *            循環参照を引き起こしたコンポーネントのクラス
      */
-    public function __construct(ReflectionClass $componentClass) {
+    public function __construct(\ReflectionClass $componentClass) {
         $this->componentClass = $componentClass;
         parent::__construct(112, (array)$componentClass->getName());
     }
@@ -51,7 +51,7 @@ class CyclicInstantiationRuntimeException extends seasar::exception::S2RuntimeEx
     /**
      * 循環参照を引き起こしたコンポーネントのクラスを返します。
      * 
-     * @return ReflectionClass 循環参照を引き起こしたコンポーネントのクラス
+     * @return \ReflectionClass 循環参照を引き起こしたコンポーネントのクラス
      */
     public function getComponentClass() {
         return $this->componentClass;
