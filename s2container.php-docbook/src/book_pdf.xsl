@@ -20,7 +20,7 @@
   <xsl:param name="monospace.font.family" select="'MS Mincho'" />
 
   <xsl:param name="admon.graphics" select="1"/>
-  <xsl:param name="admon.graphics.path">D:/seasar.php/workspace/s2container.php-docbook/doc/images/docbook/</xsl:param>
+  <xsl:param name="admon.graphics.path">doc/images/docbook/</xsl:param>
 
   <xsl:param name="page.margin.inner">0.4in</xsl:param>
   <xsl:param name="page.margin.outer">0.4in</xsl:param>

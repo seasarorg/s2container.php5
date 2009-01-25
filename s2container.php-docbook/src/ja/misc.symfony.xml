@@ -17,14 +17,14 @@
 require_once('S2Container/S2Container.php');
 
 /** S2Log設定 */
-seasar::Config::$LOG_LEVEL = seasar::log::impl::SimpleLogger::DEBUG;
-seasar::Config::$DEBUG_EVAL = false;
-seasar::Config::$DEBUG_VERBOSE = false;
-seasar::Config::$SIMPLE_LOG_FILE = SF_ROOT_DIR . '/log/s2.log';
+seasar\Config::$LOG_LEVEL = seasar\log\impl\SimpleLogger::DEBUG;
+seasar\Config::$DEBUG_EVAL = false;
+seasar\Config::$DEBUG_VERBOSE = false;
+seasar\Config::$SIMPLE_LOG_FILE = SF_ROOT_DIR . '/log/s2.log';
 
 /** S2Aop設定 */
-seasar::aop::Config::$CACHING = false;
-seasar::aop::Config::$CACHE_DIR = SF_ROOT_DIR . '/cache/s2aop';
+seasar\aop\Config::$CACHING = false;
+seasar\aop\Config::$CACHE_DIR = SF_ROOT_DIR . '/cache/s2aop';
 
 ]]></programlisting>
 
@@ -41,7 +41,7 @@ seasar::aop::Config::$CACHE_DIR = SF_ROOT_DIR . '/cache/s2aop';
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
 require_once(SF_ROOT_DIR . '/config/s2.php');
-use seasar::container::S2ApplicationContext as s2app;
+use seasar\container\S2ApplicationContext as s2app;
 s2app::import(dirname(dirname(__FILE__)) . '/lib/logic');
 
 class defaultActions extends sfActions {
@@ -99,7 +99,7 @@ greeting : <?php echo $greeting; ?> <br>
 <?php
 class Hoge {
     /**
-     * @S2Aspect('interceptor' => 'new seasar::aop::interceptor::MockInterceptor')
+     * @S2Aspect('interceptor' => 'new seasar\aop\interceptor\MockInterceptor')
      * @S2Mock('return' => 'strval("Bye World !!")')
      */
     public function greeting() {
@@ -119,9 +119,9 @@ class Hoge {
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
 require_once(SF_ROOT_DIR . '/config/s2.php');
-use seasar::container::S2ApplicationContext as s2app;
+use seasar\container\S2ApplicationContext as s2app;
 s2app::import(dirname(dirname(__FILE__)) . '/lib/logic');
-s2app::registerAspect('/^Hoge$/', 'new seasar::aop::interceptor::MockInterceptor');
+s2app::registerAspect('/^Hoge$/', 'new seasar\aop\interceptor\MockInterceptor');
 
 class defaultActions extends sfActions {
     public function executeIndex() {

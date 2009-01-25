@@ -47,7 +47,7 @@
             <row>
               <entry>アノテーション</entry>
               <entry>拡張機能(extension)でのAnnotation関連、S2ContainerApplicationContextクラスのアノテーション機能</entry>
-              <entry><link linkend="misc.annotation">seasar::util:Annotationクラスに統合</link></entry>
+              <entry><link linkend="misc.annotation">seasar\util\Annotationクラスに統合</link></entry>
             </row>
             <row>
               <entry>バンドル Interceptor</entry>
@@ -61,9 +61,9 @@
                 S2Container_InterceptorChain
               </entry>
               <entry>
-                seasar::aop::interceptor::TraceInterceptor <sbr/>
-                seasar::aop::interceptor::MockInterceptor <sbr/>
-                seasar::aop::interceptor::InterceptorChain
+                seasar\aop\interceptor\TraceInterceptor <sbr/>
+                seasar\aop\interceptor\MockInterceptor <sbr/>
+                seasar\aop\interceptor\InterceptorChain
               </entry>
             </row>
             <row>
@@ -87,7 +87,7 @@
             <row>
               <entry>ClassLoader</entry>
               <entry>S2ContainerClassLoader、S2ContainerApplicationContext クラス</entry>
-              <entry><link linkend="misc.classloader">seasar::util::ClassLoader クラス</link></entry>
+              <entry><link linkend="misc.classloader">seasar\util\ClassLoader クラス</link></entry>
             </row>
             <row>
               <entry>Singleton S2Container 機能</entry>
@@ -161,8 +161,8 @@ class Service {
 <?php
 require_once('S2Container/S2Container.php');
 
-seasar::container::S2ApplicationContext::import(dirname(__FILE__) . '/classes');
-$container = seasar::container::S2ApplicationContext::create();
+seasar\container\S2ApplicationContext::import(dirname(__FILE__) . '/classes');
+$container = seasar\container\S2ApplicationContext::create();
 $service   = $container->getComponent('Service');
 
 print get_class($service->container) . PHP_EOL;
@@ -186,14 +186,14 @@ print get_class($service->container) . PHP_EOL;
 <?php
 require_once('S2Container/S2Container.php');
 
-seasar::log::S2Logger::getLogger()->debug('debug message.');
+seasar\log\S2Logger::getLogger()->debug('debug message.');
 ]]></programlisting>
 
     <sect2><title>S2Logger</title>
       <para>
-      S2Containerでは、ログ出力を行う Loggerインスタンスを seasar::log::S2Logger クラスを介して取得します。
+      S2Containerでは、ログ出力を行う Loggerインスタンスを seasar\log\S2Logger クラスを介して取得します。
       S2Logger::getLogger メソッドは、デフォルトでは SimpleLogger のインスタンスを返します。
-      Loggerクラスを生成するLoggerFactoryや、ログ出力のレベル設定等は、seasar::Configクラスのプロパティとして設定します。
+      Loggerクラスを生成するLoggerFactoryや、ログ出力のレベル設定等は、seasar\Configクラスのプロパティとして設定します。
       </para>
 
       <blockquote>
@@ -203,7 +203,7 @@ seasar::log::S2Logger::getLogger()->debug('debug message.');
         </para>
 
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-seasar::Config::$LOGGER_FACTORY = 'seasar::log::impl::SimpleLoggerFactory';
+seasar\Config::$LOGGER_FACTORY = 'seasar\log\impl\SimpleLoggerFactory';
 ]]></programlisting>
 
         <formalpara><title>LOG_LEVEL</title></formalpara>
@@ -212,7 +212,7 @@ seasar::Config::$LOGGER_FACTORY = 'seasar::log::impl::SimpleLoggerFactory';
         </para>
 
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-seasar::Config::$LOG_LEVEL = seasar::log::impl::SimpleLogger::DEBUG;
+seasar\Config::$LOG_LEVEL = seasar\log\impl\SimpleLogger::DEBUG;
 ]]></programlisting>
 
         <formalpara><title>DEBUG_EVAL</title></formalpara>
@@ -221,7 +221,7 @@ seasar::Config::$LOG_LEVEL = seasar::log::impl::SimpleLogger::DEBUG;
         </para>
 
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-seasar::Config::$DEBUG_EVAL = false;
+seasar\Config::$DEBUG_EVAL = false;
 ]]></programlisting>
 
         <formalpara><title>DEBUG_VERBOSE</title></formalpara>
@@ -230,7 +230,7 @@ seasar::Config::$DEBUG_EVAL = false;
         </para>
 
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-seasar::Config::$DEBUG_VERBOSE = false;
+seasar\Config::$DEBUG_VERBOSE = false;
 ]]></programlisting>
 
       </blockquote>
@@ -247,7 +247,7 @@ seasar::Config::$DEBUG_VERBOSE = false;
         SimpleLoggerのLoggerFactoryはSimpleLoggerFactoryです。
         </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-seasar::Config::$LOGGER_FACTORY = 'seasar::log::impl::SimpleLoggerFactory';
+seasar\Config::$LOGGER_FACTORY = 'seasar\log\impl\SimpleLoggerFactory';
 ]]></programlisting>
 
         <formalpara><title>LOG_LEVEL</title></formalpara>
@@ -256,12 +256,12 @@ seasar::Config::$LOGGER_FACTORY = 'seasar::log::impl::SimpleLoggerFactory';
         </para>
 
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-seasar::Config::$LOG_LEVEL = seasar::log::impl::SimpleLogger::DEBUG;
-seasar::Config::$LOG_LEVEL = seasar::log::impl::SimpleLogger::NOTICE;
-seasar::Config::$LOG_LEVEL = seasar::log::impl::SimpleLogger::INFO;
-seasar::Config::$LOG_LEVEL = seasar::log::impl::SimpleLogger::WARN;
-seasar::Config::$LOG_LEVEL = seasar::log::impl::SimpleLogger::ERROR;
-seasar::Config::$LOG_LEVEL = seasar::log::impl::SimpleLogger::FATAL;
+seasar\Config::$LOG_LEVEL = seasar\log\impl\SimpleLogger::DEBUG;
+seasar\Config::$LOG_LEVEL = seasar\log\impl\SimpleLogger::NOTICE;
+seasar\Config::$LOG_LEVEL = seasar\log\impl\SimpleLogger::INFO;
+seasar\Config::$LOG_LEVEL = seasar\log\impl\SimpleLogger::WARN;
+seasar\Config::$LOG_LEVEL = seasar\log\impl\SimpleLogger::ERROR;
+seasar\Config::$LOG_LEVEL = seasar\log\impl\SimpleLogger::FATAL;
 ]]></programlisting>
 
         <formalpara><title>SIMPLE_LOG_FILE</title></formalpara>
@@ -269,7 +269,7 @@ seasar::Config::$LOG_LEVEL = seasar::log::impl::SimpleLogger::FATAL;
                 ログ出力をファイルに行う場合のログファイルを設定します。
         </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-seasar::Config::$SIMPLE_LOG_FILE = null;
+seasar\Config::$SIMPLE_LOG_FILE = null;
 ]]></programlisting>
       </blockquote>
     </sect2>
@@ -278,7 +278,7 @@ seasar::Config::$SIMPLE_LOG_FILE = null;
   <!-- ##################################################################### -->
   <sect1 id="misc.annotation"><title>Annotation API リファレンス</title>
     <para>   
-    seasar::util::Annotation は、クラスに記述されたコメントや定数値をアノテーションとして読み込みます。
+    seasar\util\Annotation は、クラスに記述されたコメントや定数値をアノテーションとして読み込みます。
         読み込んだ文字列は配列のExpressionとしてeval関数で処理します。
     <sbr/>
        例として、次のようなアノテーションが記述されたサービスクラスを作成します。
@@ -300,15 +300,15 @@ class Service {
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
 require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php');
-seasar::util::ClassLoader::import(dirname(__FILE__) . '/classes');
-seasar::util::Annotation::$CONSTANT = true;
+seasar\util\ClassLoader::import(dirname(__FILE__) . '/classes');
+seasar\util\Annotation::$CONSTANT = true;
 
 $service = new ReflectionClass('Service');
 
-$annotation = seasar::util::Annotation::get($service, '@Sample');
+$annotation = seasar\util\Annotation::get($service, '@Sample');
 print_r($annotation);
 
-$annotation = seasar::util::Annotation::get($service, 'SAMPLE');
+$annotation = seasar\util\Annotation::get($service, 'SAMPLE');
 print_r($annotation);
 ]]></programlisting>
 
@@ -339,7 +339,7 @@ Array
             コメントアノテーションを読み込む設定とします。
       </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-seasar::util::Annotation::$COMMENT = true;
+seasar\util\Annotation::$COMMENT = true;
 ]]></programlisting>
 
       <formalpara><title>CONSTANT設定</title></formalpara>
@@ -347,7 +347,7 @@ seasar::util::Annotation::$COMMENT = true;
             定数アノテーションを読み込む設定とします。
       </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-seasar::util::Annotation::$CONSTANT = false;
+seasar\util\Annotation::$CONSTANT = false;
 ]]></programlisting>
 
       <formalpara><title>Annotation::get メソッド</title></formalpara>
@@ -361,7 +361,7 @@ seasar::util::Annotation::$CONSTANT = false;
  * @param ReflectionClass|ReflectionMethod|ReflectionProperty $reflection
  * @param string $annotation
  * @return array
- * @throw seasar::exception::AnnotationNotFoundException
+ * @throw seasar\exception\AnnotationNotFoundException
  */
 publi static function get($reflection, $annotation)
 ]]></programlisting>
@@ -388,18 +388,18 @@ publi static function has($reflection, $annotation)
   <!-- ##################################################################### -->
   <sect1 id="misc.classloader"><title>ClassLoader API リファレンス</title>
      <para>
-       seasar::util::ClassLoaderクラスは、ファイルシステム上のクラスファイルを検索し、autoload関数を介して
+       seasar\util\ClassLoaderクラスは、ファイルシステム上のクラスファイルを検索し、autoload関数を介して
               クラス定義をロードします。クラスのインポートは次のメソッドで行います。
      </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-seasar::util::ClassLoader::import($path, $namespace = array(), $strict = false, $pear = false, $recursive = true)
+seasar\util\ClassLoader::import($path, $namespace = array(), $strict = false, $pear = false, $recursive = true)
 ]]></programlisting>
     <blockquote>
       <itemizedlist>
         <listitem>第1引数 : 検索するディレクトリへのパス</listitem>
         <listitem>第2引数 : namespace文字列または配列</listitem>
         <listitem>第3引数 : trueの場合、$namespaceで指定されたネームスペースが使用されます。falseの場合は、検索したサブディレクトリが$namespaceに順次追加されます。</listitem>
-        <listitem>第4引数 : trueの場合は、$namespaceが「_」で展開されます。falseの場合は、$namespaceが「::」で展開されます</listitem>
+        <listitem>第4引数 : trueの場合は、$namespaceが「_」で展開されます。falseの場合は、$namespaceが「\」で展開されます</listitem>
         <listitem>第5引数 : trueの場合は、再帰的にディレクトリを検索します。falseの場合は、サブディレクトリを検索しません。</listitem>
       </itemizedlist>
     </blockquote>
@@ -411,7 +411,7 @@ seasar::util::ClassLoader::import($path, $namespace = array(), $strict = false, 
               「 S2Container 」がクラス名になります。
      </para>
      <para>
-             第2引数でnamespaceを文字列で指定する場合は、「example::logic」などのように指定します。
+             第2引数でnamespaceを文字列で指定する場合は、「example\logic」などのように指定します。
              配列で指定する場合は、array('example','logic')のようになります。
      </para>
   </sect1>
@@ -425,7 +425,7 @@ seasar::util::ClassLoader::import($path, $namespace = array(), $strict = false, 
         <para>例として、次のようなSqlitePdoクラスを  /path/to/classes/SqlitePdo.php に作成します。</para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
-class SqlitePdo extends ::PDO {
+class SqlitePdo extends \PDO {
     public function __construct() {
         parent::__construct('sqlite:' DB_DIR . '/sqlite.db');
         $this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -451,7 +451,7 @@ class CdDao {
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
 require_once('S2Container/S2Container.php');
-use seasar::container::S2ApplicationCcontext as s2app;
+use seasar\container\S2ApplicationContext as s2app;
 
 s2app::import('/path/to/classes');
 $cdDao = s2app::get('CdDao');
@@ -481,7 +481,7 @@ var_dump($cdDao->findAll());
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
 require_once('S2Container/S2Container.php');
-use seasar::container::S2ApplicationCcontext as s2app;
+use seasar\container\S2ApplicationContext as s2app;
 
 s2app::import('/path/to/dicons');
 s2app::import('/path/to/classes');

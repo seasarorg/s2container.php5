@@ -13,6 +13,8 @@ example/misc/pdo/
  |    +-- Paginate.php
  |    +-- PdoInterceptor.php
  |    +-- SqlFileReader.php
+ |    +-- StandardDto.php
+ |    +-- StandardPdo.php
  +-- config/
  |    +-- pdo.dicon
  |    +-- SqliteAPdo.php
@@ -22,7 +24,6 @@ example/misc/pdo/
  |    +-- sqlite_b.db
  |    +-- sqlite_c.db
  +-- tests/
- +-- main.php
       
 ]]></programlisting>
 
@@ -89,7 +90,7 @@ example/misc/pdo/
         </itemizedlist>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
-namespace sample::pdo;
+namespace sample\pdo;
 class CdDao {
     public function findAll() {
         return 'select * from CD';
@@ -120,12 +121,12 @@ class CdDao {
 define('ROOT_DIR', dirname(__FILE__));
 require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php');
 
-use seasar::container::S2ApplicationContext as s2app;
+use seasar\container\S2ApplicationContext as s2app;
 s2app::registerAspect('/Dao$/', 'pdo.interceptor');
 s2app::import(ROOT_DIR . '/classes');
 s2app::import(ROOT_DIR . '/config/SqliteAPdo.php');
 
-$dao = s2app::get('sample::pdo::CdDao');
+$dao = s2app::get('sample\pdo\CdDao');
 $rows = $dao->findAll();
 var_dump($rows);
 
@@ -145,7 +146,7 @@ var_dump($rows);
         </itemizedlist>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
-namespace sample::pdo;
+namespace sample\pdo;
 class ICdDao {
     public function findAll();
 }
@@ -190,12 +191,12 @@ select * from CD
 define('ROOT_DIR', dirname(__FILE__));
 require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php');
 
-use seasar::container::S2ApplicationContext as s2app;
+use seasar\container\S2ApplicationContext as s2app;
 s2app::registerAspect('/Dao$/', 'pdo.interceptor');
 s2app::import(ROOT_DIR . '/classes');
 s2app::import(ROOT_DIR . '/config/SqliteAPdo.php');
 
-$dao = s2app::get('sample::pdo::ICdDao');
+$dao = s2app::get('sample\pdo\ICdDao');
 $rows = $dao->findAll();
 var_dump($rows);
 
@@ -218,7 +219,7 @@ var_dump($rows);
         </itemizedlist>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
-namespace sample::pdo;
+namespace sample\pdo;
 class CdDao {
     public function findById($id) {
         return "select * from CD where id = /*:id*/5";    
@@ -249,12 +250,12 @@ class CdDao {
 define('ROOT_DIR', dirname(__FILE__));
 require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php');
 
-use seasar::container::S2ApplicationContext as s2app;
+use seasar\container\S2ApplicationContext as s2app;
 s2app::registerAspect('/Dao$/', 'pdo.interceptor');
 s2app::import(ROOT_DIR . '/classes');
 s2app::import(ROOT_DIR . '/config/SqliteAPdo.php');
 
-$dao = s2app::get('sample::pdo::ICdDao');
+$dao = s2app::get('sample\pdo\ICdDao');
 $rows = $dao->findById(1);
 var_dump($rows);
 
@@ -279,7 +280,7 @@ var_dump($rows);
         </itemizedlist>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
-namespace sample::pdo;
+namespace sample\pdo;
 class CdDao {
     public function findBySqlFile1($condition){}
 }
@@ -331,12 +332,12 @@ select * from CD
 define('ROOT_DIR', dirname(__FILE__));
 require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php');
 
-use seasar::container::S2ApplicationContext as s2app;
+use seasar\container\S2ApplicationContext as s2app;
 s2app::registerAspect('/Dao$/', 'pdo.interceptor');
 s2app::import(ROOT_DIR . '/classes');
 s2app::import(ROOT_DIR . '/config/SqliteAPdo.php');
 
-$dao = s2app::get('sample::pdo::ICdDao');
+$dao = s2app::get('sample\pdo\ICdDao');
 $condition = new StdClass;
 $condition->id = 1;
 $rows = $dao->findBySqlFile1($condition);
@@ -360,7 +361,7 @@ var_dump($rows);
         </itemizedlist>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
-namespace sample::pdo;
+namespace sample\pdo;
 class CdDao {
     public function findBySqlFile3($condition){}
 }
@@ -412,12 +413,12 @@ select * from CD
 define('ROOT_DIR', dirname(__FILE__));
 require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php');
 
-use seasar::container::S2ApplicationContext as s2app;
+use seasar\container\S2ApplicationContext as s2app;
 s2app::registerAspect('/Dao$/', 'pdo.interceptor');
 s2app::import(ROOT_DIR . '/classes');
 s2app::import(ROOT_DIR . '/config/SqliteAPdo.php');
 
-$dao = s2app::get('sample::pdo::ICdDao');
+$dao = s2app::get('sample\pdo\ICdDao');
 $condition = array('id' => 1);
 $rows = $dao->findBySqlFile3($condition);
 var_dump($rows);
@@ -440,7 +441,7 @@ var_dump($rows);
         </itemizedlist>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
-namespace sample::pdo;
+namespace sample\pdo;
 class CdDao {
     public function findByTitle() {
         return array("select * from CD where title = /*:title*/'AAA'", array('title' => 'S2Pdo!!!'));
@@ -470,12 +471,12 @@ class CdDao {
 define('ROOT_DIR', dirname(__FILE__));
 require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php');
 
-use seasar::container::S2ApplicationContext as s2app;
+use seasar\container\S2ApplicationContext as s2app;
 s2app::registerAspect('/Dao$/', 'pdo.interceptor');
 s2app::import(ROOT_DIR . '/classes');
 s2app::import(ROOT_DIR . '/config/SqliteAPdo.php');
 
-$dao = s2app::get('sample::pdo::ICdDao');
+$dao = s2app::get('sample\pdo\ICdDao');
 $rows = $dao->findByTitle();
 var_dump($rows);
 
@@ -512,7 +513,7 @@ var_dump($rows);
         </itemizedlist>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
-namespace sample::pdo;
+namespace sample\pdo;
 class CdDao {
     /**
      * @S2Pdo('pdo' => 'sqliteBPdo')
@@ -544,12 +545,12 @@ class CdDao {
 define('ROOT_DIR', dirname(__FILE__));
 require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php');
 
-use seasar::container::S2ApplicationContext as s2app;
+use seasar\container\S2ApplicationContext as s2app;
 s2app::registerAspect('/Dao$/', 'pdo.interceptor');
 s2app::import(ROOT_DIR . '/classes');
 s2app::import(ROOT_DIR . '/config');
 
-$dao = s2app::get('sample::pdo::CdDao');
+$dao = s2app::get('sample\pdo\CdDao');
 $rows = $dao->findAllFromB();
 var_dump($rows);
 
@@ -572,7 +573,7 @@ var_dump($rows);
         </itemizedlist>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
-namespace sample::pdo;
+namespace sample\pdo;
 class CdDao {
     public $sqliteBPdo = 's2binding';
 
@@ -582,7 +583,7 @@ class CdDao {
             $this->insert(10, 'S2Pdo transaction', 'sample');
             $this->sqliteBPdo->commit();
         } catch (Exception $e) {
-            seasar::log::S2Logger::getInstance(__NAMESPACE__)->warn($e->getMessage(), __METHOD__);
+            seasar\log\S2Logger::getInstance(__NAMESPACE__)->warn($e->getMessage(), __METHOD__);
             $this->sqliteBPdo->rollBack();
         }
     }
@@ -618,12 +619,12 @@ class CdDao {
 define('ROOT_DIR', dirname(__FILE__));
 require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php');
 
-use seasar::container::S2ApplicationContext as s2app;
+use seasar\container\S2ApplicationContext as s2app;
 s2app::registerAspect('/Dao$/', 'pdo.interceptor', '/^(find|insert|update|delete)/');
 s2app::import(ROOT_DIR . '/classes');
 s2app::import(ROOT_DIR . '/config');
 
-$dao = s2app::get('sample::pdo::CdDao');
+$dao = s2app::get('sample\pdo\CdDao');
 $dao->transactionalInsert();
 
 ]]></programlisting>
@@ -644,23 +645,23 @@ $dao->transactionalInsert();
         </itemizedlist>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
-namespace sample::pdo;
+namespace sample\pdo;
 /**
  * @S2Pdo('pdo' => 'sqliteC')
  */
 class EmpDao {
 
-    public function findByPaginate(::Paginate $paginate) {
+    public function findByPaginate(\Paginate $paginate) {
         list($row) = $this->findAllTotal($paginate);
         $paginate->setTotal($row->total);
         return $this->findAll($paginate);
     }
 
-    public function findAllTotal(::Paginate $paginate) {
+    public function findAllTotal(\Paginate $paginate) {
         return "select count(*) as total from EMP";
     }
 
-    public function findAll(::Paginate $paginate) {
+    public function findAll(\Paginate $paginate) {
         return "select * from EMP
                 limit /*:paginate_getLimit*/3 offset /*:paginate_getOffset*/5";
     }
@@ -698,12 +699,12 @@ class EmpDao {
 define('ROOT_DIR', dirname(__FILE__));
 require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php');
 
-use seasar::container::S2ApplicationContext as s2app;
+use seasar\container\S2ApplicationContext as s2app;
 s2app::registerAspect('/Dao$/', 'pdo.interceptor', '/^find/');
 s2app::import(ROOT_DIR . '/classes');
 s2app::import(ROOT_DIR . '/config');
 
-$dao = s2app::get('sample::pdo::EmpDao');
+$dao = s2app::get('sample\pdo\EmpDao');
 $paginate = new Paginate;
 $paginate->setLimit(5);
 $rows = $dao->findByPaginate($paginate);

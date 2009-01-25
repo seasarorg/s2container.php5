@@ -21,7 +21,7 @@ S2Container             version       state
 %
 ]]></programlisting>
 
-  <para>Please require "S2Container.php", then S2Container.PHP becomes usable</para>
+  <para>By requiring "S2Container.php", S2Container.PHP will be available.</para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
 require_once('S2Container/S2Container.php');
@@ -29,7 +29,7 @@ require_once('S2Container/S2Container.php');
 ]]></programlisting>
 
   <para>
-    Please carry out "pear uninstall", when you uninstall S2Container.PHP
+    Please carry out "pear uninstall", when you uninstall S2Container.PHP.
   </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 % pear uninstall S2Container
@@ -41,8 +41,8 @@ uninstall ok: channel://pear.php.net/S2Container-version
   </sect1>
   <sect1 id="install.full"><title>Installation with Full Package</title>
     <para>
-      Please download s2container.php-version.zip and unzip it.
-      The following directory is developed.
+      Please download s2container.php-version.tar.gz and unpack it.
+      The following directory will be created.
     </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 s2container.php/
@@ -54,7 +54,7 @@ s2container.php/
   +-- S2Container.php
   +-- S2ContainerCore.php
 ]]></programlisting>
-  <para>Please require "S2Container.php", then S2Container.PHP becomes usable.</para>
+  <para>Please require "S2Container.php", then it becomes usable.</para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
 require_once('/path/to/s2container.php/S2Container.php');
@@ -63,7 +63,8 @@ require_once('/path/to/s2container.php/S2Container.php');
   </sect1>
 
   <sect1 id="install.phar"><title>Installation with Phar Package</title>
-    <para>Please download S2Container-version.phar and require it. Then S2Container.PHP becomes usable.</para>
+    <para>Please download S2Container-version.phar.gz and gunzip it.
+    By requiring phar file, S2Container.PHP will be available.</para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
 require_once('/path/to/S2Container.php-version.phar');

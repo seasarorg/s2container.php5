@@ -17,7 +17,7 @@
 <?php
 require_once('S2Container/S2Container.php');
 
-$container = seasar::container::S2ApplicationContext::create();
+$container = seasar\container\S2ApplicationContext::create();
 $container->getComponentDefSize() == 0 ?
     print 'container is empty.' . PHP_EOL:
     print 'container has some component.' . PHP_EOL;
@@ -67,8 +67,8 @@ class Hello {
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
 require_once('S2Container/S2Container.php');
-seasar::container::S2ApplicationContext::import(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'classes');
-$container = seasar::container::S2ApplicationContext::create();
+seasar\container\S2ApplicationContext::import(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'classes');
+$container = seasar\container\S2ApplicationContext::create();
 $container->getComponentDefSize() == 0 ?
     print 'container is empty.' . PHP_EOL:
     print 'container has some component.' . PHP_EOL;
@@ -93,7 +93,7 @@ container has some component.
   <sect1 id="quick203"><title>Getting a Component</title>
     <para>
       Since the container with a component was created, let's take out a component.
-      In order to pick out a component from a container, you can use "getComponent" method of S2Container.
+      In order to pick out a component from a container, you can use "getComponent" method of S2Container class.
     </para>
     <itemizedlist>
       <listitem>quickstart.php
@@ -103,8 +103,8 @@ container has some component.
 <?php
 require_once('S2Container/S2Container.php');
 
-seasar::container::S2ApplicationContext::import(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'classes');
-$container = seasar::container::S2ApplicationContext::create();
+seasar\container\S2ApplicationContext::import(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'classes');
+$container = seasar\container\S2ApplicationContext::create();
 $container->getComponentDefSize() == 0 ?
     print 'container is empty.' . PHP_EOL:
     print 'container has some component.' . PHP_EOL;
@@ -154,8 +154,8 @@ class Printer {
 <?php
 require_once('S2Container/S2Container.php');
 
-seasar::container::S2ApplicationContext::import(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'classes');
-$container = seasar::container::S2ApplicationContext::create();
+seasar\container\S2ApplicationContext::import(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'classes');
+$container = seasar\container\S2ApplicationContext::create();
 $hello = $container->getComponent('Hello');
 $hello->sayHello();
 $printer = $container->getComponent('Printer');
@@ -200,7 +200,6 @@ class Hello {
 
     <para>
       If carrying out DI by Setter Method injection, the setter method which receives a Printer instance is added to a Hello class.
-      Moreover, in the sayHello method, it outputs by Printer instance.
     </para>
     <itemizedlist>
       <listitem>classes/Hello.php
@@ -245,7 +244,7 @@ Printer::printOut : Hello World ! with DI
 <?php
 class Printer {
     /**
-     * @S2Aspect('interceptor' => 'new seasar::aop::interceptor::TraceInterceptor');
+     * @S2Aspect('interceptor' => 'new seasar\aop\interceptor\TraceInterceptor');
      */
     public function printOut($message) {
         print __METHOD__ . ' : ' . $message . PHP_EOL;
@@ -270,7 +269,7 @@ END   Printer#printOut(Hello World ! with DI) : null
   <!-- ################################################################### -->
   <sect1 id="quick207"><title>Auto Aspect</title>
     <para>
-      With above-mentioned<link linkend="quick206">Applying Aspect</link>, @Aspect annotation was described and the aspect was applied individually.
+      With mentioned before (<link linkend="quick206">Applying Aspect</link>), @Aspect annotation was described and the aspect was applied individually.
       You can set up the same aspect automatically by using the registerAspect method of S2ApplicationiContext class.
     </para>
     <itemizedlist>
@@ -281,9 +280,9 @@ END   Printer#printOut(Hello World ! with DI) : null
 <?php
 require_once('S2Container/S2Container.php');
 
-seasar::container::S2ApplicationContext::import(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'classes');
-seasar::container::S2ApplicationContext::registerAspect('/Printer$/', 'new seasar::aop::interceptor::TraceInterceptor', 'printOut');
-$container = seasar::container::S2ApplicationContext::create();
+seasar\container\S2ApplicationContext::import(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'classes');
+seasar\container\S2ApplicationContext::registerAspect('/Printer$/', 'new seasar\aop\interceptor\TraceInterceptor', 'printOut');
+$container = seasar\container\S2ApplicationContext::create();
 $hello = $container->getComponent('Hello');
 $hello->sayHello();
 ]]></programlisting>
@@ -306,8 +305,8 @@ END   Printer#printOut(Hello World ! with DI) : null
   <!-- ################################################################### -->
   <sect1 id="quick208"><title>Setup with DICON file</title>
     <para>
-      Let's set up the above-mentioned setting by DICON file.
-      Please create dicon directory to a current directory and save as hello.dicon at it.
+      Let's set up the before-mentioned all setting by DICON file.
+      Please create dicon directory to a current directory and save it as hello.dicon.
     </para>
     <itemizedlist>
       <listitem>dicon/hello.dicon
@@ -321,7 +320,7 @@ END   Printer#printOut(Hello World ! with DI) : null
         <property name="printer">Printer</property>
     </component>
     <component class="Printer">
-        <aspect pointcut="printOut">seasar::aop::interceptor::TraceInterceptor</aspect>
+        <aspect pointcut="printOut">new seasar\aop\interceptor\TraceInterceptor</aspect>
     </component>
 </components>
 ]]></programlisting>
@@ -338,10 +337,10 @@ END   Printer#printOut(Hello World ! with DI) : null
 <?php
 require_once('S2Container/S2Container.php');
 
-seasar::container::S2ApplicationContext::import(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'classes');
-seasar::container::S2ApplicationContext::import(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'dicon');
-seasar::container::S2ApplicationContext::setIncludePattern('/hello.dicon$/');
-$container = seasar::container::S2ApplicationContext::create();
+seasar\container\S2ApplicationContext::import(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'classes');
+seasar\container\S2ApplicationContext::import(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'dicon');
+seasar\container\S2ApplicationContext::setIncludePattern('/hello.dicon$/');
+$container = seasar\container\S2ApplicationContext::create();
 $hello = $container->getComponent('Hello');
 $hello->sayHello();
 ]]></programlisting>

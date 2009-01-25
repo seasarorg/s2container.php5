@@ -95,11 +95,11 @@ class Service {
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
 require_once('S2Container/S2Container.php');
-seasar::util::ClassLoader::import(dirname(__FILE__) . '/classes');
+seasar\util\ClassLoader::import(dirname(__FILE__) . '/classes');
 
-$interceptor = new seasar::aop::interceptor::TraceInterceptor;
-$pointcut    = new seasar::aop::Pointcut('^add$');
-$aspect      = new seasar::aop::Aspect($interceptor, $pointcut);
+$interceptor = new seasar\aop\interceptor\TraceInterceptor;
+$pointcut    = new seasar\aop\Pointcut('^add$');
+$aspect      = new seasar\aop\Aspect($interceptor, $pointcut);
 $service     = S2AopFactory::create(new ReflectionClass('Service'), array($aspect));
 
 print get_class($service) . PHP_EOL;
@@ -108,22 +108,22 @@ $result = $service->add(2, 3);
       <blockquote>
         <formalpara><title>Interceptor</title></formalpara>
         <para>
-          Interceptor is a class which implements seasar::aop::MethodInterceptor interface.
+          Interceptor is a class which implements seasar\aop\MethodInterceptor interface.
           These next interceptors are attached to S2Aop.
         </para>
         <itemizedlist>
-          <listitem>seasar::aop::interceptor::TraceInterceptor <sbr/>
+          <listitem>seasar\aop\interceptor\TraceInterceptor <sbr/>
             TraceInterceptor is a interceptor for treating trace processing as "Crosscutting Concern".
           </listitem>
-          <listitem>seasar::aop::interceptor::MockInterceptor <sbr/>
+          <listitem>seasar\aop\interceptor\MockInterceptor <sbr/>
             MockInterceptor is a interceptor for doing the test using Mock simply.
           </listitem>
-          <listitem>seasar::aop::interceptor::InterceptorChain <sbr/>
+          <listitem>seasar\aop\interceptor\InterceptorChain <sbr/>
             InterceptorChain is a interceptor which makes two or more interceptors a group and
             thereby, reuse of interceptor is simplified.
           </listitem>
           <!--
-          <listitem>seasar::aop::interceptor::AbstractAroundInterceptor <sbr/>
+          <listitem>seasar\aop\interceptor\AbstractAroundInterceptor <sbr/>
           </listitem>
           -->
         </itemizedlist>
@@ -137,7 +137,7 @@ $result = $service->add(2, 3);
  * Construct Pointcut
  * @param mixed $target
  */
-seasar::aop::Pointcut::__construct($target)
+seasar\aop\Pointcut::__construct($target)
 ]]></programlisting>
         <para>
           The regular expression character string which specifies Pointcut,
@@ -162,10 +162,10 @@ seasar::aop::Pointcut::__construct($target)
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 /**
  * Construct Aspect
- * @param seasar::aop::MethodInterceptor $methodInterceptor
- * @param seasar::aop::Pointcut $pointcut
+ * @param seasar\aop\MethodInterceptor $methodInterceptor
+ * @param seasar\aop\Pointcut $pointcut
  */
-seasar::aop::Aspect::__construct(MethodInterceptor $methodInterceptor, Pointcut $pointcut)
+seasar\aop\Aspect::__construct(MethodInterceptor $methodInterceptor, Pointcut $pointcut)
 ]]></programlisting>
         <para>
           MethodInterceptor and Pointcut are specified by a constructor argument.
@@ -202,9 +202,9 @@ class Service {
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
 require_once('S2Container/S2Container.php');
-seasar::container::S2ApplicationContext::import(dirname(__FILE__) . '/classes');
-seasar::container::S2ApplicationContext::registerAspect('/^Service$/', 'new seasar::aop::interceptor::TraceInterceptor', '^add$');
-$container = seasar::container::S2ApplicationContext::create();
+seasar\container\S2ApplicationContext::import(dirname(__FILE__) . '/classes');
+seasar\container\S2ApplicationContext::registerAspect('/^Service$/', 'new seasar\aop\interceptor\TraceInterceptor', '^add$');
+$container = seasar\container\S2ApplicationContext::create();
 $service   = $container->getComponent('Service');
 
 print get_class($service) . PHP_EOL;
@@ -227,7 +227,7 @@ $result = $service->add(2, 3);
 
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 /**
- * @S2Aspect('interceptor' => 'new seasar::aop::interceptor::TraceInterceptor',
+ * @S2Aspect('interceptor' => 'new seasar\aop\interceptor\TraceInterceptor',
  *           'pointcut'    => '^add$')
  */
 class Service {
@@ -244,7 +244,7 @@ class Service {
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 class Service {
     /**
-     * @S2Aspect('interceptor' => 'new seasar::aop::interceptor::TraceInterceptor')
+     * @S2Aspect('interceptor' => 'new seasar\aop\interceptor\TraceInterceptor')
      */
     public function add($a, $b) {
         return $a + $b;
@@ -259,8 +259,8 @@ class Service {
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
 require_once('S2Container/S2Container.php');
-seasar::container::S2ApplicationContext::import(dirname(__FILE__) . '/classes');
-$container = seasar::container::S2ApplicationContext::create();
+seasar\container\S2ApplicationContext::import(dirname(__FILE__) . '/classes');
+$container = seasar\container\S2ApplicationContext::create();
 $service   = $container->getComponent('Service');
 
 print get_class($service) . PHP_EOL;
@@ -294,7 +294,7 @@ class Service {
 <!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
 "http://www.seasar.org/dtd/components21.dtd">
 <components>
-    <component name="trace" class="seasar::aop::interceptor::TraceInterceptor"/>
+    <component name="trace" class="seasar\aop\interceptor::TraceInterceptor"/>
     <component class="Service">
         <aspect pointcut="^add$">trace</aspect>
     </component>
@@ -307,8 +307,8 @@ class Service {
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
 require_once('S2Container/S2Container.php');
-seasar::util::ClassLoader::import(dirname(__FILE__) . '/classes');
-$container = seasar::container::factory::S2ContainerFactory::create('/path/to/diconファイル');
+seasar\util\ClassLoader::import(dirname(__FILE__) . '/classes');
+$container = seasar\container\factory\S2ContainerFactory::create('/path/to/diconファイル');
 $service   = $container->getComponent('Service');
 
 print get_class($service) . PHP_EOL;
@@ -358,9 +358,9 @@ class Service {
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
 require_once('S2Container/S2Container.php');
-seasar::container::S2ApplicationContext::import(dirname(__FILE__) . '/classes');
-seasar::container::S2ApplicationContext::registerAspect('/^Service$/', 'new seasar::aop::interceptor::TraceInterceptor');
-$container = seasar::container::S2ApplicationContext::create();
+seasar\container\S2ApplicationContext::import(dirname(__FILE__) . '/classes');
+seasar\container\S2ApplicationContext::registerAspect('/^Service$/', 'new seasar\aop\interceptor\TraceInterceptor');
+$container = seasar\container\S2ApplicationContext::create();
 $service   = $container->getComponent('Service');
 
 print get_class($service) . PHP_EOL;
@@ -374,9 +374,9 @@ $result = $service->add(2, 3);
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 % php context.php
 Service_EnhancedByS2AOP
-[INFO  ] seasar::aop::interceptor::TraceInterceptor::invoke - BEGIN Service->add(2,3)
+[INFO  ] seasar\aop\interceptor\TraceInterceptor::invoke - BEGIN Service->add(2,3)
 Service called.
-[INFO  ] seasar::aop::interceptor::TraceInterceptor::invoke - END   Service->add(2,3) : 5 : 0.0012331008911133
+[INFO  ] seasar\aop\interceptor\TraceInterceptor::invoke - END   Service->add(2,3) : 5 : 0.0012331008911133
 %
 ]]></programlisting>
       </blockquote>
@@ -393,7 +393,7 @@ Service called.
 <!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
 "http://www.seasar.org/dtd/components21.dtd">
 <components>
-    <component name="trace" class="seasar::aop::interceptor::TraceInterceptor"/>
+    <component name="trace" class="seasar\aop\interceptor\TraceInterceptor"/>
     <component class="Service">
         <aspect>trace</aspect>
     </component>
@@ -420,8 +420,8 @@ Service called.
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
 require_once('S2Container/S2Container.php');
-seasar::util::ClassLoader::import(dirname(__FILE__) . '/classes');
-$container = seasar::container::factory::S2ContainerFactory::create(dirname(__FILE__) . '/example.dicon');
+seasar\util\ClassLoader::import(dirname(__FILE__) . '/classes');
+$container = seasar\container\factory\S2ContainerFactory::create(dirname(__FILE__) . '/example.dicon');
 $service = $container->getComponent('Service');
 
 print get_class($service) . PHP_EOL;
@@ -435,9 +435,9 @@ $result = $service->add(2, 3);
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 % php factory.php
 Service_EnhancedByS2AOP
-[INFO  ] seasar::aop::interceptor::TraceInterceptor::invoke - BEGIN Service->add(2,3)
+[INFO  ] seasar\aop\interceptor\TraceInterceptor::invoke - BEGIN Service->add(2,3)
 Service called.
-[INFO  ] seasar::aop::interceptor::TraceInterceptor::invoke - END   Service->add(2,3) : 5 : 0.0012331008911133
+[INFO  ] seasar\aop\interceptor\TraceInterceptor::invoke - END   Service->add(2,3) : 5 : 0.0012331008911133
 %
 ]]></programlisting>
       </blockquote>
@@ -482,7 +482,7 @@ class Service {
         return $a + $b;
     }
     /**
-     * @S2Mock('throw' => 'new seasar::exception::NotYetImplementedException("mock exception")')
+     * @S2Mock('throw' => 'new seasar\exception\NotYetImplementedException("mock exception")')
      */
     public function sub($a, $b) {
         print __CLASS__ . ' called.' . PHP_EOL;
@@ -512,9 +512,9 @@ class Service {
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
 require_once('S2Container/S2Container.php');
-seasar::container::S2ApplicationContext::import(dirname(__FILE__) . '/classes');
-seasar::container::S2ApplicationContext::registerAspect('/^Service$/', 'new seasar::aop::interceptor::MockInterceptor');
-$container = seasar::container::S2ApplicationContext::create();
+seasar\container\S2ApplicationContext::import(dirname(__FILE__) . '/classes');
+seasar\container\S2ApplicationContext::registerAspect('/^Service$/', 'new seasar\aop\interceptor\MockInterceptor');
+$container = seasar\container\S2ApplicationContext::create();
 $service = $container->getComponent('Service');
 
 print $service->add(2, 3) . PHP_EOL;
@@ -535,7 +535,7 @@ try {
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 % php context.php
 10
-seasar::exception::NotYetImplementedException : mock exception
+seasar\exception\NotYetImplementedException : mock exception
 %
 ]]></programlisting>
       </blockquote>
@@ -554,14 +554,14 @@ seasar::exception::NotYetImplementedException : mock exception
 <!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
 "http://www.seasar.org/dtd/components21.dtd">
 <components>
-    <component name="mock" class="seasar::aop::interceptor::MockInterceptor">
+    <component name="mock" class="seasar\aop\interceptor\MockInterceptor">
         <initMethod name="setReturnValue">
             <arg>"add"</arg>
             <arg>20</arg>
         </initMethod>
         <initMethod name="setThrowable">
             <arg>"sub"</arg>
-            <arg>new seasar::exception::NotYetImplementedException('mock exception')</arg>
+            <arg>new seasar\exception\NotYetImplementedException('mock exception')</arg>
         </initMethod>
     </component>
 
@@ -594,8 +594,8 @@ seasar::exception::NotYetImplementedException : mock exception
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
 require_once('S2Container/S2Container.php');
-seasar::util::ClassLoader::import(dirname(__FILE__) . '/classes');
-$container = seasar::container::factory::S2ContainerFactory::create(dirname(__FILE__) . '/example.dicon');
+seasar\util\ClassLoader::import(dirname(__FILE__) . '/classes');
+$container = seasar\container\factory\S2ContainerFactory::create(dirname(__FILE__) . '/example.dicon');
 $service = $container->getComponent('Service');
 
 print $service->add(2, 3) . PHP_EOL;
@@ -616,7 +616,7 @@ try {
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 % php factory.php
 20
-seasar::exception::NotYetImplementedException : mock exception
+seasar\exception\NotYetImplementedException : mock exception
 %
 ]]></programlisting>
       </blockquote>
@@ -658,13 +658,13 @@ class Service {
         <aspect>chain</aspect>
     </component>
 
-    <component name="chain" class="seasar::aop::interceptor::InterceptorChain">
+    <component name="chain" class="seasar\aop\interceptor\InterceptorChain">
         <initMethod name="add"><arg>trace</arg></initMethod>
         <initMethod name="add"><arg>mock</arg></initMethod>
     </component>
 
-    <component name="trace" class="seasar::aop::interceptor::TraceInterceptor"/>
-    <component name="mock" class="seasar::aop::interceptor::MockInterceptor">
+    <component name="trace" class="seasar\aop\interceptor\TraceInterceptor"/>
+    <component name="mock" class="seasar\aop\interceptor\MockInterceptor">
         <initMethod name="setReturnValue">
             <arg>"add"</arg>
             <arg>20</arg>
@@ -692,8 +692,8 @@ class Service {
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
 require_once('S2Container/S2Container.php');
-seasar::util::ClassLoader::import(dirname(__FILE__) . '/classes');
-$container = seasar::container::factory::S2ContainerFactory::create(dirname(__FILE__) . '/example.dicon');
+seasar\util\ClassLoader::import(dirname(__FILE__) . '/classes');
+$container = seasar\container\factory\S2ContainerFactory::create(dirname(__FILE__) . '/example.dicon');
 $service = $container->getComponent('Service');
 
 print $service->add(2, 3) . PHP_EOL;
@@ -707,8 +707,8 @@ print $service->add(2, 3) . PHP_EOL;
 
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 % php factory.php
-[INFO  ] seasar::aop::interceptor::TraceInterceptor::invoke - BEGIN Service->add(2,3)
-[INFO  ] seasar::aop::interceptor::TraceInterceptor::invoke - END   Service->add(2,3) : 5 : 0.0012331008911133
+[INFO  ] seasar\aop\interceptor\TraceInterceptor::invoke - BEGIN Service->add(2,3)
+[INFO  ] seasar\aop\interceptor\TraceInterceptor::invoke - END   Service->add(2,3) : 5 : 0.0012331008911133
 20
 %
 ]]></programlisting>
@@ -724,9 +724,9 @@ print $service->add(2, 3) . PHP_EOL;
       </para>
 
       <itemizedlist>
-        <listitem>seasar::aop::MethodInterceptor
+        <listitem>seasar\aop\MethodInterceptor
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-namespace seasar::aop;
+namespace seasar\aop;
 interface MethodInterceptor {
     /**
      * @param MethodInvocation $invocation
@@ -741,8 +741,8 @@ interface MethodInterceptor {
         Following sample Interceptor is created.
       </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-class SampleInterceptor implements seasar::aop::MethodInterceptor {
-    public function invoke(seasar::aop::MethodInvocation $invocation){
+class SampleInterceptor implements seasar\aop\MethodInterceptor {
+    public function invoke(seasar\aop\MethodInvocation $invocation){
 
         print 'Before' . PHP_EOL;            // <-- Processing before calling following Interceptor or a following actual method
 
@@ -851,7 +851,7 @@ public function getParameter($name);
 
   <sect1 id="aop.config"><title>S2AOP Configuration file</title>
     <para>
-      Various setup of S2AOP is set up as a property of seasar::aop::Config class.
+      Various setup of S2AOP is set up as a property of seasar\aop\Config class.
     </para>
     <blockquote>
 
@@ -860,7 +860,7 @@ public function getParameter($name);
           The Generator class which generates the extended class for weaving in an aspect is specified.
         </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-seasar::aop::Config::$ENHANCED_CLASS_GENERATOR = 'seasar::aop::EnhancedClassGenerator';
+seasar\aop\Config::$ENHANCED_CLASS_GENERATOR = 'seasar\aop\EnhancedClassGenerator';
 ]]></programlisting>
 
         <formalpara id="aop.config.caching"><title>CACHING</title></formalpara>
@@ -868,7 +868,7 @@ seasar::aop::Config::$ENHANCED_CLASS_GENERATOR = 'seasar::aop::EnhancedClassGene
           It is set up whether the extended class generated in order to weave in aspect is outputted to a file.
         </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-seasar::aop::Config::$CACHING = false;
+seasar\aop\Config::$CACHING = false;
 ]]></programlisting>
 
         <formalpara><title>CACHE_DIR</title></formalpara>
@@ -876,7 +876,7 @@ seasar::aop::Config::$CACHING = false;
           The output directory in the case of outputting the extended class generated in order to weave in aspect to a file is set up.
         </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-seasar::aop::Config::$CACHE_DIR = null;
+seasar\aop\Config::$CACHE_DIR = null;
 ]]></programlisting>
 
     </blockquote>

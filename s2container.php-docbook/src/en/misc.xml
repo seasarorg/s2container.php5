@@ -47,7 +47,7 @@
             <row>
               <entry>Annotation</entry>
               <entry>extension Annotation, annotation function of S2ContainerApplicationContextclass</entry>
-              <entry><link linkend="misc.annotation">unifies to seasar::util:Annotation class</link></entry>
+              <entry><link linkend="misc.annotation">unifies to seasar\util:Annotation class</link></entry>
             </row>
             <row>
               <entry>Attached Interceptor</entry>
@@ -61,9 +61,9 @@
                 S2Container_InterceptorChain
               </entry>
               <entry>
-                seasar::aop::interceptor::TraceInterceptor <sbr/>
-                seasar::aop::interceptor::MockInterceptor <sbr/>
-                seasar::aop::interceptor::InterceptorChain
+                seasar\aop\interceptor\TraceInterceptor <sbr/>
+                seasar\aop\interceptor\MockInterceptor <sbr/>
+                seasar\aop\interceptor\InterceptorChain
               </entry>
             </row>
             <row>
@@ -89,7 +89,7 @@
             <row>
               <entry>ClassLoader</entry>
               <entry>S2ContainerClassLoader, S2ContainerApplicationContext class</entry>
-              <entry><link linkend="misc.classloader">seasar::util::ClassLoader class</link></entry>
+              <entry><link linkend="misc.classloader">seasar\util\ClassLoader class</link></entry>
             </row>
             <row>
               <entry>Singleton S2Container function</entry>
@@ -166,8 +166,8 @@ class Service {
 <?php
 require_once('S2Container/S2Container.php');
 
-seasar::container::S2ApplicationContext::import(dirname(__FILE__) . '/classes');
-$container = seasar::container::S2ApplicationContext::create();
+seasar\container\S2ApplicationContext::import(dirname(__FILE__) . '/classes');
+$container = seasar\container\S2ApplicationContext::create();
 $service   = $container->getComponent('Service');
 
 print get_class($service->container) . PHP_EOL;
@@ -191,14 +191,14 @@ print get_class($service->container) . PHP_EOL;
 <?php
 require_once('S2Container/S2Container.php');
 
-seasar::log::S2Logger::getLogger()->debug('debug message.');
+seasar\log\S2Logger::getLogger()->debug('debug message.');
 ]]></programlisting>
 
     <sect2><title>S2Logger</title>
       <para>
-        In S2Container, Logger instance which performs a log output is acquired through seasar::log::S2Logger class.
+        In S2Container, Logger instance which performs a log output is acquired through seasar\log\S2Logger class.
         S2Logger::getLogger method returns the instance of SimpleLogger by a default.
-        LoggerFactory which generates Logger instance, a level setup of a log output, etc. are set up as a property of seasar::Config class.
+        LoggerFactory which generates Logger instance, a level setup of a log output, etc. are set up as a property of seasar\Config class.
       </para>
 
       <blockquote>
@@ -208,7 +208,7 @@ seasar::log::S2Logger::getLogger()->debug('debug message.');
         </para>
 
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-seasar::Config::$LOGGER_FACTORY = 'seasar::log::impl::SimpleLoggerFactory';
+seasar\Config::$LOGGER_FACTORY = 'seasar\log\impl\SimpleLoggerFactory';
 ]]></programlisting>
 
         <formalpara><title>LOG_LEVEL</title></formalpara>
@@ -217,7 +217,7 @@ seasar::Config::$LOGGER_FACTORY = 'seasar::log::impl::SimpleLoggerFactory';
         </para>
 
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-seasar::Config::$LOG_LEVEL = seasar::log::impl::SimpleLogger::DEBUG;
+seasar\Config::$LOG_LEVEL = seasar\log\impl\SimpleLogger::DEBUG;
 ]]></programlisting>
 
         <formalpara><title>DEBUG_EVAL</title></formalpara>
@@ -226,7 +226,7 @@ seasar::Config::$LOG_LEVEL = seasar::log::impl::SimpleLogger::DEBUG;
         </para>
 
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-seasar::Config::$DEBUG_EVAL = false;
+seasar\Config::$DEBUG_EVAL = false;
 ]]></programlisting>
         <formalpara><title>DEBUG_VERBOSE</title></formalpara>
         <para>
@@ -234,7 +234,7 @@ seasar::Config::$DEBUG_EVAL = false;
         </para>
 
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-seasar::Config::$DEBUG_VERBOSE = false;
+seasar\Config::$DEBUG_VERBOSE = false;
 ]]></programlisting>
 
       </blockquote>
@@ -252,7 +252,7 @@ seasar::Config::$DEBUG_VERBOSE = false;
         SimpleLoggerのLoggerFactoryはSimpleLoggerFactoryです。
         </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-seasar::Config::$LOGGER_FACTORY = 'seasar::log::impl::SimpleLoggerFactory';
+seasar\Config::$LOGGER_FACTORY = 'seasar\log\impl\SimpleLoggerFactory';
 ]]></programlisting>
 
         <formalpara><title>LOG_LEVEL</title></formalpara>
@@ -261,12 +261,12 @@ seasar::Config::$LOGGER_FACTORY = 'seasar::log::impl::SimpleLoggerFactory';
         </para>
 
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-seasar::Config::$LOG_LEVEL = seasar::log::impl::SimpleLogger::DEBUG;
-seasar::Config::$LOG_LEVEL = seasar::log::impl::SimpleLogger::NOTICE;
-seasar::Config::$LOG_LEVEL = seasar::log::impl::SimpleLogger::INFO;
-seasar::Config::$LOG_LEVEL = seasar::log::impl::SimpleLogger::WARN;
-seasar::Config::$LOG_LEVEL = seasar::log::impl::SimpleLogger::ERROR;
-seasar::Config::$LOG_LEVEL = seasar::log::impl::SimpleLogger::FATAL;
+seasar\Config::$LOG_LEVEL = seasar\log\impl\SimpleLogger::DEBUG;
+seasar\Config::$LOG_LEVEL = seasar\log\impl\SimpleLogger::NOTICE;
+seasar\Config::$LOG_LEVEL = seasar\log\impl\SimpleLogger::INFO;
+seasar\Config::$LOG_LEVEL = seasar\log\impl\SimpleLogger::WARN;
+seasar\Config::$LOG_LEVEL = seasar\log\impl\SimpleLogger::ERROR;
+seasar\Config::$LOG_LEVEL = seasar\log\impl\SimpleLogger::FATAL;
 ]]></programlisting>
 
         <formalpara><title>SIMPLE_LOG_FILE</title></formalpara>
@@ -274,7 +274,7 @@ seasar::Config::$LOG_LEVEL = seasar::log::impl::SimpleLogger::FATAL;
           The log file in the case of performing a log output to a file is set up.
         </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-seasar::Config::$SIMPLE_LOG_FILE = null;
+seasar\Config::$SIMPLE_LOG_FILE = null;
 ]]></programlisting>
       </blockquote>
     </sect2>
@@ -283,7 +283,7 @@ seasar::Config::$SIMPLE_LOG_FILE = null;
   <!-- ##################################################################### -->
   <sect1 id="misc.annotation"><title>Annotation API Reference</title>
     <para>
-      seasar::util::Annotation reads as annotation the comment and constant value which were described by the class.
+      seasar\util\Annotation reads as annotation the comment and constant value which were described by the class.
       The read character string is processed with an eval function as PHP Array Expression.<sbr/>
       The service class annotated as follows is created as an example.
     </para>
@@ -304,15 +304,15 @@ class Service {
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
 require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php');
-seasar::util::ClassLoader::import(dirname(__FILE__) . '/classes');
-seasar::util::Annotation::$CONSTANT = true;
+seasar\util\ClassLoader::import(dirname(__FILE__) . '/classes');
+seasar\util\Annotation::$CONSTANT = true;
 
 $service = new ReflectionClass('Service');
 
-$annotation = seasar::util::Annotation::get($service, '@Sample');
+$annotation = seasar\util\Annotation::get($service, '@Sample');
 print_r($annotation);
 
-$annotation = seasar::util::Annotation::get($service, 'SAMPLE');
+$annotation = seasar\util\Annotation::get($service, 'SAMPLE');
 print_r($annotation);
 ]]></programlisting>
 
@@ -344,7 +344,7 @@ Array
          A setup which reads comment annotation.
       </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-seasar::util::Annotation::$COMMENT = true;
+seasar\util\Annotation::$COMMENT = true;
 ]]></programlisting>
 
       <formalpara><title>CONSTANT Setup</title></formalpara>
@@ -352,7 +352,7 @@ seasar::util::Annotation::$COMMENT = true;
          A setup which reads constant annotation.
       </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-seasar::util::Annotation::$CONSTANT = false;
+seasar\util\Annotation::$CONSTANT = false;
 ]]></programlisting>
 
       <formalpara><title>Annotation::get method</title></formalpara>
@@ -368,7 +368,7 @@ seasar::util::Annotation::$CONSTANT = false;
  * @param ReflectionClass|ReflectionMethod|ReflectionProperty $reflection
  * @param string $annotation
  * @return array
- * @throw seasar::exception::AnnotationNotFoundException
+ * @throw seasar\exception\AnnotationNotFoundException
  */
 publi static function get($reflection, $annotation)
 ]]></programlisting>
@@ -397,12 +397,12 @@ publi static function has($reflection, $annotation)
   <!-- ##################################################################### -->
   <sect1 id="misc.classloader"><title>ClassLoader API Reference</title>
      <para>
-       seasar::util::ClassLoader class searches the class file on a file system, 
+       seasar\util\ClassLoader class searches the class file on a file system, 
        and loads a class definition through an autoload function.
        Import of a class is performed by the following method.
      </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-seasar::util::ClassLoader::import($path, $namespace = array(), $strict = false, $pear = false, $recursive = true)
+seasar\util\ClassLoader::import($path, $namespace = array(), $strict = false, $pear = false, $recursive = true)
 ]]></programlisting>
     <blockquote>
         <itemizedlist>
@@ -414,7 +414,7 @@ seasar::util::ClassLoader::import($path, $namespace = array(), $strict = false, 
           </listitem>
           <listitem>
             4th argument : In the case of true, $namespace is imploded by "_" (underscore).
-            In the case of false, $namespace is imploded by "::"
+            In the case of false, $namespace is imploded by "\"
           </listitem>
           <listitem>
             5th argument : In the case of true, a directory is searched recursively.
@@ -431,7 +431,7 @@ seasar::util::ClassLoader::import($path, $namespace = array(), $strict = false, 
        As an example, when a class file name is "S2Container.php" and "S2Container.class.php", "S2Container" becomes a class name.
      </para>
      <para>
-       If specifying namespace by a character string by the 2nd argument, it specifies like "example::logic."
+       If specifying namespace by a character string by the 2nd argument, it specifies like "example\logic."
        When specifying in array, it becomes like "array('example', 'logic')".
      </para>
   </sect1>
@@ -445,7 +445,7 @@ seasar::util::ClassLoader::import($path, $namespace = array(), $strict = false, 
         <para>As an example, the following SqlitePdo classe is created to /path/to/classes/SqlitePdo.php.</para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
-class SqlitePdo extends ::PDO {
+class SqlitePdo extends \PDO {
     public function __construct() {
         parent::__construct('sqlite:' DB_DIR . '/sqlite.db');
         $this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -471,7 +471,7 @@ class CdDao {
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
 require_once('S2Container/S2Container.php');
-use seasar::container::S2ApplicationCcontext as s2app;
+use seasar\container\S2ApplicationContext as s2app;
 
 s2app::import('/path/to/classes');
 $cdDao = s2app::get('CdDao');
@@ -502,7 +502,7 @@ var_dump($cdDao->findAll());
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
 require_once('S2Container/S2Container.php');
-use seasar::container::S2ApplicationCcontext as s2app;
+use seasar\container\S2ApplicationContext as s2app;
 
 s2app::import('/path/to/dicons');
 s2app::import('/path/to/classes');

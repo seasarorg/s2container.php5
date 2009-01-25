@@ -15,8 +15,8 @@
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
 require_once('S2Container/S2Container.php');
-seasar::container::S2ApplicationContext::import('/path/to/classes');
-$container = seasar::container::S2ApplicationContext::create();
+seasar\container\S2ApplicationContext::import('/path/to/classes');
+$container = seasar\container\S2ApplicationContext::create();
 
 ]]></programlisting>
 
@@ -27,7 +27,7 @@ $container = seasar::container::S2ApplicationContext::create();
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
 require_once('S2Container/S2Container.php');
-$container =　seasar::container::S2ContainerFactory::create('/path/to/diconファイル');
+$container =　seasar\container\S2ContainerFactory::create('/path/to/diconファイル');
 
 ]]></programlisting>
    </sect2>
@@ -56,7 +56,7 @@ S2Container::getComponent($componentKey)
 <!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
 "http://www.seasar.org/dtd/components21.dtd">
 <components>
-    <component name="action" class="example::IndexAction" />
+    <component name="action" class="example\IndexAction" />
 </components>
 ]]></programlisting>
 
@@ -66,7 +66,7 @@ S2Container::getComponent($componentKey)
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
 require_once('S2Container/S2Container.php');
-$container = seasar::container::impl::S2ContainerFactory::create('/path/to/diconファイル');
+$container = seasar\container\impl\S2ContainerFactory::create('/path/to/diconファイル');
 $component = $container->getComponent('action');
 
 ]]></programlisting>
@@ -77,8 +77,8 @@ $component = $container->getComponent('action');
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
 require_once('S2Container/S2Container.php');
-$container = seasar::container::impl::S2ContainerFactory::create('/path/to/diconファイル');
-$component = $container->getComponent('example::IndexAction');
+$container = seasar\container\impl\S2ContainerFactory::create('/path/to/diconファイル');
+$component = $container->getComponent('example\IndexAction');
 
 ]]></programlisting>
 
@@ -88,7 +88,7 @@ $component = $container->getComponent('example::IndexAction');
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
 require_once('S2Container/S2Container.php');
-$container = seasar::container::impl::S2ContainerFactory::create('/path/to/diconファイル');
+$container = seasar\container\impl\S2ContainerFactory::create('/path/to/diconファイル');
 $component = $container->getComponent('IndexAction');
 
 ]]></programlisting>
@@ -99,7 +99,7 @@ $component = $container->getComponent('IndexAction');
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
 require_once('S2Container/S2Container.php');
-$container = seasar::container::impl::S2ContainerFactory::create('/path/to/diconファイル');
+$container = seasar\container\impl\S2ContainerFactory::create('/path/to/diconファイル');
 $component = $container->getComponent('indexAction');
 
 ]]></programlisting>
@@ -124,8 +124,38 @@ $component = $container->getComponent('indexAction');
          <para>
                   プロパティ・インジェクションでは、アクセス修飾子がpublicなプロパティにDependency Injectionを行います。
          </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+class Action {
+
+    /**
+     * @var Service
+     */
+    public $service = null;
+
+    /**
+     * アクション実装メソッド
+     */
+    public function execute() {
+        $result = $this->service->add(2,3);    
+    }
+}
+]]></programlisting>
+
          <para>
-                  プロパティのデフォルト値にタイプヒントを設定することで、DIするコンポーネントを指定できます。
+         publicプロパティのデフォルト値がnullと判断された場合は、プロパティ名をキーとするコンポーネントがDIされます。
+                 上記のサンプルでは、「service」コンポーネントがDIされます。<sbr/>
+                  デフォルト値が null の publicプロパティへのDIを実施したくない場合は、
+         seasar\container\Config::$DI_PROPERTY_NULL に false を設定します。
+         </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+seasar\container\Config::$DI_PROPERTY_NULL = false;
+]]></programlisting>
+
+         <para>
+        DIするコンポーネントを指定したい場合は プロパティのデフォルト値にタイプヒントを記述します。
                  タイプヒントは「S2Binding コンポーネント名」と記述します。また、複数のコンポーネントをまとめて配列としDIすることができます。
                   配列としてDIする場合は、タイプヒントに「S2Binding コンポーネント名[]」と記述します。
                  次のようなアクションクラスをカレントディレクトリにclasses/Action.phpとして保存します。
@@ -162,30 +192,13 @@ class Action {
 ]]></programlisting>
 
          <para>
-           seasar::container::Config::$PROPERTY_TYPEHINT_NULLに true を設定することで、
-                      プロパティのデフォルト値がnullの場合でも自動インジェクションを行うことができます。
-           seasar::container::Config::$PROPERTY_TYPEHINT_NULLのデフォルト値は false です。
-         </para>
-
-<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-seasar::container::Config::$PROPERTY_TYPEHINT_NULL = true;
-]]></programlisting>
-
-<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-    /**
-     * @var Service
-     */
-    public $service = null;
-]]></programlisting>
-
-         <para>
-           seasar::container::Config::$PROPERTY_TYPEHINT_KEY に任意の文字列を指定することで、
+           seasar\container\Config::$PROPERTY_TYPEHINT_KEY に任意の文字列を指定することで、
                       プロパティのタイプヒントのキーを設定できます。$PROPERTY_TYPEHINT_KEYに「DI」を設定した場合は、
                      次のようにpublic プロパティのデフォルト値を設定できます。
-           seasar::container::Config::$PROPERTY_TYPEHINT_KEYのデフォルト値は「S2Binding」です。
+           seasar\container\Config::$PROPERTY_TYPEHINT_KEYのデフォルト値は「S2Binding」です。
          </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-seasar::container::Config::$PROPERTY_TYPEHINT_KEY = 'DI';
+seasar\container\Config::$PROPERTY_TYPEHINT_KEY = 'DI';
 ]]></programlisting>
 
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
@@ -225,8 +238,8 @@ class Service {
 <?php
 require_once('S2Container/S2Container.php');
 
-seasar::container::S2ApplicationContext::import(dirname(__FILE__) . '/classes');
-$container = seasar::container::S2ApplicationContext::create();
+seasar\container\S2ApplicationContext::import(dirname(__FILE__) . '/classes');
+$container = seasar\container\S2ApplicationContext::create();
 $action    = $container->getComponent('Action');
 
 $action->execute();
@@ -256,8 +269,8 @@ $action->execute();
 <?php
 require_once('S2Container/S2Container.php');
 
-seasar::util::ClassLoader::import(dirname(__FILE__) . '/classes');
-$container = seasar::container::S2ContainerFactory::create('/path/to/diconファイル');
+seasar\util\ClassLoader::import(dirname(__FILE__) . '/classes');
+$container = seasar\container\S2ContainerFactory::create('/path/to/diconファイル');
 $action    = $container->getComponent('Action');
 
 $action->execute();
@@ -340,8 +353,8 @@ class Service {
 <?php
 require_once('S2Container/S2Container.php');
 
-seasar::container::S2ApplicationContext::import(dirname(__FILE__) . '/classes');
-$container = seasar::container::S2ApplicationContext::create();
+seasar\container\S2ApplicationContext::import(dirname(__FILE__) . '/classes');
+$container = seasar\container\S2ApplicationContext::create();
 $action    = $container->getComponent('Action');
 
 $action->execute();
@@ -371,8 +384,8 @@ $action->execute();
 <?php
 require_once('S2Container/S2Container.php');
 
-seasar::util::ClassLoader::import(dirname(__FILE__) . '/classes');
-$container = seasar::container::S2ContainerFactory::create('/path/to/diconファイル');
+seasar\util\ClassLoader::import(dirname(__FILE__) . '/classes');
+$container = seasar\container\S2ContainerFactory::create('/path/to/diconファイル');
 $action    = $container->getComponent('Action');
 
 $action->execute();
@@ -453,8 +466,8 @@ class Service {
 <?php
 require_once('S2Container/S2Container.php');
 
-seasar::container::S2ApplicationContext::import(dirname(__FILE__) . '/classes');
-$container = seasar::container::S2ApplicationContext::create();
+seasar\container\S2ApplicationContext::import(dirname(__FILE__) . '/classes');
+$container = seasar\container\S2ApplicationContext::create();
 $action    = $container->getComponent('Action');
 
 $action->execute();
@@ -484,8 +497,8 @@ $action->execute();
 <?php
 require_once('S2Container/S2Container.php');
 
-seasar::util::ClassLoader::import(dirname(__FILE__) . '/classes');
-$container = seasar::container::S2ContainerFactory::create('/path/to/diconファイル');
+seasar\util\ClassLoader::import(dirname(__FILE__) . '/classes');
+$container = seasar\container\S2ContainerFactory::create('/path/to/diconファイル');
 $action    = $container->getComponent('Action');
 
 $action->execute();
@@ -567,8 +580,8 @@ class Service {
 <?php
 require_once('S2Container/S2Container.php');
 
-seasar::container::S2ApplicationContext::import(dirname(__FILE__) . '/classes');
-$container = seasar::container::S2ApplicationContext::create();
+seasar\container\S2ApplicationContext::import(dirname(__FILE__) . '/classes');
+$container = seasar\container\S2ApplicationContext::create();
 $action    = $container->getComponent('Action');
 
 var_dump($action);
@@ -644,8 +657,8 @@ class Service {
 <?php
 require_once('S2Container/S2Container.php');
 
-seasar::util::ClassLoader::import(dirname(__FILE__) . '/classes');
-$container = seasar::container::S2ContainerFactory::create('/path/to/diconファイル');
+seasar\util\ClassLoader::import(dirname(__FILE__) . '/classes');
+$container = seasar\container\S2ContainerFactory::create('/path/to/diconファイル');
 $action    = $container->getComponent('Action');
 
 var_dump($action);
@@ -731,8 +744,8 @@ class Service {
 <?php
 require_once('S2Container/S2Container.php');
 
-seasar::container::S2ApplicationContext::import(dirname(__FILE__) . '/classes');
-$container = seasar::container::S2ApplicationContext::create();
+seasar\container\S2ApplicationContext::import(dirname(__FILE__) . '/classes');
+$container = seasar\container\S2ApplicationContext::create();
 $action    = $container->getComponent('Action');
 
 var_dump($action);
@@ -821,8 +834,8 @@ class Service {
 <?php
 require_once('S2Container/S2Container.php');
 
-seasar::util::ClassLoader::import(dirname(__FILE__) . '/classes');
-$container = seasar::container::S2ContainerFactory::create('/path/to/diconファイル');
+seasar\util\ClassLoader::import(dirname(__FILE__) . '/classes');
+$container = seasar\container\S2ContainerFactory::create('/path/to/diconファイル');
 $action    = $container->getComponent('Action');
 
 var_dump($action);
@@ -908,8 +921,8 @@ class Service {
 <?php
 require_once('S2Container/S2Container.php');
 
-seasar::util::ClassLoader::import(dirname(__FILE__) . '/classes');
-$container = seasar::container::S2ContainerFactory::create('/path/to/diconファイル');
+seasar\util\ClassLoader::import(dirname(__FILE__) . '/classes');
+$container = seasar\container\S2ContainerFactory::create('/path/to/diconファイル');
 $action    = $container->getComponent('Action');
 
 var_dump($action);
@@ -1006,8 +1019,8 @@ class Service {
 <?php
 require_once('S2Container/S2Container.php');
 
-seasar::util::ClassLoader::import(dirname(__FILE__) . '/classes');
-$container = seasar::container::S2ContainerFactory::create('/path/to/diconファイル');
+seasar\util\ClassLoader::import(dirname(__FILE__) . '/classes');
+$container = seasar\container\S2ContainerFactory::create('/path/to/diconファイル');
 $action    = $container->getComponent('Action');
 
 var_dump($action);
@@ -1188,7 +1201,7 @@ S2ApplicationContext::import($path, $namespace = array(), $strict = false, $pear
           <listitem>第1引数 : 検索するディレクトリへのパス</listitem>
           <listitem>第2引数 : namespaceの文字列または配列</listitem>
           <listitem>第3引数 : trueの場合、$namespaceで指定されたネームスペースが使用されます。falseの場合は、検索したサブディレクトリが$namespaceに順次追加されます。</listitem>
-          <listitem>第4引数 : trueの場合は、$namespaceが「_」で展開されます。falseの場合は、$namespaceが「::」で展開されます</listitem>
+          <listitem>第4引数 : trueの場合は、$namespaceが「_」で展開されます。falseの場合は、$namespaceが「\」で展開されます</listitem>
           <listitem>第5引数 : trueの場合は、再帰的にディレクトリを検索します。falseの場合は、サブディレクトリを検索しません。</listitem>
         </itemizedlist>
       </blockquote>
@@ -1248,15 +1261,15 @@ class Bar {}
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
 require_once('S2Container/S2Container.php');
-seasar::container::S2ApplicationContext::import('/path/to/classes');
+seasar\container\S2ApplicationContext::import('/path/to/classes');
 
 // グローバルコンテナの生成
-$globalContainer = seasar::container::S2ApplicationContext::create();
+$globalContainer = seasar\container\S2ApplicationContext::create();
 $foo = $globalContainer->getComponent('Foo');
 $bar = $globalContainer->getComponent('example.Bar');
 
 // example namespace コンテナの生成
-$exampleContainer = seasar::container::S2ApplicationContext::create('example');
+$exampleContainer = seasar\container\S2ApplicationContext::create('example');
 $foo = $exampleContainer->getComponent('Foo');          // コンポーネントが存在しないので例外がスローされます。
 $bar = $exampleContainer->getComponent('Bar');
 ]]></programlisting>
@@ -1610,7 +1623,7 @@ class Bar {}
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
 require_once('S2Container/S2Container.php');
-use seasar::container::S2ApplicationContext as s2app;
+use seasar\container\S2ApplicationContext as s2app;
 s2app::import('/path/to/classes');
 
 // グローバルの Singleton コンテナを使用する
@@ -1707,7 +1720,7 @@ S2ContainerFactory::create($path)
 require_once('S2Container/S2Container.php');
 
 $PATH = "path/to/ccc.dicon";
-$container = seasar::container::factory::S2ContainerFactory::create($PATH);
+$container = seasar\container\factory\S2ContainerFactory::create($PATH);
 ・・・
 
 ]]></programlisting>
@@ -1798,7 +1811,7 @@ $container = seasar::container::factory::S2ContainerFactory::create($PATH);
 <?php
 require_once('S2Container/S2Container.php');
 
-$container  = seasar:container::factory::S2ContainerFactory::create('/path/to/parent.dicon');
+$container  = seasar\container\factory\S2ContainerFactory::create('/path/to/parent.dicon');
 $service    = $container->getComponent('service');
 $fooService = $container->getComponent('foo.service');
 $barService = $container->getComponent('bar.service');
@@ -1961,7 +1974,7 @@ $barService = $container->getComponent('bar.service');
 <!DOCTYPE components PUBLIC "-//SEASAR2.1//DTD S2Container//EN"
 "http://www.seasar.org/dtd/components21.dtd">
 <components>
-    <component name="trace" class="seasar::aop::interceptor::TraceInterceptor"/>
+    <component name="trace" class="seasar\aop\interceptor\TraceInterceptor"/>
     <component class="IndexAction">
         <aspect pointcut=".*Action">trace</aspect>
     </component>
@@ -2016,7 +2029,7 @@ $barService = $container->getComponent('bar.service');
 
   <sect1 id="dicon.config"><title>S2Container 設定ファイル</title>
     <para>
-    S2Containerの各種設定は、seasar::container::Configクラスのプロパティとして設定します。
+    S2Containerの各種設定は、seasar\container\Configクラスのプロパティとして設定します。
     </para>
     <blockquote>
 
@@ -2025,7 +2038,7 @@ $barService = $container->getComponent('bar.service');
         XML形式のダイコンファイルをLoadする際にDTD検証を行うかどうかを設定します。
         </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-seasar::container::Config::$DOM_VALIDATE = false;
+seasar\container\Config::$DOM_VALIDATE = false;
 ]]></programlisting>
 
         <formalpara><title>CONTAINER_BUILDERS</title></formalpara>
@@ -2033,9 +2046,9 @@ seasar::container::Config::$DOM_VALIDATE = false;
                 ダイコンファイルのパースクラスを拡張子ごとに登録します。
         </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-seasar::container::Config::$CONTAINER_BUILDERS = array(
-                      'dicon' => 'seasar::container::factory::XmlS2ContainerBuilder',
-                      'xml'   => 'seasar::container::factory::XmlS2ContainerBuilder');
+seasar\container\Config::$CONTAINER_BUILDERS = array(
+                      'dicon' => 'seasar\container\factory\XmlS2ContainerBuilder',
+                      'xml'   => 'seasar\container\factory\XmlS2ContainerBuilder');
 ]]></programlisting>
 
         <formalpara><title>PROPERTY_TYPEHINT_NULL</title></formalpara>
@@ -2043,7 +2056,7 @@ seasar::container::Config::$CONTAINER_BUILDERS = array(
                 プロパティのデフォルト値がnullの場合でも自動インジェクションを行うかどうかを設定します。
         </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-seasar::container::Config::$PROPERTY_TYPEHINT_NULL = false;
+seasar\container\Config::$PROPERTY_TYPEHINT_NULL = false;
 ]]></programlisting>
 
         <formalpara><title>PROPERTY_TYPEHINT_KEY</title></formalpara>
@@ -2051,7 +2064,7 @@ seasar::container::Config::$PROPERTY_TYPEHINT_NULL = false;
                 自動インジェクションを行うプロパティのタイプヒントキーを設定します。
         </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-seasar::container::Config::$PROPERTY_TYPEHINT_KEY = 'S2Binding';
+seasar\container\Config::$PROPERTY_TYPEHINT_KEY = 'S2Binding';
 ]]></programlisting>
 
     </blockquote>    

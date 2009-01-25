@@ -12,7 +12,7 @@
     <property name="doc.dir" value="doc" />
     <property name="html.stylesheet" value="src/book.xsl" />
     <property name="fo.stylesheet" value="src/book_pdf.xsl" />
-    <property name="xalan.lib.dir" value="lib/xalan-j_2_7_1" />
+    <property name="xalan.lib.dir" value="lib/xalan" />
 
     <!--
     - Sets up the classpath for the Xalan and Xerces implementations
@@ -69,29 +69,31 @@
     </target>
 
 
-	<target name="build-pdf" depends="depends" description="Generates PDF files from DocBook XML">
-	    <property name="fop.home" value="lib/fop-0.94" />
-	    <taskdef name="fop" classname="org.apache.fop.tools.anttasks.Fop">
-	        <classpath>
-	            <fileset dir="${fop.home}/lib">
-	                <include name="*.jar" />
-	            </fileset>
-	            <fileset dir="${fop.home}/build">
-	                <include name="fop.jar" />
-	                <include name="fop-hyph.jar" />
-	            </fileset>
-    	    </classpath>
-	    </taskdef>
+    <target name="build-pdf" depends="depends" description="Generates PDF files from DocBook XML">
+        <property name="fop.home" value="lib/fop" />
+        <taskdef name="fop" classname="org.apache.fop.tools.anttasks.Fop">
+            <classpath>
+                <fileset dir="${fop.home}/lib">
+                    <include name="*.jar" />
+                </fileset>
+                <fileset dir="${fop.home}/build">
+                    <include name="fop.jar" />
+                    <include name="fop-hyph.jar" />
+                </fileset>
+            </classpath>
+        </taskdef>
 
         <xslt style="${fo.stylesheet}" extension=".fo" 
-	        basedir="src/ja" destdir="${doc.dir}/ja/docbook"  force="true">
-	        <classpath refid="xalan.classpath" />
-	        <include name="book.xml" />
-	    </xslt>
+            basedir="src/ja" destdir="${doc.dir}/ja/docbook"  force="true">
+            <classpath refid="xalan.classpath" />
+            <include name="book.xml" />
+        </xslt>
 
-	    <fop format="application/pdf" fofile="${doc.dir}/ja/docbook/book.fo" 
-	         outfile="${doc.dir}/ja/docbook/s2container.php-2.0-docbook.pdf"
-    	     userconfig="${fop.home}/conf/fop.xconf"/>
+        <fop format="application/pdf" fofile="${doc.dir}/ja/docbook/book.fo" 
+             outfile="${doc.dir}/ja/docbook/s2container.php-2.0-docbook.pdf"
+             userconfig="${fop.home}/conf/fop.xconf"/>
+
+        <delete file="${doc.dir}/ja/docbook/book.fo" />
 
         <xslt style="${fo.stylesheet}" extension=".fo" 
             basedir="src/en" destdir="${doc.dir}/en/docbook"  force="true">
@@ -102,5 +104,7 @@
         <fop format="application/pdf" fofile="${doc.dir}/en/docbook/book.fo" 
              outfile="${doc.dir}/en/docbook/s2container.php-2.0-docbook.pdf"
              userconfig="${fop.home}/conf/fop.xconf"/>
+
+        <delete file="${doc.dir}/en/docbook/book.fo" />
     </target>
 </project>

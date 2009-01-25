@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
-"../../lib/docbook-xml/docbook-5.0CR7/dtd/docbook.dtd"
+"../../lib/docbook-xml/docbook-5.0/dtd/docbook.dtd"
 [
 <!ENTITY install    SYSTEM "install.xml">
 <!ENTITY quickstart SYSTEM "quickstart.xml">
