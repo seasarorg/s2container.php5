@@ -2,8 +2,8 @@
 define('ROOT_DIR', dirname(dirname(__FILE__)));
 define('S2CONTAINER_ROOT_DIR', ROOT_DIR);
 require_once(ROOT_DIR . '/classes/seasar/util/ClassLoader.php');
-\seasar\util\ClassLoader::$CLASSES = array();
-\seasar\util\ClassLoader::import(ROOT_DIR . DIRECTORY_SEPARATOR . 'classes' . DIRECTORY_SEPARATOR . 'seasar', $namespace = array('seasar'));
+seasar\util\ClassLoader::$CLASSES = array();
+seasar\util\ClassLoader::import(ROOT_DIR . DIRECTORY_SEPARATOR . 'classes' . DIRECTORY_SEPARATOR . 'seasar', $namespace = array('seasar'));
 $coreClasses = getCoreClasses();
 genCoreFile($coreClasses);
 setupClassLoader($coreClasses);
@@ -15,9 +15,9 @@ function setupClassLoader(array $coreClasses) {
     $contents = 'ClassLoader::$CLASSES = array(' . PHP_EOL;
     $classes = array();
     foreach(\seasar\util\ClassLoader::$CLASSES as $className => $filePath) {
-        if (in_array($className, $coreClasses)) {
-            continue;
-        }
+#        if (in_array($className, $coreClasses)) {
+#            continue;
+#        }
         $filePath = str_replace(ROOT_DIR, '', $filePath);
         $filePath = str_replace(DIRECTORY_SEPARATOR, '/', $filePath);
         $classes[] = '    ' . "'$className' => S2CONTAINER_ROOT_DIR . '$filePath'";
