@@ -268,7 +268,7 @@ class S2ApplicationContext {
         foreach($classes as $clazz) {
             list($cd, $namespace) = self::createComponentDef($clazz);
             if ($cd === null) {
-                continue;
+                continue;  // if available of @S2Component annotation is flase
             }
             $importedClasses[] = $clazz;
             $registeredComponentDefs[] = $cd;
