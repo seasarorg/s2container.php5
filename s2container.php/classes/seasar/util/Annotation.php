@@ -31,7 +31,7 @@ class Annotation {
     /**
      * @var boolean
      */
-    public static $CONSTANT = false;
+    public static $CONSTANT = true;
 
     /**
      * @var boolean
@@ -47,6 +47,24 @@ class Annotation {
      * @var array
      */
     private static $formattedComments = array();
+
+    /**
+     * 定数アノテーションを読み込むかどうかを設定します。
+     *
+     * @param boolean $val
+     */
+    public static function readConstantAnnotation($val = true) {
+        self::$CONSTANT = $val;
+    }
+
+    /**
+     * コメントアノテーションを読み込むかどうかを設定します。
+     *
+     * @param boolean $val
+     */
+    public static function readCommentAnnotation($val = true) {
+        self::$COMMENT = $val;
+    }
 
     /**
      * アノテーションデータをスプールに登録します。
@@ -83,7 +101,8 @@ class Annotation {
      * @param strint $annotation
      * @return array
      */
-    public static function getConstantAnnotation($reflection, $annotation) {
+    public static function getConstantAnnotation($reflection, $key) {
+        list($annotation, $atAnnotation) = self::constructAnnotationKey($key);
         self::validateReflection($reflection);
         $annoKey = self::constructKey($reflection) . '_' . $annotation;
         if (isset(self::$spool[$annoKey])) {
@@ -129,7 +148,8 @@ class Annotation {
      * @param strint $annotation
      * @return array
      */
-    public static function getCommentAnnotation($reflection, $annotation) {
+    public static function getCommentAnnotation($reflection, $key) {
+        list($annotation, $atAnnotation) = self::constructAnnotationKey($key);
         self::validateReflection($reflection);
         $refKey  = self::constructKey($reflection);
         $annoKey = $refKey . '_' . $annotation;
@@ -143,8 +163,8 @@ class Annotation {
         $comment = self::$formattedComments[$refKey];
         $annoArray = null;
         $matches = array();
-        if (preg_match("/$annotation\s*\((.*?)\);/iu", $comment, $matches) or
-            preg_match("/$annotation\s*\((.*?)\)\s/iu", $comment, $matches)) {
+        if (preg_match("/$atAnnotation\s*\((.*?)\);/iu", $comment, $matches) or
+            preg_match("/$atAnnotation\s*\((.*?)\)\s/iu", $comment, $matches)) {
             $value = EvalUtil::formatArrayExpression(trim($matches[1]));
             $annoArray = EvalUtil::execute($value);
         }
@@ -260,9 +280,9 @@ class Annotation {
         if ($reflection instanceof \ReflectionClass) {
             return $reflection->getName() . '::CLASS';
         } else if ($reflection instanceof \ReflectionMethod) {
-            return $reflection->getDeclaringClass()->getName() . '\\' . $reflection->getName() . '::METHOD';
+            return $reflection->getDeclaringClass()->getName() . '::' . $reflection->getName() . '::METHOD';
         } else {
-            return $reflection->getDeclaringClass()->getName() . '\\' . $reflection->getName() . '::PROPERTY';
+            return $reflection->getDeclaringClass()->getName() . '::' . $reflection->getName() . '::PROPERTY';
         }
     }
 
@@ -279,4 +299,19 @@ class Annotation {
             throw new \seasar\exception\AnnotationNotSupportedException('unsupported reflection.');
         }
     }
+
+    /**
+     * 指定されたアノテーションキーから、@マークが付いているキーと付いていないキーを作成します。
+     *
+     * @param string $key
+     * @return array @無しキー、@付きキー
+     */
+    public static function constructAnnotationKey($key) {
+        if (strpos($key, '@') === 0) {
+            return array(substr($key, 1), $key);
+        } else {
+            return array($key, '@' . $key);
+        }
+    }
 }
+

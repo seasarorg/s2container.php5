@@ -1,6 +1,6 @@
 <?php
 // +----------------------------------------------------------------------+
-// | Copyright 2005-2009 the Seasar Foundation and the Others.            |
+// | Copyright 2005-2006 the Seasar Foundation and the Others.            |
 // +----------------------------------------------------------------------+
 // | Licensed under the Apache License, Version 2.0 (the "License");      |
 // | you may not use this file except in compliance with the License.     |
@@ -20,20 +20,25 @@
  * @link      http://s2container.php5.seasar.org/
  * @version   SVN: $Id:$
  * @since     Class available since Release 2.0.0
- * @package   seasar.container.impl
+ * @package   seasar.container
  * @author    klove
  */
-namespace seasar\container\impl;
-class SimpleComponentDefTest extends \PHPUnit_Framework_TestCase {
+namespace seasar\container;
+class ComponentInfoDefTest extends \PHPUnit_Framework_TestCase {
 
-    public function testA() {
-        $def = new SimpleComponentDef(new \seasar\container\impl\A_SimpleComponentDefTest);
-        try {
-            $def->addArgDef(new ArgDef());
-            $this->fail();
-        } catch(\seasar\exception\UnsupportedOperationException $e) {
-            print $e->getMessage() . PHP_EOL;
-        }    }
+    public function testS2Comp() {
+        $info = s2comp('A')->
+                setName('a')->
+                setInstance('singleton')->
+                setAutoBinding('auto')->
+                setNamespace('sample');
+
+        $this->assertEquals($info->getClassName(), 'A');
+        $this->assertEquals($info->getName(), 'a');
+        $this->assertEquals($info->getInstance(), 'singleton');
+        $this->assertEquals($info->getAutoBinding(), 'auto');
+        $this->assertEquals($info->getNamespace(), 'sample');
+    }
 
     public function setUp(){
         print PHP_EOL . __CLASS__ . '->' . $this->getName() . '()' . PHP_EOL;
@@ -42,6 +47,3 @@ class SimpleComponentDefTest extends \PHPUnit_Framework_TestCase {
     public function tearDown() {
     }
 }
-
-class A_SimpleComponentDefTest {}
-

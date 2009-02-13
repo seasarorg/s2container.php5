@@ -8,11 +8,12 @@ $coreClasses = getCoreClasses();
 genCoreFile($coreClasses);
 setupClassLoader($coreClasses);
 
+
 exit;
 
 /** FUNCTIONS */
 function setupClassLoader(array $coreClasses) {
-    $contents = 'ClassLoader::$CLASSES = array(' . PHP_EOL;
+    $contents = 'ClassLoader::$CLASSES = array(' . "\n";
     $classes = array();
     foreach(\seasar\util\ClassLoader::$CLASSES as $className => $filePath) {
 #        if (in_array($className, $coreClasses)) {
@@ -22,13 +23,13 @@ function setupClassLoader(array $coreClasses) {
         $filePath = str_replace(DIRECTORY_SEPARATOR, '/', $filePath);
         $classes[] = '    ' . "'$className' => S2CONTAINER_ROOT_DIR . '$filePath'";
     }
-    $contents .= implode(',' . PHP_EOL, $classes);
-    $contents .= ');' . PHP_EOL;
+    $contents .= implode(',' . "\n", $classes);
+    $contents .= ');' . "\n";
 
     $classLoaderContents = file_get_contents(ROOT_DIR . '/classes/seasar/util/ClassLoader.php');
     $classLoaderContents = preg_replace('/}[^}]+$/', '', $classLoaderContents);
 
-    $classLoaderContents .= '}' . PHP_EOL . PHP_EOL . $contents;
+    $classLoaderContents .= '}' . "\n" . "\n" . $contents;
     //print $classLoaderContents;
     file_put_contents(ROOT_DIR . '/classes/seasar/util/ClassLoader.php', $classLoaderContents);
 }
@@ -54,7 +55,7 @@ function genCoreFile(array $coreClasses) {
         $src .= $line;
     }
     $src = preg_replace('/\/\*.+?\*\//s', '', $src);
-    $src = '<?php' . PHP_EOL . $src;
+    $src = '<?php' . "\n" . $src;
     file_put_contents(ROOT_DIR . '/S2ContainerCore.php', $src);
 }
 
@@ -68,6 +69,8 @@ function getCoreClasses() { return array(
 'seasar\aop\MethodInterceptor',
 'seasar\aop\MethodInvocation',
 'seasar\exception\S2RuntimeException',
+'seasar\container\ComponentInfoDef',
+'seasar\container\AspectInfoDef',
 'seasar\container\S2ApplicationContext',
 'seasar\log\S2Logger',
 'seasar\log\impl\SimpleLogger',

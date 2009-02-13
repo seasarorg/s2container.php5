@@ -79,6 +79,7 @@ class S2ApplicationContextTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testCreate(){
+        S2ApplicationContext::init();
         $container = S2ApplicationContext::create();
         $this->assertTrue($container instanceof S2Container);
         $this->assertTrue($container->getComponentDefSize() == 0);
@@ -106,7 +107,7 @@ class S2ApplicationContextTest extends \PHPUnit_Framework_TestCase {
 
         S2ApplicationContext::$CLASSES = array();
         S2ApplicationContext::import($this->sampleDir);
-        S2ApplicationContext::$includePattern = array();
+        S2ApplicationContext::setIncludePattern();
         //S2ApplicationContext::setIncludePattern(array());
         S2ApplicationContext::addExcludePattern('/Hoge_/');
         $container = S2ApplicationContext::create();
@@ -123,8 +124,8 @@ class S2ApplicationContextTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue($container->getComponentDefSize() == 1);
 
         S2ApplicationContext::$CLASSES = array();
-        S2ApplicationContext::$includePattern = array();
-        S2ApplicationContext::$excludePattern = array();
+        S2ApplicationContext::setIncludePattern();
+        S2ApplicationContext::setExcludePattern();
         //S2ApplicationContext::setIncludePattern();
         //S2ApplicationContext::setExcludePattern();
         S2ApplicationContext::import($this->sampleDir);
@@ -137,43 +138,19 @@ class S2ApplicationContextTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($cd->getMetaDef('name')->getValue(), 'xyz');
         $this->assertEquals($cd->getMetaDef('year')->getValue(), 2007);
         $this->assertEquals($cd->getMetaDef('add')->getValue(), 5);
+
     }
 
     public function testCreateComponentDef(){
-        list($cd, $namespace) = S2ApplicationContext::createComponentDef(__NAMESPACE__ . '\AppTestA_S2ApplicationContextTest');
+        $info = S2ApplicationContext::createComponentInfoDef(__NAMESPACE__ . '\AppTestA_S2ApplicationContextTest');
+        $cd = S2ApplicationContext::createComponentDef($info);
         $this->assertTrue($cd instanceof ComponentDef);
         $this->assertTrue($cd->getComponentName() == '');
 
-        list($cd, $namespace) = S2ApplicationContext::createComponentDef(__NAMESPACE__ . '\AppTestB_S2ApplicationContextTest');
+        $info = S2ApplicationContext::createComponentInfoDef(__NAMESPACE__ . '\AppTestB_S2ApplicationContextTest');
+        $cd = S2ApplicationContext::createComponentDef($info);
         $this->assertTrue($cd instanceof ComponentDef);
         $this->assertEquals($cd->getComponentName(), 'b');
-    }
-
-    public function testFilter(){
-        S2ApplicationContext::$includePattern = array();
-        S2ApplicationContext::$excludePattern = array();
-        //S2ApplicationContext::setIncludePattern(array());
-        //S2ApplicationContext::setExcludePattern(array());
-
-        $items = array('A', 'B', 'C');
-        $filtered = S2ApplicationContext::filter($items);
-        $this->assertEquals($items, $filtered);
-
-        S2ApplicationContext::setIncludePattern('/A/');
-        $filtered = S2ApplicationContext::filter($items);
-        $this->assertEquals(array('A'), $filtered);
-
-        S2ApplicationContext::setIncludePattern('/A/');
-        S2ApplicationContext::addIncludePattern('/B/');
-        S2ApplicationContext::setExcludePattern('/B/');
-        $filtered = S2ApplicationContext::filter($items);
-        $this->assertEquals(array('A'), $filtered);
-
-        //S2ApplicationContext::setIncludePattern(array());
-        S2ApplicationContext::$includePattern = array();
-        S2ApplicationContext::setExcludePattern('/B/');
-        $filtered = S2ApplicationContext::filter($items);
-        $this->assertEquals(array('A', 'C'), $filtered);
     }
 
     public function testReadParentAnnotation(){
@@ -193,14 +170,14 @@ class S2ApplicationContextTest extends \PHPUnit_Framework_TestCase {
     public function testRegisterAspect(){
         S2ApplicationContext::init();
         S2ApplicationContext::$CLASSES[__NAMESPACE__ . '\AppTestE_S2ApplicationContextTest'] = '';
-        S2ApplicationContext::registerAspect('/AppTestE_/', 'new \seasar\aop\interceptor\TraceInterceptor', '/^hoge$/');
+        S2ApplicationContext::registerAspect('new \seasar\aop\interceptor\TraceInterceptor', '/AppTestE_/', '/^hoge$/');
         $container = S2ApplicationContext::create();
         $e = $container->getComponent(__NAMESPACE__ . '\AppTestE_S2ApplicationContextTest');
         $this->assertTrue($e instanceof \seasar\container\AppTestE_S2ApplicationContextTest_EnhancedByS2AOP);
 
         S2ApplicationContext::$CLASSES[__NAMESPACE__ . '\AppTestE_S2ApplicationContextTest'] = '';
         S2ApplicationContext::$CLASSES[__NAMESPACE__ . '\AppTestF_S2ApplicationContextTest'] = '';
-        S2ApplicationContext::registerAspect('/AppTestE_/', 'new \seasar\aop\interceptor\TraceInterceptor', '/^hoge$/');
+        S2ApplicationContext::registerAspect('new \seasar\aop\interceptor\TraceInterceptor', '/AppTestE_/', '/^hoge$/');
         $container = S2ApplicationContext::create();
         $e = $container->getComponent(__NAMESPACE__ . '\AppTestE_S2ApplicationContextTest');
         $f = $container->getComponent('annoTestF');
@@ -210,8 +187,8 @@ class S2ApplicationContextTest extends \PHPUnit_Framework_TestCase {
         S2ApplicationContext::init();
         S2ApplicationContext::$CLASSES[__NAMESPACE__ . '\AppTestE_S2ApplicationContextTest'] = '';
         S2ApplicationContext::$CLASSES[__NAMESPACE__ . '\AppTestF_S2ApplicationContextTest'] = '';
-        S2ApplicationContext::registerAspect('/AppTestE_/', 'new \seasar\aop\interceptor\TraceInterceptor', '/^hoge$/');
-        S2ApplicationContext::registerAspect('/annoTestF/', 'new \seasar\aop\interceptor\TraceInterceptor');
+        S2ApplicationContext::registerAspect('new \seasar\aop\interceptor\TraceInterceptor', '/AppTestE_/', '/^hoge$/');
+        S2ApplicationContext::registerAspect('new \seasar\aop\interceptor\TraceInterceptor', '/annoTestF/');
         $container = S2ApplicationContext::create();
         $e = $container->getComponent(__NAMESPACE__ . '\AppTestE_S2ApplicationContextTest');
         $f = $container->getComponent('annoTestF');
@@ -269,6 +246,32 @@ class S2ApplicationContextTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue($cd instanceof \seasar\container\ComponentDef);
         $cd2 = S2ApplicationContext::getComponentDef(__NAMESPACE__ . '\A_S2ApplicationContextTest');
         $this->assertTrue($cd === $cd2);
+    }
+
+    public function testFilter(){
+
+        $items = array('A', 'B', 'C');
+        $filtered = S2ApplicationContext::includeFilter($items, array());
+        $this->assertEquals($items, $filtered);
+
+        $items = array('A', 'B', 'C');
+        $filtered = S2ApplicationContext::excludeFilter($items, array());
+        $this->assertEquals($items, $filtered);
+
+        $items = array('A', 'B', 'C');
+        $filtered = S2ApplicationContext::includeFilter($items, array('/A/'));
+        $this->assertEquals(array('A'), $filtered);
+
+        $items = array('A', 'B', 'C');
+        $filtered = S2ApplicationContext::excludeFilter($items, array('/A/'));
+        $this->assertEquals(array('B', 'C'), $filtered);
+    }
+
+    public function testRegister(){
+        S2ApplicationContext::init();
+        $info = S2ApplicationContext::register(__NAMESPACE__ . '\A_S2ApplicationContextTest')->setName('a');
+        $this->assertTrue($info instanceof \seasar\container\ComponentInfoDef);
+        $this->assertTrue(S2ApplicationContext::hasComponentDef('a'));
     }
 
     public function setUp(){

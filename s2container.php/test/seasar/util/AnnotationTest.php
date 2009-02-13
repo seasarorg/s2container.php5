@@ -231,6 +231,11 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals(array(1, 2, 'a'), Annotation::getCommentAnnotation($clazz, '@Bar'));
     }
 
+    public function testConstructAnnotationKey(){
+        $this->assertEquals(array('Hoge', '@Hoge'), Annotation::constructAnnotationKey('@Hoge'));
+        $this->assertEquals(array('Hoge', '@Hoge'), Annotation::constructAnnotationKey('Hoge'));
+    }
+
     public function setUp(){
         print PHP_EOL . __CLASS__ . '->' . $this->getName() . '()' . PHP_EOL;
     }
