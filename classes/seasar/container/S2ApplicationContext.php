@@ -36,17 +36,32 @@ class S2ApplicationContext {
     /**
      * @var array
      */
-    public static $DICONS  = array();
+    public static $DICONS = array();
 
     /**
      * @var array
      */
-    public static $includePattern = array();
+    public static $COMPONENT_INFOS = array();
 
     /**
      * @var array
      */
-    public static $excludePattern = array();
+    public static $includeDiconPatterns = array();
+
+    /**
+     * @var array
+     */
+    public static $excludeDiconPatterns = array();
+
+    /**
+     * @var array
+     */
+    public static $includeClassPatterns = array();
+
+    /**
+     * @var array
+     */
+    public static $excludeClassPatterns = array();
 
     /**
      * @var array
@@ -89,10 +104,62 @@ class S2ApplicationContext {
     public static function init() {
         self::$CLASSES = array();
         self::$DICONS  = array();
+        self::$COMPONENT_INFOS = array();
         self::$SINGLETON_CONTAINERS = array();
-        self::$includePattern = array();
-        self::$excludePattern = array();
-        self::$autoAspects    = array();
+        self::$includeDiconPatterns = array();
+        self::$excludeDiconPatterns = array();
+        self::$includeClassPatterns = array();
+        self::$excludeClassPatterns = array();
+        self::$autoAspects = array();
+    }
+
+    /**
+     * 各メソッドに付いているコメントアノテーションについて、親クラスのアノテーションも読むかどうかを設定します。
+     *
+     * @param boolean $val
+     */
+    public static function setReadParentAnnotation($val = true) {
+        self::$READ_PARENT_ANNOTATION = $val;
+    }
+
+    /**
+     * @see seasar\container\S2ApplicationContext::register()
+     */
+    public static function add($info) {
+        return self::register($info);
+    }
+
+    /**
+     * コンポーネント情報を登録します。
+     * s2component関数から呼ばれます。
+     *
+     * @param seasar\container\ComponentInfoDef|string $info
+     * @return seasar\container\ComponentInfoDef
+     */
+    public static function register($info) {
+        if (!($info instanceof seasar\container\ComponentInfoDef)) {
+            $info = new \seasar\container\ComponentInfoDef($info);
+        }
+        self::$COMPONENT_INFOS[] = $info;
+        return $info;
+    }
+
+    /**
+     * 自動アスペクト情報を登録します。
+     *
+     * @param string $interceptor
+     * @param string $componentPattern
+     * @param string $pointcut
+     * @return seasar\container\AspectInfoDef
+     */
+    public static function registerAspect($interceptor, $componentPattern = null, $pointcut = null) {
+        if ($interceptor instanceof \seasar\container\AspectInfoDef) {
+            $info = $interceptor;
+        } else {
+            $info = new \seasar\container\AspectInfoDef($interceptor, $componentPattern, $pointcut);
+        }
+        self::$autoAspects[] = $info;
+        return $info;
     }
 
     /**
@@ -186,33 +253,61 @@ class S2ApplicationContext {
     /**
      * コンテナを生成してコンポーネントを返します。生成したコンテナはsingletonとして保持します。
      *
-     * @param string  $key
-     * @param string  $namespace
+     * @param string  $arg1
+     * @param string  $arg2
      * @return object
      */
-    public static function getComponent($key, $namespace = '') {
-        return self::getComponentDef($key, $namespace)->getComponent();
+    public static function getComponent($arg1, $arg2 = null) {
+        return self::getComponentDef($arg1, $arg2)->getComponent();
     }
 
     /**
      * @see \seasar\container\S2ApplicationContext::getComponent()
      */
-    public static function get($key, $namespace = '') {
-        return self::getComponent($key, $namespace);
+    public static function get($arg1, $arg2 = null) {
+        return self::getComponent($arg1, $arg2);
     }
 
     /**
      * コンテナを生成して、ComponentDefを返します。生成したコンテナはsingletonとして保持します。
      *
-     * @param string  $key
-     * @param string  $namespace
+     * @param string  $arg1
+     * @param string  $arg2
      * @return \seasar\container\ComponentDef
      */
-    public static function getComponentDef($key, $namespace = '') {
+    public static function getComponentDef($arg1, $arg2 = null) {
+        if (is_null($arg2)) {
+            $namespace = '';
+            $key = $arg1;
+        } else {
+            $namespace = arg1;
+            $key = $arg2;
+        }
         if (!array_key_exists($namespace, self::$SINGLETON_CONTAINERS)) {
             self::$SINGLETON_CONTAINERS[$namespace] = self::create($namespace);
         }
         return self::$SINGLETON_CONTAINERS[$namespace]->getComponentDef($key);
+    }
+
+    /**
+     * コンテナを生成して、ComponentDefが存在するかどうかを返します。生成したコンテナはsingletonとして保持します。
+     *
+     * @param string  $arg1
+     * @param string  $arg2
+     * @return boolean
+     */
+    public static function hasComponentDef($arg1, $arg2 = null) {
+        if (is_null($arg2)) {
+            $namespace = '';
+            $key = $arg1;
+        } else {
+            $namespace = arg1;
+            $key = $arg2;
+        }
+        if (!array_key_exists($namespace, self::$SINGLETON_CONTAINERS)) {
+            self::$SINGLETON_CONTAINERS[$namespace] = self::create($namespace);
+        }
+        return self::$SINGLETON_CONTAINERS[$namespace]->hasComponentDef($key);
     }
 
     /**
@@ -224,23 +319,67 @@ class S2ApplicationContext {
     public static function create($namespace = '') {
         $dicons = array_values(self::$DICONS);
         if (count($dicons) > 0) {
-            $dicons = self::filter($dicons);
+            $dicons = self::includeFilter($dicons, self::$includeDiconPatterns);
+            $dicons = self::excludeFilter($dicons, self::$excludeDiconPatterns);
         }
         $classes = array_keys(self::$CLASSES);
         if (count($classes) > 0) {
-            $classes = self::filter($classes);
+            $classes = self::includeFilter($classes, self::$includeClassPatterns);
+            $classes = self::excludeFilter($classes, self::$excludeClassPatterns);
         }
 
-        if (count($dicons) == 0 and count($classes) == 0) {
+        $infos = self::$COMPONENT_INFOS;
+        foreach ($classes as $className) {
+            $info = self::createComponentInfoDef($className);
+            if (!is_null($info)) {  // if available of @S2Component annotation is flase
+                $infos[] = $info;
+            }
+        }
+
+        if (count($dicons) == 0 and count($infos) == 0) {
             \seasar\log\S2Logger::getLogger(__CLASS__)->info("dicon, class not found at all. create empty container.", __METHOD__);
             return new \seasar\container\impl\S2ContainerImpl();
         }
-
-        $const = \seasar\util\Annotation::$CONSTANT;
-        \seasar\util\Annotation::$CONSTANT = false;
-        $container = self::createInternal($dicons, $classes, $namespace);
-        \seasar\util\Annotation::$CONSTANT = $const;
+        $container = self::createInternal($dicons, $infos, $namespace);
         return $container;
+    }
+
+    /**
+     * クラスに対するComponentInfoDefを生成します。
+     * コンポーネント情報はコメントアノテーションで取得します。
+     *
+     * @param string $className
+     * @return \seasar\container\ComponentInfoDef
+     */
+    public static function createComponentInfoDef($className) {
+        $refClass = new \ReflectionClass($className);
+        if (!\seasar\util\Annotation::has($refClass, self::COMPONENT_ANNOTATION)) {
+            return new \seasar\container\ComponentInfoDef($refClass);
+        }
+
+        $componentInfo = \seasar\util\Annotation::get($refClass, self::COMPONENT_ANNOTATION);
+        if (isset($componentInfo['available']) and (boolean)$componentInfo['available'] === false) {
+            return null;
+        }
+
+        $info = new \seasar\container\ComponentInfoDef($refClass);
+        if (isset($componentInfo['name'])) {
+            $info->setName($componentInfo['name']);
+        }
+
+        if (isset($componentInfo['instance'])) {
+            $info->setInstance($componentInfo['instance']);
+        }
+
+        if (isset($componentInfo['autoBinding'])) {
+            $info->setAutoBinding($componentInfo['autoBinding']);
+        }
+
+        if (isset($componentInfo['namespace'])) {
+            $info->setNamespace($componentInfo['namespace']);
+        }
+
+        return $info;
     }
 
     /**
@@ -251,10 +390,10 @@ class S2ApplicationContext {
      *   - 各ComponentDefのセットアップを実施します。
      *
      * @param array $dicons
-     * @param array $classes
+     * @param array $infos
      * @return \seasar\container\S2Container
      */
-    public static function createInternal($dicons, $classes, $namespaceArg = '') {
+    public static function createInternal($dicons, $infos, $namespaceArg) {
         $container = new \seasar\container\impl\S2ContainerImpl();
         foreach ($dicons as $dicon) {
             $child = \seasar\container\factory\S2ContainerFactory::includeChild($container, $dicon);
@@ -262,31 +401,16 @@ class S2ApplicationContext {
             \seasar\log\S2Logger::getLogger(__CLASS__)->debug("include dicon : $dicon", __METHOD__);
         }
 
-        $importedClasses = array();
         $registeredComponentDefs = array();
-        $namespaceArgDot = $namespaceArg . '.';
-        foreach($classes as $clazz) {
-            list($cd, $namespace) = self::createComponentDef($clazz);
-            if ($cd === null) {
-                continue;  // if available of @S2Component annotation is flase
+        foreach($infos as $info) {
+            $namespace = self::namespaceFilter($info->getNamespace(), $namespaceArg);
+            if ($namespace === false) {
+                continue;
             }
-            $importedClasses[] = $clazz;
+            $cd = self::createComponentDef($info);
             $registeredComponentDefs[] = $cd;
-
-            if ($namespaceArg !== '') {
-                if ($namespace === $namespaceArg) {
-                    $namespace = '';
-                } else {
-                    if (strpos($namespace, $namespaceArgDot) === 0) {
-                        $namespace = substr($namespace, strlen($namespaceArgDot));
-                    } else {
-                        \seasar\log\S2Logger::getLogger(__CLASS__)->debug("ignored by namespace : $namespace not in $namespaceArg", __METHOD__);
-                        continue;
-                    }
-                }
-            }
             self::registerComponentDef($container, $cd, $namespace);
-            \seasar\log\S2Logger::getLogger(__CLASS__)->debug("import component : $clazz", __METHOD__);
+            \seasar\log\S2Logger::getLogger(__CLASS__)->debug('import component : ' . $info->getClassName(), __METHOD__);
         }
 
         foreach($registeredComponentDefs as $cd) {
@@ -294,6 +418,55 @@ class S2ApplicationContext {
         }
 
         return $container;
+    }
+
+    /**
+     * コンポーネントが特定のネームスペース配下に存在した場合は、特定のネームスペースを除くネームスペースを返す。
+     * 特定のネームスペースが a.b 、コンポーネントのネームスペースが a.b.c の場合、c を返す。
+     * コンポーネントのネームスペースが、a.b の場合は空文字列を返す。
+     * コンポーネントのネームスペースが、a.b で始まらない場合は、booleanのfalseを返す。
+     *
+     * @param string $namespace コンポーネントのネームスペース
+     * @param string $namespaceArg 特定のネームスペース
+     * @return boolean|string
+     */
+    public static function namespaceFilter($namespace, $namespaceArg) {
+        if ($namespaceArg == '') {
+            return $namespace;
+        }
+
+        if ($namespace === $namespaceArg) {
+            return '';
+        }
+
+        if (strpos($namespace, $namespaceArg . '.') === 0) {
+            return substr($namespace, strlen($namespaceArg) + 1);
+        }
+
+        \seasar\log\S2Logger::getLogger(__CLASS__)->debug("ignored by namespace : $namespace not in $namespaceArg", __METHOD__);
+        return false;
+    }
+
+    /**
+     * クラスに対するComponentDefを生成します。
+     * コンポーネント情報はコメントアノテーションで取得します。
+     *
+     * @param seasar\container\ComponentInfoDef $info
+     * @return \seasar\container\ComponentDef
+     */
+    public static function createComponentDef($info) {
+        if ($info->hasName()) {
+            $cd = new \seasar\container\impl\ComponentDefImpl($info->getReflectionClass(), $info->getName());
+        } else {
+            $cd = new \seasar\container\impl\ComponentDefImpl($info->getReflectionClass());
+        }
+        if ($info->hasInstance()) {
+            $cd->setInstanceDef(\seasar\container\deployer\InstanceDefFactory::getInstanceDef($info->getInstance()));
+        }
+        if ($info->hasAutoBinding()) {
+            $cd->setAutoBindingDef(\seasar\container\assembler\AutoBindingDefFactory::getAutoBindingDef($info->getAutoBinding()));
+        }
+        return $cd;
     }
 
     /**
@@ -325,41 +498,6 @@ class S2ApplicationContext {
             }
             self::registerComponentDef($childContainer, $cd, $restNamespace);
         }
-    }
-
-    /**
-     * クラスに対するComponentDefを生成します。
-     * コンポーネント情報はコメントアノテーションで取得します。
-     *
-     * @param string $className
-     * @return \seasar\container\ComponentDef
-     */
-    public static function createComponentDef($className) {
-        $refClass = new \ReflectionClass($className);
-        if (!\seasar\util\Annotation::has($refClass, self::COMPONENT_ANNOTATION)) {
-            return array(new \seasar\container\impl\ComponentDefImpl($refClass) , null);
-        }
-
-        $componentInfo = \seasar\util\Annotation::get($refClass, self::COMPONENT_ANNOTATION);
-        if (isset($componentInfo['available']) and (boolean)$componentInfo['available'] === false) {
-            return null;
-        }
-        if (isset($componentInfo['name'])) {
-            $cd = new \seasar\container\impl\ComponentDefImpl($refClass, $componentInfo['name']);
-        } else {
-            $cd = new \seasar\container\impl\ComponentDefImpl($refClass);
-        }
-        if (isset($componentInfo['instance'])) {
-            $cd->setInstanceDef(\seasar\container\deployer\InstanceDefFactory::getInstanceDef($componentInfo['instance']));
-        }
-        if (isset($componentInfo['autoBinding'])) {
-            $cd->setAutoBindingDef(\seasar\container\assembler\AutoBindingDefFactory::getAutoBindingDef($componentInfo['autoBinding']));
-        }
-        $namespace = '';
-        if (isset($componentInfo['namespace'])) {
-            $namespace = $componentInfo['namespace'];
-        }
-        return array($cd, $namespace);
     }
 
     /**
@@ -417,9 +555,8 @@ class S2ApplicationContext {
         }
 
         foreach(self::$autoAspects as $aspectInfo) {
-            if (preg_match($aspectInfo['componentPattern'], $cd->getComponentName()) or
-                preg_match($aspectInfo['componentPattern'], $cd->getComponentClass()->getName())) {
-                self::setupAspectDef($cd, $aspectInfo);
+            if ($aspectInfo->applicable($cd)) {
+                self::setupAspectDef($cd, $aspectInfo->toAnnotationArray());
             }
         }
 
@@ -487,7 +624,7 @@ class S2ApplicationContext {
      */
     private static function setupAspectDef(ComponentDef $cd, array $annoInfo) {
         if (isset($annoInfo['interceptor'])) {
-            if (isset($annoInfo['pointcut'])) {
+            if (isset($annoInfo['pointcut']) and is_string($annoInfo['pointcut'])) {
                 $pointcut = new \seasar\aop\Pointcut($annoInfo['pointcut']);
             } else {
                 $pointcut = new \seasar\aop\Pointcut($cd->getComponentClass());
@@ -529,52 +666,81 @@ class S2ApplicationContext {
     }
 
     /**
-     * includeパターン、excludeパターンによってフィルタします。
+     * includeパターンによってフィルタします。
      *
      * @param array $items
+     * @param array $patterns
      * @return array
      */
-    public static function filter($items) {
-        if (0 < count(self::$includePattern)) {
-            $includes = array();
-            foreach($items as $item) {
-                foreach(self::$includePattern as $pattern){
-                    if (preg_match($pattern, $item)) {
-                        $includes[] = $item;
-                        break;
-                    }
-                }
-            }
-            $items = $includes;
-        }
-
-        if (0 == count(self::$excludePattern)) {
+    public static function includeFilter($items, $patterns) {
+        if (count($patterns) == 0) {
             return $items;
         }
-
-        $includes = array();
-        foreach($items as $item) {
-            $matched = false;
-            foreach(self::$excludePattern as $pattern){
+        $results = array();
+        foreach ($items as $item) {
+            foreach ($patterns as $pattern) {
                 if (preg_match($pattern, $item)) {
-                    $matched = true;
+                    $results[] = $item;
                     break;
                 }
             }
-            if (!$matched) {
-                $includes[] = $item;
-            }
         }
-        return $includes;
+        return $results;
     }
 
     /**
-     * includeパターンを返します。
+     * excludeパターンによってフィルタします。
      *
+     * @param array $items
+     * @param array $patterns
      * @return array
      */
-    public static function getIncludePattern() {
-        return self::$includePattern;
+    public static function excludeFilter($items, $patterns) {
+        if (count($patterns) == 0) {
+            return $items;
+        }
+        $results = array();
+        foreach ($items as $item) {
+            $exclude = false;
+            foreach ($patterns as $pattern) {
+                if (preg_match($pattern, $item)) {
+                    $exclude = true;
+                    break;
+                }
+            }
+            if ($exclude == false) {
+                $results[] = $item;
+            }
+        }
+        return $results;
+    }
+
+    /**
+     * パターンをセットします。
+     *
+     * @param string|array $pattern
+     * @param boolean $condition
+     */
+    public static function setPattern($pattern, $condition = true) {
+        if ($condition) {
+            self::setIncludePattern($pattern);
+        } else {
+            self::setExcludePattern($pattern);
+        }
+    }
+
+    /**
+     * パターンを追加します。
+     *
+     * @param string $pattern
+     * @param boolean $condition
+     */
+    public static function addPattern($pattern, $condition = true) {
+        if ($condition) {
+            self::addIncludePattern($pattern);
+        } else {
+            self::addExcludePattern($pattern);
+        }
     }
 
     /**
@@ -583,7 +749,8 @@ class S2ApplicationContext {
      * @param string|array $pattern
      */
     public static function setIncludePattern($pattern = array()) {
-        self::$includePattern = array($pattern);
+        self::$includeDiconPatterns = (array)$pattern;
+        self::$includeClassPatterns = (array)$pattern;
     }
 
     /**
@@ -592,16 +759,8 @@ class S2ApplicationContext {
      * @param string $pattern
      */
     public static function addIncludePattern($pattern) {
-        self::$includePattern[] = $pattern;
-    }
-
-    /**
-     * excludeパターンを返します。
-     *
-     * @return array
-     */
-    public static function getExcludePattern() {
-        return self::$excludePattern;
+        self::$includeDiconPatterns[] = $pattern;
+        self::$includeClassPatterns[] = $pattern;
     }
 
     /**
@@ -610,7 +769,8 @@ class S2ApplicationContext {
      * @param string $pattern
      */
     public static function setExcludePattern($pattern = array()) {
-        self::$excludePattern = array($pattern);
+        self::$excludeDiconPatterns = (array)$pattern;
+        self::$excludeClassPatterns = (array)$pattern;
     }
 
     /**
@@ -619,35 +779,8 @@ class S2ApplicationContext {
      * @param string $pattern
      */
     public static function addExcludePattern($pattern) {
-        self::$excludePattern[] = $pattern;
+        self::$excludeDiconPatterns[] = $pattern;
+        self::$excludeClassPatterns[] = $pattern;
     }
 
-    /**
-     * 各メソッドに付いているコメントアノテーションについて、親クラスのアノテーションも読むかどうかを設定します。
-     *
-     * @param boolean $val
-     */
-    public static function setReadParentAnnotation($val = true) {
-        self::$READ_PARENT_ANNOTATION = $val;
-    }
-
-    /**
-     * 自動アスペクト情報を登録します。
-     * aspectInfoは、@S2Aspectアノテーション結果に合わせます。
-     *
-     * @param string $componentPattern
-     * @param string $interceptor
-     * @param string $pointcut
-     */
-    public static function registerAspect($componentPattern, $interceptor, $pointcut = null) {
-        if ($pointcut == null) {
-            $aspectInfo = array('componentPattern' => $componentPattern,
-                                'interceptor'      => $interceptor);
-        } else {
-            $aspectInfo = array('componentPattern' => $componentPattern,
-                                'interceptor'      => $interceptor,
-                                'pointcut'         => $pointcut);
-        }
-        self::$autoAspects[] = $aspectInfo;
-    }
 }

@@ -31,13 +31,40 @@ if (!defined('S2CONTAINER_ROOT_DIR')) {
 }
 
 require_once(S2CONTAINER_ROOT_DIR . '/S2ContainerCore.php');
-require_once(S2CONTAINER_ROOT_DIR . '/classes/seasar/Config.php');
-require_once(S2CONTAINER_ROOT_DIR . '/classes/seasar/container/Config.php');
-require_once(S2CONTAINER_ROOT_DIR . '/classes/seasar/aop/Config.php');
-
 require_once(S2CONTAINER_ROOT_DIR . '/classes/seasar/util/ClassLoader.php');
-
 if (function_exists('spl_autoload_register')) {
     spl_autoload_register(array('\seasar\util\ClassLoader', 'load'));
 }
 
+require_once(S2CONTAINER_ROOT_DIR . '/classes/seasar/Config.php');
+require_once(S2CONTAINER_ROOT_DIR . '/classes/seasar/container/Config.php');
+require_once(S2CONTAINER_ROOT_DIR . '/classes/seasar/aop/Config.php');
+
+
+
+/**
+ * @param string|ReflectionClass $arg
+ * @return seasar\container\ComponentInfoDef
+ */
+function s2component($arg) {
+    return seasar\container\S2ApplicationContext::register($arg);
+}
+
+/**
+ * @see s2component
+ */
+function s2comp($arg) {
+    return s2component($arg);
+}
+
+/**
+ * 自動アスペクト情報を登録します。
+ *
+ * @param string $interceptor
+ * @param string $componentPattern
+ * @param string $pointcut
+ * @return seasar\container\AspectInfoDef
+ */
+function s2aspect($interceptor, $componentPattern = null, $pointcut = null) {
+    return seasar\container\S2ApplicationContext::registerAspect($interceptor, $componentPattern, $pointcut);
+}
