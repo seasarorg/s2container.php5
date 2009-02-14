@@ -46,16 +46,24 @@ class AspectInfoDef {
         $this->pointcut = $pointcut;
     }
 
+    /**
+     * @param seasar\container\ComponentDef $cd
+     * @return boolean
+     */
     public function applicable(\seasar\container\ComponentDef $cd) {
-        if (false === $this->condition) {
-            return !preg_match($this->componentPattern, $cd->getComponentName()) and
-                   !preg_match($this->componentPattern, $cd->getComponentClass()->getName());
+        $result = preg_match($this->componentPattern, $cd->getComponentName()) ||
+                  preg_match($this->componentPattern, $cd->getComponentClass()->getName());
+        if ($this->condition) {
+          return $result;
         } else {
-            return preg_match($this->componentPattern, $cd->getComponentName()) or
-                   preg_match($this->componentPattern, $cd->getComponentClass()->getName());
+          return !$result;
         }
     }
 
+    /**
+     * @S2Aspectアノテーション結果の形で配列を返します。
+     * @return array
+     */
     public function toAnnotationArray() {
         return array('interceptor' => $this->interceptor, 'pointcut' => $this->pointcut);
     }
@@ -149,7 +157,7 @@ class AspectInfoDef {
     /**
      * @see seasar\container\AspectInfoDef::setCondition
      */
-    public function condition($condition) {
+    public function condition($condition = true) {
         return $this->setCondition($condition);
     }
 
@@ -157,7 +165,7 @@ class AspectInfoDef {
      * @param boolean $condition
      * @return seasar\container\AspectInfoDef
      */
-    public function setCondition($condition) {
+    public function setCondition($condition = true) {
         $this->condition = $condition;
         return $this;
     }
