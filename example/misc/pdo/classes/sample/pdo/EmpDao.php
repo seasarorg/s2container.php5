@@ -6,9 +6,7 @@ namespace sample\pdo;
 class EmpDao {
 
     public function byPaginate(\Paginate $paginate) {
-        try {
-            $paginate->getTotal();
-        } catch (\Exception $e) {
+        if (!$paginate->hasTotal()) {
             list($row) = $this->findAllTotal($paginate);
             $paginate->setTotal($row->total);
         }

@@ -10,12 +10,7 @@ class PdoInterceptor implements \seasar\aop\MethodInterceptor {
      public static $MODEL_CLASS = 'StandardDto';
 
     /**
-     * @var \seasar\container\S2Container
-     */
-    public $container = 's2binding';
-
-    /**
-     * @S2Pdo('pdo' => 'PDOコンポーネントの名前');
+     * @S2Pdo('dto' => 'DTOクラス名');
      */
     const ANNOTATION = '@S2Pdo';
 
@@ -23,6 +18,13 @@ class PdoInterceptor implements \seasar\aop\MethodInterceptor {
      * @var PDO
      */
     private $pdo = null;
+
+    /**
+     * @param PDO $pdo
+     */
+    public function setPdo(\PDO $pdo) {
+      $this->pdo = $pdo;
+    }
 
     /**
      * @see \seasar\aop\MethodInterceptor::invoke()
@@ -130,42 +132,6 @@ class PdoInterceptor implements \seasar\aop\MethodInterceptor {
     }
 
     /**
-     * S2ContainerからPDOコンポーネントを取得します。コンテナにPDOコンポーネントが1つだけ存在する場合は、
-     * そのインスタンスを$this->pdoに保持します。コンテナに複数のPDOコンポーネントが存在する場合は、
-     * クラスとメソッドに付いている@S2Pdoアノテーションのpdo属性値をキーとしてコンテナから取得します。
-     *
-     * @param \ReflectionClass $targetClass
-     * @param \ReflectionMethod $method
-     * @return PDO
-     * @throw Exception PDOコンポーネントが存在しなかった場合にスローされます。
-     */
-    public function getPdo(\ReflectionClass $targetClass, \ReflectionMethod $method) {
-        if ($this->pdo instanceof PDO) {
-            return $this->pdo;
-        }
-
-        $cd = $this->container->getComponentDef('PDO');
-        if (! $cd instanceof seasar\container\impl\TooManyRegistrationComponentDef) {
-            $this->pdo = $cd->getComponent();
-            return $this->pdo;
-        }
-
-        if (\seasar\util\Annotation::has($method, self::ANNOTATION)) {
-            $pdoInfo = \seasar\util\Annotation::get($method, self::ANNOTATION);
-            if (isset($pdoInfo['pdo'])) {
-                return $this->container->getComponent($pdoInfo['pdo']);
-            }
-        }
-        if (\seasar\util\Annotation::has($targetClass, self::ANNOTATION)) {
-            $pdoInfo = \seasar\util\Annotation::get($targetClass, self::ANNOTATION);
-            if (isset($pdoInfo['pdo'])) {
-                return $this->container->getComponent($pdoInfo['pdo']);
-            }
-        }
-        throw new Exception('two or more PDO found, not specified.');
-    }
-
-    /**
      * SQLクエリを整形し、プレースホルダーを取得します。
      *
      * @param string $query
@@ -222,16 +188,15 @@ class PdoInterceptor implements \seasar\aop\MethodInterceptor {
 
         list($query, $placeHolders) = $this->setupQuery($query);
 
-        $pdo = $this->getPdo($invocation->getTargetClass(), $invocation->getMethod());
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $stmt = $pdo->prepare($query);
+        $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $stmt = $this->pdo->prepare($query);
         $stmt->setFetchMode(PDO::FETCH_CLASS, $this->getModelClass($invocation->getMethod()));
         $this->setupBindValue($stmt, $placeHolders, $context);
         $stmt->execute();
         $rows = $stmt->fetchAll();
         if (count($rows) == 0 and
             $this->guessCudSql($invocation->getMethod()->getName())) {
-            return array('last_insert_id' => $pdo->lastInsertId(), 'affected_rows' => $stmt->rowCount());
+            return array('last_insert_id' => $this->pdo->lastInsertId(), 'affected_rows' => $stmt->rowCount());
         }
         return $rows;
     }
