@@ -20,15 +20,7 @@ class CdDao {
     }
 
     /**
-     * @S2Pdo('pdo' => 'sqliteBPdo');
-     */
-    public function findAllFromB() {
-        return "select * from CD";
-    }
-
-    /**
-     * @S2Pdo('pdo' => 'sqliteBPdo',
-     *        'dto' => 'sample\pdo\SampleDto');
+     * @S2Pdo('dto' => 'sample\pdo\SampleDto');
      */
     public function findAllFromBwithSampleDto() {
         return "select * from CD";
