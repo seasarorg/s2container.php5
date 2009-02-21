@@ -6,7 +6,7 @@ use \seasar\container\S2ApplicationContext as s2app;
 s2app::import(ROOT_DIR . '/classes');
 s2app::import(ROOT_DIR . '/example/CdDao2.php');
 
-StandardPdo::$DSN = 'sqlite:' . ROOT_DIR . '/db/sqlite_b.db';
+StandardPdo::$DSN = 'sqlite:' . ROOT_DIR . '/example/db/sqlite_b.db';
 
 s2aspect('pdo.interceptor', '/Dao2$/', '/^(insert|update|delete)/');
 

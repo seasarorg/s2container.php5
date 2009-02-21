@@ -3,7 +3,7 @@
 "http://www.seasar.org/dtd/components.dtd">
 <components namespace="pdo_c">
     <component name="sqliteC" class="PDO">
-        <arg>return 'sqlite:' . ROOT_DIR . '/db/sqlite_c.db'</arg>
+        <arg>return 'sqlite:' . ROOT_DIR . '/example/db/sqlite_c.db'</arg>
     </component>
     <component name="interceptor" class="PdoInterceptor"/>
 </components>
