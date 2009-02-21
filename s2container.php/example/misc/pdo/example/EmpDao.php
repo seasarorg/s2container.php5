@@ -1,5 +1,5 @@
 <?php
-class EmpDao2 {
+class EmpDao {
 
     public function byPaginate(\Paginate $paginate) {
         if (!$paginate->hasTotal()) {
