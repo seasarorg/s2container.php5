@@ -5,7 +5,7 @@ require_once(dirname(dirname(ROOT_DIR)) . '/example.inc.php');
 use \seasar\container\S2ApplicationContext as s2app;
 s2app::import(ROOT_DIR . '/classes');
 
-StandardPdo::$DSN = 'sqlite:' . ROOT_DIR . '/db/sqlite_a.db';
+StandardPdo::$DSN = 'sqlite:' . ROOT_DIR . '/example/db/sqlite_a.db';
 
 interface IDao {
     public function findAll();
