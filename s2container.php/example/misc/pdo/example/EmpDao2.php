@@ -1,7 +1,5 @@
 <?php
-namespace sample\pdo;
-
-class EmpDao {
+class EmpDao2 {
 
     public function byPaginate(\Paginate $paginate) {
         if (!$paginate->hasTotal()) {
@@ -12,11 +10,12 @@ class EmpDao {
     }
 
     public function findAllTotal(\Paginate $paginate) {
-        return "select count(*) as total from EMP order by EMPNO";
+        return 'select count(*) as total from EMP order by EMPNO';
     }
 
     public function findAll(\Paginate $paginate) {
-        return "select * from EMP order by EMPNO
-                limit /*:paginate_getLimit*/3 offset /*:paginate_getOffset*/5";
+        $sql = 'select * from EMP order by EMPNO limit :limit offset :offset';
+        $context = array('limit' => $paginate->getLimit(), 'offset' => $paginate->getOffset());
+        return array($sql, $context);
     }
 }
