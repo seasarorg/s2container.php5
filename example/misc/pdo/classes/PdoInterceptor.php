@@ -23,135 +23,19 @@ class PdoInterceptor implements \seasar\aop\MethodInterceptor {
      * @param PDO $pdo
      */
     public function setPdo(\PDO $pdo) {
-      $this->pdo = $pdo;
+        $this->pdo = $pdo;
+        $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 
     /**
      * @see \seasar\aop\MethodInterceptor::invoke()
      */
     public function invoke(\seasar\aop\MethodInvocation $invocation) {
-        if ($invocation->getMethod()->isAbstract()) {
-            $result = null;
-        } else {
+        $result = null;
+        if (!$invocation->getMethod()->isAbstract()) {
             $result = $invocation->proceed();
         }
         return $this->execute($result, $invocation);
-    }
-
-    /**
-     * DAOメソッド呼び出しに対応するSQLファイルを読み込みます。
-     * HogeDao->findById() の呼び出しの場合、SQLファイ名は、
-     * /path/to/Hogeクラスファイルの場所/HogeDao_findById.sql
-     *
-     * @param \ReflectionClass $targetClass
-     * @param \ReflectionMethod $method
-     * @param array $context
-     * @return string
-     */
-    public function getQueryFromSqlFile(\ReflectionClass $targetClass, \ReflectionMethod $method, array $context) {
-        $sqlFile = dirname($targetClass->getFileName())
-                 . DIRECTORY_SEPARATOR
-                 . \seasar\util\ClassUtil::getClassName($targetClass->getName())
-                 . '_' . $method->getName() . '.sql';
-        $query = null;
-        if (is_file($sqlFile) and is_readable($sqlFile)) {
-            $query = SqlFileReader::read($sqlFile, $context);
-        }
-        return $query;
-    }
-
-    /**
-     * アンダースコアで区切られた文字列をもとに、オブジェクトから値を取得します。
-     * 文字列が condition_id で、conditionがインスタンスの場合は、そのインスタンスのidメソッド、または
-     * idプロパティを返します。($condition->id() or $condition->id)
-     * 文字列が condition_id で、conditionが配列の場合は、その配列のキーをidとして値を返します。
-     * ($condition['id'])
-     *
-     * 文字列が condition_id_abc で、conditionとidがインスタンスの場合は、そのインスタンスのabcメソッド、
-     * または idプロパティを返します。($condition->id()->abc() or $condition->id->abc())
-     * 文字列が condition_id_0 で、conditionとidが配列の場合は、その配列のキーを0として値を返します。
-     * ($condition['id'][0])
-     *
-     * 文字列が condition_id_abc で、conditionが配列でcondition['id']がインスタンスの場合、
-     * icondition['id']のabcメソッド、またはabcプロパティを返します。
-     * ($condition['id']->abc() $condition['id']->abc)
-     *
-     * @param object $obj
-     * @param array $items
-     * @return mixed
-     */
-    public function resolveValue($obj, array $items) {
-        if (is_array($obj)) {
-            if (isset($obj[$items[0]])) {
-                if (count($items) > 1) {
-                    $index = array_shift($items);
-                    return $this->resolveValue($obj[$index], $items);
-                } else { 
-                    return $obj[$items[0]];
-                }
-            } else {
-                return null;
-            }
-        }
-        else if (is_object($obj)) {
-            $curObj = null;
-            if (in_array($items[0], get_class_methods($obj))) {
-                $methodName = $items[0];
-                $curObj = $obj->$methodName();
-            } else if (property_exists($obj, $items[0])){
-                $curObj = $obj->$items[0];
-            }
-            if ($curObj === null) {
-                return null;
-            }
-            if (count($items) > 1) {
-                array_shift($items);
-                return $this->resolveValue($curObj, $items);
-            } else { 
-                return $curObj;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * \ReflectionMethodから引数の名前を取得し$argsを割り当てます。
-     *
-     * @param \ReflectionMethod $method
-     * @param array $args
-     * @return array
-     */
-    public function getContext(\ReflectionMethod $method, array $args) {
-        $context = array();
-        $refParames = $method->getParameters();
-        $o = count($args);
-        for($i=0; $i<$o; $i++) {
-            $context[$refParames[$i]->getName()] = $args[$i];
-        }
-        return $context;
-    }
-
-    /**
-     * SQLクエリを整形し、プレースホルダーを取得します。
-     *
-     * @param string $query
-     * @return array
-     */
-    public function setupQuery($query) {
-        $query = trim($query);
-        $query = preg_replace('/(\/\*:.+?\s*\*\/)\'[^\']*\'(\s*,*\s*)/su', '\1\2', $query);   // /*:id*/'aaa' => /*:id*/
-        $query = preg_replace('/(\/\*:.+?\s*\*\/)[^(\s|,)]*(\s*,*\s*)/su', '\1\2', $query);   // /*:id*/5,    => /*:id*/,
-        $reg = '/\/\*:(.+?)\s*\*\/(\s*,*\s*)/su';
-        $matches = array();
-        $placeHolders = array();
-        if (preg_match_all($reg, $query, $matches)) {
-            $placeHolders = $matches[1];
-        }
-        $query = preg_replace($reg, ':\1\2', $query);
-        if (\seasar\Config::$DEBUG_VERBOSE) {
-            \seasar\log\S2Logger::getInstance(__NAMESPACE__)->debug($this->queryToString($query), __METHOD__);
-        }
-        return array($query, $placeHolders);
     }
 
     /**
@@ -168,90 +52,187 @@ class PdoInterceptor implements \seasar\aop\MethodInterceptor {
      *                     'affected_rows'  => $stmt->rowCount());
      * @throw Exception SQLクエリがnullの場合にスローされます。
      */
-    protected function execute($result, \seasar\aop\MethodInvocation $invocation) {
-        if (is_array($result)) {
-            $query   = $result[0];
-            $context = $result[1];
-        } else {
-            $query   = $result;
+    private function execute($result, \seasar\aop\MethodInvocation $invocation) {
+        list($query, $context) = $this->inspectResult($result);
+
+        if (is_null($context)) {
             $context = $this->getContext($invocation->getMethod(), $invocation->getArguments());
         }
-        if ($query === null) {
+
+        if (is_null($query)) {
             $query = $this->getQueryFromSqlFile($invocation->getTargetClass(), $invocation->getMethod(), $context);
         }
-        if ($query === null) {
-            throw new Exception('none sql found.');
-        }
         if (!is_string($query)) {
-            throw new Exception('invalid sql found. [' . $query . ']');
+            throw new Exception("invalid sql found. [$query]");
         }
+        $query = trim($query);
 
-        list($query, $placeHolders) = $this->setupQuery($query);
 
-        $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        if (\seasar\Config::$DEBUG_VERBOSE) {
+            \seasar\log\S2Logger::getInstance(__NAMESPACE__)->debug('prepared sql [' . $this->queryToString($query) . ']', __METHOD__);
+        }
         $stmt = $this->pdo->prepare($query);
-        $stmt->setFetchMode(PDO::FETCH_CLASS, $this->getModelClass($invocation->getMethod()));
-        $this->setupBindValue($stmt, $placeHolders, $context);
+        $stmt->setFetchMode(PDO::FETCH_CLASS, $this->getDtoClass($invocation->getTargetClass(), $invocation->getMethod()));
+        $binded = $this->bindValue($stmt, $query, $context);
+        if (\seasar\Config::$DEBUG_VERBOSE) {
+            \seasar\log\S2Logger::getInstance(__NAMESPACE__)->debug($this->bindValuesToString($binded), __METHOD__);
+        }
         $stmt->execute();
         $rows = $stmt->fetchAll();
-        if (count($rows) == 0 and
-            $this->guessCudSql($invocation->getMethod()->getName())) {
-            return array('last_insert_id' => $this->pdo->lastInsertId(), 'affected_rows' => $stmt->rowCount());
+        if (!preg_match('/^select/si', $query) and count($rows) == 0) {
+          return $stmt->rowCount();
         }
         return $rows;
     }
 
     /**
-     * PDOStatementにプレースホルダーに対応するcontextの値をbindします。
-     *
      * @param PDOStatement $stmt
-     * @param array $placeHolders
+     * @param string $query
      * @param array $context
      */
-    private function setupBindValue(PDOStatement $stmt, array $placeHolders, array $context) {
-        $bindValues = array();
-        foreach ($placeHolders as $ph) {
-            if (isset($context[$ph])) {
-                $bindValues[$ph] = $context[$ph];
-                $stmt->bindValue($ph, $context[$ph]);
-                continue;
-            }
-            $matches = array();
-            $items = preg_split('/_/', $ph);
-            if (count($items) > 1 and isset($context[$items[0]])) {
-                $obj = $context[$items[0]];
-                array_shift($items);
-                $value = $this->resolveValue($obj, $items);
-                if ($value !== null) {
-                    $bindValues[$ph] = $value;
-                    $stmt->bindValue($ph, $value);
-                    continue;
+    private function bindValue(\PDOStatement $stmt, $query, array $context) {
+        $binded = array();
+        foreach($context as $key => $val) {
+            if (preg_match("/:$key\W*/", $query)) {
+                $type = $this->getValueType($val);
+                if (!is_null($type)) {
+                    if ($stmt->bindValue($key, $val, $type)) {
+                        $binded[$key] = $val;
+                    } else {
+                        throw new Exception("illegal bind value. [" . $this->queryToString($query) . "] [:$key <- " . \seasar\util\StringUtil::mixToString($val) . "]");
+                    }
+                } else {
+                    \seasar\log\S2Logger::getInstance(__NAMESPACE__)->info("type not applicable. ignored. [:$key <- " . \seasar\util\StringUtil::mixToString($val) . "]", __METHOD__);
                 }
+            } else {
+                \seasar\log\S2Logger::getInstance(__NAMESPACE__)->info("placeholder not found. ignored. [:$key <- " . \seasar\util\StringUtil::mixToString($val) . "]", __METHOD__);
             }
-            \seasar\log\S2Logger::getInstance(__NAMESPACE__)->info("$ph defined. value not found.", __METHOD__);
         }
-        if (\seasar\Config::$DEBUG_VERBOSE) {
-            \seasar\log\S2Logger::getInstance(__NAMESPACE__)->debug($this->bindValuesToString($bindValues), __METHOD__);
+        return $binded;
+    }
+
+    /**
+     * @param mixed $val
+     * @return int|null
+     */
+    private function getValueType($val) {
+        if (is_bool($val)) {
+            return \PDO::PARAM_BOOL;
+        } else if (is_null($val)) {
+            return \PDO::PARAM_NULL;
+        } else if (is_int($val) or is_float($val)) {
+            return \PDO::PARAM_INT;
+        } else if (is_string($val)) {
+            return \PDO::PARAM_STR;
+        } else {
+            return null;
         }
     }
 
     /**
-     * SQLクエリのタイプが、insert、update、deleteかどうかをメソッド名から推測します。
-     *
-     * @param string $methodName
-     * @return boolean
+     * アスペクト対象メソッド結果から、SQLクエリとコンテキストを抽出します。
+     * @param null|string|array $result
+     * @return array
      */
-    private function guessCudSql($methodName) {
-        if (preg_match('/^(insert|create)/i', $methodName)) {
-            return true;
+    private function inspectResult($result) {
+        $query = null;
+        $context = null;
+        if (is_array($result)) {
+            if (count($result) == 1) {
+                if (array_key_exists(0, $result)) {
+                    $query = $result[0];
+                } else {
+                    $context = $result;
+                }
+            } else if (count($result) == 2) {
+                if (array_key_exists(0, $result)) {
+                    $query   = $result[0];
+                    $context = $result[1];
+                } else {
+                    $context = $result;
+                }
+            } else {
+                $context = $result;
+            }
+        } else if (is_string($result)) {
+            $query = $result;
+        } else if (is_null($result)) {
+        } else {
+            throw new Exception("invalid result. [$result]");
         }
-        if (preg_match('/^(update|save)/i', $methodName)) {
-            return true;
+
+        if (!is_null($query) and !is_string($query)) {
+            throw new Exception("invalid query. [$query]");
         }
-        if (preg_match('/^(delete|remove)/i', $methodName)) {
-            return true;
+
+        if (!is_null($context) and !is_array($context)) {
+            throw new Exception("invalid context. [$context]");
         }
-        return false;
+
+        return array($query, $context);
+    }
+
+    /**
+     * DAOメソッド呼び出しに対応するSQLファイルを読み込みます。
+     * HogeDao->findById() の呼び出しの場合、SQLファイ名は、
+     * /path/to/Hogeクラスファイルの場所/HogeDao_findById.sql
+     *
+     * @param \ReflectionClass $targetClass
+     * @param \ReflectionMethod $method
+     * @param array $context
+     * @return string
+     */
+    private function getQueryFromSqlFile(\ReflectionClass $targetClass, \ReflectionMethod $method, array $context) {
+        $sqlFile = dirname($targetClass->getFileName())
+                 . DIRECTORY_SEPARATOR
+                 . \seasar\util\ClassUtil::getClassName($targetClass->getName())
+                 . '_' . $method->getName() . '.sql';
+        $query = null;
+        if (is_file($sqlFile) and is_readable($sqlFile)) {
+            $query = SqlFileReader::read($sqlFile, $context);
+        } else {
+            \seasar\log\S2Logger::getInstance(__NAMESPACE__)->info("sql file not found. [$sqlFile]", __METHOD__);
+        }
+        return $query;
+    }
+
+    /**
+     * \ReflectionMethodから引数の名前を取得し$argsを割り当てます。
+     *
+     * @param \ReflectionMethod $method
+     * @param array $args
+     * @return array
+     */
+    private function getContext(\ReflectionMethod $method, array $args) {
+        $context = array();
+        $refParames = $method->getParameters();
+        $o = count($args);
+        for($i=0; $i<$o; $i++) {
+            $context[$refParames[$i]->getName()] = $args[$i];
+        }
+        return $context;
+    }
+
+    /**
+     * クラス、メソッドについている@S2Pdoアノテーションから戻り値に使用するモデルクラスを取得する。
+     * アノテーションが付いていなければ、デフォルトのPdoStandardModelクラス名を返す。
+     *
+     * @param \ReflectionMethod $method
+     * @return string
+     */
+    private function getDtoClass(\ReflectionClass $clazz, \ReflectionMethod $method) {
+        $pdoInfo = array();
+        if (\seasar\util\Annotation::has($method, self::ANNOTATION)) {
+            $pdoInfo = \seasar\util\Annotation::get($method, self::ANNOTATION);
+        } else if (\seasar\util\Annotation::has($clazz, self::ANNOTATION)) {
+            $pdoInfo = \seasar\util\Annotation::get($clazz, self::ANNOTATION);
+        }
+        if (isset($pdoInfo['dto'])) {
+            return $pdoInfo['dto'];
+        } else if (count($pdoInfo) == 1 and isset($pdoInfo[0])){
+            return $pdoInfo[0];
+        }
+        return self::$MODEL_CLASS;
     }
 
     /**
@@ -261,10 +242,9 @@ class PdoInterceptor implements \seasar\aop\MethodInterceptor {
      * @return string
      */
     private function queryToString($query) {
-        $query = preg_replace('/\/\*\s*?\*\//s', '', $query);
-        $query = preg_replace('/[\r|\n]+/s', ' ', trim($query));
+        $query = preg_replace('/[\r\n]+/s', ' ', $query);
         $query = preg_replace('/\s+/', ' ', $query);
-        return $query;
+        return trim($query);
     }
 
     /**
@@ -278,23 +258,6 @@ class PdoInterceptor implements \seasar\aop\MethodInterceptor {
         foreach($bindValues as $ph => $value) {
             $items[] = $ph . ' => ' . \seasar\util\StringUtil::mixToString($value);
         }
-        return 'bindValues(' . implode(', ', $items) . ')';
-    }
-
-    /**
-     * メソッドについている@S2Pdoアノテーションから戻り値に使用するモデルクラスを取得する。
-     * アノテーションが付いていなければ、デフォルトのPdoStandardModelクラス名を返す。
-     *
-     * @param \ReflectionMethod $method
-     * @return string
-     */
-    private function getModelClass(\ReflectionMethod $method) {
-        if (\seasar\util\Annotation::has($method, self::ANNOTATION)) {
-            $pdoInfo = \seasar\util\Annotation::get($method, self::ANNOTATION);
-            if (isset($pdoInfo['dto'])) {
-                return $pdoInfo['dto'];
-            }
-        }
-        return self::$MODEL_CLASS;
+        return 'bind values (' . implode(', ', $items) . ')';
     }
 }
