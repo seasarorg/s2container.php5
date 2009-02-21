@@ -1,5 +1,5 @@
 <?php
-class CdDao2 {
+class CdDao {
 
     public $pdo = 's2binding pdo.StandardPdo';
 
