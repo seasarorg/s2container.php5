@@ -3,7 +3,7 @@ require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php');
 use \seasar\container\S2ApplicationContext as s2app;
 
 s2app::import(dirname(__FILE__) . '/classes');
-s2app::registerAspect('/Service/', 'StrictInterceptor');
+s2app::registerAspect('StrictInterceptor', '/Service/');
 $service = s2app::get('Service');
 
 try {
