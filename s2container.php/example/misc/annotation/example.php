@@ -1,7 +1,8 @@
 <?php
 require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php');
-\seasar\util\ClassLoader::import(dirname(__FILE__) . '/classes');
-\seasar\util\Annotation::$CONSTANT = true;
+
+use seasar\container\S2ApplicationContext as s2app;
+s2app::import(dirname(__FILE__) . '/classes');
 
 $service = new \ReflectionClass('Service');
 

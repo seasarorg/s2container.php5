@@ -10,9 +10,9 @@ class PdoInterceptor implements \seasar\aop\MethodInterceptor {
      public static $MODEL_CLASS = 'StandardDto';
 
     /**
-     * @S2Pdo('dto' => 'DTOクラス名');
+     * DTO('DTOクラス名');
      */
-    const ANNOTATION = '@S2Pdo';
+    const ANNOTATION = 'DTO';
 
     /**
      * @var PDO
@@ -227,9 +227,7 @@ class PdoInterceptor implements \seasar\aop\MethodInterceptor {
         } else if (\seasar\util\Annotation::has($clazz, self::ANNOTATION)) {
             $pdoInfo = \seasar\util\Annotation::get($clazz, self::ANNOTATION);
         }
-        if (isset($pdoInfo['dto'])) {
-            return $pdoInfo['dto'];
-        } else if (count($pdoInfo) == 1 and isset($pdoInfo[0])){
+        if (isset($pdoInfo[0])) {
             return $pdoInfo[0];
         }
         return self::$MODEL_CLASS;
