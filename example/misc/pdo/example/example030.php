@@ -11,13 +11,12 @@ class FooDto extends StandardDto{}
 class BarDto extends StandardDto{}
 
 interface IDao {
-    /**
-     * @S2Pdo('FooDto')
-     */
+
+    const findById_DTO = 'FooDto';
     public function findById($id);
 
     /**
-     * @S2Pdo('dto' => 'BarDto')
+     * @DTO('BarDto')
      */
     public function findByArg2($id, $ename);
 
