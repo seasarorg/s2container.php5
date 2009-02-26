@@ -145,8 +145,7 @@
     </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 class Service {
-    public $container = 'S2Binding container';
-
+    public $container = null;
     public function add($a, $b) {
         return $a + $b;
     }
@@ -161,9 +160,9 @@ class Service {
 <?php
 require_once('S2Container/S2Container.php');
 
-seasar\container\S2ApplicationContext::import(dirname(__FILE__) . '/classes');
-$container = seasar\container\S2ApplicationContext::create();
-$service   = $container->getComponent('Service');
+use seasar\container\S2ApplicationContext as s2app;
+s2app::import(dirname(__FILE__) . '/classes');
+$service = s2app::get('Service');
 
 print get_class($service->container) . PHP_EOL;
 
@@ -299,17 +298,18 @@ class Service {
 
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
-require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php');
-seasar\util\ClassLoader::import(dirname(__FILE__) . '/classes');
-seasar\util\Annotation::$CONSTANT = true;
+require_once('S2Container/S2Container.php');
+use seasar\container\S2ApplicationContext as s2app;
+s2app::import(dirname(__FILE__) . '/classes');
 
-$service = new ReflectionClass('Service');
+$service = new \ReflectionClass('Service');
 
-$annotation = seasar\util\Annotation::get($service, '@Sample');
+$annotation = \seasar\util\Annotation::get($service, '@Sample');
 print_r($annotation);
 
-$annotation = seasar\util\Annotation::get($service, 'SAMPLE');
+$annotation = \seasar\util\Annotation::get($service, 'SAMPLE');
 print_r($annotation);
+
 ]]></programlisting>
 
     <para>
@@ -347,7 +347,7 @@ seasar\util\Annotation::$COMMENT = true;
             定数アノテーションを読み込む設定とします。
       </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-seasar\util\Annotation::$CONSTANT = false;
+seasar\util\Annotation::$CONSTANT = true;
 ]]></programlisting>
 
       <formalpara><title>Annotation::get メソッド</title></formalpara>
@@ -427,7 +427,7 @@ seasar\util\ClassLoader::import($path, $namespace = array(), $strict = false, $p
 <?php
 class SqlitePdo extends \PDO {
     public function __construct() {
-        parent::__construct('sqlite:' DB_DIR . '/sqlite.db');
+        parent::__construct('sqlite:' . DB_DIR . '/sqlite.db');
         $this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 }
@@ -437,9 +437,9 @@ class SqlitePdo extends \PDO {
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
 class CdDao {
-    public $sqlitePdo = 's2binding';
+    public $sqlitePdo = null;
     public function findAll() {
-        $stmt = $sqlitePdo->prepare('select * from CD');
+        $stmt = $this->sqlitePdo->prepare('select * from CD');
         $stmt->setFetchMode(PDO::FETCH_OBJ);
         $stmt->execute();
         return $stmt->fetchAll();
@@ -451,9 +451,10 @@ class CdDao {
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
 require_once('S2Container/S2Container.php');
+define('DB_DIR', dirname(__FILE__) . '/db');
 use seasar\container\S2ApplicationContext as s2app;
 
-s2app::import('/path/to/classes');
+s2app::import(dirname(__FILE__) . '/classes');
 $cdDao = s2app::get('CdDao');
 var_dump($cdDao->findAll());
 
@@ -483,12 +484,18 @@ var_dump($cdDao->findAll());
 require_once('S2Container/S2Container.php');
 use seasar\container\S2ApplicationContext as s2app;
 
-s2app::import('/path/to/dicons');
-s2app::import('/path/to/classes');
+use seasar\container\S2ApplicationContext as s2app;
+
+s2app::import(dirname(__FILE__) . '/classes/CdDao.php');
+s2app::import(dirname(__FILE__) . '/dicon');
 $cdDao = s2app::get('CdDao');
 var_dump($cdDao->findAll());
 
 ]]></programlisting>
+
+    <note><title>NOTE</title>
+      <para>このExampleは examples/misc/datasource にあります。</para>
+    </note>
     </sect2>
   </sect1>
 

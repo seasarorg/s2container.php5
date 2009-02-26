@@ -121,7 +121,7 @@ class Hoge {
 require_once(SF_ROOT_DIR . '/config/s2.php');
 use seasar\container\S2ApplicationContext as s2app;
 s2app::import(dirname(dirname(__FILE__)) . '/lib/logic');
-s2app::registerAspect('/^Hoge$/', 'new seasar\aop\interceptor\MockInterceptor');
+s2app::registerAspect('new seasar\aop\interceptor\MockInterceptor', '/^Hoge$/');
 
 class defaultActions extends sfActions {
     public function executeIndex() {

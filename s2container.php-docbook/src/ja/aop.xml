@@ -189,7 +189,7 @@ class Service {
 <?php
 require_once('S2Container/S2Container.php');
 seasar\container\S2ApplicationContext::import(dirname(__FILE__) . '/classes');
-seasar\container\S2ApplicationContext::registerAspect('/^Service$/', 'new seasar\aop\interceptor\TraceInterceptor', '^add$');
+seasar\container\S2ApplicationContext::registerAspect('new seasar\aop\interceptor\TraceInterceptor', '/^Service$/', '^add$');
 $container = seasar\container\S2ApplicationContext::create();
 $service   = $container->getComponent('Service');
 
@@ -342,7 +342,7 @@ class Service {
 <?php
 require_once('S2Container/S2Container.php');
 seasar\container\S2ApplicationContext::import(dirname(__FILE__) . '/classes');
-seasar\container\S2ApplicationContext::registerAspect('/^Service$/', 'new seasar\aop\interceptor\TraceInterceptor');
+seasar\container\S2ApplicationContext::registerAspect('new seasar\aop\interceptor\TraceInterceptor', '/^Service$/');
 $container = seasar\container\S2ApplicationContext::create();
 $service   = $container->getComponent('Service');
 
@@ -494,7 +494,7 @@ class Service {
 <?php
 require_once('S2Container/S2Container.php');
 seasar\container\S2ApplicationContext::import(dirname(__FILE__) . '/classes');
-seasar\container\S2ApplicationContext::registerAspect('/^Service$/', 'new seasar\aop\interceptor\MockInterceptor');
+seasar\container\S2ApplicationContext::registerAspect('new seasar\aop\interceptor\MockInterceptor', '/^Service$/');
 $container = seasar\container\S2ApplicationContext::create();
 $service = $container->getComponent('Service');
 

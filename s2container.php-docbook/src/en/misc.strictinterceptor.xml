@@ -24,10 +24,10 @@ example/misc/strict/
     </sect2>
 
     <sbr/>
-    <sect2><title>The outline of StrictInterceptor</title>
+    <sect2><title>Summary of StrictInterceptor</title>
       <para>
         StrictInterceptor is Interceptor which performs a type check about a method argument and a return value at the time of a method call.
-        Specification of the type of a method argument or a return value is set up by Annotation.
+        Specification of the type of a method argument and a return value is set up by Annotation.
         <itemizedlist>
           <listitem>@param : The type of the argument of a method is specified</listitem>
           <listitem>@return : The type of the return value of a method is specified</listitem>
@@ -52,19 +52,20 @@ class Calc {
       </para>
       
       <para>
-        It is checked whether the check of a type is an instance belonging to the class, when the specified type is a class.
+        When the specified type is a class
+        it is checked whether the instance belonging to the class.
         If the class of the specified model does not exist,
-        It checks by using the function of the name which added the "is_" character string to the specified type.
+        it checks by using the function of the name which added the "is_" character string to the specified type.
         For example, an is_integer function is used when type specification is integer.
         Moreover, two or more specification of a type can be specified by dividing by "|".
-        OR verification is carried out when two or more types are specified.
+        OR verification is applied when two or more types are specified.
       </para>
     </sect2>
 
     <sbr/>
     <sect2><title>Aspect StrictInterceptor</title>
       <para>
-        The following Hoge class is created as an example.
+        Let's create following Hoge class as an example.
       </para>
 <blockquote>
         <itemizedlist>
@@ -93,14 +94,14 @@ class Hoge {
         return null;
     }
 }
-class Huga{}
+class Huga {}
 
 ]]></programlisting>
 </blockquote>
 
       <para>
         An execution script becomes the next.
-        The automatic aspect of StrictInterceptor is carried out to the Hoge class.
+        The automatic aspect of StrictInterceptor is applied to the Hoge class.
       </para>
 <blockquote>
         <itemizedlist>
@@ -112,7 +113,7 @@ require_once(dirname(dirname(dirname(__FILE__))) . '/example.inc.php');
 use seasar\container\S2ApplicationContext as s2app;
 
 s2app::import(dirname(__FILE__) . '/classes');
-s2app::registerAspect('/Hoge/', 'StrictInterceptor');
+s2app::registerAspect('StrictInterceptor', '/Hoge/');
 $hoge = s2app::get('Hoge');
 
 $obj = $hoge->foo(1, 'abc');

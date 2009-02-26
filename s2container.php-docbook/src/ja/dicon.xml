@@ -27,7 +27,7 @@ $container = seasar\container\S2ApplicationContext::create();
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
 require_once('S2Container/S2Container.php');
-$container =　seasar\container\S2ContainerFactory::create('/path/to/diconファイル');
+$container =　seasar\container\factory\S2ContainerFactory::create('/path/to/diconファイル');
 
 ]]></programlisting>
    </sect2>
@@ -1360,24 +1360,88 @@ S2ApplicationContext::addEcludePattern($pattern)
    </formalpara></blockquote>
 
     <sbr/>
-    <sect2 id="dicon.application.autoaspect"><title>自動アスペクト</title>
-       <para>コンポーネントの選択でインクルードされたコンポーネントに対して、自動的にアスペクトを適用します。</para>
+    <sect2 id="dicon.application.register"><title>コンポーネントの手動登録</title>
+       <para>コンポーネントを手動で登録します。</para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-S2ApplicationContext::registerAspect($componentPattern, $interceptor, $pointcut = null)
+S2ApplicationContext::register($info)
 ]]></programlisting>
       <blockquote>
         <itemizedlist>
-          <listitem>第1引数 : コンポーネント名またはコンポーネントクラス名にパターンマッチする正規表現文字列</listitem>
-          <listitem>第2引数 : Interceptorコンポーネント名、またはExpression</listitem>
+          <listitem>第1引数 : クラス名 | ReflectionClass | ComponentInfoDefインスタンス</listitem>
+          <listitem>戻り値 : ComponentInfoDefインスタンス</listitem>
+        </itemizedlist>
+      </blockquote>
+
+      <para>
+      Serviceクラスを手動でコンポーネント登録する場合は次のようになります。
+      </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+S2ApplicationContext::register('Service');
+]]></programlisting>
+
+      <para>
+      S2ApplicationContext::registerメソッドへのショートカットとして、s2component関数が定義されています。使用方法はregisterメソッドと同じです。
+      </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+s2component('Service');
+]]></programlisting>
+
+      <para>
+            戻り値のComponentInfoDefインスタンスを使用して、コンポーネント設定を追加できます。
+      </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+s2component('Service')
+  ->setName('indexService')
+  ->setInstance('singleton')
+  ->setAutoBinding('auto')
+  ->setNamespace('example');
+]]></programlisting>
+
+      <caution><title>注意</title>
+      <para>
+            コンポーネントの手動登録では、アノテーションによる設定は反映されません。また、autoloadも実施されません。
+      </para>
+      </caution>
+    </sect2>
+
+    <sbr/>
+    <sect2 id="dicon.application.autoaspect"><title>自動アスペクト</title>
+       <para>コンポーネントの選択でインクルードされたコンポーネントに対して、自動的にアスペクトを適用します。</para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+S2ApplicationContext::registerAspect($interceptor, $componentPattern = null, $pointcut = null)
+]]></programlisting>
+      <blockquote>
+        <itemizedlist>
+          <listitem>第1引数 : Interceptorコンポーネント名、またはExpression</listitem>
+          <listitem>第2引数 : コンポーネント名またはコンポーネントクラス名にパターンマッチする正規表現文字列</listitem>
           <listitem>第3引数 : ポイントカットを正規表現文字列で指定</listitem>
+          <listitem>戻り値 : AspectInfoDefインスタンス</listitem>
         </itemizedlist>
       </blockquote>
       <para>
              コンポーネントクラス名が「Dao」で終わっているコンポーネントに、dao.interceptorをアスペクトしたい場合は次のように設定します。
       </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-S2ApplicationContext::registerAspect('/Dao$/', 'dao.interceptor');
+S2ApplicationContext::registerAspect('dao.interceptor', '/Dao$/');
 ]]></programlisting>
+
+      <para>
+      S2ApplicationContext::registerAspectメソッドへのショートカットとして、s2aspect関数が定義されています。使用方法はregisterAspectメソッドと同じです。
+      </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+s2aspect('dao.interceptor', '/Dao$/');
+]]></programlisting>
+
+      <para>
+            戻り値のAspectInfoDefを使用して、aspect設定を追加することもできます。
+      </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+s2aspect('dao.interceptor')
+  ->setPattern('/Dao$/')
+  ->setPointcut('/^find/');
+]]></programlisting>
+
+
       <caution><title>注意</title>
       <para>
               自動アスペクトはimportされたコンポーネントに対してのみ適用されます。インクルードされたダイコンファイルに含まれるコンポーネントには適用されません。
@@ -1491,7 +1555,7 @@ class IndexAction {
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
   /**
    * @S2Aspect('interceptor' => 'traceInterceptor',
-   *           'pointcut'    => '.+Action')
+   *           'pointcut'    => '/.+Action/')
    */
   class CdController {
       public function indexAction(){
@@ -1501,7 +1565,7 @@ class IndexAction {
 
   class DvdController {
       /**
-       * @S2Aspect('interceptor' => 'new S2Container_TraceInterceptor()')
+       * @S2Aspect('interceptor' => 'new seasar\aop\interceptor\TraceInterceptor()')
        */
       public funcion indexAction() {
           ・・・

@@ -1,15 +1,15 @@
 <sect1 id="misc.symfony"><title>Using S2Container with Symfony</title>
-  <sect2><title>Startup of Smfony</title>
+  <sect2><title>Startup of Symfony</title>
     <para>
-      Arbitrary projects, application, and a module are created by Symfony.
+      Please create Symfony projects, application, and a module.
     </para>
   </sect2>
 
   <sect2><title>S2Container Setup</title>
     <para>
-      S2Container.php is installed by PEAR.
-      If installing with a full package, it is unpacked as S2Container to the lib directory of a project directory.
-      The following configuration file sample of S2Container is saved as s2.php to the config directory of a project directory.
+      Let's install S2Container.php by PEAR.
+      If installing with a full package, please unpack it as S2Container to the lib directory of a project directory.
+      Next, create the following sample configuration file as s2.php to the config directory of a project directory.
       <itemizedlist>
         <listitem>config/s2.php</listitem>
       </itemizedlist>
@@ -57,7 +57,7 @@ class defaultActions extends sfActions {
         <listitem>Import Logic directory</listitem>
         <listitem>
           Hoge component is used in an action method.
-          If acquiring a component by a get method, Singleton S2Container managed inside S2ApplicationContext is used.
+          If taking out a component by a get method, Singleton S2Container managed inside S2ApplicationContext is used.
         </listitem>
       </orderedlist>
 
@@ -79,7 +79,7 @@ class Hoge {
     </para>
 
     <para>
-      The template of index action is edited.
+      As follows, edit the template file of index action.
       <itemizedlist>
         <listitem>module/template/indexSuccess.php</listitem>
       </itemizedlist>
@@ -96,7 +96,7 @@ greeting : <?php echo $greeting; ?> <br>
 
   <sect2><title>Using Mock</title>
     <para>
-      The aspect of MockInterceptor is carried out to a Hoge class, and the return value of greeting method is set up.
+    As an example, MockInterceptor is applied to Hoge class, and the return value of greeting method is specified.
     </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
@@ -118,7 +118,7 @@ class Hoge {
     <para>
       @S2Aspect annotation can also annotate on a class.
       Moreover, the same result can be obtained even if it uses the automatic aspect function of S2ApplicationContext.
-      If using an automatic aspect function,  registerAspect method is added to S2ApplicationContext setting part of an action class.
+      If using an automatic aspect function, registerAspect method is added to S2ApplicationContext setting part of an action class.
     </para>
 
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
@@ -126,7 +126,7 @@ class Hoge {
 require_once(SF_ROOT_DIR . '/config/s2.php');
 use seasar\container\S2ApplicationContext as s2app;
 s2app::import(dirname(dirname(__FILE__)) . '/lib/logic');
-s2app::registerAspect('/^Hoge$/', 'new seasar\aop\interceptor\MockInterceptor');
+s2app::registerAspect('new seasar\aop\interceptor\MockInterceptor', '/^Hoge$/');
 
 class defaultActions extends sfActions {
     public function executeIndex() {

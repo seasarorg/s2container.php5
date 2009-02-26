@@ -1,11 +1,11 @@
 <chapter id="aop"><title>S2AOP.PHP Reference</title>
-  <sect1 id="aop.about"><title>The outline of S2AOP</title>
+  <sect1 id="aop.about"><title>Summary of S2AOP</title>
     <para>
       AOP, Aspect Oriented Programming, it is a technique which extracts the common logic distributed
       in two or more classes, and is woven in from the outside of a class.
 
     </para>
-    <sect2><title>The Concept of AOP</title>
+    <sect2><title>Concept of AOP</title>
       <blockquote>
         <formalpara><title>Advice(MethodInterceptor)</title></formalpara>
         <para>
@@ -16,7 +16,7 @@
         <formalpara><title>Joinpoint(MethodInvocation)</title></formalpara>
         <para>
           Joinpoint expresses the point which combines target class and Advice.
-          Advice can acquire the information on an argument or a method from Joinpoint.
+          Advice can get method arguments or information of the method from Joinpoint.
         </para>
 
         <formalpara><title>Pointcut</title></formalpara>
@@ -32,23 +32,17 @@
     </sect2>
   </sect1>
 
-  <sect1 id="aop.caution"><title>The notes on use of S2AOP</title>
+  <sect1 id="aop.caution"><title>Notes on S2AOP</title>
 
     <itemizedlist>
       <listitem>
-        The component specified with aspect tag is acquired from a container at the time of initialization of a container.
-        Therefore, even if the instance attribute of the component specified with the aspect tag is prototype", 
+        The component specified with aspect tag is taken out from a container at the time of initialization of a container.
+        Therefore, even if the instance attribute of the component specified with the aspect tag is "prototype", 
         a new instance is not created whenever an aspected method is called.
       </listitem>
       <listitem>
-            <itemizedlist>
-            <listitem>
-              If the class of a component implements abstract method, all the abstract method is applicable
-            </listitem>
-            <listitem>
-              If  the class of a component does not implement abstract method, all the public method implemented in the class is applicable.
-            </listitem>
-          </itemizedlist>
+       If the class of a component implements abstract method, all the abstract method is applicable
+       If  the class of a component does not implement abstract method, all the public method implemented in the class is applicable.
       </listitem>
       <listitem>An aspect is applicable only to a public method.</listitem>
       <listitem>An aspect is inapplicable to an staic method.</listitem>
@@ -64,7 +58,7 @@
   <sect1 id="aop.aspect"><title>Aspect using S2AopFactory</title>
     <para>
       By the create method of S2AopFactory class, the extended class of an aspect target class is generated and
-      the instance which wove in the aspect is acquired.
+      you are able to get the instance into which the aspect was woven.
     </para>
 
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
@@ -75,7 +69,7 @@ public static function create(ReflectionClass $targetClass, array $aspects, arra
       <listitem>The 1st argument ： Aspect target class</listitem>
       <listitem>The 2nd argument ： Aspect woven in</listitem>
       <listitem>The 3rd argument ： Arguments of constructor method</listitem>
-      <listitem>The 4th argument ： Extended parameter of S2Aop.PHP</listitem>
+      <listitem>The 4th argument ： Additional parameter of S2Aop.PHP</listitem>
     </itemizedlist>
     </blockquote>
     <para>
@@ -140,8 +134,8 @@ $result = $service->add(2, 3);
 seasar\aop\Pointcut::__construct($target)
 ]]></programlisting>
         <para>
-          The regular expression character string which specifies Pointcut,
-          or ReflectionClass is passed to $target of a constructor argument.
+          The regular expression which specifies Pointcut 
+          or ReflectionClass is passed to a constructor argument.
           If ReflectionClass is passed, and if the class implements abstract method, all the abstract method is be Pointcut.
           If the class does not implement abstract method at all, all the public method implemented in the class except the following conditions is be Pointcut.
         </para>
@@ -178,14 +172,14 @@ seasar\aop\Aspect::__construct(MethodInterceptor $methodInterceptor, Pointcut $p
   <sect1 id="aop.dicon"><title>Aspect using S2Container</title>
     <sect2><title>Using S2ApplicationContext</title>
       <para>
-        If carrying out an aspect to a component using S2ApplicationContext, there is a method of setting up an automatic aspect or 
-        setting up comment annotation in each class.
+        When Applying aspect to a component using S2ApplicationContext, there are two methods,
+        setting up an automatic aspect or setting up comment annotation in each class.
       </para>
       <blockquote>
         <formalpara><title>Automatic Aspect</title></formalpara>
         <para>
           If using <link linkend="dicon.application.autoaspect">the automatic aspect function of S2ApplictionContext</link>, an aspect is set up by an S2ApplictionContext::registerAspect method.<sbr/>
-          As an example, you can apply Aspect to the following Service class.
+          As an example, you can apply aspect to the following Service class.
         </para>
 
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
@@ -196,14 +190,14 @@ class Service {
 }
 ]]></programlisting>
         <para>
-          A Service class is imported by S2ApplicationContext::import method.
-          A container is generated by S2ApplicationContext::create method and a Service component is acquired by a getComponent method.
+          Service class is imported by S2ApplicationContext::import method.
+          A container is generated by S2ApplicationContext::create method and Service component is taken out by a getComponent method.
         </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
 require_once('S2Container/S2Container.php');
 seasar\container\S2ApplicationContext::import(dirname(__FILE__) . '/classes');
-seasar\container\S2ApplicationContext::registerAspect('/^Service$/', 'new seasar\aop\interceptor\TraceInterceptor', '^add$');
+seasar\container\S2ApplicationContext::registerAspect('new seasar\aop\interceptor\TraceInterceptor', '/^Service$/', '^add$');
 $container = seasar\container\S2ApplicationContext::create();
 $service   = $container->getComponent('Service');
 
@@ -211,13 +205,15 @@ print get_class($service) . PHP_EOL;
 $result = $service->add(2, 3);
 ]]></programlisting>
         <para>
-          The component name to which an aspect is applied, Interceptor and Pointcut are set up by the argument of an S2ApplicationContext::registerAspect method.
+          You can specify the component name to which an aspect is applied, Interceptor and Pointcut
+          by the argument of an S2ApplicationContext::registerAspect method.
         </para>
 
         <sbr/>
         <formalpara><title>Setup by Comment Annotation</title></formalpara>
         <para>
-          <link linkend="dicon.application.annotation.aspect">@S2Aspect</link> annotation is used when comment annotation describes an aspect setup.
+          <link linkend="dicon.application.annotation.aspect">@S2Aspect</link> annotation is used 
+          when setting up an aspect by comment annotation.
           @S2Aspect annotation can be described in a class or a method.
         </para>
 
@@ -253,8 +249,9 @@ class Service {
 ]]></programlisting>
 
   <para>
-    A Service class is imported by the S2ApplicationContext::import method.
-    A container is generated by the S2ApplicationContext::create method and a Service component is acquired by the getComponent method.
+    Service class is imported by the S2ApplicationContext::import method.
+    A container is generated by the S2ApplicationContext::create method,
+    and Service component is taken out by the getComponent method from the container.
   </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
@@ -273,7 +270,7 @@ $result = $service->add(2, 3);
     <sbr/>
     <sect2><title>Using S2ContainerFactory</title>
       <para>
-        If using S2ContainerFactory, aspect setting is performed using a aspect tag by DICON file which is a definition file of S2Container.<sbr/>
+        If using S2ContainerFactory, aspect setting is performed using a aspect tag in DICON file which is a definition file of S2Container.<sbr/>
         An aspect is applied to service class as an example.
       </para>
 
@@ -286,8 +283,8 @@ class Service {
 ]]></programlisting>
 
        <para>
-         An aspect is woven into a component.
-         The name of Interceptor is described by a body of a aspect tag.
+         An aspect tag is added to a component tag.
+         The name of Interceptor component is described by a body of a aspect tag.
        </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
@@ -318,7 +315,7 @@ $result = $service->add(2, 3);
   </sect1>
 
   <!-- ##################################################################### -->
-  <sect1 id="aop.interceptor"><title>Interceptor prepared in S2AOP</title>
+  <sect1 id="aop.interceptor"><title>Interceptors prepared in S2AOP</title>
     <sect2 id="aop.interceptor.trace"><title>TraceInterceptor</title>   
       <blockquote>
         <formalpara><title>Using S2ApplicationContext</title></formalpara>
@@ -336,11 +333,11 @@ class Service {
 }
 ]]></programlisting>
           <para>
-            The following execution script is made.
+            Let's create following execution script.
           </para>
           <itemizedlist>
             <listitem>
-              A Service class is imported by the S2ApplicationContext::import method
+              Service class is imported by the S2ApplicationContext::import method
             </listitem>
             <listitem>
               TraceInterceptor is aspected to a service component by the S2ApplicationContext::registerAspect method
@@ -349,17 +346,17 @@ class Service {
               A container is generated by the S2ApplicationContext::create method
             </listitem>
             <listitem>
-              A Service component is acquired by the S2Container::getComponent method.
+              Service component is taken out by the S2Container::getComponent method.
             </listitem>
             <listitem>
-              The add method of the Service component is carried out.
+              The add method of the Service component is called.
             </listitem>
           </itemizedlist>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
 require_once('S2Container/S2Container.php');
 seasar\container\S2ApplicationContext::import(dirname(__FILE__) . '/classes');
-seasar\container\S2ApplicationContext::registerAspect('/^Service$/', 'new seasar\aop\interceptor\TraceInterceptor');
+seasar\container\S2ApplicationContext::registerAspect('new seasar\aop\interceptor\TraceInterceptor','/^Service$/');
 $container = seasar\container\S2ApplicationContext::create();
 $service   = $container->getComponent('Service');
 
@@ -368,7 +365,8 @@ $result = $service->add(2, 3);
 ]]></programlisting>
 
           <para>
-            If you execute above script, when the add method of the service class was carried out, TraceInterceptor outputs log.
+            If you execute above script, when the add method of the service class was called,
+            TraceInterceptor outputs a log message.
           </para>
 
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
@@ -385,7 +383,7 @@ Service called.
         <formalpara><title>Using S2ContainerFactory</title></formalpara>
         <para>
           If using S2ContainerFactory, it's necessary to create the following DICON file.
-          TraceInterceptor is aspected to a Service component using a spect tag.
+          TraceInterceptor is aspected to Service component using an aspect tag.
         </para>
 
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
@@ -401,20 +399,20 @@ Service called.
 ]]></programlisting>
 
           <para>
-            The following execution script is made.
+          Let's create following execution script.
           </para>
           <itemizedlist>
             <listitem>
-              A Service class is imported by ClassLoader::import method
+             Service class is imported by ClassLoader::import method
             </listitem>
             <listitem>
               DICON file is read by the S2ContainerFactory::create method
             </listitem>
             <listitem>
-              A Service component is acquired by the S2Container::getComponent method.
+              Service component is taken out by the S2Container::getComponent method.
             </listitem>
             <listitem>
-              The add method of the Service component is carried out.
+              The add method of the Service component is called.
             </listitem>
           </itemizedlist>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
@@ -429,7 +427,8 @@ $result = $service->add(2, 3);
 ]]></programlisting>
 
           <para>
-            If you execute above script, when the add method of the service class was carried out, TraceInterceptor outputs log.
+            If you execute above script, when the add method of the service class was called,
+            TraceInterceptor outputs a log message.
           </para>
 
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
@@ -469,7 +468,7 @@ Service called.
           </itemizedlist>
 
           <para>
-            Carry out an aspect to the following service classes as an example.
+          As an example, an aspect is applied to the following service class.
           </para>
 
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
@@ -490,20 +489,20 @@ class Service {
 }
 ]]></programlisting>
           <para>
-            The following execution scripts are created.
+          Let's create following execution scripts.
           </para>
           <itemizedlist>
             <listitem>
-              A Service class is imported by S2ApplicationContext::import method
+            Service class is imported by S2ApplicationContext::import method
             </listitem>
             <listitem>
-              The aspect of the MockInterceptor is carried out to a service component by S2ApplicationContext::registerAspect method.
+            MockInterceptor is aspected to a service component by the S2ApplicationContext::registerAspect method
             </listitem>
             <listitem>
               A container is generated by S2ApplicationContext::create method.
             </listitem>
             <listitem>
-              A Service component is acquired by an S2Container::getComponent method.
+             Service component is taken out by an S2Container::getComponent method.
             </listitem>
             <listitem>
               The add and the sub method of an Service component are performed.
@@ -513,7 +512,7 @@ class Service {
 <?php
 require_once('S2Container/S2Container.php');
 seasar\container\S2ApplicationContext::import(dirname(__FILE__) . '/classes');
-seasar\container\S2ApplicationContext::registerAspect('/^Service$/', 'new seasar\aop\interceptor\MockInterceptor');
+seasar\container\S2ApplicationContext::registerAspect('new seasar\aop\interceptor\MockInterceptor', '/^Service$/');
 $container = seasar\container\S2ApplicationContext::create();
 $service = $container->getComponent('Service');
 
@@ -526,10 +525,9 @@ try {
 ]]></programlisting>
 
           <para>
-            The above-mentioned script is performed.
-            Execution of the add method of a service class will return 10 
+            Execution of the add method of a service class will return 10, 
             not as an actual calculation result(5) but as a Mock value.
-            Execution of sub method will carry out a throw of the NotYetImplementedException.
+            Execution of sub method will throw the NotYetImplementedException.
           </para>
 
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
@@ -544,9 +542,9 @@ seasar\exception\NotYetImplementedException : mock exception
         <formalpara><title>Using S2ContainerFactory</title></formalpara>
         <para>
           If using S2ContainerFactory, the following DICON file is created.
-          The aspect of the MockInterceptor is carried out to a Service component using aspect tag.
-          With an initMethod tag, a return value of an add method is set up by a setRetrunValue method.
-          Moreover, to a sub method, the exception which is thrown is set up by a setThrowable method.
+          MockInterceptor is applied to Service component using aspect tag.
+          With an initMethod tag, a return value of the add method is set up by the setRetrunValue method.
+          Moreover, to the sub method, the exception which is thrown is set up by the setThrowable method.
         </para>
 
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
@@ -571,24 +569,24 @@ seasar\exception\NotYetImplementedException : mock exception
 </components>
 ]]></programlisting>
           <para>
-            If a setup of Mock value is omitted, a setup of comment annotation is reflected.
+            If a setup of Mock value is omitted, information of a comment annotation is used.
           </para>
 
           <para>
-            The following execution scripts are created.
+          Let's create following execution scripts.
           </para>
           <itemizedlist>
             <listitem>
-              A Service class is imported by ClassLoader::import method
+            Service class is imported by ClassLoader::import method
             </listitem>
             <listitem>
-              DICON file is read by the S2ContainerFactory::create method
+            DICON file is read by the S2ContainerFactory::create method
             </listitem>
             <listitem>
-              A Service component is acquired by the S2Container::getComponent method.
+            Service component is taken out by the S2Container::getComponent method.
             </listitem>
             <listitem>
-              The add and the sub method of an Service component are performed.
+            The add and the sub method of Service component are performed.
             </listitem>
           </itemizedlist>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
@@ -607,10 +605,9 @@ try {
 ]]></programlisting>
 
           <para>
-            The above-mentioned script is performed.
-            Execution of the add method of a service class will return 20 
-            not as an actual calculation result(5) but as a Mock value.
-            Execution of sub method will carry out a throw of the NotYetImplementedException.
+            Execution of the add method of Service class will return 20, 
+            not as an actual calculation result(5) but as Mock value.
+            Execution of the sub method will throw the NotYetImplementedException.
           </para>
 
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
@@ -630,7 +627,8 @@ seasar\exception\NotYetImplementedException : mock exception
     <sect2 id="aop.interceptor.chain"><title>InterceptorChain</title>   
       <para>
         InterceptorChain group-izes two or more Interceptor. Thereby, reuse of Interceptor is made easy.<sbr/>
-        As an example, your can set TraceInterceptor and MockInterceptor to InterceptorChain and carry out an aspect to the following service class.
+        As an example, your can set TraceInterceptor and MockInterceptor to InterceptorChain and 
+        aspect it to the following service class.
       </para>
 
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
@@ -643,10 +641,11 @@ class Service {
 ]]></programlisting>
 
       <para>
-        The following DICON files are created.
-        The aspect of the chain component is carried out to a Service component using aspect tag.
-        By chain component, the trace component and mock component are registered into InterceptorChain using an initMethod tag.
-        Moreover, a trace component and mock component are also registered, respectively.
+        Let's create following DICON file.
+        The aspect of the chain component is applied to Service component using aspect tag.
+        By chain component, the trace component and mock component are registered into InterceptorChain
+        using the initMethod tag.
+        Moreover, trace component and mock component are also registered.
       </para>
 
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
@@ -673,20 +672,20 @@ class Service {
 </components>
 ]]></programlisting>
         <para>
-          The following execution scripts are created.
+        Please create following execution scripts.
         </para>
         <itemizedlist>
           <listitem>
-            A Service class is imported by ClassLoader::import method
+          Service class is imported by ClassLoader::import method
           </listitem>
           <listitem>
-            DICON file is read by the S2ContainerFactory::create method
+          DICON file is read by the S2ContainerFactory::create method
           </listitem>
           <listitem>
-            A Service component is acquired by the S2Container::getComponent method.
+          Service component is take out by the S2Container::getComponent method.
           </listitem>
           <listitem>
-            The add method of an Service component is performed.
+          The add method of Service component is performed.
           </listitem>
         </itemizedlist>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
@@ -700,9 +699,8 @@ print $service->add(2, 3) . PHP_EOL;
 ]]></programlisting>
 
         <para>
-            The above-mentioned script is performed.
-            when the add method of the service class was carried out, TraceInterceptor outputs log
-            And add method  will return 20, not as an actual calculation result(5) but as a Mock value.
+        when the add method of the service class was called, TraceInterceptor outputs a log message.
+        And the add method will return 20, not as an actual calculation result(5) but as Mock value.
         </para>
 
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
@@ -720,7 +718,7 @@ print $service->add(2, 3) . PHP_EOL;
     <sbr/>
     <sect2 id="aop.interceptor.custom"><title>Implementing Interceptor</title>   
       <para>
-        When carrying out custom-made implementing of Interceptor, the class which implements the following interface is created.
+      When you create original interceptor, it is necessary to implements following MethodInterceptor.
       </para>
 
       <itemizedlist>
@@ -731,14 +729,14 @@ interface MethodInterceptor {
     /**
      * @param MethodInvocation $invocation
      */
-    function invoke(MethodInvocation $invocation);
+    public function invoke(MethodInvocation $invocation);
 }
 ]]></programlisting>
         </listitem>
       </itemizedlist>
 
       <para>
-        Following sample Interceptor is created.
+      Let's create following sample Interceptor.
       </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 class SampleInterceptor implements seasar\aop\MethodInterceptor {
@@ -755,17 +753,17 @@ class SampleInterceptor implements seasar\aop\MethodInterceptor {
 }
 ]]></programlisting>
       <para>
-        Execution of MethodInvocation::proceed method will call following Interceptor or a following actual method.
-        If two or more Aspects are defined as one component, as-follows execution is carried out.
+        Execution of MethodInvocation::proceed method will call following Interceptor or following actual method.
+        If two or more aspects are applied to a component, execution will be done as-follows.
       </para>
       <itemizedlist>
         <listitem>The Before part of MethodInterceptor is performed in order of registration of Aspect.</listitem>
         <listitem>After performing the Before part of the last MethodInterceptor, a component's own method is called.</listitem>
-        <listitem>The After portion of MethodInterceptor is performed by the order of reverse of registration of Aspect.</listitem>
+        <listitem>The After part of MethodInterceptor is performed by reverse order of registration of Aspect.</listitem>
       </itemizedlist>
 
       <para>
-        The instance for an aspect, ReflectionMethod, method arguments, etc. are acquirable through <link linkend="aop.invocation">MethodInvocation</link> passed by the argument of MethodInterceptor::invoke method.
+      You are able to get the aspect taget instance, ReflectionMethod and method arguments by <link linkend="aop.invocation">MethodInvocation</link> instance passed by the argument of MethodInterceptor::invoke method.
       </para>
     </sect2> 
     
@@ -836,7 +834,7 @@ public function getArguments();
 
       <formalpara><title>MethodInvocation::getParameter method</title></formalpara>
       <para>
-        The extended parameter for S2Aop.PHP is returned.
+        The additional parameter for S2Aop.PHP is returned.
       </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 /**
@@ -857,7 +855,7 @@ public function getParameter($name);
 
         <formalpara><title>ENHANCED_CLASS_GENERATOR</title></formalpara>
         <para>
-          The Generator class which generates the extended class for weaving in an aspect is specified.
+          The generator class which generates the extended class for weaving in an aspect is specified.
         </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 seasar\aop\Config::$ENHANCED_CLASS_GENERATOR = 'seasar\aop\EnhancedClassGenerator';
@@ -873,7 +871,7 @@ seasar\aop\Config::$CACHING = false;
 
         <formalpara><title>CACHE_DIR</title></formalpara>
         <para>
-          The output directory in the case of outputting the extended class generated in order to weave in aspect to a file is set up.
+          The output directory in the case of outputting the extended class to a file is specified.
         </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 seasar\aop\Config::$CACHE_DIR = null;

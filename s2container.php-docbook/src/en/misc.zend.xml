@@ -1,7 +1,7 @@
 <sect1 id="misc.zend"><title>Using S2Container with Zend_Controller</title>
   <sect2><title>Zend_Controller Setup</title>
     <para>
-      As follows, It sets up according to the modular directory structure of Zend_Controller.
+      As follows, let's sets up according to the modular directory structure of Zend_Controller.
     </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 project/
@@ -37,7 +37,7 @@ project/
 
     <para>
       config, lib, and a log directory are added to the modular directory structure of Zend_Controller.
-      In a config directory, the following environment.php are created as a common setting file.
+      In a config directory, please create the following environment.php.(a common setting file)
     </para>
     
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
@@ -52,9 +52,9 @@ ini_set('include_path', implode(PATH_SEPARATOR, $packages) . PATH_SEPARATOR . in
 
   <sect2><title>S2Container Setup</title>
     <para>
-      S2Container.php is installed by PEAR.
-      If installing with a full package, it is unpacked as S2Container to the lib directory of a project directory.
-      The following configuration file sample of S2Container is saved as s2.php to the config directory of a project directory.
+      Let's install S2Container.php by PEAR.
+      If installing with a full package, please unpack it as S2Container to the lib directory of a project directory.
+      Next, create the following sample configuration file as s2.php to the config directory of a project directory.
       <itemizedlist>
         <listitem>config/s2.php</listitem>
       </itemizedlist>
@@ -80,7 +80,7 @@ seasar\aop\Config::$CACHE_DIR = PROJECT_ROOT_DIR . '/cache/s2aop';
 
   <sect2><title>Creation of action</title>
     <para>
-      IndexController class is created according to the document of Zend_Controller.
+      As follows, IndexController class is created according to the document of Zend_Controller.
       <itemizedlist>
         <listitem>application/default/controllers/IndexController.php</listitem>
       </itemizedlist>
@@ -104,14 +104,14 @@ class IndexController extends Zend_Controller_Action {
         <listitem>Import models/index directory</listitem>
         <listitem>
           Hoge component is used in an action method.
-          If acquiring a component by a get method, Singleton S2Container managed inside S2ApplicationContext is used.
+          If taking out a component by the get method, Singleton S2Container managed inside S2ApplicationContext is used.
         </listitem>
       </orderedlist>
 
     </para>
 
     <para>
-      Hoge class used in an action class is created in models/index directory.
+      Please create Hoge class used in an action class in models/index directory.
       <itemizedlist>
         <listitem>application/default/models/index/Hoge.php</listitem>
       </itemizedlist>
@@ -126,7 +126,7 @@ class Hoge {
     </para>
 
     <para>
-      The template of index action is edited.
+      The template of index action is edited, as follows.
       <itemizedlist>
         <listitem>application/default/views/scripts/index/index.phtml</listitem>
       </itemizedlist>
@@ -152,7 +152,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 
   <sect2><title>Using Mock</title>
     <para>
-      The aspect of MockInterceptor is carried out to a Hoge class, and the return value of greeting method is set up.
+    As an example, MockInterceptor is applied to Hoge class, and the return value of greeting method is set up.
     </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
@@ -182,7 +182,7 @@ class Hoge {
 require_once PROJECT_ROOT_DIR . '/config/s2.php';
 use seasar\container\S2ApplicationContext as s2app;
 s2app::import(dirname(dirname(__FILE__)) . '/models/index');
-s2app::registerAspect('/^Hoge$/', 'new seasar\aop\interceptor\MockInterceptor');
+s2app::registerAspect('new seasar\aop\interceptor\MockInterceptor', '/^Hoge$/');
 
 require_once 'Zend/Controller/Action.php';
 class IndexController extends Zend_Controller_Action {

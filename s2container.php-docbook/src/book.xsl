@@ -28,7 +28,7 @@
     <br />
     <br />
     <table width="100%"><tr><td align="center"><font size="-2">
-    © Copyright The Seasar Foundation and the others 2005-2008, all rights reserved.
+    © Copyright The Seasar Foundation and the others 2005-2009, all rights reserved.
     </font></td></tr></table>
   </xsl:template>
 

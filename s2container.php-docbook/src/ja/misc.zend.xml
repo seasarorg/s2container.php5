@@ -179,7 +179,7 @@ class Hoge {
 require_once PROJECT_ROOT_DIR . '/config/s2.php';
 use seasar\container\S2ApplicationContext as s2app;
 s2app::import(dirname(dirname(__FILE__)) . '/models/index');
-s2app::registerAspect('/^Hoge$/', 'new seasar\aop\interceptor\MockInterceptor');
+s2app::registerAspect('new seasar\aop\interceptor\MockInterceptor', '/^Hoge$/');
 
 require_once 'Zend/Controller/Action.php';
 class IndexController extends Zend_Controller_Action {
