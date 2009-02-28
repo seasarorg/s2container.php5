@@ -597,6 +597,9 @@ class S2ApplicationContext {
             \seasar\log\S2Logger::getLogger(__CLASS__)->debug("class aspect annotation found. cannot get values.", __METHOD__);
             return;
         }
+        if (array_key_exists(0, $annoInfo)) {
+            $annoInfo['interceptor'] = $annoInfo[0];
+        }
         self::setupAspectDef($cd, $annoInfo);
     }
 
@@ -611,6 +614,9 @@ class S2ApplicationContext {
         if (count($annoInfo) === 0) {
             \seasar\log\S2Logger::getLogger(__CLASS__)->debug("method aspect annotation found. cannot get values.", __METHOD__);
             return;
+        }
+        if (array_key_exists(0, $annoInfo)) {
+            $annoInfo['interceptor'] = $annoInfo[0];
         }
         $annoInfo['pointcut'] = '/^' . $methodRef->getName() . '$/';
         self::setupAspectDef($cd, $annoInfo);

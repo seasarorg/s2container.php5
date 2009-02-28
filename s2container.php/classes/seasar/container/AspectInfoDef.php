@@ -95,11 +95,9 @@ class AspectInfoDef {
      * @param string $componentPattern
      * @return seasar\container\AspectInfoDef
      */
-    public function setComponentPattern($componentPattern, $condition = null) {
-        if (is_bool($condition)) {
-            $this->setCondition($condition);
-        }
+    public function setComponentPattern($componentPattern, $condition = true) {
         $this->componentPattern = $componentPattern;
+        $this->setCondition($condition);
         return $this;
     }
 
@@ -113,14 +111,14 @@ class AspectInfoDef {
     /**
      * @see seasar\container\AspectInfoDef::setComponentPattern
      */
-    public function pattern($componentPattern, $condition = null) {
+    public function pattern($componentPattern, $condition = true) {
         return $this->setComponentPattern($componentPattern, $condition);
     }
 
     /**
      * @see seasar\container\AspectInfoDef::setComponentPattern
      */
-    public function setPattern($componentPattern, $condition = null) {
+    public function setPattern($componentPattern, $condition = true) {
         return $this->setComponentPattern($componentPattern, $condition);
     }
 
