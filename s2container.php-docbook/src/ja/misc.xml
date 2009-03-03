@@ -129,6 +129,24 @@
               <entry>有り</entry>
               <entry>無し</entry>
             </row>
+            <row>
+              <entry>S2ApplicationContext::registerAspect メソッド引数</entry>
+              <entry>
+                <itemizedlist>
+                  <listitem>第1引数 : コンポーネントパターン</listitem>
+                  <listitem>第2引数 : Interceptor</listitem>
+                  <listitem>第3引数 : Pointcut</listitem>
+                </itemizedlist>              
+              </entry>
+              <entry>
+                <itemizedlist>
+                  <listitem>第1引数 : Interceptor</listitem>
+                  <listitem>第2引数 : コンポーネントパターン (optional)</listitem>
+                  <listitem>第3引数 : Pointcut (optional)</listitem>
+                </itemizedlist>
+                                また、戻り値としてAspectInfoDefインスタンスが返ります。              
+              </entry>
+            </row>
           </tbody>
         </tgroup>
       </table>

@@ -135,6 +135,24 @@
               <entry>availavle</entry>
               <entry>none</entry>
             </row>
+            <row>
+              <entry>S2ApplicationContext::registerAspect method arguments</entry>
+              <entry>
+                <itemizedlist>
+                  <listitem>1st : component pattern</listitem>
+                  <listitem>2nd : Interceptor</listitem>
+                  <listitem>3rd : Pointcut</listitem>
+                </itemizedlist>              
+              </entry>
+              <entry>
+                <itemizedlist>
+                  <listitem>1nd : Interceptor</listitem>
+                  <listitem>2st : component pattern (optional)</listitem>
+                  <listitem>3rd : Pointcut (optional)</listitem>
+                </itemizedlist>
+                And return value is a instance of AspectInfoDef class.              
+              </entry>
+            </row>
           </tbody>
         </tgroup>
       </table>

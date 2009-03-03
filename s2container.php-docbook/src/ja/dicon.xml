@@ -1451,7 +1451,7 @@ s2aspect('dao.interceptor')
 
 
     <sbr/>
-    <sect2><title>アノテーション</title>
+    <sect2 id="dicon.application.annotation"><title>アノテーション</title>
        <para>
                 コンポーネントの細かい設定や、Dependency Injection設定、Aspectの適用を行う場合はアノテーションを用います。
                 アノテーションの形式は、@アノテーション名[()] です。アットマーク(@)で開始します。末尾はスペース、または改行となります。
@@ -1472,7 +1472,7 @@ S2ApplicationContext::setReadParentAnnotation($val = true)
    </blockquote>
 
    <sbr/>
-   <blockquote><formalpara><title>@S2Component アノテーション</title></formalpara>
+   <blockquote id="dicon.application.annotation.s2component"><formalpara><title>@S2Component アノテーション</title></formalpara>
       <para>コンポーネント情報を設定します。</para>
       <blockquote>
         <itemizedlist>

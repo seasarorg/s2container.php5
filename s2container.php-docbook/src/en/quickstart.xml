@@ -5,360 +5,236 @@
     <para>Please install S2Container.PHP according to an installation document first.</para>
   </sect1>
 
-  <sect1 id="quick201"><title>Generation of a container</title>
+
+  <!-- ################################################################### -->
+  <sect1 id="quick010"><title>Registration and getting of a component</title>
     <para>
-      First of all, Let's create an empty container using <link linkend="dicon.application.create">the create method</link> of S2ContainerApplicationContext class.
-    <itemizedlist>
-      <listitem>quickstart.php
-      </listitem>
-    </itemizedlist>
+    <link linkend="dicon.application.register">The s2component function</link> performs registration of a component.
+    The s2component function registers a component using the register method of S2ApplicationContext class.
+    You can get the registered component by the get method of S2ApplicationContext class.
     </para>
+    <itemizedlist><listitem>quickstart010.php</listitem></itemizedlist>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
 require_once('S2Container/S2Container.php');
+use seasar\container\S2ApplicationContext as s2app;
 
-$container = seasar\container\S2ApplicationContext::create();
-$container->getComponentDefSize() == 0 ?
-    print 'container is empty.' . PHP_EOL:
-    print 'container has some component.' . PHP_EOL;
+class Action {}
+s2component('Action');
+
+$action = s2app::get('Action');
+var_dump($action);
 ]]></programlisting>
 
-    <para>As described below, you can execute quickstart.php.</para>
+    <para>When specifying a component name, it specifies by the ComponentInfoDef instance which is a return value of the s2component function.</para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-% php quickstart.php
-container is empty.
-%
+<?php
+require_once('S2Container/S2Container.php');
+use seasar\container\S2ApplicationContext as s2app;
+
+class Action {}
+s2component('Action')->setName('act');
+
+$action = s2app::get('act');
+var_dump($action);
 ]]></programlisting>
 
     <note><title>NOTE</title>
-      <para>
-        This Example is located at "examples/quickstart/quickstart1".
-      </para>
+      <para>This Example is located at "examples/quickstart/quickstart010.php".</para>
     </note>
   </sect1>
 
 
   <!-- ################################################################### -->
-  <sect1 id="quick202"><title>Generation of a component</title>
+  <sect1 id="quick020"><title>Dependency Injection</title>
     <para>
-      Next, let's create a container with a component.
-      Please create classes directory to a current directory,
-      and create the following Hello class in the classes directory
+    Next, let's inject Service component into Action component.
     </para>
-    <itemizedlist>
-      <listitem>classes/Hello.php
-      </listitem>
-    </itemizedlist>
+
+    <para>
+    Please create the following Action class in the classes directory.
+    You can specify a component name by <link linkend="dicon.application.annotation.s2component">@S2Component annotation.</link>
+    Moreover, please implement the $service property which receives the instance of Service class.
+    By setting public accession to $service property, Service component will be injected to by <link linkend="dicon.di.auto.property">the property injection function</link>.
+    Within the indexAction method, it can process using the injected Service component.
+    </para>
+    <itemizedlist><listitem>classes/Action.php</listitem></itemizedlist>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
-class Hello {
-    public function sayHello() {
-        print 'Hello World !' . PHP_EOL;
-    }
-}
-]]></programlisting>
-    <para>
-      As follows, classes directory is <link linkend="dicon.application.import">imported</link> in quickstart.php.
-    </para>
-    <itemizedlist>
-      <listitem>quickstart.php
-      </listitem>
-    </itemizedlist>
-<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-<?php
-require_once('S2Container/S2Container.php');
-seasar\container\S2ApplicationContext::import(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'classes');
-$container = seasar\container\S2ApplicationContext::create();
-$container->getComponentDefSize() == 0 ?
-    print 'container is empty.' . PHP_EOL:
-    print 'container has some component.' . PHP_EOL;
-]]></programlisting>
-
-    <para>As described below, you can execute quickstart.php.</para>
-<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-% php quickstart.php
-container has some component.
-%
-]]></programlisting>
-
-    <note><title>NOTE</title>
-      <para>
-        This Example is located at "examples/quickstart/quickstart2".
-      </para>
-    </note>
-  </sect1>
-
-
-  <!-- ################################################################### -->
-  <sect1 id="quick203"><title>Getting a Component</title>
-    <para>
-      Since the container with a component was created, let's take out a component.
-      In order to pick out a component from a container, you can use "getComponent" method of S2Container class.
-    </para>
-    <itemizedlist>
-      <listitem>quickstart.php
-      </listitem>
-    </itemizedlist>
-<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-<?php
-require_once('S2Container/S2Container.php');
-
-seasar\container\S2ApplicationContext::import(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'classes');
-$container = seasar\container\S2ApplicationContext::create();
-$container->getComponentDefSize() == 0 ?
-    print 'container is empty.' . PHP_EOL:
-    print 'container has some component.' . PHP_EOL;
-$hello = $container->getComponent('Hello');
-$hello->sayHello();
-]]></programlisting>
-    <para>As described below, you can execute quickstart.php.</para>
-<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-% php quickstart.php
-container has some component.
-Hello World !
-%
-]]></programlisting>
-    <note><title>NOTE</title>
-      <para>
-        This Example is located at "examples/quickstart/quickstart3".
-      </para>
-    </note>
-  </sect1>
-
-
-  <!-- ################################################################### -->
-  <sect1 id="quick204"><title>Handling Two or more components</title>
-    <para>
-      Since Hello component was acquirable, let's add the following Printer class to classes directory,
-      and use two or more components.
-    </para>
-    <itemizedlist>
-      <listitem>classes/Printer.php
-      </listitem>
-    </itemizedlist>
-<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-<?php
-class Printer {
-    public function printOut($message) {
-        print __METHOD__ . ' : ' . $message . PHP_EOL;
-    }
-]]></programlisting>
-    <para>
-      Please edit quickstart.php as follows and take out Printer component.
-    </para>
-    <itemizedlist>
-      <listitem>quickstart.php
-      </listitem>
-    </itemizedlist>
-<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-<?php
-require_once('S2Container/S2Container.php');
-
-seasar\container\S2ApplicationContext::import(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'classes');
-$container = seasar\container\S2ApplicationContext::create();
-$hello = $container->getComponent('Hello');
-$hello->sayHello();
-$printer = $container->getComponent('Printer');
-$printer->printOut('Hello World !');
-]]></programlisting>
-    <para>As described below, you can execute quickstart.php.</para>
-<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-% php quickstart.php
-Hello World !
-Printer::printOut : Hello World !
-%
-]]></programlisting>
-    <note><title>NOTE</title>
-      <para>
-        This Example is located at "examples/quickstart/quickstart4".
-      </para>
-    </note>
-  </sect1>
-
-
-  <!-- ################################################################### -->
-  <sect1 id="quick205"><title>Dependency Injection</title>
-    <para>
-      Since two components were created, you can DI ( Dependency Injection) Printer component to Hello component.
-      The public property for holding a Printer instance is implemeted in Hello class.
-      "S2Binding" string is set as the default value of a public property.
-      Moreover, in the sayHello method, it outputs by Printer instance.
-    </para>
-    <itemizedlist>
-      <listitem>classes/Hello.php
-      </listitem>
-    </itemizedlist>
-<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-<?php
-class Hello {
-    public $printer = 'S2Binding';
-    public function sayHello() {
-        $this->printer->printOut('Hello World ! with DI');
+/**
+ * @S2Component('name' => 'act')
+ */
+class Action{
+    public $service = null;
+    public function indexAction() {
+        $result = $this->service->add(1, 2);
     }
 }
 ]]></programlisting>
 
     <para>
-      If carrying out DI by Setter Method injection, the setter method which receives a Printer instance is added to a Hello class.
+    Next, create the following Service class.
     </para>
-    <itemizedlist>
-      <listitem>classes/Hello.php
-      </listitem>
-    </itemizedlist>
+    <itemizedlist><listitem>classes/Service.php</listitem></itemizedlist>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
-class Hello {
-    private $printer;
-    public function setPrinter(Printer $printer) {
-        $this->printer = $printer;
-    }
-    public function sayHello() {
-        $this->printer->printOut('Hello World ! with DI');
+class Service {
+    public function add($a, $b) {
+        return $a + $b;
     }
 }
 ]]></programlisting>
-    <para>As described below, you can execute quickstart.php.</para>
+
+    <para>
+    Requiring of Action class and Service class is performed by <link linkend="dicon.application.import">the import method of S2ApplicationContext class</link>.
+    When Action component is taken out by the get method of S2ApplicationContext, the instance of the Service class will be injected into $service property of Action instance.
+    </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-% php quickstart.php
-Printer::printOut : Hello World ! with DI
-%
+<?php
+require_once('S2Container/S2Container.php');
+use seasar\container\S2ApplicationContext as s2app;
+
+s2app::import(dirname(__FILE__) . '/classes');
+$action = s2app::get('act');
+var_dump($action);
+
 ]]></programlisting>
+
     <note><title>NOTE</title>
-      <para>This Example located in examples/quickstart/quickstart5</para>
+      <para>This Example is located at "examples/quickstart/quickstart020.php".</para>
     </note>
   </sect1>
 
 
   <!-- ################################################################### -->
-  <sect1 id="quick206"><title>Applying Aspect</title>
+  <sect1 id="quick030"><title>Auto Aspect</title>
     <para>
-      Let's carry out the aspect TraceInterceptor (attachment of S2Container) to the printOut method of Printer class.
-      You can set up an aspect by <link linkend="dicon.application.annotation.aspect">@S2Aspect</link> annotation.
-      Please describe annotation in printOut method as follows.
+    You are able to register Aspect with <link linkend="dicon.application.autoaspect">the s2aspect function</link>.
+    In the following example, TraceInterceptor is aspected to the add method of Service class.
+    When Action component is taken out by the get method of S2ApplicationContext 
+    and the indexAction method is performed, the trace log at the time of the add method of Service class being performed will be outputted.
     </para>
-    <itemizedlist>
-      <listitem>classes/Printer.php
-      </listitem>
-    </itemizedlist>
+    <itemizedlist><listitem>quickstart030.php</listitem></itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+require_once('S2Container/S2Container.php');
+use seasar\container\S2ApplicationContext as s2app;
+
+s2app::import(dirname(__FILE__) . '/classes');
+s2aspect('new seasar\aop\interceptor\TraceInterceptor')
+  ->setPattern('/^Service$/')
+  ->setPointcut('/^add$/');
+
+$action = s2app::get('Action');
+$action->indexAction();
+]]></programlisting>
+
+    <note><title>NOTE</title>
+      <para>This Example is located at "examples/quickstart/quickstart030.php".</para>
+    </note>
+  </sect1>
+
+  <!-- ################################################################### -->
+  <sect1 id="quick040"><title>Aspect Anotation</title>
+    <para>
+    You can set up registration of Aspect also <link linkend="dicon.application.annotation.aspect">@S2Aspect annotation</link>.
+    In the following example, TraceInterceptor is aspected to the findById method of Dao class.
+    </para>
+    <itemizedlist><listitem>classes/Dao.php</listitem></itemizedlist>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
-class Printer {
+class Dao {
     /**
-     * @S2Aspect('interceptor' => 'new seasar\aop\interceptor\TraceInterceptor');
+     * S2Aspect('new seasar\aop\interceptor\TraceInterceptor')
      */
-    public function printOut($message) {
-        print __METHOD__ . ' : ' . $message . PHP_EOL;
+    public function findById($id) {
+        return 2009;
     }
 }
 ]]></programlisting>
-    <para>As described below, you can execute quickstart.php.</para>
-<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-% php quickstart.php
-BEGIN Printer#printOut(Hello World ! with DI)
-Printer::printOut : Hello World ! with DI
-END   Printer#printOut(Hello World ! with DI) : null
-%
-]]></programlisting>
-    <note><title>NOTE</title>
-      <para>
-        This Example is located at "examples/quickstart/quickstart6".
-      </para>
-    </note>
-  </sect1>
 
-  <!-- ################################################################### -->
-  <sect1 id="quick207"><title>Auto Aspect</title>
     <para>
-      With mentioned before (<link linkend="quick206">Applying Aspect</link>), @Aspect annotation was described and the aspect was applied individually.
-      You can set up the same aspect automatically by using the registerAspect method of S2ApplicationiContext class.
+    Let's create the following Action class. The setDao setter method which receives the Dao component is implemented.
+    Within the getById method of Action class, processing is performed using the findById method of Dao class.
     </para>
-    <itemizedlist>
-      <listitem>quickstart.php
-      </listitem>
-    </itemizedlist>
+
+    <itemizedlist><listitem>classes/Action.php</listitem></itemizedlist>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
-require_once('S2Container/S2Container.php');
+/**
+ * @S2Component('name' => 'act')
+ */
+class Action{
+    private $dao = null;
+    public function setDao(Dao $dao) {
+        $this->dao = $dao;
+    }
+    public function getById() {
+        return $this->dao->findById(10);
+    }
+}
+]]></programlisting>
 
-seasar\container\S2ApplicationContext::import(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'classes');
-seasar\container\S2ApplicationContext::registerAspect('new seasar\aop\interceptor\TraceInterceptor', '/Printer$/', 'printOut');
-$container = seasar\container\S2ApplicationContext::create();
-$hello = $container->getComponent('Hello');
-$hello->sayHello();
-]]></programlisting>
-    <para>As described below, you can execute quickstart.php.</para>
+    <para>
+    When Action component is taken out by the get method of S2ApplicationContext and the getById method is performed,
+    the trace log at the time of the findById method of Dao class being performed will be outputted.
+    </para>
+    <itemizedlist><listitem>quickstart030.php</listitem></itemizedlist>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-% php quickstart.php
-BEGIN Printer#printOut(Hello World ! with DI)
-Printer::printOut : Hello World ! with DI
-END   Printer#printOut(Hello World ! with DI) : null
-%
+require_once('S2Container/S2Container.php');
+use seasar\container\S2ApplicationContext as s2app;
+
+s2app::import(dirname(__FILE__) . '/classes');
+$action = s2app::get('Action');
+$action->getById();
 ]]></programlisting>
+
     <note><title>NOTE</title>
-      <para>
-        This Example is located at "examples/quickstart/quickstart7".
-      </para>
+      <para>This Example is located at "examples/quickstart/quickstart040.php".</para>
     </note>
-  </sect1>
+  </sect1>  
 
 
   <!-- ################################################################### -->
-  <sect1 id="quick208"><title>Setup with DICON file</title>
-    <para>
-      Let's set up the before-mentioned all setting by DICON file.
-      Please create dicon directory to a current directory and save it as hello.dicon.
-    </para>
-    <itemizedlist>
-      <listitem>dicon/hello.dicon
-      </listitem>
-    </itemizedlist>
+  <sect1 id="quick050"><title>Setup with DICON file</title>
+    <para>Let's set up the before-mentioned all setting by DICON file.</para>
+    <itemizedlist><listitem>quickstart050.dicon</listitem></itemizedlist>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN" "components21.dtd">
 <components>
-    <component class="Hello">
-        <property name="printer">Printer</property>
+    <component class="Action"/>
+    <component class="Service">
+        <aspect pointcut="/^add$/">trace</aspect>
     </component>
-    <component class="Printer">
-        <aspect pointcut="printOut">new seasar\aop\interceptor\TraceInterceptor</aspect>
+    <component class="Dao">
+        <aspect pointcut="/^findById$/">trace</aspect>
     </component>
+    <component class="seasar\aop\interceptor\TraceInterceptor" name="trace"/>
 </components>
 ]]></programlisting>
 
     <para>
-      Please edit quickstart.php into the form which uses this DICON file.
-      You need to set DICON file to Include Pattern using setIncludePattern method.
-    <itemizedlist>
-      <listitem>quickstart.php
-      </listitem>
-    </itemizedlist>
+    Reading of the DICON file is performed by the import method of S2ApplicationContext class.
+    Requiring of the classes of the classes directory is performed by the import method of <link linkend="misc.classloader">seasar\util\ClassLoader class</link>.
     </para>
+    <itemizedlist><listitem>quickstart050.php</listitem></itemizedlist>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
 require_once('S2Container/S2Container.php');
+use seasar\container\S2ApplicationContext as s2app;
+use seasar\util\ClassLoader as s2loader;
 
-seasar\container\S2ApplicationContext::import(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'classes');
-seasar\container\S2ApplicationContext::import(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'dicon');
-seasar\container\S2ApplicationContext::setIncludePattern('/hello.dicon$/');
-$container = seasar\container\S2ApplicationContext::create();
-$hello = $container->getComponent('Hello');
-$hello->sayHello();
+s2loader::import(dirname(__FILE__) . '/classes');
+s2app::import(dirname(__FILE__) . '/quickstart050.dicon');
+
+$action = s2app::get('Action');
+$action->indexAction();
 ]]></programlisting>
 
-    <para>As described below, you can execute quickstart.php.</para>
-<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-% php quickstart.php
-BEGIN Printer#printOut(Hello World ! with DI)
-Printer::printOut : Hello World ! with DI
-END   Printer#printOut(Hello World ! with DI) : null
-%
-]]></programlisting>
+
     <note><title>NOTE</title>
-      <para>
-        This Example is located at "examples/quickstart/quickstart8".
-      </para>
+      <para>This Example is located at "examples/quickstart/quickstart050.php".</para>
     </note>
   </sect1>
-
 
 </chapter>
