@@ -253,70 +253,71 @@ class S2ApplicationContext {
     /**
      * コンテナを生成してコンポーネントを返します。生成したコンテナはsingletonとして保持します。
      *
-     * @param string  $arg1
-     * @param string  $arg2
+     * @param string $key
+     * @param array $namespaces
      * @return object
      */
-    public static function getComponent($arg1, $arg2 = null) {
-        return self::getComponentDef($arg1, $arg2)->getComponent();
+    public static function getComponent($key, $namespaces = array()) {
+        return self::getComponentDef($key, $namespaces)->getComponent();
     }
 
     /**
      * @see \seasar\container\S2ApplicationContext::getComponent()
      */
-    public static function get($arg1, $arg2 = null) {
-        return self::getComponent($arg1, $arg2);
+    public static function get($key, $namespaces = array()) {
+        return self::getComponent($key, $namespaces);
     }
 
     /**
      * コンテナを生成して、ComponentDefを返します。生成したコンテナはsingletonとして保持します。
      *
-     * @param string  $arg1
-     * @param string  $arg2
+     * @param string $key
+     * @param array $namespaces
      * @return \seasar\container\ComponentDef
      */
-    public static function getComponentDef($arg1, $arg2 = null) {
-        if (is_null($arg2)) {
-            $namespace = '';
-            $key = $arg1;
-        } else {
-            $namespace = arg1;
-            $key = $arg2;
-        }
-        if (!array_key_exists($namespace, self::$SINGLETON_CONTAINERS)) {
-            self::$SINGLETON_CONTAINERS[$namespace] = self::create($namespace);
-        }
-        return self::$SINGLETON_CONTAINERS[$namespace]->getComponentDef($key);
+    public static function getComponentDef($key, $namespaces = array()) {
+        $singletonKey = self::createSingleton($namespaces);
+        return self::$SINGLETON_CONTAINERS[$singletonKey]->getComponentDef($key);
     }
 
     /**
      * コンテナを生成して、ComponentDefが存在するかどうかを返します。生成したコンテナはsingletonとして保持します。
      *
-     * @param string  $arg1
-     * @param string  $arg2
+     * @param string $key
+     * @param array $namespaces
      * @return boolean
      */
-    public static function hasComponentDef($arg1, $arg2 = null) {
-        if (is_null($arg2)) {
-            $namespace = '';
-            $key = $arg1;
-        } else {
-            $namespace = arg1;
-            $key = $arg2;
+    public static function hasComponentDef($key, $namespaces = array()) {
+        $singletonKey = self::createSingleton($namespaces);
+        return self::$SINGLETON_CONTAINERS[$singletonKey]->hasComponentDef($key);
+    }
+
+    /**
+     * importされたクラスとダイコンファイルからS2Containerを生成します。
+     * 生成されたS2ContainerをSingletonとして登録し、シングルトンキーを返します。
+     *
+     * @param array $namespaces
+     * @param boolean $force
+     * @return string
+     */
+    public static function createSingleton($namespaces = array(), $force = false) {
+        $namespaces = (array)$namespaces;
+        sort($namespaces, SORT_STRING);
+        $singletonKey = implode(',', $namespaces);
+        if (!array_key_exists($singletonKey, self::$SINGLETON_CONTAINERS) || $force === true) {
+            self::$SINGLETON_CONTAINERS[$singletonKey] = self::create($namespaces);
         }
-        if (!array_key_exists($namespace, self::$SINGLETON_CONTAINERS)) {
-            self::$SINGLETON_CONTAINERS[$namespace] = self::create($namespace);
-        }
-        return self::$SINGLETON_CONTAINERS[$namespace]->hasComponentDef($key);
+        return $singletonKey;
     }
 
     /**
      * importされたクラスとダイコンファイルからS2Containerを生成します。
      *
-     * @param string $namespace
+     * @param array $namespaces
      * @return \seasar\container\S2Container
      */
-    public static function create($namespace = '') {
+    public static function create($namespaces = array()) {
+        $namespaces = (array)$namespaces;
         $dicons = array_values(self::$DICONS);
         if (count($dicons) > 0) {
             $dicons = self::includeFilter($dicons, self::$includeDiconPatterns);
@@ -340,7 +341,7 @@ class S2ApplicationContext {
             \seasar\log\S2Logger::getLogger(__CLASS__)->info("dicon, class not found at all. create empty container.", __METHOD__);
             return new \seasar\container\impl\S2ContainerImpl();
         }
-        $container = self::createInternal($dicons, $infos, $namespace);
+        $container = self::createInternal($dicons, $infos, $namespaces);
         return $container;
     }
 
@@ -391,9 +392,10 @@ class S2ApplicationContext {
      *
      * @param array $dicons
      * @param array $infos
+     * @param array $namespaces
      * @return \seasar\container\S2Container
      */
-    public static function createInternal($dicons, $infos, $namespaceArg) {
+    public static function createInternal($dicons, $infos, $namespaces) {
         $container = new \seasar\container\impl\S2ContainerImpl();
         foreach ($dicons as $dicon) {
             $child = \seasar\container\factory\S2ContainerFactory::includeChild($container, $dicon);
@@ -402,14 +404,35 @@ class S2ApplicationContext {
         }
 
         $registeredComponentDefs = array();
-        foreach($infos as $info) {
-            $namespace = self::namespaceFilter($info->getNamespace(), $namespaceArg);
-            if ($namespace === false) {
-                continue;
+        $checkNamespace = false;
+        $dotNamespaces = array();
+        if (0 < count($namespaces)) {
+            $checkNamespace = true;
+            foreach($namespaces as $n) {
+                $dotNamespaces[] = $n . '.';
             }
+        } 
+        foreach($infos as $info) {
+            if ($checkNamespace) {
+              $namespace = (string)$info->getNamespace();
+              if (!in_array($namespace, $namespaces, true)) {
+                  $applicable = false;
+                  foreach($dotNamespaces as $n) {
+                      if (0 === strpos($namespace, $n)) {
+                          $applicable = true;
+                          break;
+                      }
+                  }
+                  if (!$applicable) {
+                      \seasar\log\S2Logger::getLogger(__CLASS__)->debug("ignored by namespace : $namespace", __METHOD__);
+                      continue;
+                  }
+              }
+            }
+
             $cd = self::createComponentDef($info);
             $registeredComponentDefs[] = $cd;
-            self::registerComponentDef($container, $cd, $namespace);
+            self::registerComponentDef($container, $cd, (string)$info->getNamespace());
             \seasar\log\S2Logger::getLogger(__CLASS__)->debug('import component : ' . $info->getClassName(), __METHOD__);
         }
 
@@ -418,33 +441,6 @@ class S2ApplicationContext {
         }
 
         return $container;
-    }
-
-    /**
-     * コンポーネントが特定のネームスペース配下に存在した場合は、特定のネームスペースを除くネームスペースを返す。
-     * 特定のネームスペースが a.b 、コンポーネントのネームスペースが a.b.c の場合、c を返す。
-     * コンポーネントのネームスペースが、a.b の場合は空文字列を返す。
-     * コンポーネントのネームスペースが、a.b で始まらない場合は、booleanのfalseを返す。
-     *
-     * @param string $namespace コンポーネントのネームスペース
-     * @param string $namespaceArg 特定のネームスペース
-     * @return boolean|string
-     */
-    public static function namespaceFilter($namespace, $namespaceArg) {
-        if ($namespaceArg == '') {
-            return $namespace;
-        }
-
-        if ($namespace === $namespaceArg) {
-            return '';
-        }
-
-        if (strpos($namespace, $namespaceArg . '.') === 0) {
-            return substr($namespace, strlen($namespaceArg) + 1);
-        }
-
-        \seasar\log\S2Logger::getLogger(__CLASS__)->debug("ignored by namespace : $namespace not in $namespaceArg", __METHOD__);
-        return false;
     }
 
     /**

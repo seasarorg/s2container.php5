@@ -1,7 +1,10 @@
 <?php
 class CdDao {
 
-    public $pdo = 's2binding pdo.StandardPdo';
+    private $pdo = null;
+    public function setPdo(Pdo $pdo) {
+        $this->pdo = $pdo;
+    }
 
     public function sampleTransaction() {
         try {

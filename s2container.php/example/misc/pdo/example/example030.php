@@ -23,7 +23,7 @@ interface IDao {
 }
 
 s2component('IDao');
-s2app::registerAspect('pdo.interceptor', '/Dao$/');
+s2aspect('pdo.interceptor', '/Dao$/');
 
 
 $dao = s2app::get('IDao');

@@ -7,6 +7,9 @@ s2app::import(ROOT_DIR . '/classes');
 
 StandardPdo::$DSN = 'sqlite:' . ROOT_DIR . '/example/db/sqlite_a.db';
 
+/**
+ * @S2Aspect('pdo.interceptor')
+ */
 interface IDao {
     public function findAll();
 
@@ -18,7 +21,7 @@ interface IDao {
 }
 
 s2component('IDao');
-s2app::registerAspect('pdo.interceptor', '/Dao$/');
+//s2aspect('pdo.interceptor', '/Dao$/');
 
 
 $dao = s2app::get('IDao');

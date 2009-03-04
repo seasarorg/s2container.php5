@@ -40,6 +40,22 @@ class ComponentInfoDefTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($info->getNamespace(), 'sample');
     }
 
+    public function testUsePhpNamespace() {
+        $info = s2comp('a\b\A')->usePhpNamespace();
+        $this->assertEquals($info->getNamespace(), 'a.b');
+
+        $info = s2comp('\a\b\A')->usePhpNamespace();
+        $this->assertEquals($info->getNamespace(), 'a.b');
+
+        $info = s2comp('A')->usePhpNamespace();
+        $this->assertEquals($info->getNamespace(), null);
+
+        $info = s2comp('a\b\A')
+                  ->setNamespace('x.y')
+                  ->usePhpNamespace();
+        $this->assertEquals($info->getNamespace(), 'x.y');
+    }
+
     public function setUp(){
         print PHP_EOL . __CLASS__ . '->' . $this->getName() . '()' . PHP_EOL;
     }
