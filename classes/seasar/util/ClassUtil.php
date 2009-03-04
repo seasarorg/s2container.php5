@@ -158,6 +158,9 @@ final class ClassUtil {
         if (count($items) == 0) {
             return '\\';
         }
+        if ($items[0] === '') { // 先頭に\が付いている場合は削除する。( \a\b\Hoge など)
+            array_shift($items);
+        }
         return implode('\\', $items);
     }
 

@@ -228,15 +228,27 @@ class S2ApplicationContextTest extends \PHPUnit_Framework_TestCase {
         S2ApplicationContext::init();
         S2ApplicationContext::$CLASSES[__NAMESPACE__ . '\A_S2ApplicationContextTest'] = '';
         $container = S2ApplicationContext::create('foo');
-        $this->assertFalse($container->hasComponentDef('foo'));
+        $this->assertTrue($container->hasComponentDef('foo'));
+        $this->assertTrue($container->getComponent('foo') instanceof \seasar\container\S2Container);
         $this->assertTrue($container->hasComponentDef('a'));
+        $this->assertTrue($container->hasComponentDef('foo.a'));
 
         S2ApplicationContext::init();
         S2ApplicationContext::$CLASSES[__NAMESPACE__ . '\B_S2ApplicationContextTest'] = '';
         $container = S2ApplicationContext::create('foo');
-        $this->assertFalse($container->hasComponentDef('foo'));
+        $this->assertTrue($container->hasComponentDef('foo'));
         $this->assertTrue($container->hasComponentDef('bar'));
+        $this->assertTrue($container->hasComponentDef('foo.bar'));
         $this->assertTrue($container->getComponent('bar')->hasComponentDef('b'));
+
+        S2ApplicationContext::init();
+        S2ApplicationContext::$CLASSES[__NAMESPACE__ . '\B_S2ApplicationContextTest'] = '';
+        S2ApplicationContext::$CLASSES[__NAMESPACE__ . '\D_S2ApplicationContextTest'] = '';
+        $container = S2ApplicationContext::create('foo.bar');
+        $this->assertTrue($container->hasComponentDef('foo'));
+        $this->assertTrue($container->hasComponentDef('bar'));
+        $this->assertTrue($container->hasComponentDef('foo.bar'));
+        $this->assertFalse($container->hasComponentDef('huga'));
     }
 
     public function testGetComponentDef(){
@@ -357,3 +369,10 @@ class B_S2ApplicationContextTest {
  */
 class C_S2ApplicationContextTest {
 }
+
+/**
+ * @S2Component('name' => 'd', 'namespace' => 'huga');
+ */
+class D_S2ApplicationContextTest {
+}
+

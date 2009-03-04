@@ -71,7 +71,7 @@ class Dao {
 }
 
 s2component('Dao');
-s2app::registerAspect('pdo.interceptor', '/Dao$/');
+s2aspect('pdo.interceptor', '/Dao$/');
 
 
 $dao = s2app::get('Dao');
