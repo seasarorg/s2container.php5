@@ -4,11 +4,11 @@ use seasar\container\S2ApplicationContext as s2app;
 
 s2app::import(dirname(__FILE__) . '/classes');
 $action = s2app::get('Action');
-var_dump($action);
+echo get_class($action) . PHP_EOL;
 
 $action = s2app::get('action');
-var_dump($action);
+echo get_class($action) . PHP_EOL;
 
 $action = s2app::get('act');
-var_dump($action);
+echo get_class($action) . PHP_EOL;
 
