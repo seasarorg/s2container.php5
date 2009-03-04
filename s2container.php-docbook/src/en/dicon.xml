@@ -1278,7 +1278,7 @@ S2ApplicationContext::import($path, $namespace = array(), $strict = false, $pear
     <sect2 id="dicon.application.create"><title>Generation of S2Container</title>
       <para>Generation of S2Container instance is performed by the following method.</para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-S2ApplicationContext::create($namespace = '')
+S2ApplicationContext::create($namespaces = array())
 ]]></programlisting>
       <para>
         Generated S2Container has all the classes as a component which are imported by the import method.
@@ -1286,7 +1286,7 @@ S2ApplicationContext::create($namespace = '')
         When a DICON file is imported by the import method, S2Container is generated using the DICON file, and it is included as a child container.
       </para>
       <para>
-        If a namespace argument is passed, the S2Container instance of specified namespace is returned.
+        If a namespace argument is passed, the S2Container instance with the component contained in specified namespace is returned.
         As an example, S2Container is generable as follows, if there is Foo class in global namespace (means without namespace) and
         Bar class in "example" namespace.
       </para>
@@ -1695,8 +1695,8 @@ class IndexAction {
 
       <blockquote><formalpara><title>get method (getComponent method)</title></formalpara>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-S2ApplicationContext::get($key, $namespace = '')
-S2ApplicationContext::getComponent($key, $namespace = '')
+S2ApplicationContext::get($key, $namespaces = array())
+S2ApplicationContext::getComponent($key, $namespaces = array())
 ]]></programlisting>
       <blockquote>
         <itemizedlist>
@@ -1715,7 +1715,7 @@ S2ApplicationContext::getComponent($key, $namespace = '')
       <sbr/>
       <blockquote><formalpara><title>getComponentDef method</title></formalpara>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-S2ApplicationContext::getComponentDef($key, $namespace = '')
+S2ApplicationContext::getComponentDef($key, $namespaces = array())
 ]]></programlisting>
       <blockquote>
         <itemizedlist>

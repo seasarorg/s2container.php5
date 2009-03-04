@@ -1219,7 +1219,7 @@ S2ApplicationContext::import($path, $namespace = array(), $strict = false, $pear
     <sect2 id="dicon.application.create"><title>S2Containerの生成</title>
       <para>S2Containerインスタンスの生成は次のメソッドで行います。</para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-S2ApplicationContext::create($namespace = '')
+S2ApplicationContext::create($namespaces = array())
 ]]></programlisting>
       <para>
               生成されるS2Containerは、importメソッドでインポートされた全クラスをコンポーネントとして持ちます。
@@ -1227,7 +1227,7 @@ S2ApplicationContext::create($namespace = '')
        importメソッドで取得されたダイコンファイルについては、そのダイコンファイルを用いてS2Containerを生成し、子コンテナとしてincludeします。
       </para>
       <para>
-       namespace引数を設定した場合は、指定されたnamespaceのS2Containerインスタンスが返されます。
+       namespace引数を設定した場合は、指定されたnamespaceに含まれるコンポーネントを持つS2Containerインスタンスが返されます。
               例として、グローバル(namespace指定無し)にFooクラスがあり、example namespaceにBarクラスが
               ある場合は、次のようにS2Containerを生成できます。
       </para>
@@ -1619,8 +1619,8 @@ class IndexAction {
 
       <blockquote><formalpara><title>getメソッド (getComponentメソッド)</title></formalpara>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-S2ApplicationContext::get($key, $namespace = '')
-S2ApplicationContext::getComponent($key, $namespace = '')
+S2ApplicationContext::get($key, $namespaces = array())
+S2ApplicationContext::getComponent($key, $namespaces = array())
 ]]></programlisting>
       <blockquote>
         <itemizedlist>
@@ -1638,7 +1638,7 @@ S2ApplicationContext::getComponent($key, $namespace = '')
       <sbr/>
       <blockquote><formalpara><title>getComponentDefメソッド</title></formalpara>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-S2ApplicationContext::getComponentDef($key, $namespace = '')
+S2ApplicationContext::getComponentDef($key, $namespaces = array())
 ]]></programlisting>
       <blockquote>
         <itemizedlist>
