@@ -306,7 +306,7 @@ $rows = $dao->findById(7369);
       <para>
       Daoクラスの中で直接PDOを使用する場合は、DaoクラスにPDOコンポーネントをインジェクションします。
             次の例では、CdDaoクラスにStandardPdoコンポーネントをセッターメソッドインジェクションしています。
-      transactionalInsertメソッドでは、インジェクションされたPDOコンポーネントを使用してトランザクションを開始しています。
+      sampleTransactionメソッドでは、インジェクションされたPDOコンポーネントを使用してトランザクションを開始しています。
       </para>
 
       <blockquote>
@@ -378,7 +378,7 @@ $rows = $dao->sampleTransaction();
     <sect2><title>Paginateクラスでページング処理</title>      
       <para>
         Paginateクラスは、データベースからのデータ取得の際にページングを行うユーティリティクラスです。    
-                 例として、EMPテーブルにアクセスするEmpDaoクラスを作成します。EmpDaoクラスには、次のようなfindByPaginateメソッドを実装します。
+                 例として、EMPテーブルにアクセスするEmpDaoクラスを作成します。EmpDaoクラスには、次のようなbyPaginateメソッドを実装します。
       </para>
       <blockquote>
         <itemizedlist>
@@ -407,7 +407,7 @@ class EmpDao {
 ]]></programlisting>      
       </blockquote>
       <para>
-        findByPaginateメソッドでは、まずfindAllTotalメソッドで全件数を取得し、paginateインスタンスに設定します。
+        byPaginateメソッドでは、まずfindAllTotalメソッドで全件数を取得し、paginateインスタンスに設定します。
         (Paginateクラスでページング処理を実施するために全件数が必要なため)
                 その後、findAllメソッドを実行し、データを取得しています。findAllメソッドでは、limit/offset値にpaginateインスタンスが持つ
                 情報を設定して、ページングを実施しています。

@@ -325,7 +325,7 @@ $rows = $dao->findById(7369);
         If using PDO directly in Dao, injection of PDO component is carried out to Dao component.
         In the following example, in order to carry out injection of the SqliteBPdo component to CdDao class, "sqliteBPdo" public property is prepared.
         Thereby, injection of PDO component is carried out to CdDao component by the automatic injection function of S2Container.
-        In the transactionalInsert method, the transaction is started using injected PDO component.
+        In the sampleTransaction method, the transaction is started using injected PDO component.
       </para>
 
       <blockquote>
@@ -426,7 +426,7 @@ class EmpDao {
 ]]></programlisting>      
       </blockquote>
       <para>
-        In the findByPaginate method, fistly the total number of data is acquired by the findAllTotal method, and it is set to paginate instance.
+        In the byPaginate method, fistly the total number of data is acquired by the findAllTotal method, and it is set to paginate instance.
         (In order to carry out paging processing with Paginate class, the total number of data is required.)
         Then, findAll was performed and data is acquired. 
         By the findAll method, the limit/offset information which the paginate instance has is set up, and paging is carried out.
