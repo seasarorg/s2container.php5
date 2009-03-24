@@ -4,7 +4,7 @@ use seasar\container\S2ApplicationContext as s2app;
 
 class Action {}
 
-s2component('Action');
+s2component('Action');  // same as s2app::register('Action');
 
 $action = s2app::get('Action');
 var_dump($action);
