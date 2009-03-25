@@ -1,5 +1,5 @@
 <?php
-system('php53 build.php');
+//system('php build.php');
 
 define('ROOT_DIR', dirname(dirname(__FILE__)));
 

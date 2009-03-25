@@ -27,6 +27,7 @@ namespace seasar\util;
 class ClassLoaderTest extends \PHPUnit_Framework_TestCase {
 
     public function testImport() {
+        $classesTmp = ClassLoader::$CLASSES;
         ClassLoader::$CLASSES = array();
         ClassLoader::import(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'ClassLoaderTest');
         $cPath = dirname(__FILE__) . DIRECTORY_SEPARATOR
@@ -34,9 +35,11 @@ class ClassLoaderTest extends \PHPUnit_Framework_TestCase {
                . 'a' . DIRECTORY_SEPARATOR
                . 'b' . DIRECTORY_SEPARATOR . 'C.php';
         $this->assertEquals(ClassLoader::$CLASSES, array('a\b\C' => $cPath));
+        ClassLoader::$CLASSES = $classesTmp;
     }
 
     public function testImportStrict() {
+        $classesTmp = ClassLoader::$CLASSES;
         ClassLoader::$CLASSES = array();
         ClassLoader::import(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'ClassLoaderTest', array(), true);
         $cPath = dirname(__FILE__) . DIRECTORY_SEPARATOR
@@ -52,9 +55,12 @@ class ClassLoaderTest extends \PHPUnit_Framework_TestCase {
                . 'a' . DIRECTORY_SEPARATOR
                . 'b' . DIRECTORY_SEPARATOR . 'C.php';
         $this->assertEquals(ClassLoader::$CLASSES, array('hoge\C' => $cPath));
+
+        ClassLoader::$CLASSES = $classesTmp;
     }
 
     public function testImportPear() {
+        $classesTmp = ClassLoader::$CLASSES;
         ClassLoader::$CLASSES = array();
         ClassLoader::import(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'ClassLoaderTest', array(), false, true);
         $cPath = dirname(__FILE__) . DIRECTORY_SEPARATOR
@@ -78,9 +84,12 @@ class ClassLoaderTest extends \PHPUnit_Framework_TestCase {
                . 'a' . DIRECTORY_SEPARATOR
                . 'b' . DIRECTORY_SEPARATOR . 'C.php';
         $this->assertEquals(ClassLoader::$CLASSES, array('hoge_C' => $cPath));
+
+        ClassLoader::$CLASSES = $classesTmp;
     }
 
     public function testRecursive() {
+        $classesTmp = ClassLoader::$CLASSES;
         ClassLoader::$CLASSES = array();
         ClassLoader::import(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'ClassLoaderTest', array(), true, false, false);
         $cPath = dirname(__FILE__) . DIRECTORY_SEPARATOR
@@ -88,6 +97,8 @@ class ClassLoaderTest extends \PHPUnit_Framework_TestCase {
                . 'a' . DIRECTORY_SEPARATOR
                . 'b' . DIRECTORY_SEPARATOR . 'C.php';
         $this->assertEquals(count(ClassLoader::$CLASSES), 0);
+
+        ClassLoader::$CLASSES = $classesTmp;
     }
 
     public function setUp(){
