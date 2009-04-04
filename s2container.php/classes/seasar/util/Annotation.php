@@ -81,7 +81,7 @@ class Annotation {
      * アノテーションを取得します。
      *
      * @param \ReflectionClass|ReflectionMethod|ReflectionProperty $reflection
-     * @param strint $annotation
+     * @param string $annotation
      * @return array
      */
     public static function get($reflection, $annotation) {
@@ -98,7 +98,7 @@ class Annotation {
      * 定数アノテーションを取得します。
      *
      * @param \ReflectionClass|ReflectionMethod|ReflectionProperty $reflection
-     * @param strint $annotation
+     * @param string $annotation
      * @return array
      */
     public static function getConstantAnnotation($reflection, $key) {
@@ -145,7 +145,7 @@ class Annotation {
      *    閉じ括弧の後ろのスペースを削除するか、最後尾にセミコロンを付ける必要があります。
      *
      * @param \ReflectionClass|ReflectionMethod|ReflectionProperty $reflection
-     * @param strint $annotation
+     * @param string $annotation
      * @return array
      */
     public static function getCommentAnnotation($reflection, $key) {
@@ -181,7 +181,7 @@ class Annotation {
      * アノテーションが存在するかどうかを返します。
      *
      * @param \ReflectionClass|ReflectionMethod|ReflectionProperty $reflection
-     * @param strint $annotation
+     * @param string $annotation
      * @return boolean
      */
     public static function has($reflection, $annotation) {
@@ -203,7 +203,7 @@ class Annotation {
      * 定数アノテーションが存在するかどうかを返します。
      *
      * @param \ReflectionClass|ReflectionMethod|ReflectionProperty $reflection
-     * @param strint $annotation
+     * @param string $annotation
      * @return boolean
      */
     public static function hasConstantAnnotation($reflection, $annotation) {
@@ -219,7 +219,7 @@ class Annotation {
      * コメントアノテーションが存在するかどうかを返します。
      *
      * @param \ReflectionClass|ReflectionMethod|ReflectionProperty $reflection
-     * @param strint $annotation
+     * @param string $annotation
      * @return boolean
      */
     public static function hasCommentAnnotation($reflection, $annotation) {
@@ -234,7 +234,7 @@ class Annotation {
     /**
      * コメントをフォーマットします。
      *
-     * @param strint $commentLine
+     * @param string $commentLine
      * @return string
      */
     public static function formatCommentLine($commentLine) {
@@ -273,7 +273,7 @@ class Annotation {
      * spoolに保存するための一意のキーを作成します。
      *
      * @param \ReflectionClass|ReflectionMethod|ReflectionProperty $reflection
-     * @param strint $annotation
+     * @param string $annotation
      * @return string
      */
     public static function constructKey($reflection) {
