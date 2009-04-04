@@ -1,0 +1,7 @@
+
+2009-04-05 s2container-2.0.0-rc1
+
+	* info: s2container-2.0.0-rc1 release.
+	* info: PHP-5.3で導入されたnamespaceを用いて実装しました。s2container-1.0ではクラス名に「S2Container_」が付いていましたが、s2container-2.0では、namespace seasar\container; を使用しています。
+	* info: s2container-1.0からの機能の追加、削除、変更点は、http://s2container.php5.seasar.org/2.0/ja/docbook/misc.html#misc.spec を参照下さい。
+	* caution: s2container-2.0はs2container-1.0と互換がありません。このため、S2Dao.PHPなどの他のSeasar.PHPプロダクトと共にs2container-2.0を使用することはできません。(2009/04)

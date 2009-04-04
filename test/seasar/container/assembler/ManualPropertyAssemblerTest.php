@@ -95,7 +95,7 @@ class ManualPropertyAssemblerTest extends \PHPUnit_Framework_TestCase {
         try {
             $assembler->assemble($component);
             $this->fail();
-        } catch(\seasar\container\exception\PropertyNotFoundRuntimeException $e) {
+        } catch(\seasar\exception\PropertyNotFoundRuntimeException $e) {
             print $e->getMessage() . PHP_EOL;
         }
     }
