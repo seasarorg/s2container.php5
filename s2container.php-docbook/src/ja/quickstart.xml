@@ -18,7 +18,7 @@ require_once('S2Container/S2Container.php');
 use seasar\container\S2ApplicationContext as s2app;
 
 class Action {}
-s2component('Action');
+s2component('Action');     // same as s2app::register('Action');
 
 $action = s2app::get('Action');
 var_dump($action);
@@ -116,7 +116,7 @@ require_once('S2Container/S2Container.php');
 use seasar\container\S2ApplicationContext as s2app;
 
 s2app::import(dirname(__FILE__) . '/classes');
-s2aspect('new seasar\aop\interceptor\TraceInterceptor')
+s2aspect('new seasar\aop\interceptor\TraceInterceptor')    // same as s2app::registerAspect('...');
   ->setPattern('/^Service$/')
   ->setPointcut('/^add$/');
 
