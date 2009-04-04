@@ -150,7 +150,6 @@ ClassLoader::$CLASSES = array(
     'seasar\container\exception\IllegalConstructorRuntimeException' => S2CONTAINER_ROOT_DIR . '/classes/seasar/container/exception/IllegalConstructorRuntimeException.php',
     'seasar\container\exception\IllegalContainerBuilderRuntimeException' => S2CONTAINER_ROOT_DIR . '/classes/seasar/container/exception/IllegalContainerBuilderRuntimeException.php',
     'seasar\container\exception\IllegalInstanceDefRuntimeException' => S2CONTAINER_ROOT_DIR . '/classes/seasar/container/exception/IllegalInstanceDefRuntimeException.php',
-    'seasar\container\exception\PropertyNotFoundRuntimeException' => S2CONTAINER_ROOT_DIR . '/classes/seasar/container/exception/PropertyNotFoundRuntimeException.php',
     'seasar\container\exception\TooManyRegistrationRuntimeException' => S2CONTAINER_ROOT_DIR . '/classes/seasar/container/exception/TooManyRegistrationRuntimeException.php',
     'seasar\container\factory\S2ContainerBuilder' => S2CONTAINER_ROOT_DIR . '/classes/seasar/container/factory/S2ContainerBuilder.php',
     'seasar\container\factory\S2ContainerFactory' => S2CONTAINER_ROOT_DIR . '/classes/seasar/container/factory/S2ContainerFactory.php',

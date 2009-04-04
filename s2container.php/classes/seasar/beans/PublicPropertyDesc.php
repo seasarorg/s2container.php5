@@ -52,7 +52,7 @@ class PublicPropertyDesc extends AbstractPropertyDesc {
     public function __construct(\ReflectionClass $beanClass, $propName) {
         parent::__construct($beanClass, $propName);
         if (!$beanClass->hasProperty($propName)) {
-            throw new \seasar\exception\PropertyNotFoundRuntimeException($propName);
+            throw new \seasar\exception\PropertyNotFoundRuntimeException($beanClass, $propName);
         }
         $this->property = $beanClass->getProperty($propName);
         if (!$this->property->isPublic()) {

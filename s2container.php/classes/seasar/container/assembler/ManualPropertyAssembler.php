@@ -67,7 +67,7 @@ class ManualPropertyAssembler extends AbstractAssembler {
                 }
                 $propDesc->setValue($component, $value);
             } else {
-                throw new \seasar\container\exception\PropertyNotFoundRuntimeException($componentDef->getComponentClass(), $propertyName);
+                throw new \seasar\exception\PropertyNotFoundRuntimeException($componentDef->getComponentClass(), $propertyName);
             }
         }
     }

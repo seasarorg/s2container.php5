@@ -15,8 +15,8 @@
 // | governing permissions and limitations under the License.             |
 // +----------------------------------------------------------------------+
 /**
- * プロパティが存在しない場合にスローされる例外です。
- *
+ * 指定されたプロパティが対象クラスに存在していない場合にスローされます。
+ * 
  * @copyright 2005-2009 the Seasar Foundation and the Others.
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  * @link      http://s2container.php5.seasar.org/
@@ -26,14 +26,39 @@
  * @author    klove
  */
 namespace seasar\exception;
-class PropertyNotFoundRuntimeException extends \Exception {
+class PropertyNotFoundRuntimeException extends \seasar\exception\S2RuntimeException {
+
+    /**
+     * @var \ReflectionClass
+     */
+    private $componentClass;
 
     /**
      * PropertyNotFoundRuntimeExceptionを構築します。
-     *
-     * @param string $propName
+     * @param \ReflectionClass $componentClass Manualインジェクションに失敗したコンポーネントのクラス
+     * @param sring $propertyName Manualインジェクションに失敗したプロパティ名
      */
-    public function __construct($propName) {
-        parent::__construct("property not found. [$propName]");
+    public function __construct(\ReflectionClass $componentClass, $propertyName) {
+        $this->componentClass = $componentClass;
+        $this->propertyName   = $propertyName;
+        parent::__construct(113, array($componentClass->getName(), $propertyName));
+    }
+
+    /**
+     * Manualインジェクションに失敗したコンポーネントのクラスを返します。
+     * 
+     * @return \ReflectionClass Manualインジェクションに失敗したコンポーネントのクラス
+     */
+    public function getComponentClass() {
+        return $this->componentClass;
+    }
+
+    /**
+     * Manualインジェクションに失敗したプロパティ名を返します。
+     * 
+     * @return string Manualインジェクションに失敗したプロパティ名
+     */
+    public function getPropertyName() {
+        return $this->getPropertyName;
     }
 }

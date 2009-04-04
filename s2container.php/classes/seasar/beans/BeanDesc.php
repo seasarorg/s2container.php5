@@ -105,7 +105,7 @@ class BeanDesc {
         if ($this->hasPropertyDesc($name)) {
             return $this->propertyDescs[$name];
         }
-        throw new \seasar\exception\PropertyNotFoundRuntimeException('class ' . $this->beanClass->getName() . " dose not have public property [$name].");
+        throw new \seasar\exception\PropertyNotFoundRuntimeException($this->beanClass, $name);
     }
 
     /**
@@ -147,7 +147,7 @@ class BeanDesc {
         if ($this->hasTypehintPropertyDesc($name)) {
             return $this->typehintPropertyDescs[$name];
         }
-        throw new \seasar\exception\PropertyNotFoundRuntimeException('class ' . $this->beanClass->getName() . " dose not have typehint public property [$name].");
+        throw new \seasar\exception\PropertyNotFoundRuntimeException($this->beanClass, $name);
     }
 
     /**
