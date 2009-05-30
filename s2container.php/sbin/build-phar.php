@@ -2,7 +2,7 @@
 $ROOT_DIR   = dirname(dirname(__FILE__));
 $PHAR_NAME  = 'S2Container';
 $PHAR_ALIAS = 'seasar.s2container';
-$VERSION    = '2.0.0RC1';
+$VERSION    = '2.0.0RC2';
 $PHAR_FILE  = dirname(dirname(__FILE__)) . "/$PHAR_NAME-$VERSION.phar";
 
 if (file_exists($PHAR_FILE)) {

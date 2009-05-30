@@ -19,17 +19,17 @@
  <date><?php echo date('Y-m-d');?></date>
  <time><?php echo date('H:i:s');?></time>
  <version>
-  <release>2.0.0RC1</release>
-  <api>2.0.0RC1</api>
+  <release>2.0.0RC2</release>
+  <api>2.0.0RC2</api>
  </version>
  <stability>
   <release>beta</release>
   <api>beta</api>
  </stability>
  <license uri="http://www.apache.org/licenses/LICENSE-2.0">The Apache License, Version 2.0</license>
- <notes>Release 2.0.0RC1</notes>
+ <notes>Release 2.0.0RC2</notes>
  <contents>
-  <dir baseinstalldir="S2Container" name="/">
+  <dir name="/">
 <?php
     define('ROOT_DIR', dirname(dirname(__FILE__)));
     $ret = array();
@@ -53,8 +53,9 @@
             continue;
         }
 
-        print "    <file role=\"php\" name=\"$item\" />" . PHP_EOL;
+        print "    <file role=\"php\" name=\"S2Container/$item\" />" . PHP_EOL;
     }
+    print "    <file role=\"php\" name=\"S2Container.php\" />" . PHP_EOL;
 ?>
   </dir>
  </contents>
