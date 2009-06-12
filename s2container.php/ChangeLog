@@ -1,4 +1,13 @@
 
+2009-06-12 s2container-2.0.0-rc2
+
+	* info: PHP-5.3.0RC3で動作確認を行いました。
+	* info: PEARパッケージを作成しました。require_once('S2Container.php'); でS2Containerを利用できます。
+
+2009-06-09 s2container-2.0.0-rc2
+
+	* modify: seasar\container\impl\S2ContainerImpl::getComponentDefInternal()で、namespaceで指定された子コンテナを取得後、S2Containerインスタンスかどうかを確認するように修正しました。
+
 2009-04-05 s2container-2.0.0-rc1
 
 	* info: s2container-2.0.0-rc1 release.

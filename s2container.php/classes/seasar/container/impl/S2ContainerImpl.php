@@ -248,7 +248,8 @@ class S2ContainerImpl implements \seasar\container\S2Container {
         if (preg_match('/(.+?)' . \seasar\container\Config::NS_SEP . '(.+)/', $key, $matches)) {
             if ($this->hasComponentDef($matches[1])) {
                 $childContainer = $this->getComponent($matches[1]);
-                if ($childContainer->hasComponentDef($matches[2])) {
+                if ($childContainer instanceof \seasar\container\S2Container &&
+                    $childContainer->hasComponentDef($matches[2])) {
                     return $childContainer->getComponentDef($matches[2]);
                 }
             }

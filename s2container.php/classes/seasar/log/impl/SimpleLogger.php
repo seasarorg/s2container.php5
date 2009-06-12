@@ -115,11 +115,11 @@ class SimpleLogger {
      */
     private function logging($level, $msg, $methodName) {
         if (\seasar\Config::$LOG_LEVEL <= $level) {
-            $logMag = sprintf('%s [%-6s] %s - %s' . PHP_EOL, date('Y-m-d H:i:s'), $this->labels[$level], $methodName, $msg);
+            $logMsg = sprintf('%s [%-6s] %s - %s' . PHP_EOL, date('Y-m-d H:i:s'), $this->labels[$level], $methodName, $msg);
             if (\seasar\Config::$SIMPLE_LOG_FILE !== null) {
-                file_put_contents(\seasar\Config::$SIMPLE_LOG_FILE, $logMag, FILE_APPEND | LOCK_EX);
+                file_put_contents(\seasar\Config::$SIMPLE_LOG_FILE, $logMsg, FILE_APPEND | LOCK_EX);
             } else {
-                print $logMag;
+                print $logMsg;
             }
         }
     }
