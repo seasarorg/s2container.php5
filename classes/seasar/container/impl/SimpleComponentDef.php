@@ -110,10 +110,10 @@ class SimpleComponentDef implements \seasar\container\ComponentDef {
 
     /**
      * @see \seasar\container\ComponentDef::getConcreteClass()
-     */
     public function getConcreteClass() {
         return $this->componentClass;
     }
+     */
 
     /**
      * @see \seasar\container\ComponentDef::addArgDef()
