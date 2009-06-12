@@ -43,9 +43,11 @@ $stub = <<< EOSTUB
     require_once("phar://$PHAR_ALIAS/S2Container.php");
     __HALT_COMPILER();
 EOSTUB;
-print $stub;
-var_dump($phar->setStub($phar->createDefaultStub($stub)));
 
+$phar->setStub($stub);
+
+//print $stub;
+//var_dump($phar->setStub($phar->createDefaultStub($stub)));
 //$phar = new Phar($PHAR_FILE);
 //$phar->extractTo(dirname(__FILE__) . '/tmp');
 
