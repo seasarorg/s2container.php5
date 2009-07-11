@@ -19,15 +19,15 @@
  <date><?php echo date('Y-m-d');?></date>
  <time><?php echo date('H:i:s');?></time>
  <version>
-  <release>2.0.0RC2</release>
-  <api>2.0.0RC2</api>
+  <release>2.0.0</release>
+  <api>2.0.0</api>
  </version>
  <stability>
-  <release>beta</release>
-  <api>beta</api>
+  <release>stable</release>
+  <api>stable</api>
  </stability>
  <license uri="http://www.apache.org/licenses/LICENSE-2.0">The Apache License, Version 2.0</license>
- <notes>Release 2.0.0RC2</notes>
+ <notes>Release 2.0.0</notes>
  <contents>
   <dir name="/">
 <?php
@@ -62,7 +62,7 @@
  <dependencies>
   <required>
    <php>
-    <min>5.3.0dev</min>
+    <min>5.3.0</min>
    </php>
    <pearinstaller>
     <min>1.5.0</min>

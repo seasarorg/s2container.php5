@@ -1,8 +1,16 @@
 
+2009-07-11 s2container-2.0.0
+
+	* info: PHP-5.3.0で動作確認を行いました。
+	* modify: ログ出力レベルを修正しました。 (default WARN)
+	* modify: S2ApplicationContextの各メソッド引数のタイプヒントを修正しました。
+	* info: s2container-2.0.0 release.
+
 2009-06-12 s2container-2.0.0-rc2
 
 	* info: PHP-5.3.0RC3で動作確認を行いました。
 	* info: PEARパッケージを作成しました。require_once('S2Container.php'); でS2Containerを利用できます。
+	* info: s2container-2.0.0-rc2 release.
 
 2009-06-09 s2container-2.0.0-rc2
 

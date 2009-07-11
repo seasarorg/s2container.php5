@@ -566,7 +566,7 @@ class S2ApplicationContext {
      * @param \ReflectionClass $reflection
      * @param string $propName
      */
-    private static function setupPropertyDef(ComponentDef $cd, $reflection, $propName) {
+    private static function setupPropertyDef(\seasar\container\ComponentDef $cd, $reflection, $propName) {
         $propInfo = \seasar\util\Annotation::get($reflection, self::BINDING_ANNOTATION);
         if (isset($propInfo[0])) {
             $propertyDef = new \seasar\container\impl\PropertyDef($propName);
@@ -587,7 +587,7 @@ class S2ApplicationContext {
      * @param \seasar\container\ComponentDef $cd
      * @param \ReflectionClass $reflection
      */
-    private static function setupClassAspectDef(ComponentDef $cd, \ReflectionClass $classRef) {
+    private static function setupClassAspectDef(\seasar\container\ComponentDef $cd, \ReflectionClass $classRef) {
         $annoInfo = \seasar\util\Annotation::get($classRef, self::ASPECT_ANNOTATION);
         if (count($annoInfo) === 0) {
             \seasar\log\S2Logger::getLogger(__CLASS__)->debug("class aspect annotation found. cannot get values.", __METHOD__);
@@ -605,7 +605,7 @@ class S2ApplicationContext {
      * @param \seasar\container\ComponentDef $cd
      * @param \ReflectionMethod $methodRef
      */
-    private static function setupMethodAspectDef(ComponentDef $cd, \ReflectionMethod $methodRef) {
+    private static function setupMethodAspectDef(\seasar\container\ComponentDef $cd, \ReflectionMethod $methodRef) {
         $annoInfo = \seasar\util\Annotation::get($methodRef, self::ASPECT_ANNOTATION);
         if (count($annoInfo) === 0) {
             \seasar\log\S2Logger::getLogger(__CLASS__)->debug("method aspect annotation found. cannot get values.", __METHOD__);
@@ -624,7 +624,7 @@ class S2ApplicationContext {
      * @param \seasar\container\ComponentDef $cd
      * @param array $annoInfo
      */
-    private static function setupAspectDef(ComponentDef $cd, array $annoInfo) {
+    private static function setupAspectDef(\seasar\container\ComponentDef $cd, array $annoInfo) {
         if (isset($annoInfo['interceptor'])) {
             if (isset($annoInfo['pointcut']) and is_string($annoInfo['pointcut'])) {
                 $pointcut = new \seasar\aop\Pointcut($annoInfo['pointcut']);
@@ -649,7 +649,7 @@ class S2ApplicationContext {
      * @param \seasar\container\ComponentDef $cd
      * @param \ReflectionClass $classRef
      */
-    private static function setupClassMetaDef(ComponentDef $cd, \ReflectionClass $classRef) {
+    private static function setupClassMetaDef(\seasar\container\ComponentDef $cd, \ReflectionClass $classRef) {
         $annoInfo = \seasar\util\Annotation::get($classRef, self::META_ANNOTATION);
         if (count($annoInfo) === 0) {
             \seasar\log\S2Logger::getLogger(__CLASS__)->debug("class aspect annotation found. cannot get values.", __METHOD__);

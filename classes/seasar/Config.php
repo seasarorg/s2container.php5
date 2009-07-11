@@ -28,7 +28,7 @@
 namespace seasar;
 abstract class Config {
     /** ログ設定 */
-    public static $LOG_LEVEL       = \seasar\log\impl\SimpleLogger::DEBUG;
+    public static $LOG_LEVEL       = \seasar\log\impl\SimpleLogger::WARN;
     public static $DEBUG_EVAL      = false;
     public static $DEBUG_VERBOSE   = false;
     public static $SIMPLE_LOG_FILE = null;
