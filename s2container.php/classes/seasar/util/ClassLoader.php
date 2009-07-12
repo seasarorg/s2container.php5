@@ -126,6 +126,7 @@ ClassLoader::$CLASSES = array(
     'seasar\container\MethodDef' => S2CONTAINER_ROOT_DIR . '/classes/seasar/container/MethodDef.php',
     'seasar\container\AspectInfoDef' => S2CONTAINER_ROOT_DIR . '/classes/seasar/container/AspectInfoDef.php',
     'seasar\container\factory\S2ContainerFactory' => S2CONTAINER_ROOT_DIR . '/classes/seasar/container/factory/S2ContainerFactory.php',
+    'seasar\container\factory\ComponentDefBuilder' => S2CONTAINER_ROOT_DIR . '/classes/seasar/container/factory/ComponentDefBuilder.php',
     'seasar\container\factory\S2ContainerBuilder' => S2CONTAINER_ROOT_DIR . '/classes/seasar/container/factory/S2ContainerBuilder.php',
     'seasar\container\factory\XmlS2ContainerBuilder' => S2CONTAINER_ROOT_DIR . '/classes/seasar/container/factory/XmlS2ContainerBuilder.php',
     'seasar\container\impl\S2ContainerImpl' => S2CONTAINER_ROOT_DIR . '/classes/seasar/container/impl/S2ContainerImpl.php',

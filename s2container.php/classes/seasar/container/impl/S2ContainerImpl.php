@@ -260,6 +260,20 @@ class S2ContainerImpl implements \seasar\container\S2Container {
                 }
             }
         }
+
+        if (class_exists($key) || interface_exists($key)) {
+            $refClass = new \ReflectionClass($key);
+            if ($refClass->isUserDefined()) {
+                $cd = \seasar\container\factory\ComponentDefBuilder::create($this, $refClass);
+                if ($refClass->isAbstract() || $refClass->isInterface()) {
+                    if (count($cd->getAspectDefs()) === 0) {
+                        return null;
+                    }
+                }
+                $this->register($cd);
+                return $cd;
+            }
+        }
         return null;
     }
 

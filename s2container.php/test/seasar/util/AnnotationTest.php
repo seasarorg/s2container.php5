@@ -37,44 +37,44 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase {
     
     public function testHasAnnotation(){
         $clazzB = new \ReflectionClass(__NAMESPACE__ . '\AnnoTestB_AnnotationTest');
-        $ret = Annotation::has($clazzB, \seasar\container\S2ApplicationContext::ASPECT_ANNOTATION);
+        $ret = Annotation::has($clazzB, \seasar\container\factory\ComponentDefBuilder::ASPECT_ANNOTATION);
         $this->assertFalse($ret);
-        $ret = Annotation::has($clazzB, \seasar\container\S2ApplicationContext::COMPONENT_ANNOTATION);
+        $ret = Annotation::has($clazzB, \seasar\container\factory\ComponentDefBuilder::COMPONENT_ANNOTATION);
         $this->assertTrue($ret);
-        $ret = Annotation::has($clazzB->getMethod('b'), \seasar\container\S2ApplicationContext::ASPECT_ANNOTATION);
+        $ret = Annotation::has($clazzB->getMethod('b'), \seasar\container\factory\ComponentDefBuilder::ASPECT_ANNOTATION);
         $this->assertTrue($ret);
-        $ret = Annotation::has($clazzB->getMethod('a'), \seasar\container\S2ApplicationContext::BINDING_ANNOTATION);
+        $ret = Annotation::has($clazzB->getMethod('a'), \seasar\container\factory\ComponentDefBuilder::BINDING_ANNOTATION);
         $this->assertTrue($ret);
 
-        $ret = Annotation::has($clazzB->getProperty('seasar'), \seasar\container\S2ApplicationContext::BINDING_ANNOTATION);
+        $ret = Annotation::has($clazzB->getProperty('seasar'), \seasar\container\factory\ComponentDefBuilder::BINDING_ANNOTATION);
         $this->assertTrue($ret);
     }
 
     public function testGetAnnotation(){
         $clazzB = new \ReflectionClass(__NAMESPACE__ . '\AnnoTestB_AnnotationTest');
         try{
-            $ret = Annotation::get($clazzB, \seasar\container\S2ApplicationContext::ASPECT_ANNOTATION);
+            $ret = Annotation::get($clazzB, \seasar\container\factory\ComponentDefBuilder::ASPECT_ANNOTATION);
         } catch(\Exception $e) {
             $this->assertEquals(1, preg_match("/not found on/", $e->getMessage()));
         }
         $propRef = $clazzB->getProperty('year');
         try{
-            $ret = Annotation::get($propRef, \seasar\container\S2ApplicationContext::BINDING_ANNOTATION);
+            $ret = Annotation::get($propRef, \seasar\container\factory\ComponentDefBuilder::BINDING_ANNOTATION);
         } catch(\Exception $e) {
             $this->assertEquals(1, preg_match("/not found on/", $e->getMessage()));
         }
         $propRef = $clazzB->getProperty('name');
-        $ret = Annotation::get($propRef, \seasar\container\S2ApplicationContext::BINDING_ANNOTATION);
+        $ret = Annotation::get($propRef, \seasar\container\factory\ComponentDefBuilder::BINDING_ANNOTATION);
         $this->assertEquals($ret, array('hoge'));
         
         $clazzB = new \ReflectionClass(__NAMESPACE__ . '\AnnoTestB_AnnotationTest');
-        $ret = Annotation::get($clazzB, \seasar\container\S2ApplicationContext::COMPONENT_ANNOTATION);
+        $ret = Annotation::get($clazzB, \seasar\container\factory\ComponentDefBuilder::COMPONENT_ANNOTATION);
         $this->assertEquals($ret['name'], 'b');
 
-        $ret = Annotation::get($clazzB->getMethod('a'), \seasar\container\S2ApplicationContext::BINDING_ANNOTATION);
+        $ret = Annotation::get($clazzB->getMethod('a'), \seasar\container\factory\ComponentDefBuilder::BINDING_ANNOTATION);
         $this->assertEquals($ret[0], 'abc');
 
-        $ret = Annotation::get($clazzB->getProperty('seasar'), \seasar\container\S2ApplicationContext::BINDING_ANNOTATION);
+        $ret = Annotation::get($clazzB->getProperty('seasar'), \seasar\container\factory\ComponentDefBuilder::BINDING_ANNOTATION);
         $this->assertEquals($ret[0], 'しーさ');
     }
 
@@ -158,19 +158,19 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase {
     public function testGetCommentAnnotation(){
         $clazz = new \ReflectionClass(__NAMESPACE__ . '\C_AnnotationTest');
 
-        $ret = Annotation::getCommentAnnotation($clazz, \seasar\container\S2ApplicationContext::ASPECT_ANNOTATION);
+        $ret = Annotation::getCommentAnnotation($clazz, \seasar\container\factory\ComponentDefBuilder::ASPECT_ANNOTATION);
         $this->assertEquals($ret['val'], 100);
 
         $propRef = $clazz->getProperty('foo');
-        $ret = Annotation::getCommentAnnotation($propRef, \seasar\container\S2ApplicationContext::ASPECT_ANNOTATION);
+        $ret = Annotation::getCommentAnnotation($propRef, \seasar\container\factory\ComponentDefBuilder::ASPECT_ANNOTATION);
         $this->assertEquals($ret['val'], 200);
 
         $propRef = $clazz->getMethod('bar');
-        $ret = Annotation::getCommentAnnotation($propRef, \seasar\container\S2ApplicationContext::ASPECT_ANNOTATION);
+        $ret = Annotation::getCommentAnnotation($propRef, \seasar\container\factory\ComponentDefBuilder::ASPECT_ANNOTATION);
         $this->assertEquals($ret['val'], 300);
 
         try{
-            $ret = Annotation::getCommentAnnotation($clazz, \seasar\container\S2ApplicationContext::BINDING_ANNOTATION);
+            $ret = Annotation::getCommentAnnotation($clazz, \seasar\container\factory\ComponentDefBuilder::BINDING_ANNOTATION);
         } catch(\Exception $e) {
             $this->assertEquals(1, preg_match("/not found on/", $e->getMessage()));
         }
@@ -179,14 +179,14 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase {
     public function testHasCommentAnnotation(){
         $clazz = new \ReflectionClass(__NAMESPACE__ . '\C_AnnotationTest');
 
-        $this->assertTrue(Annotation::hasCommentAnnotation($clazz, \seasar\container\S2ApplicationContext::ASPECT_ANNOTATION));
-        $this->assertFalse(Annotation::hasCommentAnnotation($clazz, \seasar\container\S2ApplicationContext::BINDING_ANNOTATION));
+        $this->assertTrue(Annotation::hasCommentAnnotation($clazz, \seasar\container\factory\ComponentDefBuilder::ASPECT_ANNOTATION));
+        $this->assertFalse(Annotation::hasCommentAnnotation($clazz, \seasar\container\factory\ComponentDefBuilder::BINDING_ANNOTATION));
 
-        $this->assertTrue(Annotation::hasCommentAnnotation($clazz->getProperty('foo'), \seasar\container\S2ApplicationContext::ASPECT_ANNOTATION));
-        $this->assertFalse(Annotation::hasCommentAnnotation($clazz->getProperty('foo'), \seasar\container\S2ApplicationContext::BINDING_ANNOTATION));
+        $this->assertTrue(Annotation::hasCommentAnnotation($clazz->getProperty('foo'), \seasar\container\factory\ComponentDefBuilder::ASPECT_ANNOTATION));
+        $this->assertFalse(Annotation::hasCommentAnnotation($clazz->getProperty('foo'), \seasar\container\factory\ComponentDefBuilder::BINDING_ANNOTATION));
 
-        $this->assertTrue(Annotation::hasCommentAnnotation($clazz->getMethod('bar'), \seasar\container\S2ApplicationContext::ASPECT_ANNOTATION));
-        $this->assertFalse(Annotation::hasCommentAnnotation($clazz->getMethod('bar'), \seasar\container\S2ApplicationContext::BINDING_ANNOTATION));
+        $this->assertTrue(Annotation::hasCommentAnnotation($clazz->getMethod('bar'), \seasar\container\factory\ComponentDefBuilder::ASPECT_ANNOTATION));
+        $this->assertFalse(Annotation::hasCommentAnnotation($clazz->getMethod('bar'), \seasar\container\factory\ComponentDefBuilder::BINDING_ANNOTATION));
     }
 
     public function testGetConstantAnnotation(){
