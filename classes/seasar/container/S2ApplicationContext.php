@@ -28,6 +28,12 @@
  */
 namespace seasar\container;
 class S2ApplicationContext {
+
+    /**
+     * @var string
+     */
+    const DEFAULT_SINGLETON_CONTAINER_KEY = '';
+
     /**
      * @var array
      */
@@ -69,34 +75,9 @@ class S2ApplicationContext {
     public static $autoAspects = array();
 
     /**
-     * @var boolean
-     */
-    public static $READ_PARENT_ANNOTATION = false;
-
-    /**
      * @var array
      */
     public static $SINGLETON_CONTAINERS = array();
-
-    /**
-     * コンポーネント定義を行うコメントアノテーションです。
-     */
-    const COMPONENT_ANNOTATION = '@S2Component';
-
-    /**
-     * 自動バインディングを行うコメントアノテーションです。
-     */
-    const BINDING_ANNOTATION = '@S2Binding';
-
-    /**
-     * アスペクトを行うコメントアノテーションです。
-     */
-    const ASPECT_ANNOTATION = '@S2Aspect';
-
-    /**
-     * メタ情報を設定するコメントアノテーションです。
-     */
-    const META_ANNOTATION = '@S2Meta';
 
     /**
      * 初期化処理を行います。
@@ -119,7 +100,7 @@ class S2ApplicationContext {
      * @param boolean $val
      */
     public static function setReadParentAnnotation($val = true) {
-        self::$READ_PARENT_ANNOTATION = $val;
+        \seasar\container\factory\ComponentDefBuilder::$READ_PARENT_ANNOTATION = $val;
     }
 
     /**
@@ -276,8 +257,7 @@ class S2ApplicationContext {
      * @return \seasar\container\ComponentDef
      */
     public static function getComponentDef($key, $namespaces = array()) {
-        $singletonKey = self::createSingleton($namespaces);
-        return self::$SINGLETON_CONTAINERS[$singletonKey]->getComponentDef($key);
+        return self::createSingletonContainer($namespaces)->getComponentDef($key);
     }
 
     /**
@@ -288,8 +268,28 @@ class S2ApplicationContext {
      * @return boolean
      */
     public static function hasComponentDef($key, $namespaces = array()) {
-        $singletonKey = self::createSingleton($namespaces);
-        return self::$SINGLETON_CONTAINERS[$singletonKey]->hasComponentDef($key);
+        return self::createSingletonContainer($namespaces)->hasComponentDef($key);
+    }
+
+    /**
+     * importされたクラスとダイコンファイルからS2Containerを生成します。
+     * 生成されたS2ContainerをSingletonとして登録します。
+     *
+     * @param array $namespaces
+     * @param boolean $force
+     * @return seasar\container\S2Container
+     */
+    public static function createSingletonContainer($namespaces = array(), $force = false) {
+        $namespaces = (array)$namespaces;
+        if (count($namespaces) === 0) {
+            $singletonKey = self::DEFAULT_SINGLETON_CONTAINER_KEY;
+        } else {
+            $singletonKey = self::createSingletonKey($namespaces);
+        }
+        if (!array_key_exists($singletonKey, self::$SINGLETON_CONTAINERS) || $force) {
+            self::$SINGLETON_CONTAINERS[$singletonKey] = self::create($namespaces);
+        }
+        return self::$SINGLETON_CONTAINERS[$singletonKey];
     }
 
     /**
@@ -297,17 +297,12 @@ class S2ApplicationContext {
      * 生成されたS2ContainerをSingletonとして登録し、シングルトンキーを返します。
      *
      * @param array $namespaces
-     * @param boolean $force
      * @return string
      */
-    public static function createSingleton($namespaces = array(), $force = false) {
+    public static function createSingletonKey($namespaces = array()) {
         $namespaces = (array)$namespaces;
         sort($namespaces, SORT_STRING);
-        $singletonKey = implode(',', $namespaces);
-        if (!array_key_exists($singletonKey, self::$SINGLETON_CONTAINERS) || $force === true) {
-            self::$SINGLETON_CONTAINERS[$singletonKey] = self::create($namespaces);
-        }
-        return $singletonKey;
+        return implode(',', $namespaces);
     }
 
     /**
@@ -354,11 +349,11 @@ class S2ApplicationContext {
      */
     public static function createComponentInfoDef($className) {
         $refClass = new \ReflectionClass($className);
-        if (!\seasar\util\Annotation::has($refClass, self::COMPONENT_ANNOTATION)) {
+        if (!\seasar\util\Annotation::has($refClass, \seasar\container\factory\ComponentDefBuilder::COMPONENT_ANNOTATION)) {
             return new \seasar\container\ComponentInfoDef($refClass);
         }
 
-        $componentInfo = \seasar\util\Annotation::get($refClass, self::COMPONENT_ANNOTATION);
+        $componentInfo = \seasar\util\Annotation::get($refClass, \seasar\container\factory\ComponentDefBuilder::COMPONENT_ANNOTATION);
         if (isset($componentInfo['available']) and (boolean)$componentInfo['available'] === false) {
             return null;
         }
@@ -436,8 +431,14 @@ class S2ApplicationContext {
             \seasar\log\S2Logger::getLogger(__CLASS__)->debug('import component : ' . $info->getClassName(), __METHOD__);
         }
 
+        \seasar\log\S2Logger::getLogger(__CLASS__)->info('imported components : ' . count($registeredComponentDefs), __METHOD__);
         foreach($registeredComponentDefs as $cd) {
-            self::setupComponentDef($cd);
+            \seasar\container\factory\ComponentDefBuilder::setupComponentDef($cd);
+            foreach(self::$autoAspects as $aspectInfo) {
+                if ($aspectInfo->applicable($cd)) {
+                    \seasar\container\factory\ComponentDefBuilder::setupAspectDef($cd, $aspectInfo->toAnnotationArray());
+                }
+            }
         }
 
         return $container;
@@ -493,177 +494,6 @@ class S2ApplicationContext {
                 $restNamespace = $names[1];
             }
             self::registerComponentDef($childContainer, $cd, $restNamespace);
-        }
-    }
-
-    /**
-     * ComponentDefをセットアップします。
-     * コンポーネント情報はコメントアノテーションで取得します。
-     *   - public プロパティに対するPropertyDefをセットアップします。
-     *   - セッターメソッドに対するPropertyDefをセットアップします。
-     *   - 各publicメソッドについてAspectDefをセットアップします。
-     *   - クラスについてAspectDefをセットアップします。
-     *   - クラスについてMetaDefをセットアップします。
-     *   - 自動アスペクトのセットアップを行います。
-     *
-     * @param \seasar\container\ComponentDef $cd
-     * @return \seasar\container\ComponentDef
-     */
-    public static function setupComponentDef(\seasar\container\ComponentDef $cd) {
-        $classRef = $cd->getComponentClass();
-        $beanDesc = \seasar\beans\BeanDescFactory::getBeanDesc($classRef);
-        $propDescs = $beanDesc->getPropertyDescs();
-        foreach ($propDescs as $propDesc) {
-            $ref = $propDesc->getReflection();
-            if (self::$READ_PARENT_ANNOTATION === false and 
-                $ref->getDeclaringClass()->getName() !== $classRef->getName()) {
-                continue;
-            }
-            if (\seasar\util\Annotation::has($ref, self::BINDING_ANNOTATION)) {
-                self::setupPropertyDef($cd, $ref, $propDesc->getPropertyName());
-            }
-        }
-
-        $methodRefs = $classRef->getMethods();
-        foreach ($methodRefs as $methodRef) {
-            if (self::$READ_PARENT_ANNOTATION === false and 
-                $methodRef->getDeclaringClass()->getName() !== $classRef->getName()) {
-                continue;
-            }
-            if (!$methodRef->isPublic() or 
-                $methodRef->isConstructor() or
-                strpos($methodRef->getName(), '_') === 0 ) {
-                continue;
-            }
-            if (!$methodRef->isStatic() and 
-                !$methodRef->isFinal() and
-                \seasar\util\Annotation::has($methodRef, self::ASPECT_ANNOTATION)) {
-                self::setupMethodAspectDef($cd, $methodRef);
-            }
-        }
-        if (!$classRef->isFinal() and
-            \seasar\util\Annotation::has($classRef, self::ASPECT_ANNOTATION)) {
-            self::setupClassAspectDef($cd, $classRef);
-        }
-
-        if (\seasar\util\Annotation::has($cd->getComponentClass(), self::META_ANNOTATION)) {
-            self::setupClassMetaDef($cd, $classRef);
-        }
-
-        foreach(self::$autoAspects as $aspectInfo) {
-            if ($aspectInfo->applicable($cd)) {
-                self::setupAspectDef($cd, $aspectInfo->toAnnotationArray());
-            }
-        }
-
-        return $cd;
-    }
-
-    /**
-     * PropertyDefをセットアップします。
-     *
-     * @param \seasar\container\ComponentDef $cd
-     * @param \ReflectionClass $reflection
-     * @param string $propName
-     */
-    private static function setupPropertyDef(\seasar\container\ComponentDef $cd, $reflection, $propName) {
-        $propInfo = \seasar\util\Annotation::get($reflection, self::BINDING_ANNOTATION);
-        if (isset($propInfo[0])) {
-            $propertyDef = new \seasar\container\impl\PropertyDef($propName);
-            $cd->addPropertyDef($propertyDef);
-            if ($cd->getContainer()->hasComponentDef($propInfo[0])) {
-                $propertyDef->setChildComponentDef($cd->getContainer()->getComponentDef($propInfo[0]));
-            } else {
-                $propertyDef->setExpression($propInfo[0]);
-            }
-        } else {
-            \seasar\log\S2Logger::getLogger(__CLASS__)->debug("binding annotation found. cannot get values.", __METHOD__);
-        }
-    }
-
-    /**
-     * クラスに指定されているAspectをセットアップします。
-     *
-     * @param \seasar\container\ComponentDef $cd
-     * @param \ReflectionClass $reflection
-     */
-    private static function setupClassAspectDef(\seasar\container\ComponentDef $cd, \ReflectionClass $classRef) {
-        $annoInfo = \seasar\util\Annotation::get($classRef, self::ASPECT_ANNOTATION);
-        if (count($annoInfo) === 0) {
-            \seasar\log\S2Logger::getLogger(__CLASS__)->debug("class aspect annotation found. cannot get values.", __METHOD__);
-            return;
-        }
-        if (array_key_exists(0, $annoInfo)) {
-            $annoInfo['interceptor'] = $annoInfo[0];
-        }
-        self::setupAspectDef($cd, $annoInfo);
-    }
-
-    /**
-     * メソッドに指定されているAspectをセットアップします。
-     *
-     * @param \seasar\container\ComponentDef $cd
-     * @param \ReflectionMethod $methodRef
-     */
-    private static function setupMethodAspectDef(\seasar\container\ComponentDef $cd, \ReflectionMethod $methodRef) {
-        $annoInfo = \seasar\util\Annotation::get($methodRef, self::ASPECT_ANNOTATION);
-        if (count($annoInfo) === 0) {
-            \seasar\log\S2Logger::getLogger(__CLASS__)->debug("method aspect annotation found. cannot get values.", __METHOD__);
-            return;
-        }
-        if (array_key_exists(0, $annoInfo)) {
-            $annoInfo['interceptor'] = $annoInfo[0];
-        }
-        $annoInfo['pointcut'] = '/^' . $methodRef->getName() . '$/';
-        self::setupAspectDef($cd, $annoInfo);
-    }
-
-    /**
-     * AspectDefをセットアップします。
-     *
-     * @param \seasar\container\ComponentDef $cd
-     * @param array $annoInfo
-     */
-    private static function setupAspectDef(\seasar\container\ComponentDef $cd, array $annoInfo) {
-        if (isset($annoInfo['interceptor'])) {
-            if (isset($annoInfo['pointcut']) and is_string($annoInfo['pointcut'])) {
-                $pointcut = new \seasar\aop\Pointcut($annoInfo['pointcut']);
-            } else {
-                $pointcut = new \seasar\aop\Pointcut($cd->getComponentClass());
-            }
-            $aspectDef = new \seasar\container\impl\AspectDef($pointcut);
-            $cd->addAspectDef($aspectDef);
-            if ($cd->getContainer()->hasComponentDef($annoInfo['interceptor'])) {
-                $aspectDef->setChildComponentDef($cd->getContainer()->getComponentDef($annoInfo['interceptor']));
-            } else {
-                $aspectDef->setExpression($annoInfo['interceptor']);
-            }
-        } else {
-            \seasar\log\S2Logger::getLogger(__CLASS__)->debug("invalid aspect info. cannot get interceptor value.", __METHOD__);
-        }
-    }
-
-    /**
-     * MetaDefをセットアップします。
-     *
-     * @param \seasar\container\ComponentDef $cd
-     * @param \ReflectionClass $classRef
-     */
-    private static function setupClassMetaDef(\seasar\container\ComponentDef $cd, \ReflectionClass $classRef) {
-        $annoInfo = \seasar\util\Annotation::get($classRef, self::META_ANNOTATION);
-        if (count($annoInfo) === 0) {
-            \seasar\log\S2Logger::getLogger(__CLASS__)->debug("class aspect annotation found. cannot get values.", __METHOD__);
-            return;
-        }
-        foreach($annoInfo as $key => $val) {
-            $metaDef = new \seasar\container\impl\MetaDef($key);
-            $cd->addMetaDef($metaDef);
-            $metaDef->setExpression($val);
-            if ($cd->getContainer()->hasComponentDef($val)) {
-                $metaDef->setChildComponentDef($cd->getContainer()->getComponentDef($val));
-            } else {
-                $metaDef->setExpression($val);
-            }
         }
     }
 

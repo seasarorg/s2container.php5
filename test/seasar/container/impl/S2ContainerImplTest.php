@@ -157,6 +157,14 @@ class S2ContainerImplTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue($component->a_S2ContainerImplTest instanceof \seasar\container\impl\A_S2ContainerImplTest);
     }
 
+    public function testClassComponentDefBuilder() {
+        $container = new S2ContainerImpl();
+        $this->assertFalse($container->hasComponentDef('e_s2container'));
+        $this->assertTrue($container->hasComponentDef(__NAMESPACE__ . '\E'));
+        $this->assertTrue($container->hasComponentDef('e_s2container'));
+    }
+
+
     public function setUp(){
         print PHP_EOL . __CLASS__ . '->' . $this->getName() . '()' . PHP_EOL;
     }
@@ -174,3 +182,8 @@ class C_S2ContainerImplTest{}
 class D_S2ContainerImplTest{
     public $a_S2ContainerImplTest = 's2binding';
 }
+
+/**
+ * @S2Component('name' => 'e_s2container')
+ */
+class E{}

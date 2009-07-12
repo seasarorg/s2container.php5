@@ -115,6 +115,7 @@ function getCoreClasses() { return array(
 'seasar\util\EvalUtil',
 'seasar\aop\EnhancedClassGenerator',
 'seasar\aop\impl\S2MethodInvocationImpl',
-'seasar\util\MethodUtil'
+'seasar\util\MethodUtil',
+'seasar\container\factory\ComponentDefBuilder'
 );}
 
