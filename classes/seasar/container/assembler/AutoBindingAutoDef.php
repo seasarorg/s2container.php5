@@ -55,7 +55,7 @@ class AutoBindingAutoDef implements \seasar\container\AutoBindingDef {
      * @see \seasar\container\AutoBindingDef::createConstructorAssembler()
      */
     public function createConstructorAssembler(\seasar\container\ComponentDef $componentDef) {
-        return new AutoConstructorAssembler($componentDef);
+        return new ClosureConstructorAssembler($componentDef);
     }
 
     /**

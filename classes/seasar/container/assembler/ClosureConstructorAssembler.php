@@ -26,7 +26,7 @@
  * @author    klove
  */
 namespace seasar\container\assembler;
-class ManualPropertyAssembler {
+class ClosureConstructorAssembler {
 
     /**
      * @var \seasar\container\ComponentDef
@@ -41,38 +41,27 @@ class ManualPropertyAssembler {
     }
 
     /**
-     * 手動で指定されたcomponentに対して、 プロパティ・インジェクションやセッターメソッド・インジェクションを実行します。
-     *
-     * @param object $component
+     * @return object
      */
-    public function assemble($component) {
-        $beanDesc = \seasar\beans\BeanDescFactory::getBeanDesc($this->componentDef->getComponentClass());
-        $propDescs = $beanDesc->getTypehintPropertyDescs();
-        $propertyDefs = $this->componentDef->getPropertyDefs();
-        foreach ($propertyDefs as $propertyName => $propertyDef) {
-            $value = null;
-            if ($beanDesc->hasPropertyDesc($propertyName)) {
-                $propDesc = $beanDesc->getPropertyDesc($propertyName);
-                try {
-                    $value = $propertyDef->getValue();
-                    if ($propDesc->isArrayAcceptable() and !is_array($value)) {
-                        $value = array($value);
-                    }
-                } catch(\seasar\container\exception\TooManyRegistrationRuntimeException $e) {
-                    if ($propDesc->isArrayAcceptable()) {
-                        $childComponentDefs = $propertyDef->getChildComponentDef()->getComponentDefs();
-                        $value = array();
-                        foreach ($childComponentDefs as $childComponentDef) {
-                           $value[] = $childComponentDef->getComponent();
-                        }
-                    } else {
-                        throw $e;
-                    }
-                }
-                $propDesc->setValue($component, $value);
-            } else {
-                throw new \seasar\exception\PropertyNotFoundRuntimeException($this->componentDef->getComponentClass(), $propertyName);
+    public function assemble() {
+        $args = array();
+        return \seasar\container\util\ConstructorUtil::newInstance($this->componentDef, $args);
+
+        $componentDef = $this->getComponentDef();
+        if ($componentDef->hasClosureConstructor()) {
+            $closure = $componentDef->getClosureConstructor();
+            if ($componentDef->getComponentClass()->getName() === 'Closure') {
+                return $closure;
             }
+            $component = $closure($componentDef);
+            $componentClass = $componentDef->getComponentClass();
+            if ($component instanceof $componentClass) {
+                return $component;
+            } else {
+                throw new Exception();
+            }
+        } else {
+            return $componentDef->getComponentClass()->newInstance();
         }
     }
 }
