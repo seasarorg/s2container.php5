@@ -30,7 +30,7 @@ abstract class AbstractAssembler {
     /**
      * @var \seasar\container\ComponentDef
      */
-    private $componentDef;
+    protected $componentDef;
 
     /**
      * AbstractAssemblerのコンストラクタです。

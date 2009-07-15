@@ -31,7 +31,6 @@ class ComponentDefImplTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function setUp(){
-        print PHP_EOL . __CLASS__ . '->' . $this->getName() . '()' . PHP_EOL;
     }
 
     public function tearDown() {

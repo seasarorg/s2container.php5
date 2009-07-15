@@ -129,35 +129,6 @@ interface ComponentDef {
     public function setInstanceDef(\seasar\container\InstanceDef $def);
 
     /**
-     * すべてのArgDefを返します。
-     *
-     * @return array
-     */
-    public function getArgDefs();
-
-    /**
-     * インデックスで指定されたArgDefを返します。
-     *
-     * @param integer $index
-     * @return \seasar\container\impl\ArgDef
-     */
-    public function getArgDef($index);
-
-    /**
-     * ArgDefの数を返します。
-     *
-     * @return integer
-     */
-    public function getArgDefSize();
-
-    /**
-     * ArgDefを追加します。
-     *
-     * @param \seasar\container\impl\ArgDef $argDef
-     */
-    public function addArgDef(\seasar\container\impl\ArgDef $argDef);
-
-    /**
      * すべてのProperetyDefを返します。
      *
      * @return array
@@ -167,10 +138,10 @@ interface ComponentDef {
     /**
      * インデックスで指定されたPropertyDefを返します。
      *
-     * @param integer $index
+     * @param string $propertyName
      * @return \seasar\container\impl\PropertyDef
      */
-    public function getPropertyDef($index);
+    public function getPropertyDef($propertyName);
 
     /**
      * PropertyDefを保持しているかどうかを返します。
@@ -193,35 +164,6 @@ interface ComponentDef {
      * @return integer
      */
     public function getPropertyDefSize();
-
-    /**
-     * すべての初期化メソッド定義をを返します。
-     *
-     * @return array
-     */
-    public function getInitMethodDefs();
-
-    /**
-     * インデックスで指定されたInitMethodDefを返します。
-     *
-     * @param integer $index
-     * @return \seasar\container\impl\InitMethodDef
-     */
-    public function getInitMethodDef($index);
-
-    /**
-     * InitMethodDefの数を返します。
-     *
-     * @return integer
-     */
-    public function getInitMethodDefSize();
-
-    /**
-     * InitMethodDefを追加します。
-     *
-     * @param \seasar\container\impl\InitMethodDef $methodDef
-     */
-    public function addInitMethodDef(\seasar\container\impl\InitMethodDef $methodDef);
 
     /**
      * すべてのAspectDefを返します。
@@ -252,33 +194,4 @@ interface ComponentDef {
      */
     public function addAspectDef(\seasar\container\impl\AspectDef $aspectDef);
 
-    /**
-     * インデックスで指定されたMetaDefを返します。
-     *
-     * @param integer $index
-     * @return \seasar\container\impl\MetaDef
-     */
-    public function getMetaDef($index);
-
-    /**
-     * 名前で指定されたMetaDefを返します。
-     *
-     * @param string $name
-     * @return array
-     */
-    public function getMetaDefs($name);
-
-    /**
-     * MetaDefを追加します。
-     *
-     * @param \seasar\container\impl\MetaDef $metaDef
-     */
-    public function addMetaDef(\seasar\container\impl\MetaDef $metaDef);
-
-    /**
-     * MetaDefの数を返します。
-     *
-     * @return integer
-     */
-    public function getMetaDefSize();
 }

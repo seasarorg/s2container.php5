@@ -49,29 +49,14 @@ class ComponentDefImpl implements \seasar\container\ComponentDef {
     private $container = null;
 
     /**
-     * @var \seasar\container\util\ArgDefSupport
-     */
-    private $argDefSupport = null;
-
-    /**
      * @var \seasar\container\util\PropertyDefSupport
      */
-    private $propertyDefSupport = null;
-
-    /**
-     * @var \seasar\container\util\MethodDefSupport
-     */
-    private $initMethodDefSupport = null;
+    private $propertyDefs = array();
 
     /**
      * @var \seasar\container\util\AspectDefSupport
      */
-    private $aspectDefSupport = null;
-
-    /**
-     * @var \seasar\container\util\MetaDefSupport
-     */
-    private $metaDefSupport = null;
+    private $aspectDefs = array();
 
     /**
      * @var \seasar\container\InstanceDef
@@ -98,18 +83,8 @@ class ComponentDefImpl implements \seasar\container\ComponentDef {
         if ($componentClassName instanceof \ReflectionClass) {
             $componentClassName = $componentClassName->getName();
         }
-        /*
-        if (0 == strpos($componentClassName, '\\')) {
-            $componentClassName = substr($componentClassName, 1);
-        }
-        */
         $this->componentClass       = new \ReflectionClass($componentClassName);
         $this->componentName        = $componentName;
-        $this->argDefSupport        = new \seasar\container\util\ArgDefSupport();
-        $this->propertyDefSupport   = new \seasar\container\util\PropertyDefSupport();
-        $this->initMethodDefSupport = new \seasar\container\util\InitMethodDefSupport();
-        $this->aspectDefSupport     = new \seasar\container\util\AspectDefSupport();
-        $this->metaDefSupport       = new \seasar\container\util\MetaDefSupport();
         $this->instanceDef          = \seasar\container\deployer\InstanceDefFactory::getInstanceDef(\seasar\container\InstanceDef::SINGLETON_NAME);
         $this->autoBindingDef       = \seasar\container\assembler\AutoBindingDefFactory::getAutoBindingDef(\seasar\container\AutoBindingDef::AUTO_NAME);
     }
@@ -154,11 +129,12 @@ class ComponentDefImpl implements \seasar\container\ComponentDef {
      */
     public final function setContainer(\seasar\container\S2Container $container) {
         $this->container = $container;
-        $this->argDefSupport->setContainer($container);
-        $this->metaDefSupport->setContainer($container);
-        $this->propertyDefSupport->setContainer($container);
-        $this->initMethodDefSupport->setContainer($container);
-        $this->aspectDefSupport->setContainer($container);
+        foreach ($this->propertyDefs as $propertyName => $propertDef) {
+            $propertyDef->setContainer($container);
+        }
+        foreach ($this->aspectDefs as $aspectDef) {
+            $aspectDef->setContainer($container);
+        }
     }
 
     /**
@@ -190,150 +166,70 @@ class ComponentDefImpl implements \seasar\container\ComponentDef {
     }
 
     /**
-     * @see \seasar\container\util\ArgDefSupport::getArgDefs()
-     */
-    public function getArgDefs() {
-        return $this->argDefSupport->getArgDefs();
-    }
-
-    /**
-     * @see \seasar\container\util\ArgDefSupport::getArgDef()
-     */
-    public function getArgDef($index) {
-        return $this->argDefSupport->getArgDef($index);
-    }
-
-    /**
-     * @see \seasar\container\util\ArgDefSupport::getArgDefSize()
-     */
-    public function getArgDefSize() {
-        return $this->argDefSupport->getArgDefSize();
-    }
-
-    /**
-     * @see \seasar\container\util\ArgDefSupport::addArgDef()
-     */
-    public function addArgDef(\seasar\container\impl\ArgDef $argDef) {
-        $this->argDefSupport->addArgDef($argDef);
-    }
-
-    /**
      * @see \seasar\container\util\PropertyDefSupport::getPropertyDefs()
      */
     public function getPropertyDefs() {
-        return $this->propertyDefSupport->getPropertyDefs();
+        return $this->propertyDefs;
     }
 
     /**
-     * @see \seasar\container\util\PropertyDefSupport::getPropertyDef()
+     * @see \seasar\container\util\PropertyDefSupport::hasPropertyDef()
      */
-    public function getPropertyDef($index) {
-        return $this->propertyDefSupport->getPropertyDef($index);
+    public function getPropertyDef($propertyName) {
+        if($this->hasPropertyDef($propertyName)) {
+            return $this->propertyDefs[$propertyName];
+        } else {
+            return null;
+        }
     }
 
     /**
      * @see \seasar\container\util\PropertyDefSupport::hasPropertyDef()
      */
     public function hasPropertyDef($propertyName) {
-        return $this->propertyDefSupport->hasPropertyDef($propertyName);
+        return array_key_exists($propertyName, $this->propertyDefs);
     }
 
     /**
      * @see \seasar\container\util\PropertyDefSupport::addPropertyDef()
      */
     public function addPropertyDef(\seasar\container\impl\PropertyDef $propertyDef) {
-        $this->propertyDefSupport->addPropertyDef($propertyDef);
+        $this->propertyDefs[$propertyDef->getPropertyName()] = $propertyDef;
     }
 
     /**
      * @see \seasar\container\util\PropertyDefSupport::getPropertyDefSize()
      */
     public function getPropertyDefSize() {
-        return $this->propertyDefSupport->getPropertyDefSize();
-    }
-
-    /**
-     * @see \seasar\container\util\InitMethodDefSupport::getInitMethodDefs()
-     */
-    public function getInitMethodDefs() {
-        return $this->initMethodDefSupport->getInitMethodDefs();
-    }
-
-    /**
-     * @see \seasar\container\util\InitMethodDefSupport::getInitMethodDef()
-     */
-    public function getInitMethodDef($index) {
-        return $this->initMethodDefSupport->getInitMethodDef($index);
-    }
-
-    /**
-     * @see \seasar\container\util\InitMethodDefSupport::getInitMethodDefSize()
-     */
-    public function getInitMethodDefSize() {
-        return $this->initMethodDefSupport->getInitMethodDefSize();
-    }
-
-    /**
-     * @see \seasar\container\util\InitMethodDefSupport::addInitMethodDef()
-     */
-    public function addInitMethodDef(\seasar\container\impl\InitMethodDef $methodDef) {
-        $this->initMethodDefSupport->addInitMethodDef($methodDef);
+        return count($this->propertyDefs);
     }
 
     /**
      * @see \seasar\container\util\AspectDefSupport::getAspectDefs()
      */
     public function getAspectDefs() {
-        return $this->aspectDefSupport->getAspectDefs();
+        return $this->aspectDefs;
     }
 
     /**
      * @see \seasar\container\util\AspectDefSupport::getAspectDef()
      */
     public function getAspectDef($index) {
-        return $this->aspectDefSupport->getAspectDef($index);
+        return $this->aspectDefs[$index];
     }
 
     /**
      * @see \seasar\container\util\AspectDefSupport::getAspectDefSize()
      */
     public function getAspectDefSize() {
-        return $this->aspectDefSupport->getAspectDefSize();
+        return count($this->aspectDefs);
     }
 
     /**
      * @see \seasar\container\util\AspectDefSupport::addAspectDef()
      */
     public function addAspectDef(\seasar\container\impl\AspectDef $aspectDef) {
-        $this->aspectDefSupport->addAspectDef($aspectDef);
-    }
-
-    /**
-     * @see \seasar\container\util\MetaDefSupport::getMetaDef()
-     */
-    public function getMetaDef($index) {
-        return $this->metaDefSupport->getMetaDef($index);
-    }
-
-    /**
-     * @see \seasar\container\util\MetaDefSupport::getMetaDefs()
-     */
-    public function getMetaDefs($name) {
-        return $this->metaDefSupport->getMetaDefs($name);
-    }
-
-    /**
-     * @see \seasar\container\util\MetaDefSupport::addMetaDef()
-     */
-    public function addMetaDef(\seasar\container\impl\MetaDef $metaDef) {
-        $this->metaDefSupport->addMetaDef($metaDef);
-    }
-
-    /**
-     * @see \seasar\container\util\MetaDefSupport::getMetaDefSize()
-     */
-    public function getMetaDefSize() {
-        return $this->metaDefSupport->getMetaDefSize();
+        $this->aspectDefs[] = $aspectDef;
     }
 
     /**

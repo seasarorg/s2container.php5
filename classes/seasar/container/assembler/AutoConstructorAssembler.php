@@ -41,15 +41,6 @@ class AutoConstructorAssembler extends ManualConstructorAssembler {
      * @return object
      */
     public function assemble() {
-        if ($this->getComponentDef()->getArgDefSize() > 0) {
-            return parent::assemble();
-        }
-        $args = array();
-        $componentDef = $this->getComponentDef();
-        $refMethod = $componentDef->getComponentClass()->getConstructor();
-        if ($refMethod instanceof \ReflectionMethod) {
-            $args = $this->getArgs($refMethod->getParameters());
-        }
-        return \seasar\container\util\ConstructorUtil::newInstance($componentDef, $args);
+         return parent::assemble();
     }
 }

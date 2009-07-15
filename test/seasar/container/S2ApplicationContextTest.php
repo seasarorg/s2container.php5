@@ -57,13 +57,6 @@ class S2ApplicationContextTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue(isset(S2ApplicationContext::$CLASSES['Huga_S2ApplicationContext']));
     }
 
-    public function testRegisterDicon(){
-        S2ApplicationContext::import($this->sampleDir . '/dicon/aaa.dicon');
-        $dicons = array_keys(S2ApplicationContext::$DICONS);
-        $this->assertEquals($dicons, array('aaa.dicon'));
-        $this->assertFalse(in_array('ccc.dicon', $dicons));
-    }
-
     public function testRegisterInternal(){
         S2ApplicationContext::$CLASSES = array();
         S2ApplicationContext::importInternal('/A/B/C/D.php');
@@ -72,10 +65,6 @@ class S2ApplicationContextTest extends \PHPUnit_Framework_TestCase {
         S2ApplicationContext::$CLASSES = array();
         S2ApplicationContext::importInternal('/A/B/C/D.php', array('B','C'));
         $this->assertEquals(S2ApplicationContext::$CLASSES, array('B\C\D' => '/A/B/C/D.php'));
-
-        S2ApplicationContext::$DICONS = array();
-        S2ApplicationContext::importInternal('/A/B/C/D.dicon', array('C'), true);
-        $this->assertEquals(S2ApplicationContext::$DICONS, array('D.dicon' => '/A/B/C/D.dicon'));
     }
 
     public function testCreate(){
@@ -132,13 +121,6 @@ class S2ApplicationContextTest extends \PHPUnit_Framework_TestCase {
         $container = S2ApplicationContext::create();
         $this->assertTrue($container instanceof S2Container);
         $this->assertTrue($container->hasComponentDef('sample\aaa\Foo_S2ApplicationContext'));
-        $cd = $container->getComponentDef('sample\aaa\Foo_S2ApplicationContext');
-        $c = $cd->getMetaDefSize();
-        $this->assertEquals($c, 3);
-        $this->assertEquals($cd->getMetaDef('name')->getValue(), 'xyz');
-        $this->assertEquals($cd->getMetaDef('year')->getValue(), 2007);
-        $this->assertEquals($cd->getMetaDef('add')->getValue(), 5);
-
     }
 
     public function testCreateComponentDef(){
@@ -197,60 +179,6 @@ class S2ApplicationContextTest extends \PHPUnit_Framework_TestCase {
         $f->hoge();
     }
 
-    public function testNamespacedComponent(){
-        S2ApplicationContext::init();
-        S2ApplicationContext::$CLASSES[__NAMESPACE__ . '\A_S2ApplicationContextTest'] = '';
-        $container = S2ApplicationContext::create();
-        $this->assertTrue($container->hasComponentDef('foo'));
-        $this->assertTrue($container->getComponent('foo')->hasComponentDef('a'));
-
-        S2ApplicationContext::init();
-        S2ApplicationContext::$CLASSES[__NAMESPACE__ . '\B_S2ApplicationContextTest'] = '';
-        $container = S2ApplicationContext::create();
-        $this->assertTrue($container->hasComponentDef('foo'));
-        $this->assertTrue($container->getComponent('foo')->hasComponentDef('bar'));
-        $this->assertTrue($container->getComponent('foo')->getComponent('bar')->hasComponentDef('b'));
-
-        S2ApplicationContext::init();
-        S2ApplicationContext::$CLASSES[__NAMESPACE__ . '\C_S2ApplicationContextTest'] = '';
-        S2ApplicationContext::$CLASSES[__NAMESPACE__ . '\A_S2ApplicationContextTest'] = '';
-        try {
-            $container = S2ApplicationContext::create();
-            $this->fail();
-        } catch(\seasar\container\exception\TooManyRegistrationRuntimeException $e) {
-            print $e->getMessage() . PHP_EOL;
-        } catch(Exception $e) {
-            $this->fail();
-        }
-    }
-
-    public function testCreateWithNamespace(){
-        S2ApplicationContext::init();
-        S2ApplicationContext::$CLASSES[__NAMESPACE__ . '\A_S2ApplicationContextTest'] = '';
-        $container = S2ApplicationContext::create('foo');
-        $this->assertTrue($container->hasComponentDef('foo'));
-        $this->assertTrue($container->getComponent('foo') instanceof \seasar\container\S2Container);
-        $this->assertTrue($container->hasComponentDef('a'));
-        $this->assertTrue($container->hasComponentDef('foo.a'));
-
-        S2ApplicationContext::init();
-        S2ApplicationContext::$CLASSES[__NAMESPACE__ . '\B_S2ApplicationContextTest'] = '';
-        $container = S2ApplicationContext::create('foo');
-        $this->assertTrue($container->hasComponentDef('foo'));
-        $this->assertTrue($container->hasComponentDef('bar'));
-        $this->assertTrue($container->hasComponentDef('foo.bar'));
-        $this->assertTrue($container->getComponent('bar')->hasComponentDef('b'));
-
-        S2ApplicationContext::init();
-        S2ApplicationContext::$CLASSES[__NAMESPACE__ . '\B_S2ApplicationContextTest'] = '';
-        S2ApplicationContext::$CLASSES[__NAMESPACE__ . '\D_S2ApplicationContextTest'] = '';
-        $container = S2ApplicationContext::create('foo.bar');
-        $this->assertTrue($container->hasComponentDef('foo'));
-        $this->assertTrue($container->hasComponentDef('bar'));
-        $this->assertTrue($container->hasComponentDef('foo.bar'));
-        $this->assertFalse($container->hasComponentDef('huga'));
-    }
-
     public function testGetComponentDef(){
         S2ApplicationContext::init();
         S2ApplicationContext::$CLASSES[__NAMESPACE__ . '\A_S2ApplicationContextTest'] = '';
@@ -287,10 +215,8 @@ class S2ApplicationContextTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function setUp(){
-        print PHP_EOL . __CLASS__ . '->' . $this->getName() . '()' . PHP_EOL;
         $this->sampleDir = dirname(__FILE__) . '/S2ApplicationContext_classes';
         S2ApplicationContext::$CLASSES = array();
-        S2ApplicationContext::$DICONS  = array();
     }
 
     public function tearDown() {

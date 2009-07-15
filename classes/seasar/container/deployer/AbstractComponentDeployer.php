@@ -108,6 +108,5 @@ abstract class AbstractComponentDeployer {
     protected function setupAssembler() {
         $this->constructorAssembler = $this->componentDef->getAutoBindingDef()->createConstructorAssembler($this->componentDef);
         $this->propertyAssembler    = $this->componentDef->getAutoBindingDef()->createPropertyAssembler($this->componentDef);
-        $this->initMethodAssembler  = new \seasar\container\assembler\InitMethodAssembler($this->componentDef);
     }
 }

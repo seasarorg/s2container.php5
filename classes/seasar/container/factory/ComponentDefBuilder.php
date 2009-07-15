@@ -48,11 +48,6 @@ class ComponentDefBuilder {
     const ASPECT_ANNOTATION = '@S2Aspect';
 
     /**
-     * メタ情報を設定するコメントアノテーションです。
-     */
-    const META_ANNOTATION = '@S2Meta';
-
-    /**
      *
      * @param ReflectionClass $refClass
      * @return \seasar\container\ComponentDef
@@ -148,10 +143,6 @@ class ComponentDefBuilder {
             \seasar\util\Annotation::has($classRef, self::ASPECT_ANNOTATION)) {
             self::setupClassAspectDef($cd, $classRef);
         }
-
-        if (\seasar\util\Annotation::has($cd->getComponentClass(), self::META_ANNOTATION)) {
-            self::setupClassMetaDef($cd, $classRef);
-        }
     }
 
     /**
@@ -235,30 +226,6 @@ class ComponentDefBuilder {
             }
         } else {
             \seasar\log\S2Logger::getLogger(__CLASS__)->debug("invalid aspect info. cannot get interceptor value.", __METHOD__);
-        }
-    }
-
-    /**
-     * MetaDefをセットアップします。
-     *
-     * @param \seasar\container\ComponentDef $cd
-     * @param \ReflectionClass $classRef
-     */
-    public static function setupClassMetaDef(\seasar\container\ComponentDef $cd, \ReflectionClass $classRef) {
-        $annoInfo = \seasar\util\Annotation::get($classRef, self::META_ANNOTATION);
-        if (count($annoInfo) === 0) {
-            \seasar\log\S2Logger::getLogger(__CLASS__)->debug("class aspect annotation found. cannot get values.", __METHOD__);
-            return;
-        }
-        foreach($annoInfo as $key => $val) {
-            $metaDef = new \seasar\container\impl\MetaDef($key);
-            $cd->addMetaDef($metaDef);
-            $metaDef->setExpression($val);
-            if ($cd->getContainer()->hasComponentDef($val)) {
-                $metaDef->setChildComponentDef($cd->getContainer()->getComponentDef($val));
-            } else {
-                $metaDef->setExpression($val);
-            }
         }
     }
 }

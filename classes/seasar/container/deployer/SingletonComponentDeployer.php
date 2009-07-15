@@ -59,7 +59,6 @@ class SingletonComponentDeployer extends AbstractComponentDeployer {
             $this->component     = $this->getConstructorAssembler()->assemble();
             $this->instantiating = false;
             $this->getPropertyAssembler()->assemble($this->component);
-            $this->getInitMethodAssembler()->assemble($this->component);
         }
         return $this->component;
     }

@@ -37,88 +37,16 @@ class S2ContainerImpl implements \seasar\container\S2Container {
      */
     private $componentDefList = array();
 
-    /**
-     * @var array
-     */
-    private $parents = array();
-
-    /**
-     * @var array
-     */
-    private $children = array();
-
-    /**
-     * @var array
-     */
-    private $descendants = array();
-
-    /**
-     * @var string
-     */
-    private $namespace = null;
-
-    /**
-     * @var \seasar\container\util\MetaDefSupport
-     */
-    private $metaDefSupport = null;
-
-    /**
-     * @var string
-     */
-    private $path = null;
-
-    /**
-     * @var \seasar\container\S2Container
-     */
-    private $root = null;
 
     /**
      * S2ContainerImpl を構築します。
      */
     public function __construct() {
-        $this->metaDefSupport = new \seasar\container\util\MetaDefSupport();
-        $this->root = $this;
         $componentDef = new SimpleComponentDef($this, \seasar\container\Config::CONTAINER_NAME);
         $this->componentDefMap[\seasar\container\Config::CONTAINER_NAME] = $componentDef;
         $this->componentDefMap['\seasar\container\S2Container'] = $componentDef;
     }
 
-    /**
-     * ルートのS2コンテナを返します。
-     *
-     * @return seasar::contaienr::S2Container
-     */
-    public function getRoot() {
-        return $this->root;
-    }
-
-    /**
-     * ルートのS2コンテナを設定します。
-     *
-     * @param seasar::contaienr::S2Container $root
-     */
-    public function setRoot(\seasar\container\S2Container $root) {
-        $this->root = $root;
-    }
-
-    /**
-     * 親のS2コンテナ配列を返します。
-     *
-     * @return array
-     */
-    public function getParents() {
-        return $this->parents;
-    }
-
-    /**
-     * 親のS2コンテナを設定します。
-     *
-     * @param seasar::contaienr::S2Container $parent
-     */
-    public function addParent(\seasar\container\S2Container $parent) {
-        $this->parents[] = $parent;
-    }
-        
     /**
      * @see seasar::contaienr::S2Container::getComponent()
      */
@@ -262,10 +190,8 @@ class S2ContainerImpl implements \seasar\container\S2Container {
      * @param string $key
      */
     private function getComponentDefInternal($key) {
-        // 親コンテナ、子コンテナ、ネームスペースで検索する
-        $cd = $this->getComponentDefRecursive($key);
-        if (!is_null($cd)) {
-            return $cd;
+        if (array_key_exists($key, $this->componentDefMap)) {
+            return $this->componentDefMap[$key];
         }
 
         // キーがクラスやインターフェースの場合は、コンポーネント化する。
@@ -287,223 +213,10 @@ class S2ContainerImpl implements \seasar\container\S2Container {
     }
 
     /**
-     * 内部的なgetComponentDefの実装です。
-     *
-     * @param string $key
-     */
-    public function getComponentDefRecursive($key, $searchParent = true, &$searchedAsParent = array(), &$searchedAsChild = array()) {
-        if (array_key_exists($key, $this->componentDefMap)) {
-            $cd =  $this->componentDefMap[$key];
-        } else if (false !== strpos($key, '.')) {
-            $cd = $this->getComponentDefByNamespace($key);
-        } else {
-            $cd = $this->getComponentDefByChildren($key, $searchedAsParent, $searchedAsChild);
-        }
-
-        if (!is_null($cd)) {
-            return $cd;
-        }
-
-        if ($searchParent === false) {
-            return null;
-        }
-
-        // 親コンテナを検索する。
-        $searchedAsParent[] = $this;
-        if (count($this->parents) === 0) {
-            return null;
-        }
-        foreach($this->parents as $parent) {
-            if (in_array($parent, $searchedAsParent, true)) {
-                continue;
-            }
-            // \seasar\log\S2Logger::getInstance(__NAMESPACE__)->debug('search parent container : ' . $parent->getNamespace(), __METHOD__);
-            $cd = $parent->getComponentDefRecursive($key, true,  $searchedAsParent, $searchedAsChild);
-            if (!is_null($cd)) {
-                return $cd;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * NamespaceでComponentDefを検索します。
-     *
-     * @param string $key
-     */
-    public function getComponentDefByNamespace($key) {
-        $matches = array();
-        if (preg_match('/(.+?)\.(.+)/', $key, $matches)) {
-            $cd = $this->getComponentDefRecursive($matches[1], false);
-            if (!is_null($cd)) {
-                $childContainer = $cd->getComponent();
-                if ($childContainer instanceof \seasar\container\S2Container) {
-                    // ネームスペースで指定されたコンテナの子コンテナも検索することにする。
-                    $cd = $cd->getComponent()->getComponentDefRecursive($matches[2], false);
-                    if (!is_null($cd)) {
-                        return $cd;
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
-    /**
-     * 子コンテナからComponentDefを検索します。
-     *
-     * @param string $key
-     */
-    public function getComponentDefByChildren($key, &$searchedAsParent, &$searchedAsChild) {
-        foreach ($this->children as $childContainer) {
-            if (in_array($childContainer, $searchedAsParent, true)) {
-                continue;
-            }
-            if (in_array($childContainer, $searchedAsChild, true)) {
-                continue;
-            }
-            // \seasar\log\S2Logger::getInstance(__NAMESPACE__)->debug('search child container  : ' . $childContainer->getNamespace(), __METHOD__);
-            $cd = $childContainer->getComponentDefRecursive($key, false, $searchedAsParent, $searchedAsChild);
-            if (!is_null($cd)) {
-                return $cd;
-            }
-            $searchedAsChild[] = $childContainer;
-        }
-        return null;
-    }
-
-    /**
      * @see \seasar\container\S2Container::hasComponentDef()
      */
     public function hasComponentDef($componentKey) {
         return $this->getComponentDefInternal($componentKey) !== null;
-    }
-
-    /**
-     * @see \seasar\container\S2Container::hasDescendant()
-     */
-    public function hasDescendant($path) {
-        return array_key_exists($path, $this->descendants);
-    }
-    
-    /**
-     * pathを読み込んだS2コンテナを返します。
-     *
-     * @param string path
-     * @return \seasar\container\S2Container
-     */
-    public function getDescendant($path) {
-        if ($this->hasDescendant($path)) {
-            return $this->descendants[$path];
-        } else {
-            throw new \seasar\container\exception\ContainerNotRegisteredRuntimeException($path);
-        }
-    }
-
-    /**
-     * descendantを子孫コンテナとして登録します。
-     * 子孫コンテナとは、このコンテナに属する子のコンテナや、その子であるコンテナです。 
-     *
-     * @param \seasar\container\S2Container $descendant
-     */
-    public function registerDescendant(\seasar\container\S2Container $descendant) {
-        $this->descendants[$descendant->getPath()] = $descendant;
-    }
-
-    /**
-     * コンテナを子としてインクルードします。
-     *
-     * @see \seasar\container\S2Container::includeChild()
-     */
-    public function includeChild(\seasar\container\S2Container $childContainer) {
-        $childContainer->setRoot($this->getRoot());
-        $childContainer->addParent($this);
-        $this->children[] = $childContainer;
-        $this->registerDescendant($childContainer);
-        $ns = $childContainer->getNamespace();
-        if ($ns !== null) {
-            $this->registerMap($ns, new S2ContainerComponentDef($childContainer, $ns));
-        }
-    }
-
-    /**
-     * インクルードしている子コンテナの数を返します。
-     *
-     * @see \seasar\container\S2Container::getChildSize()
-     */
-    public function getChildSize() {
-        return count($this->children);
-    }
-
-    /**
-     * @see \seasar\container\S2Container::getChild()
-     */
-    public function getChild($index) {
-        if (!isset($this->children[$index])) {
-            throw new \seasar\container\exception\ContainerNotRegisteredRuntimeException("Child:" . $index);
-        }
-        return $this->children[$index];
-    }
-
-    /**
-     * @see \seasar\container\S2Container::getNamespace()
-     */
-    public function getNamespace() {
-        return $this->namespace;
-    }
-
-    /**
-     * @see \seasar\container\S2Container::setNamespace()
-     */
-    public function setNamespace($namespace) {
-        $this->namespace = $namespace;
-        $this->componentDefMap[$this->namespace] = new SimpleComponentDef($this, $this->namespace);
-    }
-
-    /**
-     * 設定ファイルのpathを返します。
-     *
-     * @return string
-     */
-    public function getPath() {
-        return $this->path;
-    }
-
-    /**
-     * 設定ファイルのpathを設定します。
-     *
-     * @param string $path
-     */
-    public function setPath($path) {
-        $this->path = $path;
-    }
-
-    /**
-     * @see \seasar\container\util\MetaDefAware::addMetaDef()
-     */
-    public function addMetaDef(MetaDef $metaDef) {
-        $this->metaDefSupport->addMetaDef($metaDef);
-    }
-    
-    /**
-     * @see \seasar\container\util\MetaDefAware::getMetaDef()
-     */
-    public function getMetaDef($name) {
-        return $this->metaDefSupport->getMetaDef($name);
-    }
-    
-    /**
-     * @see \seasar\container\util\MetaDefAware::getMetaDefs()
-     */
-    public function getMetaDefs($name) {
-        return $this->metaDefSupport->getMetaDefs($name);
-    }
-    
-    /**
-     * @see \seasar\container\util\MetaDefAware::getMetaDefSize()
-     */
-    public function getMetaDefSize() {
-        return $this->metaDefSupport->getMetaDefSize();
     }
 
     /**

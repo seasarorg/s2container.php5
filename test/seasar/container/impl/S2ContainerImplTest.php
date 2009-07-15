@@ -26,11 +26,6 @@
 namespace seasar\container\impl;
 class S2ContainerImplTest extends \PHPUnit_Framework_TestCase {
 
-    public function testGetRoot() {
-        $container = new S2ContainerImpl();
-        $this->assertTrue($container->getRoot() === $container);
-    }
-
     public function testGetComponent() {
         $container = new S2ContainerImpl();
         $this->assertTrue($container->getComponent('\seasar\container\S2Container') === $container);
@@ -81,58 +76,12 @@ class S2ContainerImplTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($container->getComponentDefSize() , 2);
     }
 
-    public function testDescendant() {
-        $root = new S2ContainerImpl();
-        $container = new S2ContainerImpl();
-        $path = '/path/to/a';
-        $container->setPath($path);
-        $root->registerDescendant($container);
-        $descendant = $root->getDescendant($path);
-        $this->assertTrue($container === $descendant);
-    }
-
-    public function testChildContainer() {
-        $root = new S2ContainerImpl();
-        $child = new S2ContainerImpl();
-        $root->includeChild($child);
-        $child = new S2ContainerImpl();
-        $root->includeChild($child);
-        $this->assertEquals($root->getChildSize(), 2);
-
-        $child = new S2ContainerImpl();
-        $child->setNamespace('a');
-        $root->includeChild($child);
-        $this->assertEquals($root->getChildSize(), 3);
-        $this->assertTrue($root->getChild(2) === $child);
-        $this->assertTrue($root->getComponent('a') === $child);
-    }
-
-    public function testMetaDef() {
-    }
-
     public function testComponentDefNotFound() {
         $container = new S2ContainerImpl();
         try {
             $container->getComponentDef('xxx');
             $this->fail();
         } catch(\seasar\container\exception\ComponentNotFoundRuntimeException $e) {
-            print $e->getMessage() . PHP_EOL;
-        }
-    }
-
-    public function testContainerNotFound() {
-        $container = new S2ContainerImpl();
-        try {
-            $container->getDescendant('/path/to/xxx');
-            $this->fail();
-        } catch(\seasar\container\exception\ContainerNotRegisteredRuntimeException $e) {
-            print $e->getMessage() . PHP_EOL;
-        }
-
-        try {
-            $container->getChild(5);
-            $this->fail();
-        } catch(\seasar\container\exception\ContainerNotRegisteredRuntimeException $e) {
             print $e->getMessage() . PHP_EOL;
         }
     }
@@ -164,92 +113,7 @@ class S2ContainerImplTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue($container->hasComponentDef('e_s2container'));
     }
 
-    /**
-     *      a   x
-     *     b c y
-     *    d e f
-     *      g
-     */
-    public function testParentNamespace() {
-        $a = new S2ContainerImpl();
-        $a->setNamespace('ns_a');
-        $cd = new ComponentDefImpl(__NAMESPACE__ . '\A');
-        $a->register($cd);
-
-        $b = new S2ContainerImpl();
-        $b->setNamespace('ns_b');
-        $cd = new ComponentDefImpl(__NAMESPACE__ . '\B');
-        $b->register($cd);
-
-        $c = new S2ContainerImpl();
-        $c->setNamespace('ns_c');
-        $cd = new ComponentDefImpl(__NAMESPACE__ . '\C');
-        $c->register($cd);
-
-        $d = new S2ContainerImpl();
-        $d->setNamespace('ns_d');
-        $cd = new ComponentDefImpl(__NAMESPACE__ . '\D');
-        $d->register($cd);
-
-        $e = new S2ContainerImpl();
-        $e->setNamespace('ns_e');
-        $cd = new ComponentDefImpl(__NAMESPACE__ . '\E');
-        $e->register($cd);
-
-        $f = new S2ContainerImpl();
-        $f->setNamespace('ns_f');
-        $cd = new ComponentDefImpl(__NAMESPACE__ . '\F');
-        $f->register($cd);
-
-        $g = new S2ContainerImpl();
-        $g->setNamespace('ns_g');
-        $cd = new ComponentDefImpl(__NAMESPACE__ . '\G', 'Gg');
-        $g->register($cd);
-
-        $x = new S2ContainerImpl();
-        $x->setNamespace('ns_x');
-        $cd = new ComponentDefImpl(__NAMESPACE__ . '\X');
-        $x->register($cd);
-
-        $y = new S2ContainerImpl();
-        $y->setNamespace('ns_y');
-        $cd = new ComponentDefImpl(__NAMESPACE__ . '\Y');
-        $y->register($cd);
-
-        $a->includeChild($b);
-        $a->includeChild($c);
-        $b->includeChild($d);
-        $b->includeChild($e);
-        $c->includeChild($e);
-        $c->includeChild($f);
-        $d->includeChild($g);
-        $e->includeChild($g);
-        $f->includeChild($g);
-
-        $x->includeChild($y);
-        $y->includeChild($f);
-
-        $this->assertEquals($a, $g->getRoot());
-        $this->assertTrue(in_array($e, $g->getParents(), true));
-        $this->assertEquals(3, count($g->getParents()));
-        $this->assertTrue($g->hasComponentDef(__NAMESPACE__ . '\A'));
-        $this->assertTrue($g->hasComponentDef(__NAMESPACE__ . '\C'));
-
-        $this->assertEquals($x, $f->getRoot());
-        echo '-----------------------' . PHP_EOL;
-        $this->assertTrue($g->hasComponentDef(__NAMESPACE__ . '\X'));
-        echo '-----------------------' . PHP_EOL;
-        $this->assertTrue(!$g->hasComponentDef('qqq'));
-        $this->assertTrue($g->hasComponentDef('ns_a.ns_b.ns_d.ns_g'));
-        $this->assertTrue($g->hasComponentDef('ns_a.ns_c.ns_e.ns_g'));
-        $this->assertTrue($g->hasComponentDef('ns_a.ns_c.ns_e.ns_g'));
-        $this->assertTrue($g->hasComponentDef('ns_x.ns_y.ns_f.ns_g'));
-        $this->assertTrue($g->hasComponentDef('ns_x.ns_y.ns_f.ns_g.Gg'));
-        $this->assertTrue($b->hasComponentDef(__NAMESPACE__ . '\F'));
-    }
-
     public function setUp(){
-        print PHP_EOL . __CLASS__ . '->' . $this->getName() . '()' . PHP_EOL;
     }
 
     public function tearDown() {

@@ -52,7 +52,6 @@ class PrototypeComponentDeployer extends AbstractComponentDeployer {
         $this->instantiating = true;
         $component = $this->getConstructorAssembler()->assemble();
         $this->getPropertyAssembler()->assemble($component);
-        $this->getInitMethodAssembler()->assemble($component);
         $this->instantiating = false;
         return $component;
     }

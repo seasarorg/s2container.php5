@@ -41,22 +41,7 @@ class ManualConstructorAssembler extends AbstractAssembler {
      * @return object
      */
     public function assemble() {
-        $args           = array();
-        $refParams      = array();
-        $componentDef   = $this->getComponentDef();
-        $refConstructor = $componentDef->getComponentClass()->getConstructor();
-        if ($refConstructor instanceof \ReflectionMethod) {
-            $refParams = $refConstructor->getParameters();
-        }
-        $argDefs = $componentDef->getArgDefs();
-        $o = count($argDefs);
-        for ($i = 0; $i < $o; ++$i) {
-            if (isset($refParams[$i]) and $refParams[$i]->isArray()) {
-                $args[] = $this->getArgument($argDefs[$i], true);
-            } else {
-                $args[] = $this->getArgument($argDefs[$i], false);
-            }
-        }
-        return \seasar\container\util\ConstructorUtil::newInstance($componentDef, $args);
+        $args = array();
+        return \seasar\container\util\ConstructorUtil::newInstance($this->componentDef, $args);
     }
 }
