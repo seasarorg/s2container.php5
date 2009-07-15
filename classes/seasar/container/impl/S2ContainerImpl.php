@@ -30,7 +30,7 @@ class S2ContainerImpl implements \seasar\container\S2Container {
     /**
      * @var array
      */
-    private $componentDefMap  = array();
+    private $componentDefMap = array();
 
     /**
      * @var array
@@ -40,7 +40,12 @@ class S2ContainerImpl implements \seasar\container\S2Container {
     /**
      * @var array
      */
-    private $children    = array();
+    private $parents = array();
+
+    /**
+     * @var array
+     */
+    private $children = array();
 
     /**
      * @var array
@@ -50,7 +55,7 @@ class S2ContainerImpl implements \seasar\container\S2Container {
     /**
      * @var string
      */
-    private $namespace      = null;
+    private $namespace = null;
 
     /**
      * @var \seasar\container\util\MetaDefSupport
@@ -60,12 +65,12 @@ class S2ContainerImpl implements \seasar\container\S2Container {
     /**
      * @var string
      */
-    private $path      = null;
+    private $path = null;
 
     /**
      * @var \seasar\container\S2Container
      */
-    private $root      = null;
+    private $root = null;
 
     /**
      * S2ContainerImpl を構築します。
@@ -73,7 +78,6 @@ class S2ContainerImpl implements \seasar\container\S2Container {
     public function __construct() {
         $this->metaDefSupport = new \seasar\container\util\MetaDefSupport();
         $this->root = $this;
-
         $componentDef = new SimpleComponentDef($this, \seasar\container\Config::CONTAINER_NAME);
         $this->componentDefMap[\seasar\container\Config::CONTAINER_NAME] = $componentDef;
         $this->componentDefMap['\seasar\container\S2Container'] = $componentDef;
@@ -95,6 +99,24 @@ class S2ContainerImpl implements \seasar\container\S2Container {
      */
     public function setRoot(\seasar\container\S2Container $root) {
         $this->root = $root;
+    }
+
+    /**
+     * 親のS2コンテナ配列を返します。
+     *
+     * @return array
+     */
+    public function getParents() {
+        return $this->parents;
+    }
+
+    /**
+     * 親のS2コンテナを設定します。
+     *
+     * @param seasar::contaienr::S2Container $parent
+     */
+    public function addParent(\seasar\container\S2Container $parent) {
+        $this->parents[] = $parent;
     }
         
     /**
@@ -240,32 +262,19 @@ class S2ContainerImpl implements \seasar\container\S2Container {
      * @param string $key
      */
     private function getComponentDefInternal($key) {
-        if (array_key_exists($key, $this->componentDefMap)) {
-            return $this->componentDefMap[$key];
+        // 親コンテナ、子コンテナ、ネームスペースで検索する
+        $cd = $this->getComponentDefRecursive($key);
+        if (!is_null($cd)) {
+            return $cd;
         }
 
-        $matches = array();
-        if (preg_match('/(.+?)' . \seasar\container\Config::NS_SEP . '(.+)/', $key, $matches)) {
-            if ($this->hasComponentDef($matches[1])) {
-                $childContainer = $this->getComponent($matches[1]);
-                if ($childContainer instanceof \seasar\container\S2Container &&
-                    $childContainer->hasComponentDef($matches[2])) {
-                    return $childContainer->getComponentDef($matches[2]);
-                }
-            }
-        } else {
-            foreach ($this->children as $childContainer) {
-                if ($childContainer->hasComponentDef($key)) {
-                    return $childContainer->getComponentDef($key);
-                }
-            }
-        }
-
+        // キーがクラスやインターフェースの場合は、コンポーネント化する。
         if (class_exists($key) || interface_exists($key)) {
             $refClass = new \ReflectionClass($key);
             if ($refClass->isUserDefined()) {
                 $cd = \seasar\container\factory\ComponentDefBuilder::create($this, $refClass);
                 if ($refClass->isAbstract() || $refClass->isInterface()) {
+                    // キーが抽象クラスやインターフェースを表す時は、アスペクトが1つ以上設定されているかどうかを確認する。
                     if (count($cd->getAspectDefs()) === 0) {
                         return null;
                     }
@@ -273,6 +282,92 @@ class S2ContainerImpl implements \seasar\container\S2Container {
                 $this->register($cd);
                 return $cd;
             }
+        }
+        return null;
+    }
+
+    /**
+     * 内部的なgetComponentDefの実装です。
+     *
+     * @param string $key
+     */
+    public function getComponentDefRecursive($key, $searchParent = true, &$searchedAsParent = array(), &$searchedAsChild = array()) {
+        if (array_key_exists($key, $this->componentDefMap)) {
+            $cd =  $this->componentDefMap[$key];
+        } else if (false !== strpos($key, '.')) {
+            $cd = $this->getComponentDefByNamespace($key);
+        } else {
+            $cd = $this->getComponentDefByChildren($key, $searchedAsParent, $searchedAsChild);
+        }
+
+        if (!is_null($cd)) {
+            return $cd;
+        }
+
+        if ($searchParent === false) {
+            return null;
+        }
+
+        // 親コンテナを検索する。
+        $searchedAsParent[] = $this;
+        if (count($this->parents) === 0) {
+            return null;
+        }
+        foreach($this->parents as $parent) {
+            if (in_array($parent, $searchedAsParent, true)) {
+                continue;
+            }
+            // \seasar\log\S2Logger::getInstance(__NAMESPACE__)->debug('search parent container : ' . $parent->getNamespace(), __METHOD__);
+            $cd = $parent->getComponentDefRecursive($key, true,  $searchedAsParent, $searchedAsChild);
+            if (!is_null($cd)) {
+                return $cd;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * NamespaceでComponentDefを検索します。
+     *
+     * @param string $key
+     */
+    public function getComponentDefByNamespace($key) {
+        $matches = array();
+        if (preg_match('/(.+?)\.(.+)/', $key, $matches)) {
+            $cd = $this->getComponentDefRecursive($matches[1], false);
+            if (!is_null($cd)) {
+                $childContainer = $cd->getComponent();
+                if ($childContainer instanceof \seasar\container\S2Container) {
+                    // ネームスペースで指定されたコンテナの子コンテナも検索することにする。
+                    $cd = $cd->getComponent()->getComponentDefRecursive($matches[2], false);
+                    if (!is_null($cd)) {
+                        return $cd;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 子コンテナからComponentDefを検索します。
+     *
+     * @param string $key
+     */
+    public function getComponentDefByChildren($key, &$searchedAsParent, &$searchedAsChild) {
+        foreach ($this->children as $childContainer) {
+            if (in_array($childContainer, $searchedAsParent, true)) {
+                continue;
+            }
+            if (in_array($childContainer, $searchedAsChild, true)) {
+                continue;
+            }
+            // \seasar\log\S2Logger::getInstance(__NAMESPACE__)->debug('search child container  : ' . $childContainer->getNamespace(), __METHOD__);
+            $cd = $childContainer->getComponentDefRecursive($key, false, $searchedAsParent, $searchedAsChild);
+            if (!is_null($cd)) {
+                return $cd;
+            }
+            $searchedAsChild[] = $childContainer;
         }
         return null;
     }
@@ -322,6 +417,7 @@ class S2ContainerImpl implements \seasar\container\S2Container {
      */
     public function includeChild(\seasar\container\S2Container $childContainer) {
         $childContainer->setRoot($this->getRoot());
+        $childContainer->addParent($this);
         $this->children[] = $childContainer;
         $this->registerDescendant($childContainer);
         $ns = $childContainer->getNamespace();
@@ -409,7 +505,7 @@ class S2ContainerImpl implements \seasar\container\S2Container {
     public function getMetaDefSize() {
         return $this->metaDefSupport->getMetaDefSize();
     }
-    
+
     /**
      * すべての親クラスと実装しているすべてのインターフェースを返します。
      *
