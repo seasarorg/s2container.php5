@@ -43,12 +43,6 @@ abstract class Config {
     const COMPONENT_DEF_NAME = "componentDef";
 
     /**
-     * 名前空間とコンポーネント名の区切り(char)を表す定数です。
-     * preg_match('/(.+?)'. Config::NS_SEP . '(.+)/');
-     */
-    const NS_SEP = '\.';
-
-    /**
      * S2ContainerBuilderをファイルの拡張子ごとに設定します。
      *
      * @var array
@@ -78,7 +72,6 @@ abstract class Config {
      * @boolean
      */
     public static $PROPERTY_TYPEHINT_NULL = true;
-
 }
 
 /**
