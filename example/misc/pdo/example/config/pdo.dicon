@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
-"http://www.seasar.org/dtd/components.dtd">
-<components namespace="pdo_c">
-    <component name="sqliteC" class="PDO">
-        <arg>return 'sqlite:' . ROOT_DIR . '/example/db/sqlite_c.db'</arg>
-    </component>
-    <component name="interceptor" class="PdoInterceptor"/>
-</components>
