@@ -44,44 +44,6 @@ class ArgDefTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue($arg->getValue() instanceof \seasar\container\impl\A_ArgDef);
     } 
 
-    public function testMetaDef(){
-        $arg = new ArgDef();
-        $this->assertNotNull($arg);
- 
-        $md1 = new MetaDef('a','A');
-        $arg->addMetaDef($md1);
-        $md2 = new MetaDef('b','B');
-        $arg->addMetaDef($md2);
-        $md3 = new MetaDef('c','C');
-        $arg->addMetaDef($md3);
-
-        $this->assertEquals($arg->getMetaDefSize(),3);
-
-        $md = $arg->getMetaDef('a');
-        $this->assertTrue($md === $md1);
-    
-        $md = $arg->getMetaDef(1);
-        $this->assertTrue($md === $md2);
-    }
-
-    public function testMetaDefs(){
-        $arg = new ArgDef();
-        $this->assertNotNull($arg);
- 
-        $md1 = new MetaDef('a','A1');
-        $arg->addMetaDef($md1);
-        $md2 = new MetaDef('a','A2');
-        $arg->addMetaDef($md2);
-        $md3 = new MetaDef('a','A3');
-        $arg->addMetaDef($md3);
-
-        $this->assertEquals($arg->getMetaDefSize(),3);
-
-        $mds = $arg->getMetaDefs('a');
-        $this->assertEquals(count($mds),3);
-        $this->assertTrue($mds[0] === $md1);
-    }
-
     public function setUp(){
         print PHP_EOL . __CLASS__ . '->' . $this->getName() . '()' . PHP_EOL;
     }

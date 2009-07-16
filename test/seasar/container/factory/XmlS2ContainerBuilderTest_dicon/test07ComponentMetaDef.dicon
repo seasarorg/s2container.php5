@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
-"components21.dtd">
-<components>
-    <component name="a" class="\seasar\container\factory\A_XmlS2ContainerBuilderTest">
-        <meta name="year">2007</meta>
-    </component>
-</components>

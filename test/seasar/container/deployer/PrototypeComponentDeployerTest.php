@@ -89,16 +89,13 @@ class PrototypeComponentDeployerTest extends \PHPUnit_Framework_TestCase {
 class A_PrototypeComponentDeployerTest {}
 
 class B_PrototypeComponentDeployerTest {
-    public function __construct(B_PrototypeComponentDeployerTest $b) {
-    }
+    public function setB(B_PrototypeComponentDeployerTest $b) {}
 }
 
 class C_PrototypeComponentDeployerTest {
-    public function __construct(D_PrototypeComponentDeployerTest $b) {
-    }
+    public function setD(D_PrototypeComponentDeployerTest $d) {}
 }
 
 class D_PrototypeComponentDeployerTest {
-    public function __construct(C_PrototypeComponentDeployerTest $b) {
-    }
+    public function setC(C_PrototypeComponentDeployerTest $c) {}
 }

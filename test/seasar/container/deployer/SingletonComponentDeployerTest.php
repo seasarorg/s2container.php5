@@ -41,37 +41,6 @@ class SingletonComponentDeployerTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testCyclicReference1Step() {
-        $container = new \seasar\container\impl\S2ContainerImpl();
-        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\B_SingletonComponentDeployerTest');
-        $container->register($componentDef);
-        $deployer = new SingletonComponentDeployer($componentDef);
-        try {
-            $deployer->deploy();
-            $this->fail();
-        } catch(\seasar\container\exception\CyclicReferenceRuntimeException $e) {
-            print $e->getMessage() .PHP_EOL;
-        } catch(Exception $e) {
-            print $e->getMessage() .PHP_EOL;
-            $this->fail();
-        }
-    }
-
-    public function testCyclicReference2Step() {
-        $container = new \seasar\container\impl\S2ContainerImpl();
-        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\C_SingletonComponentDeployerTest');
-        $container->register($componentDef);
-        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\D_SingletonComponentDeployerTest');
-        $container->register($componentDef);
-        $deployer = new SingletonComponentDeployer($componentDef);
-        try {
-            $deployer->deploy();
-            $this->fail();
-        } catch(\seasar\container\exception\CyclicReferenceRuntimeException $e) {
-            print $e->getMessage() .PHP_EOL;
-        } catch(Exception $e) {
-            print $e->getMessage() .PHP_EOL;
-            $this->fail();
-        }
     }
 
     public function setUp(){
@@ -85,16 +54,13 @@ class SingletonComponentDeployerTest extends \PHPUnit_Framework_TestCase {
 class A_SingletonComponentDeployerTest {}
 
 class B_SingletonComponentDeployerTest {
-    public function __construct(B_SingletonComponentDeployerTest $b) {
-    }
+    public function setB(B_SingletonComponentDeployerTest $b) {}
 }
 
 class C_SingletonComponentDeployerTest {
-    public function __construct(D_SingletonComponentDeployerTest $b) {
-    }
+    public function setD(D_SingletonComponentDeployerTest $d) {}
 }
 
 class D_SingletonComponentDeployerTest {
-    public function __construct(C_SingletonComponentDeployerTest $b) {
-    }
+    public function setC(C_SingletonComponentDeployerTest $c) {}
 }

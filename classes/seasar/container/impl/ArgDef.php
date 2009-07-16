@@ -49,17 +49,11 @@ class ArgDef {
     private $childComponentDef = null;
 
     /**
-     * @var \seasar\container\util\MetaDefSupport
-     */
-    private $metaDefSupport    = null;
-
-    /**
      * ArgDefを構築します。
      *
      * @param mixed $value
      */
     public function __construct($value = null) {
-        $this->metaDefSupport= new \seasar\container\util\MetaDefSupport();
         $this->value= $value;
     }
 
@@ -146,42 +140,5 @@ class ArgDef {
      */
     public final function getChildComponentDef() {
          return $this->childComponentDef;
-    }
-
-    /**
-     * メタデータ定義を追加します。
-     *
-     * @param \seasar\container\impl\MetaDef $metaDef
-     */
-    public function addMetaDef(MetaDef $metaDef) {
-        $this->metaDefSupport->addMetaDef($metaDef);
-    }
-
-    /**
-     * インデックス番号indexで指定されたメタデータ定義を返します。
-     *
-     * @return \seasar\container\impl\MetaDef
-     */
-    public function getMetaDef($index) {
-        return $this->metaDefSupport->getMetaDef($index);
-    }
-
-    /**
-     * 指定したメタデータ定義名で登録されているメタデータ定義を取得します。
-     * メタデータ定義が登録されていない場合、要素数0の配列を返します。
-     *
-     * @return \seasar\container\impl\MetaDef
-     */
-    public function getMetaDefs($name) {
-        return $this->metaDefSupport->getMetaDefs($name);
-    }
-
-    /**
-     * メタデータ定義の数を返します。
-     *
-     * @return integer
-     */
-    public function getMetaDefSize() {
-        return $this->metaDefSupport->getMetaDefSize();
     }
 }
