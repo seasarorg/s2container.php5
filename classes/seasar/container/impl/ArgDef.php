@@ -100,7 +100,6 @@ class ArgDef {
         if ($this->childComponentDef instanceof ComponentDef) {
             $this->childComponentDef->setContainer($container);
         }
-        $this->metaDefSupport->setContainer($container);
     }
 
     /**

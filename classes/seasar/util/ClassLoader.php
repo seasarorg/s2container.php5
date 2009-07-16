@@ -176,7 +176,6 @@ ClassLoader::$CLASSES = array(
     'seasar\util\StringUtil' => S2CONTAINER_ROOT_DIR . '/classes/seasar/util/StringUtil.php',
     'seasar\util\Annotation' => S2CONTAINER_ROOT_DIR . '/classes/seasar/util/Annotation.php',
     'seasar\beans\AccessorMethodPropertyDesc' => S2CONTAINER_ROOT_DIR . '/classes/seasar/beans/AccessorMethodPropertyDesc.php',
-    'seasar\beans\PublicPropertyDesc' => S2CONTAINER_ROOT_DIR . '/classes/seasar/beans/PublicPropertyDesc.php',
     'seasar\beans\PropertyDesc' => S2CONTAINER_ROOT_DIR . '/classes/seasar/beans/PropertyDesc.php',
     'seasar\beans\BeanDescFactory' => S2CONTAINER_ROOT_DIR . '/classes/seasar/beans/BeanDescFactory.php',
     'seasar\beans\AbstractPropertyDesc' => S2CONTAINER_ROOT_DIR . '/classes/seasar/beans/AbstractPropertyDesc.php',

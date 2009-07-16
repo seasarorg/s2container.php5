@@ -96,16 +96,6 @@ class S2ContainerImplTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue($container->hasComponentDef('a_S2ContainerImplTest'));
     }
 
-    public function testPropertyBinding() {
-        $container = new S2ContainerImpl();
-        $componentDef = new ComponentDefImpl('\seasar\container\impl\A_S2ContainerImplTest');
-        $container->register($componentDef);
-        $componentDef = new ComponentDefImpl('\seasar\container\impl\D_S2ContainerImplTest', 'd');
-        $container->register($componentDef);
-        $component = $container->getComponent('d');
-        $this->assertTrue($component->a_S2ContainerImplTest instanceof \seasar\container\impl\A_S2ContainerImplTest);
-    }
-
     public function testClassComponentDefBuilder() {
         $container = new S2ContainerImpl();
         $this->assertFalse($container->hasComponentDef('e_s2container'));

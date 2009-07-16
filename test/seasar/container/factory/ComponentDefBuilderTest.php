@@ -45,11 +45,6 @@ class ComponentDefBuilderTest extends \PHPUnit_Framework_TestCase {
         $c = $container->getComponent(__NAMESPACE__ . '\C');
         $this->assertTrue($c->a instanceof A);
         $this->assertTrue($c->d instanceof D);
-
-        $container = new \seasar\container\impl\S2ContainerImpl;
-        $e = $container->getComponent(__NAMESPACE__ . '\E');
-        $this->assertTrue($e->a1 === null);
-        $this->assertTrue($e->a2 instanceof A);
     }
 
     public function testAspect() {

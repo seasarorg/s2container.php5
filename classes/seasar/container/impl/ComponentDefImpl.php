@@ -178,9 +178,8 @@ class ComponentDefImpl implements \seasar\container\ComponentDef {
     public function getPropertyDef($propertyName) {
         if($this->hasPropertyDef($propertyName)) {
             return $this->propertyDefs[$propertyName];
-        } else {
-            return null;
         }
+        throw new \OutOfRangeException($propertyName);
     }
 
     /**
@@ -194,6 +193,9 @@ class ComponentDefImpl implements \seasar\container\ComponentDef {
      * @see \seasar\container\util\PropertyDefSupport::addPropertyDef()
      */
     public function addPropertyDef(\seasar\container\impl\PropertyDef $propertyDef) {
+        if (!is_null($this->container)) {
+            $propertyDef->setContainer($this->container);
+        }
         $this->propertyDefs[$propertyDef->getPropertyName()] = $propertyDef;
     }
 
@@ -215,7 +217,10 @@ class ComponentDefImpl implements \seasar\container\ComponentDef {
      * @see \seasar\container\util\AspectDefSupport::getAspectDef()
      */
     public function getAspectDef($index) {
-        return $this->aspectDefs[$index];
+        if (isset($this->aspectDefs[$index])) {
+            return $this->aspectDefs[$index];
+        }
+        throw new \OutOfRangeException($propertyName);
     }
 
     /**
@@ -229,6 +234,9 @@ class ComponentDefImpl implements \seasar\container\ComponentDef {
      * @see \seasar\container\util\AspectDefSupport::addAspectDef()
      */
     public function addAspectDef(\seasar\container\impl\AspectDef $aspectDef) {
+        if (!is_null($this->container)) {
+            $aspectDef->setContainer($this->container);
+        }
         $this->aspectDefs[] = $aspectDef;
     }
 

@@ -116,37 +116,9 @@ class SimpleComponentDef implements \seasar\container\ComponentDef {
      */
 
     /**
-     * @see \seasar\container\ComponentDef::addArgDef()
-     */
-    public function addArgDef(\seasar\container\impl\ArgDef $argDef) {
-        throw new \seasar\exception\UnsupportedOperationException(__METHOD__);
-    }
-
-    /**
      * @see \seasar\container\ComponentDef::addPropertyDef()
      */
     public function addPropertyDef(\seasar\container\impl\PropertyDef $propertyDef) {
-        throw new \seasar\exception\UnsupportedOperationException(__METHOD__);
-    }
-
-    /**
-     * @see \seasar\container\ComponentDef::addInitMethodDef()
-     */
-    public function addInitMethodDef(\seasar\container\impl\InitMethodDef $methodDef) {
-        throw new \seasar\exception\UnsupportedOperationException(__METHOD__);
-    }
-
-    /**
-     * @see \seasar\container\ComponentDef::addAspectDef()
-     */
-    public function addAspectDef(\seasar\container\impl\AspectDef $aspectDef) {
-        throw new \seasar\exception\UnsupportedOperationException(__METHOD__);
-    }
-
-    /**
-     * @see \seasar\container\util\ArgDefAware::getArgDefSize()
-     */
-    public function getArgDefSize() {
         throw new \seasar\exception\UnsupportedOperationException(__METHOD__);
     }
 
@@ -158,51 +130,9 @@ class SimpleComponentDef implements \seasar\container\ComponentDef {
     }
 
     /**
-     * @see \seasar\container\util\InitMethodDefAware::getInitMethodDefSize()
-     */
-    public function getInitMethodDefSize() {
-        throw new \seasar\exception\UnsupportedOperationException(__METHOD__);
-    }
-
-    /**
-     * @see \seasar\container\util\AspectDefAware::getAspectDefSize()
-     */
-    public function getAspectDefSize() {
-        throw new \seasar\exception\UnsupportedOperationException(__METHOD__);
-    }
-
-    /**
-     * @see \seasar\container\util\ArgDefAware::getArgDefs()
-     */
-    public function getArgDefs() {
-        throw new \seasar\exception\UnsupportedOperationException(__METHOD__);
-    }
-
-    /**
      * @see \seasar\container\util\PropertyDefAware::getPropertyDefs()
      */
     public function getPropertyDefs() {
-        throw new \seasar\exception\UnsupportedOperationException(__METHOD__);
-    }
-
-    /**
-     * @see \seasar\container\util\InitMethodDefAware::getInitMethodDefs()
-     */
-    public function getInitMethodDefs() {
-        throw new \seasar\exception\UnsupportedOperationException(__METHOD__);
-    }
-
-    /**
-     * @see \seasar\container\util\AspectDefAware::getAspectDefs()
-     */
-    public function getAspectDefs() {
-        throw new \seasar\exception\UnsupportedOperationException(__METHOD__);
-    }
-
-    /**
-     * @see \seasar\container\util\ArgDefAware::getArgDef()
-     */
-    public function getArgDef($index) {
         throw new \seasar\exception\UnsupportedOperationException(__METHOD__);
     }
 
@@ -214,6 +144,27 @@ class SimpleComponentDef implements \seasar\container\ComponentDef {
     }
 
     /**
+     * @see \seasar\container\ComponentDef::addAspectDef()
+     */
+    public function addAspectDef(\seasar\container\impl\AspectDef $aspectDef) {
+        throw new \seasar\exception\UnsupportedOperationException(__METHOD__);
+    }
+
+    /**
+     * @see \seasar\container\util\AspectDefAware::getAspectDefSize()
+     */
+    public function getAspectDefSize() {
+        throw new \seasar\exception\UnsupportedOperationException(__METHOD__);
+    }
+
+    /**
+     * @see \seasar\container\util\AspectDefAware::getAspectDefs()
+     */
+    public function getAspectDefs() {
+        throw new \seasar\exception\UnsupportedOperationException(__METHOD__);
+    }
+
+    /**
      * @see \seasar\container\util\PropertyDefAware::hasPropertyDef()
      */
     public function hasPropertyDef($propertyName) {
@@ -221,44 +172,9 @@ class SimpleComponentDef implements \seasar\container\ComponentDef {
     }
 
     /**
-     * @see \seasar\container\util\InitMethodDefAware::getInitMethodDef()
-     */
-    public function getInitMethodDef($index) {
-        throw new \seasar\exception\UnsupportedOperationException(__METHOD__);
-    }
-
-    /**
      * @see \seasar\container\util\AspectDefAware::getAspectDef()
      */
     public function getAspectDef($index) {
-        throw new \seasar\exception\UnsupportedOperationException(__METHOD__);
-    }
-    
-    /**
-     * @see \seasar\container\util\MetaDefAware::addMetaDef()
-     */
-    public function addMetaDef(\seasar\container\impl\MetaDef $metaDef) {
-        throw new \seasar\exception\UnsupportedOperationException(__METHOD__);
-    }
-    
-    /**
-     * @see \seasar\container\util\MetaDefAware::getMetaDef()
-     */
-    public function getMetaDef($index) {
-        throw new \seasar\exception\UnsupportedOperationException(__METHOD__);
-    }
-
-    /**
-     * @see \seasar\container\util\MetaDefAware::getMetaDefs()
-     */
-    public function getMetaDefs($name) {
-        throw new \seasar\exception\UnsupportedOperationException(__METHOD__);
-    }
-    
-    /**
-     * @see \seasar\container\util\MetaDefAware::getMetaDefSize()
-     */
-    public function getMetaDefSize() {
         throw new \seasar\exception\UnsupportedOperationException(__METHOD__);
     }
 

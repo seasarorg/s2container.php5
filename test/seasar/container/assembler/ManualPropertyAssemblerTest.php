@@ -44,31 +44,6 @@ class ManualPropertyAssemblerTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($component->getName(), 'hoge');
     }
 
-    public function testManualAssembleWithPublicProperty() {
-        $container = new \seasar\container\impl\S2ContainerImpl();
-        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\C_ManualPropertyAssemblerTest');
-        $componentDef->addPropertyDef(new \seasar\container\impl\PropertyDef('name', 'hoge'));
-        $component = new \seasar\container\assembler\C_ManualPropertyAssemblerTest;
-        $assembler = new ManualPropertyAssembler($componentDef);
-        $assembler->assemble($component);
-        $this->assertEquals($component->name, 'hoge');
-    }
-
-    public function testManualAssembleWithPublicPropertyArray() {
-        $container = new \seasar\container\impl\S2ContainerImpl();
-        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\D_ManualPropertyAssemblerTest', 'd');
-        $container->register($componentDef);
-        $container->register(new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\E_ManualPropertyAssemblerTest', 'hoge'));
-        $container->register(new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\E_ManualPropertyAssemblerTest', 'hoge'));
-        $propDef = new \seasar\container\impl\PropertyDef('name');
-        $propDef->setChildComponentDef($container->getComponentDef('hoge'));
-        $componentDef->addPropertyDef($propDef);
-        $component = new \seasar\container\assembler\D_ManualPropertyAssemblerTest;
-        $assembler = new ManualPropertyAssembler($componentDef);
-        $assembler->assemble($component);
-        $this->assertEquals(count($component->name), 2);
-    }
-
     public function testManualAssembleWithSetterMethodArray() {
         $container = new \seasar\container\impl\S2ContainerImpl();
         $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\D_ManualPropertyAssemblerTest', 'd');
@@ -98,21 +73,6 @@ class ManualPropertyAssemblerTest extends \PHPUnit_Framework_TestCase {
         } catch(\seasar\exception\PropertyNotFoundRuntimeException $e) {
             print $e->getMessage() . PHP_EOL;
         }
-    }
-
-    public function testManualAssembleWithPublicPropertyArrayOne() {
-        $container = new \seasar\container\impl\S2ContainerImpl();
-        $componentDef = new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\D_ManualPropertyAssemblerTest', 'd');
-        $container->register($componentDef);
-        $container->register(new \seasar\container\impl\ComponentDefImpl(__NAMESPACE__ . '\E_ManualPropertyAssemblerTest', 'hoge'));
-        $propDef = new \seasar\container\impl\PropertyDef('name');
-        $propDef->setChildComponentDef($container->getComponentDef('hoge'));
-        $componentDef->addPropertyDef($propDef);
-        $component = new \seasar\container\assembler\D_ManualPropertyAssemblerTest;
-        $assembler = new ManualPropertyAssembler($componentDef);
-        $assembler->assemble($component);
-        $this->assertTrue(is_array($component->name));
-        $this->assertEquals(count($component->name), 1);
     }
 
     public function setUp(){

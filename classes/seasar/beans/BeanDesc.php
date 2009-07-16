@@ -53,7 +53,6 @@ class BeanDesc {
      */
     public function __construct(\ReflectionClass $clazz) {
         $this->beanClass = $clazz;
-        $this->setupPublicPropertyDescs();
         $this->setupAccessorMethodPropertyDescs();
     }
 
@@ -148,50 +147,6 @@ class BeanDesc {
             return $this->typehintPropertyDescs[$name];
         }
         throw new \seasar\exception\PropertyNotFoundRuntimeException($this->beanClass, $name);
-    }
-
-    /**
-     * アクセス修飾子がpublicなプロパティをすべて取得します。
-     * また、アクセス修飾子がpublicなプロパティで、タイプヒントされているプロパティをすべて取得します。
-     */
-    private function setupPublicPropertyDescs() {
-        $properties = $this->beanClass->getDefaultProperties();
-        $propTypehintKey = \seasar\container\Config::$PROPERTY_TYPEHINT_KEY;
-        $propTypehintKeyLen = strlen($propTypehintKey);
-        foreach($properties as $name => $value) {
-            if ($this->beanClass->getProperty($name)->isPublic()){
-                $propertyDesc = new PublicPropertyDesc($this->beanClass, $name);
-                $this->propertyDescs[$name] = $propertyDesc;
-                if (true === \seasar\container\Config::$PROPERTY_TYPEHINT_NULL and
-                    $value == null) {
-                    $propertyDesc->setArrayAcceptable(false);
-                    $propertyDesc->setTypehint($name);
-                    $this->typehintPropertyDescs[$name] = $propertyDesc;
-                } else if (is_string($value) and 
-                    0 === stripos($value, $propTypehintKey)) {
-                    $typehint = trim(substr($value, $propTypehintKeyLen));
-                    if ($typehint === '') {
-                        $typehint = $name;
-                    }
-                    if (0 === strpos(strrev($typehint), '][')) {
-                        $typehint = substr($typehint, 0, -2);
-                        if ($typehint === '') {
-                            $typehint = $name;
-                        }
-                        $propertyDesc->setArrayAcceptable(true);
-                    } else {
-                        $propertyDesc->setArrayAcceptable(false);
-                    }
-                    if (class_exists($typehint)) {
-                        $propertyDesc->setTypehint($typehint);
-                        $propertyDesc->setTypehintClass(new \ReflectionClass($typehint));
-                    } else {
-                        $propertyDesc->setTypehint($typehint);
-                    }
-                    $this->typehintPropertyDescs[$name] = $propertyDesc;
-                }
-            }
-        }
     }
 
     /**
