@@ -1,31 +1,6 @@
 
-2009-07-15 s2container-2.0.1
+2009-07-15 s2container-light-2.0.0
 
-	* add: S2ApplicationContext::createSingletonConatiner()メソッドを追加しました。
-	* modify: S2ContainerImplクラスで、親コンテナのコンポーネントを検索できるように修正しました。
-	* modify: S2Container::getComponent()メソッドで、コンポーネントが見つからなかった場合、コンポーネントキーがクラスを表している時は、そのクラスを用いてComponentDefを生成しリターンするようにしました。
+	* info: s2container-2.0.0からfork
 
 
-2009-07-11 s2container-2.0.0
-
-	* info: PHP-5.3.0で動作確認を行いました。
-	* modify: ログ出力レベルを修正しました。 (default WARN)
-	* modify: S2ApplicationContextの各メソッド引数のタイプヒントを修正しました。
-	* info: s2container-2.0.0 release.
-
-2009-06-12 s2container-2.0.0-rc2
-
-	* info: PHP-5.3.0RC3で動作確認を行いました。
-	* info: PEARパッケージを作成しました。require_once('S2Container.php'); でS2Containerを利用できます。
-	* info: s2container-2.0.0-rc2 release.
-
-2009-06-09 s2container-2.0.0-rc2
-
-	* modify: seasar\container\impl\S2ContainerImpl::getComponentDefInternal()で、namespaceで指定された子コンテナを取得後、S2Containerインスタンスかどうかを確認するように修正しました。
-
-2009-04-05 s2container-2.0.0-rc1
-
-	* info: s2container-2.0.0-rc1 release.
-	* info: PHP-5.3で導入されたnamespaceを用いて実装しました。s2container-1.0ではクラス名に「S2Container_」が付いていましたが、s2container-2.0では、namespace seasar\container; を使用しています。
-	* info: s2container-1.0からの機能の追加、削除、変更点は、http://s2container.php5.seasar.org/2.0/ja/docbook/misc.html#misc.spec を参照下さい。
-	* caution: s2container-2.0はs2container-1.0と互換がありません。このため、S2Dao.PHPなどの他のSeasar.PHPプロダクトと共にs2container-2.0を使用することはできません。(2009/04)

@@ -41,37 +41,6 @@ abstract class Config {
      * @see \seasar\container\ComponentDef
      */
     const COMPONENT_DEF_NAME = "componentDef";
-
-    /**
-     * S2ContainerBuilderをファイルの拡張子ごとに設定します。
-     *
-     * @var array
-     */
-    public static $CONTAINER_BUILDERS = array(
-                      'dicon' => 'seasar\container\factory\XmlS2ContainerBuilder',
-                      'xml'   => 'seasar\container\factory\XmlS2ContainerBuilder');
-
-    /**
-     * ダイコンファイルのDTD検証を実施するかどうかを設定します。
-     *
-     * @var boolean
-     */
-    public static $DOM_VALIDATE = false;
-
-    /**
-     * 自動Propertyインジェクションのタイプヒントを記述するためのキー文字列
-     *
-     * @var string
-     */
-    public static $PROPERTY_TYPEHINT_KEY = 'S2Binding';
-
-    /**
-     * パブリックPropertyのデフォルト値がnullの場合に、自動Propertyインジェクションを
-     * 実施するかどうかを指定します。
-     *
-     * @boolean
-     */
-    public static $PROPERTY_TYPEHINT_NULL = true;
 }
 
 /**

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <package packagerversion="1.5.0" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0     http://pear.php.net/dtd/tasks-1.0.xsd     http://pear.php.net/dtd/package-2.0     http://pear.php.net/dtd/package-2.0.xsd">
- <name>S2Container</name>
+ <name>S2ContainerLight</name>
  <channel>pear.php.net</channel>
  <summary>S2Container.PHP, a lightweight container supports DI and AOP.</summary>
  <description>S2Container is a lightweight container which supports DI(Dependency Injection) and AOP(Aspect Oriented Programming). The goal of S2Container.PHP project is to port Java Seasar2 to PHP5.</description>
