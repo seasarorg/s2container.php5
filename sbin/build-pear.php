@@ -53,9 +53,9 @@
             continue;
         }
 
-        print "    <file role=\"php\" name=\"S2Container/$item\" />" . PHP_EOL;
+        print "    <file role=\"php\" name=\"S2ContainerLight/$item\" />" . PHP_EOL;
     }
-    print "    <file role=\"php\" name=\"S2Container.php\" />" . PHP_EOL;
+    print "    <file role=\"php\" name=\"S2ContainerLight.php\" />" . PHP_EOL;
 ?>
   </dir>
  </contents>
