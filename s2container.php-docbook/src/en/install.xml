@@ -24,7 +24,7 @@ S2Container             version       state
   <para>By requiring "S2Container.php", S2Container.PHP will be available.</para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
-require_once('S2Container/S2Container.php');
+require_once('S2Container.php');
 ?>
 ]]></programlisting>
 

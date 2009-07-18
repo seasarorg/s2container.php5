@@ -23,7 +23,7 @@ S2Container             version       state
   <para>S2Container.php を require します。S2Container.PHPが使用可能となります。</para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
-require_once('S2Container/S2Container.php');
+require_once('S2Container.php');
 ?>
 ]]></programlisting>
 

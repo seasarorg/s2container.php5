@@ -6,7 +6,49 @@
   </sect1>
 
   <!-- ################################################################### -->
-  <sect1 id="quick010"><title>コンポーネントの登録と取得</title>
+  <sect1 id="quick005"><title>コンポーネントの取得</title>
+    <para>
+        コンポーネントの取得は<link linkend="dicon.application">S2ApplicationContextクラス</link>のgetメソッドで行います。
+    getメソッドの引数で、コンポーネントのキーであるクラス名を指定します。
+    </para>
+    <itemizedlist><listitem>quickstart005.php</listitem></itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container.php');
+use seasar\container\S2ApplicationContext as s2app;
+
+class Service {}
+
+class Action {
+    public function setService(Service $service) {
+        $this->service = $service;
+    }
+}
+
+$action = s2app::get('Action');
+var_dump($action);
+]]></programlisting>
+
+<para>実行結果は次のようになります。ActionインスタンスにServiceインスタンスがインジェクションされます。</para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+% php quickstart005.php
+object(Action)#26 (1) {
+  ["service"]=>
+  object(Service)#39 (0) {
+  }
+}
+%
+]]></programlisting>
+
+<para>コンポーネントにクラス名とは別にコンポーネント名を付ける場合は、次の「<link linkend="quick010">コンポーネントの登録</link>」を参照下さい。</para>
+<sbr/>
+    <note><title>NOTE</title>
+      <para>このExampleは examples/quickstart/quickstart005.php にあります。</para>
+    </note>
+  </sect1>
+
+  <!-- ################################################################### -->
+  <sect1 id="quick010"><title>コンポーネントの登録</title>
     <para>
         コンポーネントの登録は<link linkend="dicon.application.register">s2component関数</link>で行います。s2component関数は、S2ApplicationContextクラスのregisterメソッドを
         用いてコンポーネントを登録します。登録したコンポーネントはS2ApplicationContextクラスのgetメソッドで取得できます。
@@ -14,7 +56,7 @@
     <itemizedlist><listitem>quickstart010.php</listitem></itemizedlist>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
-require_once('S2Container/S2Container.php');
+require_once('S2Container.php');
 use seasar\container\S2ApplicationContext as s2app;
 
 class Action {}
@@ -27,7 +69,7 @@ var_dump($action);
     <para>コンポーネント名を指定して登録する場合は、s2component関数の戻り値であるComponentInfoDefインスタンスで指定します。</para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
-require_once('S2Container/S2Container.php');
+require_once('S2Container.php');
 use seasar\container\S2ApplicationContext as s2app;
 
 class Action {}
@@ -87,7 +129,7 @@ class Service {
     </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
-require_once('S2Container/S2Container.php');
+require_once('S2Container.php');
 use seasar\container\S2ApplicationContext as s2app;
 
 s2app::import(dirname(__FILE__) . '/classes');
@@ -112,7 +154,7 @@ var_dump($action);
     </para>
     <itemizedlist><listitem>quickstart030.php</listitem></itemizedlist>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-require_once('S2Container/S2Container.php');
+require_once('S2Container.php');
 use seasar\container\S2ApplicationContext as s2app;
 
 s2app::import(dirname(__FILE__) . '/classes');
@@ -176,7 +218,7 @@ class Action{
     </para>
     <itemizedlist><listitem>quickstart030.php</listitem></itemizedlist>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-require_once('S2Container/S2Container.php');
+require_once('S2Container.php');
 use seasar\container\S2ApplicationContext as s2app;
 
 s2app::import(dirname(__FILE__) . '/classes');
@@ -215,7 +257,7 @@ $action->getById();
     <itemizedlist><listitem>quickstart050.php</listitem></itemizedlist>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
-require_once('S2Container/S2Container.php');
+require_once('S2Container.php');
 use seasar\container\S2ApplicationContext as s2app;
 use seasar\util\ClassLoader as s2loader;
 

@@ -5,9 +5,50 @@
     <para>Please install S2Container.PHP according to an installation document first.</para>
   </sect1>
 
-
   <!-- ################################################################### -->
-  <sect1 id="quick010"><title>Registration and getting of a component</title>
+  <sect1 id="quick005"><title>Getting a component</title>
+    <para>
+    You can get a component by the get method of <link linkend="dicon.application">S2ApplicationContext</link> class.
+    The class name that is the key to the component is specified by the argument of the get method.
+    </para>
+    <itemizedlist><listitem>quickstart005.php</listitem></itemizedlist>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+<?php
+require_once('S2Container.php');
+use seasar\container\S2ApplicationContext as s2app;
+
+class Service {}
+
+class Action {
+    public function setService(Service $service) {
+        $this->service = $service;
+    }
+}
+
+$action = s2app::get('Action');
+var_dump($action);
+]]></programlisting>
+
+<para>The execution result is as follows. The Service instance is injected to the Action instance.</para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+% php quickstart005.php
+object(Action)#26 (1) {
+  ["service"]=>
+  object(Service)#39 (0) {
+  }
+}
+%
+]]></programlisting>
+
+<para>Please refer to the following "<link linkend="quick010">Registration of the component</link>" when you name the component name to the component besides the class name. </para>
+<sbr/>
+    <note><title>NOTE</title>
+      <para>This Example is located at "examples/quickstart/quickstart005.php".</para>
+    </note>
+  </sect1>
+  
+  <!-- ################################################################### -->
+  <sect1 id="quick010"><title>Registration of the component</title>
     <para>
     <link linkend="dicon.application.register">The s2component function</link> performs registration of a component.
     The s2component function registers a component using the register method of S2ApplicationContext class.
@@ -16,7 +57,7 @@
     <itemizedlist><listitem>quickstart010.php</listitem></itemizedlist>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
-require_once('S2Container/S2Container.php');
+require_once('S2Container.php');
 use seasar\container\S2ApplicationContext as s2app;
 
 class Action {}
@@ -29,7 +70,7 @@ var_dump($action);
     <para>When specifying a component name, it specifies by the ComponentInfoDef instance which is a return value of the s2component function.</para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
-require_once('S2Container/S2Container.php');
+require_once('S2Container.php');
 use seasar\container\S2ApplicationContext as s2app;
 
 class Action {}
@@ -91,7 +132,7 @@ class Service {
     </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
-require_once('S2Container/S2Container.php');
+require_once('S2Container.php');
 use seasar\container\S2ApplicationContext as s2app;
 
 s2app::import(dirname(__FILE__) . '/classes');
@@ -116,7 +157,7 @@ var_dump($action);
     </para>
     <itemizedlist><listitem>quickstart030.php</listitem></itemizedlist>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-require_once('S2Container/S2Container.php');
+require_once('S2Container.php');
 use seasar\container\S2ApplicationContext as s2app;
 
 s2app::import(dirname(__FILE__) . '/classes');
@@ -180,7 +221,7 @@ class Action{
     </para>
     <itemizedlist><listitem>quickstart030.php</listitem></itemizedlist>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-require_once('S2Container/S2Container.php');
+require_once('S2Container.php');
 use seasar\container\S2ApplicationContext as s2app;
 
 s2app::import(dirname(__FILE__) . '/classes');
@@ -220,7 +261,7 @@ $action->getById();
     <itemizedlist><listitem>quickstart050.php</listitem></itemizedlist>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
-require_once('S2Container/S2Container.php');
+require_once('S2Container.php');
 use seasar\container\S2ApplicationContext as s2app;
 use seasar\util\ClassLoader as s2loader;
 
