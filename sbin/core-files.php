@@ -4,9 +4,16 @@ $time_start = microtime(true);
 
 use \seasar\container\S2ApplicationContext as s2app;
 
-class Hoge{}
+class Service {}
 
-$hoge = s2app::get('Hoge');
+class Action {
+    public function setService(Service $service) {
+        $this->service = $service;
+    }
+}
+
+
+$hoge = s2app::get('Action');
 
 $time_end = microtime(true);
 $time = $time_end - $time_start;
