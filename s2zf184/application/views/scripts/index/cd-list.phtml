@@ -1,0 +1,6 @@
+
+<?php foreach($this->dtos as $dto): ?>
+  <?php echo $this->escape($dto->ID); ?>      | 
+  <?php echo $this->escape($dto->TITLE); ?>   | 
+  <?php echo $this->escape($dto->CONTENT); ?>
+<?php endforeach; ?>
