@@ -18,6 +18,6 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 }
 
 
-// ƒ‚ƒWƒ…[ƒ‹\¬‚Ìê‡
+// ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«æ§‹æˆã®å ´åˆ
 // class Sample_Bootstrap extends Zend_Application_Module_Bootstrap {}
-// application.ini ‚É "resources.modules =" ‚ğ’Ç‰Á
+// application.ini ã« "resources.modules =" ã‚’è¿½åŠ 
