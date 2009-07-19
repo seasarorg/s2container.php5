@@ -26,6 +26,24 @@
  * @author    klove
  */
 class Seasar_Zf_Controller_S2ActionHelper extends Zend_Controller_Action_Helper_Abstract {
+
+    /**
+     * モジュールディレクトリのdiconsディレクトリ以下にあるS2Container設定ファイルを読み込みます。
+     * 次のディレクトリ構成をとります。
+     *   - module directory/
+     *     +- dicons/
+     *        +- contorller name/
+     *           +- action name.php
+     *
+     * S2Container設定ファイル内では、次の変数が使用可能です。
+     *   - @var Zend_Controller_Request_Abstract $request
+     *   - @var string $module モジュール名
+     *   - @var string $controller コントローラ名
+     *   - @var string $action アクション名
+     *   - @var string $moduleDir モジュールディレクトリパス
+     *
+     * @see Zend_Controller_Action_Helper_Abstract::preDispatch()
+     */
     public function preDispatch() {
         $request    = $this->getRequest();
         $module     = $request->getModuleName();
@@ -43,16 +61,28 @@ class Seasar_Zf_Controller_S2ActionHelper extends Zend_Controller_Action_Helper_
         }
     }
 
+    /**
+     * @see Zend_Controller_Action_Helper_Abstract::getName()
+     */
     public function getName() {
         return 'S2';
     }
 
+    /**
+     * @see Zend_Controller_Action_Helper_Abstract::direct()
+     * @param string $key コンポーネントキー
+     * @return object
+     */
     public function direct($key) {
         require_once(APPLICATION_PATH . '/configs/s2.php');
         return \seasar\container\S2ApplicationContext::get($key);
     }
 
-    public function __get($name) {
-        return $this->direct($name);
+    /**
+     * @param string $key コンポーネントキー
+     * @return object
+     */
+    public function __get($key) {
+        return $this->direct($key);
     }
 }
