@@ -15,7 +15,7 @@
 // | governing permissions and limitations under the License.             |
 // +----------------------------------------------------------------------+
 /**
- * S2Container‚ğg—p‚·‚éZend_Controller‚ÌƒAƒNƒVƒ‡ƒ“ƒwƒ‹ƒp[‚Å‚·B
+ * S2Containerã‚’ä½¿ç”¨ã™ã‚‹Zend_Controllerã®ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ãƒ˜ãƒ«ãƒ‘ãƒ¼ã§ã™ã€‚
  *
  * @copyright 2005-2009 the Seasar Foundation and the Others.
  * @license   http://www.apache.org/licenses/LICENSE-2.0
@@ -28,19 +28,19 @@
 class Seasar_Zf_Controller_S2ActionHelper extends Zend_Controller_Action_Helper_Abstract {
 
     /**
-     * ƒ‚ƒWƒ…[ƒ‹ƒfƒBƒŒƒNƒgƒŠ‚ÌdiconsƒfƒBƒŒƒNƒgƒŠˆÈ‰º‚É‚ ‚éS2Containerİ’èƒtƒ@ƒCƒ‹‚ğ“Ç‚İ‚İ‚Ü‚·B
-     * Ÿ‚ÌƒfƒBƒŒƒNƒgƒŠ\¬‚ğ‚Æ‚è‚Ü‚·B
+     * ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã®diconsãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªä»¥ä¸‹ã«ã‚ã‚‹S2Containerè¨­å®šãƒ•ã‚¡ã‚¤ãƒ«ã‚’èª­ã¿è¾¼ã¿ã¾ã™ã€‚
+     * æ¬¡ã®ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªæ§‹æˆã‚’ã¨ã‚Šã¾ã™ã€‚
      *   - module directory/
      *     +- dicons/
      *        +- contorller name/
      *           +- action name.php
      *
-     * S2Containerİ’èƒtƒ@ƒCƒ‹“à‚Å‚ÍAŸ‚Ì•Ï”‚ªg—p‰Â”\‚Å‚·B
+     * S2Containerè¨­å®šãƒ•ã‚¡ã‚¤ãƒ«å†…ã§ã¯ã€æ¬¡ã®å¤‰æ•°ãŒä½¿ç”¨å¯èƒ½ã§ã™ã€‚
      *   - @var Zend_Controller_Request_Abstract $request
-     *   - @var string $module ƒ‚ƒWƒ…[ƒ‹–¼
-     *   - @var string $controller ƒRƒ“ƒgƒ[ƒ‰–¼
-     *   - @var string $action ƒAƒNƒVƒ‡ƒ“–¼
-     *   - @var string $moduleDir ƒ‚ƒWƒ…[ƒ‹ƒfƒBƒŒƒNƒgƒŠƒpƒX
+     *   - @var string $module ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«å
+     *   - @var string $controller ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©å
+     *   - @var string $action ã‚¢ã‚¯ã‚·ãƒ§ãƒ³å
+     *   - @var string $moduleDir ãƒ¢ã‚¸ãƒ¥ãƒ¼ãƒ«ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãƒ‘ã‚¹
      *
      * @see Zend_Controller_Action_Helper_Abstract::preDispatch()
      */
@@ -70,7 +70,7 @@ class Seasar_Zf_Controller_S2ActionHelper extends Zend_Controller_Action_Helper_
 
     /**
      * @see Zend_Controller_Action_Helper_Abstract::direct()
-     * @param string $key ƒRƒ“ƒ|[ƒlƒ“ƒgƒL[
+     * @param string $key ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚­ãƒ¼
      * @return object
      */
     public function direct($key) {
@@ -79,7 +79,7 @@ class Seasar_Zf_Controller_S2ActionHelper extends Zend_Controller_Action_Helper_
     }
 
     /**
-     * @param string $key ƒRƒ“ƒ|[ƒlƒ“ƒgƒL[
+     * @param string $key ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚­ãƒ¼
      * @return object
      */
     public function __get($key) {
