@@ -72,6 +72,15 @@ abstract class Config {
      * @boolean
      */
     public static $PROPERTY_TYPEHINT_NULL = true;
+
+    /**
+     * S2Container::getComponent()でコンポーネントが見つからなかった場合に、コンポーネントキーがクラスを表す場合は、
+     * 自動でコンポーネントを登録するかどうかを指定します。
+     *
+     * @boolean
+     */
+    public static $AUTO_REGISTER_WHEN_NOT_FOUND = true;
+
 }
 
 /**

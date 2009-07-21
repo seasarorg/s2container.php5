@@ -2,5 +2,9 @@
 
 php build.php
 cd ../test
-phpunit --bootstrap test.inc.php --filter $1 seasar
 
+if [ "x$1" = "x" ];then
+  phpunit --bootstrap test.inc.php seasar
+else
+  phpunit --bootstrap test.inc.php --filter $1 seasar
+fi
