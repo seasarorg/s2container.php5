@@ -41,6 +41,15 @@ abstract class Config {
      * @see \seasar\container\ComponentDef
      */
     const COMPONENT_DEF_NAME = "componentDef";
+
+    /**
+     * S2Container::getComponent()でコンポーネントが見つからなかった場合に、コンポーネントキーがクラスを表す場合は、
+     * 自動でコンポーネントを登録するかどうかを指定します。
+     *
+     * @boolean
+     */
+    public static $AUTO_REGISTER_WHEN_NOT_FOUND = true;
+
 }
 
 /**
@@ -49,10 +58,7 @@ abstract class Config {
 \seasar\exception\S2RuntimeException::$MESSAGES[105] = '"autobinding def name [$args[0]] not found."';
 \seasar\exception\S2RuntimeException::$MESSAGES[106] = '"instance def name [$args[0]] not found."';
 \seasar\exception\S2RuntimeException::$MESSAGES[107] = '"the circulation reference was occurred in [$args[0]]"';
-\seasar\exception\S2RuntimeException::$MESSAGES[108] = '"container builder not found for ext [$args[0]]."';
 \seasar\exception\S2RuntimeException::$MESSAGES[109] = '"component [$args[0]] not found."';
-\seasar\exception\S2RuntimeException::$MESSAGES[110] = '"child container [$args[0]] not found."';
-\seasar\exception\S2RuntimeException::$MESSAGES[111] = '"unmatch constructor parameters of class [$args[0]]."';
 \seasar\exception\S2RuntimeException::$MESSAGES[112] = '"the circulation instantiation was occurred in [$args[0]]."';
 \seasar\exception\S2RuntimeException::$MESSAGES[113] = '"property [$args[1]] not found in [$args[0]]."';
 \seasar\exception\S2RuntimeException::$MESSAGES[114] = '"The circulation include was occurred in $args[0], pathway $args[1]."';
