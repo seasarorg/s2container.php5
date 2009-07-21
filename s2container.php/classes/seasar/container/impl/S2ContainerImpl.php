@@ -268,6 +268,9 @@ class S2ContainerImpl implements \seasar\container\S2Container {
             return $cd;
         }
 
+        if (false === \seasar\container\Config::$AUTO_REGISTER_WHEN_NOT_FOUND) {
+            return null;
+        }
         // キーがクラスやインターフェースの場合は、コンポーネント化する。
         if (class_exists($key) || interface_exists($key)) {
             $refClass = new \ReflectionClass($key);
