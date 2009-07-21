@@ -15,7 +15,7 @@ class Service_SampleService2Test extends PHPUnit_Framework_TestCase {
 
     public function setUp() {
         s2app::init();
-        s2component('Service_SampleService2')->setName('service2');
+        require(APPLICATION_PATH . '/dicons/index/cd-list2.php');
         $this->service = s2app::get('service2');
     }
 

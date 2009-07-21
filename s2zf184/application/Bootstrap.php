@@ -15,6 +15,17 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     {
         Zend_Controller_Action_HelperBroker::addHelper(new Seasar_Zf_Controller_S2ActionHelper);
     }
+
+    protected function _initView()
+    {
+        $view = new Zend_View();
+        $view->doctype('HTML4_LOOSE');
+        $view->headTitle('My First S2ZF');
+        $viewRenderer = Zend_Controller_Action_HelperBroker::getStaticHelper('ViewRenderer');
+        $viewRenderer->setView($view);
+        return $view;
+    }
+
 }
 
 

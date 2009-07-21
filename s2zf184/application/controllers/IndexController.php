@@ -14,10 +14,10 @@ class IndexController extends Zend_Controller_Action
     }
 
     /**
-     * �R���|�[�l���g���N���X���Ŏ擾���܂��B
-     * �R���|�[�l���g���N���X���Ŏ擾����ꍇ�́A
+     * コンポーネントをクラス名で取得します。
+     * コンポーネントをクラス名で取得する場合は、
      *   APPLICATION_PATH/dicons/index/cd-list.php
-     * ���ł̓��ʂȐݒ�͕K�v����܂���B
+     * 等での特別な設定は必要ありません。
      */
     public function cdListAction()
     {
@@ -25,8 +25,8 @@ class IndexController extends Zend_Controller_Action
     }
 
     /**
-     * �R���|�[�l���g���uservice2�v�Ŏ擾���܂��B
-     * �R���|�[�l���g���̐ݒ�ɂ��ẮAAPPLICATION_PATH/dicons/index/cd-list2.php���Q�Ɖ������B
+     * コンポーネント名「service2」で取得します。
+     * コンポーネント名の設定については、APPLICATION_PATH/dicons/index/cd-list2.phpを参照下さい。
      */
     public function cdList2Action()
     {
