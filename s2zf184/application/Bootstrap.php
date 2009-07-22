@@ -1,5 +1,9 @@
 <?php
-
+/**
+ * Bootstrapクラスの設定はapplication.iniの設定よりも優先される。
+ * Bootstrapクラスとapplication.iniに同一Resourceの設定が存在した場合は、
+ * Bootstrapクラスの設定が有効となる。
+ */
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
 
@@ -11,7 +15,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         new Zend_Application_Module_Autoloader(array('namespace' => '', 'basePath'  => dirname(__FILE__)));
     }
 
-    protected function _initHelper()
+    protected function _initActionHelper()
     {
         Zend_Controller_Action_HelperBroker::addHelper(new Seasar_Zf_Controller_S2ActionHelper);
     }
@@ -21,6 +25,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         $view = new Zend_View();
         $view->doctype('HTML4_LOOSE');
         $view->headTitle('My First S2ZF');
+        $view->setEncoding('UTF-8');
         $viewRenderer = Zend_Controller_Action_HelperBroker::getStaticHelper('ViewRenderer');
         $viewRenderer->setView($view);
         return $view;
