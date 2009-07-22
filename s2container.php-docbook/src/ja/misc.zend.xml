@@ -1,193 +1,151 @@
 <sect1 id="misc.zend"><title>Zend_ControllerでS2Containerを使用する</title>
-  <sect2><title>Zend_Controllerのセットアップ</title>
-    <para>
-      Zend_Controllerのモジュラーディレクトリ構造に従ってセットアップを行います。
-    </para>
-<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-project/
- +--application/
- |  +--default/
- |      +--controllers/
- |      |  +--ErrorController.php
- |      |  +--IndexController.php
- |      +--models/
- |      |  +--index/
- |      |     +--Hoge.php
- |      +--views/
- |          +--filters/
- |          +--helpers/
- |          +--scripts/
- |             +--error/
- |             |  +--error.phtml
- |             +--index/
- |                +--index.phtml
- +--cache/
- |  +--s2aop
- +--config/
- |  +--environment.php
- |  +--s2.php
- +--docroot/
- |  +--.htaccess
- |  +--index.php
- +--lib/
- |  +--S2Container/
- +--log/
-    +--s2.log                
-]]></programlisting>
+    <sect2><title>動作環境</title>
+        <itemizedlist>
+            <listitem>PHP-5.3.0</listitem>
+            <listitem>Zend Framework v1.8.4</listitem>
+            <listitem>s2container.php-2.0.1</listitem>
+        </itemizedlist>
+    </sect2>
 
-    <para>
-      Zend_Controllerのモジューラディレクトリ構造に、config、lib、logディレクトリを追加しています。
-      configディレクトリには、共通設定ファイルとして次のようなenvironment.phpを作成します。
-    </para>
-    
-<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-<?php
-define('PROJECT_ROOT_DIR', dirname(dirname(__FILE__)));
+    <sbr/>
+    <sect2><title>プロジェクトの作成</title>
+        <para>
+            Zend_Tool_Frameworkを使用しプロジェクトディレクトリを作成します。その後、s2container.phpを利用するための設定を追加します。
+                        次のSVNリポジトリに今回作成したプロジェクトディレクトリがあります。
+        </para>
 
-$packages = array(PROJECT_ROOT_DIR . '/lib');
-ini_set('include_path', implode(PATH_SEPARATOR, $packages) . PATH_SEPARATOR . ini_get('include_path') );
+        <itemizedlist>
+            <listitem><ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf184/">https://www.seasar.org/svn/s2container.php5/trunk/s2zf184/</ulink></listitem>
+        </itemizedlist>
+    </sect2>
 
-]]></programlisting>
-  </sect2>
-
+  <sbr/>
   <sect2><title>S2Containerの設定</title>
     <para>
-      S2Container.phpをPEARでインストールします。フルパッケージでインストールする場合は、
-            プロジェクトディレクトリのlibディレクトリにS2Containerとして解凍します。
-            次のS2Containerの設定ファイルサンプルをプロジェクトディレクトリのconfigディレクトリにs2.phpとして保存します。
-      <itemizedlist>
-        <listitem>config/s2.php</listitem>
-      </itemizedlist>
-
-<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-<?php
-require_once('S2Container/S2Container.php');
-
-/** S2Log設定 */
-seasar\Config::$LOG_LEVEL = seasar\log\impl\SimpleLogger::DEBUG;
-seasar\Config::$DEBUG_EVAL = false;
-seasar\Config::$DEBUG_VERBOSE = false;
-seasar\Config::$SIMPLE_LOG_FILE = PROJECT_ROOT_DIR . '/log/s2.log';
-
-/** S2Aop設定 */
-seasar\aop\Config::$CACHING = false;
-seasar\aop\Config::$CACHE_DIR = PROJECT_ROOT_DIR . '/cache/s2aop';
-
-]]></programlisting>
-
+      Zend_Tool_Frameworkで作成したプロジェクトにs2container.phpを利用するための設定を追加します。
     </para>
+
+       <blockquote><formalpara><title>s2.phpの作成</title><sbr/></formalpara>
+            <para>
+            s2container.phpの設定を行うs2.phpをapplication/configsディレクトリに作成します。
+            </para>
+            <itemizedlist>
+                <listitem><ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf184/application/configs/s2.php">application/configs/s2.php</ulink></listitem>
+            </itemizedlist>
+       </blockquote>
+
+       <sbr/>
+       <blockquote><formalpara><title>S2ActionHelperの作成</title><sbr/></formalpara>
+            <para>
+                            アクションメソッド内でS2Containerにアクセスするアクションヘルパーを作成します。
+            </para>
+            <itemizedlist>
+                <listitem><ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf184/library/Seasar/Zf/Controller/S2ActionHelper.php">library/Seasar/Zf/Controller/S2ActionHelper.php</ulink></listitem>
+            </itemizedlist>
+       </blockquote>
+
+       <sbr/>
+       <blockquote><formalpara><title>Bootstrap.phpの編集</title><sbr/></formalpara>
+            <para>
+                            アプリケーションのBootstrapでS2ActionHelperを利用する設定を行います。(_initActionHelperメソッド)
+            </para>
+            <itemizedlist>
+                <listitem><ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf184/application/Bootstrap.php">application/Bootstrap.php</ulink></listitem>
+            </itemizedlist>
+       </blockquote>
+
+       <sbr/>
+       <blockquote><formalpara><title>varディレクトリの作成</title><sbr/></formalpara>
+            <para>
+                            ログファイル、セッションファイル、キャッシュなどを保存するためのvarディレクトリを作成します。
+            </para>
+            <itemizedlist>
+                <listitem><ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf184/var/">var/</ulink></listitem>
+            </itemizedlist>
+       </blockquote>
   </sect2>
 
-  <sect2><title>アクションの作成</title>
+  <sbr/>
+  <sect2><title>アクションメソッドでS2Containerを利用する</title>
     <para>
-      Zend_Controllerのドキュメントに従って、IndexControllerクラスを作成します。
- 
+        アクションメソッド内でS2Containerのコンポーネントを利用する場合は、S2ActionHelper経由でS2Containerにアクセスします。
+    </para>
       <itemizedlist>
-        <listitem>application/default/controllers/IndexController.php</listitem>
+        <listitem><ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf184/application/controllers/IndexController.php">application/controllers/IndexController.php</ulink></listitem>
       </itemizedlist>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-<?php
-require_once PROJECT_ROOT_DIR . '/config/s2.php';
-use seasar\container\S2ApplicationContext as s2app;
-s2app::import(dirname(dirname(__FILE__)) . '/models/index');
-
-require_once 'Zend/Controller/Action.php';
-class IndexController extends Zend_Controller_Action {
-    public function indexAction() {
-       $this->view->greeting = s2app::get('Hoge')->greeting();
+    public function cdListAction()
+    {
+        $this->view->dtos = $this->_helper->s2('Service_SampleService')->findAllCd();
     }
-}
-
 ]]></programlisting>
-      <orderedlist>
-        <listitem>s2.php共通設定ファイルを読み込みます。</listitem>
-        <listitem>useを用いてS2ApplicationContextを別名で定義します。 (必須ではありません)</listitem>
-        <listitem>models/indexディレクトリをインポートします。</listitem>
-        <listitem>
-                    アクションメソッドでHogeコンポーネントを使用します。getメソッドでコンポーネントを取得する場合は、
-          S2ApplicationContext内部で管理されるSingleton S2Containerが使用されます。
-        </listitem>
-      </orderedlist>
-
+    <para>
+        <ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf184/application/services/SampleService.php">Service_SampleServiceクラス</ulink>をapplication/servicesディレクトリに作成します。
+        Service_SampleServiceクラスには、<ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf184/application/models/DbTable/Cd.php">Model_DbTable_Cdクラス</ulink>へのセッターメソッドが定義されているので、Model_DbTable_CdクラスのインスタンスがS2Containerによって自動インジェクションされます。
+        Model_DbTable_Cdクラスは<ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf184/var/db/">var/db/sqlite.db</ulink>にアクセスするZend_Db_Tableのモデルです。
     </para>
 
     <para>
-          アクションクラスで使用するHogeクラスをmodels/indexディレクトリに作成します。
+    アクションメソッド内からS2Containerへのアクセスは、S2ActionHelperのプロパティ経由でもアクセスすることができます。プロパティとして指定した名前がコンポーネント名になります。
+    </para>
+
       <itemizedlist>
-        <listitem>application/default/models/index/Hoge.php</listitem>
+        <listitem><ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf184/application/controllers/IndexController.php">application/controllers/IndexController.php</ulink></listitem>
       </itemizedlist>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-<?php
-class Hoge {
-    public function greeting() {
-        return 'Hello World !!';
+    public function cdList2Action()
+    {
+        $this->view->dtos = $this->_helper->s2->service2->findAllCd();
     }
-}
 ]]></programlisting>
-    </para>
 
     <para>
-      indexアクションのテンプレートを編集します。
-      <itemizedlist>
-        <listitem>application/default/views/scripts/index/index.phtml</listitem>
-      </itemizedlist>
-<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-<!DOCTYPE html
-PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html>
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>My first Zend Framework App</title>
-</head>
-<body>
-    greeting : <?php echo $this->greeting; ?><br>
-</body>
-</html>
-]]></programlisting>
+    上記の場合は"service2"と名前の付いたコンポーネントがS2Containerから取り出されます。ただし、S2Containerからコンポーネント名でコンポーネントを取得する場合は、
+    あらかじめS2Containerにコンポーネントが登録されている必要があります。S2ActionHelperは、各アクション毎にS2Containerを構築するための設定ファイルを読み込むことができます。
+    設定ファイルは、モジュールディレクトリのdiconsディレクトリに、"コントローラ名/アクション名.php"というファイルです。上記の場合は、次のファイルがcdList2アクションの設定ファイルになります。
     </para>
-    
-    <para>indexページにアクセスすると、「greeting : Hello World !!」と表示されます。</para>
+
+    <itemizedlist>
+        <listitem><ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf184/application/dicons/index/cd-list2.php">application/dicons/index/cd-list2.php</ulink></listitem>
+    </itemizedlist>
   </sect2>
 
-  <sect2><title>Mockを使用する</title>
+  <sbr/>
+  <sect2><title>コンポーネントのUnitTest</title>
     <para>
-      MockInterceptorをHogeクラスにアスペクトして、greetingメソッドの戻り値を設定します。
-    </para>
-<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-<?php
-class Hoge {
-    /**
-     * @S2Aspect('interceptor' => 'new seasar\aop\interceptor\MockInterceptor')
-     * @S2Mock('return' => 'strval("Bye World !!")')
-     */
-    public function greeting() {
-        return 'Hello World !!';
-    }
-}
-]]></programlisting>
-
-    <para>indexページにアクセスすると、「greeting : Bye World !!」と表示されます。</para>
-    <para>
-      @S2Aspectアノテーションは、クラスに注釈することもできます。また、S2ApplicationContextの自動アスペクトを使用しても、
-           同様の結果を得ることができます。自動アスペクトを行う場合は、アクションコントローラクラスのS2ApplicationContext設定部に、
-      registerAspectメソッドを追記します。
+      UnitTestはtestsディレクトリに作成します。
+      <ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf184/tests/application/bootstrap.php">tests/application/bootstrap.php</ulink>で、Zend_Applicationのbootstrapメソッドを実行し、アプリケーション環境を構築します。
+      Service_SampleServiceクラスのUnitTestは、<ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf184/tests/application/services/">tests/application/servicesディレクトリ</ulink>に
+      <ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf184/tests/application/services/SampleServiceTest.php">SampleServiceTest.php</ulink>として作成します。
+      Service_SampleServiceTestクラスでは、setUpメソッドでテスト対象のサービスコンポーネントをS2Contaienr経由で取得しています。
     </para>
 
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-<?php
-require_once PROJECT_ROOT_DIR . '/config/s2.php';
-use seasar\container\S2ApplicationContext as s2app;
-s2app::import(dirname(dirname(__FILE__)) . '/models/index');
-s2app::registerAspect('new seasar\aop\interceptor\MockInterceptor', '/^Hoge$/');
-
-require_once 'Zend/Controller/Action.php';
-class IndexController extends Zend_Controller_Action {
-    public function indexAction() {
-       $this->view->greeting = s2app::get('Hoge')->greeting();
+    public function setUp() {
+        s2app::init();
+        $this->service = s2app::get('Service_SampleService');
     }
-}
 ]]></programlisting>
+
+    <para>
+    UnitTestの実行結果は次のなります。
+    </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+% cd tests
+% cat phpunit.xml
+<phpunit bootstrap="application/bootstrap.php"/>
+% phpunit application
+PHPUnit 3.3.17 by Sebastian Bergmann.
+
+....
+
+Time: 0 seconds
+
+OK (4 tests, 4 assertions)
+%
+]]></programlisting>
+
   </sect2>
 </sect1>
 
