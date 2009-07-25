@@ -81,6 +81,13 @@ abstract class Config {
      */
     public static $AUTO_REGISTER_WHEN_NOT_FOUND = true;
 
+    /**
+     * S2Container::getComponent()で親コンテナを検索するかどうかを指定します。
+     *
+     * @boolean
+     */
+    public static $SEARCH_PARENT_CONTAINER = true;
+
 }
 
 /**

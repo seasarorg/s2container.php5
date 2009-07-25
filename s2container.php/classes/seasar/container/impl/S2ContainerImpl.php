@@ -307,7 +307,11 @@ class S2ContainerImpl implements \seasar\container\S2Container {
             return $cd;
         }
 
-        if ($searchParent === false) {
+        if (false === \seasar\container\Config::$SEARCH_PARENT_CONTAINER) {
+            return null;
+        }
+
+        if (false === $searchParent) {
             return null;
         }
 

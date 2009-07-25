@@ -236,9 +236,9 @@ class S2ContainerImplTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue($g->hasComponentDef(__NAMESPACE__ . '\C'));
 
         $this->assertEquals($x, $f->getRoot());
-        echo '-----------------------' . PHP_EOL;
+        //echo '-----------------------' . PHP_EOL;
         $this->assertTrue($g->hasComponentDef(__NAMESPACE__ . '\X'));
-        echo '-----------------------' . PHP_EOL;
+        //echo '-----------------------' . PHP_EOL;
         $this->assertTrue(!$g->hasComponentDef('qqq'));
         $this->assertTrue($g->hasComponentDef('ns_a.ns_b.ns_d.ns_g'));
         $this->assertTrue($g->hasComponentDef('ns_a.ns_c.ns_e.ns_g'));
