@@ -128,7 +128,7 @@ final class ClassUtil {
      * @param array $args
      * @return object
      */
-    public static function newInstance(\ReflectionClass $reflection, array $args) {
+    public static function newInstance(\ReflectionClass $reflection, array $args = array()) {
         if (count($args) > 0) {
             return $reflection->newInstanceArgs($args);
         }
@@ -160,6 +160,9 @@ final class ClassUtil {
         }
         if ($items[0] === '') { // 先頭に\が付いている場合は削除する。( \a\b\Hoge など)
             array_shift($items);
+        }
+        if (count($items) == 0) {
+            return '\\';
         }
         return implode('\\', $items);
     }

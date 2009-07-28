@@ -78,7 +78,7 @@ final class Pointcut {
             count($targetClass->getInterfaces()) === 0) {
             $methods = \seasar\util\ClassUtil::getDeclaringMethods($targetClass);
         } else {
-            $methods = \seasar\util\ClassUtil::getImplementMethods($targetClass);
+            $methods = \seasar\util\ClassUtil::getAbstractMethods($targetClass);
         }
         $this->methodNames = array();
         foreach($methods as $method) {
