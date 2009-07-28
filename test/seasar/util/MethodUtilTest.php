@@ -24,44 +24,16 @@
  * @author    klove
  */
 namespace seasar\util;
-class EvalUtilTest extends \PHPUnit_Framework_TestCase {
+class MethodUtilTest extends \PHPUnit_Framework_TestCase {
 
-    public function testFormatExpression() {
-        $src = ' 1 + 1';
-        $src = EvalUtil::formatExpression($src);
-        $this->assertEquals($src, 'return 1 + 1;');
-
-        $src = ' return 1 + 1';
-        $src = EvalUtil::formatExpression($src);
-        $this->assertEquals($src, 'return 1 + 1;');
-
-        $src = ' 1 + 1;';
-        $src = EvalUtil::formatExpression($src);
-        $this->assertEquals($src, 'return 1 + 1;');
-
-        $src = ' return 1 + 1;';
-        $src = EvalUtil::formatExpression($src);
-        $this->assertEquals($src, 'return 1 + 1;');
-    }
-
-    public function testExecute() {
-        $src = '$a + $b';
-        $context = array('a' => 2, 'b' => 1);
-        $result = EvalUtil::execute(EvalUtil::formatExpression($src), $context);
-        $this->assertEquals($result, 3);
-    }
-
-    public function testFormatExecute() {
-        $src = '$a + $b';
-        $context = array('a' => 2, 'b' => 1);
-        $result = EvalUtil::formatExecute($src, $context);
-        $this->assertEquals($result, 3);
-    }
-
-    public function testFormatArrayExpression() {
-        $src = ' 1, 2, 3 ';
-        $src = EvalUtil::formatArrayExpression($src);
-        $this->assertEquals($src, 'return array( 1, 2, 3 );');
+    public function testInvoke() {
+        $refClass = new \ReflectionClass(__NAMESPACE__ . '\A');
+        $refMethod = $refClass->getMethod('add');
+        $this->assertEquals(5, MethodUtil::invoke($refMethod, $refClass->newInstance()));
+        $refMethod = $refClass->getMethod('add');
+        $this->assertEquals(5, MethodUtil::invoke($refMethod, $refClass->newInstance(), array()));
+        $refMethod = $refClass->getMethod('add2');
+        $this->assertEquals(5, MethodUtil::invoke($refMethod, $refClass->newInstance(), array(2, 3)));
     }
 
     public function setUp(){
@@ -72,4 +44,11 @@ class EvalUtilTest extends \PHPUnit_Framework_TestCase {
     }
 }
 
-
+class A {
+    public function add() {
+        return 5;
+    }
+    public function add2($a, $b) {
+        return $a + $b;
+    }
+}
