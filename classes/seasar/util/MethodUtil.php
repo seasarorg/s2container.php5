@@ -40,7 +40,7 @@ final class MethodUtil {
      * @param array $args
      * @return mixed
      */
-    public static function invoke(\ReflectionMethod $reflection, $target, array $args) {
+    public static function invoke(\ReflectionMethod $reflection, $target, array $args = array()) {
         if (count($args) === 0) {
             return $reflection->invoke($target);
         } else {
