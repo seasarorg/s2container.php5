@@ -26,6 +26,12 @@
 namespace seasar\aop\interceptor;
 class TraceInterceptorTest extends \PHPUnit_Framework_TestCase {
 
+    public function testTrace() {
+        $container = new \seasar\container\impl\S2ContainerImpl;
+        $a = $container->getComponent(__NAMESPACE__ . '\A_TraceInterceptorTest');
+        $a->hoge();
+    }
+
     public function setUp(){
         print PHP_EOL . __CLASS__ . '->' . $this->getName() . '()' . PHP_EOL;
     }
@@ -34,6 +40,9 @@ class TraceInterceptorTest extends \PHPUnit_Framework_TestCase {
     }
 }
 
+/**
+ * @S2Aspect('interceptor' => 'new \seasar\aop\interceptor\TraceInterceptor')
+ */
 class A_TraceInterceptorTest{
     public function hoge() {
         print __METHOD__ . ' called.' . PHP_EOL;

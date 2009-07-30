@@ -26,6 +26,19 @@
 namespace seasar\aop\interceptor;
 class MockInterceptorTest extends \PHPUnit_Framework_TestCase {
 
+    public function testMock() {
+        $container = new \seasar\container\impl\S2ContainerImpl;
+        $c = $container->getComponent(__NAMESPACE__ . '\C_MockInterceptorTest');
+        $this->assertEquals(2007, $c->getName());
+        $this->assertEquals(1234, $c->getValue());
+        try {
+            $c->getYear();
+            $this->fail();
+        } catch(\Exception $e) {
+            $this->assertEquals('mock exception', $e->getMessage());
+        }
+    }
+
     public function setUp(){
         print PHP_EOL . __CLASS__ . '->' . $this->getName() . '()' . PHP_EOL;
     }
@@ -34,18 +47,9 @@ class MockInterceptorTest extends \PHPUnit_Framework_TestCase {
     }
 }
 
-class A_MockInterceptorTest{
-    public function hoge() {
-        print __METHOD__ . ' called.' . PHP_EOL;
-    }
-}
-
-class B_MockInterceptorTest{
-    public function getName() {
-        return null;
-    }
-}
-
+/**
+ * @S2Aspect('interceptor' => 'new \seasar\aop\interceptor\MockInterceptor', 'pointcut' => '/.+/')
+ */
 abstract class C_MockInterceptorTest{
     /**
      * @S2Mock('return' => 2007);
@@ -53,7 +57,7 @@ abstract class C_MockInterceptorTest{
     abstract public function getName();
 
     /**
-     * @S2Mock('exception' => new \Exception('annotation exception'));
+     * @S2Mock('throw' => 'new \Exception("mock exception")');
      */
     abstract public function getYear();
 

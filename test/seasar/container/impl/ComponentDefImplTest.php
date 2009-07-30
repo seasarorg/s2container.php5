@@ -26,11 +26,65 @@
 namespace seasar\container\impl;
 class ComponentDefImplTest extends \PHPUnit_Framework_TestCase {
 
-    public function testA() {
+    public function testConstruct() {
+        $def = new ComponentDefImpl(__NAMESPACE__ . '\A_ComponentDefTest');
+        $this->assertTrue($def instanceof \seasar\container\ComponentDef);
+        $this->assertTrue($def->getComponentClass() instanceof \ReflectionClass);
+        $this->assertEquals($def->getComponentClass()->getName(), __NAMESPACE__ . '\A_ComponentDefTest');
+        $this->assertTrue(is_null($def->getComponentName()));
+    }
+
+    public function testSetContainer() {
+        $container = new S2ContainerImpl();
         $def = new ComponentDefImpl('\seasar\container\impl\A_ComponentDefTest');
+        $propDef = new PropertyDef('a');
+        $def->addPropertyDef($propDef);
+        $def->setContainer($container);
+        $this->assertEquals($propDef->getContainer(), $container);
+    }
+
+    public function testPropertyDef() {
+        $container = new S2ContainerImpl();
+        $def = new ComponentDefImpl('\seasar\container\impl\A_ComponentDefTest');
+        $propertyDef = new PropertyDef('a');
+        $def->addPropertyDef($propertyDef);
+        $propertyDef = new PropertyDef('b');
+        $def->addPropertyDef($propertyDef);
+        $this->assertEquals(2, $def->getPropertyDefSize());
+        $this->assertTrue(is_array($def->getPropertyDefs()));
+        $this->assertEquals(2, count($def->getPropertyDefs()));
+        $this->assertTrue($def->getPropertyDef('a') instanceof PropertyDef);
+        $this->assertTrue($def->getPropertyDef('b') instanceof PropertyDef);
+        try {
+            $def->getPropertyDef(2);
+            $this->fail();
+        } catch(\OutOfRangeException $e) {
+            echo $e->getMessage() . PHP_EOL;
+        }
+    }
+
+    public function testAspectDef() {
+        $container = new S2ContainerImpl();
+        $def = new ComponentDefImpl('\seasar\container\impl\A_ComponentDefTest');
+        $aspectDef = new AspectDef();
+        $def->addAspectDef($aspectDef);
+        $aspectDef = new AspectDef();
+        $def->addAspectDef($aspectDef);
+        $this->assertEquals(2, $def->getAspectDefSize());
+        $this->assertTrue(is_array($def->getAspectDefs()));
+        $this->assertEquals(2, count($def->getAspectDefs()));
+        $this->assertTrue($def->getAspectDef(0) instanceof AspectDef);
+        $this->assertTrue($def->getAspectDef(1) instanceof AspectDef);
+        try {
+            $def->getAspectDef(2);
+            $this->fail();
+        } catch(\OutOfRangeException $e) {
+            echo $e->getMessage() . PHP_EOL;
+        }
     }
 
     public function setUp(){
+        print PHP_EOL . __CLASS__ . '->' . $this->getName() . '()' . PHP_EOL;
     }
 
     public function tearDown() {

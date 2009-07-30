@@ -129,7 +129,7 @@ class ComponentDefImpl implements \seasar\container\ComponentDef {
      */
     public final function setContainer(\seasar\container\S2Container $container) {
         $this->container = $container;
-        foreach ($this->propertyDefs as $propertyName => $propertDef) {
+        foreach ($this->propertyDefs as $propertyName => $propertyDef) {
             $propertyDef->setContainer($container);
         }
         foreach ($this->aspectDefs as $aspectDef) {
@@ -220,7 +220,7 @@ class ComponentDefImpl implements \seasar\container\ComponentDef {
         if (isset($this->aspectDefs[$index])) {
             return $this->aspectDefs[$index];
         }
-        throw new \OutOfRangeException($propertyName);
+        throw new \OutOfRangeException($index);
     }
 
     /**
