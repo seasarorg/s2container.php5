@@ -75,37 +75,3 @@ class MetaDefSupportTest extends \PHPUnit_Framework_TestCase {
     }
 
 }
-
-class AnnoTestA_MetaDefSupportTestTest {
-    public static function setSetA($a){}
-    public static function a(){}
-}
-
-/**
- * @S2Component('name' => 'b')
- */
-class AnnoTestB_MetaDefSupportTestTest {
-
-    /**
-     * @S2Binding('1000')
-     */
-    public static function setSetB($b){}
-
-    /**
-     * @S2Binding('abc')
-     */
-    public static function a(){}
-
-    /**
-     * @S2Meta('dao.interceptor')
-     */
-    public static function b(){}
-}
-
-class AnnoTestC_MetaDefSupportTestTest {
-    /**
-     * @S2Meta('interceptor' => 'new \seasar\aop\interceptor\TraceInterceptor')
-     */
-    public function hoge(){}
-}
-

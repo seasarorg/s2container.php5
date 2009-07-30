@@ -101,6 +101,5 @@ abstract class Config {
 \seasar\exception\S2RuntimeException::$MESSAGES[110] = '"child container [$args[0]] not found."';
 \seasar\exception\S2RuntimeException::$MESSAGES[111] = '"unmatch constructor parameters of class [$args[0]]."';
 \seasar\exception\S2RuntimeException::$MESSAGES[112] = '"the circulation instantiation was occurred in [$args[0]]."';
-\seasar\exception\S2RuntimeException::$MESSAGES[113] = '"property [$args[1]] not found in [$args[0]]."';
 \seasar\exception\S2RuntimeException::$MESSAGES[114] = '"The circulation include was occurred in $args[0], pathway $args[1]."';
 \seasar\exception\S2RuntimeException::$MESSAGES[115] = '"Two or more components[$args[1]] are registered as $args[0]."';

@@ -66,37 +66,3 @@ class PropertyDefSupportTest extends \PHPUnit_Framework_TestCase {
     }
 
 }
-
-class AnnoTestA_PropertyDefSupportTestTest {
-    public static function setSetA($a){}
-    public static function a(){}
-}
-
-/**
- * @S2Component('name' => 'b')
- */
-class AnnoTestB_PropertyDefSupportTestTest {
-
-    /**
-     * @S2Binding('1000')
-     */
-    public static function setSetB($b){}
-
-    /**
-     * @S2Binding('abc')
-     */
-    public static function a(){}
-
-    /**
-     * @S2Property('dao.interceptor')
-     */
-    public static function b(){}
-}
-
-class AnnoTestC_PropertyDefSupportTestTest {
-    /**
-     * @S2Property('interceptor' => 'new \seasar\aop\interceptor\TraceInterceptor')
-     */
-    public function hoge(){}
-}
-

@@ -47,7 +47,7 @@ class SimpleLoggerTest extends \PHPUnit_Framework_TestCase {
         \seasar\Config::$SIMPLE_LOG_FILE = null;
     }
 
-    public function testWothoutMethodName() {
+    public function testWithoutMethodName() {
         S2Logger::getInstance()->debug('called.');
         S2Logger::getInstance()->info('called.');
         S2Logger::getInstance()->notice('called.');
