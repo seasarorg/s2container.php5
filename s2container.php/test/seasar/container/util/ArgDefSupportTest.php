@@ -64,36 +64,3 @@ class ArgDefSupportTest extends \PHPUnit_Framework_TestCase {
 
 }
 
-class AnnoTestA_ArgDefSupportTestTest {
-    public static function setSetA($a){}
-    public static function a(){}
-}
-
-/**
- * @S2Component('name' => 'b')
- */
-class AnnoTestB_ArgDefSupportTestTest {
-
-    /**
-     * @S2Binding('1000')
-     */
-    public static function setSetB($b){}
-
-    /**
-     * @S2Binding('abc')
-     */
-    public static function a(){}
-
-    /**
-     * @S2Aspect('dao.interceptor')
-     */
-    public static function b(){}
-}
-
-class AnnoTestC_ArgDefSupportTestTest {
-    /**
-     * @S2Aspect('interceptor' => 'new \seasar\aop\interceptor\TraceInterceptor')
-     */
-    public function hoge(){}
-}
-

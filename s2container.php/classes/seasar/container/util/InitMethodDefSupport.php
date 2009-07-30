@@ -66,6 +66,9 @@ class InitMethodDefSupport {
      * @return \seasar\container\impl\InitMethodDef
      */
     public function getInitMethodDef($index) {
+        if (!isset($this->methodDefs[$index])) {
+            throw new \OutOfRangeException($index);
+        }
         return $this->methodDefs[$index];
     }
 

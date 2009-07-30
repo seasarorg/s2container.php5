@@ -26,12 +26,7 @@
  * @author    klove
  */
 namespace seasar\exception;
-class PropertyNotFoundRuntimeException extends \seasar\exception\S2RuntimeException {
-
-    /**
-     * @var \ReflectionClass
-     */
-    private $componentClass;
+class PropertyNotFoundRuntimeException extends \Exception {
 
     /**
      * PropertyNotFoundRuntimeExceptionを構築します。
@@ -39,26 +34,6 @@ class PropertyNotFoundRuntimeException extends \seasar\exception\S2RuntimeExcept
      * @param sring $propertyName Manualインジェクションに失敗したプロパティ名
      */
     public function __construct(\ReflectionClass $componentClass, $propertyName) {
-        $this->componentClass = $componentClass;
-        $this->propertyName   = $propertyName;
-        parent::__construct(113, array($componentClass->getName(), $propertyName));
-    }
-
-    /**
-     * Manualインジェクションに失敗したコンポーネントのクラスを返します。
-     * 
-     * @return \ReflectionClass Manualインジェクションに失敗したコンポーネントのクラス
-     */
-    public function getComponentClass() {
-        return $this->componentClass;
-    }
-
-    /**
-     * Manualインジェクションに失敗したプロパティ名を返します。
-     * 
-     * @return string Manualインジェクションに失敗したプロパティ名
-     */
-    public function getPropertyName() {
-        return $this->getPropertyName;
+        parent::__construct("property [$propertyName] not found in [{$componentClass->getName()}].");
     }
 }
