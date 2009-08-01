@@ -1,4 +1,11 @@
 
+2009-08-02 s2container-2.0.1
+
+	* modify: CoreClassesを修正しました。
+	* add: クイックスタートドキュメントに「コンポーネントの取得」を追加しました。
+	* modify: Zend_Controllerとの連携についてドキュメントを更新しました。
+	* info: s2container-2.0.1 release.
+
 2009-07-15 s2container-2.0.1
 
 	* add: S2ApplicationContext::createSingletonConatiner()メソッドを追加しました。
