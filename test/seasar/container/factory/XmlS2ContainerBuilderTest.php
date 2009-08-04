@@ -26,6 +26,29 @@
 namespace seasar\container\factory;
 class XmlS2ContainerBuilderTest extends \PHPUnit_Framework_TestCase {
 
+    /**
+     * \seasar\container\factory\XmlS2ContainerBuilderTest::errorHandler()が処理したエラーの数です。
+     * @var integer
+     */
+    private $errorCount = 0;
+
+    /**
+     * エラーハンドラです。<br />
+     * \seasar\container\factory\XmlS2ContainerBuilderTest::$errorCountをインクリメントして、
+     * エラーの内容を標準出力に出力します。
+     * @param integer $errno
+     * @param string $errstr
+     * @param string $errfile
+     * @param integer $errline
+     * @param array $errcontext
+     * @return boolean
+     */
+    public function errorHandler($errno, $errstr, $errfile,  $errline, $errcontext) {
+        $this->errorCount++;
+        print $errstr . PHP_EOL;
+        return true;
+    }
+
     public function test01Build() {
         $builder = new XmlS2ContainerBuilder();
         $container = $builder->build(dirname(__FILE__) . '/XmlS2ContainerBuilderTest_dicon/test01Build.dicon');
@@ -124,13 +147,21 @@ class XmlS2ContainerBuilderTest extends \PHPUnit_Framework_TestCase {
 
     public function test12DomValidate() {
         $builder = new XmlS2ContainerBuilder();
+        set_error_handler(array($this, "errorHandler"));
+        \seasar\container\Config::$DOM_VALIDATE = true;
+
         try {
-            \seasar\container\Config::$DOM_VALIDATE = true;
             $container = $builder->build(dirname(__FILE__) . '/XmlS2ContainerBuilderTest_dicon/test12DomValidate.dicon');
             $this->fail();
         } catch (\seasar\exception\DOMException $e) {
             print $e->getMessage() . PHP_EOL;
+        } catch (\Exception $e) {
+            restore_error_handler();
+            throw $e;
         }
+        $this->assertTrue($this->errorCount > 0);
+
+        restore_error_handler();
         \seasar\container\Config::$DOM_VALIDATE = false;
     }
 
@@ -145,6 +176,7 @@ class XmlS2ContainerBuilderTest extends \PHPUnit_Framework_TestCase {
 
     public function setUp(){
         print PHP_EOL . __CLASS__ . '->' . $this->getName() . '()' . PHP_EOL;
+        $this->errorCount = 0;
     }
 
     public function tearDown() {

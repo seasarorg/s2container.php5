@@ -28,8 +28,12 @@ class S2ApplicationContextTest extends \PHPUnit_Framework_TestCase {
 
     public function testRegisterException(){
         S2ApplicationContext::$CLASSES = array();
-        S2ApplicationContext::import($this->sampleDir . '/XXX');
-        $this->assertEquals(S2ApplicationContext::$CLASSES, array());
+        try {
+            S2ApplicationContext::import($this->sampleDir . '/XXX');
+            $this->fail();
+        } catch (\seasar\exception\FileNotFoundException $e) {
+            print $e->getMessage() . PHP_EOL;
+        }
     }
 
     public function testRegisterClass(){
