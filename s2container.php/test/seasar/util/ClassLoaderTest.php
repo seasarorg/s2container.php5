@@ -39,8 +39,6 @@ class ClassLoaderTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testImportFail() {
-        $classesTmp = ClassLoader::$CLASSES;
-        ClassLoader::$CLASSES = array();
         try {
             ClassLoader::import(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'ClassLoaderTest' . DIRECTORY_SEPARATOR . 'XXX');
             $this->fail();

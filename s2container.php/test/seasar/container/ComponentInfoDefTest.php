@@ -31,13 +31,15 @@ class ComponentInfoDefTest extends \PHPUnit_Framework_TestCase {
                 setName('a')->
                 setInstance('singleton')->
                 setAutoBinding('auto')->
-                setNamespace('sample');
+                setNamespace('sample')->
+                setConstructClosure(function($cd){});
 
         $this->assertEquals($info->getClassName(), 'A');
         $this->assertEquals($info->getName(), 'a');
         $this->assertEquals($info->getInstance(), 'singleton');
         $this->assertEquals($info->getAutoBinding(), 'auto');
         $this->assertEquals($info->getNamespace(), 'sample');
+        $this->assertTrue($info->getConstructClosure() instanceof \Closure);
     }
 
     public function testUsePhpNamespace() {

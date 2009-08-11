@@ -290,6 +290,17 @@ class S2ApplicationContextTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue(S2ApplicationContext::hasComponentDef('a'));
     }
 
+    public function testConstructClosure(){
+        S2ApplicationContext::init();
+        $arg = 'abc';
+        S2ApplicationContext::register(__NAMESPACE__ . '\E_S2ApplicationContextTest')
+            ->setName('e')
+            ->setConstructClosure(function(ComponentDef $cd) use($arg) { return $cd->getComponentClass()->newInstance($arg);});
+        $this->assertTrue(S2ApplicationContext::hasComponentDef('e'));
+        $component = S2ApplicationContext::get('e');
+        $this->assertEquals($arg, $component->a);
+    }
+
     public function setUp(){
         print PHP_EOL . __CLASS__ . '->' . $this->getName() . '()' . PHP_EOL;
         $this->sampleDir = dirname(__FILE__) . '/S2ApplicationContext_classes';
@@ -380,3 +391,9 @@ class C_S2ApplicationContextTest {
 class D_S2ApplicationContextTest {
 }
 
+class E_S2ApplicationContextTest {
+    public $a = null;
+    public function __construct($a) {
+        $this->a = $a;
+    }
+}

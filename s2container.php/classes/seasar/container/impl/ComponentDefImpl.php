@@ -89,6 +89,11 @@ class ComponentDefImpl implements \seasar\container\ComponentDef {
     private $componentDeployer = null;
 
     /**
+     * @var \Closure
+     */
+    private $constructClosure = null;
+
+    /**
      * ComponentDefImplを構築します。
      *
      * @param string component class name
@@ -347,4 +352,26 @@ class ComponentDefImpl implements \seasar\container\ComponentDef {
         }
         return $this->componentDeployer;
     }
+
+    /**
+     * @see \seasar\container\ComponentDef::setConstructClosure()
+     */
+    public function setConstructClosure(\Closure $closure) {
+        $this->constructClosure = $closure;
+    }
+
+    /**
+     * @see \seasar\container\ComponentDef::getConstructClosure()
+     */
+    public function getConstructClosure() {
+        return $this->constructClosure;
+    }
+
+    /**
+     * @see \seasar\container\ComponentDef::hasConstructClosure()
+     */
+    public function hasConstructClosure() {
+        return !is_null($this->constructClosure);
+    }
+
 }

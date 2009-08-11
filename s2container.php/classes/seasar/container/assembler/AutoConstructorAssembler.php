@@ -29,23 +29,16 @@ namespace seasar\container\assembler;
 class AutoConstructorAssembler extends ManualConstructorAssembler {
 
     /**
-     * @see \seasar\container\assembler\ManualConstructorAssembler::__construct()
-     */
-    public function __construct(\seasar\container\ComponentDef $componentDef) {
-        parent::__construct($componentDef);
-    }
-
-    /**
      * 自動コンストラクタ・インジェクションを実行して、 組み立てたコンポーネントを返します。
      *
      * @return object
      */
     public function assemble() {
-        if ($this->getComponentDef()->getArgDefSize() > 0) {
+        $componentDef = $this->getComponentDef();
+        if ($componentDef->hasConstructClosure() || $componentDef->getArgDefSize() > 0) {
             return parent::assemble();
         }
         $args = array();
-        $componentDef = $this->getComponentDef();
         $refMethod = $componentDef->getComponentClass()->getConstructor();
         if ($refMethod instanceof \ReflectionMethod) {
             $args = $this->getArgs($refMethod->getParameters());

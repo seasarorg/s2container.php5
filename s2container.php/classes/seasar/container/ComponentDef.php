@@ -281,4 +281,27 @@ interface ComponentDef {
      * @return integer
      */
     public function getMetaDefSize();
+
+    /**
+     * コンストラクタクロージャを設定します。
+     *
+     * @param \Closure $closure
+     * @return void
+     */
+    public function setConstructClosure(\Closure $closure);
+
+    /**
+     * コンストラクタクロージャを返します。
+     *
+     * @return \Closure
+     */
+    public function getConstructClosure();
+
+    /**
+     * コンストラクタクロージャが設定されているかどうかを返します。
+     *
+     * @return boolean
+     */
+    public function hasConstructClosure();
+
 }

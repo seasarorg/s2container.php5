@@ -103,3 +103,4 @@ abstract class Config {
 \seasar\exception\S2RuntimeException::$MESSAGES[112] = '"the circulation instantiation was occurred in [$args[0]]."';
 \seasar\exception\S2RuntimeException::$MESSAGES[114] = '"The circulation include was occurred in $args[0], pathway $args[1]."';
 \seasar\exception\S2RuntimeException::$MESSAGES[115] = '"Two or more components[$args[1]] are registered as $args[0]."';
+\seasar\exception\S2RuntimeException::$MESSAGES[116] = '"Actual class [$args[1]] is not applicable in defined class [$args[0]]"';

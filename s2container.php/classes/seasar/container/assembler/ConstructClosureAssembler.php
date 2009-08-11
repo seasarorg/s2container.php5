@@ -15,45 +15,44 @@
 // | governing permissions and limitations under the License.             |
 // +----------------------------------------------------------------------+
 /**
- * 手動で設定されたものだけを対象にするプロパティアセンブラです。
+ * ConstructClosureを用いてオブジェクトを生成します。
  *
  * @copyright 2005-2009 the Seasar Foundation and the Others.
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  * @link      http://s2container.php5.seasar.org/
  * @version   SVN: $Id:$
- * @since     Class available since Release 1.0.0
+ * @since     Class available since Release 2.0.2
  * @package   seasar.container.assembler
  * @author    klove
  */
 namespace seasar\container\assembler;
-class ManualConstructorAssembler extends ConstructClosureAssembler {
-
+class ConstructClosureAssembler extends AbstractAssembler {
     /**
-     * 手動コンストラクタ・インジェクションを実行して、 組み立てたコンポーネントを返します。
-     *
      * @return object
      */
     public function assemble() {
-        $componentDef   = $this->getComponentDef();
+        $componentDef = $this->getComponentDef();
         if ($componentDef->hasConstructClosure()) {
-            return parent::assemble();
-        }
-
-        $args           = array();
-        $refParams      = array();
-        $refConstructor = $componentDef->getComponentClass()->getConstructor();
-        if ($refConstructor instanceof \ReflectionMethod) {
-            $refParams = $refConstructor->getParameters();
-        }
-        $argDefs = $componentDef->getArgDefs();
-        $o = count($argDefs);
-        for ($i = 0; $i < $o; ++$i) {
-            if (isset($refParams[$i]) and $refParams[$i]->isArray()) {
-                $args[] = $this->getArgument($argDefs[$i], true);
-            } else {
-                $args[] = $this->getArgument($argDefs[$i], false);
+            $componentClass = $componentDef->getComponentClass();
+            $closure = $componentDef->getConstructClosure();
+            if ($componentClass->getName() === 'Closure') {
+                return $closure;
             }
+            $component = $closure($componentDef);
+            if (is_object($component) && $componentClass->isInstance($component)) {
+                return $component;
+            } else {
+                if (is_object($component)) { 
+                    $realClassName = get_class($component);
+                } else if(is_null($component)) {
+                    $realClassName = 'null';
+                } else {
+                    $realClassName = strval($component);
+                }
+                throw new \seasar\container\exception\ClassUnmatchRuntimeException($componentClass->getName(), $realClassName);
+            }
+        } else {
+            return $componentDef->getComponentClass()->newInstance();
         }
-        return \seasar\container\util\ConstructorUtil::newInstance($componentDef, $args);
     }
 }
