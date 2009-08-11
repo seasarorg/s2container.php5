@@ -66,6 +66,13 @@ class ClassLoader {
             $namespace = explode($separator, $namespace);
         }
 
+        if(!is_dir($dirPath)) {
+            if(!class_exists('\seasar\exception\FileNotFoundException')) {
+                require_once (S2CONTAINER_ROOT_DIR . '/classes/seasar/exception/FileNotFoundException.php');
+            }
+            throw new \seasar\exception\FileNotFoundException($dirPath);
+        }
+
         $iterator = new \DirectoryIterator($dirPath);
         while($iterator->valid()) {
             if (strpos($iterator->getFilename(), '.') === 0) {

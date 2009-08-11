@@ -38,6 +38,15 @@ class ClassLoaderTest extends \PHPUnit_Framework_TestCase {
         ClassLoader::$CLASSES = $classesTmp;
     }
 
+    public function testImportFail() {
+        try {
+            ClassLoader::import(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'ClassLoaderTest' . DIRECTORY_SEPARATOR . 'XXX');
+            $this->fail();
+        } catch (\seasar\exception\FileNotFoundException $e) {
+            print $e->getMessage() . PHP_EOL;
+        }
+    }
+
     public function testImportStrict() {
         $classesTmp = ClassLoader::$CLASSES;
         ClassLoader::$CLASSES = array();

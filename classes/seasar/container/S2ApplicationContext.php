@@ -151,7 +151,7 @@ class S2ApplicationContext {
         } else if (class_exists($path) or interface_exists($path)) {
             self::$CLASSES[$path] = null;
         } else {
-            trigger_error(__CLASS__ . " : invalid args. [$path]", E_USER_WARNING);
+            throw new \seasar\exception\FileNotFoundException($path);
         }
     }
 

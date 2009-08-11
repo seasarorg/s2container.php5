@@ -53,9 +53,9 @@ class S2RuntimeException extends \RuntimeException {
      *
      * @param integer $code
      * @param array $args
-     * @param Exception $couse
+     * @param \Exception $couse
      */
-    public function __construct($code, array $args = array(), Exception $couse = null) {
+    public function __construct($code, array $args = array(), \Exception $couse = null) {
         $this->code  = $code;
         $this->args  = $args;
         $this->couse = $couse;
