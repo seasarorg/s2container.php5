@@ -186,6 +186,7 @@ ClassLoader::$CLASSES = array(
     'seasar\aop\interceptor\InterceptorChain' => S2CONTAINER_ROOT_DIR . '/classes/seasar/aop/interceptor/InterceptorChain.php',
     'seasar\aop\interceptor\MockInterceptor' => S2CONTAINER_ROOT_DIR . '/classes/seasar/aop/interceptor/MockInterceptor.php',
     'seasar\aop\interceptor\AbstractAroundInterceptor' => S2CONTAINER_ROOT_DIR . '/classes/seasar/aop/interceptor/AbstractAroundInterceptor.php',
+    'seasar\aop\interceptor\ClosureInterceptor' => S2CONTAINER_ROOT_DIR . '/classes/seasar/aop/interceptor/ClosureInterceptor.php',
     'seasar\aop\Aspect' => S2CONTAINER_ROOT_DIR . '/classes/seasar/aop/Aspect.php',
     'seasar\aop\impl\S2MethodInvocationImpl' => S2CONTAINER_ROOT_DIR . '/classes/seasar/aop/impl/S2MethodInvocationImpl.php',
     'seasar\aop\impl\NestedMethodInvocation' => S2CONTAINER_ROOT_DIR . '/classes/seasar/aop/impl/NestedMethodInvocation.php',

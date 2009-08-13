@@ -301,6 +301,24 @@ class S2ApplicationContextTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($arg, $component->a);
     }
 
+    public function testClosureInterceptor() {
+        S2ApplicationContext::init();
+        S2ApplicationContext::register(__NAMESPACE__ . '\F_S2ApplicationContextTest')->setName('f');
+        S2ApplicationContext::registerAspect(function($invoker) { return $invoker->proceed() * 10;});
+        $component = S2ApplicationContext::get('f');
+        $this->assertEquals(100, $component->hoge());
+    }
+
+    public function testClosureComponentAspect() {
+        S2ApplicationContext::init();
+        S2ApplicationContext::register(__NAMESPACE__ . '\F_S2ApplicationContextTest')->setName('f');
+        S2ApplicationContext::register('\Closure')->setName('f2')
+            ->setConstructClosure(function($invoker) { return $invoker->proceed() * 100;});
+        S2ApplicationContext::registerAspect('f2');
+        $component = S2ApplicationContext::get('f');
+        $this->assertEquals(1000, $component->hoge());
+    }
+    
     public function setUp(){
         print PHP_EOL . __CLASS__ . '->' . $this->getName() . '()' . PHP_EOL;
         $this->sampleDir = dirname(__FILE__) . '/S2ApplicationContext_classes';
@@ -395,5 +413,12 @@ class E_S2ApplicationContextTest {
     public $a = null;
     public function __construct($a) {
         $this->a = $a;
+    }
+}
+
+
+class F_S2ApplicationContextTest {
+    public function hoge() {
+        return 10;
     }
 }
