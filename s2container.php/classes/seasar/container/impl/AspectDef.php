@@ -74,6 +74,10 @@ class AspectDef extends ArgDef {
      * @return \seasar\aop\Aspect
      */
     public function getAspect() {
-        return new \seasar\aop\Aspect($this->getValue(), $this->pointcut);
+        $interceptor = $this->getValue();
+        if ($interceptor instanceof \Closure) {
+            $interceptor = new \seasar\aop\interceptor\ClosureInterceptor($interceptor);
+        }
+        return new \seasar\aop\Aspect($interceptor, $this->pointcut);
     }
 }
