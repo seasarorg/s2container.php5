@@ -236,7 +236,6 @@ class S2ApplicationContext {
      * コンテナを生成して、ComponentDefが存在するかどうかを返します。生成したコンテナはsingletonとして保持します。
      *
      * @param string $key
-     * @param array $namespaces
      * @return boolean
      */
     public static function hasComponentDef($key) {
@@ -247,7 +246,6 @@ class S2ApplicationContext {
      * importされたクラスとダイコンファイルからS2Containerを生成します。
      * 生成されたS2ContainerをSingletonとして登録します。
      *
-     * @param array $namespaces
      * @param boolean $force
      * @return seasar\container\S2Container
      */

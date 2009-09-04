@@ -26,14 +26,11 @@
  */
 namespace seasar\container;
 class ComponentInfoDef {
-    public static $USE_PHP_NAMESPACE = false;
     private $reflectionClass = null;
     private $className = null;
     private $name = null;
     private $instance = null;
     private $autoBinding = null;
-    private $namespace = null;
-    private $usePhpNamespace = null;
     private $constructClosure = null;
 
     /**
@@ -46,7 +43,6 @@ class ComponentInfoDef {
         } else {
             $this->className = $clazz;
         }
-        $this->usePhpNamespace = self::$USE_PHP_NAMESPACE;
     }
 
     /**
@@ -151,53 +147,6 @@ class ComponentInfoDef {
      */
     public function getAutoBinding() {
         return $this->autoBinding;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function hasNamespace() {
-        return !is_null($this->namespace);
-    }
-
-    /**
-     * @param string $namespace
-     * @return seasar\container\ComponentInfoDef
-     */
-    public function setNamespace($namespace) {
-        $this->namespace = $namespace;
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getNamespace() {
-        if (is_null($this->namespace)) {
-            if ($this->usePhpNamespace === true) {
-                $ns = \seasar\util\ClassUtil::getNamespace($this->className);
-                if ($ns != '\\') {
-                    $this->namespace = str_replace('\\', '.', $ns);
-                }
-            }
-        }
-        return $this->namespace;
-    }
-
-    /**
-     * @param boolean $val
-     * @return seasar\container\ComponentInfoDef
-     */
-    public function usePhpNamespace($val = true) {
-        $this->usePhpNamespace = $val;
-        return $this;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function istUsePhpNamespace() {
-        return $this->usePhpNamespace;
     }
 
     /**
