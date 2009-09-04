@@ -218,6 +218,35 @@ class S2ApplicationContextTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue(S2ApplicationContext::hasComponentDef('a'));
     }
 
+    public function testConstructClosure(){
+        S2ApplicationContext::init();
+        $arg = 'abc';
+        S2ApplicationContext::register(__NAMESPACE__ . '\E_S2ApplicationContextTest')
+            ->setName('e')
+            ->setConstructClosure(function(ComponentDef $cd) use($arg) { return $cd->getComponentClass()->newInstance($arg);});
+        $this->assertTrue(S2ApplicationContext::hasComponentDef('e'));
+        $component = S2ApplicationContext::get('e');
+        $this->assertEquals($arg, $component->a);
+    }
+
+    public function testClosureInterceptor() {
+        S2ApplicationContext::init();
+        S2ApplicationContext::register(__NAMESPACE__ . '\F_S2ApplicationContextTest')->setName('f');
+        S2ApplicationContext::registerAspect(function($invoker) { return $invoker->proceed() * 10;});
+        $component = S2ApplicationContext::get('f');
+        $this->assertEquals(100, $component->hoge());
+    }
+
+    public function testClosureComponentAspect() {
+        S2ApplicationContext::init();
+        S2ApplicationContext::register(__NAMESPACE__ . '\F_S2ApplicationContextTest')->setName('f');
+        S2ApplicationContext::register('\Closure')->setName('f2')
+            ->setConstructClosure(function($invoker) { return $invoker->proceed() * 100;});
+        S2ApplicationContext::registerAspect('f2');
+        $component = S2ApplicationContext::get('f');
+        $this->assertEquals(1000, $component->hoge());
+    }
+    
     public function setUp(){
         $this->sampleDir = dirname(__FILE__) . '/S2ApplicationContext_classes';
         S2ApplicationContext::$CLASSES = array();
@@ -306,3 +335,16 @@ class C_S2ApplicationContextTest {
 class D_S2ApplicationContextTest {
 }
 
+class E_S2ApplicationContextTest {
+    public $a = null;
+    public function __construct($a) {
+        $this->a = $a;
+    }
+}
+
+
+class F_S2ApplicationContextTest {
+    public function hoge() {
+        return 10;
+    }
+}

@@ -15,53 +15,47 @@
 // | governing permissions and limitations under the License.             |
 // +----------------------------------------------------------------------+
 /**
- * 自動バインディング定義の自動版です。
- *
+ * クロージャーをラップするMethodInterceptorです。
  * @copyright 2005-2009 the Seasar Foundation and the Others.
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  * @link      http://s2container.php5.seasar.org/
  * @version   SVN: $Id:$
- * @since     Class available since Release 1.0.0
- * @package   seasar.container.assembler
+ * @since     Class available since Release 2.0.2
+ * @package   seasar.aop.interceptor
  * @author    klove
  */
-namespace seasar\container\assembler;
-class AutoBindingAutoDef implements \seasar\container\AutoBindingDef {
+namespace seasar\aop\interceptor;
+class ClosureInterceptor implements \seasar\aop\MethodInterceptor {
+
     /**
-     * 自動バインディング定義名
-     * \seasar\container\AutoBindingDef::AUTO_NAME
+     * @var \Closure
+     */
+    private $closure = null;
+
+    /**
+     * ClosureInterceptor を構築します。
      *
-     * @var string 
+     * @param \Closure $closure
+     * @return void
      */
-    private $name = null;
+    public function __construct(\Closure $closure) {
+        $this->closure = $closure;
+    }
 
     /**
-     * AutoBindingAutoDefを作成します。
+     * Closureを設定します。
      *
-     * @param string $name \seasar\container\AutoBindingDef::AUTO_NAME
+     * @param \Closure $closure
      */
-    public function __construct($name) {
-        $this->name = $name;
+    public function setClosure(\Closure $closure) {
+        $this->closure = $closure;
     }
 
     /**
-     * @see \seasar\container\AutoBindingDef::getName()
+     * @see MethodInterceptor::invoke()
      */
-    public function getName() {
-        return $this->name;
-    }
-
-    /**
-     * @see \seasar\container\AutoBindingDef::createConstructorAssembler()
-     */
-    public function createConstructorAssembler(\seasar\container\ComponentDef $componentDef) {
-        return new ConstructClosureAssembler($componentDef);
-    }
-
-    /**
-     * @see \seasar\container\AutoBindingDef::createPropertyAssembler()
-     */
-    public function createPropertyAssembler(\seasar\container\ComponentDef $componentDef) {
-        return new AutoPropertyAssembler($componentDef);
+    public function invoke(\seasar\aop\MethodInvocation $invocation) {
+        $closure = $this->closure;
+        return $closure($invocation);
     }
 }

@@ -91,7 +91,7 @@ function getCoreClasses() { return array(
 'seasar\util\ClassUtil',
 'seasar\container\deployer\AbstractComponentDeployer',
 'seasar\container\deployer\SingletonComponentDeployer',
-'seasar\container\assembler\ClosureConstructorAssembler',
+'seasar\container\assembler\ConstructClosureAssembler',
 'seasar\container\assembler\ManualPropertyAssembler',
 'seasar\container\assembler\AutoPropertyAssembler',
 'seasar\container\util\ConstructorUtil'

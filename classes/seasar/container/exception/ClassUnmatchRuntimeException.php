@@ -15,53 +15,28 @@
 // | governing permissions and limitations under the License.             |
 // +----------------------------------------------------------------------+
 /**
- * 手動で設定されたものだけを対象にするプロパティアセンブラです。
+ * コンポーネントのインスタンスを、 {@link ComponentDef コンポーネント定義}に指定されたクラスにキャスト出来ない場合にスローされます。
  *
  * @copyright 2005-2009 the Seasar Foundation and the Others.
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  * @link      http://s2container.php5.seasar.org/
  * @version   SVN: $Id:$
  * @since     Class available since Release 1.0.0
- * @package   seasar.container.assembler
+ * @package   seasar.container.exception
  * @author    klove
  */
-namespace seasar\container\assembler;
-class ClosureConstructorAssembler {
+namespace seasar\container\exception;
+class ClassUnmatchRuntimeException extends \seasar\exception\S2RuntimeException {
 
     /**
-     * @var \seasar\container\ComponentDef
+     * <b>ClassUnmatchRuntimeException</b>を構築します。
+     * 
+     * @param string $componentClassName
+     *            コンポーネント定義に指定されたクラス
+     * @param string $realComponentClassName
+     *            コンポーネントの実際の型
      */
-    protected $componentDef;
-
-    /**
-     * @param \seasar\container\ComponentDef $componentDef
-     */
-    public function __construct(\seasar\container\ComponentDef $componentDef) {
-        $this->componentDef = $componentDef;
-    }
-
-    /**
-     * @return object
-     */
-    public function assemble() {
-        $args = array();
-        return \seasar\container\util\ConstructorUtil::newInstance($this->componentDef, $args);
-
-        $componentDef = $this->getComponentDef();
-        if ($componentDef->hasClosureConstructor()) {
-            $closure = $componentDef->getClosureConstructor();
-            if ($componentDef->getComponentClass()->getName() === 'Closure') {
-                return $closure;
-            }
-            $component = $closure($componentDef);
-            $componentClass = $componentDef->getComponentClass();
-            if ($component instanceof $componentClass) {
-                return $component;
-            } else {
-                throw new Exception();
-            }
-        } else {
-            return $componentDef->getComponentClass()->newInstance();
-        }
+    public function __construct($componentClassName, $realComponentClassName) {
+        parent::__construct(116, array($componentClassName, $realComponentClassName));
     }
 }

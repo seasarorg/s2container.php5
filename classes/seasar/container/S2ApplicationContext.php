@@ -372,6 +372,9 @@ class S2ApplicationContext {
         if ($info->hasAutoBinding()) {
             $cd->setAutoBindingDef(\seasar\container\assembler\AutoBindingDefFactory::getAutoBindingDef($info->getAutoBinding()));
         }
+        if ($info->hasConstructClosure()) {
+            $cd->setConstructClosure($info->getConstructClosure());
+        }
         return $cd;
     }
 

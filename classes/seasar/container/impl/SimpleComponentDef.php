@@ -205,4 +205,26 @@ class SimpleComponentDef implements \seasar\container\ComponentDef {
     public function setAutoBindingDef(\seasar\container\AutoBindingDef $autoBindingDef) {
         throw new \seasar\exception\UnsupportedOperationException(__METHOD__);
     }
+
+    /**
+     * @see \seasar\container\ComponentDef::setConstructClosure()
+     */
+    public function setConstructClosure(\Closure $closure) {
+        throw new \seasar\exception\UnsupportedOperationException(__METHOD__);
+    }
+
+    /**
+     * @see \seasar\container\ComponentDef::getConstructClosure()
+     */
+    public function getConstructClosure() {
+        throw new \seasar\exception\UnsupportedOperationException(__METHOD__);
+    }
+
+    /**
+     * @see \seasar\container\ComponentDef::hasConstructClosure()
+     */
+    public function hasConstructClosure() {
+        throw new \seasar\exception\UnsupportedOperationException(__METHOD__);
+    }
+
 }

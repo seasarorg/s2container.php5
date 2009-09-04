@@ -34,6 +34,7 @@ class ComponentInfoDef {
     private $autoBinding = null;
     private $namespace = null;
     private $usePhpNamespace = null;
+    private $constructClosure = null;
 
     /**
      * @param string $className
@@ -199,4 +200,26 @@ class ComponentInfoDef {
         return $this->usePhpNamespace;
     }
 
+    /**
+     * @param \Closure $constructClosure
+     * @return seasar\container\ComponentInfoDef
+     */
+    public function setConstructClosure(\Closure $constructClosure) {
+        $this->constructClosure = $constructClosure;
+        return $this;
+    }
+
+    /**
+     * @return \Closure
+     */
+    public function getConstructClosure() {
+        return $this->constructClosure;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function hasConstructClosure() {
+        return !is_null($this->constructClosure);
+    }
 }

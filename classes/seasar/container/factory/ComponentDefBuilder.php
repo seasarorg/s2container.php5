@@ -219,10 +219,15 @@ class ComponentDefBuilder {
             }
             $aspectDef = new \seasar\container\impl\AspectDef($pointcut);
             $cd->addAspectDef($aspectDef);
-            if ($cd->getContainer()->hasComponentDef($annoInfo['interceptor'])) {
-                $aspectDef->setChildComponentDef($cd->getContainer()->getComponentDef($annoInfo['interceptor']));
+
+            if (is_string($annoInfo['interceptor'])) {
+                if ($cd->getContainer()->hasComponentDef($annoInfo['interceptor'])) {
+                    $aspectDef->setChildComponentDef($cd->getContainer()->getComponentDef($annoInfo['interceptor']));
+                } else {
+                    $aspectDef->setExpression($annoInfo['interceptor']);
+                }
             } else {
-                $aspectDef->setExpression($annoInfo['interceptor']);
+                $aspectDef->setValue($annoInfo['interceptor']);
             }
         } else {
             \seasar\log\S2Logger::getLogger(__CLASS__)->debug("invalid aspect info. cannot get interceptor value.", __METHOD__);
