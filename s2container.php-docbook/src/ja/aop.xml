@@ -742,6 +742,9 @@ class SampleInterceptor implements seasar\aop\MethodInterceptor {
       </para>
     </sect2> 
     
+    
+    
+  <!-- ################################################################### -->
   </sect1>
   <sect1 id="aop.invocation"><title>MethodInvocation API リファレンス</title>
     <para>

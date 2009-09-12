@@ -1160,7 +1160,43 @@ class Service {}
 </components>
 ]]></programlisting>
     </sect2>
-   
+
+
+    <sbr/>
+    <sect2 id="dicon.closure"><title>ConstructClosureによるコンポーネントの生成</title>
+      <para>
+      コンポーネントの生成を行う処理をClosureで設定することができます。ConstructClosureの設定は、
+      <link linkend="dicon.application.register">s2component関数</link>で行います。
+       </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+s2component('PDO')
+  ->setConstructClosure(function(){
+        return new PDO('sqlite:sqlite.db');
+    });
+]]></programlisting>
+
+      <para>
+        ConstructClosureの戻り値は、s2component関数で指定するクラスとinstanceofの関係を満たす必要があります。<sbr/>
+        staticなファクトリメソッドなどで生成したインスタンスをコンポーネントとして扱うことができます。
+      </para>
+
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+$options = array('dbname' => 'sqlite.db');
+
+s2component('Zend_Db_Adapter_Abstract')
+  ->setName('zendPdo')
+  ->setConstructClosure(function() use($options) {
+        $db = Zend_Db::factory('PDO_SQLITE', $options);
+        Zend_Db_Table_Abstract::setDefaultAdapter($db);
+        return $db;
+    });
+]]></programlisting>
+
+       <note><title>NOTE</title>
+         <para>このExampleは example/ManualDI/closure にあります。</para>
+       </note>
+    </sect2>
   </sect1>
 
 
@@ -1394,7 +1430,8 @@ s2component('Service')
   ->setName('indexService')
   ->setInstance('singleton')
   ->setAutoBinding('auto')
-  ->setNamespace('example');
+  ->setNamespace('example')
+  ->setConstructClosure(function(){return new Service;});
 ]]></programlisting>
 
       <caution><title>注意</title>
@@ -1412,7 +1449,7 @@ S2ApplicationContext::registerAspect($interceptor, $componentPattern = null, $po
 ]]></programlisting>
       <blockquote>
         <itemizedlist>
-          <listitem>第1引数 : Interceptorコンポーネント名、またはExpression</listitem>
+          <listitem>第1引数 : Interceptorコンポーネント名、Closure、またはExpression</listitem>
           <listitem>第2引数 : コンポーネント名またはコンポーネントクラス名にパターンマッチする正規表現文字列</listitem>
           <listitem>第3引数 : ポイントカットを正規表現文字列で指定</listitem>
           <listitem>戻り値 : AspectInfoDefインスタンス</listitem>
@@ -1441,10 +1478,22 @@ s2aspect('dao.interceptor')
   ->setPointcut('/^find/');
 ]]></programlisting>
 
+      <para>
+          次の例では、Closureをインターセプターとして設定しています。Closureの第1引数には<link linkend="aop.invocation">MethodInvocationインスタンス</link>が渡されます。
+       </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+s2aspect()
+  ->setPattern('/Service$/')
+  ->setPointcut('/^add/')
+  ->setInterceptor(function($invoker) {
+        return $invoker->proceed() * 1.05;
+    });
+]]></programlisting>
+
 
       <caution><title>注意</title>
       <para>
-              自動アスペクトはimportされたコンポーネントに対してのみ適用されます。インクルードされたダイコンファイルに含まれるコンポーネントには適用されません。
+              自動アスペクトはimportされたコンポーネントに対してのみ適用されます。importされたダイコンファイルに含まれるコンポーネントには適用されません。
       </para>
       </caution>
     </sect2>
