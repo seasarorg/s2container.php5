@@ -191,7 +191,7 @@ class PdoInterceptor implements \seasar\aop\MethodInterceptor {
         if (is_file($sqlFile) and is_readable($sqlFile)) {
             $query = SqlFileReader::read($sqlFile, $context);
         } else {
-            \seasar\log\S2Logger::getInstance(__NAMESPACE__)->info("sql file not found. [$sqlFile]", __METHOD__);
+            \seasar\log\S2Logger::getInstance(__NAMESPACE__)->info("sql file found, but unreadable. [$sqlFile]", __METHOD__);
         }
         return $query;
     }

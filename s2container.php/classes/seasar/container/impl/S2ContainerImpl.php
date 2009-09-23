@@ -222,6 +222,13 @@ class S2ContainerImpl implements \seasar\container\S2Container {
     }
 
     /**
+     * @see \seasar\container\S2Container::getComponentDefNames()
+     */
+    public function getComponentDefNames() {
+        return array_keys($this->componentDefMap);
+    }
+
+    /**
      * @see \seasar\container\S2Container::getComponentDef()
      */
     public function getComponentDef($key) {

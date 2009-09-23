@@ -46,7 +46,7 @@ class ConstructClosureAssemblerTest extends \PHPUnit_Framework_TestCase {
         $componentDef = new \seasar\container\impl\ComponentDefImpl('\Closure');
         $arg = 'abc';
         $clazz = __NAMESPACE__ . '\B_ConstructClosureAssemblerTest';
-        $componentDef->setConstructClosure(function($cd) use($arg, $clazz) { return new $clazz($arg);} );
+        $componentDef->setConstructClosure(function($cd) use($arg, $clazz) {return function() use($arg, $clazz) { return new $clazz($arg);};} );
         $assembler = new ConstructClosureAssembler($componentDef);
         $component = $assembler->assemble();
         $this->assertTrue($component instanceof \Closure);

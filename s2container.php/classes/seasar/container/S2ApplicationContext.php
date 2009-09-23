@@ -114,12 +114,14 @@ class S2ApplicationContext {
      * コンポーネント情報を登録します。
      * s2component関数から呼ばれます。
      *
-     * @param seasar\container\ComponentInfoDef|string $info
+     * @param seasar\container\ComponentInfoDef|string $clazz
      * @return seasar\container\ComponentInfoDef
      */
-    public static function register($info) {
-        if (!($info instanceof seasar\container\ComponentInfoDef)) {
-            $info = new \seasar\container\ComponentInfoDef($info);
+    public static function register($clazz = null) {
+        if ($clazz instanceof seasar\container\ComponentInfoDef) {
+            $info = $clazz;
+        } else {
+            $info = new \seasar\container\ComponentInfoDef($clazz);
         }
         self::$COMPONENT_INFOS[] = $info;
         return $info;
@@ -133,7 +135,7 @@ class S2ApplicationContext {
      * @param string $pointcut
      * @return seasar\container\AspectInfoDef
      */
-    public static function registerAspect($interceptor, $componentPattern = null, $pointcut = null) {
+    public static function registerAspect($interceptor = null, $componentPattern = null, $pointcut = null) {
         if ($interceptor instanceof \seasar\container\AspectInfoDef) {
             $info = $interceptor;
         } else {
@@ -323,7 +325,6 @@ class S2ApplicationContext {
             $classes = self::includeFilter($classes, self::$includeClassPatterns);
             $classes = self::excludeFilter($classes, self::$excludeClassPatterns);
         }
-
         $infos = self::$COMPONENT_INFOS;
         foreach ($classes as $className) {
             $info = self::createComponentInfoDef($className);
