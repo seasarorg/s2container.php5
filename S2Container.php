@@ -46,14 +46,14 @@ require_once(S2CONTAINER_ROOT_DIR . '/classes/seasar/aop/Config.php');
  * @param string|ReflectionClass $arg
  * @return seasar\container\ComponentInfoDef
  */
-function s2component($arg) {
+function s2component($arg = null) {
     return seasar\container\S2ApplicationContext::register($arg);
 }
 
 /**
  * @see s2component
  */
-function s2comp($arg) {
+function s2comp($arg = null) {
     return s2component($arg);
 }
 
@@ -65,6 +65,6 @@ function s2comp($arg) {
  * @param string $pointcut
  * @return seasar\container\AspectInfoDef
  */
-function s2aspect($interceptor, $componentPattern = null, $pointcut = null) {
+function s2aspect($interceptor = null, $componentPattern = null, $pointcut = null) {
     return seasar\container\S2ApplicationContext::registerAspect($interceptor, $componentPattern, $pointcut);
 }

@@ -16,6 +16,12 @@
   <email>s2container-php5@ml.seasar.org</email>
   <active>yes</active>
  </developer>
+ <developer>
+  <name>Delfino</name>
+  <user>Delfino</user>
+  <email>s2container-php5@ml.seasar.org</email>
+  <active>yes</active>
+ </developer>
  <date><?php echo date('Y-m-d');?></date>
  <time><?php echo date('H:i:s');?></time>
  <version>

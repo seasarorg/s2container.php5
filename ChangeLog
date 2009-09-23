@@ -1,4 +1,12 @@
 
+2009-09-04 s2container-2.0.2
+
+	* fix: トップレベルのnamespaceの記述漏れを修正しました。seasar\exception\S2RuntimeException
+	* fix: seasar\util\ClassLoaderとseasar\container\S2ApplicationContextのimportメソッドで、ディレクトリが参照できない場合に例外をスローするようにしました。
+	* add: Closureでコンポーネントを構築するseasar\container\assembler\ClosureConstructAssemblerを追加しました。
+	* add: Closureをインターセプターとして使用するseasar\aop\interceptor\ClosureInterceptorを追加しました。
+
+
 2009-08-02 s2container-2.0.1
 
 	* modify: CoreClassesを修正しました。
