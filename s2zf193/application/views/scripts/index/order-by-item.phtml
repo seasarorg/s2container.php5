@@ -1,0 +1,6 @@
+
+<?php foreach($this->dtos as $dto): ?>
+  <?php echo $this->escape($dto['ordering_id']); ?>      | 
+  <?php echo $this->escape($dto['customer_id']); ?>      | 
+  <?php echo $this->escape($dto['ordering_date']); ?> <br>
+<?php endforeach; ?>

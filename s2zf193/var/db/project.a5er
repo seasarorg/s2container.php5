@@ -1,0 +1,170 @@
+# A5:ER FORMAT:04
+# A5:ER ENCODING:Shift_JIS
+# A5:ER Mk-1 Copyright (C)2007 m.matsubara
+# A5:SQL Mk-2 Copyright (C)1997 m.matsubara
+#  http://www.wind.sannet.ne.jp/m_matsu/developer/a5m2/
+
+[Manager]
+ProjectName=s2zf
+Author=klove
+MaxEntityRowShow=1000
+ReadOnlyRecommend=0
+Page=Main
+LogicalView=1
+DecodeDomain=0
+ViewMode=4
+ViewFormat=0
+UseNondependenceDashLine=0
+FontName=ÇlÇr ÇoÉSÉVÉbÉN
+FontSize=9
+PaperSize=A4Portrait
+HeaderLeft=
+HeaderCenter=
+HeaderRight=
+FooterLeft=
+FooterCenter=
+FooterRight=
+
+[Comment]
+Comment=S2ZF ÉTÉìÉvÉãERê}
+FontName=ÇlÇr ÇoÉSÉVÉbÉN
+FontBold=0
+FontItalic=0
+FontUnderline=0
+FontSize=12
+FontColor=$000000
+LineColor=$000000
+BkColor=$FFFFFF
+Page=Main
+Left=50
+Top=50
+Width=423
+Height=77
+
+[Relation]
+Entity1=item
+Entity2=ordering_detail
+RelationType1=2
+RelationType2=3
+Fields1=item_id
+Fields2=item_id
+Cardinarity1=
+Cardinarity2=
+Position="MAIN",0,5000,5000,5035,R,R
+Dependence=1
+Caption=
+PName=
+ModifiedDateTime=20091010003720
+LineMode=0
+Bar1=500
+Bar2=500
+Bar3=504
+TermPos1=R
+TermPos2=R
+
+[Relation]
+Entity1=ordering
+Entity2=ordering_detail
+RelationType1=2
+RelationType2=3
+Fields1=ordering_id
+Fields2=ordering_id
+Cardinarity1=
+Cardinarity2=
+Position="MAIN",0,5000,5000,5000,R,R
+Dependence=1
+Caption=
+PName=
+ModifiedDateTime=20091010003716
+LineMode=0
+Bar1=500
+Bar2=500
+Bar3=500
+TermPos1=R
+TermPos2=R
+
+[Relation]
+Entity1=customer
+Entity2=ordering
+RelationType1=2
+RelationType2=3
+Fields1=customer_id
+Fields2=customer_id
+Cardinarity1=
+Cardinarity2=
+Position="MAIN",0,5000,5000,5000,R,R
+Dependence=0
+Caption=
+PName=
+LineMode=0
+Bar1=500
+Bar2=500
+Bar3=500
+TermPos1=R
+TermPos2=R
+
+[Entity]
+PName=item
+LName=è§ïi
+Comment=<?php\n    public function add($a, $b) {\n        return $a + $b;\n    }\n?>
+TableOption=
+Page=MAIN
+Left=950
+Top=350
+Field="è§ïiID","item_id","@INT","NOT NULL",0,"","",$FFFFFFFF
+Field="è§ïiñº","item_name","@VARCHAR(64)","NOT NULL",,"","<?php\narray(\qabc\q, \qxyz\q)\n?>\n",$FFFFFFFF
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+ModifiedDateTime=20091010172536
+Position="MAIN",950,350
+
+[Entity]
+PName=ordering_detail
+LName=íçï∂ñæç◊
+Comment=
+TableOption=
+Page=MAIN
+Left=950
+Top=600
+Field="íçï∂ID","ordering_id","@INT","NOT NULL",0,"","",$FFFFFFFF
+Field="è§ïiID","item_id","@INT","NOT NULL",1,"","",$FFFFFFFF
+Field="íçï∂êî","ordering_count","@INT","NOT NULL",,"","",$FFFFFFFF
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+ModifiedDateTime=20091010003751
+Position="MAIN",950,600
+
+[Entity]
+PName=ordering
+LName=íçï∂
+Comment=
+TableOption=
+Page=MAIN
+Left=250
+Top=600
+Field="íçï∂ID","ordering_id","@INT","NOT NULL",0,"","",$FFFFFFFF
+Field="å⁄ãqID","customer_id","@INT","NOT NULL",,"","",$FFFFFFFF
+Field="íçï∂ì˙","ordering_date","@DATE","NOT NULL",,"","",$FFFFFFFF
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+ModifiedDateTime=20091010003647
+Position="MAIN",250,600
+
+[Entity]
+PName=customer
+LName=å⁄ãq
+Comment=
+TableOption=
+Page=MAIN
+Left=250
+Top=350
+Field="å⁄ãqID","customer_id","@INT","NOT NULL",0,"","",$FFFFFFFF
+Field="å⁄ãqñº","customer_name","@VARCHAR(64)","NOT NULL",,"","",$FFFFFFFF
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+ModifiedDateTime=20091010001918
+Position="MAIN",250,350

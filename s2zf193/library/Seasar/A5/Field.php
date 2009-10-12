@@ -1,0 +1,278 @@
+<?php
+// +----------------------------------------------------------------------+
+// | Copyright 2005-2009 the Seasar Foundation and the Others.            |
+// +----------------------------------------------------------------------+
+// | Licensed under the Apache License, Version 2.0 (the "License");      |
+// | you may not use this file except in compliance with the License.     |
+// | You may obtain a copy of the License at                              |
+// |                                                                      |
+// |     http://www.apache.org/licenses/LICENSE-2.0                       |
+// |                                                                      |
+// | Unless required by applicable law or agreed to in writing, software  |
+// | distributed under the License is distributed on an "AS IS" BASIS,    |
+// | WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,                        |
+// | either express or implied. See the License for the specific language |
+// | governing permissions and limitations under the License.             |
+// +----------------------------------------------------------------------+
+/**
+ * ER図のEntityのFieldを表します。
+ *
+ * @copyright 2005-2009 the Seasar Foundation and the Others.
+ * @license   http://www.apache.org/licenses/LICENSE-2.0
+ * @link      http://s2container.php5.seasar.org/
+ * @version   SVN: $Id:$
+ * @since     Class available since Release 2.0.2
+ * @package   Seasar_A5
+ * @author    klove
+ */
+class Seasar_A5_Field {
+
+    /**
+     * フィールド物理名
+     * @var string
+     */ 
+    private $pname = null;
+
+    /**
+     * @param string $pname
+     * @return null
+     */
+    public function setPname($pname) {
+        $this->pname = $pname;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPname() {
+        return $this->pname;
+    }
+
+    /**
+     * フィールド論理名
+     * @var string
+     */ 
+    private $lname = null;
+
+    /**
+     * @param string $lname
+     * @return null
+     */
+    public function setLname($lname) {
+        $this->lname = $lname;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLname() {
+        return $this->lname;
+    }
+
+    /**
+     * データタイプ
+     * @var string
+     */ 
+    private $type = null;
+
+    /**
+     * @param boolean $type
+     * @return null
+     */
+    public function setType($type) {
+        $this->type = $type;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType() {
+        return $this->type;
+    }
+
+    /**
+     * データサイズ
+     * @var integer
+     */ 
+    private $size = null;
+
+    /**
+     * @param integer $size
+     * @return null|integer
+     */
+    public function setSize($size) {
+        $this->size = $size;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getSize() {
+        return $this->size;
+    }
+
+    /**
+     * NOT NULLかどうか
+     * @var boolean
+     */ 
+    private $notNull = false;
+
+    /**
+     * @param boolean $notNull
+     * @return boolean
+     */
+    public function setNotNull($notNull = true) {
+        $this->notNull = $notNull;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isNotNull() {
+        return $this->notNull;
+    }
+
+    /**
+     * プライマリキーかどうか
+     * @var boolean
+     */ 
+    private $primaryKey = false;
+
+    /**
+     * @param boolean $primaryKey
+     * @return null
+     */
+    public function setPrimaryKey($primaryKey = true) {
+        $this->primaryKey = $primaryKey;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isPrimaryKey() {
+        return $this->primaryKey;
+    }
+
+    /**
+     * プライマリキーの順番
+     * @var string
+     */ 
+    private $primaryKeyIndex = null;
+
+    /**
+     * @param integer $primaryKeyIndex
+     * @return null
+     */
+    public function setPrimaryKeyIndex($primaryKeyIndex) {
+        $this->primaryKeyIndex = $primaryKeyIndex;
+    }
+
+    /**
+     * @return integer|null
+     */
+    public function getPrimaryKeyIndex() {
+        return $this->primaryKeyIndex;
+    }
+
+    /**
+     * SQL DEFAULT式
+     * @var string
+     */ 
+    private $default = null;
+
+    /**
+     * @param string $default
+     * @return null
+     */
+    public function setDefault($default) {
+        $this->default = $default;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDefault() {
+        return $this->default;
+    }
+
+    /**
+     * フィールドコメント
+     * @var string
+     */ 
+    private $comment = null;
+
+    /**
+     * @param string $comment
+     * @return null
+     */
+    public function setComment($comment) {
+        $this->comment = $comment;
+    }
+
+    /**
+     * @return string
+     */
+    public function getComment() {
+        return $this->comment;
+    }
+
+    /**
+     * コメントに埋め込まれたPHPソース
+     * @var string
+     */ 
+    private $commentedSrc = null;
+
+    /**
+     * @param string $commentedSrc
+     * @return null
+     */
+    public function setCommentedSrc($commentedSrc) {
+        $this->commentedSrc = $commentedSrc;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCommentedSrc() {
+        return $this->commentedSrc;
+    }
+
+    /**
+     * フィールド情報を表すPHPソースを返します。
+     * @return string
+     */ 
+    public function getSource() {
+
+        $src = array();
+        $src[] = "'pname' => '{$this->pname}'";
+        $src[] = "'lname' => '{$this->lname}'";
+        $src[] = "'type' => '{$this->type}'";
+        if (is_null($this->size)) {
+            $src[] = "'size' => null";
+        } else {
+            $src[] = "'size' => {$this->size}";
+        }
+
+        if ($this->isNotNull()) {
+            $src[] = "'nn' => true";
+        } else {
+            $src[] = "'nn' => false";
+        }
+
+        if ($this->isPrimaryKey()) {
+            $src[] = "'pk' => true";
+            $src[] = "'pk_idx' => {$this->primaryKeyIndex}";
+        } else {
+            $src[] = "'pk' => false";
+            $src[] = "'pk_idx' => null";
+        }
+
+        $src[] = "'default' => '{$this->default}'";
+        $src[] = "'comment' => '{$this->comment}'";
+        $src[] = "'options' => {$this->commentedSrc}";
+
+        $src = 'array(' . implode(',' . PHP_EOL . '              ', $src) . ')';
+        return $src;
+    }
+
+}
