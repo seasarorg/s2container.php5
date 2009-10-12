@@ -31,14 +31,9 @@ class Seasar_A5_Generator_Postgres extends Seasar_A5_Generator_Abstract {
      */
     protected function getSequenceSrc(Seasar_A5_Entity $entity) {
         $pkFields = $entity->getPrimaryKeyFields();
-        if (1 != count($pkFields)) {
-            return 'false';
-        }
-
-        if ($pkFields[0]->getType() === 'SERIAL') {
+        if (1 == count($pkFields) && 'SERIAL' === $pkFields[0]->getType()) {
             return 'true';
         }
-
         return 'false';
     }
 
