@@ -1,5 +1,5 @@
 <?php
-class Model_DbTable_Abstract extends Zend_Db_Table_Abstract {
+abstract class @@SUPER_CLASS@@ extends Zend_Db_Table_Abstract {
 
     public function getValidators() {
         return static::$VALIDATORS;

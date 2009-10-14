@@ -31,6 +31,5 @@ define('S2A5_ROOT', dirname(__FILE__) . '/A5');
 define('S2A5_ENCODING', 'UTF-8');
 define('S2A5_MODEL_PACKAGE', 'Model_DbTable');
 define('S2A5_MODEL_SUPER_CLASS', 'Abstract');
-define('S2A5_NS', 's2-a5');
 
 require_once(dirname(dirname(dirname(__FILE__))) . '/application/configs/s2.php');

@@ -80,7 +80,7 @@ class Seasar_A5_Field {
      * @return null
      */
     public function setType($type) {
-        $this->type = $type;
+        $this->type = strtoupper($type);
     }
 
     /**
@@ -88,6 +88,27 @@ class Seasar_A5_Field {
      */
     public function getType() {
         return $this->type;
+    }
+
+    /**
+     * データタイプ
+     * @var string
+     */ 
+    private $typeOption = null;
+
+    /**
+     * @param boolean $typeOption
+     * @return null
+     */
+    public function setTypeOption($typeOption) {
+        $this->typeOption = $typeOption;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTypeOption() {
+        return $this->typeOption;
     }
 
     /**

@@ -31,14 +31,11 @@ class Seasar_A5_Generator_SqLite extends Seasar_A5_Generator_Abstract {
      */
     protected function getSequenceSrc(Seasar_A5_Entity $entity) {
         $pkFields = $entity->getPrimaryKeyFields();
-        if (1 != count($pkFields)) {
-            return 'false';
-        }
-
-        if ($pkFields[0]->getType() === 'INT') {
+        if (1 == count($pkFields) &&
+            'INTEGER' === $pkFields[0]->getType() &&
+            false !== stripos($pkFields[0]->getTypeOption(), 'PRIMARY KEY')) {
             return 'true';
         }
-
         return 'false';
     }
 }

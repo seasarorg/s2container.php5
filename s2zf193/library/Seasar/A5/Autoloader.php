@@ -15,7 +15,7 @@
 // | governing permissions and limitations under the License.             |
 // +----------------------------------------------------------------------+
 /**
- * A5Model用のクラスローダー
+ * A5ModelpﾌクX[_[
  *
  * @copyright 2005-2009 the Seasar Foundation and the Others.
  * @license   http://www.apache.org/licenses/LICENSE-2.0
@@ -91,6 +91,9 @@ class Seasar_A5_Autoloader implements Zend_Loader_Autoloader_Interface {
      */
     private function getSchema() {
         if (is_null($this->schema)) {
+            if (is_null($this->a5erFile)) {
+                $this->a5erFile = dirname(APPLICATION_PATH) . '/var/db/project.a5er';
+            }
             $this->schema = $this->parser->parse($this->a5erFile);
         }
         return $this->schema;

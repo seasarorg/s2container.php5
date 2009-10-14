@@ -123,11 +123,16 @@ class Seasar_A5_Parser {
         }
         $field->setLname($items[0]);
         $field->setPname($items[1]);
-        $field->setType(preg_replace('/\(\d+\)$/', '', preg_replace('/^@/', '', $items[2])));
+        $types = preg_split('/\s+/', $items[2], 2);
+        if (count($types) < 2) {
+            $types[] = null;
+        }
+        $field->setType(preg_replace('/\(\d+\)$/', '', preg_replace('/^@/', '', $types[0])));
         $matches = array();
-        if (preg_match('/\((\d+)\)/', $items[2], $matches)) {
+        if (preg_match('/\((\d+)\)/', $types[0], $matches)) {
             $field->setSize($matches[1]);
         }
+        $field->setTypeOption($types[1]);
         $field->setNotNull($items[3] === 'NOT NULL' ? true : false);
 
         if ($items[4] == '') {

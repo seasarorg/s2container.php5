@@ -2,7 +2,7 @@
 /**
  * @S2Component('autoBinding' => 'none')
  */
-class @@CLASS_NAME@@ extends @@PARENT_CLASS_NAME@@ {
+class @@CLASS_NAME@@ extends @@SUPER_CLASS@@ {
 
     const PNAME = @@PNAME@@;
     const LNAME = @@LNAME@@;

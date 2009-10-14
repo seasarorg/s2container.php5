@@ -24,29 +24,16 @@
  * @package   Seasar_A5_Generator
  * @author    klove
  */
-class Seasar_A5_Generator_Postgres extends Seasar_A5_Generator_Abstract {
+class Seasar_A5_Generator_MySQL extends Seasar_A5_Generator_Abstract {
 
     /**
      * @see Seasar_A5_Generator_Abstract::getSequenceSrc()
      */
     protected function getSequenceSrc(Seasar_A5_Entity $entity) {
         $pkFields = $entity->getPrimaryKeyFields();
-        if (1 == count($pkFields) && 'SERIAL' === $pkFields[0]->getType()) {
+        if (1 == count($pkFields) && false !== stripos($pkFields[0]->getTypeOption(), 'AUTO_INCREMENT')) {
             return 'true';
         }
         return 'false';
-    }
-
-    /**
-     * @see Seasar_A5_Generator_Abstract::getFieldValidator()
-     */
-    protected function getFieldValidator(Seasar_A5_Field $field) {
-        $validators = parent::getFieldValidator($field);
-        switch($field->getType()) {
-            case 'SERIAL':
-                $validators[$field->getType()] = "'Digits'";
-                break;
-        }
-        return $validators;
     }
 }

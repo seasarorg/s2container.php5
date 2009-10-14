@@ -81,7 +81,7 @@ class Seasar_Zf_Controller_S2ActionHelper extends Zend_Controller_Action_Helper_
      */
     public function direct($key) {
         require_once(APPLICATION_PATH . '/configs/s2.php');
-        return \seasar\container\S2ApplicationContext::get($key);
+        return \seasar\container\S2ApplicationContext::create()->getComponent($key);
     }
 
     /**
