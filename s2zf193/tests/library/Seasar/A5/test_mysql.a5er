@@ -26,8 +26,8 @@ FooterCenter=
 FooterRight=
 
 [Relation]
-Entity1=pg_item
-Entity2=pg_item_status
+Entity1=mysql_item
+Entity2=mysql_item_status
 RelationType1=2
 RelationType2=3
 Fields1=item_id,order_date
@@ -47,7 +47,7 @@ TermPos1=R
 TermPos2=R
 
 [Entity]
-PName=pg_item_status
+PName=mysql_item_status
 LName=商品状況
 Comment=複合主キーテーブルのためのサンプルです。
 TableOption=
@@ -64,7 +64,7 @@ ModifiedDateTime=20091015000651
 Position="MAIN",1050,1150
 
 [Entity]
-PName=pg_item
+PName=mysql_item
 LName=商品
 Comment=複合主キーテーブルのためのサンプルです。\n<?php\n    public function findById($id) {\n        return $this->find($id)->current();\n    }\n?>\n\nソースの埋め込みを行うさんぷるです。\n
 TableOption=
@@ -81,8 +81,8 @@ ModifiedDateTime=20091015000643
 Position="MAIN",350,1150
 
 [Relation]
-Entity1=pg_busyo
-Entity2=pg_other_employee
+Entity1=mysql_busyo
+Entity2=mysql_other_employee
 RelationType1=1
 RelationType2=3
 Fields1=busyo_id
@@ -102,8 +102,8 @@ TermPos1=R
 TermPos2=R
 
 [Relation]
-Entity1=pg_busyo
-Entity2=pg_other_employee
+Entity1=mysql_busyo
+Entity2=mysql_other_employee
 RelationType1=2
 RelationType2=3
 Fields1=busyo_id
@@ -122,7 +122,7 @@ TermPos1=R
 TermPos2=R
 
 [Entity]
-PName=pg_other_employee
+PName=mysql_other_employee
 LName=外部社員
 Comment=主キーがInteger以外の場合は、sequenceをfalseとする。
 TableOption=
@@ -140,8 +140,8 @@ ModifiedDateTime=20091015000635
 Position="MAIN",350,700
 
 [Relation]
-Entity1=pg_busyo
-Entity2=pg_employee
+Entity1=mysql_busyo
+Entity2=mysql_employee
 RelationType1=2
 RelationType2=3
 Fields1=busyo_id
@@ -160,14 +160,14 @@ TermPos1=R
 TermPos2=R
 
 [Entity]
-PName=pg_employee
+PName=mysql_employee
 LName=社員
 Comment=
 TableOption=
 Page=MAIN
 Left=1050
 Top=400
-Field="社員ID","employee_id","SERIAL","NOT NULL",0,"","",$FFFFFFFF
+Field="社員ID","employee_id","@INT AUTO_INCREMENT","NOT NULL",0,"","",$FFFFFFFF
 Field="部署ID","busyo_id","@INT","NOT NULL",,"","",$FFFFFFFF
 Field="氏名","name","@VARCHAR(64)",,,"","",$FFFFFFFF
 Field="生年月日","birthday","@DATE",,,"","",$FFFFFFFF
@@ -177,11 +177,11 @@ Field="ボーナス","bonus","@DECIMAL",,,"","",$FFFFFFFF
 EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
-ModifiedDateTime=20091015000627
+ModifiedDateTime=20091015002848
 Position="MAIN",1050,400
 
 [Entity]
-PName=pg_busyo
+PName=mysql_busyo
 LName=部署
 Comment=
 TableOption=

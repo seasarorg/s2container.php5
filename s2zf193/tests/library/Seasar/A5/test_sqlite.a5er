@@ -26,8 +26,8 @@ FooterCenter=
 FooterRight=
 
 [Relation]
-Entity1=item
-Entity2=item_status
+Entity1=sqlite_item
+Entity2=sqlite_item_status
 RelationType1=2
 RelationType2=3
 Fields1=item_id,order_date
@@ -47,7 +47,7 @@ TermPos1=R
 TermPos2=R
 
 [Entity]
-PName=item_status
+PName=sqlite_item_status
 LName=¤•ió‹µ
 Comment=•¡‡åƒL[ƒe[ƒuƒ‹‚Ì‚½‚ß‚ÌƒTƒ“ƒvƒ‹‚Å‚·B
 TableOption=
@@ -60,11 +60,11 @@ Field="ŒÚ‹qID","shopper_id","@INT","NOT NULL",,"9999","ƒfƒtƒHƒ‹ƒg’l‚Íƒ_ƒ~[ƒf[ƒ
 EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
-ModifiedDateTime=20091003153725
+ModifiedDateTime=20091015003513
 Position="MAIN",1050,1150
 
 [Entity]
-PName=item
+PName=sqlite_item
 LName=¤•i
 Comment=•¡‡åƒL[ƒe[ƒuƒ‹‚Ì‚½‚ß‚ÌƒTƒ“ƒvƒ‹‚Å‚·B\n<?php\n    public function findById($id) {\n        return $this->find($id)->current();\n    }\n?>\n\nƒ\[ƒX‚Ì–„‚ß‚İ‚ğs‚¤‚³‚ñ‚Õ‚é‚Å‚·B\n
 TableOption=
@@ -77,12 +77,12 @@ Field="¤•i–¼","item_name","@VARCHAR(128)","NOT NULL",,"","",$FFFFFFFF
 EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
-ModifiedDateTime=20091005233923
+ModifiedDateTime=20091015003504
 Position="MAIN",350,1150
 
 [Relation]
-Entity1=busyo
-Entity2=other_employee
+Entity1=sqlite_busyo
+Entity2=sqlite_other_employee
 RelationType1=1
 RelationType2=3
 Fields1=busyo_id
@@ -102,8 +102,8 @@ TermPos1=R
 TermPos2=R
 
 [Relation]
-Entity1=busyo
-Entity2=other_employee
+Entity1=sqlite_busyo
+Entity2=sqlite_other_employee
 RelationType1=2
 RelationType2=3
 Fields1=busyo_id
@@ -122,7 +122,7 @@ TermPos1=R
 TermPos2=R
 
 [Entity]
-PName=other_employee
+PName=sqlite_other_employee
 LName=ŠO•”Ğˆõ
 Comment=åƒL[‚ªIntegerˆÈŠO‚Ìê‡‚ÍAsequence‚ğfalse‚Æ‚·‚éB
 TableOption=
@@ -136,12 +136,12 @@ Field="–¼","name","@VARCHAR",,,"","",$FFFFFFFF
 EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
-ModifiedDateTime=20091005223214
+ModifiedDateTime=20091015003456
 Position="MAIN",350,700
 
 [Relation]
-Entity1=busyo
-Entity2=employee
+Entity1=sqlite_busyo
+Entity2=sqlite_employee
 RelationType1=2
 RelationType2=3
 Fields1=busyo_id
@@ -160,14 +160,14 @@ TermPos1=R
 TermPos2=R
 
 [Entity]
-PName=employee
+PName=sqlite_employee
 LName=Ğˆõ
 Comment=
 TableOption=
 Page=MAIN
 Left=1050
 Top=400
-Field="ĞˆõID","employee_id","@INT","NOT NULL",0,"","",$FFFFFFFF
+Field="ĞˆõID","employee_id","INTEGER PRIMARY KEY","NOT NULL",0,"","",$FFFFFFFF
 Field="•”ID","busyo_id","@INT","NOT NULL",,"","",$FFFFFFFF
 Field="–¼","name","@VARCHAR(64)",,,"","",$FFFFFFFF
 Field="¶”NŒ“ú","birthday","@DATE",,,"","",$FFFFFFFF
@@ -177,11 +177,11 @@ Field="ƒ{[ƒiƒX","bonus","@DECIMAL",,,"","",$FFFFFFFF
 EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
-ModifiedDateTime=20091003150709
+ModifiedDateTime=20091015003448
 Position="MAIN",1050,400
 
 [Entity]
-PName=busyo
+PName=sqlite_busyo
 LName=•”
 Comment=
 TableOption=
@@ -193,5 +193,5 @@ Field="•”–¼","busyo_name","@VARCHAR(64)",,,"","<?php\narray(\qmsg\q => \QƒtƒB
 EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
-ModifiedDateTime=20091005223138
+ModifiedDateTime=20091015003440
 Position="MAIN",350,400

@@ -30,7 +30,7 @@ use \seasar\container\S2ApplicationContext as s2app;
 class Seasar_A5_AutoloaderTest extends PHPUnit_Framework_TestCase {
 
     public function testAutoLoad() {
-        $className = 'Model_DbTable_Busyo';
+        $className = 'Model_DbTable_PgBusyo';
         $this->assertFalse(class_exists($className, false));
         $this->loader->autoload($className);
         $this->assertTrue(class_exists($className, false));

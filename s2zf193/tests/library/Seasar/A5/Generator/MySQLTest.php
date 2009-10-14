@@ -26,44 +26,27 @@
  */
 
 use \seasar\container\S2ApplicationContext as s2app;
+require_once(dirname(APPLICATION_PATH) . '/library/Seasar/A5.php');
 
-class Seasar_A5_ParserTest extends PHPUnit_Framework_TestCase {
+class Seasar_A5_Generator_MySQLTest extends PHPUnit_Framework_TestCase {
 
-    public function testParse() {
-        $a5erFile = dirname(__FILE__) . '/test_sqlite.a5er';
+    public function testGen() {
+        $a5erFile = dirname(dirname(__FILE__)) . '/test_mysql.a5er';
         $schema = $this->parser->parse($a5erFile);
-
-        $this->assertTrue($schema instanceof Seasar_A5_Schema);
-        $this->assertEquals(5, count($schema->getEntities()));
-        $this->assertEquals(4, count($schema->getRelations()));
-
-        $pname = 'sqlite_busyo';
-        $entity = $schema->getEntity($pname);
-        $this->assertTrue($entity instanceof Seasar_A5_Entity);
-        $entity = $schema->getEntityByPname($pname);
-        $this->assertTrue($entity instanceof Seasar_A5_Entity);
-
-        $lname = '部署';
-        $entity = $schema->getEntityByLname($lname);
-        $this->assertTrue($entity instanceof Seasar_A5_Entity);
-
-        $className = 'SqliteBusyo';
-        $entity = $schema->getEntityByClass($className);
-        $this->assertTrue($entity instanceof Seasar_A5_Entity);
-
-        //var_dump($schema);
-
+        $saveDir = dirname(__FILE__) . '/tmp';
+        $this->generator->gen($schema, $saveDir);
     }
 
     public function setUp() {
-        require_once(dirname(APPLICATION_PATH) . '/library/Seasar/A5.php');
-        require_once(dirname(APPLICATION_PATH) . '/library/Seasar/A5/config/sqlite.php');
         s2app::init();
+        require(dirname(APPLICATION_PATH) . '/library/Seasar/A5/config/mysql.php');
         $this->parser = s2app::get('Seasar_A5_Parser');
+        $this->generator = s2app::get('Seasar_A5_Generator_MySQL');
     }
 
     public function tearDown() {
         $this->parser = null;
+        $this->generator = null;
     }
 }
 
