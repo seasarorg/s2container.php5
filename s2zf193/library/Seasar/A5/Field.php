@@ -268,6 +268,13 @@ class Seasar_A5_Field {
         $src[] = "'pname' => '{$this->pname}'";
         $src[] = "'lname' => '{$this->lname}'";
         $src[] = "'type' => '{$this->type}'";
+
+        if (is_null($this->typeOption)) {
+            $src[] = "'type_opt' => null";
+        } else {
+            $src[] = "'type_opt' => '{$this->typeOption}'";
+        }
+
         if (is_null($this->size)) {
             $src[] = "'size' => null";
         } else {

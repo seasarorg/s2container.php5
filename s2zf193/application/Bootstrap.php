@@ -14,7 +14,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         Zend_Loader_Autoloader::getInstance()->suppressNotFoundWarnings(true);
         new Zend_Application_Module_Autoloader(array('namespace' => '', 'basePath'  => dirname(__FILE__)));
 
-        require_once(dirname(APPLICATION_PATH) . '/library/Seasar/A5/config/sqlite_autoload.php');
+        require_once('Seasar/A5/config/sqlite_autoload.php');
     }
 
     protected function _initActionHelper()
