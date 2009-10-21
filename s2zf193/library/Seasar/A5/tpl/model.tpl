@@ -8,9 +8,11 @@ class @@CLASS_NAME@@ extends @@SUPER_CLASS@@ {
     const LNAME = @@LNAME@@;
     const COMMENT = @@COMMENT@@;
 
-    public static $VALIDATORS = @@VALIDATORS@@;
-
     public static $FIELDS = @@FIELDS@@;
+
+    public static $FILTERS = @@FILTERS@@;
+
+    public static $VALIDATORS = @@VALIDATORS@@;
 
     protected $_name = @@TABLE_NAME@@;
     protected $_primary = @@PRIMARY_KEYS@@;

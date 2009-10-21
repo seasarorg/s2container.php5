@@ -15,7 +15,6 @@
 // | governing permissions and limitations under the License.             |
 // +----------------------------------------------------------------------+
 /**
- * Seasar_A5_SchemaPHP\[X𐶐B
  *
  * @copyright 2005-2009 the Seasar Foundation and the Others.
  * @license   http://www.apache.org/licenses/LICENSE-2.0
@@ -57,19 +56,12 @@ class Seasar_A5_Generator_Abstract implements Seasar_A5_Generator {
         return $this->writer;
     }
 
+    /**
+     * Seasar_A5_Generator_Abstractを構築する。
+     */
     public function __construct() {
         $this->modelSuperClassTpl = file_get_contents(dirname(dirname(__FILE__)) . '/tpl/model_abstract.tpl');
         $this->modelClassTpl      = file_get_contents(dirname(dirname(__FILE__)) . '/tpl/model.tpl');
-    }
-
-    /**
-     * @see Seasar_A5_Generator::genModelSuperClass()
-     */
-    public function genModelSuperClass($saveDir = '.') {
-        $this->writer->setClassName(S2A5_MODEL_PACKAGE . '_' . S2A5_MODEL_SUPER_CLASS);
-        $this->writer->setResource($saveDir . '/' . S2A5_MODEL_SUPER_CLASS . '.php');
-        $src = preg_replace('/@@SUPER_CLASS@@/', S2A5_MODEL_PACKAGE . '_' . S2A5_MODEL_SUPER_CLASS, $this->modelSuperClassTpl);
-        $this->writer->write($src);
     }
 
     /**
@@ -84,13 +76,37 @@ class Seasar_A5_Generator_Abstract implements Seasar_A5_Generator {
     }
 
     /**
+     * @see Seasar_A5_Generator::genModelSuperClass()
+     */
+    public function genModelSuperClass($saveDir = '.') {
+        $this->writer->setClassName(S2A5_MODEL_PACKAGE . '_' . S2A5_MODEL_SUPER_CLASS);
+        $this->writer->setResource($saveDir . '/' . S2A5_MODEL_SUPER_CLASS . '.php');
+        $this->writer->write($this->getModelSuperClassSrc());
+    }
+
+    /**
      * @see Seasar_A5_Generator::genModelClass()
      */
     public function genModelClass(Seasar_A5_Schema $schema, Seasar_A5_Entity $entity, $saveDir = '.') {
         $saveFile = $saveDir . '/' . $entity->getClassName() . '.php';
         $this->writer->setClassName(S2A5_MODEL_PACKAGE . '_' . $entity->getClassName());
         $this->writer->setResource($saveFile);
+        $this->writer->write($this->getModelClassSrc($schema, $entity));
+    }
 
+    /**
+     * @return string
+     */
+    protected function getModelSuperClassSrc() {
+        return preg_replace('/@@SUPER_CLASS@@/', S2A5_MODEL_PACKAGE . '_' . S2A5_MODEL_SUPER_CLASS, $this->modelSuperClassTpl);
+    }
+
+    /**
+     * @param Seasar_A5_Schema $schema
+     * @param Seasar_A5_Entity $entity
+     * @return string
+     */
+    protected function getModelClassSrc(Seasar_A5_Schema $schema, Seasar_A5_Entity $entity) {
         $src = preg_replace('/@@CLASS_NAME@@/', S2A5_MODEL_PACKAGE . '_' . $entity->getClassName(), $this->modelClassTpl);
         $src = preg_replace('/@@SUPER_CLASS@@/', S2A5_MODEL_PACKAGE . '_' . S2A5_MODEL_SUPER_CLASS, $src);
 
@@ -113,26 +129,19 @@ class Seasar_A5_Generator_Abstract implements Seasar_A5_Generator {
 
         $src = preg_replace('/@@FIELDS@@/', $entity->getFieldDefSrc(), $src);
 
-        $src = preg_replace('/@@VALIDATORS@@/', $this->getEntityValidator($entity), $src);
+        $src = preg_replace('/@@FILTERS@@/', $this->getEntityFiltersSrc($entity), $src);
+
+        $src = preg_replace('/@@VALIDATORS@@/', $this->getEntityValidatorsSrc($entity), $src);
 
         $src = preg_replace('/@@DEPENDENT@@/', $this->getDependentSrc($schema, $entity), $src);
 
         $src = preg_replace('/@@REFERENCE@@/', $this->getReferenceSrc($schema, $entity), $src);
 
-        $src = $this->genModelClassAdditional($src);
-        $this->writer->write($src);
-    }
-
-    /**
-     * @param string $src
-     * @return string
-     */
-    protected function genModelClassAdditional($src) {
         return $src;
     }
 
     /**
-     * Zend_Db_Table_Abstract::$_sequencelPHP\[X𐶐B
+     * Zend_Db_Table_Abstract::$_sequenceのPHPソースを生成する
      *
      * @param Seasar_A5_Entity $entity
      * @return string
@@ -142,7 +151,7 @@ class Seasar_A5_Generator_Abstract implements Seasar_A5_Generator {
     }
 
     /**
-     * Zend_Db_Table_Abstract::$_dependentlPHP\[X𐶐B
+     * Zend_Db_Table_Abstract::$_dependentのPHPソースを生成する
      *
      * @param Seasar_A5_Schema $schema
      * @param Seasar_A5_Entity $entity
@@ -164,7 +173,7 @@ class Seasar_A5_Generator_Abstract implements Seasar_A5_Generator {
     }
 
     /**
-     * Zend_Db_Table_Abstract::$_referenceMaplPHP\[X𐶐B
+     * Zend_Db_Table_Abstract::$_referenceMapのPHPソースを生成する
      *
      * @param Seasar_A5_Schema $schema
      * @param Seasar_A5_Entity $entity
@@ -195,15 +204,63 @@ class Seasar_A5_Generator_Abstract implements Seasar_A5_Generator {
     }
 
     /**
-     * FilterInputpstatic $VALIDATORSlPHP\[X𐶐B
+     * FilterInput用のVALIDATORSのPHPソースを生成する
      *
      * @param Seasar_A5_Entity $entity
      * @return string
      */
-    protected function getEntityValidator(Seasar_A5_Entity $entity) {
+    protected function getEntityFiltersSrc(Seasar_A5_Entity $entity) {
         $src = array();
         foreach($entity->getFields() as $field) {
-            $validators = $this->getFieldValidator($field);
+            $filters = $this->getFieldFilterSrc($field);
+            if (!empty($filters)) {
+                $src[] = "'{$field->getPname()}' => " . 'array(' . implode(', ', array_values($filters)) . ')';
+            }
+        }
+
+        $src = 'array(' . PHP_EOL
+             . '        '
+             . implode(',' . PHP_EOL . '        ', $src)
+             . ')';
+        return $src;
+    }
+
+    /**
+     * FilterInput用のFiltersのPHPソースを生成する。(カラム)
+     *
+     * @param Seasar_A5_Field $field
+     * @return array
+     */
+    protected function getFieldFilterSrc(Seasar_A5_Field $field) {
+
+        $filters = array();
+
+/*
+        if (false === strpos($field->getType(), 'CHAR')) {
+            $filters['null'] = "'Null'";
+        }
+*/
+        
+        switch($field->getType()) {
+            case 'INT':
+            case 'INTEGER':
+                $filters[$field->getType()] = "'Int'";
+                break;
+        }
+
+        return $filters;
+    }
+
+    /**
+     * FilterInput用のValidatorsのPHPソースを生成する
+     *
+     * @param Seasar_A5_Entity $entity
+     * @return string
+     */
+    protected function getEntityValidatorsSrc(Seasar_A5_Entity $entity) {
+        $src = array();
+        foreach($entity->getFields() as $field) {
+            $validators = $this->getFieldValidatorSrc($field);
             $src[] = "'{$field->getPname()}' => " . 'array(' . implode(', ', array_values($validators)) . ')';
         }
 
@@ -215,12 +272,12 @@ class Seasar_A5_Generator_Abstract implements Seasar_A5_Generator {
     }
 
     /**
-     * FilterInputpvalidatorsAzzԂB
+     * FilterInput用のValidatorsのPHPソースを生成する。(カラム)
      *
      * @param Seasar_A5_Field $field
      * @return array
      */
-    protected function getFieldValidator(Seasar_A5_Field $field) {
+    protected function getFieldValidatorSrc(Seasar_A5_Field $field) {
 
         $validators = array();
         
