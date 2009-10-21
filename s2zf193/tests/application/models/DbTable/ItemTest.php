@@ -33,6 +33,7 @@ class Model_DbTable_ItemTest extends PHPUnit_Framework_TestCase {
             $adapter->beginTransaction();
 
             $row = $this->itemModel->createRow();
+            $row->item_id = 31;
             $row->item_name = 'とまと';
             $row->save();
             $this->assertEquals(31, $row->item_id);
@@ -44,12 +45,10 @@ class Model_DbTable_ItemTest extends PHPUnit_Framework_TestCase {
     }
 
     public function testFilterInput() {
-        $filters = array();
-        $validators = $this->itemModel->getValidators();
-        $data = array();
-        $options = array();
+//        $filters = $this->itemModel->getFilters();
+//        $validators = $this->itemModel->getValidators();
 
-        $filterInput = new Zend_Filter_Input($filters, $validators, $data, $options);
+        $filterInput = $this->itemModel->getFilterInput();
 
         $id = 10;
         $row = $this->itemModel->find($id)->current();
@@ -67,6 +66,11 @@ class Model_DbTable_ItemTest extends PHPUnit_Framework_TestCase {
         $this->assertFalse($filterInput->isValid());
         $messages = $filterInput->getMessages();
         $this->assertTrue(isset($messages['item_name']['stringLengthTooLong']));
+
+        $row->item_name = ' abc ';
+        $filterInput->setData($row->toArray());
+        $this->assertTrue($filterInput->isValid());
+        $this->assertEquals('abc', $filterInput->item_name);
     }
 
     public function setUp() {
