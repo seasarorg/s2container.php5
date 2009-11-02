@@ -299,7 +299,8 @@ class Seasar_A5_Field {
         $src[] = "'comment' => '{$this->comment}'";
         $src[] = "'options' => {$this->commentedSrc}";
 
-        $src = 'array(' . implode(',' . PHP_EOL . '              ', $src) . ')';
+        $sp = '              ';
+        $src = 'array(' . PHP_EOL . $sp . implode(',' . PHP_EOL . $sp, $src) . ')';
         return $src;
     }
 

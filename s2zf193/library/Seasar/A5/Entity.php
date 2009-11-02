@@ -188,13 +188,9 @@
     public function getFieldDefSrc() {
         $src = array();
         foreach($this->fields as $field) {
-            $src[] = $field->getSource();
+            $src []= "        '{$field->getPname()}' => {$field->getSource()}";
         }
-
-        $src = 'array(' . PHP_EOL
-             . '        '
-             . implode(',' . PHP_EOL . '        ', $src)
-             . ')';
+        $src = 'array(' . PHP_EOL . implode(',' . PHP_EOL, $src) . ')';
         return $src;
     }
 

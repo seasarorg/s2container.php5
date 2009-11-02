@@ -204,7 +204,7 @@ class Seasar_A5_Generator_Abstract implements Seasar_A5_Generator {
     }
 
     /**
-     * FilterInput用のVALIDATORSのPHPソースを生成する
+     * FilterInput用のFILTERSのPHPソースを生成する
      *
      * @param Seasar_A5_Entity $entity
      * @return string
@@ -214,7 +214,7 @@ class Seasar_A5_Generator_Abstract implements Seasar_A5_Generator {
         foreach($entity->getFields() as $field) {
             $filters = $this->getFieldFilterSrc($field);
             if (!empty($filters)) {
-                $src[] = "'{$field->getPname()}' => " . 'array(' . implode(', ', array_values($filters)) . ')';
+                $src[] = "'{$field->getPname()}' => " . 'array(' . implode(', ', $filters) . ')';
             }
         }
 
@@ -235,16 +235,16 @@ class Seasar_A5_Generator_Abstract implements Seasar_A5_Generator {
 
         $filters = array();
 
-/*
+        /*
         if (false === strpos($field->getType(), 'CHAR')) {
             $filters['null'] = "'Null'";
         }
-*/
+        */
         
         switch($field->getType()) {
             case 'INT':
             case 'INTEGER':
-                $filters[$field->getType()] = "'Int'";
+                $filters[] = "'Int'";
                 break;
         }
 
@@ -261,7 +261,7 @@ class Seasar_A5_Generator_Abstract implements Seasar_A5_Generator {
         $src = array();
         foreach($entity->getFields() as $field) {
             $validators = $this->getFieldValidatorSrc($field);
-            $src[] = "'{$field->getPname()}' => " . 'array(' . implode(', ', array_values($validators)) . ')';
+            $src[] = "'{$field->getPname()}' => " . 'array(' . implode(', ', $validators) . ')';
         }
 
         $src = 'array(' . PHP_EOL
@@ -282,35 +282,35 @@ class Seasar_A5_Generator_Abstract implements Seasar_A5_Generator {
         $validators = array();
         
         if ($field->isNotNull()) {
-            $validators['presence'] = "'presence' => 'required'";
+            $validators[] = "'presence' => 'required'";
         } else {
-            $validators['presence'] = "'allowEmpty' => 'true'";
+            $validators[] = "'allowEmpty' => 'true'";
         }
 
         switch($field->getType()) {
             case 'INT':
             case 'INTEGER':
-                $validators[$field->getType()] = "'Int'";
+                $validators[] = "'Int'";
                 break;
             case 'FLOAT':
             case 'DECIMAL':
-                $validators[$field->getType()] = "'Float'";
+                $validators[] = "'Float'";
                 break;
             case 'CHAR':
             case 'VARCHAR':
                 $size = $field->getSize();
                 if (!is_null($size)) {
-                    $validators[$field->getType()] = "array('StringLength', 0, $size, '" . S2A5_ENCODING . "')";
+                    $validators[] = "array('StringLength', 0, $size, '" . S2A5_ENCODING . "')";
                 }
                 break;
             case 'DATE':
-                $validators[$field->getType()] = "array('Date', 'YYYY-MM-dd')";
+                $validators[] = "array('Date', 'YYYY-MM-dd')";
                 break;
             case 'TIME':
-                $validators[$field->getType()] = "array('Date', 'HH::mm::ss')";
+                $validators[] = "array('Date', 'HH::mm::ss')";
                 break;
             case 'DATETIME':
-                $validators[$field->getType()] = "array('Date', 'YYYY-MM-dd HH::mm::ss')";
+                $validators[] = "array('Date', 'YYYY-MM-dd HH::mm::ss')";
                 break;
         }
 

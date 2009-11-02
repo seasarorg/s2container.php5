@@ -25,15 +25,13 @@ abstract class @@SUPER_CLASS@@ extends Zend_Db_Table_Abstract {
     }
 
     public function getFieldByPname($pname) {
-        foreach(static::$FIELDS as $field) {
-            if ($field['pname'] === $pname) {
-                return $field;
-            }
+        if (isset(static::$FIELDS[$pname])) {
+            return static::$FIELDS[$pname];
         }
     }
 
     public function getFieldByLname($lname) {
-        foreach(static::$FIELDS as $field) {
+        foreach(static::$FIELDS as $pname => $field) {
             if ($field['lname'] === $lname) {
                 return $field;
             }
