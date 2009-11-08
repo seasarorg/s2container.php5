@@ -80,6 +80,12 @@ interface S2Container {
     public function getComponentDefSize();
 
     /**
+     * コンテナに登録されているコンポーネント定義の名前を返します。
+     * @return array コンポーネント定義の名前
+     */
+    public function getComponentDefNames();
+
+    /**
      * 番号で指定された位置のコンポーネント定義を返します。
      * 
      * @param int|string $index キー

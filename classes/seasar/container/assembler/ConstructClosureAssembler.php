@@ -57,9 +57,6 @@ class ConstructClosureAssembler {
         if ($componentDef->hasConstructClosure()) {
             $componentClass = $componentDef->getComponentClass();
             $closure = $componentDef->getConstructClosure();
-            if ($componentClass->getName() === 'Closure') {
-                return $closure;
-            }
             $component = $closure($componentDef);
             if (is_object($component) && $componentClass->isInstance($component)) {
                 return $component;

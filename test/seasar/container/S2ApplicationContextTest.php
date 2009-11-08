@@ -241,7 +241,7 @@ class S2ApplicationContextTest extends \PHPUnit_Framework_TestCase {
         S2ApplicationContext::init();
         S2ApplicationContext::register(__NAMESPACE__ . '\F_S2ApplicationContextTest')->setName('f');
         S2ApplicationContext::register('\Closure')->setName('f2')
-            ->setConstructClosure(function($invoker) { return $invoker->proceed() * 100;});
+            ->setConstructClosure(function() { return function($invoker) {return $invoker->proceed() * 100;};});
         S2ApplicationContext::registerAspect('f2');
         $component = S2ApplicationContext::get('f');
         $this->assertEquals(1000, $component->hoge());

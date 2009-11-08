@@ -36,7 +36,7 @@ class ComponentInfoDef {
     /**
      * @param string $className
      */
-    public function __construct($clazz) {
+    public function __construct($clazz = null) {
         if ($clazz instanceof \ReflectionClass) {
             $this->reflectionClass = $clazz;
             $this->className = $clazz->getName();
@@ -51,6 +51,7 @@ class ComponentInfoDef {
      */
     public function setReflectionClass($calzz) {
         $this->reflectionClass = $clazz;
+        $this->className = $clazz->getName();
         return $this;
     }
 
