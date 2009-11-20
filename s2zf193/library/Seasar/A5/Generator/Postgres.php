@@ -40,11 +40,11 @@ class Seasar_A5_Generator_Postgres extends Seasar_A5_Generator_Abstract {
     /**
      * @see Seasar_A5_Generator_Abstract::getFieldValidator()
      */
-    protected function getFieldValidator(Seasar_A5_Field $field) {
-        $validators = parent::getFieldValidator($field);
+    protected function getFieldValidatorSrc(Seasar_A5_Field $field) {
+        $validators = parent::getFieldValidatorSrc($field);
         switch($field->getType()) {
             case 'SERIAL':
-                $validators[$field->getType()] = "'Digits'";
+                $validators[] = "'Digits'";
                 break;
         }
         return $validators;

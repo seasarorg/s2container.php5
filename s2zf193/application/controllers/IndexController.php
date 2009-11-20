@@ -14,12 +14,12 @@ class IndexController extends Zend_Controller_Action
     }
 
     /**
-     * GET /base/url/index/item-list
+     * GET /s2zf/index/item-list
      *
-     * ƒRƒ“ƒ|[ƒlƒ“ƒg‚ğƒNƒ‰ƒX–¼‚Åæ“¾‚µ‚Ü‚·B
-     * ƒRƒ“ƒ|[ƒlƒ“ƒg‚ğƒNƒ‰ƒX–¼‚Åæ“¾‚·‚éê‡‚ÍA
+     * ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’ã‚¯ãƒ©ã‚¹åã§å–å¾—ã—ã¾ã™ã€‚
+     * ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’ã‚¯ãƒ©ã‚¹åã§å–å¾—ã™ã‚‹å ´åˆã¯ã€
      *   APPLICATION_PATH/dicons/index/item-list.php
-     * “™‚Å‚Ì“Á•Ê‚Èİ’è‚Í•K—v‚ ‚è‚Ü‚¹‚ñB
+     * ç­‰ã§ã®ç‰¹åˆ¥ãªè¨­å®šã¯å¿…è¦ã‚ã‚Šã¾ã›ã‚“ã€‚
      */
     public function itemListAction()
     {
@@ -27,10 +27,10 @@ class IndexController extends Zend_Controller_Action
     }
 
     /**
-     * GET /base/url/index/customer-list
+     * GET /s2zf/index/customer-list
      *
-     * ƒRƒ“ƒ|[ƒlƒ“ƒg–¼ucustomerv‚Åæ“¾‚µ‚Ü‚·B
-     * ƒRƒ“ƒ|[ƒlƒ“ƒg–¼‚Ìİ’è‚É‚Â‚¢‚Ä‚ÍAAPPLICATION_PATH/dicons/index/customer-list.php‚ğQÆ‰º‚³‚¢B
+     * ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆåã€Œcustomerã€ã§å–å¾—ã—ã¾ã™ã€‚
+     * ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆåã®è¨­å®šã«ã¤ã„ã¦ã¯ã€APPLICATION_PATH/dicons/index/customer-list.phpã‚’å‚ç…§ä¸‹ã•ã„ã€‚
      */
     public function customerListAction()
     {
@@ -38,9 +38,9 @@ class IndexController extends Zend_Controller_Action
     }
 
     /**
-     * GET /base/url/index/order-by-item/id/10
+     * GET /s2zf/index/order-by-item/id/10
      *
-     * item_id‚©‚ç]‘®sƒZƒbƒgAe‚Ìs‚ğæ“¾‚µ‚ÄA’•¶î•ñ(Ordering)‚ğ•Ô‚µ‚Ü‚·B
+     * item_idã‹ã‚‰å¾“å±è¡Œã‚»ãƒƒãƒˆã€è¦ªã®è¡Œã‚’å–å¾—ã—ã¦ã€æ³¨æ–‡æƒ…å ±(Ordering)ã‚’è¿”ã—ã¾ã™ã€‚
      */
     public function orderByItemAction()
     {

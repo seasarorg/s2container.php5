@@ -15,6 +15,8 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         new Zend_Application_Module_Autoloader(array('namespace' => '', 'basePath'  => dirname(__FILE__)));
 
         require_once('Seasar/A5/config/sqlite_autoload.php');
+        //require_once('Seasar/A5/config/mysql_autoload.php');
+        //require_once('Seasar/A5/config/postgres_autoload.php');
     }
 
     protected function _initActionHelper()
