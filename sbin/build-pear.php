@@ -25,15 +25,15 @@
  <date><?php echo date('Y-m-d');?></date>
  <time><?php echo date('H:i:s');?></time>
  <version>
-  <release>2.0.1</release>
-  <api>2.0.1</api>
+  <release>2.0.2</release>
+  <api>2.0.2</api>
  </version>
  <stability>
   <release>stable</release>
   <api>stable</api>
  </stability>
  <license uri="http://www.apache.org/licenses/LICENSE-2.0">The Apache License, Version 2.0</license>
- <notes>Release 2.0.1</notes>
+ <notes>Release 2.0.2</notes>
  <contents>
   <dir name="/">
 <?php
