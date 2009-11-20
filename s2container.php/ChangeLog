@@ -1,4 +1,9 @@
 
+2009-11-20 s2container-2.0.2
+
+	* info: php-5.3.1で動作確認を行いました。
+	* info: s2container-2.0.2 release
+
 2009-09-04 s2container-2.0.2
 
 	* fix: トップレベルのnamespaceの記述漏れを修正しました。seasar\exception\S2RuntimeException
