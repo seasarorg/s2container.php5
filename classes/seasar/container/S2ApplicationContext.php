@@ -410,20 +410,21 @@ class S2ApplicationContext {
         } 
         foreach($infos as $info) {
             if ($checkNamespace) {
-              $namespace = (string)$info->getNamespace();
-              if (!in_array($namespace, $namespaces, true)) {
-                  $applicable = false;
-                  foreach($dotNamespaces as $n) {
-                      if (0 === strpos($namespace, $n)) {
-                          $applicable = true;
-                          break;
-                      }
-                  }
-                  if (!$applicable) {
-                      \seasar\log\S2Logger::getLogger(__CLASS__)->debug("ignored by namespace : $namespace", __METHOD__);
-                      continue;
-                  }
-              }
+                $namespace = (string)$info->getNamespace();
+                if (!in_array($namespace, $namespaces, true)) {
+                    $applicable = false;
+                    foreach($dotNamespaces as $n) {
+                        if (0 === strpos($namespace, $n)) {
+                            $applicable = true;
+                            break;
+                        }
+                    }
+                    if (!$applicable) {
+                        $nsStr = implode("', '", $namespaces);
+                        \seasar\log\S2Logger::getLogger(__CLASS__)->debug($info->getClassName() . " ignored by namespace : '$namespace' not in array('$nsStr')", __METHOD__);
+                        continue;
+                    }
+                }
             }
 
             $cd = self::createComponentDef($info);
