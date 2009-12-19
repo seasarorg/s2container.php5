@@ -1,0 +1,197 @@
+# A5:ER FORMAT:04
+# A5:ER ENCODING:Shift_JIS
+# A5:ER Mk-1 Copyright (C)2007 m.matsubara
+# A5:SQL Mk-2 Copyright (C)1997 m.matsubara
+#  http://www.wind.sannet.ne.jp/m_matsu/developer/a5m2/
+
+[Manager]
+ProjectName=s2zf
+Author=klove
+MaxEntityRowShow=1000
+ReadOnlyRecommend=0
+Page=Main
+LogicalView=1
+DecodeDomain=0
+ViewMode=4
+ViewFormat=0
+UseNondependenceDashLine=0
+FontName=ＭＳ Ｐゴシック
+FontSize=9
+PaperSize=A4Portrait
+HeaderLeft=
+HeaderCenter=
+HeaderRight=
+FooterLeft=
+FooterCenter=
+FooterRight=
+
+[Relation]
+Entity1=mysql_item
+Entity2=mysql_item_status
+RelationType1=2
+RelationType2=3
+Fields1=item_id,order_date
+Fields2=item_id,order_date
+Cardinarity1=
+Cardinarity2=
+Position="MAIN",0,5000,5000,5000,R,R
+Dependence=1
+Caption=
+PName=
+ModifiedDateTime=20091003153444
+LineMode=0
+Bar1=500
+Bar2=500
+Bar3=500
+TermPos1=R
+TermPos2=R
+
+[Entity]
+PName=mysql_item_status
+LName=商品状況
+Comment=複合主キーテーブルのためのサンプルです。
+TableOption=
+Page=MAIN
+Left=1050
+Top=1150
+Field="商品ID","item_id","@INT","NOT NULL",0,"","",$FFFFFFFF
+Field="注文日","order_date","@DATE","NOT NULL",1,"","",$FFFFFFFF
+Field="顧客ID","shopper_id","@INT","NOT NULL",,"9999","デフォルト値はダミーデータです。",$FFFFFFFF
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+ModifiedDateTime=20091015000651
+Position="MAIN",1050,1150
+
+[Entity]
+PName=mysql_item
+LName=商品
+Comment=複合主キーテーブルのためのサンプルです。\n<?php\n    public function findById($id) {\n        return $this->find($id)->current();\n    }\n?>\n\nソースの埋め込みを行うさんぷるです。\n
+TableOption=
+Page=MAIN
+Left=350
+Top=1150
+Field="商品ID","item_id","@INT","NOT NULL",0,"","",$FFFFFFFF
+Field="注文日","order_date","@DATE","NOT NULL",1,"","",$FFFFFFFF
+Field="商品名","item_name","@VARCHAR(128)","NOT NULL",,"","",$FFFFFFFF
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+ModifiedDateTime=20091015000643
+Position="MAIN",350,1150
+
+[Relation]
+Entity1=mysql_busyo
+Entity2=mysql_other_employee
+RelationType1=1
+RelationType2=3
+Fields1=busyo_id
+Fields2=pre_busyo_id
+Cardinarity1=
+Cardinarity2=
+Position="MAIN",0,5000,5000,5000,R,R
+Dependence=0
+Caption=
+PName=
+ModifiedDateTime=20091003150752
+LineMode=0
+Bar1=500
+Bar2=500
+Bar3=500
+TermPos1=R
+TermPos2=R
+
+[Relation]
+Entity1=mysql_busyo
+Entity2=mysql_other_employee
+RelationType1=2
+RelationType2=3
+Fields1=busyo_id
+Fields2=busyo_id
+Cardinarity1=
+Cardinarity2=
+Position="MAIN",0,5000,5000,5000,R,R
+Dependence=0
+Caption=
+PName=
+LineMode=0
+Bar1=500
+Bar2=500
+Bar3=500
+TermPos1=R
+TermPos2=R
+
+[Entity]
+PName=mysql_other_employee
+LName=外部社員
+Comment=主キーがInteger以外の場合は、sequenceをfalseとする。
+TableOption=
+Page=MAIN
+Left=350
+Top=700
+Field="外部社員ID","other_employee_id","@VARCHAR(16)","NOT NULL",0,"","",$FFFFFFFF
+Field="部署ID","busyo_id","@INT","NOT NULL",,"","",$FFFFFFFF
+Field="前部署ID","pre_busyo_id","@INT",,,"","",$FFFFFFFF
+Field="氏名","name","TEXT",,,"","",$FFFFFFFF
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+ModifiedDateTime=20091015000635
+Position="MAIN",350,700
+
+[Relation]
+Entity1=mysql_busyo
+Entity2=mysql_employee
+RelationType1=2
+RelationType2=3
+Fields1=busyo_id
+Fields2=busyo_id
+Cardinarity1=
+Cardinarity2=
+Position="MAIN",0,5000,5000,5000,R,R
+Dependence=0
+Caption=
+PName=
+LineMode=0
+Bar1=500
+Bar2=500
+Bar3=500
+TermPos1=R
+TermPos2=R
+
+[Entity]
+PName=mysql_employee
+LName=社員
+Comment=
+TableOption=
+Page=MAIN
+Left=1050
+Top=400
+Field="社員ID","employee_id","@INT AUTO_INCREMENT","NOT NULL",0,"","",$FFFFFFFF
+Field="部署ID","busyo_id","@INT","NOT NULL",,"","",$FFFFFFFF
+Field="氏名","name","@VARCHAR(64)",,,"","",$FFFFFFFF
+Field="生年月日","birthday","@DATE",,,"","",$FFFFFFFF
+Field="残時間","rest_time","@TIME",,,"","",$FFFFFFFF
+Field="退出日時","leave_time","@DATETIME",,,"","",$FFFFFFFF
+Field="ボーナス","bonus","@DECIMAL",,,"","",$FFFFFFFF
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+ModifiedDateTime=20091015002848
+Position="MAIN",1050,400
+
+[Entity]
+PName=mysql_busyo
+LName=部署
+Comment=
+TableOption=
+Page=MAIN
+Left=350
+Top=400
+Field="部署ID","busyo_id","@INT","NOT NULL",0,"","",$FFFFFFFF
+Field="部署名","busyo_name","@VARCHAR(64)",,,"","<?php\narray(\qmsg\q => \Qフィールドコメントへの, PHPソース\Q)\n?>\n\nテストです。\n",$FFFFFFFF
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+ModifiedDateTime=20091015000619
+Position="MAIN",350,400
