@@ -14,6 +14,24 @@ class IndexController extends Zend_Controller_Action
     }
 
     /**
+     * GET /s2zf/index/add
+     */
+    public function addAction()
+    {
+        $this->_helper->viewRenderer->setNoRender();
+        echo $this->_helper->s2('Service_Calc')->add(1, 2);
+    }
+
+    /**
+     * GET /s2zf/index/add2
+     */
+    public function add2Action()
+    {
+        $this->_helper->viewRenderer->setNoRender();
+        echo $this->_helper->s2->calc->add(1, 2);
+    }
+
+    /**
      * GET /s2zf/index/bug-list
      */
     public function bugListAction()
