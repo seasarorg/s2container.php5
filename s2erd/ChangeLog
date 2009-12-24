@@ -1,0 +1,12 @@
+
+2009-12-19 s2erd-0.2.0
+
+	* add: ER MasterのERDファイルParserを追加しました。
+	* add: MySQL WorkbenchのERDファイルParserを追加しました。
+
+2009-11-22 s2erd-0.1.0
+
+	* add: Zend_Db_Tableクラスファイルを生成するGeneratorを追加しました。
+	* add: A5:SQLのA5ERファイルParserを追加しました。
+	* info: s2erd-0.1.0 release.
+
