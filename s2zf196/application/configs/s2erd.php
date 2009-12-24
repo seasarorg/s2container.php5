@@ -4,8 +4,11 @@
  */
 s2component('seasar\erd\parser\MwbParser')->setConstructClosure(function() {
     $parser = new \seasar\erd\parser\MwbParser;
-    $parser->setErdFile(dirname(APPLICATION_PATH) . '/var/db/project.mwb');
     $parser->setSchemaName('s2');
+    $parser->setErdFile(dirname(APPLICATION_PATH) . '/var/db/project.mwb');
+    // MySQL Workbenchのデータファイルはzip圧縮されています。PHPのzip拡張モジュールが無効な場合は、
+    // あらかじめ手動でunzipする必要があります。unzipすると、document.mwb.xmlファイルが展開されます。
+    //$parser->setErdFile(dirname(APPLICATION_PATH) . '/var/db/document.mwb.xml');
     return $parser;
 });
 
