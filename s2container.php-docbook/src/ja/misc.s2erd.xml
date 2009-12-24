@@ -1,0 +1,300 @@
+<sect1 id="misc.s2erd"><title>ERDデザインツールとS2Erd</title>
+    <para>
+        S2Erdは、ERDデザインツールのデータからZend_Db_TableクラスのPHPソースを生成します。
+    </para>
+
+    <sect2><title>動作環境</title>
+        <itemizedlist>
+            <listitem>PHP-5.3.1</listitem>
+            <listitem>Zend Framework v1.9.6</listitem>
+            <listitem>s2container.php-2.0.2</listitem>
+            <listitem>s2erd-0.2.0</listitem>
+        </itemizedlist>
+        <para>対応しているERDデザインツール</para>
+        <itemizedlist>
+            <listitem><ulink url="http://www.wind.sannet.ne.jp/m_matsu/developer/a5m2/">A5:SQL Mk-2 version 2.4.0beta</ulink></listitem>
+            <listitem><ulink url="http://ermaster.sourceforge.net/index_ja.html">ER Master version 1.0.0-20091210-0025</ulink></listitem>
+            <listitem><ulink url="http://wb.mysql.com/">MySQL Workbech version 5.1.18</ulink></listitem>
+        </itemizedlist>
+    </sect2>
+
+    <sbr/>
+    <sect2><title>サンプルプロジェクトの作成</title>
+        <para>
+            「<link linkend="misc.zend">Zend_ControllerでS2Containerを使用する</link>」にしたがって、Zend Frameworkのプロジェクトを作成します。
+        </para>
+    </sect2>
+
+    <sbr/>
+    <sect2><title>S2Erdのインストール</title>
+
+        <blockquote><formalpara><title>ダウンロード</title><sbr/></formalpara>
+            <itemizedlist>
+                <listitem><ulink url="http://s2container.php5.seasar.org/download/S2Erd-0.2.0.tgz">S2Erd-0.2.0.tgz</ulink></listitem>
+            </itemizedlist>
+        </blockquote>
+
+        <sbr/>
+        <blockquote><formalpara><title>PEAR インストール</title><sbr/></formalpara>
+            <para>
+            S2Erd-version.tgzをダウンロードし、pear install を実行します。
+            </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+% pear install /path/to/S2Erd-version.tgz
+install ok: channel://pear.php.net/S2Erd-version
+
+% pear list 
+・・・
+S2Erd             version       state
+・・・
+%
+]]></programlisting>
+
+        </blockquote>
+
+        <sbr/>
+        <blockquote><formalpara><title>解凍してインストール</title><sbr/></formalpara>
+            <para>
+                S2Erd-version.tgzをダウンロードし、プロジェクトディレクトリの library ディレクトリに展開します。<sbr/>
+                また、ホームディレクトリのzf.iniファイルか、環境変数 ZF_CONFIG_FILE で指定した設定ファイルで、
+                S2Erdを展開したディレクトリをPHPのインクルードパスに設定します。
+            </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+% cat ~/zf.ini
+php.include_path = ".:/usr/lib/php:/path/to/zf/project/library"
+%
+]]></programlisting>
+        </blockquote>
+
+    </sect2>
+
+    <sbr/>
+    <sect2><title>S2Erdの設定</title>
+        <para>
+        S2Erdの設定を行うs2erd.phpをapplication/configsディレクトリに作成します。
+        </para>
+        <itemizedlist>
+            <listitem><ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf196/application/configs/s2erd.php">application/configs/s2erd.php</ulink>
+                <itemizedlist>
+                    <listitem>
+                        使用するERDデザインツール用のParserクラスを選択します。<sbr/>
+                        Parserクラスへの設定として、ERDデザインツールのデータファイルへのパスを設定します。
+                    </listitem>
+                    <listitem>
+                        Zend_Db_Tableクラスのソースを生成するGeneratorクラスの設定として、出力先ディレクトリやTableクラスのテンプレートファイルなどを設定します。
+                    </listitem>
+                </itemizedlist>
+            </listitem>
+        </itemizedlist>
+    </sect2>
+
+    <sbr/>
+    <sect2 id="misc.s2erd.autoload"><title>Autoload設定</title>
+        <para>
+        S2Erd用のオートローダーを設定することで、ERDデザインツールのデータから、直接PHPのTableクラスを定義することができます。<sbr/>
+        テーブル定義が不定の間は、このオートローダーでTableクラス定義を読み込み、テーブル定義が確定した後は、次の「<link linkend="misc.s2erd.tool">Zend_Toolコマンド</link>」で
+        Tableクラス定義をファイルに出力します。
+        </para>
+
+        <blockquote><formalpara><title>s2erd_autoload.phpの作成</title><sbr/></formalpara>
+            <para>
+            S2Erd用のAutoload設定を行うs2erd_autoload.phpをapplication/configsディレクトリに作成します。
+            </para>
+            <itemizedlist>
+                <listitem><ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf196/application/configs/s2erd_autoload.php">application/configs/s2erd_autoload.php</ulink></listitem>
+            </itemizedlist>
+        </blockquote>
+
+        <sbr/>
+        <blockquote><formalpara><title>Bootstrap.phpの編集</title><sbr/></formalpara>
+            <para>
+            アプリケーションのBootstrapでs2erd_autoload.phpをrequireします。(_initAutoloadメソッド)
+            </para>
+            <itemizedlist>
+                <listitem><ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf196/application/Bootstrap.php">application/Bootstrap.php</ulink></listitem>
+            </itemizedlist>
+        </blockquote>
+    </sect2>
+
+    <sbr/>
+    <sect2 id="misc.s2erd.tool"><title>Zend_Toolコマンド</title>
+        <para>
+        Zend_Tool の zf コマンドを実行し、次のコマンドが追加されているかどうかを確認します。
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+% zf.sh --help
+  . . .
+  . . .
+  . . .
+
+  A5Model
+    zf create a5model a5er-file[=<project/var/db/project.a5er>]
+
+  ERMModel
+    zf create erm-model erm-file[=<project/var/db/project.erm>]
+
+  MWBModel
+    zf create mwb-model schema[=mydb] mwb-file[=<project/var/db/project.mwb>]
+
+%
+]]></programlisting>
+
+        <para>
+        使用しているERDデザインツール用のコマンドを実行します。Tableクラス定義ファイルは、application/models/DbTable ディレクトリに出力されます。<sbr/>
+        zfコマンドのオプションとして「--pretend」を付加した場合は、標準出力にTableクラス定義が出力されます。(ファイル出力されません。)
+        </para>
+        
+        <para>
+        サンプルとして、<ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf196/var/db">var/db</ulink> ディレクトリに次のERDデザインツールのデータファイルを用意しています。<sbr/>
+        テーブル定義は<ulink url="http://framework.zend.com/manual/ja/zend.db.html#zend.db.adapter.example-database">Zend_Dbドキュメントのサンプルデータベース</ulink>を参照下さい。
+        </para>
+
+        <itemizedlist>
+            <listitem>project.a5er (<ulink url="http://www.wind.sannet.ne.jp/m_matsu/developer/a5m2/">A5:SQL Mk-2</ulink>)</listitem>
+            <listitem>project.erm (<ulink url="http://ermaster.sourceforge.net/index_ja.html">ER Master</ulink>)</listitem>
+            <listitem>project.mwb (<ulink url="http://wb.mysql.com/">MySQL Workbech</ulink>)</listitem>
+        </itemizedlist>
+    </sect2>
+
+    <sbr/>
+    <sect2><title>TableモデルのUnitTest</title>
+        <para>
+        サンプルとして、accountsテーブルのTableクラスのUnitTestを作成します。UnitTestは、<ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf196/tests/application/models/DbTable/">tests/application/models/DbTableディレクトリ</ulink>
+        に<ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf196/tests/application/models/DbTable/AccountsTest.php">AccountsTest.php</ulink>
+        として作成します。
+        </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+class Model_DbTable_AccountsTest extends PHPUnit_Framework_TestCase {
+
+    public function testFetchAll() {
+        $this->assertEquals(5, count($this->model->fetchAll()));
+    }
+
+    public function setUp() {
+        $this->model = s2app::get('Model_DbTable_Accounts');
+    }
+
+    public function tearDown() {
+        $this->model = null;
+    }
+}
+]]></programlisting>
+
+        <para>
+        UnitTestの実行結果は次のなります。
+        </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+% phpunit application/models/DbTable
+PHPUnit 3.4.2 by Sebastian Bergmann.
+
+.
+
+Time: 1 second
+
+OK (1 test, 1 assertion)
+%
+]]></programlisting>
+
+        <para>
+        Model_DbTable_Accountsクラスは未作成ですが、<link linkend="misc.s2erd.autoload">S2ErdのAutoload</link>により動的にクラス定義が実施されるため、
+        Tableモデルを使用することができます。
+        </para>
+    </sect2>
+
+
+
+    <sbr/>
+    <sect2><title>ServiceでTableモデルを使用する</title>
+        <para>
+        サンプルとして、TableモデルやDBアダプタを使用するサービスクラスを<ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf196/application/services/">application/servicesディレクトリ</ulink>
+        に<ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf196/application/services/Sample.php">Sample.php</ulink>
+        として作成します。
+        </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+class Service_Sample {
+
+    public function setModel(Model_DbTable_Bugs $model) {
+        $this->model = $model;
+    }
+
+    public function setAdapter(Zend_Db_Adapter_Abstract $adapter) {
+        $this->adapter = $adapter;
+    }
+    
+    public function fetchAllBugs() {
+        return $this->model->fetchAll()->toArray();
+    }
+
+    public function fetchProductBugDescriptions() {
+        $select = $this->adapter->select()->from(array('bp' => Model_DbTable_BugsProducts::PNAME), array());
+        $select->joinLeft(array('b' => Model_DbTable_Bugs::PNAME), 'b.bug_id = bp.bug_id', array('bug_description'));
+        $select->joinLeft(array('p' => Model_DbTable_Products::PNAME), 'p.product_id = bp.product_id', array('product_name'));
+        return $this->adapter->fetchAll($select);
+    }
+}
+]]></programlisting>
+
+        <para>
+        TableモデルやDBアダプタはセッターメソッドでインジェクションされます。<sbr/>
+        検索を行うSQLの発行についてはDBアダプタを利用することが多く、新規作成、更新、削除処理についてはTableモデルを使用します。
+        </para>
+
+        <para>
+        SampleサービスクラスのUnitTestを作成します。UnitTestは、<ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf196/tests/application/services/">tests/application/servicesディレクトリ</ulink>
+        に<ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf196/tests/application/services/SampleTest.php">SampleTest.php</ulink>
+        として作成します。
+        </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+class Service_SampleTest extends PHPUnit_Framework_TestCase {
+
+    public function testFetchAllBugs() {
+        $this->assertEquals(3, count($this->service->fetchAllBugs()));
+    }
+
+    public function testFetchAllBugsWithAccounts() {
+        $rows = $this->service->fetchProductBugDescriptions();
+        $this->assertEquals(6, count($rows));
+        $this->assertEquals(2, count($rows[0]));
+        $this->assertTrue(isset($rows[0]['bug_description']));
+        $this->assertTrue(isset($rows[0]['product_name']));
+    }
+
+    public function setUp() {
+        require(APPLICATION_PATH . '/dicons/dicon.php');  // 共通設定ファイル
+        $this->service = s2app::get('Service_Sample');
+    }
+
+    public function tearDown() {
+        $this->service = null;
+    }
+}
+]]></programlisting>
+
+        <para>
+        UnitTestの実行結果は次のなります。
+        </para>
+
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+% phpunit application/services
+PHPUnit 3.4.2 by Sebastian Bergmann.
+
+..
+
+Time: 0 seconds
+
+OK (2 tests, 5 assertions)
+%
+]]></programlisting>
+
+        <para>
+        サービスクラスをアクションコントローラで使用する方法については、「<link linkend="misc.zend.action">アクションメソッドでS2Containerを利用する</link>」
+        を参照ください。
+        </para>
+    </sect2>
+</sect1>
+

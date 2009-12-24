@@ -11,7 +11,7 @@
       Please download S2Container-version.tgz and do "pear install".
     </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-% pear install /path/to/S2Container.version.tgz
+% pear install /path/to/S2Container-version.tgz
 install ok: channel://pear.php.net/S2Container-version
 
 % pear list 

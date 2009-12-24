@@ -11,6 +11,7 @@
 <!ENTITY misc.strictinterceptor SYSTEM "misc.strictinterceptor.xml">
 <!ENTITY misc.zend    SYSTEM "misc.zend.xml">
 <!ENTITY misc.symfony SYSTEM "misc.symfony.xml">
+<!ENTITY misc.s2erd SYSTEM "misc.s2erd.xml">
 ]>
 <book lang="ja" id="index"><title>S2Container.PHP-2.0 ドキュメント</title>
   <bookinfo>

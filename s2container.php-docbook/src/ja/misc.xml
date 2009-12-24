@@ -522,5 +522,6 @@ var_dump($cdDao->findAll());
   &misc.pdointerceptor;
   &misc.strictinterceptor;
   &misc.zend;
+  &misc.s2erd;
   &misc.symfony;
 </chapter>

@@ -10,7 +10,7 @@
   <sect1 id="install.pear"><title>PEARパッケージでインストールする</title>
     <para>S2Container-version.tgzをダウンロードし、pear install を実行します。</para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-% pear install /path/to/S2Container.version.tgz
+% pear install /path/to/S2Container-version.tgz
 install ok: channel://pear.php.net/S2Container-version
 
 % pear list 
