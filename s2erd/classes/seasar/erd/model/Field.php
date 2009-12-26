@@ -159,21 +159,21 @@ class Field {
      * データサイズ
      * @var integer
      */ 
-    private $size = null;
+    private $length = null;
 
     /**
-     * @param integer $size
+     * @param integer $length
      * @return null|integer
      */
-    public function setSize($size) {
-        $this->size = $size;
+    public function setLength($length) {
+        $this->length = $length;
     }
 
     /**
      * @return integer
      */
-    public function getSize() {
-        return $this->size;
+    public function getLength() {
+        return $this->length;
     }
 
     /**
@@ -298,10 +298,22 @@ class Field {
             $src[] = "'type_opt' => '{$this->typeOption}'";
         }
 
-        if (is_null($this->size)) {
-            $src[] = "'size' => null";
+        if (is_null($this->length)) {
+            $src[] = "'length' => null";
         } else {
-            $src[] = "'size' => {$this->size}";
+            $src[] = "'length' => {$this->length}";
+        }
+
+        if (is_null($this->scale)) {
+            $src[] = "'scale' => null";
+        } else {
+            $src[] = "'scale' => {$this->scale}";
+        }
+
+        if (is_null($this->precision)) {
+            $src[] = "'precision' => null";
+        } else {
+            $src[] = "'precision' => {$this->precision}";
         }
 
         if ($this->isNotNull()) {
@@ -310,15 +322,17 @@ class Field {
             $src[] = "'nn' => false";
         }
 
-/*
         if ($this->isPrimaryKey()) {
             $src[] = "'pk' => true";
-            $src[] = "'pk_idx' => {$this->primaryKeyIndex}";
         } else {
             $src[] = "'pk' => false";
-            $src[] = "'pk_idx' => null";
         }
-*/
+
+        if ($this->isForeignKey()) {
+            $src[] = "'fk' => true";
+        } else {
+            $src[] = "'fk' => false";
+        }
 
         $src[] = "'default' => '{$this->default}'";
         $src[] = "'comment' => '{$this->comment}'";
@@ -329,4 +343,85 @@ class Field {
         return $src;
     }
 
+    /**
+     * PKかどうか
+     * @var boolean
+     */ 
+    private $primaryKey = false;
+
+    /**
+     * @param boolean $primaryKey
+     * @return boolean
+     */
+    public function setPrimaryKey($primaryKey = true) {
+        $this->primaryKey = $primaryKey;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isPrimaryKey() {
+        return $this->primaryKey;
+    }
+
+    /**
+     * FKかどうか
+     * @var boolean
+     */ 
+    private $foreignKey = false;
+
+    /**
+     * @param boolean $foreignKey
+     * @return boolean
+     */
+    public function setForeignKey($foreignKey = true) {
+        $this->foreignKey = $foreignKey;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isForeignKey() {
+        return $this->foreignKey;
+    }
+
+    /**
+     * @var string
+     */ 
+    private $scale = null;
+
+    /**
+     * @param string $scale
+     * @return null
+     */
+    public function setScale($scale) {
+        $this->scale = $scale;
+    }
+
+    /**
+     * @return string
+     */
+    public function getScale() {
+        return $this->scale;
+    }
+
+    /**
+     * @var string
+     */ 
+    private $precision = null;
+
+    /**
+     * @param string $precision
+     * @return null
+     */
+    public function setPrecision($precision) {
+        $this->precision = $precision;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrecision() {
+        return $this->precision;
+    }
 }

@@ -344,31 +344,23 @@ class AbstractGenerator implements \seasar\erd\Generator {
             $validators[] = "'allowEmpty' => 'true'";
         }
 
-        switch($field->getType()) {
-            case 'INT':
-            case 'INTEGER':
-                $validators[] = "'Int'";
-                break;
-            case 'FLOAT':
-            case 'DECIMAL':
-                $validators[] = "'Float'";
-                break;
-            case 'CHAR':
-            case 'VARCHAR':
-                $size = $field->getSize();
-                if (!is_null($size)) {
-                    $validators[] = "array('StringLength', 0, $size, '" . \seasar\erd\Config::$ENCODING . "')";
-                }
-                break;
-            case 'DATE':
-                $validators[] = "array('Date', 'YYYY-MM-dd')";
-                break;
-            case 'TIME':
-                $validators[] = "array('Date', 'HH::mm::ss')";
-                break;
-            case 'DATETIME':
-                $validators[] = "array('Date', 'YYYY-MM-dd HH::mm::ss')";
-                break;
+        $type = $field->getType();
+
+        if(preg_match('/^INT/', $type)) {
+            $validators[] = "'Int'";
+        } else if($type === 'FLOAT' || $type === 'DOUBLE' || $type === 'DECIMAL') {
+            $validators[] = "'Float'";
+        } else if(preg_match('/CHAR/', $type)) {
+            $length = $field->getLength();
+            if (!is_null($length)) {
+                $validators[] = "array('StringLength', 0, $length, '" . \seasar\erd\Config::$ENCODING . "')";
+            }
+        } else if($type === 'DATE') {
+            $validators[] = "array('Date', 'YYYY-MM-dd')";
+        } else if($type === 'TIME') {
+            $validators[] = "array('Date', 'HH::mm::ss')";
+        } else if($type === 'DATETIME') {
+            $validators[] = "array('Date', 'YYYY-MM-dd HH::mm::ss')";
         }
 
         return $validators;

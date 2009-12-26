@@ -183,7 +183,13 @@ class MwbParser extends AbstractParser {
         $fieldModel->setType(strtoupper(array_pop($items)));
 
         $nodes = $colNode->xpath('value[@key="length"]');
-        $fieldModel->setSize((string)$nodes[0]);
+        $fieldModel->setLength((string)$nodes[0]);
+
+        $nodes = $colNode->xpath('value[@key="precision"]');
+        $fieldModel->setPrecision((string)$nodes[0]);
+
+        $nodes = $colNode->xpath('value[@key="scale"]');
+        $fieldModel->setScale((string)$nodes[0]);
 
         $nodes = $colNode->xpath('value[@key="autoIncrement"]');
         if ((string)$nodes[0] === '1') {

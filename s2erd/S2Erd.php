@@ -30,7 +30,10 @@ if (!defined('S2ERD_ROOT_DIR')) {
     define('S2ERD_ROOT_DIR', dirname(__FILE__));
 }
 
-require_once('S2Container.php');
+if (!defined('S2CONTAINER_ROOT_DIR')) {
+    require_once('S2Container.php');
+}
+
 require_once(S2ERD_ROOT_DIR . '/classes/seasar/erd/Config.php');
 \seasar\util\ClassLoader::import(S2ERD_ROOT_DIR . '/classes');
 

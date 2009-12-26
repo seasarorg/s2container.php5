@@ -132,8 +132,8 @@ class ErmParser extends AbstractParser {
             $fieldModel->setPname((string)$wordNode->physical_name);
             $fieldModel->setLname((string)$wordNode->logical_name);
             $fieldModel->setType(strtoupper((string)$wordNode->type));
-            $size = (string)$wordNode->length;
-            $fieldModel->setSize(is_numeric($size) ? (int)$size : null);
+            $length = (string)$wordNode->length;
+            $fieldModel->setLength(is_numeric($length) ? (int)$length : null);
             list($comment, $phpSrc) = $this->explodeComment((string)$wordNode->description);
             $fieldModel->setComment($comment);
             if ($phpSrc === '') {

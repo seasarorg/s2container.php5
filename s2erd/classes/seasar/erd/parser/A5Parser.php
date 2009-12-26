@@ -112,7 +112,9 @@ class A5Parser extends AbstractParser {
             $entity2Model = $schema->getEntityByPname($relation->entity2);
             $relationModel->setEntity2($entity2Model);
             foreach($relation->fields2 as $field) {
-                $relationModel->addField2($entity2Model->getFieldByPname($field));
+                $fieldModel = $entity2Model->getFieldByPname($field);
+                $fieldModel->setForeignKey();
+                $relationModel->addField2($fieldModel);
             }
         }
         return $schema;
@@ -144,12 +146,13 @@ class A5Parser extends AbstractParser {
         $field->setType(preg_replace('/\(\d+\)$/', '', preg_replace('/^@/', '', $types[0])));
         $matches = array();
         if (preg_match('/\((\d+)\)/', $types[0], $matches)) {
-            $field->setSize($matches[1]);
+            $field->setLength($matches[1]);
         }
         $field->setTypeOption($types[1]);
         $field->setNotNull($items[3] === 'NOT NULL' ? true : false);
 
         if ($items[4] != '') {
+            $field->setPrimaryKey();
             $entityModel->addPrimaryKeyField($field);
         }
 
