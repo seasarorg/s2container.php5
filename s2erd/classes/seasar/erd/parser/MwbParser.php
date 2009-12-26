@@ -108,7 +108,9 @@ class MwbParser extends AbstractParser {
 
                 $refColNodeArray = $fkNode->xpath('value[@key="columns"]');
                 foreach($refColNodeArray[0]->children() as $refColNode) {
-                    $relationModel->addField2($refTableModel->getFieldById((string)$refColNode));
+                    $fkFieldModel = $refTableModel->getFieldById((string)$refColNode);
+                    $fkFieldModel->setForeignKey();
+                    $relationModel->addField2($fkFieldModel);
                 }
             }
         }
@@ -143,7 +145,9 @@ class MwbParser extends AbstractParser {
             $nodeArray = $pkIndexNode->xpath('value[@key="columns"]');
             foreach($nodeArray[0]->children() as $indexColNode) {
                 $nodeArray = $indexColNode->xpath('link[@key="referencedColumn"]');
-                $entityModel->addPrimaryKeyField($entityModel->getFieldById((string)$nodeArray[0]));
+                $fieldModel = $entityModel->getFieldById((string)$nodeArray[0]);
+                $fieldModel->setPrimaryKey();
+                $entityModel->addPrimaryKeyField($fieldModel);
             }
         }
         

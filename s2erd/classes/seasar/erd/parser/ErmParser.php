@@ -68,7 +68,9 @@ class ErmParser extends AbstractParser {
                 }
 
                 $relationModel->setEntity2($selfTableModel);
-                $relationModel->addField2($selfTableModel->getFieldById((string)$fieldNode->id));
+                $fkFieldModel = $selfTableModel->getFieldById((string)$fieldNode->id);
+                $fkFieldModel->setForeignKey();
+                $relationModel->addField2($fkFieldModel);
 
                 list($refTableModel, $refFieldModel) = $colMap[(string)$fieldNode->referenced_column];
                 $relationModel->setEntity1($refTableModel);
@@ -98,7 +100,9 @@ class ErmParser extends AbstractParser {
 
         $colNodes = $tableNode->xpath('columns/normal_column[primary_key="true"]');
         foreach($colNodes as $colNode) {
-            $entityModel->addPrimaryKeyField($entityModel->getFieldById((string)$colNode->id));
+            $fieldModel = $entityModel->getFieldById((string)$colNode->id);
+            $fieldModel->setPrimaryKey();
+            $entityModel->addPrimaryKeyField($fieldModel);
         }
 
         return $entityModel;
