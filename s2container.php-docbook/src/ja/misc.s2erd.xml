@@ -12,9 +12,9 @@
         </itemizedlist>
         <para>対応しているERDデザインツール</para>
         <itemizedlist>
+            <listitem><ulink url="http://wb.mysql.com/">MySQL Workbech version 5.1.18</ulink></listitem>
             <listitem><ulink url="http://www.wind.sannet.ne.jp/m_matsu/developer/a5m2/">A5:SQL Mk-2 version 2.4.0beta</ulink></listitem>
             <listitem><ulink url="http://ermaster.sourceforge.net/index_ja.html">ER Master version 1.0.0-20091210-0025</ulink></listitem>
-            <listitem><ulink url="http://wb.mysql.com/">MySQL Workbech version 5.1.18</ulink></listitem>
         </itemizedlist>
     </sect2>
 
@@ -151,10 +151,110 @@ php.include_path = ".:/usr/lib/php:/path/to/zf/project/library"
         </para>
 
         <itemizedlist>
+            <listitem>project.mwb (<ulink url="http://wb.mysql.com/">MySQL Workbech</ulink>)</listitem>
             <listitem>project.a5er (<ulink url="http://www.wind.sannet.ne.jp/m_matsu/developer/a5m2/">A5:SQL Mk-2</ulink>)</listitem>
             <listitem>project.erm (<ulink url="http://ermaster.sourceforge.net/index_ja.html">ER Master</ulink>)</listitem>
-            <listitem>project.mwb (<ulink url="http://wb.mysql.com/">MySQL Workbech</ulink>)</listitem>
         </itemizedlist>
+
+        <para>
+        例として、MySQL Workbench(project.mwb)を対象とするMWBModelコマンドを実行してみます。
+        </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+% ls application/models/DbTable
+% zf create mwb-model s2
+
+MySQL Workbench File:   /project/var/db/project.mwb
+
+create : application/models/DbTable/Abstract.php
+create : application/models/DbTable/Accounts.php
+create : application/models/DbTable/Bugs.php
+create : application/models/DbTable/BugsProducts.php
+create : application/models/DbTable/Products.php
+
+% cat application/models/DbTable/Bugs.php
+<?php
+/**
+ * @S2Component('autoBinding' => 'none')
+ */
+class Model_DbTable_Bugs extends Model_DbTable_Abstract {
+
+    const PNAME = 'bugs';
+    const LNAME = 'bugs';
+    const COMMENT = '';
+
+    public static $FIELDS = array(
+        'bug_id' => array(
+              'pname' => 'bug_id',
+              'lname' => 'bug_id',
+              'type' => 'INT',
+              'type_opt' => null,
+              'length' => -1,
+              'scale' => -1,
+              'precision' => -1,
+              'nn' => true,
+              'pk' => true,
+              'fk' => false,
+              'default' => '',
+              'comment' => '',
+              'options' => null),
+
+              . . . . . 
+              . . . . . 
+              . . . . . 
+
+        'verified_by' => array(
+              'pname' => 'verified_by',
+              'lname' => 'verified_by',
+              'type' => 'VARCHAR',
+              'type_opt' => null,
+              'length' => 100,
+              'scale' => -1,
+              'precision' => -1,
+              'nn' => false,
+              'pk' => false,
+              'fk' => true,
+              'default' => '',
+              'comment' => '',
+              'options' => null));
+
+    public static $FILTERS = array(
+        'bug_id' => array('Int'));
+
+    public static $VALIDATORS = array(
+        'bug_id' => array('presence' => 'required', 'Int'),
+        'bug_description' => array('allowEmpty' => 'true', array('StringLength', 0, 100, 'UTF-8')),
+        'bug_status' => array('allowEmpty' => 'true', array('StringLength', 0, 20, 'UTF-8')),
+        'reported_by' => array('allowEmpty' => 'true', array('StringLength', 0, 100, 'UTF-8')),
+        'assigned_to' => array('allowEmpty' => 'true', array('StringLength', 0, 100, 'UTF-8')),
+        'verified_by' => array('allowEmpty' => 'true', array('StringLength', 0, 100, 'UTF-8')));
+
+    protected $_name = 'bugs';
+    protected $_primary = array('bug_id');
+    protected $_sequence = false;
+
+    protected $_dependentTables = array('Model_DbTable_BugsProducts');
+
+    protected $_referenceMap = array(
+        'ReportedBy' => array(
+           'columns' => array('reported_by'),
+           'refTableClass' => 'Model_DbTable_Accounts',
+           'refColumns' => array('account_name')),
+        'AssignedTo' => array(
+           'columns' => array('assigned_to'),
+           'refTableClass' => 'Model_DbTable_Accounts',
+           'refColumns' => array('account_name')),
+        'VerifiedBy' => array(
+           'columns' => array('verified_by'),
+           'refTableClass' => 'Model_DbTable_Accounts',
+           'refColumns' => array('account_name')));
+
+}
+%
+]]></programlisting>
+        <para>
+        生成されたModel_DbTable_BugsクラスのLNAMEや$FIELDSのlname値は、
+        A5:SQLやER Masterを使用している場合に日本語カラム名となります。
+        </para>
     </sect2>
 
     <sbr/>
@@ -183,7 +283,7 @@ class Model_DbTable_AccountsTest extends PHPUnit_Framework_TestCase {
 ]]></programlisting>
 
         <para>
-        UnitTestの実行結果は次のなります。
+        UnitTestの実行結果は次になります。
         </para>
 
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
@@ -259,9 +359,6 @@ class Service_SampleTest extends PHPUnit_Framework_TestCase {
     public function testFetchAllBugsWithAccounts() {
         $rows = $this->service->fetchProductBugDescriptions();
         $this->assertEquals(6, count($rows));
-        $this->assertEquals(2, count($rows[0]));
-        $this->assertTrue(isset($rows[0]['bug_description']));
-        $this->assertTrue(isset($rows[0]['product_name']));
     }
 
     public function setUp() {
@@ -276,7 +373,7 @@ class Service_SampleTest extends PHPUnit_Framework_TestCase {
 ]]></programlisting>
 
         <para>
-        UnitTestの実行結果は次のなります。
+        UnitTestの実行結果は次になります。
         </para>
 
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
@@ -287,7 +384,7 @@ PHPUnit 3.4.2 by Sebastian Bergmann.
 
 Time: 0 seconds
 
-OK (2 tests, 5 assertions)
+OK (2 tests, 2 assertions)
 %
 ]]></programlisting>
 
