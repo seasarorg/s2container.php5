@@ -34,16 +34,6 @@ class StringUtil {
     private function __construct(){}
 
     /**
-     * 文字列の先頭1文字を小文字に変更します。
-     *
-     * @param string $value
-     * @return string
-     */
-    public static function lcfirst($value) {
-        return strtolower(substr($value, 0, 1)) . substr($value, 1);
-    }
-
-    /**
      * mixedの値を文字列にします。
      *
      * @param mixed $val

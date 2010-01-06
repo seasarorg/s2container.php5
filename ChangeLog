@@ -1,4 +1,10 @@
 
+2010-01-06 s2container-2.0.3
+
+	* add: S2ApplicationContextの各メソッドへのalias関数を定義しました。(s2init()、s2register()、s2import()、s2get()、 s2create())
+	* modify: php-5.3で追加されたReflectionClass::getShortName()、ReflectionClass::getNamespaceName()を使用するようにしました。(seasar\util\ClassUtil)
+	* modify: php-5.3で追加されたlcfirst()関数を使用するようにしました。(seasar\util\StringUtil)
+
 2009-11-20 s2container-2.0.2
 
 	* info: php-5.3.1で動作確認を行いました。

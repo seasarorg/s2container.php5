@@ -26,11 +26,6 @@
 namespace seasar\util;
 class StringUtilTest extends \PHPUnit_Framework_TestCase {
 
-    public function testLcFirst() {
-        $this->assertEquals(StringUtil::lcfirst('Hoge'), 'hoge');
-        $this->assertEquals(StringUtil::lcfirst('hOge'), 'hOge');
-    }
-
     public function testMixToString() {
         $this->assertEquals(StringUtil::mixToString('hoge'), 'hoge');
         $this->assertEquals(StringUtil::mixToString(array('hoge','huga')), 'array(2)');

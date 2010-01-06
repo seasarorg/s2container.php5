@@ -45,6 +45,7 @@ class EnhancedClassGenerator {
      * @return string Enhancedクラス名
      */
     public static function generate(\ReflectionClass $targetClass, array $applicableMethods) {
+        $concreteClassShortName = $targetClass->getShortName() . self::CLASS_NAME_POSTFIX;
         $concreteClassName = $targetClass->getName() . self::CLASS_NAME_POSTFIX;
         if (class_exists($concreteClassName, false)) {
             return $concreteClassName;
@@ -55,7 +56,7 @@ class EnhancedClassGenerator {
             return $concreteClassName;
         }
 
-        $concreteClassSrc = self::generateInternal($concreteClassName, $targetClass, $applicableMethods);
+        $concreteClassSrc = self::generateInternal($concreteClassShortName, $targetClass, $applicableMethods);
         \seasar\util\EvalUtil::execute($concreteClassSrc);
 
         if (true === \seasar\aop\Config::$CACHING) {
@@ -66,15 +67,14 @@ class EnhancedClassGenerator {
 
     /**
      * Enhancedクラスのソースを生成します。戻り値としてEnhancedクラスのソース文字列を返します。
-     * @param string $concreteClassName Enhancedクラスの名前
+     * @param string $concreteClassShortName Enhancedクラスの名前(namespaceは含まない)
      * @param \ReflectionClass Enhance対象のクラス
      * @param array $applicableMethods Enhance対象のクラスのメソッドのうち、アスペクト対象となるメソッドのReflectionの配列
      * @return string Enhancedクラスのソース
      */
-    public static function generateInternal($concreteClassName, \ReflectionClass $targetClass, array $applicableMethods) {
+    public static function generateInternal($className, \ReflectionClass $targetClass, array $applicableMethods) {
         self::validateTargetClass($targetClass);
-        $className = \seasar\util\ClassUtil::getClassName($concreteClassName);
-        $packageName = \seasar\util\ClassUtil::getNamespace($concreteClassName);
+        $packageName = $targetClass->getNamespaceName();
         $srcLine = '';
         if ($packageName != '\\') {
             $srcLine = 'namespace ' . $packageName . ';' . PHP_EOL;

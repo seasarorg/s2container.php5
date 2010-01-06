@@ -43,16 +43,16 @@ class ComponentInfoDefTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function testUsePhpNamespace() {
-        $info = s2comp('a\b\A')->usePhpNamespace();
-        $this->assertEquals($info->getNamespace(), 'a.b');
+        $info = s2comp('seasar\container\A_ComponentInfoDefTest')->usePhpNamespace();
+        $this->assertEquals($info->getNamespace(), 'seasar.container');
 
-        $info = s2comp('\a\b\A')->usePhpNamespace();
-        $this->assertEquals($info->getNamespace(), 'a.b');
+        $info = s2comp('\seasar\container\A_ComponentInfoDefTest')->usePhpNamespace();
+        $this->assertEquals($info->getNamespace(), 'seasar.container');
 
-        $info = s2comp('A')->usePhpNamespace();
+        $info = s2comp('PDO')->usePhpNamespace();
         $this->assertEquals($info->getNamespace(), null);
 
-        $info = s2comp('a\b\A')
+        $info = s2comp('seasar\container\A_ComponentInfoDefTest')
                   ->setNamespace('x.y')
                   ->usePhpNamespace();
         $this->assertEquals($info->getNamespace(), 'x.y');
@@ -65,3 +65,5 @@ class ComponentInfoDefTest extends \PHPUnit_Framework_TestCase {
     public function tearDown() {
     }
 }
+
+class A_ComponentInfoDefTest {}
