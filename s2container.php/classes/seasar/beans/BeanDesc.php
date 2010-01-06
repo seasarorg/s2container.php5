@@ -206,7 +206,7 @@ class BeanDesc {
             if ($method->isPublic() and
                 count($params) === 1 and 
                 0 === strpos($methodName, 'set')) {
-                $propName = \seasar\util\StringUtil::lcfirst(substr($methodName, 3));
+                $propName = lcfirst(substr($methodName, 3));
                 $propertyDesc = new AccessorMethodPropertyDesc($this->beanClass, $propName);
                 $this->propertyDescs[$propName] = $propertyDesc;
 

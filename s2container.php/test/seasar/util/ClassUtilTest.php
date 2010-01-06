@@ -89,24 +89,6 @@ class ClassUtilTest extends \PHPUnit_Framework_TestCase {
         $this->assertTrue(ClassUtil::newInstance($refClass, array(1, 2)) instanceof $className);
     }
 
-    public function testGetClassName() {
-        $this->assertEquals('c', ClassUtil::getClassName('a\b\c'));
-        $this->assertEquals('a', ClassUtil::getClassName('a'));
-        $this->assertEquals('a', ClassUtil::getClassName('\a'));
-    }
-
-    public function testGetNamespace() {
-        $this->assertEquals('a\b', ClassUtil::getNamespace('a\b\c'));
-        $this->assertEquals('a\b', ClassUtil::getNamespace('\a\b\c'));
-        $this->assertEquals('\\', ClassUtil::getNamespace('a'));
-        $this->assertEquals('\\', ClassUtil::getNamespace('\a'));
-    }
-
-    public function testIsGlobalClass() {
-        $this->assertTrue(ClassUtil::isGlobalClass(new \ReflectionClass('PDO')));
-        $this->assertFalse(ClassUtil::isGlobalClass(new \ReflectionClass(__NAMESPACE__ . '\A_ClassUtil')));
-    }
-
     public function setUp(){
         print PHP_EOL . __CLASS__ . '->' . $this->getName() . '()' . PHP_EOL;
     }

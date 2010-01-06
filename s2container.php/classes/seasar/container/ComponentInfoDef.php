@@ -176,10 +176,8 @@ class ComponentInfoDef {
     public function getNamespace() {
         if (is_null($this->namespace)) {
             if ($this->usePhpNamespace === true) {
-                $ns = \seasar\util\ClassUtil::getNamespace($this->className);
-                if ($ns != '\\') {
-                    $this->namespace = str_replace('\\', '.', $ns);
-                }
+                $ns = $this->getReflectionClass()->getNamespaceName();
+                $this->namespace = str_replace('\\', '.', $ns);
             }
         }
         return $this->namespace;
