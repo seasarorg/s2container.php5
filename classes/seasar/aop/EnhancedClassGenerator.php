@@ -76,7 +76,7 @@ class EnhancedClassGenerator {
         self::validateTargetClass($targetClass);
         $packageName = $targetClass->getNamespaceName();
         $srcLine = '';
-        if ($packageName != '\\') {
+        if ($packageName !== '') {
             $srcLine = 'namespace ' . $packageName . ';' . PHP_EOL;
         }
         $srcLine .= 'class ' . $className . ' ';
