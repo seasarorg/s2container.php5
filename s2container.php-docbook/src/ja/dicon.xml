@@ -1176,6 +1176,15 @@ s2component('PDO')
 ]]></programlisting>
 
       <para>
+      setConstructClosureメソッドのAliasとしてconstructメソッドも定義されています。
+       </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+s2component('PDO')->construct(function(){
+    return new PDO('sqlite:sqlite.db');
+});
+]]></programlisting>
+
+      <para>
         ConstructClosureの戻り値は、s2component関数で指定するクラスとinstanceofの関係を満たす必要があります。<sbr/>
         staticなファクトリメソッドなどで生成したインスタンスをコンポーネントとして扱うことができます。
       </para>

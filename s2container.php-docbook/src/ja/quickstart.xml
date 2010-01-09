@@ -8,14 +8,13 @@
   <!-- ################################################################### -->
   <sect1 id="quick005"><title>コンポーネントの取得</title>
     <para>
-        コンポーネントの取得は<link linkend="dicon.application">S2ApplicationContextクラス</link>のgetメソッドで行います。
+    コンポーネントの取得は<link linkend="dicon.application">S2ApplicationContextクラス</link>のgetメソッドで行います。
     getメソッドの引数で、コンポーネントのキーであるクラス名を指定します。
     </para>
     <itemizedlist><listitem>quickstart005.php</listitem></itemizedlist>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
 require_once('S2Container.php');
-use seasar\container\S2ApplicationContext as s2app;
 
 class Service {}
 
@@ -29,7 +28,7 @@ $action = s2app::get('Action');
 var_dump($action);
 ]]></programlisting>
 
-<para>実行結果は次のようになります。ActionインスタンスにServiceインスタンスがインジェクションされます。</para>
+    <para>実行結果は次のようになります。ActionインスタンスにServiceインスタンスがインジェクションされます。</para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 % php quickstart005.php
 object(Action)#26 (1) {
@@ -40,8 +39,8 @@ object(Action)#26 (1) {
 %
 ]]></programlisting>
 
-<para>コンポーネントにクラス名とは別にコンポーネント名を付ける場合は、次の「<link linkend="quick010">コンポーネントの登録</link>」を参照下さい。</para>
-<sbr/>
+    <para>コンポーネントにクラス名とは別にコンポーネント名を付ける場合は、次の「<link linkend="quick010">コンポーネントの登録</link>」を参照下さい。</para>
+    <sbr/>
     <note><title>NOTE</title>
       <para>このExampleは examples/quickstart/quickstart005.php にあります。</para>
     </note>
@@ -57,7 +56,6 @@ object(Action)#26 (1) {
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
 require_once('S2Container.php');
-use seasar\container\S2ApplicationContext as s2app;
 
 class Action {}
 s2component('Action');     // same as s2app::register('Action');
@@ -70,7 +68,6 @@ var_dump($action);
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
 require_once('S2Container.php');
-use seasar\container\S2ApplicationContext as s2app;
 
 class Action {}
 s2component('Action')->setName('act');
@@ -130,7 +127,6 @@ class Service {
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
 require_once('S2Container.php');
-use seasar\container\S2ApplicationContext as s2app;
 
 s2app::import(dirname(__FILE__) . '/classes');
 $action = s2app::get('act');
@@ -155,7 +151,6 @@ var_dump($action);
     <itemizedlist><listitem>quickstart030.php</listitem></itemizedlist>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 require_once('S2Container.php');
-use seasar\container\S2ApplicationContext as s2app;
 
 s2app::import(dirname(__FILE__) . '/classes');
 s2aspect('new seasar\aop\interceptor\TraceInterceptor')    // same as s2app::registerAspect('...');
@@ -219,7 +214,6 @@ class Action{
     <itemizedlist><listitem>quickstart030.php</listitem></itemizedlist>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 require_once('S2Container.php');
-use seasar\container\S2ApplicationContext as s2app;
 
 s2app::import(dirname(__FILE__) . '/classes');
 $action = s2app::get('Action');
@@ -258,7 +252,6 @@ $action->getById();
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 <?php
 require_once('S2Container.php');
-use seasar\container\S2ApplicationContext as s2app;
 use seasar\util\ClassLoader as s2loader;
 
 s2loader::import(dirname(__FILE__) . '/classes');

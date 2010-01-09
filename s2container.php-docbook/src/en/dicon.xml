@@ -1213,7 +1213,7 @@ class Service {}
    
 
     <sbr/>
-    <sect2 id="dicon.closure"><title>ConstructClosureによるコンポーネントの生成</title>
+    <sect2 id="dicon.closure"><title>ConstructClosure</title>
       <para>
       Processing that generates the component can be set with Closure.
       You can set ConstructClosure by <link linkend="dicon.application.register">the s2component function.</link> 
@@ -1223,6 +1223,15 @@ s2component('PDO')
   ->setConstructClosure(function(){
         return new PDO('sqlite:sqlite.db');
     });
+]]></programlisting>
+
+      <para>
+      The construct method is also defined as an alias for the setConstructClosure method.
+       </para>
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+s2component('PDO')->construct(function(){
+    return new PDO('sqlite:sqlite.db');
+});
 ]]></programlisting>
 
       <para>
