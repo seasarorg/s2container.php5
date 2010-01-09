@@ -67,6 +67,7 @@ function getCoreClasses() { return array(
 'seasar\container\AutoBindingDef',
 'seasar\beans\PropertyDesc',
 'seasar\exception\S2RuntimeException',
+'seasar\container\ComponentInfoDef',
 'seasar\container\S2ApplicationContext',
 'seasar\log\S2Logger',
 'seasar\log\impl\SimpleLogger',

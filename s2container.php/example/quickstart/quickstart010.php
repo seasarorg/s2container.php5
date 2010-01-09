@@ -1,6 +1,5 @@
 <?php
 require_once(dirname(dirname(__FILE__)) . '/example.inc.php');
-use seasar\container\S2ApplicationContext as s2app;
 
 class Action {}
 
