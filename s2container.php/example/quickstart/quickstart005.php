@@ -9,7 +9,7 @@ class Action {
     }
 }
 
-$action = s2app::get('Action');
+$action = s2get('Action');
 var_dump($action);
 
 
