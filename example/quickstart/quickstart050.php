@@ -4,6 +4,6 @@ use seasar\util\ClassLoader as s2loader;
 
 s2loader::import(dirname(__FILE__) . '/classes');
 
-s2app::import(dirname(__FILE__) . '/quickstart050.dicon');
-$action = s2app::get('Action');
+s2import(dirname(__FILE__) . '/quickstart050.dicon');
+$action = s2get('Action');
 $action->indexAction();

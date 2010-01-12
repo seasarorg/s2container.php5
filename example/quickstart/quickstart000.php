@@ -20,4 +20,4 @@ s2component('PDO')->construct(function(){
     return new PDO('sqlite::memory:');
 });
 
-var_dump(s2app::get('Action'));
+var_dump(s2get('Action'));

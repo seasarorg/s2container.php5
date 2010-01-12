@@ -40,6 +40,21 @@ require_once(S2CONTAINER_ROOT_DIR . '/classes/seasar/Config.php');
 require_once(S2CONTAINER_ROOT_DIR . '/classes/seasar/container/Config.php');
 require_once(S2CONTAINER_ROOT_DIR . '/classes/seasar/aop/Config.php');
 
+
+/**
+ * @see seasar\container\S2ApplicationContext::init()
+ */
+function s2init() {
+    seasar\container\S2ApplicationContext::init();
+}
+
+/**
+ * @see seasar\container\S2ApplicationContext::register()
+ */
+function s2register($clazz = null) {
+    return seasar\container\S2ApplicationContext::register($clazz);
+}
+
 /**
  * @see seasar\container\S2ApplicationContext::register()
  */
@@ -61,4 +76,24 @@ function s2aspect($interceptor = null, $componentPattern = null, $pointcut = nul
     return seasar\container\S2ApplicationContext::registerAspect($interceptor, $componentPattern, $pointcut);
 }
 
-class_alias('seasar\container\S2ApplicationContext', 's2app');
+/**
+ * @see seasar\container\S2ApplicationContext::import()
+ */
+function s2import($path, $namespace = array(), $strict = false, $pear = false, $recursive = true) {
+    seasar\container\S2ApplicationContext::import($path, $namespace, $strict, $pear, $recursive);
+}
+
+/**
+ * @see seasar\container\S2ApplicationContext::get()
+ */
+function s2get($key, $namespaces = array()) {
+    return seasar\container\S2ApplicationContext::get($key, $namespaces);
+}
+
+/**
+ * @see seasar\container\S2ApplicationContext::create()
+ */
+function s2create($namespaces = array()) {
+    return seasar\container\S2ApplicationContext::create($namespaces);
+}
+
