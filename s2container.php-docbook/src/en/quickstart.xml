@@ -24,7 +24,7 @@ class Action {
     }
 }
 
-$action = s2app::get('Action');
+$action = s2get('Action');
 var_dump($action);
 ]]></programlisting>
 
@@ -59,9 +59,9 @@ object(Action)#26 (1) {
 require_once('S2Container.php');
 
 class Action {}
-s2component('Action');     // same as s2app::register('Action');
+s2component('Action');     // same as s2register('Action');
 
-$action = s2app::get('Action');
+$action = s2get('Action');
 var_dump($action);
 ]]></programlisting>
 
@@ -73,7 +73,7 @@ require_once('S2Container.php');
 class Action {}
 s2component('Action')->setName('act');
 
-$action = s2app::get('act');
+$action = s2get('act');
 var_dump($action);
 ]]></programlisting>
 
@@ -131,8 +131,8 @@ class Service {
 <?php
 require_once('S2Container.php');
 
-s2app::import(dirname(__FILE__) . '/classes');
-$action = s2app::get('act');
+s2import(dirname(__FILE__) . '/classes');
+$action = s2get('act');
 var_dump($action);
 
 ]]></programlisting>
@@ -155,12 +155,12 @@ var_dump($action);
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 require_once('S2Container.php');
 
-s2app::import(dirname(__FILE__) . '/classes');
-s2aspect('new seasar\aop\interceptor\TraceInterceptor')    // same as s2app::registerAspect('...');
+s2import(dirname(__FILE__) . '/classes');
+s2aspect('new seasar\aop\interceptor\TraceInterceptor')
   ->setPattern('/^Service$/')
   ->setPointcut('/^add$/');
 
-$action = s2app::get('Action');
+$action = s2get('Action');
 $action->indexAction();
 ]]></programlisting>
 
@@ -218,8 +218,8 @@ class Action{
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 require_once('S2Container.php');
 
-s2app::import(dirname(__FILE__) . '/classes');
-$action = s2app::get('Action');
+s2import(dirname(__FILE__) . '/classes');
+$action = s2get('Action');
 $action->getById();
 ]]></programlisting>
 
@@ -259,9 +259,9 @@ require_once('S2Container.php');
 use seasar\util\ClassLoader as s2loader;
 
 s2loader::import(dirname(__FILE__) . '/classes');
-s2app::import(dirname(__FILE__) . '/quickstart050.dicon');
+s2import(dirname(__FILE__) . '/quickstart050.dicon');
 
-$action = s2app::get('Action');
+$action = s2get('Action');
 $action->indexAction();
 ]]></programlisting>
 
