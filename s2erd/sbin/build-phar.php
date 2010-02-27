@@ -2,7 +2,7 @@
 $ROOT_DIR   = dirname(dirname(__FILE__));
 $PHAR_NAME  = 'S2Erd';
 $PHAR_ALIAS = 'seasar.s2erd';
-$VERSION    = '0.2.0';
+$VERSION    = '0.3.0';
 $PHAR_FILE  = dirname(dirname(__FILE__)) . "/$PHAR_NAME-$VERSION.phar";
 
 if (file_exists($PHAR_FILE)) {

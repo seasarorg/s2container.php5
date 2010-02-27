@@ -1,6 +1,6 @@
 <?php
 // +----------------------------------------------------------------------+
-// | Copyright 2005-2009 the Seasar Foundation and the Others.            |
+// | Copyright 2005-2010 the Seasar Foundation and the Others.            |
 // +----------------------------------------------------------------------+
 // | Licensed under the Apache License, Version 2.0 (the "License");      |
 // | you may not use this file except in compliance with the License.     |
@@ -16,7 +16,7 @@
 // +----------------------------------------------------------------------+
 /**
  *
- * @copyright 2005-2009 the Seasar Foundation and the Others.
+ * @copyright 2005-2010 the Seasar Foundation and the Others.
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  * @link      http://s2container.php5.seasar.org/
  * @version   SVN: $Id:$
@@ -25,7 +25,7 @@
  * @author    klove
  */
 namespace seasar\erd\generator\zend\db;
-class AbstractGenerator implements \seasar\erd\Generator {
+abstract class AbstractGenerator implements \seasar\erd\Generator {
 
     /**
      * @var string
@@ -153,18 +153,20 @@ class AbstractGenerator implements \seasar\erd\Generator {
         $src = preg_replace('/@@CLASS_NAME@@/', \seasar\erd\Config::$MODEL_PACKAGE_NAME . '_' . $this->getClassNameByPname($entity->getPname()), $this->modelClassTpl);
         $src = preg_replace('/@@SUPER_CLASS@@/', \seasar\erd\Config::$MODEL_PACKAGE_NAME . '_' . \seasar\erd\Config::$MODEL_SUPER_CLASS_NAME, $src);
 
-        $src = preg_replace('/@@TABLE_NAME@@/', "'{$entity->getPname()}'", $src);
         $src = preg_replace('/@@PNAME@@/', "'{$entity->getPname()}'", $src);
         $src = preg_replace('/@@LNAME@@/', "'{$entity->getLname()}'", $src);
 
         $src = preg_replace('/@@COMMENT@@/', "'{$entity->getComment()}'", $src);
         $src = preg_replace('/@@COMMENT_PHP_SOURCE@@/', $entity->getCommentedSrc(), $src);
 
+        $src = preg_replace('/@@FIELDS@@/', $entity->getFieldDefSrc(), $src);
+
+
+        $src = preg_replace('/@@TABLE_NAME@@/', "'{$entity->getPname()}'", $src);
+
         $src = preg_replace('/@@PRIMARY_KEYS@@/', $this->getPrimaryKeysSrc($entity), $src);
 
         $src = preg_replace('/@@SEQUENCE@@/', $this->getSequenceSrc($entity), $src);
-
-        $src = preg_replace('/@@FIELDS@@/', $entity->getFieldDefSrc(), $src);
 
         $src = preg_replace('/@@FILTERS@@/', $this->getEntityFiltersSrc($entity), $src);
 
@@ -184,7 +186,11 @@ class AbstractGenerator implements \seasar\erd\Generator {
      * @return string
      */
     protected function getSequenceSrc(\seasar\erd\model\Entity $entity) {
-        return 'true';
+        $pkFields = $entity->getPrimaryKeyFields();
+        if (1 == count($pkFields)) {
+            return $pkFields[0]->isAutoIncrement() ? 'true' : 'false';
+        }
+        return 'false';
     }
 
     /**
@@ -291,19 +297,18 @@ class AbstractGenerator implements \seasar\erd\Generator {
     protected function getFieldFilterSrc(\seasar\erd\model\Field $field) {
 
         $filters = array();
-
+        $type = $field->getType();
+        if(preg_match('/^INT/', $type)) {
+            $filters[] = "'Int'";
+        }
         /*
-        if (false === strpos($field->getType(), 'CHAR')) {
-            $filters['null'] = "'Null'";
+        if(preg_match('/^BOOL/', $type)) {
+            $filters[] = "'Boolean'";
+        }
+        if(preg_match('/CHAR/', $type)) {
+            $filters[] = "'Null'";
         }
         */
-        
-        switch($field->getType()) {
-            case 'INT':
-            case 'INTEGER':
-                $filters[] = "'Int'";
-                break;
-        }
 
         return $filters;
     }
@@ -341,7 +346,7 @@ class AbstractGenerator implements \seasar\erd\Generator {
         if ($field->isNotNull()) {
             $validators[] = "'presence' => 'required'";
         } else {
-            $validators[] = "'allowEmpty' => 'true'";
+            $validators[] = "'allowEmpty' => true";
         }
 
         $type = $field->getType();

@@ -1,6 +1,6 @@
 <?php
 // +----------------------------------------------------------------------+
-// | Copyright 2005-2009 the Seasar Foundation and the Others.            |
+// | Copyright 2005-2010 the Seasar Foundation and the Others.            |
 // +----------------------------------------------------------------------+
 // | Licensed under the Apache License, Version 2.0 (the "License");      |
 // | you may not use this file except in compliance with the License.     |
@@ -15,15 +15,15 @@
 // | governing permissions and limitations under the License.             |
 // +----------------------------------------------------------------------+
 /**
- * @copyright 2005-2009 the Seasar Foundation and the Others.
+ * @copyright 2005-2010 the Seasar Foundation and the Others.
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  * @link      http://s2container.php5.seasar.org/
  * @version   SVN: $Id:$
  * @since     Class available since Release 0.2.0
- * @package   seasar\erd\generator\zen\db
+ * @package   seasar\erd\generator\zend\db
  * @author    klove
  */
-namespace seasar\erd\generator\zen\db;
+namespace seasar\erd\generator\zend\db;
 use seasar\container\S2ApplicationContext as s2app;
 class ErmGeneratorTest extends \PHPUnit_Framework_TestCase {
 
@@ -37,7 +37,7 @@ class ErmGeneratorTest extends \PHPUnit_Framework_TestCase {
         s2app::init();
         s2component('seasar\erd\writer\FileWriter');
         $this->parser = s2app::get('seasar\erd\parser\ErmParser');
-        $this->generator = s2app::get('seasar\erd\generator\zend\db\MySQLGenerator');
+        $this->generator = s2app::get('seasar\erd\generator\zend\db\PostgresGenerator');
         $this->generator->setModelClassTplFile(S2ERD_ROOT_DIR . '/test/data/tpl/model.tpl');
         $this->generator->setModelSuperClassTplFile(S2ERD_ROOT_DIR . '/test/data/tpl/model_abstract.tpl');
         $this->generator->setSaveDir(dirname(__FILE__) . '/tmp_erm');

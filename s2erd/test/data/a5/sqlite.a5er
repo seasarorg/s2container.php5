@@ -10,6 +10,8 @@ Author=klove
 MaxEntityRowShow=1000
 ReadOnlyRecommend=0
 Page=Main
+Domain=AI_SQLITE=integer primary key
+Domain=AI_MySQL=integer auto_increment
 LogicalView=1
 DecodeDomain=0
 ViewMode=4
@@ -167,7 +169,7 @@ TableOption=
 Page=MAIN
 Left=1050
 Top=400
-Field="社員ID","employee_id","INTEGER PRIMARY KEY","NOT NULL",0,"","",$FFFFFFFF
+Field="社員ID","employee_id","*AI_SQLITE","NOT NULL",0,"","",$FFFFFFFF
 Field="部署ID","busyo_id","@INT","NOT NULL",,"","",$FFFFFFFF
 Field="氏名","name","@VARCHAR(64)",,,"","",$FFFFFFFF
 Field="生年月日","birthday","@DATE",,,"","",$FFFFFFFF
@@ -177,7 +179,7 @@ Field="ボーナス","bonus","@DECIMAL",,,"","",$FFFFFFFF
 EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
-ModifiedDateTime=20091015003448
+ModifiedDateTime=20100103135800
 Position="MAIN",1050,400
 
 [Entity]

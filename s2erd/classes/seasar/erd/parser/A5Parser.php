@@ -1,6 +1,6 @@
 <?php
 // +----------------------------------------------------------------------+
-// | Copyright 2005-2009 the Seasar Foundation and the Others.            |
+// | Copyright 2005-2010 the Seasar Foundation and the Others.            |
 // +----------------------------------------------------------------------+
 // | Licensed under the Apache License, Version 2.0 (the "License");      |
 // | you may not use this file except in compliance with the License.     |
@@ -17,7 +17,7 @@
 /**
  * A5ERファイルのパースクラス
  *
- * @copyright 2005-2009 the Seasar Foundation and the Others.
+ * @copyright 2005-2010 the Seasar Foundation and the Others.
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  * @link      http://s2container.php5.seasar.org/
  * @version   SVN: $Id:$
@@ -38,6 +38,7 @@ class A5Parser extends AbstractParser {
         $entity = null;
         $relation = null;
         $relations = array();
+        $domains = array();
         foreach ($contents as $line) {
             $line = mb_convert_encoding(trim($line), \seasar\erd\Config::$ENCODING, 'sjis-win');
 
@@ -51,6 +52,11 @@ class A5Parser extends AbstractParser {
                 $entity = null;
                 $relation = new \stdClass;
                 $relations[] = $relation;
+            }
+
+            $matches = array();
+            if (preg_match('/^Domain=(.+?)=(.+)$/', $line, $matches)) {
+                $domains['*' . $matches[1]] = $matches[2];
             }
 
             $matches = array();
@@ -76,7 +82,7 @@ class A5Parser extends AbstractParser {
 
             $matches = array();
             if (preg_match('/^Field=(.+)$/', $line, $matches)) {
-                $this->createField($entity, $matches[1]);
+                $this->createField($entity, $matches[1], $domains);
             }
 
             $matches = array();
@@ -125,9 +131,10 @@ class A5Parser extends AbstractParser {
      *
      * @param \seasar\erd\model\Entity $entityModel
      * @param string $fieldLine
+     * @param array $domains
      * @return \seasar\erd\model\Field
      */
-    private function createField(\seasar\erd\model\Entity $entityModel, $fieldLine) {
+    private function createField(\seasar\erd\model\Entity $entityModel, $fieldLine, array $domains) {
         $field = new \seasar\erd\model\Field;
         $entityModel->addField($field);
 
@@ -139,16 +146,21 @@ class A5Parser extends AbstractParser {
         }
         $field->setLname($items[0]);
         $field->setPname($items[1]);
+
+        if (array_key_exists($items[2], $domains)) {
+            $items[2] = $domains[$items[2]];
+        }
+
         $types = preg_split('/\s+/', $items[2], 2);
         if (count($types) < 2) {
-            $types[] = null;
+            $types[1] = null;
         }
         $field->setType(preg_replace('/\(\d+\)$/', '', preg_replace('/^@/', '', $types[0])));
         $matches = array();
         if (preg_match('/\((\d+)\)/', $types[0], $matches)) {
             $field->setLength($matches[1]);
         }
-        $field->setTypeOption($types[1]);
+        $field->setTypeOption(trim($types[1]));
         $field->setNotNull($items[3] === 'NOT NULL' ? true : false);
 
         if ($items[4] != '') {

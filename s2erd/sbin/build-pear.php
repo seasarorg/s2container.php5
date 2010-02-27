@@ -13,15 +13,15 @@
  <date><?php echo date('Y-m-d');?></date>
  <time><?php echo date('H:i:s');?></time>
  <version>
-  <release>0.2.0</release>
-  <api>0.2.0</api>
+  <release>0.3.0</release>
+  <api>0.3.0</api>
  </version>
  <stability>
   <release>stable</release>
   <api>stable</api>
  </stability>
  <license uri="http://www.apache.org/licenses/LICENSE-2.0">The Apache License, Version 2.0</license>
- <notes>Release 0.2.0</notes>
+ <notes>Release 0.3.0</notes>
  <contents>
   <dir name="/">
 <?php

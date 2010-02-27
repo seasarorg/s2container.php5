@@ -1,6 +1,6 @@
 <?php
 // +----------------------------------------------------------------------+
-// | Copyright 2005-2009 the Seasar Foundation and the Others.            |
+// | Copyright 2005-2010 the Seasar Foundation and the Others.            |
 // +----------------------------------------------------------------------+
 // | Licensed under the Apache License, Version 2.0 (the "License");      |
 // | you may not use this file except in compliance with the License.     |
@@ -29,7 +29,7 @@ require_once(dirname(dirname(dirname(dirname(dirname(dirname(__FILE__)))))) . '/
 /**
  * A5用のZend_Tool Manifest
  *
- * @copyright 2005-2009 the Seasar Foundation and the Others.
+ * @copyright 2005-2010 the Seasar Foundation and the Others.
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  * @link      http://s2container.php5.seasar.org/
  * @version   SVN: $Id:$
@@ -37,13 +37,13 @@ require_once(dirname(dirname(dirname(dirname(dirname(dirname(__FILE__)))))) . '/
  * @package   seasar\erd\util\zend
  * @author    klove
  */
-class Seasar_Erd_Manifest implements Zend_Tool_Framework_Manifest_ProviderManifestable {
+class Seasar_Erd_Util_Zend_Manifest implements Zend_Tool_Framework_Manifest_ProviderManifestable {
     
     /**
      * @see Zend_Tool_Framework_Manifest_ProviderManifestable::getProviders()
      */
     public function getProviders() {
         //return array(new \seasar\erd\util\zend\provider\A5Model);
-        return array(new Seasar_Erd_A5Model, new Seasar_Erd_ERMModel, new Seasar_Erd_MWBModel);
+        return array(new Seasar_Erd_Util_Zend_Provider_A5Model, new Seasar_Erd_Util_Zend_Provider_ERMModel, new Seasar_Erd_Util_Zend_Provider_MWBModel);
     }
 }
