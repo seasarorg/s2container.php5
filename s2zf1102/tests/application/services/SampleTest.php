@@ -1,6 +1,4 @@
 <?php
-use \seasar\container\S2ApplicationContext as s2app;
-
 class Service_SampleTest extends PHPUnit_Framework_TestCase {
 
     public function testFetchAllBugs() {
@@ -17,7 +15,7 @@ class Service_SampleTest extends PHPUnit_Framework_TestCase {
 
     public function setUp() {
         require(APPLICATION_PATH . '/dicons/dicon.php');
-        $this->service = s2app::get('Service_Sample');
+        $this->service = s2get('Service_Sample');
     }
 
     public function tearDown() {

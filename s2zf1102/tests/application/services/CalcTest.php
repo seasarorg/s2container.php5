@@ -1,6 +1,4 @@
 <?php
-use \seasar\container\S2ApplicationContext as s2app;
-
 class Service_CalcTest extends PHPUnit_Framework_TestCase {
 
     public function testAdd() {
@@ -8,8 +6,8 @@ class Service_CalcTest extends PHPUnit_Framework_TestCase {
     }
 
     public function setUp() {
-        s2app::init();
-        $this->service = s2app::get('Service_Calc');
+        s2init();
+        $this->service = s2get('Service_Calc');
     }
 
     public function tearDown() {
