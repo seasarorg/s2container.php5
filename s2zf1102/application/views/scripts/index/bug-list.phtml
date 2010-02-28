@@ -1,0 +1,4 @@
+
+<?php foreach($this->dtos as $dto): ?>
+  <?php echo $this->escape(implode(' | ', array_values($dto))); ?><br>
+<?php endforeach; ?>
