@@ -8,8 +8,8 @@
   <!-- ################################################################### -->
   <sect1 id="quick005"><title>Getting a component</title>
     <para>
-    You can get a component by the get method of <link linkend="dicon.application">S2ApplicationContext</link> class.
-    The class name that is the key to the component is specified by the argument of the get method.
+    You can get a component by the <link linkend="dicon.application.singleton">s2get funcion</link>.
+    The class name that is the key to the component is specified by the argument of the s2get function.
     </para>
     <itemizedlist><listitem>quickstart005.php</listitem></itemizedlist>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
@@ -51,7 +51,6 @@ object(Action)#26 (1) {
     <para>
     <link linkend="dicon.application.register">The s2component function</link> performs registration of a component.
     The s2component function registers a component using the register method of S2ApplicationContext class.
-    You can get the registered component by the get method of S2ApplicationContext class.
     </para>
     <itemizedlist><listitem>quickstart010.php</listitem></itemizedlist>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
@@ -124,7 +123,7 @@ class Service {
 ]]></programlisting>
 
     <para>
-    Requiring of Action class and Service class is performed by <link linkend="dicon.application.import">the import method of S2ApplicationContext class</link>.
+    Requiring of Action class and Service class is performed by <link linkend="dicon.application.import">the s2import function</link>.
     When Action component is taken out by the get method of S2ApplicationContext, the instance of the Service class will be injected into $service property of Action instance.
     </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
@@ -211,7 +210,7 @@ class Action{
 ]]></programlisting>
 
     <para>
-    When Action component is taken out by the get method of S2ApplicationContext and the getById method is performed,
+    When Action component is taken out by the s2get function and the getById method is called,
     the trace log at the time of the findById method of Dao class being performed will be outputted.
     </para>
     <itemizedlist><listitem>quickstart030.php</listitem></itemizedlist>
@@ -249,7 +248,7 @@ $action->getById();
 ]]></programlisting>
 
     <para>
-    Reading of the DICON file is performed by the import method of S2ApplicationContext class.
+    Reading of the DICON file is performed by the s2import function.
     Requiring of the classes of the classes directory is performed by the import method of <link linkend="misc.classloader">seasar\util\ClassLoader class</link>.
     </para>
     <itemizedlist><listitem>quickstart050.php</listitem></itemizedlist>

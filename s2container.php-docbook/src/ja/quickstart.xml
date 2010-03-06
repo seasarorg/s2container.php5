@@ -8,8 +8,8 @@
   <!-- ################################################################### -->
   <sect1 id="quick005"><title>コンポーネントの取得</title>
     <para>
-    コンポーネントの取得は<link linkend="dicon.application">S2ApplicationContextクラス</link>のgetメソッドで行います。
-    getメソッドの引数で、コンポーネントのキーであるクラス名を指定します。
+    コンポーネントの取得は<link linkend="dicon.application.singleton">s2get関数</link>で行います。
+    s2get関数の引数で、コンポーネントのキーであるクラス名を指定します。
     </para>
     <itemizedlist><listitem>quickstart005.php</listitem></itemizedlist>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
@@ -50,7 +50,7 @@ object(Action)#26 (1) {
   <sect1 id="quick010"><title>コンポーネントの登録</title>
     <para>
         コンポーネントの登録は<link linkend="dicon.application.register">s2component関数</link>で行います。s2component関数は、S2ApplicationContextクラスのregisterメソッドを
-        用いてコンポーネントを登録します。登録したコンポーネントはS2ApplicationContextクラスのgetメソッドで取得できます。
+        用いてコンポーネントを登録します。
     </para>
     <itemizedlist><listitem>quickstart010.php</listitem></itemizedlist>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
@@ -121,7 +121,7 @@ class Service {
 ]]></programlisting>
 
     <para>
-    ActionクラスやServiceクラスの読み込みは<link linkend="dicon.application.import">S2ApplicationContextクラスのimportメソッド</link>で行います。
+    ActionクラスやServiceクラスの読み込みは<link linkend="dicon.application.import">s2import関数</link>で行います。
     S2ApplicationContext::getメソッドでActionコンポーネントを取得すると、$serviceプロパティには、ServiceクラスのインスタンスがInjectされています。
     </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
@@ -208,7 +208,7 @@ class Action{
 ]]></programlisting>
 
     <para>
-    S2ApplicationContext::getメソッドでActionコンポーネントを取得し、getByIdメソッドを実行すると、Daoクラスの
+    s2get関数でActionコンポーネントを取得しgetByIdメソッドを実行すると、Daoクラスの
     findByIdメソッドが実行された際のトレースログが出力されます。
     </para>
     <itemizedlist><listitem>quickstart030.php</listitem></itemizedlist>
@@ -245,7 +245,7 @@ $action->getById();
 </components>
 ]]></programlisting>
 
-    <para>ダイコンファイルの読み込みは、S2ApplicationContextクラスのimportメソッドで行います。
+    <para>ダイコンファイルの読み込みは、s2import関数で行います。
        classesディレクトリのクラスの読み込みは、<link linkend="misc.classloader">seasar\util\ClassLoaderクラス</link>のimportメソッドで行います。
     </para>
     <itemizedlist><listitem>quickstart050.php</listitem></itemizedlist>

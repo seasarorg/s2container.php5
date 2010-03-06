@@ -1,9 +1,9 @@
 <sect1 id="misc.zend"><title>Using S2Container with Zend_Controller</title>
     <sect2><title>Environment</title>
         <itemizedlist>
-            <listitem>PHP-5.3.0</listitem>
-            <listitem>Zend Framework v1.8.4</listitem>
-            <listitem>s2container.php-2.0.1</listitem>
+            <listitem>PHP-5.3.2</listitem>
+            <listitem>Zend Framework v1.10.2</listitem>
+            <listitem>s2container.php-2.0.3</listitem>
         </itemizedlist>
     </sect2>
 
@@ -16,7 +16,7 @@
         </para>
 
         <itemizedlist>
-            <listitem><ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf184/">https://www.seasar.org/svn/s2container.php5/trunk/s2zf184/</ulink></listitem>
+            <listitem><ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf1102/">https://www.seasar.org/svn/s2container.php5/trunk/s2zf1102/</ulink></listitem>
         </itemizedlist>
     </sect2>
 
@@ -31,7 +31,7 @@
             Create the s2.php which is a setting file of s2container.php in the application/configs directory. 
             </para>
             <itemizedlist>
-                <listitem><ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf184/application/configs/s2.php">application/configs/s2.php</ulink></listitem>
+                <listitem><ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf1102/application/configs/s2.php">application/configs/s2.php</ulink></listitem>
             </itemizedlist>
        </blockquote>
 
@@ -41,7 +41,7 @@
                Make the action helper which accesses S2Container in the action method.
             </para>
             <itemizedlist>
-                <listitem><ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf184/library/Seasar/Zf/Controller/S2ActionHelper.php">library/Seasar/Zf/Controller/S2ActionHelper.php</ulink></listitem>
+                <listitem><ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf1102/library/Seasar/Zf/Controller/S2ActionHelper.php">library/Seasar/Zf/Controller/S2ActionHelper.php</ulink></listitem>
             </itemizedlist>
        </blockquote>
 
@@ -51,7 +51,7 @@
               Set the use of S2ActionHelper with Bootstrap of the application.(_initActionHelper method)
             </para>
             <itemizedlist>
-                <listitem><ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf184/application/Bootstrap.php">application/Bootstrap.php</ulink></listitem>
+                <listitem><ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf1102/application/Bootstrap.php">application/Bootstrap.php</ulink></listitem>
             </itemizedlist>
        </blockquote>
 
@@ -61,48 +61,44 @@
               Make the var directory to save the log file, the session file, and cash, etc.
             </para>
             <itemizedlist>
-                <listitem><ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf184/var/">var/</ulink></listitem>
+                <listitem><ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf1102/var/">var/</ulink></listitem>
             </itemizedlist>
        </blockquote>
   </sect2>
 
   <sbr/>
-  <sect2><title>Using S2Container in the Action method</title>
+  <sect2 id="misc.zend.action"><title>Using S2Container in the Action method</title>
     <para>
         When using  the component of S2Container in the action method, you can touch it by the S2ActionHelper.
     </para>
       <itemizedlist>
-        <listitem><ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf184/application/controllers/IndexController.php">application/controllers/IndexController.php</ulink></listitem>
+        <listitem><ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf1102/application/controllers/IndexController.php">application/controllers/IndexController.php</ulink></listitem>
       </itemizedlist>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-    public function cdListAction()
+    public function addAction()
     {
-        $this->view->dtos = $this->_helper->s2('Service_SampleService')->findAllCd();
+        $this->_helper->viewRenderer->setNoRender();
+        echo $this->_helper->s2('Service_Calc')->add(1, 2);
     }
 ]]></programlisting>
     <para>
-        Let's create the <ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf184/application/services/SampleService.php">Service_SampleService class</ulink> int the application/services directory.
-        Because the setter method for the <ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf184/application/models/DbTable/Cd.php">Model_DbTable_Cd class</ulink> is defined in the Service_SampleService class,
-        the instance of the Model_DbTable_Cd class is injected by the automatic injection function of S2Container.
-        The Model_DbTable_Cd class is a model which extends Zend_Db_Table accessing <ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf184/var/db/">var/db/sqlite.db</ulink> database. 
-    </para>
-
-    <para>
-    The access from in the method of the action to S2Container can be accessed by way of the property of S2ActionHelper. The name specified for a property becomes a component name. 
+        Let's create the <ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf1102/application/services/Calc.php">Service_Calc class</ulink> int the application/services directory.
+        The access from in the method of the action to S2Container can be accessed by way of the property of S2ActionHelper. The name specified for a property becomes a component name. 
     </para>
 
       <itemizedlist>
-        <listitem><ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf184/application/controllers/IndexController.php">application/controllers/IndexController.php</ulink></listitem>
+        <listitem><ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf1102/application/controllers/IndexController.php">application/controllers/IndexController.php</ulink></listitem>
       </itemizedlist>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-    public function cdList2Action()
+    public function add2Action()
     {
-        $this->view->dtos = $this->_helper->s2->service2->findAllCd();
+        $this->_helper->viewRenderer->setNoRender();
+        echo $this->_helper->s2->calc->add(1, 2);
     }
 ]]></programlisting>
 
     <para>
-    For the above-mentioned, the component of the name "service2" is taken out from S2Container.
+    For the above-mentioned, the component of the name "calc" is taken out from S2Container.
     However, when the component is taken from S2Container by the component name, it is necessary to register the component in S2Container in advance. 
     S2ActionHelper can read the configuration file to construct S2Container in each action.
     The configuration file is located in "module/dicons/controller/action.php"
@@ -110,7 +106,7 @@
     </para>
 
     <itemizedlist>
-        <listitem><ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf184/application/dicons/index/cd-list2.php">application/dicons/index/cd-list2.php</ulink></listitem>
+        <listitem><ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf1102/application/dicons/index/add2.php">application/dicons/index/add2.php</ulink></listitem>
     </itemizedlist>
   </sect2>
 
@@ -118,16 +114,28 @@
   <sect2><title>UnitTest of The Component</title>
     <para>
       Let's create the UnitTest in the tests direcotry.
-      The bootstrap method of Zend_Application is executed with <ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf184/tests/application/bootstrap.php">tests/application/bootstrap.php</ulink>, and the applications environment is constructed.
-      Create UnitTest of the Service_SampleService class in the <ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf184/tests/application/services/">tests/application/services directory</ulink> as <ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf184/tests/application/services/SampleServiceTest.php">SampleServiceTest.php</ulink>. 
-      In the Service_SampleServiceTest class, the service component to be tested is acquired from S2Contaienr　in the setUp method 
+      The bootstrap method of Zend_Application is executed with <ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf1102/tests/application/bootstrap.php">tests/application/bootstrap.php</ulink>, and the applications environment is constructed.
+      Create UnitTest of the Service_Calc class in the <ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf1102/tests/application/services/">tests/application/services directory</ulink> as <ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf1102/tests/application/services/CalcTest.php">CalcTest.php</ulink>. 
+      In the Service_CalcTest class, the service component to be tested is acquired from S2Contaienr　in the setUp method 
     </para>
 
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-    public function setUp() {
-        s2app::init();
-        $this->service = s2app::get('Service_SampleService');
+class Service_CalcTest extends PHPUnit_Framework_TestCase {
+
+    public function testAdd() {
+        $this->assertEquals(3, $this->service->add(1, 2));
     }
+
+    public function setUp() {
+        s2init();
+        $this->service = s2get('Service_Calc');
+    }
+
+    public function tearDown() {
+        $this->service = null;
+    }
+}
+
 ]]></programlisting>
 
     <para>
@@ -138,14 +146,14 @@
 % cd tests
 % cat phpunit.xml
 <phpunit bootstrap="application/bootstrap.php"/>
-% phpunit application
-PHPUnit 3.3.17 by Sebastian Bergmann.
+% phpunit application/services/CalcTest.php
+PHPUnit 3.4.2 by Sebastian Bergmann.
 
-....
+.
 
 Time: 0 seconds
 
-OK (4 tests, 4 assertions)
+OK (1 test, 1 assertion)
 %
 ]]></programlisting>
 

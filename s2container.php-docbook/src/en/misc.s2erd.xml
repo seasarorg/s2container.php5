@@ -1,43 +1,42 @@
-<sect1 id="misc.s2erd"><title>ERDデザインツールとS2Erd</title>
+<sect1 id="misc.s2erd"><title>Using S2Erd with ERD design tools</title>
     <para>
-        S2Erdは、ERDデザインツールのデータからZend_Db_TableクラスのPHPソースを生成します。
+        S2Erd generates the PHP source of the Zend_Db_Table class from the data of the ERD design tool. 
     </para>
 
-    <sect2><title>動作環境</title>
+    <sect2><title>Environment</title>
         <itemizedlist>
             <listitem>PHP-5.3.2</listitem>
             <listitem>Zend Framework v1.10.2</listitem>
             <listitem>s2container.php-2.0.3</listitem>
             <listitem>s2erd-0.3.0</listitem>
         </itemizedlist>
-        <para>対応しているERDデザインツール</para>
+        <para>ERD design tools</para>
         <itemizedlist>
             <listitem><ulink url="http://wb.mysql.com/">MySQL Workbech version 5.1.18</ulink></listitem>
-            <listitem><ulink url="http://www.wind.sannet.ne.jp/m_matsu/developer/a5m2/">A5:SQL Mk-2 version 2.4.0beta</ulink></listitem>
-            <listitem><ulink url="http://ermaster.sourceforge.net/index_ja.html">ER Master version 1.0.0-20091210-0025</ulink></listitem>
+            <listitem><ulink url="http://ermaster.sourceforge.net/index.html">ER Master version 1.0.0-20091210-0025</ulink></listitem>
         </itemizedlist>
     </sect2>
 
     <sbr/>
-    <sect2><title>サンプルプロジェクトの作成</title>
+    <sect2><title>Creation of a sample project</title>
         <para>
-            「<link linkend="misc.zend">Zend_ControllerでS2Containerを使用する</link>」にしたがって、Zend Frameworkのプロジェクトを作成します。
+            Create a Zend Framework project according to <link linkend="misc.zend">Using S2Container with Zend_Controller</link>.
         </para>
     </sect2>
 
     <sbr/>
-    <sect2><title>S2Erdのインストール</title>
+    <sect2><title>Installation of S2Erd</title>
 
-        <blockquote><formalpara><title>ダウンロード</title><sbr/></formalpara>
+        <blockquote><formalpara><title>Download</title><sbr/></formalpara>
             <itemizedlist>
                 <listitem><ulink url="http://s2container.php5.seasar.org/download/S2Erd-0.3.0.tgz">S2Erd-0.3.0.tgz</ulink></listitem>
             </itemizedlist>
         </blockquote>
 
         <sbr/>
-        <blockquote><formalpara><title>PEAR インストール</title><sbr/></formalpara>
+        <blockquote><formalpara><title>PEAR Install</title><sbr/></formalpara>
             <para>
-            S2Erd-version.tgzをダウンロードし、pear install を実行します。
+            Download S2Erd-version.tgz, and run pear install.
             </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 % pear install /path/to/S2Erd-version.tgz
@@ -53,13 +52,13 @@ S2Erd             version       state
         </blockquote>
 
         <sbr/>
-        <blockquote><formalpara><title>zf.iniファイルの作成</title><sbr/></formalpara>
+        <blockquote><formalpara><title>Prepare zf.ini</title><sbr/></formalpara>
             <para>
-                ホームディレクトリに次のzf.iniファイルを作成します。
+                Create the following zf.ini file in your home directory.
             </para>
 
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
-% cat ~/zf.ini
+% cat ~/.zf.ini
 basicloader.classes.0 = "seasar_erd_util_zend_Manifest"
 php.include_path = ".:/usr/lib/php:/path/to/zf/project/library"
 %
@@ -69,19 +68,20 @@ php.include_path = ".:/usr/lib/php:/path/to/zf/project/library"
     </sect2>
 
     <sbr/>
-    <sect2><title>S2Erdの設定</title>
+    <sect2><title>Setup of S2Erd</title>
         <para>
-        S2Erdの設定を行うs2erd.phpをapplication/configsディレクトリに作成します。
+        Create the s2erd.php file that sets S2Erd information in the application/configs direcotry.
         </para>
         <itemizedlist>
             <listitem><ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf1102/application/configs/s2erd.php">application/configs/s2erd.php</ulink>
                 <itemizedlist>
                     <listitem>
-                        使用するERDデザインツール用のParserクラスを選択します。<sbr/>
-                        Parserクラスへの設定として、ERDデザインツールのデータファイルへのパスを設定します。
+                        Set the Parser class for the ERD design tool used.<sbr/>
+                        Set the path to the data file of the ERD design tool as a setting to the Parser class. 
                     </listitem>
                     <listitem>
-                        Zend_Db_Tableクラスのソースを生成するGeneratorクラスの設定として、出力先ディレクトリやTableクラスのテンプレートファイルなどを設定します。
+                        Set the output directory and the template file of the Table class, etc.
+                        as a setting of the Generator class that generates PHP source of the Zend_Db_Table class
                     </listitem>
                 </itemizedlist>
             </listitem>
@@ -89,16 +89,16 @@ php.include_path = ".:/usr/lib/php:/path/to/zf/project/library"
     </sect2>
 
     <sbr/>
-    <sect2 id="misc.s2erd.autoload"><title>Autoload設定</title>
+    <sect2 id="misc.s2erd.autoload"><title>Autoload Setting</title>
         <para>
-        S2Erd用のオートローダーを設定することで、ERDデザインツールのデータから、直接PHPのTableクラスを定義することができます。<sbr/>
-        テーブル定義が不定の間は、このオートローダーでTableクラス定義を読み込み、テーブル定義が確定した後は、次の「<link linkend="misc.s2erd.tool">Zend_Toolコマンド</link>」で
-        Tableクラス定義をファイルに出力します。
+        The Table class of PHP can be defined directly from the data of the ERD design tool by setting an auto loader for S2Erd. <sbr/>
+        While the table definition is unfixed, you can read the table class definition by this auto loader. 
+        After fixing the table definition, output the Table class definition to the file by <link linkend="misc.s2erd.tool">Zend_Tool command</link>.
         </para>
 
-        <blockquote><formalpara><title>s2erd_autoload.phpの作成</title><sbr/></formalpara>
+        <blockquote><formalpara><title>Create the s2erd_autoload.php</title><sbr/></formalpara>
             <para>
-            S2Erd用のAutoload設定を行うs2erd_autoload.phpをapplication/configsディレクトリに作成します。
+            Create the  s2erd_autoload.php that sets Autoload for S2Erd in the application/configs directory. 
             </para>
             <itemizedlist>
                 <listitem><ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf1102/application/configs/s2erd_autoload.php">application/configs/s2erd_autoload.php</ulink></listitem>
@@ -106,9 +106,9 @@ php.include_path = ".:/usr/lib/php:/path/to/zf/project/library"
         </blockquote>
 
         <sbr/>
-        <blockquote><formalpara><title>Bootstrap.phpの編集</title><sbr/></formalpara>
+        <blockquote><formalpara><title>Edit the Bootstrap.php</title><sbr/></formalpara>
             <para>
-            アプリケーションのBootstrapでs2erd_autoload.phpをrequireします。(_initAutoloadメソッド)
+            Require the s2erd_autoload.php in the application Bootstrap.php file. (int the _initAutoload method)
             </para>
             <itemizedlist>
                 <listitem><ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf1102/application/Bootstrap.php">application/Bootstrap.php</ulink></listitem>
@@ -117,18 +117,15 @@ php.include_path = ".:/usr/lib/php:/path/to/zf/project/library"
     </sect2>
 
     <sbr/>
-    <sect2 id="misc.s2erd.tool"><title>Zend_Toolコマンド</title>
+    <sect2 id="misc.s2erd.tool"><title>Zend_Tool command</title>
         <para>
-        Zend_Tool の zf コマンドを実行し、次のコマンドが追加されているかどうかを確認します。
+        Run the zf command of Zend_Tool, and confirm whether the following command is added. 
         </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 % zf.sh --help
   . . .
   . . .
   . . .
-
-  A5Model
-    zf create a5model a5er-file[=<project/var/db/project.a5er>]
 
   ERMModel
     zf create erm-model erm-file[=<project/var/db/project.erm>]
@@ -140,23 +137,23 @@ php.include_path = ".:/usr/lib/php:/path/to/zf/project/library"
 ]]></programlisting>
 
         <para>
-        使用しているERDデザインツール用のコマンドを実行します。Tableクラス定義ファイルは、application/models/DbTable ディレクトリに出力されます。<sbr/>
-        zfコマンドのオプションとして「--pretend」を付加した場合は、標準出力にTableクラス定義が出力されます。(ファイル出力されません。)
+        Run the command for the ERD design tool used. 
+        the table class definition file is output to the application/models/DbTable directory. 
+        When "--pretend" is added as an option of the zf command, the table class definition is output to a standard output. 
         </para>
         
         <para>
-        サンプルとして、<ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf1102/var/db">var/db</ulink> ディレクトリに次のERDデザインツールのデータファイルを用意しています。<sbr/>
-        テーブル定義は<ulink url="http://framework.zend.com/manual/ja/zend.db.adapter.html#zend.db.adapter.example-database">Zend_Dbドキュメントのサンプルデータベース</ulink>を参照下さい。
+        The data file of the following ERD design tool is prepared in the <ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf1102/var/db">var/db</ulink> directory as a sample. 
+        Please refer to the sample data base in <ulink url="http://framework.zend.com/manual/en/zend.db.adapter.html#zend.db.adapter.example-database">the Zend_Db document</ulink> for the table definition. 
         </para>
 
         <itemizedlist>
             <listitem>project.mwb (<ulink url="http://wb.mysql.com/">MySQL Workbech</ulink>)</listitem>
-            <listitem>project.a5er (<ulink url="http://www.wind.sannet.ne.jp/m_matsu/developer/a5m2/">A5:SQL Mk-2</ulink>)</listitem>
-            <listitem>project.erm (<ulink url="http://ermaster.sourceforge.net/index_ja.html">ER Master</ulink>)</listitem>
+            <listitem>project.erm (<ulink url="http://ermaster.sourceforge.net/index.html">ER Master</ulink>)</listitem>
         </itemizedlist>
 
         <para>
-        例として、MySQL Workbench(project.mwb)を対象とするMWBModelコマンドを実行してみます。
+        The MWBModel command is executed as an example. 
         </para>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
 % ls application/models/DbTable
@@ -250,18 +247,14 @@ class Model_DbTable_Bugs extends Model_DbTable_Abstract {
 }
 %
 ]]></programlisting>
-        <para>
-        生成されたModel_DbTable_BugsクラスのLNAMEや$FIELDSのlname値は、
-        A5:SQLやER Masterを使用している場合に日本語カラム名となります。
-        </para>
+
     </sect2>
 
     <sbr/>
-    <sect2><title>TableモデルのUnitTest</title>
+    <sect2><title>UnitTest of Table Model</title>
         <para>
-        サンプルとして、accountsテーブルのTableクラスのUnitTestを作成します。UnitTestは、<ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf1102/tests/application/models/DbTable/">tests/application/models/DbTableディレクトリ</ulink>
-        に<ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf1102/tests/application/models/DbTable/AccountsTest.php">AccountsTest.php</ulink>
-        として作成します。
+        As a sample, create the UnitTest of the Table class of the accounts table.
+        UnitTest file is  <ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf1102/tests/application/models/DbTable/AccountsTest.php">AccountsTest.php</ulink> in the <ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf1102/tests/application/models/DbTable/">tests/application/models/DbTable</ulink> directory.
         </para>
 
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
@@ -282,7 +275,7 @@ class Model_DbTable_AccountsTest extends PHPUnit_Framework_TestCase {
 ]]></programlisting>
 
         <para>
-        UnitTestの実行結果は次になります。
+        The result of UnitTest becomes the next. 
         </para>
 
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
@@ -298,19 +291,18 @@ OK (1 test, 1 assertion)
 ]]></programlisting>
 
         <para>
-        Model_DbTable_Accountsクラスは未作成ですが、<link linkend="misc.s2erd.autoload">S2ErdのAutoload</link>により動的にクラス定義が実施されるため、
-        Tableモデルを使用することができます。
+        Because the class definition is dynamically defined by <link linkend="misc.s2erd.autoload">Autoload of S2Erd</link>, 
+        you can use Model_DbTable_Accounts class. (actually source file not exists.)
         </para>
     </sect2>
 
 
-
     <sbr/>
-    <sect2><title>ServiceでTableモデルを使用する</title>
+    <sect2><title>Using Table Model in Service class</title>
         <para>
-        サンプルとして、TableモデルやDBアダプタを使用するサービスクラスを<ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf1102/application/services/">application/servicesディレクトリ</ulink>
-        に<ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf1102/application/services/Sample.php">Sample.php</ulink>
-        として作成します。
+         As a sample, create the service class that uses the Table model and the DB adaptor, 
+         in the <ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf1102/application/services/">application/services</ulink> directory
+         as <ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf1102/application/services/Sample.php">Sample.php</ulink>. 
         </para>
 
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
@@ -338,14 +330,8 @@ class Service_Sample {
 ]]></programlisting>
 
         <para>
-        TableモデルやDBアダプタはセッターメソッドでインジェクションされます。<sbr/>
-        検索を行うSQLの発行についてはDBアダプタを利用することが多く、新規作成、更新、削除処理についてはTableモデルを使用します。
-        </para>
-
-        <para>
-        SampleサービスクラスのUnitTestを作成します。UnitTestは、<ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf1102/tests/application/services/">tests/application/servicesディレクトリ</ulink>
-        に<ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf1102/tests/application/services/SampleTest.php">SampleTest.php</ulink>
-        として作成します。
+        Create the UnitTest of Sample class in <ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf1102/tests/application/services/">tests/application/services</ulink> directory as
+        <ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf1102/tests/application/services/SampleTest.php">SampleTest.php</ulink>.
         </para>
 
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
@@ -361,7 +347,7 @@ class Service_SampleTest extends PHPUnit_Framework_TestCase {
     }
 
     public function setUp() {
-        require(APPLICATION_PATH . '/dicons/dicon.php');  // 共通設定ファイル
+        require(APPLICATION_PATH . '/dicons/dicon.php'); 
         $this->service = s2get('Service_Sample');
     }
 
@@ -372,7 +358,7 @@ class Service_SampleTest extends PHPUnit_Framework_TestCase {
 ]]></programlisting>
 
         <para>
-        UnitTestの実行結果は次になります。
+        The result of UnitTest becomes the next.
         </para>
 
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
@@ -388,8 +374,7 @@ OK (2 tests, 2 assertions)
 ]]></programlisting>
 
         <para>
-        サービスクラスをアクションコントローラで使用する方法については、「<link linkend="misc.zend.action">アクションメソッドでS2Containerを利用する</link>」
-        を参照ください。
+        Please refer to "<link linkend="misc.zend.action">Using S2Container in the Action method</link>" for how to use the service class in the action controller. 
         </para>
     </sect2>
 </sect1>

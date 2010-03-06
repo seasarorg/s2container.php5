@@ -1315,6 +1315,7 @@ S2ApplicationContext::import($path, $namespace = array(), $strict = false, $pear
               This information is used when a class definition is required in autoload function.
               A class name becomes a portion except the extension of a class file name.
               As an example, when a class file name is "S2Container.php" and "S2Container.class.php", "S2Container" becomes a class name.
+              The s2import function is also defined as shortcut to the S2ApplicationContext::import method. 
        </para>
    </sect2>
 
@@ -1391,7 +1392,7 @@ $bar = $exampleContainer->getComponent('Bar');
 
 
     <sbr/>
-    <sect2><title>Selection of a component</title>
+    <sect2 id="dicon.application.select"><title>Selection of a component</title>
        <para>
          You can choose a part from the imported class or DICON file, and can generate S2Container.
        </para>
@@ -1767,6 +1768,7 @@ S2ApplicationContext::getComponent($key, $namespaces = array())
         The component specified by the 1st argument is taken out.
         If Singleton S2Container of namespace specified by the 2nd argument has not been created, 
         S2Continer is generated using S2ApplicationContext::create method.
+       The s2get function is also defined as shortcut to the S2ApplicationContext::get method. 
       </para>
       </blockquote>
 
@@ -1844,6 +1846,25 @@ var_dump($globalBar === $exampleBar);                // be false
       </para>
       </caution>
 
+    </sect2>
+
+    <sbr/>
+    <sect2 id="dicon.application.init"><title>Initialization of S2ApplicationContext</title>
+      <para>
+        You can initialize information set with 
+        <link linkend="dicon.application.import">Import of Component</link>, 
+        <link linkend="dicon.application.select">Selection of a component</link>, 
+        <link linkend="dicon.application.autoaspect">Auto Aspect</link> and 
+        <link linkend="dicon.application.singleton">Singleton Container</link> by
+        the init method of S2ApplicationContext.
+      </para>  
+<programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
+S2ApplicationContext::init()
+]]></programlisting>
+
+      <para>
+        The s2init function is also defined as shortcut to the S2ApplicationContext::init method. 
+      </para>
     </sect2>
 
     <sbr/>

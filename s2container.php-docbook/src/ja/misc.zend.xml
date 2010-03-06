@@ -1,9 +1,9 @@
 <sect1 id="misc.zend"><title>Zend_ControllerでS2Containerを使用する</title>
     <sect2><title>動作環境</title>
         <itemizedlist>
-            <listitem>PHP-5.3.1</listitem>
-            <listitem>Zend Framework v1.9.6</listitem>
-            <listitem>s2container.php-2.0.2</listitem>
+            <listitem>PHP-5.3.2</listitem>
+            <listitem>Zend Framework v1.10.2</listitem>
+            <listitem>s2container.php-2.0.3</listitem>
         </itemizedlist>
     </sect2>
 
@@ -15,7 +15,7 @@
         </para>
 
         <itemizedlist>
-            <listitem><ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf196/">https://www.seasar.org/svn/s2container.php5/trunk/s2zf196/</ulink></listitem>
+            <listitem><ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf1102/">https://www.seasar.org/svn/s2container.php5/trunk/s2zf1102/</ulink></listitem>
         </itemizedlist>
     </sect2>
 
@@ -30,7 +30,7 @@
             s2container.phpの設定を行うs2.phpをapplication/configsディレクトリに作成します。
             </para>
             <itemizedlist>
-                <listitem><ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf196/application/configs/s2.php">application/configs/s2.php</ulink></listitem>
+                <listitem><ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf1102/application/configs/s2.php">application/configs/s2.php</ulink></listitem>
             </itemizedlist>
         </blockquote>
 
@@ -40,7 +40,7 @@
             アクションメソッド内でS2Containerにアクセスするアクションヘルパーを作成します。
             </para>
             <itemizedlist>
-                <listitem><ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf196/library/Seasar/Zf/Controller/S2ActionHelper.php">library/Seasar/Zf/Controller/S2ActionHelper.php</ulink></listitem>
+                <listitem><ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf1102/library/Seasar/Zf/Controller/S2ActionHelper.php">library/Seasar/Zf/Controller/S2ActionHelper.php</ulink></listitem>
             </itemizedlist>
         </blockquote>
 
@@ -50,7 +50,7 @@
             アプリケーションのBootstrapでS2ActionHelperを利用する設定を行います。(_initActionHelperメソッド)
             </para>
             <itemizedlist>
-                <listitem><ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf196/application/Bootstrap.php">application/Bootstrap.php</ulink></listitem>
+                <listitem><ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf1102/application/Bootstrap.php">application/Bootstrap.php</ulink></listitem>
             </itemizedlist>
         </blockquote>
 
@@ -60,7 +60,7 @@
             ログファイル、セッションファイル、キャッシュなどを保存するためのvarディレクトリを作成します。
             </para>
             <itemizedlist>
-                <listitem><ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf196/var/">var/</ulink></listitem>
+                <listitem><ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf1102/var/">var/</ulink></listitem>
             </itemizedlist>
         </blockquote>
     </sect2>
@@ -71,7 +71,7 @@
         アクションメソッド内でS2Containerのコンポーネントを利用する場合は、S2ActionHelper経由でS2Containerにアクセスします。
         </para>
         <itemizedlist>
-            <listitem><ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf196/application/controllers/IndexController.php">application/controllers/IndexController.php</ulink></listitem>
+            <listitem><ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf1102/application/controllers/IndexController.php">application/controllers/IndexController.php</ulink></listitem>
         </itemizedlist>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
     public function addAction()
@@ -81,14 +81,14 @@
     }
 ]]></programlisting>
         <para>
-        <ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf196/application/services/Calc.php">Service_Calcクラス</ulink>
+        <ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf1102/application/services/Calc.php">Service_Calcクラス</ulink>
         をapplication/servicesディレクトリに作成します。<sbr/>
         アクションメソッド内からS2Containerへのアクセスは、S2ActionHelperのプロパティ経由でもアクセスすることができます。
         プロパティとして指定した名前がコンポーネント名になります。
         </para>
 
         <itemizedlist>
-            <listitem><ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf196/application/controllers/IndexController.php">application/controllers/IndexController.php</ulink></listitem>
+            <listitem><ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf1102/application/controllers/IndexController.php">application/controllers/IndexController.php</ulink></listitem>
         </itemizedlist>
 <programlisting continuation="restart" linenumbering="unnumbered"><![CDATA[
     public function add2Action()
@@ -108,7 +108,7 @@
         </para>
 
         <itemizedlist>
-            <listitem><ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf196/application/dicons/index/add2.php">application/dicons/index/add2.php</ulink></listitem>
+            <listitem><ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf1102/application/dicons/index/add2.php">application/dicons/index/add2.php</ulink></listitem>
         </itemizedlist>
     </sect2>
 
@@ -116,10 +116,10 @@
     <sect2><title>コンポーネントのUnitTest</title>
         <para>
         UnitTestはtestsディレクトリに作成します。
-        <ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf196/tests/application/bootstrap.php">tests/application/bootstrap.php</ulink>
+        <ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf1102/tests/application/bootstrap.php">tests/application/bootstrap.php</ulink>
         で、Zend_Applicationのbootstrapメソッドを実行し、アプリケーション環境を構築します。
-        Service_CalcクラスのUnitTestは、<ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf196/tests/application/services/">tests/application/servicesディレクトリ</ulink>
-        に<ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf196/tests/application/services/CalcTest.php">CalcTest.php</ulink>
+        Service_CalcクラスのUnitTestは、<ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf1102/tests/application/services/">tests/application/servicesディレクトリ</ulink>
+        に<ulink url="https://www.seasar.org/svn/s2container.php5/trunk/s2zf1102/tests/application/services/CalcTest.php">CalcTest.php</ulink>
         として作成します。
         Service_CalcTestクラスでは、setUpメソッドでテスト対象のサービスコンポーネントをS2Contaienr経由で取得しています。
         </para>
@@ -132,8 +132,8 @@ class Service_CalcTest extends PHPUnit_Framework_TestCase {
     }
 
     public function setUp() {
-        s2app::init();
-        $this->service = s2app::get('Service_Calc');
+        s2init();
+        $this->service = s2get('Service_Calc');
     }
 
     public function tearDown() {

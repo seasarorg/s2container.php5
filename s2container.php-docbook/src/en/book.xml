@@ -11,12 +11,13 @@
 <!ENTITY misc.strictinterceptor SYSTEM "misc.strictinterceptor.xml">
 <!ENTITY misc.symfony SYSTEM "misc.symfony.xml">
 <!ENTITY misc.zend SYSTEM "misc.zend.xml">
+<!ENTITY misc.s2erd SYSTEM "misc.s2erd.xml">
 ]>
 <book lang="en" id="index"><title>S2Container.PHP-2.0 Document</title>
   <bookinfo>
     <title>S2Container.PHP-2.0 Document</title>
     <copyright>
-      <year>2005-2009</year>
+      <year>2005-2010</year>
       <holder>The Seasar Foundation and the others.</holder>
     </copyright>
     <!--
