@@ -1,4 +1,9 @@
 
+2010-03-08 s2container-2.0.3
+
+	* info: PHP-5.3.2で動作確認を行いました。
+	* info: s2container-2.0.3 release
+
 2010-01-06 s2container-2.0.3
 
 	* add: S2ApplicationContextの各メソッドへのalias関数を追加しました。(s2init()、s2register()、s2import()、s2get()、 s2create())
