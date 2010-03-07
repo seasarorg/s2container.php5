@@ -198,6 +198,10 @@ class S2ContainerImpl implements \seasar\container\S2Container {
      * @param string $key
      */
     private function getComponentDefInternal($key) {
+        if (0 === strpos($key, '\\')) {
+            $key = substr($key, 1);
+        }
+
         if (array_key_exists($key, $this->componentDefMap)) {
             return $this->componentDefMap[$key];
         }

@@ -167,13 +167,6 @@ class ComponentInfoDef {
     }
 
     /**
-     * @see seasar\container\ComponentInfoDef::setConstructClosure()
-     */
-    public function construct(\Closure $constructClosure) {
-        return $this->setConstructClosure($constructClosure);
-    }
-
-    /**
      * @return \Closure
      */
     public function getConstructClosure() {
