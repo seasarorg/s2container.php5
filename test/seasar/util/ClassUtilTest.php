@@ -1,6 +1,6 @@
 <?php
 // +----------------------------------------------------------------------+
-// | Copyright 2005-2009 the Seasar Foundation and the Others.            |
+// | Copyright 2005-2010 the Seasar Foundation and the Others.            |
 // +----------------------------------------------------------------------+
 // | Licensed under the Apache License, Version 2.0 (the "License");      |
 // | you may not use this file except in compliance with the License.     |
@@ -15,7 +15,7 @@
 // | governing permissions and limitations under the License.             |
 // +----------------------------------------------------------------------+
 /**
- * @copyright 2005-2009 the Seasar Foundation and the Others.
+ * @copyright 2005-2010 the Seasar Foundation and the Others.
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  * @link      http://s2container.php5.seasar.org/
  * @version   SVN: $Id:$
@@ -87,24 +87,6 @@ class ClassUtilTest extends \PHPUnit_Framework_TestCase {
         $className = __NAMESPACE__ . '\I_ClassUtil';
         $refClass = new \ReflectionClass($className);
         $this->assertTrue(ClassUtil::newInstance($refClass, array(1, 2)) instanceof $className);
-    }
-
-    public function testGetClassName() {
-        $this->assertEquals('c', ClassUtil::getClassName('a\b\c'));
-        $this->assertEquals('a', ClassUtil::getClassName('a'));
-        $this->assertEquals('a', ClassUtil::getClassName('\a'));
-    }
-
-    public function testGetNamespace() {
-        $this->assertEquals('a\b', ClassUtil::getNamespace('a\b\c'));
-        $this->assertEquals('a\b', ClassUtil::getNamespace('\a\b\c'));
-        $this->assertEquals('\\', ClassUtil::getNamespace('a'));
-        $this->assertEquals('\\', ClassUtil::getNamespace('\a'));
-    }
-
-    public function testIsGlobalClass() {
-        $this->assertTrue(ClassUtil::isGlobalClass(new \ReflectionClass('PDO')));
-        $this->assertFalse(ClassUtil::isGlobalClass(new \ReflectionClass(__NAMESPACE__ . '\A_ClassUtil')));
     }
 
     public function setUp(){

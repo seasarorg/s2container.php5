@@ -1,6 +1,6 @@
 <?php
 // +----------------------------------------------------------------------+
-// | Copyright 2005-2009 the Seasar Foundation and the Others.            |
+// | Copyright 2005-2010 the Seasar Foundation and the Others.            |
 // +----------------------------------------------------------------------+
 // | Licensed under the Apache License, Version 2.0 (the "License");      |
 // | you may not use this file except in compliance with the License.     |
@@ -17,7 +17,7 @@
 /**
  * S2Containerの設定ファイルです。
  *
- * @copyright 2005-2009 the Seasar Foundation and the Others.
+ * @copyright 2005-2010 the Seasar Foundation and the Others.
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  * @link      http://s2container.php5.seasar.org/
  * @version   SVN: $Id:$
@@ -41,30 +41,59 @@ require_once(S2CONTAINER_ROOT_DIR . '/classes/seasar/container/Config.php');
 require_once(S2CONTAINER_ROOT_DIR . '/classes/seasar/aop/Config.php');
 
 
-
 /**
- * @param string|ReflectionClass $arg
- * @return seasar\container\ComponentInfoDef
+ * @see seasar\container\S2ApplicationContext::init()
  */
-function s2component($arg = null) {
-    return seasar\container\S2ApplicationContext::register($arg);
+function s2init() {
+    seasar\container\S2ApplicationContext::init();
 }
 
 /**
- * @see s2component
+ * @see seasar\container\S2ApplicationContext::register()
  */
-function s2comp($arg = null) {
-    return s2component($arg);
+function s2register($clazz = null) {
+    return seasar\container\S2ApplicationContext::register($clazz);
 }
 
 /**
- * 自動アスペクト情報を登録します。
- *
- * @param string $interceptor
- * @param string $componentPattern
- * @param string $pointcut
- * @return seasar\container\AspectInfoDef
+ * @see seasar\container\S2ApplicationContext::register()
+ */
+function s2component($clazz = null) {
+    return seasar\container\S2ApplicationContext::register($clazz);
+}
+
+/**
+ * @see seasar\container\S2ApplicationContext::register()
+ */
+function s2comp($clazz = null) {
+    return seasar\container\S2ApplicationContext::register($clazz);
+}
+
+/**
+ * @see seasar\container\S2ApplicationContext::registerAspect()
  */
 function s2aspect($interceptor = null, $componentPattern = null, $pointcut = null) {
     return seasar\container\S2ApplicationContext::registerAspect($interceptor, $componentPattern, $pointcut);
 }
+
+/**
+ * @see seasar\container\S2ApplicationContext::import()
+ */
+function s2import($path, $namespace = array(), $strict = false, $pear = false, $recursive = true) {
+    seasar\container\S2ApplicationContext::import($path, $namespace, $strict, $pear, $recursive);
+}
+
+/**
+ * @see seasar\container\S2ApplicationContext::get()
+ */
+function s2get($key, $namespaces = array()) {
+    return seasar\container\S2ApplicationContext::get($key, $namespaces);
+}
+
+/**
+ * @see seasar\container\S2ApplicationContext::create()
+ */
+function s2create($namespaces = array()) {
+    return seasar\container\S2ApplicationContext::create($namespaces);
+}
+

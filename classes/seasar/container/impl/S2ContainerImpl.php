@@ -1,6 +1,6 @@
 <?php
 // +----------------------------------------------------------------------+
-// | Copyright 2005-2009 the Seasar Foundation and the Others.            |
+// | Copyright 2005-2010 the Seasar Foundation and the Others.            |
 // +----------------------------------------------------------------------+
 // | Licensed under the Apache License, Version 2.0 (the "License");      |
 // | you may not use this file except in compliance with the License.     |
@@ -17,7 +17,7 @@
 /**
  * S2Containerの実装クラスです。
  *
- * @copyright 2005-2009 the Seasar Foundation and the Others.
+ * @copyright 2005-2010 the Seasar Foundation and the Others.
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  * @link      http://s2container.php5.seasar.org/
  * @version   SVN: $Id:$
@@ -44,7 +44,7 @@ class S2ContainerImpl implements \seasar\container\S2Container {
     public function __construct() {
         $componentDef = new SimpleComponentDef($this, \seasar\container\Config::CONTAINER_NAME);
         $this->componentDefMap[\seasar\container\Config::CONTAINER_NAME] = $componentDef;
-        $this->componentDefMap['\seasar\container\S2Container'] = $componentDef;
+        $this->componentDefMap['seasar\container\S2Container'] = $componentDef;
     }
 
     /**
@@ -101,14 +101,15 @@ class S2ContainerImpl implements \seasar\container\S2Container {
     private function registerByClass(\seasar\container\ComponentDef $componentDef) {
         $classes = $this->getAssignableClasses($componentDef->getComponentClass());
         $componentName = $componentDef->getComponentName();
-        foreach ($classes as $namespacedClassName) {
+        foreach ($classes as $classInfo) {
+            $className = $classInfo[1];
+            $namespacedClassName = $classInfo[0] . '\\' . $className;
             if ($namespacedClassName !== $componentName) {
                 $this->registerMap($namespacedClassName, $componentDef);
-                $className = \seasar\util\ClassUtil::getClassName($namespacedClassName);
                 if ($className !== $namespacedClassName and $className !== $componentName) {
                     $this->registerMap($className, $componentDef);
                 }
-                $lcClassName = \seasar\util\StringUtil::lcfirst($className);
+                $lcClassName = lcfirst($className);
                 if ($lcClassName !== $className and $lcClassName !== $namespacedClassName and $lcClassName !== $componentName) {
                     $this->registerMap($lcClassName, $componentDef);
                 }
@@ -239,13 +240,13 @@ class S2ContainerImpl implements \seasar\container\S2Container {
         $classes = array();
         $interfaces = \seasar\util\ClassUtil::getInterfaces($componentClass);
         foreach ($interfaces as $interface) {
-            $classes[] = $interface->getName();
+            $classes[] = array($interface->getNamespaceName(), $interface->getShortName());
         }
 
         $reflection = $componentClass;
         if(!$reflection->isInterface()){
             while ($reflection instanceof \ReflectionClass) {
-                $classes[] = $reflection->getName();
+                $classes[] = array($reflection->getNamespaceName(), $reflection->getShortName());
                 $reflection = $reflection->getParentClass();
             }
         }

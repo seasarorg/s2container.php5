@@ -1,6 +1,6 @@
 <?php
 // +----------------------------------------------------------------------+
-// | Copyright 2005-2009 the Seasar Foundation and the Others.            |
+// | Copyright 2005-2010 the Seasar Foundation and the Others.            |
 // +----------------------------------------------------------------------+
 // | Licensed under the Apache License, Version 2.0 (the "License");      |
 // | you may not use this file except in compliance with the License.     |
@@ -17,7 +17,7 @@
 /**
  * アスペクト対象クラスのEnhancedクラスを生成するGeneratorクラスです。
  * 
- * @copyright 2005-2009 the Seasar Foundation and the Others.
+ * @copyright 2005-2010 the Seasar Foundation and the Others.
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  * @link      http://s2container.php5.seasar.org/
  * @version   SVN: $Id:$
@@ -45,6 +45,7 @@ class EnhancedClassGenerator {
      * @return string Enhancedクラス名
      */
     public static function generate(\ReflectionClass $targetClass, array $applicableMethods) {
+        $concreteClassShortName = $targetClass->getShortName() . self::CLASS_NAME_POSTFIX;
         $concreteClassName = $targetClass->getName() . self::CLASS_NAME_POSTFIX;
         if (class_exists($concreteClassName, false)) {
             return $concreteClassName;
@@ -55,7 +56,7 @@ class EnhancedClassGenerator {
             return $concreteClassName;
         }
 
-        $concreteClassSrc = self::generateInternal($concreteClassName, $targetClass, $applicableMethods);
+        $concreteClassSrc = self::generateInternal($concreteClassShortName, $targetClass, $applicableMethods);
         \seasar\util\EvalUtil::execute($concreteClassSrc);
 
         if (true === \seasar\aop\Config::$CACHING) {
@@ -66,17 +67,16 @@ class EnhancedClassGenerator {
 
     /**
      * Enhancedクラスのソースを生成します。戻り値としてEnhancedクラスのソース文字列を返します。
-     * @param string $concreteClassName Enhancedクラスの名前
+     * @param string $concreteClassShortName Enhancedクラスの名前(namespaceは含まない)
      * @param \ReflectionClass Enhance対象のクラス
      * @param array $applicableMethods Enhance対象のクラスのメソッドのうち、アスペクト対象となるメソッドのReflectionの配列
      * @return string Enhancedクラスのソース
      */
-    public static function generateInternal($concreteClassName, \ReflectionClass $targetClass, array $applicableMethods) {
+    public static function generateInternal($className, \ReflectionClass $targetClass, array $applicableMethods) {
         self::validateTargetClass($targetClass);
-        $className = \seasar\util\ClassUtil::getClassName($concreteClassName);
-        $packageName = \seasar\util\ClassUtil::getNamespace($concreteClassName);
+        $packageName = $targetClass->getNamespaceName();
         $srcLine = '';
-        if ($packageName != '\\') {
+        if ($packageName !== '') {
             $srcLine = 'namespace ' . $packageName . ';' . PHP_EOL;
         }
         $srcLine .= 'class ' . $className . ' ';
