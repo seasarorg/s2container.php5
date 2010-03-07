@@ -1,6 +1,6 @@
 <?php
 // +----------------------------------------------------------------------+
-// | Copyright 2005-2009 the Seasar Foundation and the Others.            |
+// | Copyright 2005-2010 the Seasar Foundation and the Others.            |
 // +----------------------------------------------------------------------+
 // | Licensed under the Apache License, Version 2.0 (the "License");      |
 // | you may not use this file except in compliance with the License.     |
@@ -20,7 +20,7 @@
  *   - セッターメソッドを管理します。
  *   - タイプヒントされたセッターメソッドを管理します。
  *
- * @copyright 2005-2009 the Seasar Foundation and the Others.
+ * @copyright 2005-2010 the Seasar Foundation and the Others.
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  * @link      http://s2container.php5.seasar.org/
  * @version   SVN: $Id:$
@@ -161,7 +161,7 @@ class BeanDesc {
             if ($method->isPublic() and
                 count($params) === 1 and 
                 0 === strpos($methodName, 'set')) {
-                $propName = \seasar\util\StringUtil::lcfirst(substr($methodName, 3));
+                $propName = lcfirst(substr($methodName, 3));
                 $propertyDesc = new AccessorMethodPropertyDesc($this->beanClass, $propName);
                 $this->propertyDescs[$propName] = $propertyDesc;
 

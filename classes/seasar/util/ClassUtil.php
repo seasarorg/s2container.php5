@@ -1,6 +1,6 @@
 <?php
 // +----------------------------------------------------------------------+
-// | Copyright 2005-2009 the Seasar Foundation and the Others.            |
+// | Copyright 2005-2010 the Seasar Foundation and the Others.            |
 // +----------------------------------------------------------------------+
 // | Licensed under the Apache License, Version 2.0 (the "License");      |
 // | you may not use this file except in compliance with the License.     |
@@ -17,7 +17,7 @@
 /**
  * \ReflectionClass用のユーティリティクラスです。
  *
- * @copyright 2005-2009 the Seasar Foundation and the Others.
+ * @copyright 2005-2010 the Seasar Foundation and the Others.
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  * @link      http://s2container.php5.seasar.org/
  * @version   SVN: $Id:$
@@ -135,52 +135,4 @@ final class ClassUtil {
         return $reflection->newInstance();
     }
 
-    /**
-     * ネームスペースを含まないクラス名を返します。
-     *
-     * @param string $className
-     * @return string
-     */
-    public static function getClassName($className) {
-        $items = explode('\\', $className);
-        return array_pop($items);
-    }
-
-    /**
-     * クラス名を含まないネームスペースを返します。
-     *
-     * @param string $className
-     * @return string
-     */
-    public static function getNamespace($className) {
-        $items = explode('\\', $className);
-        array_pop($items);
-        if (count($items) == 0) {
-            return '\\';
-        }
-        if ($items[0] === '') { // 先頭に\が付いている場合は削除する。( \a\b\Hoge など)
-            array_shift($items);
-        }
-        if (count($items) == 0) {
-            return '\\';
-        }
-        return implode('\\', $items);
-    }
-
-    /**
-     * グローバルクラスかどうかを返します。
-     *
-     * @param \ReflectionClass $clazz
-     * @return boolean
-     */
-    public static function isGlobalClass(\ReflectionClass $clazz) {
-        $pos = strpos($clazz->getName(), '\\');
-        if ($pos === false) {
-            return true;
-        } else if ($pos === 0) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 }
